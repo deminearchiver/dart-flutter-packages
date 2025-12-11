@@ -1,7 +1,9 @@
 name: material
 description: "A new Flutter package project."
 version: 1.0.0
-homepage:
+homepage: https://github.com/deminearchiver/dart-flutter-packages
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/material
+issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
 publish_to: none
 resolution: workspace
 
