@@ -14,6 +14,7 @@ This repository contains interconnected published and unpublished Dart and Flutt
   - [Dynamic Color FFI](#dynamic-color-ffi)
   - [Layout](#layout)
   - [Material](#material)
+  - [Screen Corners FFI](#screen-corners-ffi)
   - [Shapes](#shapes)
 
 </details>
@@ -49,6 +50,12 @@ This repository contains interconnected published and unpublished Dart and Flutt
 **Location**: [`packages/material`](packages/material)
 
 **Published**: No
+
+### [Screen Corners FFI](packages/screen_corners_ffi/README.md)
+
+**Location**: [`packages/screen_corners_ffi`](packages/screen_corners_ffi)
+
+**Published**: Yes
 
 ### [Shapes](packages/shapes/README.md)
 
