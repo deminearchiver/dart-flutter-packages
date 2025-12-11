@@ -8,57 +8,73 @@ This repository contains interconnected published and unpublished Dart and Flutt
     <h3>Table of contents</h3>
   </summary>
 
-- [Packages](#packages)
+- [Published packages](#published-packages)
   - [deminearchiver lints](#deminearchiver-lints)
   - [Device Info FFI](#device-info-ffi)
   - [Dynamic Color FFI](#dynamic-color-ffi)
+  - [Screen Corners FFI](#screen-corners-ffi)
+- [Unpublished packages](#unpublished-packages)
   - [Layout](#layout)
   - [Material](#material)
-  - [Screen Corners FFI](#screen-corners-ffi)
   - [Shapes](#shapes)
+- [License](#license)
 
 </details>
 
-## Packages
+## Published packages
+
+Click on a package's name to view its README.
 
 ### [deminearchiver lints](packages/deminearchiver_lints/README.md)
 
+Opinionated lints for Dart and Flutter projects.
+
 **Location**: [`packages/deminearchiver_lints`](packages/deminearchiver_lints)
 
-**Published**: Yes
+**Published to**: [`deminearchiver_lints`](https://pub.dev/packages/deminearchiver_lints)
 
 ### [Device Info FFI](packages/device_info_ffi/README.md)
 
+An FFI-based version of the device_info_plus plugin.
+
 **Location**: [`packages/device_info_ffi`](packages/device_info_ffi)
 
-**Published**: Yes
+**Published to**: [`device_info_ffi`](https://pub.dev/packages/device_info_ffi)
 
 ### [Dynamic Color FFI](packages/dynamic_color_ffi/README.md)
 
+An FFI-based version of the dynamic_color plugin.
+
 **Location**: [`packages/dynamic_color_ffi`](packages/dynamic_color_ffi)
 
-**Published**: Yes
+**Published to**: [`dynamic_color_ffi`](https://pub.dev/packages/dynamic_color_ffi)
+
+
+### [Screen Corners FFI](packages/screen_corners_ffi/README.md)
+
+A Flutter FFI-based plugin to obtain the screen corner radius on mobile platforms.
+
+**Location**: [`packages/screen_corners_ffi`](packages/screen_corners_ffi)
+
+**Published to**: [`screen_corners_ffi`](https://pub.dev/packages/screen_corners_ffi)
+
+## Unpublished packages
+
+Click on a package's name to view its README.
 
 ### [Layout](packages/layout/README.md)
 
 **Location**: [`packages/layout`](packages/layout)
 
-**Published**: No
-
 ### [Material](packages/material/README.md)
 
 **Location**: [`packages/material`](packages/material)
-
-**Published**: No
-
-### [Screen Corners FFI](packages/screen_corners_ffi/README.md)
-
-**Location**: [`packages/screen_corners_ffi`](packages/screen_corners_ffi)
-
-**Published**: Yes
 
 ### [Shapes](packages/shapes/README.md)
 
 **Location**: [`packages/shapes`](packages/shapes)
 
-**Published**: No
+
+## License
+
+This repository is licensed under the [**MIT License**](LICENSE).
