@@ -1,6 +1,6 @@
 # Dynamic Color FFI
 
-An FFI-based version of the device_info_plus plugin.
+An FFI-based version of the dynamic_color plugin.
 
 ## Getting started
 

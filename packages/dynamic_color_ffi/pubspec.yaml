@@ -1,8 +1,7 @@
 name: dynamic_color_ffi
-description: A new Flutter FFI plugin project.
+description: An FFI-based version of the dynamic_color plugin.
 version: 1.0.0
 homepage:
-publish_to: none
 resolution: workspace
 
 environment:
