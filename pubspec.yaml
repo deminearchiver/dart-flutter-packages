@@ -1,0 +1,20 @@
+name: _
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.38.0"
+
+workspace:
+  - packages/deminearchiver_lints
+  - packages/device_info_ffi
+  - packages/device_info_ffi/example
+  - packages/dynamic_color_ffi
+  - packages/dynamic_color_ffi/example
+  - packages/layout
+  - packages/material
+  - packages/shapes
+
+dependency_overrides:
+  material_color_utilities: ^0.13.0
+  meta: ^1.17.0

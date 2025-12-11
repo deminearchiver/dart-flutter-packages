@@ -1,0 +1,11 @@
+name: deminearchiver_lints
+description: Opinionated lints for Dart and Flutter projects.
+version: 1.1.0
+resolution: workspace
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  lints: ^6.0.0
+  flutter_lints: ^6.0.0
