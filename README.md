@@ -27,6 +27,8 @@ Click on a package's name to view its README.
 
 ### [AndroidX Graphics Shapes](packages/androidx_graphics_shapes/README.md)
 
+A Flutter port of the `androidx.graphics.shapes` and `androidx.compose.material3.MaterialShapes` Kotlin libraries.
+
 **Location**: [`packages/androidx_graphics_shapes`](packages/androidx_graphics_shapes)
 
 **Published to**: [`androidx_graphics_shapes`](https://pub.dev/packages/androidx_graphics_shapes)
