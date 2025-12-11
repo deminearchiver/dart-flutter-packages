@@ -6,6 +6,7 @@ environment:
   flutter: ">=3.38.0"
 
 workspace:
+  - packages/androidx_graphics_shapes
   - packages/deminearchiver_lints
   - packages/device_info_ffi
   - packages/device_info_ffi/example
@@ -15,7 +16,6 @@ workspace:
   - packages/material
   - packages/screen_corners_ffi
   - packages/screen_corners_ffi/example
-  - packages/shapes
 
 dependency_overrides:
   material_color_utilities: ^0.13.0

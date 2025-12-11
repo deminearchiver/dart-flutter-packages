@@ -9,6 +9,7 @@ This repository contains interconnected published and unpublished Dart and Flutt
   </summary>
 
 - [Published packages](#published-packages)
+  - [AndroidX Graphics Shapes](#androidx-graphics-shapes)
   - [deminearchiver lints](#deminearchiver-lints)
   - [Device Info FFI](#device-info-ffi)
   - [Dynamic Color FFI](#dynamic-color-ffi)
@@ -16,7 +17,6 @@ This repository contains interconnected published and unpublished Dart and Flutt
 - [Unpublished packages](#unpublished-packages)
   - [Layout](#layout)
   - [Material](#material)
-  - [Shapes](#shapes)
 - [License](#license)
 
 </details>
@@ -24,6 +24,12 @@ This repository contains interconnected published and unpublished Dart and Flutt
 ## Published packages
 
 Click on a package's name to view its README.
+
+### [AndroidX Graphics Shapes](packages/androidx_graphics_shapes/README.md)
+
+**Location**: [`packages/androidx_graphics_shapes`](packages/androidx_graphics_shapes)
+
+**Published to**: [`androidx_graphics_shapes`](https://pub.dev/packages/androidx_graphics_shapes)
 
 ### [deminearchiver lints](packages/deminearchiver_lints/README.md)
 
@@ -69,11 +75,6 @@ Click on a package's name to view its README.
 ### [Material](packages/material/README.md)
 
 **Location**: [`packages/material`](packages/material)
-
-### [Shapes](packages/shapes/README.md)
-
-**Location**: [`packages/shapes`](packages/shapes)
-
 
 ## License
 
