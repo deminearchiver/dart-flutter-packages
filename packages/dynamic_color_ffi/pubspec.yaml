@@ -1,6 +1,6 @@
 name: dynamic_color_ffi
 description: An FFI-based version of the dynamic_color plugin.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/dynamic_color_ffi
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues

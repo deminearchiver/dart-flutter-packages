@@ -1,6 +1,6 @@
 name: screen_corners_ffi
 description: A Flutter FFI-based plugin to obtain the screen corner radius on mobile platforms.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/screen_corners_ffi
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
