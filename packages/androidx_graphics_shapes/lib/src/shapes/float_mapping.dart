@@ -41,8 +41,8 @@ double linearMap(List<double> xValues, List<double> yValues, double x) {
 @internal
 final class DoubleMapper {
   DoubleMapper(List<(double, double)> mappings)
-    : _sourceValues = List.filled(mappings.length, 0.0),
-      _targetValues = List.filled(mappings.length, 0.0) {
+    : _sourceValues = .filled(mappings.length, 0.0),
+      _targetValues = .filled(mappings.length, 0.0) {
     for (var i = 0; i < mappings.length; i++) {
       _sourceValues[i] = mappings[i].$1;
       _targetValues[i] = mappings[i].$2;
@@ -58,10 +58,7 @@ final class DoubleMapper {
 
   double mapBack(double x) => linearMap(_targetValues, _sourceValues, x);
 
-  static final DoubleMapper identity = DoubleMapper(const [
-    (0.0, 0.0),
-    (0.5, 0.5),
-  ]);
+  static final identity = DoubleMapper(const [(0.0, 0.0), (0.5, 0.5)]);
 }
 
 @internal
@@ -92,6 +89,7 @@ double progressDistance(double p1, double p2) {
   return math.min(it, 1.0 - it);
 }
 
+@internal
 extension IterableExtensions<T> on Iterable<T> {
   Iterable<int> get indices sync* {
     var index = 0;

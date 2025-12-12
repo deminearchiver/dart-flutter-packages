@@ -21,5 +21,5 @@ class CornerRounding {
   @override
   int get hashCode => Object.hash(runtimeType, radius, smoothing);
 
-  static const CornerRounding unrounded = CornerRounding();
+  static const unrounded = CornerRounding();
 }

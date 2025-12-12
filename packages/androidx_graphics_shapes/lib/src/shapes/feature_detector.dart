@@ -21,7 +21,7 @@ List<Feature> detectFeatures(List<Cubic> cubics) {
     final next = cubics[(i + 1) % (cubics.length)];
 
     if (i < cubics.length - 1 && current.alignsIshWith(next)) {
-      current = Cubic.extend(current, next);
+      current = .extend(current, next);
       continue;
     }
 

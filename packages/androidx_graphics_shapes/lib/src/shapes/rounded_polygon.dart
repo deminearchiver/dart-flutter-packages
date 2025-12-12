@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:meta/meta.dart';
@@ -58,7 +58,7 @@ final class RoundedPolygon {
   ///   placed. The default center is at (0,0).
   /// @param rounding The [CornerRounding] properties of all vertices. If some vertices should have
   ///   different rounding properties, then use [perVertexRounding] instead. The default rounding value
-  ///   is [CornerRounding.Unrounded], meaning that the polygon will use the vertices themselves in the
+  ///   is [CornerRounding.unrounded], meaning that the polygon will use the vertices themselves in the
   ///   final shape and not curves rounded around the vertices.
   /// @param perVertexRounding The [CornerRounding] properties of every vertex. If this parameter is
   ///   not null, then it must have [numVertices] elements. If this parameter is null, then the polygon
@@ -71,13 +71,13 @@ final class RoundedPolygon {
     double radius = 1.0,
     double centerX = 0.0,
     double centerY = 0.0,
-    CornerRounding rounding = CornerRounding.unrounded,
+    CornerRounding rounding = .unrounded,
     List<CornerRounding>? perVertexRounding,
   }) {
     if (numVertices < 3) {
       throw RangeError.range(numVertices, 3, null, "numVertices");
     }
-    return RoundedPolygon.fromVertices(
+    return .fromVertices(
       vertices: _verticesFromNumVerts(numVertices, radius, centerX, centerY),
       rounding: rounding,
       perVertexRounding: perVertexRounding,
@@ -91,10 +91,10 @@ final class RoundedPolygon {
 
   factory RoundedPolygon.fromVertices({
     required List<double> vertices,
-    CornerRounding rounding = CornerRounding.unrounded,
+    CornerRounding rounding = .unrounded,
     List<CornerRounding>? perVertexRounding,
-    double centerX = double.minPositive,
-    double centerY = double.minPositive,
+    double centerX = .minPositive,
+    double centerY = .minPositive,
   }) {
     if (vertices.length < 6) {
       throw ArgumentError("Polygons must have at least 3 vertices.");
@@ -199,7 +199,7 @@ final class RoundedPolygon {
         ..add(Corner(corners[i], convex(prevVertex, currVertex, nextVertex)))
         ..add(
           Edge([
-            Cubic.straightLine(
+            .straightLine(
               corners[i].last.anchor1X,
               corners[i].last.anchor1Y,
               corners[(i + 1) % n].first.anchor0X,
@@ -209,7 +209,7 @@ final class RoundedPolygon {
         );
     }
 
-    final c = centerX == double.minPositive || centerY == double.minPositive
+    final c = centerX == .minPositive || centerY == .minPositive
         ? calculateCenter(vertices)
         : Point(centerX, centerY);
     return RoundedPolygon(tempFeatures, c);
@@ -217,13 +217,14 @@ final class RoundedPolygon {
 
   factory RoundedPolygon.fromFeatures({
     required List<Feature> features,
-    double centerX = double.nan,
-    double centerY = double.nan,
+    double centerX = .nan,
+    double centerY = .nan,
   }) {
     if (features.length < 2) {
       throw ArgumentError("Polygons must have at least 2 features.");
     }
 
+    // TODO: is is the most optimal solution? if not, optimize this implementation
     final vertices = [
       for (final feature in features)
         for (final cubic in feature.cubics) ...[cubic.anchor0X, cubic.anchor0Y],
@@ -257,7 +258,7 @@ final class RoundedPolygon {
     // Radius of the underlying RoundedPolygon object given the desired radius of the circle
     final polygonRadius = radius / math.cos(theta);
 
-    return RoundedPolygon.regular(
+    return .regular(
       numVertices: numVertices,
       rounding: CornerRounding(radius: radius),
       radius: polygonRadius,
@@ -269,7 +270,7 @@ final class RoundedPolygon {
   factory RoundedPolygon.rectangle({
     double width = 2.0,
     double height = 2.0,
-    CornerRounding rounding = CornerRounding.unrounded,
+    CornerRounding rounding = .unrounded,
     List<CornerRounding>? perVertexRounding,
     double centerX = 0.0,
     double centerY = 0.0,
@@ -279,7 +280,7 @@ final class RoundedPolygon {
     final right = centerX + width / 2.0;
     final bottom = centerY + height / 2.0;
 
-    return RoundedPolygon.fromVertices(
+    return .fromVertices(
       vertices: [right, bottom, left, bottom, left, top, right, top],
       rounding: rounding,
       perVertexRounding: perVertexRounding,
@@ -292,7 +293,7 @@ final class RoundedPolygon {
     required int numVerticesPerRadius,
     double radius = 1.0,
     double innerRadius = 0.5,
-    CornerRounding rounding = CornerRounding.unrounded,
+    CornerRounding rounding = .unrounded,
     CornerRounding? innerRounding,
     List<CornerRounding>? perVertexRounding,
     double centerX = 0.0,
@@ -321,7 +322,7 @@ final class RoundedPolygon {
     // create per-vertex rounding list based on supplied outer/inner rounding parameters
     if (pvRounding == null && innerRounding != null) {
       // TODO: consider reverting back to the original flattening implementation
-      pvRounding = List.generate(
+      pvRounding = .generate(
         numVerticesPerRadius * 2,
         (index) => index.isEven ? rounding : innerRounding,
       );
@@ -329,7 +330,7 @@ final class RoundedPolygon {
 
     // Star polygon is just a polygon with all vertices supplied (where we generate
     // those vertices to be on the inner/outer radii)
-    return RoundedPolygon.fromVertices(
+    return .fromVertices(
       vertices: _starVerticesFromNumVerts(
         numVerticesPerRadius,
         radius,
@@ -358,7 +359,7 @@ final class RoundedPolygon {
     final wHalf = width / 2.0;
     final hHalf = height / 2.0;
 
-    return RoundedPolygon.fromVertices(
+    return .fromVertices(
       vertices: [
         wHalf + centerX,
         hHalf + centerY,
@@ -383,7 +384,7 @@ final class RoundedPolygon {
     double height = 1.0,
     int numVerticesPerRadius = 8,
     double innerRadiusRatio = 0.5,
-    CornerRounding rounding = CornerRounding.unrounded,
+    CornerRounding rounding = .unrounded,
     CornerRounding? innerRounding,
     List<CornerRounding>? perVertexRounding,
     double vertexSpacing = 0.5,
@@ -429,13 +430,13 @@ final class RoundedPolygon {
     // create per-vertex rounding list based on supplied outer/inner rounding parameters
     if (pvRounding == null && innerRounding != null) {
       // TODO: consider reverting back to the original flattening implementation
-      pvRounding = List.generate(
+      pvRounding = .generate(
         numVerticesPerRadius * 2,
         (index) => index.isEven ? rounding : innerRounding,
       );
     }
 
-    return RoundedPolygon.fromVertices(
+    return .fromVertices(
       vertices: _pillStarVerticesFromNumVerts(
         numVerticesPerRadius,
         width,
@@ -464,7 +465,7 @@ final class RoundedPolygon {
   final List<Cubic> cubics;
 
   RoundedPolygon transformed(PointTransformer f) => RoundedPolygon([
-    for (int i = 0; i < features.length; i++) features[i].transformed(f),
+    for (var i = 0; i < features.length; i++) features[i].transformed(f),
   ], center.transformed(f));
 
   RoundedPolygon normalized({bool approximate = true}) {
@@ -481,7 +482,7 @@ final class RoundedPolygon {
     return transformed((x, y) => ((x + offsetX) / side, (y + offsetY) / side));
   }
 
-  ui.Rect calculateMaxBounds() {
+  Rect calculateMaxBounds() {
     var maxDistSquared = 0.0;
     for (var i = 0; i < cubics.length; i++) {
       final cubic = cubics[i];
@@ -500,7 +501,7 @@ final class RoundedPolygon {
       );
     }
     final distance = math.sqrt(maxDistSquared);
-    return ui.Rect.fromLTRB(
+    return Rect.fromLTRB(
       centerX - distance,
       centerY - distance,
       centerX + distance,
@@ -508,11 +509,11 @@ final class RoundedPolygon {
     );
   }
 
-  ui.Rect calculateBounds({bool approximate = true}) {
-    var minX = double.maxFinite;
-    var minY = double.maxFinite;
-    var maxX = double.minPositive;
-    var maxY = double.minPositive;
+  Rect calculateBounds({bool approximate = true}) {
+    double minX = .maxFinite;
+    double minY = .maxFinite;
+    double maxX = .minPositive;
+    double maxY = .minPositive;
     for (var i = 0; i < cubics.length; i++) {
       final cubic = cubics[i];
       final bounds = cubic.calculateBounds(approximate: approximate);
@@ -521,7 +522,7 @@ final class RoundedPolygon {
       maxX = math.max(maxX, bounds.right);
       maxY = math.max(maxY, bounds.bottom);
     }
-    return ui.Rect.fromLTRB(minX, minY, maxX, maxY);
+    return Rect.fromLTRB(minX, minY, maxX, maxY);
   }
 
   @override
@@ -556,8 +557,8 @@ final class RoundedPolygon {
     if (features.isNotEmpty && features[0].cubics.length == 3) {
       final centerCubic = features[0].cubics[1];
       final (start, end) = centerCubic.split(0.5);
-      firstFeatureSplitStart = <Cubic>[features[0].cubics[0], start];
-      firstFeatureSplitEnd = <Cubic>[end, features[0].cubics[2]];
+      firstFeatureSplitStart = [features[0].cubics[0], start];
+      firstFeatureSplitEnd = [end, features[0].cubics[2]];
     }
     // iterating one past the features list size allows us to insert the initial split
     // cubic if it exists
@@ -588,7 +589,7 @@ final class RoundedPolygon {
             // enough discontinuity to throw an exception later, even though the
             // distances are quite small. Account for that by making the last
             // cubic use the latest anchor point, always.
-            lastCubic = Cubic.from(
+            lastCubic = .from(
               lastCubic.anchor0X,
               lastCubic.anchor0Y,
               lastCubic.control0X,
@@ -605,7 +606,7 @@ final class RoundedPolygon {
 
     if (lastCubic != null && firstCubic != null) {
       cubics.add(
-        Cubic.from(
+        .from(
           lastCubic.anchor0X,
           lastCubic.anchor0Y,
           lastCubic.control0X,
@@ -619,7 +620,7 @@ final class RoundedPolygon {
     } else {
       // Empty / 0-sized polygon.
       cubics.add(
-        Cubic.from(
+        .from(
           center.x,
           center.y,
           center.x,
@@ -674,8 +675,8 @@ final class _RoundedCorner {
   ]) {
     final v01 = p0 - p1;
     final v21 = p2 - p1;
-    final d01 = v01.getDistance();
-    final d21 = v21.getDistance();
+    final d01 = v01.distance;
+    final d21 = v21.distance;
 
     final Point d1;
     final Point d2;
@@ -745,7 +746,7 @@ final class _RoundedCorner {
 
   double get expectedCut => ((1.0 + smoothing) * expectedRoundCut);
 
-  Point center = const Point(0.0, 0.0);
+  Point center = .zero;
 
   List<Cubic> getCubics(double allowedCut0, [double? allowedCut1]) {
     allowedCut1 ??= allowedCut0;
@@ -759,7 +760,7 @@ final class _RoundedCorner {
         allowedCut < distanceEpsilon ||
         cornerRadius < distanceEpsilon) {
       center = p1;
-      return [Cubic.straightLine(p1.x, p1.y, p1.x, p1.y)];
+      return [.straightLine(p1.x, p1.y, p1.x, p1.y)];
     }
     // How much of the cut is required for the rounding part.
     final actualRoundCut = math.min(allowedCut, expectedRoundCut);
@@ -777,7 +778,7 @@ final class _RoundedCorner {
     final centerDistance = math.sqrt(square(actualR) + square(actualRoundCut));
 
     // Center of the arc we will use for rounding
-    center = p1 + ((d1 + d2) / 2.0).getDirection() * centerDistance;
+    center = p1 + ((d1 + d2) / 2.0).direction * centerDistance;
 
     final circleIntersection0 = p1 + d1 * actualRoundCut;
     final circleIntersection2 = p1 + d2 * actualRoundCut;
@@ -806,7 +807,7 @@ final class _RoundedCorner {
 
     return [
       flanking0,
-      Cubic.circularArc(
+      .circularArc(
         center.x,
         center.y,
         flanking0.anchor1X,
@@ -838,7 +839,7 @@ final class _RoundedCorner {
     double actualR,
   ) {
     // sideStart is the anchor, 'anchor' is actual control point
-    final sideDirection = (sideStart - corner).getDirection();
+    final sideDirection = (sideStart - corner).direction;
     final curveStart =
         corner + sideDirection * actualRoundCut * (1.0 + actualSmoothingValues);
     // We use an approximation to cut a part of the circle section proportional to 1 - smooth,
@@ -862,7 +863,7 @@ final class _RoundedCorner {
     // From what remains, we pick a point for the start anchor.
     // 2/3 seems to come from design tools?
     final anchorStart = (curveStart + anchorEnd * 2.0) / 3.0;
-    return Cubic.fromPoints(curveStart, anchorStart, anchorEnd, curveEnd);
+    return .fromPoints(curveStart, anchorStart, anchorEnd, curveEnd);
   }
 
   Point? _lineIntersection(Point p0, Point d0, Point p1, Point d1) {

@@ -147,12 +147,12 @@ final class Edge extends Feature {
   Edge transformed(PointTransformer f) => Edge([
     // Performance: Builds the list by avoiding creating an unnecessary Iterator to
     // iterate through the cubics List.
-    for (int i = 0; i < cubics.length; i++) cubics[i].transformed(f),
+    for (var i = 0; i < cubics.length; i++) cubics[i].transformed(f),
   ]);
 
   @override
   Edge reversed() =>
-      Edge([for (int i = cubics.length - 1; i >= 0; i--) cubics[i].reverse()]);
+      Edge([for (var i = cubics.length - 1; i >= 0; i--) cubics[i].reverse()]);
 
   @override
   bool get isIgnorableFeature => true;
@@ -180,12 +180,12 @@ final class Corner extends Feature {
   Corner transformed(PointTransformer f) => Corner([
     // Performance: Builds the list by avoiding creating an unnecessary Iterator to
     // iterate through the cubics List.
-    for (int i = 0; i < cubics.length; i++) cubics[i].transformed(f),
+    for (var i = 0; i < cubics.length; i++) cubics[i].transformed(f),
   ], convex);
 
   @override
   Corner reversed() => Corner(
-    [for (int i = cubics.length - 1; i >= 0; i--) cubics[i].reverse()],
+    [for (var i = cubics.length - 1; i >= 0; i--) cubics[i].reverse()],
     // TODO: b/369320447 - Revert flag negation when [RoundedPolygon] ignores orientation for setting the flag
     !convex,
   );

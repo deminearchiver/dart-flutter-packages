@@ -17,7 +17,7 @@ extension RoundedPolygonInternalExtension on RoundedPolygon {
   @internal
   Path toPathWith({
     Path? path,
-    int startAngle = 270,
+    double startAngle = 270.0,
     bool repeatPath = false,
     bool closePath = true,
   }) => _pathFromCubics(
@@ -32,7 +32,7 @@ extension RoundedPolygonInternalExtension on RoundedPolygon {
 }
 
 extension RoundedPolygonExtension on RoundedPolygon {
-  Path toPath({int startAngle = 0}) => toPathWith(
+  Path toPath({double startAngle = 0.0}) => toPathWith(
     path: Path(),
     startAngle: startAngle,
     repeatPath: false,
@@ -45,7 +45,7 @@ extension MorphInternalExtension on Morph {
   Path toPathWith({
     required double progress,
     Path? path,
-    int startAngle = 270, // 12 O'clock
+    double startAngle = 270.0, // 12 O'clock
     bool repeatPath = false,
     bool closePath = true,
     double rotationPivotX = 0.0,
@@ -62,17 +62,20 @@ extension MorphInternalExtension on Morph {
 }
 
 extension MorphExtension on Morph {
-  Path toPath({required double progress, Path? path, int startAngle = 0}) =>
-      toPathWith(
-        path: path ?? Path(),
-        progress: progress,
-        startAngle: startAngle,
-      );
+  Path toPath({
+    required double progress,
+    Path? path,
+    double startAngle = 0.0,
+  }) => toPathWith(
+    path: path ?? Path(),
+    progress: progress,
+    startAngle: startAngle,
+  );
 }
 
 Path _pathFromCubics({
   required Path path,
-  required int startAngle,
+  required double startAngle,
   required bool repeatPath,
   required bool closePath,
   required List<Cubic> cubics,
@@ -89,7 +92,7 @@ Path _pathFromCubics({
 
     if (first) {
       path.moveTo(it.anchor0X, it.anchor0Y);
-      if (startAngle != 0) {
+      if (startAngle != 0.0) {
         firstCubic = it;
       }
       first = false;
@@ -129,14 +132,14 @@ Path _pathFromCubics({
 
   if (closePath) path.close();
 
-  if (startAngle != 0 && firstCubic != null) {
+  if (startAngle != 0.0 && firstCubic != null) {
     final angleToFirstCubicRadians = math.atan2(
       cubics[0].anchor0Y - rotationPivotY,
       cubics[0].anchor0X - rotationPivotX,
     );
-    final startAngleRadians = _degreesToRadians(startAngle.toDouble());
+    final startAngleRadians = _degreesToRadians(startAngle);
+
     // Rotate the Path to to start from the given angle.
-    // path.transform(Matrix().apply { rotateZ(-angleToFirstCubic + startAngle) });
     final matrix = Matrix4.rotationZ(
       -angleToFirstCubicRadians + startAngleRadians,
     );
@@ -151,65 +154,62 @@ double _degreesToRadians(double degrees) {
 
 abstract final class MaterialShapes {
   // Cache various roundings for use below
-  static const CornerRounding _cornerRound15 = CornerRounding(radius: 0.15);
-  static const CornerRounding _cornerRound20 = CornerRounding(radius: 0.2);
-  static const CornerRounding _cornerRound30 = CornerRounding(radius: 0.3);
-  static const CornerRounding _cornerRound50 = CornerRounding(radius: 0.5);
-  static const CornerRounding _cornerRound100 = CornerRounding(radius: 1.0);
+  static const _cornerRound15 = CornerRounding(radius: 0.15);
+  static const _cornerRound20 = CornerRounding(radius: 0.2);
+  static const _cornerRound30 = CornerRounding(radius: 0.3);
+  static const _cornerRound50 = CornerRounding(radius: 0.5);
+  static const _cornerRound100 = CornerRounding(radius: 1.0);
 
-  static final Matrix4 _rotateNeg45 = Matrix4.rotationZ(-math.pi * 0.25);
-  static final Matrix4 _rotateNeg90 = Matrix4.rotationZ(-math.pi * 0.5);
-  static final Matrix4 _rotateNeg135 = Matrix4.rotationZ(-math.pi * 0.75);
+  static final _rotateNeg45 = Matrix4.rotationZ(-math.pi * 0.25);
+  static final _rotateNeg90 = Matrix4.rotationZ(-math.pi * 0.5);
+  static final _rotateNeg135 = Matrix4.rotationZ(-math.pi * 0.75);
 
-  static RoundedPolygon circle = buildCircle().normalized();
-  static RoundedPolygon square = buildSquare().normalized();
-  static RoundedPolygon slanted = buildSlanted().normalized();
-  static RoundedPolygon arch = buildArch().normalized();
-  static RoundedPolygon fan = buildFan().normalized();
-  static RoundedPolygon arrow = buildArrow().normalized();
-  static RoundedPolygon semiCircle = buildSemiCircle().normalized();
-  static RoundedPolygon oval = buildOval().normalized();
-  static RoundedPolygon pill = buildPill().normalized();
-  static RoundedPolygon triangle = buildTriangle().normalized();
-  static RoundedPolygon diamond = buildDiamond().normalized();
-  static RoundedPolygon clamShell = buildClamShell().normalized();
-  static RoundedPolygon pentagon = buildPentagon().normalized();
-  static RoundedPolygon gem = buildGem().normalized();
-  static RoundedPolygon verySunny = buildVerySunny().normalized();
-  static RoundedPolygon sunny = buildSunny().normalized();
-  static RoundedPolygon cookie4Sided = buildCookie4Sided().normalized();
-  static RoundedPolygon cookie6Sided = buildCookie6Sided().normalized();
-  static RoundedPolygon cookie7Sided = buildCookie7Sided().normalized();
-  static RoundedPolygon cookie9Sided = buildCookie9Sided().normalized();
-  static RoundedPolygon cookie12Sided = buildCookie12Sided().normalized();
-  static RoundedPolygon ghostish = buildGhostish().normalized();
-  static RoundedPolygon clover4Leaf = buildClover4Leaf().normalized();
-  static RoundedPolygon clover8Leaf = buildClover8Leaf().normalized();
-  static RoundedPolygon burst = buildBurst().normalized();
-  static RoundedPolygon softBurst = buildSoftBurst().normalized();
-  static RoundedPolygon boom = buildBoom().normalized();
-  static RoundedPolygon softBoom = buildSoftBoom().normalized();
-  static RoundedPolygon flower = buildFlower().normalized();
-  static RoundedPolygon puffy = buildPuffy().normalized();
-  static RoundedPolygon puffyDiamond = buildPuffyDiamond().normalized();
-  static RoundedPolygon pixelCircle = buildPixelCircle().normalized();
-  static RoundedPolygon pixelTriangle = buildPixelTriangle().normalized();
-  static RoundedPolygon bun = buildBun().normalized();
-  static RoundedPolygon heart = buildHeart().normalized();
+  static final circle = buildCircle().normalized();
+  static final square = buildSquare().normalized();
+  static final slanted = buildSlanted().normalized();
+  static final arch = buildArch().normalized();
+  static final fan = buildFan().normalized();
+  static final arrow = buildArrow().normalized();
+  static final semiCircle = buildSemiCircle().normalized();
+  static final oval = buildOval().normalized();
+  static final pill = buildPill().normalized();
+  static final triangle = buildTriangle().normalized();
+  static final diamond = buildDiamond().normalized();
+  static final clamShell = buildClamShell().normalized();
+  static final pentagon = buildPentagon().normalized();
+  static final gem = buildGem().normalized();
+  static final verySunny = buildVerySunny().normalized();
+  static final sunny = buildSunny().normalized();
+  static final cookie4Sided = buildCookie4Sided().normalized();
+  static final cookie6Sided = buildCookie6Sided().normalized();
+  static final cookie7Sided = buildCookie7Sided().normalized();
+  static final cookie9Sided = buildCookie9Sided().normalized();
+  static final cookie12Sided = buildCookie12Sided().normalized();
+  static final ghostish = buildGhostish().normalized();
+  static final clover4Leaf = buildClover4Leaf().normalized();
+  static final clover8Leaf = buildClover8Leaf().normalized();
+  static final burst = buildBurst().normalized();
+  static final softBurst = buildSoftBurst().normalized();
+  static final boom = buildBoom().normalized();
+  static final softBoom = buildSoftBoom().normalized();
+  static final flower = buildFlower().normalized();
+  static final puffy = buildPuffy().normalized();
+  static final puffyDiamond = buildPuffyDiamond().normalized();
+  static final pixelCircle = buildPixelCircle().normalized();
+  static final pixelTriangle = buildPixelTriangle().normalized();
+  static final bun = buildBun().normalized();
+  static final heart = buildHeart().normalized();
 
   @internal
   static RoundedPolygon buildCircle({int numVertices = 10}) =>
-      RoundedPolygon.circle(numVertices: numVertices);
+      .circle(numVertices: numVertices);
 
   @internal
-  static RoundedPolygon buildSquare() => RoundedPolygon.rectangle(
-    width: 1.0,
-    height: 1.0,
-    rounding: _cornerRound30,
-  );
+  static RoundedPolygon buildSquare() =>
+      .rectangle(width: 1.0, height: 1.0, rounding: _cornerRound30);
 
   @internal
-  static RoundedPolygon buildSlanted() => _customPolygon(const <_PointNRound>[
+  static RoundedPolygon buildSlanted() => _customPolygon(const [
     _PointNRound(
       Offset(0.926, 0.970),
       CornerRounding(radius: 0.189, smoothing: 0.811),
@@ -221,9 +221,9 @@ abstract final class MaterialShapes {
   ], reps: 2);
 
   @internal
-  static RoundedPolygon buildArch() => RoundedPolygon.regular(
+  static RoundedPolygon buildArch() => .regular(
     numVertices: 4,
-    perVertexRounding: const <CornerRounding>[
+    perVertexRounding: const [
       _cornerRound100,
       _cornerRound100,
       _cornerRound20,
@@ -232,7 +232,7 @@ abstract final class MaterialShapes {
   ).transformedWithMatrix(_rotateNeg135);
 
   @internal
-  static RoundedPolygon buildFan() => _customPolygon(const <_PointNRound>[
+  static RoundedPolygon buildFan() => _customPolygon(const [
     _PointNRound(
       Offset(1.004, 1.000),
       CornerRounding(radius: 0.148, smoothing: 0.417),
@@ -243,7 +243,7 @@ abstract final class MaterialShapes {
   ], reps: 1);
 
   @internal
-  static RoundedPolygon buildArrow() => _customPolygon(const <_PointNRound>[
+  static RoundedPolygon buildArrow() => _customPolygon(const [
     _PointNRound(Offset(0.500, 0.892), CornerRounding(radius: 0.313)),
     _PointNRound(Offset(-0.216, 1.050), CornerRounding(radius: 0.207)),
     _PointNRound(
@@ -254,10 +254,10 @@ abstract final class MaterialShapes {
   ], reps: 1);
 
   @internal
-  static RoundedPolygon buildSemiCircle() => RoundedPolygon.rectangle(
+  static RoundedPolygon buildSemiCircle() => .rectangle(
     width: 1.6,
     height: 1.0,
-    perVertexRounding: const <CornerRounding>[
+    perVertexRounding: const [
       _cornerRound20,
       _cornerRound20,
       _cornerRound100,
@@ -266,13 +266,13 @@ abstract final class MaterialShapes {
   );
 
   @internal
-  static RoundedPolygon buildOval() => RoundedPolygon.circle()
+  static RoundedPolygon buildOval() => .circle()
       .transformedWithMatrix(Matrix4.diagonal3Values(1.0, 0.64, 1.0))
       .transformedWithMatrix(_rotateNeg45);
 
   @internal
   static RoundedPolygon buildPill() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.961, 0.039), CornerRounding(radius: 0.426)),
       _PointNRound(Offset(1.001, 0.428)),
       _PointNRound(Offset(1.000, 0.609), CornerRounding(radius: 1.000)),
@@ -282,13 +282,13 @@ abstract final class MaterialShapes {
   );
 
   @internal
-  static RoundedPolygon buildTriangle() => RoundedPolygon.regular(
+  static RoundedPolygon buildTriangle() => .regular(
     numVertices: 3,
     rounding: _cornerRound20,
   ).transformedWithMatrix(_rotateNeg90);
 
   @internal
-  static RoundedPolygon buildDiamond() => _customPolygon(const <_PointNRound>[
+  static RoundedPolygon buildDiamond() => _customPolygon(const [
     _PointNRound(
       Offset(0.500, 1.096),
       CornerRounding(radius: 0.151, smoothing: 0.524),
@@ -297,7 +297,7 @@ abstract final class MaterialShapes {
   ], reps: 2);
 
   @internal
-  static RoundedPolygon buildClamShell() => _customPolygon(const <_PointNRound>[
+  static RoundedPolygon buildClamShell() => _customPolygon(const [
     _PointNRound(Offset(0.171, 0.841), CornerRounding(radius: 0.159)),
     _PointNRound(Offset(-0.020, 0.500), CornerRounding(radius: 0.140)),
     _PointNRound(Offset(0.170, 0.159), CornerRounding(radius: 0.159)),
@@ -305,7 +305,7 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildPentagon() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.500, -0.009), CornerRounding(radius: 0.172)),
       _PointNRound(Offset(1.030, 0.365), CornerRounding(radius: 0.164)),
       _PointNRound(Offset(0.828, 0.970), CornerRounding(radius: 0.169)),
@@ -316,7 +316,7 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildGem() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(
         Offset(0.499, 1.023),
         CornerRounding(radius: 0.241, smoothing: 0.778),
@@ -330,48 +330,46 @@ abstract final class MaterialShapes {
   );
 
   @internal
-  static RoundedPolygon buildSunny() => RoundedPolygon.star(
+  static RoundedPolygon buildSunny() => .star(
     numVerticesPerRadius: 8,
     innerRadius: 0.8,
     rounding: _cornerRound15,
   );
 
   @internal
-  static RoundedPolygon buildVerySunny() => _customPolygon(const <_PointNRound>[
+  static RoundedPolygon buildVerySunny() => _customPolygon(const [
     _PointNRound(Offset(0.500, 1.080), CornerRounding(radius: 0.085)),
     _PointNRound(Offset(0.358, 0.843), CornerRounding(radius: 0.085)),
   ], reps: 8);
 
   @internal
-  static RoundedPolygon buildCookie4Sided() =>
-      _customPolygon(const <_PointNRound>[
-        _PointNRound(Offset(1.237, 1.236), CornerRounding(radius: 0.258)),
-        _PointNRound(Offset(0.500, 0.918), CornerRounding(radius: 0.233)),
-      ], reps: 4);
+  static RoundedPolygon buildCookie4Sided() => _customPolygon(const [
+    _PointNRound(Offset(1.237, 1.236), CornerRounding(radius: 0.258)),
+    _PointNRound(Offset(0.500, 0.918), CornerRounding(radius: 0.233)),
+  ], reps: 4);
 
   @internal
-  static RoundedPolygon buildCookie6Sided() =>
-      _customPolygon(const <_PointNRound>[
-        _PointNRound(Offset(0.723, 0.884), CornerRounding(radius: 0.394)),
-        _PointNRound(Offset(0.500, 1.099), CornerRounding(radius: 0.398)),
-      ], reps: 6);
+  static RoundedPolygon buildCookie6Sided() => _customPolygon(const [
+    _PointNRound(Offset(0.723, 0.884), CornerRounding(radius: 0.394)),
+    _PointNRound(Offset(0.500, 1.099), CornerRounding(radius: 0.398)),
+  ], reps: 6);
 
   @internal
-  static RoundedPolygon buildCookie7Sided() => RoundedPolygon.star(
+  static RoundedPolygon buildCookie7Sided() => .star(
     numVerticesPerRadius: 7,
     innerRadius: 0.75,
     rounding: _cornerRound50,
   ).transformedWithMatrix(_rotateNeg90);
 
   @internal
-  static RoundedPolygon buildCookie9Sided() => RoundedPolygon.star(
+  static RoundedPolygon buildCookie9Sided() => .star(
     numVerticesPerRadius: 9,
     innerRadius: 0.8,
     rounding: _cornerRound50,
   ).transformedWithMatrix(_rotateNeg90);
 
   @internal
-  static RoundedPolygon buildCookie12Sided() => RoundedPolygon.star(
+  static RoundedPolygon buildCookie12Sided() => .star(
     numVerticesPerRadius: 12,
     innerRadius: 0.8,
     rounding: _cornerRound50,
@@ -379,7 +377,7 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildGhostish() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.500, 0.0), CornerRounding(radius: 1.000)),
       _PointNRound(Offset(1.0, 0.0), CornerRounding(radius: 1.000)),
       _PointNRound(
@@ -394,7 +392,7 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildClover4Leaf() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.500, 0.074)),
       _PointNRound(Offset(0.725, -0.099), CornerRounding(radius: 0.476)),
     ],
@@ -403,33 +401,32 @@ abstract final class MaterialShapes {
   );
 
   @internal
-  static RoundedPolygon buildClover8Leaf() =>
-      _customPolygon(const <_PointNRound>[
-        _PointNRound(Offset(0.500, 0.036)),
-        _PointNRound(Offset(0.758, -0.101), CornerRounding(radius: 0.209)),
-      ], reps: 8);
+  static RoundedPolygon buildClover8Leaf() => _customPolygon(const [
+    _PointNRound(Offset(0.500, 0.036)),
+    _PointNRound(Offset(0.758, -0.101), CornerRounding(radius: 0.209)),
+  ], reps: 8);
 
   @internal
-  static RoundedPolygon buildBurst() => _customPolygon(const <_PointNRound>[
+  static RoundedPolygon buildBurst() => _customPolygon(const [
     _PointNRound(Offset(0.500, -0.006), CornerRounding(radius: 0.006)),
     _PointNRound(Offset(0.592, 0.158), CornerRounding(radius: 0.006)),
   ], reps: 12);
 
   @internal
-  static RoundedPolygon buildSoftBurst() => _customPolygon(const <_PointNRound>[
+  static RoundedPolygon buildSoftBurst() => _customPolygon(const [
     _PointNRound(Offset(0.193, 0.277), CornerRounding(radius: 0.053)),
     _PointNRound(Offset(0.176, 0.055), CornerRounding(radius: 0.053)),
   ], reps: 10);
 
   @internal
-  static RoundedPolygon buildBoom() => _customPolygon(const <_PointNRound>[
+  static RoundedPolygon buildBoom() => _customPolygon(const [
     _PointNRound(Offset(0.457, 0.296), CornerRounding(radius: 0.007)),
     _PointNRound(Offset(0.500, -0.051), CornerRounding(radius: 0.007)),
   ], reps: 15);
 
   @internal
   static RoundedPolygon buildSoftBoom() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.733, 0.454)),
       _PointNRound(Offset(0.839, 0.437), CornerRounding(radius: 0.532)),
       _PointNRound(
@@ -444,7 +441,7 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildFlower() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.370, 0.187)),
       _PointNRound(Offset(0.416, 0.049), CornerRounding(radius: 0.381)),
       _PointNRound(Offset(0.479, 0.001), CornerRounding(radius: 0.095)),
@@ -455,7 +452,7 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildPuffy() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.500, 0.053)),
       _PointNRound(Offset(0.545, -0.040), CornerRounding(radius: 0.405)),
       _PointNRound(Offset(0.670, -0.035), CornerRounding(radius: 0.426)),
@@ -474,7 +471,7 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildPuffyDiamond() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.870, 0.130), CornerRounding(radius: 0.146)),
       _PointNRound(Offset(0.818, 0.357)),
       _PointNRound(Offset(1.000, 0.332), CornerRounding(radius: 0.853)),
@@ -485,7 +482,7 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildPixelCircle() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.500, 0.000)),
       _PointNRound(Offset(0.704, 0.000)),
       _PointNRound(Offset(0.704, 0.065)),
@@ -501,7 +498,7 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildPixelTriangle() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.110, 0.500)),
       _PointNRound(Offset(0.113, 0.000)),
       _PointNRound(Offset(0.287, 0.000)),
@@ -522,7 +519,7 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildBun() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.796, 0.500)),
       _PointNRound(Offset(0.853, 0.518), CornerRounding(radius: 1.0)),
       _PointNRound(Offset(0.992, 0.631), CornerRounding(radius: 1.0)),
@@ -534,7 +531,7 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildHeart() => _customPolygon(
-    const <_PointNRound>[
+    const [
       _PointNRound(Offset(0.500, 0.268), CornerRounding(radius: 0.016)),
       _PointNRound(Offset(0.792, -0.066), CornerRounding(radius: 0.958)),
       _PointNRound(Offset(1.064, 0.276), CornerRounding(radius: 1.000)),
@@ -553,13 +550,13 @@ abstract final class MaterialShapes {
     if (mirroring) {
       final result = <_PointNRound>[];
 
-      final angles = <double>[
-        for (int i = 0; i < points.length; i++)
+      final angles = [
+        for (var i = 0; i < points.length; i++)
           (points[i].o - center)._angleRadians(),
       ];
 
-      final distances = <double>[
-        for (int i = 0; i < points.length; i++) (points[i].o - center).distance,
+      final distances = [
+        for (var i = 0; i < points.length; i++) (points[i].o - center).distance,
       ];
 
       final actualReps = reps * 2;
@@ -584,7 +581,7 @@ abstract final class MaterialShapes {
       return result;
     } else {
       final np = points.length;
-      return List.generate(np * reps, (it) {
+      return .generate(np * reps, (it) {
         final point = points[it % np].o._rotateDegrees(
           (it ~/ np) * 360.0 / reps,
           center,
@@ -601,13 +598,13 @@ abstract final class MaterialShapes {
     bool mirroring = false,
   }) {
     final actualPoints = _doRepeat(pnr, reps, center, mirroring);
-    return RoundedPolygon.fromVertices(
-      vertices: List.generate(actualPoints.length * 2, (ix) {
+    return .fromVertices(
+      vertices: .generate(actualPoints.length * 2, (ix) {
         final it = actualPoints[ix ~/ 2].o;
         return ix.isEven ? it.dx : it.dy;
       }),
-      perVertexRounding: <CornerRounding>[
-        for (int i = 0; i < actualPoints.length; i++) actualPoints[i].r,
+      perVertexRounding: [
+        for (var i = 0; i < actualPoints.length; i++) actualPoints[i].r,
       ],
       centerX: center.dx,
       centerY: center.dy,
@@ -617,7 +614,7 @@ abstract final class MaterialShapes {
 
 @immutable
 class _PointNRound {
-  const _PointNRound(this.o, [this.r = CornerRounding.unrounded]);
+  const _PointNRound(this.o, [this.r = .unrounded]);
 
   final Offset o;
   final CornerRounding r;
@@ -771,11 +768,11 @@ class RoundedPolygonBorder extends _PathBorder {
     super.side,
     super.squash,
     required this.polygon,
-    this.startAngle = 0,
+    this.startAngle = 0.0,
   });
 
   final RoundedPolygon polygon;
-  final int startAngle;
+  final double startAngle;
 
   @override
   Path get path => polygon.toPath(startAngle: startAngle);
@@ -785,7 +782,7 @@ class RoundedPolygonBorder extends _PathBorder {
     BorderSide? side,
     double? squash,
     RoundedPolygon? polygon,
-    int? startAngle,
+    double? startAngle,
   }) => RoundedPolygonBorder(
     polygon: polygon ?? this.polygon,
     startAngle: startAngle ?? this.startAngle,
@@ -821,12 +818,12 @@ class MorphBorder extends _PathBorder {
     super.squash,
     required this.morph,
     required this.progress,
-    this.startAngle = 0,
+    this.startAngle = 0.0,
   });
 
   final Morph morph;
   final double progress;
-  final int startAngle;
+  final double startAngle;
 
   @override
   Path get path => morph.toPath(progress: progress, startAngle: startAngle);
@@ -837,7 +834,7 @@ class MorphBorder extends _PathBorder {
     double? squash,
     Morph? morph,
     double? progress,
-    int? startAngle,
+    double? startAngle,
   }) => MorphBorder(
     side: side ?? this.side,
     squash: squash ?? this.squash,

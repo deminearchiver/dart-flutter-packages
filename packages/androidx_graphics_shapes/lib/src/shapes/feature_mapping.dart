@@ -44,14 +44,14 @@ DoubleMapper featureMapper(
   final filteredFeatures1 = [
     // Performance: Builds the list by avoiding creating an unnecessary Iterator
     // to iterate through the features1 List.
-    for (int i = 0; i < features1.length; i++)
+    for (var i = 0; i < features1.length; i++)
       if (features1[i].feature is Corner) features1[i],
   ];
 
   final filteredFeatures2 = [
     // Performance: Builds the list by avoiding creating an unnecessary Iterator
     // to iterate through the features2 List.
-    for (int i = 0; i < features2.length; i++)
+    for (var i = 0; i < features2.length; i++)
       if (features2[i].feature is Corner) features2[i],
   ];
 
@@ -108,13 +108,13 @@ List<(double, double)> doMapping(
   // debugLog(LOG_TAG) { "Shape1 progresses: " + features1.map { it.progress }.joinToString() }
   // debugLog(LOG_TAG) { "Shape2 progresses: " + features2.map { it.progress }.joinToString() }
 
-  // TODO: consider a more
+  // TODO: optimize this implementation without using iterators
   final List<DistanceVertex> distanceVertexList =
       features1
           .expand(
             (f1) => features2.map((f2) {
               final d = featureDistSquared(f1.feature, f2.feature);
-              return d != double.maxFinite ? DistanceVertex(d, f1, f2) : null;
+              return d != .maxFinite ? DistanceVertex(d, f1, f2) : null;
             }),
           )
           .nonNulls
@@ -144,11 +144,11 @@ final class _MappingHelper {
 
   // List of mappings from progress in the start shape to progress in the end shape.
   // We keep this list sorted by the first element.
-  final List<(double, double)> mapping = <(double, double)>[];
+  final mapping = <(double, double)>[];
 
   // Which features in the start shape have we used and which in the end shape.
-  final Set<ProgressableFeature> _usedF1 = <ProgressableFeature>{};
-  final Set<ProgressableFeature> _usedF2 = <ProgressableFeature>{};
+  final _usedF1 = <ProgressableFeature>{};
+  final _usedF2 = <ProgressableFeature>{};
 
   void addMapping(ProgressableFeature f1, ProgressableFeature f2) {
     // We don't want to map the same feature twice.
@@ -205,10 +205,10 @@ double featureDistSquared(Feature f1, Feature f2) {
     // Simple hack to force all features to map only to features of the same concavity, by
     // returning an infinitely large distance in that case
     // debugLog(LOG_TAG) { "*** Feature distance ∞ for convex-vs-concave corners" }
-    return double.maxFinite;
+    return .maxFinite;
   }
   return (featureRepresentativePoint(f1) - featureRepresentativePoint(f2))
-      .getDistanceSquared();
+      .distanceSquared;
 }
 
 // TODO: b/378441547 - Move to explicit parameter / expose?

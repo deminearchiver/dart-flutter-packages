@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:meta/meta.dart';
 
@@ -25,24 +25,15 @@ abstract class Cubic {
   ) = _Cubic;
 
   @internal
-  factory Cubic.fromPoints(
+  const factory Cubic.fromPoints(
     Point anchor0,
     Point control0,
     Point control1,
     Point anchor1,
-  ) => Cubic.from(
-    anchor0.x,
-    anchor0.y,
-    control0.x,
-    control0.y,
-    control1.x,
-    control1.y,
-    anchor1.x,
-    anchor1.y,
-  );
+  ) = _CubicFromPoints;
 
   factory Cubic.straightLine(double x0, double y0, double x1, double y1) =>
-      Cubic.from(
+      .from(
         x0,
         y0,
         interpolateDouble(x0, x1, 1.0 / 3.0),
@@ -69,7 +60,7 @@ abstract class Cubic {
         rotatedP0.dotProductWith(x1 - centerX, y1 - centerY) >= 0.0;
 
     final cosa = p0d.dotProduct(p1d);
-    if (cosa > 0.999) /* p0 ~= p1 */ return Cubic.straightLine(x0, y0, x1, y1);
+    if (cosa > 0.999) /* p0 ~= p1 */ return .straightLine(x0, y0, x1, y1);
 
     final k =
         distance(x0 - centerX, y0 - centerY) *
@@ -79,7 +70,7 @@ abstract class Cubic {
         (1 - cosa) *
         (clockwise ? 1.0 : -1.0);
 
-    return Cubic.from(
+    return .from(
       x0,
       y0,
       x0 + rotatedP0.x * k,
@@ -100,18 +91,30 @@ abstract class Cubic {
   double get anchor1X;
   double get anchor1Y;
 
+  Point get anchor0 => Point(anchor0X, anchor0Y);
+  Point get control0 => Point(control0X, control0Y);
+  Point get control1 => Point(control1X, control1Y);
+  Point get anchor1 => Point(anchor1X, anchor1Y);
+
   @internal
   Point pointOnCurve(double t) {
     final u = 1.0 - t;
+
+    // Shared calculations
+    final uCb = (u * u * u);
+    final tCb = (t * t * t);
+    final threeTUSq = (3.0 * t * u * u);
+    final threeUTSq = (3.0 * t * t * u);
+
     return Point(
-      anchor0X * (u * u * u) +
-          control0X * (3.0 * t * u * u) +
-          control1X * (3.0 * t * t * u) +
-          anchor1X * (t * t * t),
-      anchor0Y * (u * u * u) +
-          control0Y * (3.0 * t * u * u) +
-          control1Y * (3.0 * t * t * u) +
-          anchor1Y * (t * t * t),
+      anchor0X * uCb +
+          control0X * threeTUSq +
+          control1X * threeUTSq +
+          anchor1X * tCb,
+      anchor0Y * uCb +
+          control0Y * threeTUSq +
+          control1Y * threeUTSq +
+          anchor1Y * tCb,
     );
   }
 
@@ -121,19 +124,18 @@ abstract class Cubic {
       (anchor0Y - anchor1Y).abs() < distanceEpsilon;
 
   @internal
-  bool convexTo(Cubic next) {
-    final prevVertex = Point(anchor0X, anchor0Y);
-    final currVertex = Point(anchor1X, anchor1Y);
-    final nextVertex = Point(next.anchor1X, next.anchor1Y);
-    return convex(prevVertex, currVertex, nextVertex);
-  }
+  bool convexTo(Cubic next) => convex(
+    Point(anchor0X, anchor0Y),
+    Point(anchor1X, anchor1Y),
+    Point(next.anchor1X, next.anchor1Y),
+  );
 
   @internal
-  ui.Rect calculateBounds({bool approximate = false}) {
+  Rect calculateBounds({bool approximate = false}) {
     // A curve might be of zero-length, with both anchors co-lated.
     // Just return the point itself.
     if (zeroLength()) {
-      return ui.Rect.fromLTRB(anchor0X, anchor0Y, anchor0X, anchor0Y);
+      return .fromLTRB(anchor0X, anchor0Y, anchor0X, anchor0Y);
     }
 
     var minX = math.min(anchor0X, anchor1X);
@@ -143,7 +145,7 @@ abstract class Cubic {
 
     if (approximate) {
       // Approximate bounds use the bounding box of all anchors and controls
-      return ui.Rect.fromLTRB(
+      return .fromLTRB(
         math.min(minX, math.min(control0X, control1X)),
         math.min(minY, math.min(control0Y, control1Y)),
         math.max(maxX, math.max(control0X, control1X)),
@@ -219,7 +221,7 @@ abstract class Cubic {
       }
     }
 
-    return ui.Rect.fromLTRB(minX, minY, maxX, maxY);
+    return .fromLTRB(minX, minY, maxX, maxY);
   }
 
   /// Returns two Cubics, created by splitting this curve at the given distance of [t] between the
@@ -235,7 +237,7 @@ abstract class Cubic {
     final twoUt = 2.0 * u * t;
 
     return (
-      Cubic.from(
+      .from(
         anchor0X,
         anchor0Y,
         anchor0X * u + control0X * t,
@@ -245,7 +247,7 @@ abstract class Cubic {
         pointOnCurve.x,
         pointOnCurve.y,
       ),
-      Cubic.from(
+      .from(
         pointOnCurve.x,
         pointOnCurve.y,
         control0X * uSquared + control1X * twoUt + anchor1X * tSquared,
@@ -258,7 +260,7 @@ abstract class Cubic {
     );
   }
 
-  Cubic reverse() => Cubic.from(
+  Cubic reverse() => .from(
     anchor1X,
     anchor1Y,
     control1X,
@@ -269,22 +271,12 @@ abstract class Cubic {
     anchor0Y,
   );
 
-  Cubic transformed(PointTransformer f) {
-    final anchor0 = f(anchor0X, anchor0Y);
-    final control0 = f(control0X, control0Y);
-    final control1 = f(control1X, control1Y);
-    final anchor1 = f(anchor1X, anchor1Y);
-    return Cubic.from(
-      anchor0.$1,
-      anchor0.$2,
-      control0.$1,
-      control0.$2,
-      control1.$1,
-      control1.$2,
-      anchor1.$1,
-      anchor1.$2,
-    );
-  }
+  Cubic transformed(PointTransformer f) => .fromPoints(
+    Point.fromRaw(f(anchor0X, anchor0Y)),
+    Point.fromRaw(f(control0X, control0Y)),
+    Point.fromRaw(f(control1X, control1Y)),
+    Point.fromRaw(f(anchor1X, anchor1Y)),
+  );
 
   /// Convert to [Edge] if this cubic describes a straight line, otherwise to a
   /// [Corner]. Corner convexity is determined by [convex].
@@ -339,7 +331,7 @@ abstract class Cubic {
       zeroLength() ||
       next.zeroLength();
 
-  Cubic operator +(Cubic o) => Cubic.from(
+  Cubic operator +(Cubic o) => .from(
     anchor0X + o.anchor0X,
     anchor0Y + o.anchor0Y,
     control0X + o.control0X,
@@ -350,7 +342,7 @@ abstract class Cubic {
     anchor1Y + o.anchor1Y,
   );
 
-  Cubic operator *(double x) => Cubic.from(
+  Cubic operator *(double x) => .from(
     anchor0X * x,
     anchor0Y * x,
     control0X * x,
@@ -361,7 +353,7 @@ abstract class Cubic {
     anchor1Y * x,
   );
 
-  Cubic operator /(double x) => Cubic.from(
+  Cubic operator /(double x) => .from(
     anchor0X / x,
     anchor0Y / x,
     control0X / x,
@@ -382,19 +374,18 @@ abstract class Cubic {
       ")";
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        runtimeType == other.runtimeType &&
-            other is Cubic &&
-            anchor0X == other.anchor0X &&
-            anchor0Y == other.anchor0Y &&
-            control0X == other.control0X &&
-            control0Y == other.control0Y &&
-            control1X == other.control1X &&
-            control1Y == other.control1Y &&
-            anchor1X == other.anchor1X &&
-            anchor1Y == other.anchor1Y;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is Cubic &&
+          anchor0X == other.anchor0X &&
+          anchor0Y == other.anchor0Y &&
+          control0X == other.control0X &&
+          control0Y == other.control0Y &&
+          control1X == other.control1X &&
+          control1Y == other.control1Y &&
+          anchor1X == other.anchor1X &&
+          anchor1Y == other.anchor1Y;
 
   @override
   int get hashCode => Object.hash(
@@ -411,7 +402,7 @@ abstract class Cubic {
 
   static bool _zeroIsh(double value) => value.abs() < distanceEpsilon;
 
-  static Cubic interpolate(Cubic c1, Cubic c2, double progress) => Cubic.from(
+  static Cubic interpolate(Cubic c1, Cubic c2, double progress) => .from(
     interpolateDouble(c1.anchor0X, c2.anchor0X, progress),
     interpolateDouble(c1.anchor0Y, c2.anchor0Y, progress),
     interpolateDouble(c1.control0X, c2.control0X, progress),
@@ -426,7 +417,7 @@ abstract class Cubic {
   // TODO: make this private to feature_detector.dart
   @internal
   static Cubic extend(Cubic a, Cubic b) => a.zeroLength()
-      ? Cubic.from(
+      ? .from(
           a.anchor0X,
           a.anchor0Y,
           b.control0X,
@@ -436,7 +427,7 @@ abstract class Cubic {
           b.anchor1X,
           b.anchor1Y,
         )
-      : Cubic.from(
+      : .from(
           a.anchor0X,
           a.anchor0Y,
           a.control0X,
@@ -488,6 +479,81 @@ class _Cubic extends Cubic {
   final double anchor1Y;
 }
 
+class _CubicFromPoints extends Cubic {
+  const _CubicFromPoints(
+    this.anchor0,
+    this.control0,
+    this.control1,
+    this.anchor1,
+  );
+
+  // ignore: unused_element
+  const _CubicFromPoints.empty(Point p0)
+    : anchor0 = p0,
+      control0 = p0,
+      control1 = p0,
+      anchor1 = p0;
+
+  @override
+  double get anchor0X => anchor0.x;
+
+  @override
+  double get anchor0Y => anchor0.y;
+
+  @override
+  double get control0X => control0.x;
+
+  @override
+  double get control0Y => control0.y;
+
+  @override
+  double get control1X => control1.x;
+
+  @override
+  double get control1Y => control1.y;
+
+  @override
+  double get anchor1X => anchor1.x;
+
+  @override
+  double get anchor1Y => anchor1.y;
+
+  @override
+  final Point anchor0;
+
+  @override
+  final Point control0;
+
+  @override
+  final Point control1;
+
+  @override
+  final Point anchor1;
+
+  @override
+  String toString() =>
+      "Cubic.fromPoints("
+      "anchor0: (${anchor0.x}, ${anchor0.y}), "
+      "control0: (${control0.x}, ${control0.y}), "
+      "control1: (${control1.x}, ${control1.y}), "
+      "anchor1: (${anchor1.x}, ${anchor1.y})"
+      ")";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _CubicFromPoints &&
+          anchor0 == other.anchor0 &&
+          control0 == other.control0 &&
+          control1 == other.control1 &&
+          anchor1 == other.anchor1;
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, anchor0, control0, control1, anchor1);
+}
+
 /// This interface is used refer to Points that can be modified,
 /// as a scope to [PointTransformer].
 abstract interface class MutablePoint {
@@ -519,7 +585,7 @@ abstract class MutableCubic extends Cubic {
     double anchor1Y,
   ) = _MutableCubic;
 
-  factory MutableCubic.fromCubic(Cubic other) => MutableCubic.from(
+  factory MutableCubic.fromCubic(Cubic other) => .from(
     other.anchor0X,
     other.anchor0Y,
     other.control0X,
@@ -574,6 +640,12 @@ abstract class MutableCubic extends Cubic {
       "control1: ($control1X, $control1Y), "
       "anchor1: ($anchor1X, $anchor1Y)"
       ")";
+
+  @override
+  bool operator ==(Object other) => identical(this, other);
+
+  @override
+  int get hashCode => identityHashCode(this);
 }
 
 class _MutableCubic extends MutableCubic {

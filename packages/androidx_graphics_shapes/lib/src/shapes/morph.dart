@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:meta/meta.dart';
 
@@ -20,14 +20,14 @@ final class Morph {
   @internal
   List<(Cubic, Cubic)> get morphMatch => _morphMatch;
 
-  ui.Rect calculateBounds({bool approximate = true}) {
+  Rect calculateBounds({bool approximate = true}) {
     final startBounds = _start.calculateBounds(approximate: approximate);
     final minX = startBounds.left;
     final minY = startBounds.top;
     final maxX = startBounds.right;
     final maxY = startBounds.bottom;
     final endBounds = _end.calculateBounds(approximate: approximate);
-    return ui.Rect.fromLTRB(
+    return Rect.fromLTRB(
       math.min(minX, endBounds.left),
       math.min(minY, endBounds.top),
       math.max(maxX, endBounds.right),
@@ -35,14 +35,14 @@ final class Morph {
     );
   }
 
-  ui.Rect calculateMaxBounds() {
+  Rect calculateMaxBounds() {
     final startBounds = _start.calculateMaxBounds();
     final minX = startBounds.left;
     final minY = startBounds.top;
     final maxX = startBounds.right;
     final maxY = startBounds.bottom;
     final endBounds = _end.calculateMaxBounds();
-    return ui.Rect.fromLTRB(
+    return Rect.fromLTRB(
       math.min(minX, endBounds.left),
       math.min(minY, endBounds.top),
       math.max(maxX, endBounds.right),
@@ -70,7 +70,7 @@ final class Morph {
     }
     if (lastCubic != null && firstCubic != null) {
       result.add(
-        Cubic.from(
+        .from(
           lastCubic.anchor0X,
           lastCubic.anchor0Y,
           lastCubic.control0X,
@@ -91,7 +91,7 @@ final class Morph {
     void Function(MutableCubic) callback, [
     MutableCubic? mutableCubic,
   ]) {
-    mutableCubic ??= MutableCubic.empty(0.0, 0.0);
+    mutableCubic ??= .empty(0.0, 0.0);
     for (var i = 0; i < morphMatch.length; i++) {
       mutableCubic.interpolate(morphMatch[i].$1, morphMatch[i].$2, progress);
       callback(mutableCubic);

@@ -26,21 +26,21 @@ Point directionVectorRadians(double angleRadians) =>
 Point radialToCartesian(
   double radius,
   double angleRadians, [
-  Point center = Point.zero,
+  Point center = .zero,
 ]) => directionVectorRadians(angleRadians) * radius + center;
 
 @internal
-const double distanceEpsilon = 1.0e-4;
+const distanceEpsilon = 1.0e-4;
 
 @internal
-const double angleEpsilon = 1.0e-6;
+const angleEpsilon = 1.0e-6;
 
 /// This epsilon is based on the observation that people tend to see
 /// e.g. collinearity much more relaxed than what is mathematically correct.
 /// This effect is heightened on smaller displays.
 /// Use this epsilon for operations that allow higher tolerances.
 @internal
-const double relaxedDistanceEpsilon = 5.0e-3;
+const relaxedDistanceEpsilon = 5.0e-3;
 
 extension PointExtension on Point {
   @internal
@@ -48,7 +48,7 @@ extension PointExtension on Point {
 }
 
 @internal
-const double twoPi = 2.0 * math.pi;
+const twoPi = 2.0 * math.pi;
 
 @internal
 double square(double x) => x * x;
@@ -83,7 +83,7 @@ bool collinearIsh(
   final ab = Point(bX - aX, bY - aY).rotate90();
   final ac = Point(cX - aX, cY - aY);
   final dotProduct = ab.dotProduct(ac).abs();
-  final relativeTolerance = tolerance * ab.getDistance() * ac.getDistance();
+  final relativeTolerance = tolerance * ab.distance * ac.distance;
 
   return dotProduct < tolerance || dotProduct < relativeTolerance;
 }

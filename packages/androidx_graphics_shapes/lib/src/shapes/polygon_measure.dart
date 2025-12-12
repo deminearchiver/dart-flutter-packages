@@ -1,4 +1,4 @@
-import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
@@ -17,7 +17,7 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
     this.features,
     List<Cubic> cubics,
     List<double> outlineProgress,
-  ) : super(<MeasuredCubic>[]) {
+  ) : super([]) {
     if (outlineProgress.length != cubics.length + 1) {
       throw ArgumentError(
         "Outline progress size is expected to be the cubics size + 1",
@@ -102,7 +102,7 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
     // * All cubics after the target, until the end + All cubics from the start, before the
     //   target cubic
     // * The first part of the target cubic (before the cut)
-    final retCubics = <Cubic>[b2.cubic];
+    final retCubics = [b2.cubic];
     for (var i = 1; i < length; i++) {
       retCubics.add(this[(i + targetIndex) % length].cubic);
     }
@@ -117,7 +117,7 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
     // then 0.8 - 0.6 = 0.2, then 1 - 0.6 = 0.4, then 0.3 - 0.6 + 1 = 0.7,
     // then 1 (the cutting point again),
     // all together: (0.0, 0.2, 0.4, 0.7, 1.0)
-    final List<double> retOutlineProgress = List.generate(length + 2, (index) {
+    final retOutlineProgress = List<double>.generate(length + 2, (index) {
       if (index == 0) return 0.0;
       if (index == length + 1) return 1.0;
       final cubicIndex = (targetIndex + index - 1) % length;
@@ -128,8 +128,8 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
     });
 
     // Shift the feature's outline progress too.
-    final newFeatures = <ProgressableFeature>[
-      for (int i = 0; i < features.length; i++)
+    final newFeatures = [
+      for (var i = 0; i < features.length; i++)
         ProgressableFeature(
           positiveModulo(features[i].progress - cuttingPoint, 1.0),
           features[i].feature,
@@ -137,12 +137,7 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
     ];
 
     // Filter out all empty cubics (i.e. start and end anchor are (almost) the same point.)
-    return MeasuredPolygon._(
-      _measurer,
-      newFeatures,
-      retCubics,
-      retOutlineProgress,
-    );
+    return ._(_measurer, newFeatures, retCubics, retOutlineProgress);
   }
 
   @internal
@@ -174,6 +169,7 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
     }
     // TODO(performance): Make changes to satisfy the lint warnings for unnecessary
     //  iterators creation.
+    // TODO: optimize this implementation without using iterators
     final List<double> measures = cubics
         .scan(0.0, (measure, cubic) {
           final result = measure + measurer.measureCubic(cubic);
@@ -188,14 +184,14 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
     final totalMeasure = measures.last;
 
     // Equivalent to `measures.map { it / totalMeasure }` but without Iterator allocation.
-    final outlineProgress = <double>[
-      for (int i = 0; i < measures.length; i++) measures[i] / totalMeasure,
+    final outlineProgress = [
+      for (var i = 0; i < measures.length; i++) measures[i] / totalMeasure,
     ];
 
     // debugLog(LOG_TAG) { "Total size: $totalMeasure" }
 
     final features = <ProgressableFeature>[
-      for (int i = 0; i < featureToCubic.length; i++)
+      for (var i = 0; i < featureToCubic.length; i++)
         ProgressableFeature(
           positiveModulo(
             (outlineProgress[featureToCubic[i].$2] +
@@ -207,7 +203,7 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
         ),
     ];
 
-    return MeasuredPolygon._(measurer, features, cubics, outlineProgress);
+    return ._(measurer, features, cubics, outlineProgress);
   }
 }
 
@@ -294,7 +290,7 @@ final class MeasuredCubic {
     // Floating point errors further up can cause cutOutlineProgress to land just
     // slightly outside of the start/end progress for this cubic, so we limit it
     // to those bounds to avoid further errors later
-    final boundedCutOutlineProgress = ui.clampDouble(
+    final boundedCutOutlineProgress = clampDouble(
       cutOutlineProgress,
       startOutlineProgress,
       endOutlineProgress,
@@ -354,7 +350,7 @@ final class LengthMeasurer implements Measurer {
 
   @override
   double measureCubic(Cubic c) {
-    return _closestProgressTo(c, double.infinity).$2;
+    return _closestProgressTo(c, .infinity).$2;
   }
 
   @override
@@ -364,7 +360,7 @@ final class LengthMeasurer implements Measurer {
 
   // The minimum number needed to achieve up to 98.5% accuracy from the true arc length
   // See PolygonMeasureTest.measureCircle
-  static const int _segments = 3;
+  static const _segments = 3;
 
   (double, double) _closestProgressTo(Cubic cubic, double threshold) {
     var total = 0.0;
@@ -374,7 +370,7 @@ final class LengthMeasurer implements Measurer {
     for (var i = 1; i <= _segments; i++) {
       final progress = i / _segments;
       final point = cubic.pointOnCurve(progress);
-      final segment = (point - prev).getDistance();
+      final segment = (point - prev).distance;
 
       if (segment >= remainder) {
         return (progress - (1.0 - remainder / segment) / _segments, threshold);
