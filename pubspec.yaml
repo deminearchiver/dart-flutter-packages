@@ -14,6 +14,8 @@ workspace:
   - packages/dynamic_color_ffi/example
   - packages/layout
   - packages/material
+  - packages/permissions_ffi
+  - packages/permissions_ffi/example
   - packages/screen_corners_ffi
   - packages/screen_corners_ffi/example
 

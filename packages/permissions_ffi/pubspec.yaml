@@ -1,0 +1,48 @@
+name: permissions_ffi
+description: An FFI-based version of the permission_handler plugin.
+version: 1.0.0-dev.1
+homepage: https://github.com/deminearchiver/dart-flutter-packages
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/permissions_ffi
+issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
+resolution: workspace
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.38.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  web: ^1.1.1
+  plugin_platform_interface: ^2.1.8
+  ffi: ^2.1.4
+  jni: ^0.15.2
+  meta: ^1.17.0
+  win32: ^5.15.0
+  win32_registry: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  deminearchiver_lints: ^1.1.1
+  jnigen: ^0.15.0
+
+flutter:
+  # plugin:
+  #   platforms:
+  #     android:
+  #       package: dev.deminearchiver.permissions_ffi
+  #       pluginClass: PermissionsFfiPlugin
+  #     ios:
+  #       pluginClass: PermissionsFfiPlugin
+  #     linux:
+  #       pluginClass: PermissionsFfiPlugin
+  #     macos:
+  #       pluginClass: PermissionsFfiPlugin
+  #     windows:
+  #       pluginClass: PermissionsFfiPluginCApi
+  #     web:
+  #       pluginClass: PermissionsFfiWeb
+  #       fileName: permissions_ffi_web.dart
