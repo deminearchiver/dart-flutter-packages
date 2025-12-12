@@ -1,3 +1,9 @@
+## 1.1.1
+
+- Updated `README.md` with expanded information.
+- Added an empty `example/main.dart` for future implementation.
+- Added documentation comments for more items.
+
 ## 1.1.0
 
 - Optimized `Point` internal implementation for raw construction, making it an [extension type](https://dart.dev/language/extension-types).

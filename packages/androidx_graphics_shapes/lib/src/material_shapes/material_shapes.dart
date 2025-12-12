@@ -152,6 +152,14 @@ double _degreesToRadians(double degrees) {
   return degrees * (math.pi / 180.0);
 }
 
+/// Holds predefined Material Design shapes as [RoundedPolygon]s that can be
+/// used at various components as they are, or as part of a [Morph].
+///
+/// ![Shapes image](https://developer.android.com/images/reference/androidx/compose/material3/shapes.png)
+///
+/// Note that each [RoundedPolygon] in this class is normalized.
+///
+/// See [RoundedPolygon.normalized].
 abstract final class MaterialShapes {
   // Cache various roundings for use below
   static const _cornerRound15 = CornerRounding(radius: 0.15);
@@ -164,40 +172,109 @@ abstract final class MaterialShapes {
   static final _rotateNeg90 = Matrix4.rotationZ(-math.pi * 0.5);
   static final _rotateNeg135 = Matrix4.rotationZ(-math.pi * 0.75);
 
+  /// A circle shape.
   static final circle = buildCircle().normalized();
+
+  /// A rounded square shape.
   static final square = buildSquare().normalized();
+
+  /// A slanted square shape.
   static final slanted = buildSlanted().normalized();
+
+  /// An arch shape.
   static final arch = buildArch().normalized();
+
+  /// A fan shape.
   static final fan = buildFan().normalized();
+
+  /// An arrow shape.
   static final arrow = buildArrow().normalized();
+
+  /// A semi-circle shape.
   static final semiCircle = buildSemiCircle().normalized();
+
+  /// An oval shape.
   static final oval = buildOval().normalized();
+
+  /// A pill shape.
   static final pill = buildPill().normalized();
+
+  /// A rounded triangle shape.
   static final triangle = buildTriangle().normalized();
+
+  /// A diamond shape.
   static final diamond = buildDiamond().normalized();
+
+  /// A clam-shell shape.
   static final clamShell = buildClamShell().normalized();
+
+  /// A pentagon shape.
   static final pentagon = buildPentagon().normalized();
+
+  /// A gem shape.
   static final gem = buildGem().normalized();
+
+  /// A sunny shape.
   static final verySunny = buildVerySunny().normalized();
+
+  /// A very-sunny shape.
   static final sunny = buildSunny().normalized();
+
+  /// A 4-sided cookie shape.
   static final cookie4Sided = buildCookie4Sided().normalized();
+
+  /// A 6-sided cookie shape.
   static final cookie6Sided = buildCookie6Sided().normalized();
+
+  /// A 7-sided cookie shape.
   static final cookie7Sided = buildCookie7Sided().normalized();
+
+  /// A 9-sided cookie shape.
   static final cookie9Sided = buildCookie9Sided().normalized();
+
+  /// A 12-sided cookie shape.
   static final cookie12Sided = buildCookie12Sided().normalized();
+
+  /// A ghost-ish shape.
   static final ghostish = buildGhostish().normalized();
+
+  /// A 4-leaf clover shape.
   static final clover4Leaf = buildClover4Leaf().normalized();
+
+  /// An 8-leaf clover shape.
   static final clover8Leaf = buildClover8Leaf().normalized();
+
+  /// A burst shape.
   static final burst = buildBurst().normalized();
+
+  /// A soft-burst shape.
   static final softBurst = buildSoftBurst().normalized();
+
+  /// A boom shape.
   static final boom = buildBoom().normalized();
+
+  /// A soft-boom shape.
   static final softBoom = buildSoftBoom().normalized();
+
+  /// A flower shape.
   static final flower = buildFlower().normalized();
+
+  /// A puffy shape.
   static final puffy = buildPuffy().normalized();
+
+  /// A puffy-diamond shape.
   static final puffyDiamond = buildPuffyDiamond().normalized();
+
+  /// A pixel-circle shape.
   static final pixelCircle = buildPixelCircle().normalized();
+
+  /// A pixel-triangle shape.
   static final pixelTriangle = buildPixelTriangle().normalized();
+
+  /// A bun shape.
   static final bun = buildBun().normalized();
+
+  /// A heart shape.
   static final heart = buildHeart().normalized();
 
   @internal
