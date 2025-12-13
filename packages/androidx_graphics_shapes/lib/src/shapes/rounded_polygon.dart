@@ -260,7 +260,7 @@ final class RoundedPolygon {
 
     return .regular(
       numVertices: numVertices,
-      rounding: CornerRounding(radius: radius),
+      rounding: .from(radius: radius),
       radius: polygonRadius,
       centerX: centerX,
       centerY: centerY,
@@ -370,10 +370,7 @@ final class RoundedPolygon {
         wHalf + centerX,
         -hHalf + centerY,
       ],
-      rounding: CornerRounding(
-        radius: math.min(wHalf, hHalf),
-        smoothing: smoothing,
-      ),
+      rounding: .from(radius: math.min(wHalf, hHalf), smoothing: smoothing),
       centerX: centerX,
       centerY: centerY,
     );
@@ -534,12 +531,11 @@ final class RoundedPolygon {
       ")";
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        runtimeType == other.runtimeType &&
-            other is RoundedPolygon &&
-            listEquals(features, other.features);
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is RoundedPolygon &&
+          listEquals(features, other.features);
 
   @override
   int get hashCode => Object.hash(runtimeType, features);

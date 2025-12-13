@@ -1,3 +1,8 @@
+## 1.2.0
+
+- `CornerRounding.new` now uses positional parameters. For named parameters, `CornerRounding.from` can be used.
+- Internal code style changes.
+
 ## 1.1.1
 
 - Updated `README.md` with expanded information.

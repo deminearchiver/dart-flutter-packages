@@ -162,11 +162,11 @@ double _degreesToRadians(double degrees) {
 /// See [RoundedPolygon.normalized].
 abstract final class MaterialShapes {
   // Cache various roundings for use below
-  static const _cornerRound15 = CornerRounding(radius: 0.15);
-  static const _cornerRound20 = CornerRounding(radius: 0.2);
-  static const _cornerRound30 = CornerRounding(radius: 0.3);
-  static const _cornerRound50 = CornerRounding(radius: 0.5);
-  static const _cornerRound100 = CornerRounding(radius: 1.0);
+  static const _cornerRound15 = CornerRounding(0.15);
+  static const _cornerRound20 = CornerRounding(0.2);
+  static const _cornerRound30 = CornerRounding(0.3);
+  static const _cornerRound50 = CornerRounding(0.5);
+  static const _cornerRound100 = CornerRounding(1.0);
 
   static final _rotateNeg45 = Matrix4.rotationZ(-math.pi * 0.25);
   static final _rotateNeg90 = Matrix4.rotationZ(-math.pi * 0.5);
@@ -287,14 +287,8 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildSlanted() => _customPolygon(const [
-    _PointNRound(
-      Offset(0.926, 0.970),
-      CornerRounding(radius: 0.189, smoothing: 0.811),
-    ),
-    _PointNRound(
-      Offset(-0.021, 0.967),
-      CornerRounding(radius: 0.187, smoothing: 0.057),
-    ),
+    _PointNRound(Offset(0.926, 0.970), CornerRounding(0.189, 0.811)),
+    _PointNRound(Offset(-0.021, 0.967), CornerRounding(0.187, 0.057)),
   ], reps: 2);
 
   @internal
@@ -310,24 +304,18 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildFan() => _customPolygon(const [
-    _PointNRound(
-      Offset(1.004, 1.000),
-      CornerRounding(radius: 0.148, smoothing: 0.417),
-    ),
-    _PointNRound(Offset(0.000, 1.000), CornerRounding(radius: 0.151)),
-    _PointNRound(Offset(0.000, -0.003), CornerRounding(radius: 0.148)),
-    _PointNRound(Offset(0.978, 0.020), CornerRounding(radius: 0.803)),
+    _PointNRound(Offset(1.004, 1.000), CornerRounding(0.148, 0.417)),
+    _PointNRound(Offset(0.000, 1.000), CornerRounding(0.151)),
+    _PointNRound(Offset(0.000, -0.003), CornerRounding(0.148)),
+    _PointNRound(Offset(0.978, 0.020), CornerRounding(0.803)),
   ], reps: 1);
 
   @internal
   static RoundedPolygon buildArrow() => _customPolygon(const [
-    _PointNRound(Offset(0.500, 0.892), CornerRounding(radius: 0.313)),
-    _PointNRound(Offset(-0.216, 1.050), CornerRounding(radius: 0.207)),
-    _PointNRound(
-      Offset(0.499, -0.160),
-      CornerRounding(radius: 0.215, smoothing: 1.000),
-    ),
-    _PointNRound(Offset(1.225, 1.060), CornerRounding(radius: 0.211)),
+    _PointNRound(Offset(0.500, 0.892), CornerRounding(0.313)),
+    _PointNRound(Offset(-0.216, 1.050), CornerRounding(0.207)),
+    _PointNRound(Offset(0.499, -0.160), CornerRounding(0.215, 1.000)),
+    _PointNRound(Offset(1.225, 1.060), CornerRounding(0.211)),
   ], reps: 1);
 
   @internal
@@ -350,9 +338,9 @@ abstract final class MaterialShapes {
   @internal
   static RoundedPolygon buildPill() => _customPolygon(
     const [
-      _PointNRound(Offset(0.961, 0.039), CornerRounding(radius: 0.426)),
+      _PointNRound(Offset(0.961, 0.039), CornerRounding(0.426)),
       _PointNRound(Offset(1.001, 0.428)),
-      _PointNRound(Offset(1.000, 0.609), CornerRounding(radius: 1.000)),
+      _PointNRound(Offset(1.000, 0.609), CornerRounding(1.000)),
     ],
     reps: 2,
     mirroring: true,
@@ -366,26 +354,23 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildDiamond() => _customPolygon(const [
-    _PointNRound(
-      Offset(0.500, 1.096),
-      CornerRounding(radius: 0.151, smoothing: 0.524),
-    ),
-    _PointNRound(Offset(0.040, 0.500), CornerRounding(radius: 0.159)),
+    _PointNRound(Offset(0.500, 1.096), CornerRounding(0.151, 0.524)),
+    _PointNRound(Offset(0.040, 0.500), CornerRounding(0.159)),
   ], reps: 2);
 
   @internal
   static RoundedPolygon buildClamShell() => _customPolygon(const [
-    _PointNRound(Offset(0.171, 0.841), CornerRounding(radius: 0.159)),
-    _PointNRound(Offset(-0.020, 0.500), CornerRounding(radius: 0.140)),
-    _PointNRound(Offset(0.170, 0.159), CornerRounding(radius: 0.159)),
+    _PointNRound(Offset(0.171, 0.841), CornerRounding(0.159)),
+    _PointNRound(Offset(-0.020, 0.500), CornerRounding(0.140)),
+    _PointNRound(Offset(0.170, 0.159), CornerRounding(0.159)),
   ], reps: 2);
 
   @internal
   static RoundedPolygon buildPentagon() => _customPolygon(
     const [
-      _PointNRound(Offset(0.500, -0.009), CornerRounding(radius: 0.172)),
-      _PointNRound(Offset(1.030, 0.365), CornerRounding(radius: 0.164)),
-      _PointNRound(Offset(0.828, 0.970), CornerRounding(radius: 0.169)),
+      _PointNRound(Offset(0.500, -0.009), CornerRounding(0.172)),
+      _PointNRound(Offset(1.030, 0.365), CornerRounding(0.164)),
+      _PointNRound(Offset(0.828, 0.970), CornerRounding(0.169)),
     ],
     reps: 1,
     mirroring: true,
@@ -394,13 +379,10 @@ abstract final class MaterialShapes {
   @internal
   static RoundedPolygon buildGem() => _customPolygon(
     const [
-      _PointNRound(
-        Offset(0.499, 1.023),
-        CornerRounding(radius: 0.241, smoothing: 0.778),
-      ),
-      _PointNRound(Offset(-0.005, 0.792), CornerRounding(radius: 0.208)),
-      _PointNRound(Offset(0.073, 0.258), CornerRounding(radius: 0.228)),
-      _PointNRound(Offset(0.433, -0.000), CornerRounding(radius: 0.491)),
+      _PointNRound(Offset(0.499, 1.023), CornerRounding(0.241, 0.778)),
+      _PointNRound(Offset(-0.005, 0.792), CornerRounding(0.208)),
+      _PointNRound(Offset(0.073, 0.258), CornerRounding(0.228)),
+      _PointNRound(Offset(0.433, -0.000), CornerRounding(0.491)),
     ],
     reps: 1,
     mirroring: true,
@@ -415,20 +397,20 @@ abstract final class MaterialShapes {
 
   @internal
   static RoundedPolygon buildVerySunny() => _customPolygon(const [
-    _PointNRound(Offset(0.500, 1.080), CornerRounding(radius: 0.085)),
-    _PointNRound(Offset(0.358, 0.843), CornerRounding(radius: 0.085)),
+    _PointNRound(Offset(0.500, 1.080), CornerRounding(0.085)),
+    _PointNRound(Offset(0.358, 0.843), CornerRounding(0.085)),
   ], reps: 8);
 
   @internal
   static RoundedPolygon buildCookie4Sided() => _customPolygon(const [
-    _PointNRound(Offset(1.237, 1.236), CornerRounding(radius: 0.258)),
-    _PointNRound(Offset(0.500, 0.918), CornerRounding(radius: 0.233)),
+    _PointNRound(Offset(1.237, 1.236), CornerRounding(0.258)),
+    _PointNRound(Offset(0.500, 0.918), CornerRounding(0.233)),
   ], reps: 4);
 
   @internal
   static RoundedPolygon buildCookie6Sided() => _customPolygon(const [
-    _PointNRound(Offset(0.723, 0.884), CornerRounding(radius: 0.394)),
-    _PointNRound(Offset(0.500, 1.099), CornerRounding(radius: 0.398)),
+    _PointNRound(Offset(0.723, 0.884), CornerRounding(0.394)),
+    _PointNRound(Offset(0.500, 1.099), CornerRounding(0.398)),
   ], reps: 6);
 
   @internal
@@ -455,13 +437,10 @@ abstract final class MaterialShapes {
   @internal
   static RoundedPolygon buildGhostish() => _customPolygon(
     const [
-      _PointNRound(Offset(0.500, 0.0), CornerRounding(radius: 1.000)),
-      _PointNRound(Offset(1.0, 0.0), CornerRounding(radius: 1.000)),
-      _PointNRound(
-        Offset(1.0, 1.140),
-        CornerRounding(radius: 0.254, smoothing: 0.106),
-      ),
-      _PointNRound(Offset(0.575, 0.906), CornerRounding(radius: 0.253)),
+      _PointNRound(Offset(0.500, 0.0), CornerRounding(1.000)),
+      _PointNRound(Offset(1.0, 0.0), CornerRounding(1.000)),
+      _PointNRound(Offset(1.0, 1.140), CornerRounding(0.254, 0.106)),
+      _PointNRound(Offset(0.575, 0.906), CornerRounding(0.253)),
     ],
     reps: 1,
     mirroring: true,
@@ -471,7 +450,7 @@ abstract final class MaterialShapes {
   static RoundedPolygon buildClover4Leaf() => _customPolygon(
     const [
       _PointNRound(Offset(0.500, 0.074)),
-      _PointNRound(Offset(0.725, -0.099), CornerRounding(radius: 0.476)),
+      _PointNRound(Offset(0.725, -0.099), CornerRounding(0.476)),
     ],
     reps: 4,
     mirroring: true,
@@ -480,37 +459,34 @@ abstract final class MaterialShapes {
   @internal
   static RoundedPolygon buildClover8Leaf() => _customPolygon(const [
     _PointNRound(Offset(0.500, 0.036)),
-    _PointNRound(Offset(0.758, -0.101), CornerRounding(radius: 0.209)),
+    _PointNRound(Offset(0.758, -0.101), CornerRounding(0.209)),
   ], reps: 8);
 
   @internal
   static RoundedPolygon buildBurst() => _customPolygon(const [
-    _PointNRound(Offset(0.500, -0.006), CornerRounding(radius: 0.006)),
-    _PointNRound(Offset(0.592, 0.158), CornerRounding(radius: 0.006)),
+    _PointNRound(Offset(0.500, -0.006), CornerRounding(0.006)),
+    _PointNRound(Offset(0.592, 0.158), CornerRounding(0.006)),
   ], reps: 12);
 
   @internal
   static RoundedPolygon buildSoftBurst() => _customPolygon(const [
-    _PointNRound(Offset(0.193, 0.277), CornerRounding(radius: 0.053)),
-    _PointNRound(Offset(0.176, 0.055), CornerRounding(radius: 0.053)),
+    _PointNRound(Offset(0.193, 0.277), CornerRounding(0.053)),
+    _PointNRound(Offset(0.176, 0.055), CornerRounding(0.053)),
   ], reps: 10);
 
   @internal
   static RoundedPolygon buildBoom() => _customPolygon(const [
-    _PointNRound(Offset(0.457, 0.296), CornerRounding(radius: 0.007)),
-    _PointNRound(Offset(0.500, -0.051), CornerRounding(radius: 0.007)),
+    _PointNRound(Offset(0.457, 0.296), CornerRounding(0.007)),
+    _PointNRound(Offset(0.500, -0.051), CornerRounding(0.007)),
   ], reps: 15);
 
   @internal
   static RoundedPolygon buildSoftBoom() => _customPolygon(
     const [
       _PointNRound(Offset(0.733, 0.454)),
-      _PointNRound(Offset(0.839, 0.437), CornerRounding(radius: 0.532)),
-      _PointNRound(
-        Offset(0.949, 0.449),
-        CornerRounding(radius: 0.439, smoothing: 1.000),
-      ),
-      _PointNRound(Offset(0.998, 0.478), CornerRounding(radius: 0.174)),
+      _PointNRound(Offset(0.839, 0.437), CornerRounding(0.532)),
+      _PointNRound(Offset(0.949, 0.449), CornerRounding(0.439, 1.000)),
+      _PointNRound(Offset(0.998, 0.478), CornerRounding(0.174)),
     ],
     reps: 16,
     mirroring: true,
@@ -520,8 +496,8 @@ abstract final class MaterialShapes {
   static RoundedPolygon buildFlower() => _customPolygon(
     const [
       _PointNRound(Offset(0.370, 0.187)),
-      _PointNRound(Offset(0.416, 0.049), CornerRounding(radius: 0.381)),
-      _PointNRound(Offset(0.479, 0.001), CornerRounding(radius: 0.095)),
+      _PointNRound(Offset(0.416, 0.049), CornerRounding(0.381)),
+      _PointNRound(Offset(0.479, 0.001), CornerRounding(0.095)),
     ],
     reps: 8,
     mirroring: true,
@@ -531,16 +507,16 @@ abstract final class MaterialShapes {
   static RoundedPolygon buildPuffy() => _customPolygon(
     const [
       _PointNRound(Offset(0.500, 0.053)),
-      _PointNRound(Offset(0.545, -0.040), CornerRounding(radius: 0.405)),
-      _PointNRound(Offset(0.670, -0.035), CornerRounding(radius: 0.426)),
-      _PointNRound(Offset(0.717, 0.066), CornerRounding(radius: 0.574)),
+      _PointNRound(Offset(0.545, -0.040), CornerRounding(0.405)),
+      _PointNRound(Offset(0.670, -0.035), CornerRounding(0.426)),
+      _PointNRound(Offset(0.717, 0.066), CornerRounding(0.574)),
       _PointNRound(Offset(0.722, 0.128)),
-      _PointNRound(Offset(0.777, 0.002), CornerRounding(radius: 0.360)),
-      _PointNRound(Offset(0.914, 0.149), CornerRounding(radius: 0.660)),
-      _PointNRound(Offset(0.926, 0.289), CornerRounding(radius: 0.660)),
+      _PointNRound(Offset(0.777, 0.002), CornerRounding(0.360)),
+      _PointNRound(Offset(0.914, 0.149), CornerRounding(0.660)),
+      _PointNRound(Offset(0.926, 0.289), CornerRounding(0.660)),
       _PointNRound(Offset(0.881, 0.346)),
-      _PointNRound(Offset(0.940, 0.344), CornerRounding(radius: 0.126)),
-      _PointNRound(Offset(1.003, 0.437), CornerRounding(radius: 0.255)),
+      _PointNRound(Offset(0.940, 0.344), CornerRounding(0.126)),
+      _PointNRound(Offset(1.003, 0.437), CornerRounding(0.255)),
     ],
     reps: 2,
     mirroring: true,
@@ -549,9 +525,9 @@ abstract final class MaterialShapes {
   @internal
   static RoundedPolygon buildPuffyDiamond() => _customPolygon(
     const [
-      _PointNRound(Offset(0.870, 0.130), CornerRounding(radius: 0.146)),
+      _PointNRound(Offset(0.870, 0.130), CornerRounding(0.146)),
       _PointNRound(Offset(0.818, 0.357)),
-      _PointNRound(Offset(1.000, 0.332), CornerRounding(radius: 0.853)),
+      _PointNRound(Offset(1.000, 0.332), CornerRounding(0.853)),
     ],
     reps: 4,
     mirroring: true,
@@ -598,9 +574,9 @@ abstract final class MaterialShapes {
   static RoundedPolygon buildBun() => _customPolygon(
     const [
       _PointNRound(Offset(0.796, 0.500)),
-      _PointNRound(Offset(0.853, 0.518), CornerRounding(radius: 1.0)),
-      _PointNRound(Offset(0.992, 0.631), CornerRounding(radius: 1.0)),
-      _PointNRound(Offset(0.968, 1.000), CornerRounding(radius: 1.0)),
+      _PointNRound(Offset(0.853, 0.518), CornerRounding(1.0)),
+      _PointNRound(Offset(0.992, 0.631), CornerRounding(1.0)),
+      _PointNRound(Offset(0.968, 1.000), CornerRounding(1.0)),
     ],
     reps: 2,
     mirroring: true,
@@ -609,10 +585,10 @@ abstract final class MaterialShapes {
   @internal
   static RoundedPolygon buildHeart() => _customPolygon(
     const [
-      _PointNRound(Offset(0.500, 0.268), CornerRounding(radius: 0.016)),
-      _PointNRound(Offset(0.792, -0.066), CornerRounding(radius: 0.958)),
-      _PointNRound(Offset(1.064, 0.276), CornerRounding(radius: 1.000)),
-      _PointNRound(Offset(0.501, 0.946), CornerRounding(radius: 0.129)),
+      _PointNRound(Offset(0.500, 0.268), CornerRounding(0.016)),
+      _PointNRound(Offset(0.792, -0.066), CornerRounding(0.958)),
+      _PointNRound(Offset(1.064, 0.276), CornerRounding(1.000)),
+      _PointNRound(Offset(0.501, 0.946), CornerRounding(0.129)),
     ],
     reps: 1,
     mirroring: true,
@@ -703,13 +679,12 @@ class _PointNRound {
   int get hashCode => Object.hash(runtimeType, o, r);
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        runtimeType == other.runtimeType &&
-            other is _PointNRound &&
-            o == other.o &&
-            r == other.r;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _PointNRound &&
+          o == other.o &&
+          r == other.r;
 }
 
 extension on Offset {
@@ -805,13 +780,12 @@ abstract class _PathBorder extends OutlinedBorder {
   }
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        runtimeType == other.runtimeType &&
-            other is _PathBorder &&
-            side == other.side &&
-            squash == other.squash;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _PathBorder &&
+          side == other.side &&
+          squash == other.squash;
 
   @override
   int get hashCode => Object.hash(runtimeType, side, squash);
@@ -826,14 +800,13 @@ abstract class _CubicsBorder extends _PathBorder {
   Path get path;
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        runtimeType == other.runtimeType &&
-            other is _CubicsBorder &&
-            side == other.side &&
-            squash == other.squash &&
-            listEquals(cubics, other.cubics);
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _CubicsBorder &&
+          side == other.side &&
+          squash == other.squash &&
+          listEquals(cubics, other.cubics);
 
   @override
   int get hashCode =>
@@ -874,15 +847,14 @@ class RoundedPolygonBorder extends _PathBorder {
   );
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        runtimeType == other.runtimeType &&
-            other is RoundedPolygonBorder &&
-            side == other.side &&
-            squash == other.squash &&
-            polygon == other.polygon &&
-            startAngle == other.startAngle;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is RoundedPolygonBorder &&
+          side == other.side &&
+          squash == other.squash &&
+          polygon == other.polygon &&
+          startAngle == other.startAngle;
 
   @override
   int get hashCode =>
@@ -930,16 +902,15 @@ class MorphBorder extends _PathBorder {
   );
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        runtimeType == other.runtimeType &&
-            other is MorphBorder &&
-            side == other.side &&
-            squash == other.squash &&
-            morph == other.morph &&
-            progress == other.progress &&
-            startAngle == other.startAngle;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is MorphBorder &&
+          side == other.side &&
+          squash == other.squash &&
+          morph == other.morph &&
+          progress == other.progress &&
+          startAngle == other.startAngle;
 
   @override
   int get hashCode =>

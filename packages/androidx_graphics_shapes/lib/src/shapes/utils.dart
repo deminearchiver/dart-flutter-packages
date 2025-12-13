@@ -91,10 +91,9 @@ bool collinearIsh(
 /// Approximates whether corner at this vertex is concave or convex,
 /// based on the relationship of the prev->curr/curr->next vectors.
 @internal
-bool convex(Point previous, Point current, Point next) {
-  // TODO: b/369320447 - This is a fast, but not reliable calculation.
-  return (current - previous).clockwise(next - current);
-}
+bool convex(Point previous, Point current, Point next) =>
+    // TODO: b/369320447 - This is a fast, but not reliable calculation.
+    (current - previous).clockwise(next - current);
 
 /*
  * Does a ternary search in [v0..v1] to find the parameter that minimizes the given function.

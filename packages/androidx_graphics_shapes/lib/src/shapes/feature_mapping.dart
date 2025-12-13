@@ -24,13 +24,12 @@ final class ProgressableFeature {
       ")";
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        runtimeType == other.runtimeType &&
-            other is ProgressableFeature &&
-            progress == other.progress &&
-            feature == other.feature;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is ProgressableFeature &&
+          progress == other.progress &&
+          feature == other.feature;
 
   @override
   int get hashCode => Object.hash(runtimeType, progress, feature);
@@ -87,14 +86,13 @@ final class DistanceVertex {
   String toString() => "DistanceVertex(distance: $distance, f1: $f1, f2: $f2)";
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        runtimeType == other.runtimeType &&
-            other is DistanceVertex &&
-            distance == other.distance &&
-            f1 == other.f1 &&
-            f2 == other.f2;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is DistanceVertex &&
+          distance == other.distance &&
+          f1 == other.f1 &&
+          f2 == other.f2;
 
   @override
   int get hashCode => Object.hash(runtimeType, distance, f1, f2);

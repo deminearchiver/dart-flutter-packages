@@ -102,13 +102,12 @@ final class Morph {
   String toString() => "Morph($_start, $_end)";
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        runtimeType == other.runtimeType &&
-            other is Morph &&
-            _start == other._start &&
-            _end == other._end;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is Morph &&
+          _start == other._start &&
+          _end == other._end;
 
   @override
   int get hashCode => Object.hash(runtimeType, _start, _end);

@@ -349,14 +349,10 @@ final class LengthMeasurer implements Measurer {
   const LengthMeasurer();
 
   @override
-  double measureCubic(Cubic c) {
-    return _closestProgressTo(c, .infinity).$2;
-  }
+  double measureCubic(Cubic c) => _closestProgressTo(c, .infinity).$2;
 
   @override
-  double findCubicCutPoint(Cubic c, double m) {
-    return _closestProgressTo(c, m).$1;
-  }
+  double findCubicCutPoint(Cubic c, double m) => _closestProgressTo(c, m).$1;
 
   // The minimum number needed to achieve up to 98.5% accuracy from the true arc length
   // See PolygonMeasureTest.measureCircle

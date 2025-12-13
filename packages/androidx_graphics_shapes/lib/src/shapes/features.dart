@@ -95,16 +95,15 @@ abstract class Feature {
   bool get isConcaveCorner;
 
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        runtimeType == other.runtimeType &&
-            other is Feature &&
-            listEquals(cubics, other.cubics) &&
-            isIgnorableFeature == other.isIgnorableFeature &&
-            isEdge == other.isEdge &&
-            isConvexCorner == other.isConvexCorner &&
-            isConcaveCorner == other.isConcaveCorner;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is Feature &&
+          listEquals(cubics, other.cubics) &&
+          isIgnorableFeature == other.isIgnorableFeature &&
+          isEdge == other.isEdge &&
+          isConvexCorner == other.isConvexCorner &&
+          isConcaveCorner == other.isConcaveCorner;
 
   @override
   int get hashCode => Object.hash(runtimeType, Object.hashAll(cubics));
