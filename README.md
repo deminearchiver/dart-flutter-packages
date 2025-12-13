@@ -13,6 +13,7 @@ This repository contains interconnected published and unpublished Dart and Flutt
   - [deminearchiver lints](#deminearchiver-lints)
   - [Device Info FFI](#device-info-ffi)
   - [Dynamic Color FFI](#dynamic-color-ffi)
+  - [Package Info FFI](#package-info-ffi)
   - [Screen Corners FFI](#screen-corners-ffi)
 - [Unpublished packages](#unpublished-packages)
   - [Layout](#layout)
@@ -57,6 +58,13 @@ An FFI-based version of the dynamic_color plugin.
 
 **Published to**: [`dynamic_color_ffi`](https://pub.dev/packages/dynamic_color_ffi)
 
+### [Package Info FFI](packages/package_info_ffi/README.md)
+
+An FFI-based version of the package_info_plus plugin.
+
+**Location**: [`packages/package_info_ffi`](packages/package_info_ffi)
+
+**Published to**: [`package_info_ffi`](https://pub.dev/packages/package_info_ffi)
 
 ### [Screen Corners FFI](packages/screen_corners_ffi/README.md)
 
