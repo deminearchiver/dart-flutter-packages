@@ -14,10 +14,18 @@ workspace:
   - packages/dynamic_color_ffi/example
   - packages/layout
   - packages/material
+  - packages/package_info_ffi
+  - packages/package_info_ffi/example
   - packages/permissions_ffi
   - packages/permissions_ffi/example
   - packages/screen_corners_ffi
   - packages/screen_corners_ffi/example
+
+# This is needed for the VSCode extension to identify Flutter properly
+# https://github.com/Dart-Code/Dart-Code/blob/1b24cf3d1d84ffb3a761711a96b5cef4c4f6e26f/src/shared/utils/fs.ts#L187
+dev_dependencies:
+  flutter:
+    sdk: flutter
 
 dependency_overrides:
   material_color_utilities: ^0.13.0
