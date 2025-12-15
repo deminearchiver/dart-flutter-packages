@@ -1,3 +1,7 @@
+## Unreleased
+
+- Internal updates to `MaterialShapes`.
+
 ## 1.2.0
 
 - `CornerRounding.new` now uses positional parameters. For named parameters, `CornerRounding.from` can be used.
