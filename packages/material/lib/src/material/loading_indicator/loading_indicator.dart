@@ -574,7 +574,7 @@ List<Morph> _updateMorphSequence({
   morphSequence
     ?..clear()
     ..addAll(iterable);
-  return morphSequence ?? iterable.toList(growable: false);
+  return morphSequence ?? [...iterable];
 }
 
 double _calculateScaleFactor(
