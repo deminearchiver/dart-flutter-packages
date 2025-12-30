@@ -6,7 +6,7 @@ import 'package:flutter/material.dart' as flutter;
 /// The Material widget is responsible for:
 ///
 /// 1. Clipping: If [clipBehavior] is not [Clip.none], Material clips its widget
-///    sub-tree to the shape specified by [shape], [type], and [borderRadius].
+///    sub-tree to the shape specified by [shape].
 ///    By default, [clipBehavior] is [Clip.none] for performance considerations.
 ///    See [Ink] for an example of how this affects clipping [Ink] widgets.
 /// 2. Elevation: Material elevates its widget sub-tree on the Z axis by
@@ -26,30 +26,10 @@ import 'package:flutter/material.dart' as flutter;
 /// [InkSplash] and [InkHighlight] effects. To trigger a reaction on the
 /// material, use a [MaterialInkController] obtained via [Material.of].
 ///
-/// In general, the features of a [Material] should not change over time (e.g. a
-/// [Material] should not change its [color], [shadowColor] or [type]).
-/// Changes to [elevation], [shadowColor] and [surfaceTintColor] are animated
-/// for [animationDuration]. Changes to [shape] are animated if [type] is
-/// not [MaterialType.transparency] and [ShapeBorder.lerp] between the previous
-/// and next [shape] values is supported. Shape changes are also animated
-/// for [animationDuration].
-///
 /// ## Shape
 ///
-/// The shape for material is determined by [shape], [type], and [borderRadius].
-///
-///  - If [shape] is non null, it determines the shape.
-///  - If [shape] is null and [borderRadius] is non null, the shape is a
-///    rounded rectangle, with corners specified by [borderRadius].
-///  - If [shape] and [borderRadius] are null, [type] determines the
-///    shape as follows:
-///    - [MaterialType.canvas]: the default material shape is a rectangle.
-///    - [MaterialType.card]: the default material shape is a rectangle with
-///      rounded edges. The edge radii is specified by [kMaterialEdges].
-///    - [MaterialType.circle]: the default material shape is a circle.
-///    - [MaterialType.button]: the default material shape is a rectangle with
-///      rounded edges. The edge radii is specified by [kMaterialEdges].
-///    - [MaterialType.transparency]: the default material shape is a rectangle.
+/// The shape for material is determined by [shape].
+/// If [shape] is non null, it determines the shape.
 ///
 /// ## Border
 ///
@@ -143,64 +123,15 @@ class Material extends StatelessWidget {
 
   /// The color to paint the material.
   ///
-  /// Must be opaque. To create a transparent piece of material, use
-  /// [MaterialType.transparency].
-  ///
-  /// If [ThemeData.useMaterial3] is true then an optional [surfaceTintColor]
-  /// overlay may be applied on top of this color to indicate elevation.
-  ///
-  /// If [ThemeData.useMaterial3] is false and [ThemeData.applyElevationOverlayColor]
-  /// is true and [ThemeData.brightness] is [Brightness.dark] then a
-  /// semi-transparent overlay color will be composited on top of this
-  /// color to indicate the elevation. This is no longer needed for Material
-  /// Design 3, which uses [surfaceTintColor].
-  ///
-  /// By default, the color is derived from the [type] of material.
+  /// By default, the color is transparent.
   final Color? color;
 
-  /// {@template flutter.material.material.elevation}
-  /// The z-coordinate at which to place this material relative to its parent.
-  ///
-  /// This controls the size of the shadow below the material and the opacity
-  /// of the elevation overlay color if it is applied.
-  ///
-  /// If this is non-zero, the contents of the material are clipped, because the
-  /// widget conceptually defines an independent printed piece of material.
-  ///
-  /// Defaults to 0. Changing this value will cause the shadow and the elevation
-  /// overlay or surface tint to animate over [Material.animationDuration].
-  ///
-  /// The value is non-negative.
-  ///
-  /// See also:
-  ///
-  ///  * [ThemeData.useMaterial3] which defines whether a surface tint or
-  ///    elevation overlay is used to indicate elevation.
-  ///  * [ThemeData.applyElevationOverlayColor] which controls the whether
-  ///    an overlay color will be applied to indicate elevation.
-  ///  * [Material.color] which may have an elevation overlay applied.
-  ///  * [Material.shadowColor] which will be used for the color of a drop shadow.
-  ///  * [Material.surfaceTintColor] which will be used as the overlay tint to
-  ///    show elevation.
-  /// {@endtemplate}
+  /// {@macro flutter.material.material.elevation}
   final double? elevation;
 
   /// The color to paint the shadow below the material.
   ///
-  /// {@template flutter.material.material.shadowColor}
-  /// If null and [ThemeData.useMaterial3] is true then [ThemeData]'s
-  /// [ColorScheme.shadow] will be used. If [ThemeData.useMaterial3] is false
-  /// then [ThemeData.shadowColor] will be used.
-  ///
-  /// To remove the drop shadow when [elevation] is greater than 0, set
-  /// [shadowColor] to [Colors.transparent].
-  ///
-  /// See also:
-  ///  * [ThemeData.useMaterial3], which determines the default value for this
-  ///    property if it is null.
-  ///  * [ThemeData.applyElevationOverlayColor], which turns elevation overlay
-  /// on or off for dark themes.
-  /// {@endtemplate}
+  /// {@macro flutter.material.material.shadowColor}
   final Color? shadowColor;
 
   /// The widget below this widget in the tree.
@@ -281,9 +212,6 @@ class Material extends StatelessWidget {
       ..add(DoubleProperty("elevation", elevation, defaultValue: null))
       ..add(ColorProperty("shadowColor", shadowColor, defaultValue: null));
   }
-
-  /// The default radius of an ink splash in logical pixels.
-  static const defaultSplashRadius = flutter.Material.defaultSplashRadius;
 
   /// The ink controller from the closest instance of this class that
   /// encloses the given context within the closest [LookupBoundary].
