@@ -266,6 +266,73 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     setState(() {});
   }
 
+  void _onPointerDown(PointerDownEvent _) {
+    if (!mounted) return;
+    setState(() {
+      _focused = false;
+      _pressed = true;
+    });
+  }
+
+  void _onPointerUp(PointerUpEvent _) {
+    if (!mounted) return;
+    setState(() {
+      _focused = false;
+      _pressed = false;
+    });
+  }
+
+  void _onPointerCancel(PointerCancelEvent _) {
+    if (!mounted) return;
+    setState(() {
+      _focused = false;
+      _pressed = false;
+    });
+  }
+
+  void _onTapDown(TapDownDetails _) {
+    if (!mounted) return;
+    setState(() {
+      _focused = false;
+      _pressed = true;
+    });
+  }
+
+  void _onTapUp(TapUpDetails _) {
+    if (!mounted) return;
+    setState(() {
+      _focused = false;
+      _pressed = false;
+    });
+  }
+
+  void _onTapCancel() {
+    if (!mounted) return;
+    setState(() {
+      _focused = false;
+      _pressed = false;
+    });
+  }
+
+  void _onFocusChange(bool value) {
+    if (!mounted) return;
+    setState(() => _focused = value);
+  }
+
+  void _onTapOutside(PointerDownEvent _) {
+    if (!mounted) return;
+    setState(() {
+      _focused = false;
+    });
+  }
+
+  void _onTapUpOutside(PointerUpEvent _) {
+    if (!mounted) return;
+    setState(() {
+      _focused = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -350,30 +417,9 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       dimension: stateLayerSize,
       child: Listener(
         behavior: HitTestBehavior.deferToChild,
-        onPointerDown: !isDisabled
-            ? (_) {
-                setState(() {
-                  _focused = false;
-                  _pressed = true;
-                });
-              }
-            : null,
-        onPointerUp: !isDisabled
-            ? (_) {
-                setState(() {
-                  _focused = false;
-                  _pressed = false;
-                });
-              }
-            : null,
-        onPointerCancel: !isDisabled
-            ? (_) {
-                setState(() {
-                  _focused = false;
-                  _pressed = false;
-                });
-              }
-            : null,
+        onPointerDown: !isDisabled ? _onPointerDown : null,
+        onPointerUp: !isDisabled ? _onPointerUp : null,
+        onPointerCancel: !isDisabled ? _onPointerCancel : null,
         child: Material.empty(
           child: InkWell(
             statesController: _statesController,
@@ -386,35 +432,10 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
             onTap: !isDisabled
                 ? () => widget.onCheckedChanged?.call(!_isSelected)
                 : null,
-            onTapDown: !isDisabled
-                ? (_) {
-                    setState(() {
-                      _focused = false;
-                      _pressed = true;
-                    });
-                  }
-                : null,
-            onTapUp: !isDisabled
-                ? (_) {
-                    setState(() {
-                      _focused = false;
-                      _pressed = false;
-                    });
-                  }
-                : null,
-            onTapCancel: !isDisabled
-                ? () {
-                    setState(() {
-                      _focused = false;
-                      _pressed = false;
-                    });
-                  }
-                : null,
-            onFocusChange: !isDisabled
-                ? (value) {
-                    setState(() => _focused = value);
-                  }
-                : null,
+            onTapDown: !isDisabled ? _onTapDown : null,
+            onTapUp: !isDisabled ? _onTapUp : null,
+            onTapCancel: !isDisabled ? _onTapCancel : null,
+            onFocusChange: !isDisabled ? _onFocusChange : null,
           ),
         ),
       ),
@@ -458,16 +479,8 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
         child: TapRegion(
           behavior: HitTestBehavior.deferToChild,
           consumeOutsideTaps: false,
-          onTapOutside: !isDisabled
-              ? (_) {
-                  setState(() => _focused = false);
-                }
-              : null,
-          onTapUpOutside: !isDisabled
-              ? (_) {
-                  setState(() => _focused = false);
-                }
-              : null,
+          onTapOutside: !isDisabled ? _onTapOutside : null,
+          onTapUpOutside: !isDisabled ? _onTapUpOutside : null,
           child: FocusRingTheme.merge(
             data: FocusRingThemeDataPartial.from(shape: trackCorners),
             child: FocusRing(
