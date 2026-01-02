@@ -12,6 +12,7 @@ This repository contains interconnected published and unpublished Dart and Flutt
   - [AndroidX Graphics Shapes](#androidx-graphics-shapes)
   - [deminearchiver lints](#deminearchiver-lints)
   - [Device Info FFI](#device-info-ffi)
+  - [LZ4 FFI](#lz4-ffi)
   - [Dynamic Color FFI](#dynamic-color-ffi)
   - [Package Info FFI](#package-info-ffi)
   - [Screen Corners FFI](#screen-corners-ffi)
@@ -30,49 +31,57 @@ Click on a package's name to view its README.
 
 A Flutter port of the `androidx.graphics.shapes` and `androidx.compose.material3.MaterialShapes` Kotlin libraries.
 
-**Location**: [`packages/androidx_graphics_shapes`](packages/androidx_graphics_shapes)
+**Location**: [`packages/androidx_graphics_shapes`](packages/androidx_graphics_shapes).
 
-**Published to**: [`androidx_graphics_shapes`](https://pub.dev/packages/androidx_graphics_shapes)
+**Published to**: [`androidx_graphics_shapes`](https://pub.dev/packages/androidx_graphics_shapes).
 
 ### [deminearchiver lints](packages/deminearchiver_lints/README.md)
 
 Opinionated lints for Dart and Flutter projects.
 
-**Location**: [`packages/deminearchiver_lints`](packages/deminearchiver_lints)
+**Location**: [`packages/deminearchiver_lints`](packages/deminearchiver_lints).
 
-**Published to**: [`deminearchiver_lints`](https://pub.dev/packages/deminearchiver_lints)
+**Published to**: [`deminearchiver_lints`](https://pub.dev/packages/deminearchiver_lints).
 
 ### [Device Info FFI](packages/device_info_ffi/README.md)
 
 An FFI-based version of the device_info_plus plugin.
 
-**Location**: [`packages/device_info_ffi`](packages/device_info_ffi)
+**Location**: [`packages/device_info_ffi`](packages/device_info_ffi).
 
-**Published to**: [`device_info_ffi`](https://pub.dev/packages/device_info_ffi)
+**Published to**: [`device_info_ffi`](https://pub.dev/packages/device_info_ffi).
+
+### [LZ4 FFI](packages/lz4_ffi/README.md)
+
+FFI bindings for the LZ4 compression algorithm library.
+
+**Location**: [`packages/lz4_ffi`](packages/lz4_ffi).
+
+**Published to**: [`lz4_ffi`](https://pub.dev/packages/lz4_ffi).
 
 ### [Dynamic Color FFI](packages/dynamic_color_ffi/README.md)
 
 An FFI-based version of the dynamic_color plugin.
 
-**Location**: [`packages/dynamic_color_ffi`](packages/dynamic_color_ffi)
+**Location**: [`packages/dynamic_color_ffi`](packages/dynamic_color_ffi).
 
-**Published to**: [`dynamic_color_ffi`](https://pub.dev/packages/dynamic_color_ffi)
+**Published to**: [`dynamic_color_ffi`](https://pub.dev/packages/dynamic_color_ffi).
 
 ### [Package Info FFI](packages/package_info_ffi/README.md)
 
 An FFI-based version of the package_info_plus plugin.
 
-**Location**: [`packages/package_info_ffi`](packages/package_info_ffi)
+**Location**: [`packages/package_info_ffi`](packages/package_info_ffi).
 
-**Published to**: [`package_info_ffi`](https://pub.dev/packages/package_info_ffi)
+**Published to**: [`package_info_ffi`](https://pub.dev/packages/package_info_ffi).
 
 ### [Screen Corners FFI](packages/screen_corners_ffi/README.md)
 
 A Flutter FFI-based plugin to obtain the screen corner radius on mobile platforms.
 
-**Location**: [`packages/screen_corners_ffi`](packages/screen_corners_ffi)
+**Location**: [`packages/screen_corners_ffi`](packages/screen_corners_ffi).
 
-**Published to**: [`screen_corners_ffi`](https://pub.dev/packages/screen_corners_ffi)
+**Published to**: [`screen_corners_ffi`](https://pub.dev/packages/screen_corners_ffi).
 
 ## Unpublished packages
 

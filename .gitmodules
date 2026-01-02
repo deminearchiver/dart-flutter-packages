@@ -1,0 +1,3 @@
+[submodule "packages/lz4_ffi/third_party/lz4"]
+	path = packages/lz4_ffi/third_party/lz4
+	url = git@github.com:lz4/lz4.git

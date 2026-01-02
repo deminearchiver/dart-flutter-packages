@@ -13,6 +13,7 @@ workspace:
   - packages/dynamic_color_ffi
   - packages/dynamic_color_ffi/example
   - packages/layout
+  - packages/lz4_ffi
   - packages/material
   - packages/package_info_ffi
   - packages/package_info_ffi/example

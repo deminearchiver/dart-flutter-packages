@@ -1,0 +1,2 @@
+third_party/lz4/*
+!third_party/lz4/lib/
