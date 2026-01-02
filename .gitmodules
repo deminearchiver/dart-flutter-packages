@@ -1,3 +1,6 @@
 [submodule "packages/lz4_ffi/third_party/lz4"]
 	path = packages/lz4_ffi/third_party/lz4
 	url = git@github.com:lz4/lz4.git
+[submodule "packages/es_compression"]
+	path = packages/es_compression
+	url = git@github.com:deminearchiver/es_compression.git
