@@ -1,6 +1,6 @@
 name: lz4_ffi
 description: FFI bindings for the LZ4 compression algorithm library.
-version: 1.0.0-dev.3
+version: 1.0.0-dev.4
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/lz4_ffi
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
