@@ -32,4 +32,3 @@ dev_dependencies:
 
 dependency_overrides:
   material_color_utilities: ^0.13.0
-  meta: ^1.17.0
