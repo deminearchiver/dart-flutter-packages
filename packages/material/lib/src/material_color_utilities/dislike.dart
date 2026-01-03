@@ -1,1 +1,1 @@
-export 'dislike/dislike_analyzer.dart';
+export 'package:libmonet/dislike.dart';

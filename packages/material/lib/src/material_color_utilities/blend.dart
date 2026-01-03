@@ -1,1 +1,1 @@
-export 'blend/blend.dart';
+export 'package:libmonet/blend.dart';

@@ -1,1 +1,1 @@
-export 'contrast/contrast.dart';
+export 'package:libmonet/contrast.dart';

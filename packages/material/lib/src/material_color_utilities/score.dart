@@ -1,1 +1,1 @@
-export 'score/score.dart';
+export 'package:libmonet/score.dart';
