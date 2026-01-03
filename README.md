@@ -12,6 +12,7 @@ This repository contains interconnected published and unpublished Dart and Flutt
   - [AndroidX Graphics Shapes](#androidx-graphics-shapes)
   - [deminearchiver lints](#deminearchiver-lints)
   - [Device Info FFI](#device-info-ffi)
+  - [Material Color Utilities](#material-color-utilities)
   - [LZ4 FFI](#lz4-ffi)
   - [Dynamic Color FFI](#dynamic-color-ffi)
   - [Package Info FFI](#package-info-ffi)
@@ -50,6 +51,14 @@ An FFI-based version of the device_info_plus plugin.
 **Location**: [`packages/device_info_ffi`](packages/device_info_ffi).
 
 **Published to**: [`device_info_ffi`](https://pub.dev/packages/device_info_ffi).
+
+### [Material Color Utilities](packages/libmonet/README.md)
+
+Algorithms and utilities that power the Material Design 3 (M3) color system, including choosing theme colors from images and creating tones of colors; all in a new color space.
+
+**Location**: [`packages/libmonet`](packages/libmonet).
+
+**Published to**: [`libmonet`](https://pub.dev/packages/libmonet).
 
 ### [LZ4 FFI](packages/lz4_ffi/README.md)
 
