@@ -7,15 +7,15 @@ description: |
 output: lib/src/ffi_bindings.dart
 headers:
   entry-points:
-    - third_party/lz4/lib/lz4.c
-    - third_party/lz4/lib/lz4frame.c
-    - third_party/lz4/lib/lz4hc.c
-    - third_party/lz4/lib/xxhash.c
+    - third_party/liblz4/lib/lz4.c
+    - third_party/liblz4/lib/lz4frame.c
+    - third_party/liblz4/lib/lz4hc.c
+    - third_party/liblz4/lib/xxhash.c
   include-directives:
-    - third_party/lz4/lib/lz4.h
-    - third_party/lz4/lib/lz4frame.h
-    - third_party/lz4/lib/lz4hc.h
-    - third_party/lz4/lib/xxhash.h
+    - third_party/liblz4/lib/lz4.h
+    - third_party/liblz4/lib/lz4frame.h
+    - third_party/liblz4/lib/lz4hc.h
+    - third_party/liblz4/lib/xxhash.h
 preamble: |
   // Copyright (c) 2025 deminearchiver
 comments:

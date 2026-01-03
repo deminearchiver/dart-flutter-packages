@@ -10,10 +10,10 @@ void main(List<String> arguments) async {
       assetName: "src/ffi_bindings.dart",
 
       sources: [
-        "third_party/lz4/lib/lz4.c",
-        "third_party/lz4/lib/lz4frame.c",
-        "third_party/lz4/lib/lz4hc.c",
-        "third_party/lz4/lib/xxhash.c",
+        "third_party/liblz4/lib/lz4.c",
+        "third_party/liblz4/lib/lz4frame.c",
+        "third_party/liblz4/lib/lz4hc.c",
+        "third_party/liblz4/lib/xxhash.c",
       ],
       defines: {
         // Ensure symbols are exported in dll.
