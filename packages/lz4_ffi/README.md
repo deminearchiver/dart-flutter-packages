@@ -1,4 +1,4 @@
-# Dynamic Color FFI
+# LZ4 FFI
 
 FFI bindings for the LZ4 compression algorithm library.
 
