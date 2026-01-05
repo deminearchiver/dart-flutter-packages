@@ -138,7 +138,13 @@ abstract class ListItemThemeDataPartial with Diagnosticable {
               stateLayerOpacity?.orElseMaybe(this.stateLayerOpacity?.resolve) ??
               this.stateLayerOpacity,
           leadingIconTheme:
-              leadingIconTheme?.orElseMaybe(this.leadingIconTheme?.resolve) ??
+              leadingIconTheme
+                  ?.orElseMaybe(this.leadingIconTheme?.resolve)
+                  .mapValue(
+                    (states, value) =>
+                        this.leadingIconTheme?.resolve(states)?.merge(value) ??
+                        value,
+                  ) ??
               this.leadingIconTheme,
           leadingTextStyle:
               leadingTextStyle
@@ -188,7 +194,13 @@ abstract class ListItemThemeDataPartial with Diagnosticable {
                   ) ??
               this.trailingTextStyle,
           trailingIconTheme:
-              trailingIconTheme?.orElseMaybe(this.trailingIconTheme?.resolve) ??
+              trailingIconTheme
+                  ?.orElseMaybe(this.trailingIconTheme?.resolve)
+                  .mapValue(
+                    (states, value) =>
+                        this.trailingIconTheme?.resolve(states)?.merge(value) ??
+                        value,
+                  ) ??
               this.trailingIconTheme,
         )
       : this;
@@ -396,7 +408,12 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial {
               stateLayerOpacity?.orElse(this.stateLayerOpacity.resolve) ??
               this.stateLayerOpacity,
           leadingIconTheme:
-              leadingIconTheme?.orElse(this.leadingIconTheme.resolve) ??
+              leadingIconTheme
+                  ?.orElse(this.leadingIconTheme.resolve)
+                  .mapValue(
+                    (states, value) =>
+                        this.leadingIconTheme.resolve(states).merge(value),
+                  ) ??
               this.leadingIconTheme,
           leadingTextStyle:
               leadingTextStyle
@@ -439,7 +456,12 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial {
                   ) ??
               this.trailingTextStyle,
           trailingIconTheme:
-              trailingIconTheme?.orElse(this.trailingIconTheme.resolve) ??
+              trailingIconTheme
+                  ?.orElse(this.trailingIconTheme.resolve)
+                  .mapValue(
+                    (states, value) =>
+                        this.trailingIconTheme.resolve(states).merge(value),
+                  ) ??
               this.trailingIconTheme,
         )
       : this;
