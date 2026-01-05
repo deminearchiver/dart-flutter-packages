@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:material/src/material/flutter.dart';
 
@@ -121,8 +120,8 @@ class Corner {
         );
       } else {
         return Corner.elliptical(
-          lerpDouble(a.x, b.x, t),
-          lerpDouble(a.y, b.y, t),
+          lerpDoubleNullable(a.x, b.x, t),
+          lerpDoubleNullable(a.y, b.y, t),
         );
       }
     }
@@ -166,13 +165,13 @@ class _CornerLerp implements Corner {
 
   @override
   double? get x => switch ((a.x, b.x)) {
-    (final aX?, final bX?) => lerpDouble(aX, bX, t)!,
+    (final aX?, final bX?) => lerpDouble(aX, bX, t),
     _ => null,
   };
 
   @override
   double? get y => switch ((a.y, b.y)) {
-    (final aY?, final bY?) => lerpDouble(aY, bY, t)!,
+    (final aY?, final bY?) => lerpDouble(aY, bY, t),
     _ => null,
   };
 

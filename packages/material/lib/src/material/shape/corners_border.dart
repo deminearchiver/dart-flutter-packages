@@ -215,7 +215,7 @@ class _CutCornersBorderDelegate extends CornersBorderDelegate {
         final path = _getPath(adjustedRect)
           ..addPath(
             getInnerPath(rect: rect, side: side, borderRadius: borderRadius),
-            Offset.zero,
+            .zero,
           );
         canvas.drawPath(path, side.toPaint());
     }

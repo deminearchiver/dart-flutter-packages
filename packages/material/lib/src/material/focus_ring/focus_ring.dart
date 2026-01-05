@@ -219,8 +219,7 @@ class _FocusRingState extends State<FocusRing>
         child: DecoratedBox(
           position: .foreground,
           decoration: ShapeDecoration(
-            shape: CornersBorder.rounded(
-              corners: _focusRingTheme.shape,
+            shape: _focusRingTheme.shape.copyWith(
               side: _widthAnimation.value > 0.0
                   ? BorderSide(
                       style: .solid,

@@ -1,5 +1,3 @@
-import 'dart:ui' show lerpDouble;
-
 import 'package:material/src/material/flutter.dart';
 
 FontWeight _closestFontWeightTo(double weight) {
@@ -361,19 +359,19 @@ abstract class TypeStylePartial with Diagnosticable {
     if (identical(a, b)) return a;
     return TypeStylePartial.from(
       font: t < 0.5 ? a?.font : b?.font,
-      weight: lerpDouble(a?.weight, b?.weight, t),
-      size: lerpDouble(a?.size, b?.size, t),
-      lineHeight: lerpDouble(a?.lineHeight, b?.lineHeight, t),
-      tracking: lerpDouble(a?.tracking, b?.tracking, t),
-      wght: lerpDouble(a?.wght, b?.wght, t),
-      grad: lerpDouble(a?.grad, b?.grad, t),
-      wdth: lerpDouble(a?.wdth, b?.wdth, t),
-      rond: lerpDouble(a?.rond, b?.rond, t),
-      opsz: lerpDouble(a?.opsz, b?.opsz, t),
-      crsv: lerpDouble(a?.crsv, b?.crsv, t),
-      slnt: lerpDouble(a?.slnt, b?.slnt, t),
-      fill: lerpDouble(a?.fill, b?.fill, t),
-      hexp: lerpDouble(a?.hexp, b?.hexp, t),
+      weight: lerpDoubleNullable(a?.weight, b?.weight, t),
+      size: lerpDoubleNullable(a?.size, b?.size, t),
+      lineHeight: lerpDoubleNullable(a?.lineHeight, b?.lineHeight, t),
+      tracking: lerpDoubleNullable(a?.tracking, b?.tracking, t),
+      wght: lerpDoubleNullable(a?.wght, b?.wght, t),
+      grad: lerpDoubleNullable(a?.grad, b?.grad, t),
+      wdth: lerpDoubleNullable(a?.wdth, b?.wdth, t),
+      rond: lerpDoubleNullable(a?.rond, b?.rond, t),
+      opsz: lerpDoubleNullable(a?.opsz, b?.opsz, t),
+      crsv: lerpDoubleNullable(a?.crsv, b?.crsv, t),
+      slnt: lerpDoubleNullable(a?.slnt, b?.slnt, t),
+      fill: lerpDoubleNullable(a?.fill, b?.fill, t),
+      hexp: lerpDoubleNullable(a?.hexp, b?.hexp, t),
     );
   }
 }
@@ -728,19 +726,19 @@ abstract class TypeStyle extends TypeStylePartial {
     if (identical(a, b)) return a;
     return TypeStyle.from(
       font: t < 0.5 ? a.font : b.font,
-      weight: lerpDouble(a.weight, b.weight, t)!,
-      size: lerpDouble(a.size, b.size, t)!,
-      lineHeight: lerpDouble(a.lineHeight, b.lineHeight, t)!,
-      tracking: lerpDouble(a.tracking, b.tracking, t)!,
-      wght: lerpDouble(a.wght, b.wght, t)!,
-      grad: lerpDouble(a.grad, b.grad, t)!,
-      wdth: lerpDouble(a.wdth, b.wdth, t)!,
-      rond: lerpDouble(a.rond, b.rond, t)!,
-      opsz: lerpDouble(a.opsz, b.opsz, t)!,
-      crsv: lerpDouble(a.crsv, b.crsv, t)!,
-      slnt: lerpDouble(a.slnt, b.slnt, t)!,
-      fill: lerpDouble(a.fill, b.fill, t)!,
-      hexp: lerpDouble(a.hexp, b.hexp, t)!,
+      weight: lerpDouble(a.weight, b.weight, t),
+      size: lerpDouble(a.size, b.size, t),
+      lineHeight: lerpDouble(a.lineHeight, b.lineHeight, t),
+      tracking: lerpDouble(a.tracking, b.tracking, t),
+      wght: lerpDouble(a.wght, b.wght, t),
+      grad: lerpDouble(a.grad, b.grad, t),
+      wdth: lerpDouble(a.wdth, b.wdth, t),
+      rond: lerpDouble(a.rond, b.rond, t),
+      opsz: lerpDouble(a.opsz, b.opsz, t),
+      crsv: lerpDouble(a.crsv, b.crsv, t),
+      slnt: lerpDouble(a.slnt, b.slnt, t),
+      fill: lerpDouble(a.fill, b.fill, t),
+      hexp: lerpDouble(a.hexp, b.hexp, t),
     );
   }
 }

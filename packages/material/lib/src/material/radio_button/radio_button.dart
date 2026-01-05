@@ -1,8 +1,6 @@
 // ignore_for_file: deprecated_member_use_from_same_package, deprecated_member_use
 
-import 'dart:collection';
 import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:flutter/material.dart' as flutter;
 
@@ -12,6 +10,113 @@ typedef RadioLegacy<T extends Object?> = flutter.Radio<T>;
 typedef RadioThemeLegacy = flutter.RadioTheme;
 typedef RadioThemeDataLegacy = flutter.RadioThemeData;
 typedef RadioListTileLegacy<T extends Object?> = flutter.RadioListTile<T>;
+
+sealed class _RadioButtonStates implements RadioButtonStates {
+  const _RadioButtonStates({required this.isSelected});
+
+  const factory _RadioButtonStates.enabled({
+    required bool isSelected,
+    bool isHovered,
+    bool isFocused,
+    bool isPressed,
+  }) = _RadioButtonEnabledStates;
+
+  const factory _RadioButtonStates.disabled({required bool isSelected}) =
+      _RadioButtonDisabledStates;
+
+  factory _RadioButtonStates.fromWidgetStates(
+    WidgetStates states, {
+    bool? isSelected,
+    bool? isDisabled,
+    bool? isHovered,
+    bool? isFocused,
+    bool? isPressed,
+  }) {
+    final resolvedIsSelected =
+        isSelected ?? states.contains(WidgetState.selected);
+    final resolvedIsDisabled =
+        isDisabled ?? states.contains(WidgetState.disabled);
+    return resolvedIsDisabled
+        ? .disabled(isSelected: resolvedIsSelected)
+        : .enabled(
+            isSelected: resolvedIsSelected,
+            isHovered: isHovered ?? states.contains(WidgetState.hovered),
+            isFocused: isFocused ?? states.contains(WidgetState.focused),
+            isPressed: isPressed ?? states.contains(WidgetState.pressed),
+          );
+  }
+
+  bool get isDisabled;
+
+  bool get isHovered;
+
+  bool get isFocused;
+
+  bool get isPressed;
+
+  @override
+  final bool isSelected;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _RadioButtonStates &&
+          isSelected == other.isSelected &&
+          isDisabled == other.isDisabled &&
+          isHovered == other.isHovered &&
+          isFocused == other.isFocused &&
+          isPressed == other.isPressed;
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    isSelected,
+    isDisabled,
+    isHovered,
+    isFocused,
+    isPressed,
+  );
+}
+
+class _RadioButtonDisabledStates extends _RadioButtonStates
+    implements RadioButtonDisabledStates {
+  const _RadioButtonDisabledStates({required super.isSelected});
+
+  @override
+  bool get isDisabled => true;
+
+  @override
+  bool get isHovered => false;
+
+  @override
+  bool get isFocused => false;
+
+  @override
+  bool get isPressed => false;
+}
+
+class _RadioButtonEnabledStates extends _RadioButtonStates
+    implements RadioButtonEnabledStates {
+  const _RadioButtonEnabledStates({
+    required super.isSelected,
+    this.isHovered = false,
+    this.isFocused = false,
+    this.isPressed = false,
+  });
+
+  @override
+  bool get isDisabled => false;
+
+  @override
+  final bool isHovered;
+
+  @override
+  final bool isFocused;
+
+  @override
+  final bool isPressed;
+}
 
 class RadioButton extends StatefulWidget {
   const RadioButton({super.key, required this.onTap, required this.selected});
@@ -32,124 +137,93 @@ class _RadioButtonState extends State<RadioButton>
   bool _focused = false;
 
   late AnimationController _animationController;
-  late AnimationController _colorController;
-  final Tween<Color?> _iconColorTween = ColorTween();
-  late Animation<Color?> _iconColorAnimation;
 
-  late ColorThemeData _colorTheme;
+  late AnimationController _effectsController;
+
+  final Tween<Color?> _iconBackgroundColorTween = ColorTween();
+  late Animation<Color?> _iconBackgroundColorAnimation;
+
+  final Tween<Color?> _iconOutlineColorTween = ColorTween();
+  late Animation<Color?> _iconOutlineColorAnimation;
+
+  final Tween<Color?> _iconDotColorTween = ColorTween();
+  late Animation<Color?> _iconDotColorAnimation;
+
   late ShapeThemeData _shapeTheme;
-  late StateThemeData _stateTheme;
   late SpringThemeData _springTheme;
 
-  WidgetStateProperty<double> get _stateLayerSize =>
-      const WidgetStatePropertyAll(40.0);
-
-  WidgetStateProperty<ShapeBorder> get _stateLayerShape =>
-      WidgetStatePropertyAll(
-        CornersBorder.rounded(corners: Corners.all(_shapeTheme.corner.full)),
-      );
-
-  WidgetStateProperty<Color> get _stateLayerColor =>
-      WidgetStateProperty.resolveWith(
-        (_) => _isSelected ? _colorTheme.primary : _colorTheme.onSurface,
-      );
-
-  WidgetStateProperty<double> get _stateLayerOpacity =>
-      WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.disabled)) {
-          return 0.0;
-        }
-        if (states.contains(WidgetState.pressed)) {
-          return _stateTheme.pressedStateLayerOpacity;
-        }
-        if (states.contains(WidgetState.hovered)) {
-          return _stateTheme.hoverStateLayerOpacity;
-        }
-        if (states.contains(WidgetState.focused)) {
-          return 0.0;
-        }
-        return 0.0;
-      });
-
-  WidgetStateProperty<double> get _iconSize =>
-      const WidgetStatePropertyAll(20.0);
-
-  WidgetStateProperty<Color> get _iconColor =>
-      WidgetStateProperty.resolveWith((states) {
-        final isSelected = _isSelected;
-        if (states.contains(WidgetState.disabled)) {
-          return isSelected
-              ? _colorTheme.onSurface.withValues(alpha: 0.38)
-              : _colorTheme.onSurface.withValues(alpha: 0.38);
-        }
-        if (states.contains(WidgetState.pressed)) {
-          return isSelected ? _colorTheme.primary : _colorTheme.onSurface;
-        }
-        if (states.contains(WidgetState.focused)) {
-          return isSelected ? _colorTheme.primary : _colorTheme.onSurface;
-        }
-        if (states.contains(WidgetState.hovered)) {
-          return isSelected ? _colorTheme.primary : _colorTheme.onSurface;
-        }
-        return isSelected ? _colorTheme.primary : _colorTheme.onSurfaceVariant;
-      });
-
-  void _updateColorAnimations({required Color iconColor}) {
-    // The animation is already in progress.
-    // There is no point in triggering it again
-    // because it would animate to the same value.
-    if (iconColor == _iconColorTween.end) {
+  void _updateColorAnimations({
+    required Color iconBackgroundColor,
+    required Color iconOutlineColor,
+    required Color iconDotColor,
+  }) {
+    if (iconBackgroundColor == _iconBackgroundColorTween.end &&
+        iconOutlineColor == _iconOutlineColorTween.end &&
+        iconDotColor == _iconDotColorTween.end) {
       return;
     }
 
-    _iconColorTween.begin = _iconColorAnimation.value ?? iconColor;
-    _iconColorTween.end = iconColor;
+    _iconBackgroundColorTween.begin =
+        _iconBackgroundColorAnimation.value ?? iconBackgroundColor;
+    _iconBackgroundColorTween.end = iconBackgroundColor;
 
-    // We don't have to animate between states
-    // if the initial state is the same as the target state.
-    if (_iconColorTween.begin == _iconColorTween.end) {
+    _iconOutlineColorTween.begin =
+        _iconOutlineColorAnimation.value ?? iconOutlineColor;
+    _iconOutlineColorTween.end = iconOutlineColor;
+
+    _iconDotColorTween.begin = _iconDotColorAnimation.value ?? iconDotColor;
+    _iconDotColorTween.end = iconDotColor;
+
+    if (_iconBackgroundColorTween.begin == _iconBackgroundColorTween.end &&
+        _iconOutlineColorTween.begin == _iconOutlineColorTween.end &&
+        _iconDotColorTween.begin == _iconDotColorTween.end) {
+      _effectsController.value = 1.0;
       return;
     }
 
-    final spring = _springTheme.defaultEffects;
-    final simulation = SpringSimulation(
-      spring.toSpringDescription(),
-      0.0,
-      1.0,
-      0.0,
-    );
-    _colorController.animateWith(simulation);
+    final spring = _springTheme.defaultEffects.toSpringDescription();
+    final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0);
+    _effectsController.animateWith(simulation);
   }
 
-  /// This method returns a [UnmodifiableSetView] over
-  /// [WidgetStatesController.value]. The returned collection must not be used
-  /// if changes were made to the [WidgetStatesController.value]. In that case,
-  /// this method must be called again to update [WidgetStatesController.value]
-  /// according to internal state.
-  ///
-  /// Returns an [UnmodifiableSetView].
-  WidgetStates _resolveStates() {
+  _RadioButtonStates _resolveStates() {
     final states = _statesController.value;
 
-    final isDisabled = widget.onTap == null;
+    final _RadioButtonStates result = widget.onTap == null
+        ? .disabled(isSelected: widget.selected)
+        : .enabled(
+            isSelected: widget.selected,
+            isHovered: states.contains(WidgetState.hovered),
+            isPressed: _pressed,
+            isFocused: _focused && !_pressed,
+          );
 
-    if (isDisabled) {
+    if (result.isSelected) {
+      states.add(WidgetState.selected);
+    } else {
+      states.remove(WidgetState.selected);
+    }
+    if (result.isDisabled) {
       states.add(WidgetState.disabled);
     } else {
       states.remove(WidgetState.disabled);
     }
-
-    if (!isDisabled && _pressed) {
+    if (result.isHovered) {
       states.add(WidgetState.pressed);
     } else {
       states.remove(WidgetState.pressed);
     }
-    if (!isDisabled && (_focused && !_pressed)) {
+    if (result.isFocused) {
       states.add(WidgetState.focused);
     } else {
       states.remove(WidgetState.focused);
     }
-    return UnmodifiableSetView(states);
+    if (result.isPressed) {
+      states.add(WidgetState.pressed);
+    } else {
+      states.remove(WidgetState.pressed);
+    }
+    return result;
   }
 
   void _statesListener() {
@@ -233,8 +307,14 @@ class _RadioButtonState extends State<RadioButton>
       vsync: this,
       value: _isSelected ? 1.0 : 0.0,
     );
-    _colorController = AnimationController(vsync: this, value: 0.0);
-    _iconColorAnimation = _iconColorTween.animate(_colorController);
+    _effectsController = AnimationController(vsync: this, value: 0.0);
+    _iconBackgroundColorAnimation = _iconBackgroundColorTween.animate(
+      _effectsController,
+    );
+    _iconOutlineColorAnimation = _iconOutlineColorTween.animate(
+      _effectsController,
+    );
+    _iconDotColorAnimation = _iconDotColorTween.animate(_effectsController);
   }
 
   @override
@@ -264,15 +344,13 @@ class _RadioButtonState extends State<RadioButton>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _colorTheme = ColorTheme.of(context);
     _shapeTheme = ShapeTheme.of(context);
-    _stateTheme = StateTheme.of(context);
     _springTheme = SpringTheme.of(context);
   }
 
   @override
   void dispose() {
-    _colorController.dispose();
+    _effectsController.dispose();
     _animationController.dispose();
     super.dispose();
   }
@@ -280,36 +358,57 @@ class _RadioButtonState extends State<RadioButton>
   @override
   Widget build(BuildContext context) {
     final states = _resolveStates();
-    final isDisabled = states.contains(WidgetState.disabled);
+
+    final radioButtonTheme = RadioButtonTheme.of(context);
+
     const minTapTargetSize = Size.square(48.0);
-    final stateLayerSize = _stateLayerSize.resolve(states);
-    final stateLayerShape = _stateLayerShape.resolve(states);
-    final iconSize = _iconSize.resolve(states);
-    final iconColor = _iconColor.resolve(states);
+    final stateLayerSize = radioButtonTheme.stateLayerSize.resolve(states);
+    final stateLayerShape = radioButtonTheme.stateLayerShape.resolve(states);
+    final stateLayerColor = radioButtonTheme.stateLayerColor;
+    final stateLayerOpacity = radioButtonTheme.stateLayerOpacity;
+    final iconSize = radioButtonTheme.iconSize.resolve(states);
+    final iconBackgroundColor = radioButtonTheme.iconBackgroundColor.resolve(
+      states,
+    );
+    final iconOutlineColor = radioButtonTheme.iconOutlineColor.resolve(states);
+    final iconDotColor = radioButtonTheme.iconDotColor.resolve(states);
 
-    _updateColorAnimations(iconColor: iconColor);
+    final overlayColor = WidgetStateProperty.resolveWith((widgetStates) {
+      final resolvedStates = _RadioButtonStates.fromWidgetStates(
+        widgetStates,
+        isSelected: states.isSelected,
+      );
+      final resolvedColor = stateLayerColor.resolve(resolvedStates);
+      final resolvedOpacity = stateLayerOpacity.resolve(resolvedStates);
+      return resolvedOpacity > 0.0
+          ? resolvedColor.withValues(alpha: resolvedColor.a * resolvedOpacity)
+          : resolvedColor.withAlpha(0);
+    });
 
-    final child = SizedBox.square(
-      dimension: stateLayerSize,
+    _updateColorAnimations(
+      iconBackgroundColor: iconBackgroundColor,
+      iconOutlineColor: iconOutlineColor,
+      iconDotColor: iconDotColor,
+    );
+
+    final child = SizedBox.fromSize(
+      size: stateLayerSize,
       child: Listener(
         behavior: HitTestBehavior.deferToChild,
-        onPointerDown: !isDisabled ? _onPointerDown : null,
-        onPointerUp: !isDisabled ? _onPointerUp : null,
-        onPointerCancel: !isDisabled ? _onPointerCancel : null,
+        onPointerDown: !states.isDisabled ? _onPointerDown : null,
+        onPointerUp: !states.isDisabled ? _onPointerUp : null,
+        onPointerCancel: !states.isDisabled ? _onPointerCancel : null,
         child: Material.empty(
           child: InkWell(
             statesController: _statesController,
             customBorder: stateLayerShape,
-            overlayColor: WidgetStateLayerColor(
-              color: _stateLayerColor,
-              opacity: _stateLayerOpacity,
-            ),
-            enableFeedback: !isDisabled,
-            onTap: !isDisabled ? () => widget.onTap?.call() : null,
-            onTapDown: !isDisabled ? _onTapDown : null,
-            onTapUp: !isDisabled ? _onTapUp : null,
-            onTapCancel: !isDisabled ? _onTapCancel : null,
-            onFocusChange: !isDisabled ? _onFocusChange : null,
+            overlayColor: overlayColor,
+            enableFeedback: !states.isDisabled,
+            onTap: !states.isDisabled ? () => widget.onTap?.call() : null,
+            onTapDown: !states.isDisabled ? _onTapDown : null,
+            onTapUp: !states.isDisabled ? _onTapUp : null,
+            onTapCancel: !states.isDisabled ? _onTapCancel : null,
+            onFocusChange: !states.isDisabled ? _onFocusChange : null,
           ),
         ),
       ),
@@ -317,7 +416,7 @@ class _RadioButtonState extends State<RadioButton>
 
     return RepaintBoundary(
       child: Semantics(
-        enabled: !states.contains(WidgetState.disabled),
+        enabled: !states.isDisabled,
         label: null,
         checked: _isSelected,
         child: Align.center(
@@ -326,25 +425,30 @@ class _RadioButtonState extends State<RadioButton>
           child: TapRegion(
             behavior: HitTestBehavior.deferToChild,
             consumeOutsideTaps: false,
-            onTapOutside: !isDisabled ? _onTapOutside : null,
-            onTapUpOutside: !isDisabled ? _onTapUpOutside : null,
+            onTapOutside: !states.isDisabled ? _onTapOutside : null,
+            onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
             child: FocusRingTheme.merge(
               data: FocusRingThemeDataPartial.from(
-                shape: Corners.all(_shapeTheme.corner.full),
+                shape: CornersBorder.rounded(
+                  corners: .all(_shapeTheme.corner.full),
+                ),
               ),
               child: FocusRing(
-                visible: states.contains(WidgetState.focused),
+                visible: states.isFocused,
                 placement: FocusRingPlacement.outward,
                 layoutBuilder: (context, info, child) => Align.center(
-                  child: SizedBox.square(
-                    dimension: stateLayerSize,
-                    child: child,
-                  ),
+                  child: SizedBox.fromSize(size: stateLayerSize, child: child),
                 ),
                 child: _RadioButtonPaint(
                   minTapTargetSize: const _ValueListenable(minTapTargetSize),
                   iconSize: _ValueListenable(iconSize),
-                  iconColor: _iconColorAnimation.nonNullOr(iconColor),
+                  iconBackgroundColor: _iconBackgroundColorAnimation.nonNullOr(
+                    iconBackgroundColor,
+                  ),
+                  iconOutlineColor: _iconOutlineColorAnimation.nonNullOr(
+                    iconOutlineColor,
+                  ),
+                  iconDotColor: _iconDotColorAnimation.nonNullOr(iconDotColor),
                   animation: _animationController,
                   child: child,
                 ),
@@ -362,14 +466,18 @@ class _RadioButtonPaint extends SingleChildRenderObjectWidget {
     // super.key,
     required this.minTapTargetSize,
     required this.iconSize,
-    required this.iconColor,
+    required this.iconBackgroundColor,
+    required this.iconOutlineColor,
+    required this.iconDotColor,
     required this.animation,
     super.child,
   });
 
   final ValueListenable<Size> minTapTargetSize;
   final ValueListenable<double> iconSize;
-  final ValueListenable<Color> iconColor;
+  final ValueListenable<Color> iconBackgroundColor;
+  final ValueListenable<Color> iconOutlineColor;
+  final ValueListenable<Color> iconDotColor;
   final ValueListenable<double> animation;
 
   @override
@@ -377,7 +485,9 @@ class _RadioButtonPaint extends SingleChildRenderObjectWidget {
     return _RenderRadioButtonPaint(
       minTapTargetSize: minTapTargetSize,
       iconSize: iconSize,
-      iconColor: iconColor,
+      iconBackgroundColor: iconBackgroundColor,
+      iconOutlineColor: iconOutlineColor,
+      iconDotColor: iconDotColor,
       animation: animation,
     );
   }
@@ -390,7 +500,9 @@ class _RadioButtonPaint extends SingleChildRenderObjectWidget {
     renderObject
       ..minTapTargetSize = minTapTargetSize
       ..iconSize = iconSize
-      ..iconColor = iconColor
+      ..iconBackgroundColor = iconBackgroundColor
+      ..iconOutlineColor = iconOutlineColor
+      ..iconDotColor = iconDotColor
       ..animation = animation;
   }
 }
@@ -400,12 +512,16 @@ class _RenderRadioButtonPaint extends RenderBox
   _RenderRadioButtonPaint({
     required ValueListenable<Size> minTapTargetSize,
     required ValueListenable<double> iconSize,
-    required ValueListenable<Color> iconColor,
+    required ValueListenable<Color> iconBackgroundColor,
+    required ValueListenable<Color> iconOutlineColor,
+    required ValueListenable<Color> iconDotColor,
     required ValueListenable<double> animation,
     RenderBox? child,
   }) : _minTapTargetSize = minTapTargetSize,
        _iconSize = iconSize,
-       _iconColor = iconColor,
+       _iconBackgroundColor = iconBackgroundColor,
+       _iconOutlineColor = iconOutlineColor,
+       _iconDotColor = iconDotColor,
        _animation = animation {
     this.child = child;
   }
@@ -428,13 +544,34 @@ class _RenderRadioButtonPaint extends RenderBox
     _iconSize.addListener(markNeedsLayout);
   }
 
-  ValueListenable<Color> _iconColor;
-  ValueListenable<Color> get iconColor => _iconColor;
-  set iconColor(ValueListenable<Color> value) {
-    if (_iconColor == value) return;
-    _iconColor.removeListener(markNeedsLayout);
-    _iconColor = value;
-    _iconColor.addListener(markNeedsLayout);
+  ValueListenable<Color> _iconBackgroundColor;
+  ValueListenable<Color> get iconBackgroundColor => _iconBackgroundColor;
+  set iconBackgroundColor(ValueListenable<Color> value) {
+    if (_iconBackgroundColor == value) return;
+    _iconBackgroundColor.removeListener(markNeedsLayout);
+    _iconBackgroundColor = value;
+    _iconBackgroundColor.addListener(markNeedsLayout);
+    markNeedsPaint();
+  }
+
+  ValueListenable<Color> _iconOutlineColor;
+  ValueListenable<Color> get iconOutlineColor => _iconOutlineColor;
+  set iconOutlineColor(ValueListenable<Color> value) {
+    if (_iconOutlineColor == value) return;
+    _iconOutlineColor.removeListener(markNeedsLayout);
+    _iconOutlineColor = value;
+    _iconOutlineColor.addListener(markNeedsLayout);
+    markNeedsPaint();
+  }
+
+  ValueListenable<Color> _iconDotColor;
+  ValueListenable<Color> get iconDotColor => _iconDotColor;
+  set iconDotColor(ValueListenable<Color> value) {
+    if (_iconDotColor == value) return;
+    _iconDotColor.removeListener(markNeedsLayout);
+    _iconDotColor = value;
+    _iconDotColor.addListener(markNeedsLayout);
+    markNeedsPaint();
   }
 
   ValueListenable<double> _animation;
@@ -466,16 +603,21 @@ class _RenderRadioButtonPaint extends RenderBox
     super.attach(owner);
     minTapTargetSize.addListener(markNeedsLayout);
     iconSize.addListener(markNeedsLayout);
-    iconColor.addListener(markNeedsPaint);
+    iconBackgroundColor.addListener(markNeedsPaint);
+    iconOutlineColor.addListener(markNeedsPaint);
+    iconDotColor.addListener(markNeedsPaint);
+    _animation.addListener(markNeedsPaint);
   }
 
   @override
   void detach() {
-    _animation.removeListener(markNeedsPaint);
-    iconColor.removeListener(markNeedsPaint);
-    iconSize.removeListener(markNeedsLayout);
-    minTapTargetSize.removeListener(markNeedsLayout);
     super.detach();
+    minTapTargetSize.removeListener(markNeedsLayout);
+    iconSize.removeListener(markNeedsLayout);
+    iconBackgroundColor.removeListener(markNeedsPaint);
+    iconOutlineColor.removeListener(markNeedsPaint);
+    iconDotColor.removeListener(markNeedsPaint);
+    _animation.removeListener(markNeedsPaint);
   }
 
   @override
@@ -509,7 +651,7 @@ class _RenderRadioButtonPaint extends RenderBox
     required ChildPositioner positionChild,
   }) {
     final outerSize = _computeOuterSize();
-    final center = outerSize.center(Offset.zero);
+    final center = outerSize.center(.zero);
     if (child case final child?) {
       layoutChild(
         child,
@@ -568,36 +710,61 @@ class _RenderRadioButtonPaint extends RenderBox
     const relativeDotSize = 12.0;
     const relativeDotRadius = relativeDotSize / 2.0;
 
-    final center = size.center(Offset.zero);
+    final iconBackgroundColor = this.iconBackgroundColor.value;
+    final iconOutlineColor = this.iconOutlineColor.value;
+    final iconDotColor = this.iconDotColor.value;
+
+    if (iconBackgroundColor.a <= 0.0 &&
+        iconOutlineColor.a <= 0.0 &&
+        iconDotColor.a <= 0.0) {
+      return;
+    }
+
+    final center = size.center(.zero);
     final scale = iconSize.value / relativeIconSize;
 
-    // TODO: remove scaling once the magic numbers are extracted into theme.
+    final dotRadius = lerpDouble(0.0, relativeDotRadius, animation.value);
+
+    // TODO(deminearchiver): remove scaling once the magic numbers are extracted into theme.
+    // TODO(deminearchiver): reconsider above statement as it seems wrong now
     context.withCanvasTransform((context) {
       context.canvas.translate(center.dx, center.dy);
       context.canvas.scale(scale);
       context.canvas.translate(-center.dx, -center.dy);
-      final paint = Paint()
-        ..color = iconColor.value
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = relativeStrokeWidth;
 
-      context.canvas.drawCircle(
-        center,
-        relativeCircleRadius - relativeStrokeWidth / 2.0,
-        paint,
-      );
+      final paint = Paint();
 
-      paint
-        ..style = PaintingStyle.fill
-        ..strokeWidth = 0.0;
-      final dotRadius = lerpDouble(0.0, relativeDotRadius, animation.value)!;
-      if (dotRadius > 0.0) {
+      if (iconBackgroundColor.a > 0.0) {
         context.canvas.drawCircle(
           center,
-          // TODO: dot radius shouldn't depend on stroke width.
-          //  It's counter-intuitive.
+          relativeCircleRadius,
+          paint
+            ..style = .fill
+            ..color = iconBackgroundColor
+            ..strokeWidth = 0.0,
+        );
+      }
+
+      if (iconOutlineColor.a > 0.0) {
+        context.canvas.drawCircle(
+          center,
+          relativeCircleRadius - relativeStrokeWidth / 2.0,
+          paint
+            ..style = .stroke
+            ..color = iconOutlineColor
+            ..strokeWidth = relativeStrokeWidth,
+        );
+      }
+
+      if (dotRadius > 0.0 && iconDotColor.a > 0.0) {
+        context.canvas.drawCircle(
+          center,
+          // TODO: dot radius shouldn't depend on stroke width. It's counter-intuitive.
           dotRadius - relativeStrokeWidth / 2.0,
-          paint,
+          paint
+            ..style = .fill
+            ..color = iconDotColor
+            ..strokeWidth = 0.0,
         );
       }
     });
@@ -612,7 +779,7 @@ class _RenderRadioButtonPaint extends RenderBox
   @override
   void paint(PaintingContext context, Offset offset) {
     context.withCanvasTransform((context) {
-      if (offset != Offset.zero) {
+      if (offset != .zero) {
         context.canvas.translate(offset.dx, offset.dy);
       }
       _paintChild(context);
@@ -627,7 +794,7 @@ class _RenderRadioButtonPaint extends RenderBox
     }
     final child = this.child;
     if (child == null) return false;
-    final Offset center = child.size.center(Offset.zero);
+    final center = child.size.center(.zero);
     return result.addWithRawTransform(
       transform: MatrixUtils.forceToPoint(center),
       position: center,

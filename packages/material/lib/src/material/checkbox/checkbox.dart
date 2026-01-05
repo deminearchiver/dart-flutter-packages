@@ -1,6 +1,4 @@
-import 'dart:collection';
 import 'dart:math' as math;
-import 'dart:ui' show lerpDouble;
 
 import 'package:flutter/material.dart' as flutter;
 
@@ -10,32 +8,139 @@ typedef CheckboxLegacy = flutter.Checkbox;
 typedef CheckboxThemeLegacy = flutter.CheckboxTheme;
 typedef CheckboxThemeDataLegacy = flutter.CheckboxThemeData;
 
-enum _CheckedState { off, intermediate, checked }
+enum _CheckboxSelectionState { off, indeterminate, checked }
+
+sealed class _CheckboxStates implements CheckboxStates {
+  const _CheckboxStates({required this.isSelected});
+
+  const factory _CheckboxStates.enabled({
+    required bool isSelected,
+    bool isHovered,
+    bool isFocused,
+    bool isPressed,
+  }) = _CheckboxEnabledStates;
+
+  const factory _CheckboxStates.disabled({required bool isSelected}) =
+      _CheckboxDisabledStates;
+
+  factory _CheckboxStates.fromWidgetStates(
+    WidgetStates states, {
+    bool? isSelected,
+    bool? isDisabled,
+    bool? isHovered,
+    bool? isFocused,
+    bool? isPressed,
+  }) {
+    final resolvedIsSelected =
+        isSelected ?? states.contains(WidgetState.selected);
+    final resolvedIsDisabled =
+        isDisabled ?? states.contains(WidgetState.disabled);
+    return resolvedIsDisabled
+        ? .disabled(isSelected: resolvedIsSelected)
+        : .enabled(
+            isSelected: resolvedIsSelected,
+            isHovered: isHovered ?? states.contains(WidgetState.hovered),
+            isFocused: isFocused ?? states.contains(WidgetState.focused),
+            isPressed: isPressed ?? states.contains(WidgetState.pressed),
+          );
+  }
+
+  bool get isDisabled;
+
+  bool get isHovered;
+
+  bool get isFocused;
+
+  bool get isPressed;
+
+  @override
+  final bool isSelected;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _CheckboxStates &&
+          isSelected == other.isSelected &&
+          isDisabled == other.isDisabled &&
+          isHovered == other.isHovered &&
+          isFocused == other.isFocused &&
+          isPressed == other.isPressed;
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    isSelected,
+    isDisabled,
+    isHovered,
+    isFocused,
+    isPressed,
+  );
+}
+
+class _CheckboxDisabledStates extends _CheckboxStates
+    implements CheckboxDisabledStates {
+  const _CheckboxDisabledStates({required super.isSelected});
+
+  @override
+  bool get isDisabled => true;
+
+  @override
+  bool get isHovered => false;
+
+  @override
+  bool get isFocused => false;
+
+  @override
+  bool get isPressed => false;
+}
+
+class _CheckboxEnabledStates extends _CheckboxStates
+    implements CheckboxEnabledStates {
+  const _CheckboxEnabledStates({
+    required super.isSelected,
+    this.isHovered = false,
+    this.isFocused = false,
+    this.isPressed = false,
+  });
+
+  @override
+  bool get isDisabled => false;
+
+  @override
+  final bool isHovered;
+
+  @override
+  final bool isFocused;
+
+  @override
+  final bool isPressed;
+}
 
 sealed class Checkbox extends StatefulWidget {
   const Checkbox._({super.key});
 
-  const factory Checkbox.biState({
+  const factory Checkbox.bistate({
     Key? key,
     required ValueChanged<bool>? onCheckedChanged,
     required bool checked,
-  }) = _BiStateCheckbox;
+  }) = _BistateCheckbox;
 
-  const factory Checkbox.triState({
+  const factory Checkbox.tristate({
     Key? key,
     required VoidCallback? onTap,
     required bool? state,
-  }) = _TriStateCheckbox;
+  }) = _TristateCheckbox;
 
-  _CheckedState get _state;
+  _CheckboxSelectionState get _state;
   VoidCallback? get _onTap;
 
   @override
   State<Checkbox> createState() => _CheckboxState();
 }
 
-class _BiStateCheckbox extends Checkbox {
-  const _BiStateCheckbox({
+class _BistateCheckbox extends Checkbox {
+  const _BistateCheckbox({
     super.key,
     required this.onCheckedChanged,
     required this.checked,
@@ -45,7 +150,7 @@ class _BiStateCheckbox extends Checkbox {
   final bool checked;
 
   @override
-  _CheckedState get _state => checked ? .checked : .off;
+  _CheckboxSelectionState get _state => checked ? .checked : .off;
 
   @override
   VoidCallback? get _onTap => onCheckedChanged != null ? _onTapCallback : null;
@@ -56,17 +161,17 @@ class _BiStateCheckbox extends Checkbox {
   }
 }
 
-class _TriStateCheckbox extends Checkbox {
-  const _TriStateCheckbox({super.key, required this.onTap, required this.state})
+class _TristateCheckbox extends Checkbox {
+  const _TristateCheckbox({super.key, required this.onTap, required this.state})
     : super._();
 
   final VoidCallback? onTap;
   final bool? state;
 
   @override
-  _CheckedState get _state => switch (state) {
+  _CheckboxSelectionState get _state => switch (state) {
     false => .off,
-    null => .intermediate,
+    null => .indeterminate,
     true => .checked,
   };
 
@@ -75,16 +180,14 @@ class _TriStateCheckbox extends Checkbox {
 }
 
 class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
-  bool get _isIntermediate => widget._state == .intermediate;
+  bool get _isIndeterminate => widget._state == .indeterminate;
   bool get _isChecked => widget._state == .checked;
-  bool get _isCheckedOrIntermediate => widget._state != .off;
+  bool get _isCheckedOrIndeterminate => widget._state != .off;
 
-  double get _checkedFraction => _isCheckedOrIntermediate ? 1.0 : 0.0;
-  double get _crossCenterGravitation => _isIntermediate ? 1.0 : 0.0;
+  double get _checkedFraction => _isCheckedOrIndeterminate ? 1.0 : 0.0;
+  double get _crossCenterGravitation => _isIndeterminate ? 1.0 : 0.0;
 
-  late ColorThemeData _colorTheme;
   late ShapeThemeData _shapeTheme;
-  late StateThemeData _stateTheme;
   late SpringThemeData _springTheme;
 
   late final WidgetStatesController _statesController;
@@ -93,154 +196,99 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
 
   late final AnimationController _checkFractionController;
   late final AnimationController _crossCenterGravitationController;
-  late final AnimationController _colorController;
+  late final AnimationController _effectsController;
 
+  final Tween<OutlinedBorder?> _containerShapeTween = OutlinedBorderTween();
   final Tween<Color?> _containerColorTween = ColorTween();
-  final Tween<Color?> _outlineColorTween = ColorTween();
+  final Tween<Outline?> _containerOutlineTween = OutlineTween();
   final Tween<Color?> _iconColorTween = ColorTween();
 
+  late Animation<OutlinedBorder?> _containerShapeAnimation;
   late Animation<Color?> _containerColorAnimation;
-  late Animation<Color?> _outlineColorAnimation;
+  late Animation<Outline?> _containerOutlineAnimation;
   late Animation<Color?> _iconColorAnimation;
 
-  WidgetStateProperty<Color> get _containerColor =>
-      WidgetStateProperty.resolveWith((states) {
-        final isDisabled = states.contains(WidgetState.disabled);
-        return _isCheckedOrIntermediate
-            ? isDisabled
-                  ? _colorTheme.onSurface.withValues(alpha: 0.38)
-                  : _colorTheme.primary
-            : isDisabled
-            ? _colorTheme.onSurface.withValues(alpha: 0.0)
-            : _colorTheme.primary.withValues(alpha: 0.0);
-      });
-
-  WidgetStateProperty<Color> get _outlineColor =>
-      WidgetStateProperty.resolveWith((states) {
-        final isDisabled = states.contains(WidgetState.disabled);
-        if (isDisabled) {
-          return _colorTheme.onSurface.withValues(alpha: 0.38);
-        }
-        if (_isCheckedOrIntermediate) {
-          return _colorTheme.primary;
-        }
-        if (states.contains(WidgetState.pressed)) {
-          return _colorTheme.onSurface;
-        }
-        if (states.contains(WidgetState.focused)) {
-          return _colorTheme.onSurface;
-        }
-        if (states.contains(WidgetState.hovered)) {
-          return _colorTheme.onSurface;
-        }
-        return _colorTheme.onSurfaceVariant;
-      });
-
-  WidgetStateProperty<Color> get _iconColor =>
-      WidgetStateProperty.resolveWith((states) {
-        final isDisabled = states.contains(WidgetState.disabled);
-        return _isCheckedOrIntermediate
-            ? isDisabled
-                  ? _colorTheme.surface.withValues(alpha: 0.38)
-                  : _colorTheme.onPrimary
-            : Colors.transparent;
-      });
-
-  WidgetStateProperty<Color> get _stateLayerColor =>
-      WidgetStateProperty.resolveWith(
-        (_) => _isCheckedOrIntermediate
-            ? _colorTheme.primary
-            : _colorTheme.onSurface,
-      );
-
-  WidgetStateProperty<double> get _stateLayerOpacity =>
-      WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.disabled)) {
-          return 0.0;
-        }
-        if (states.contains(WidgetState.pressed)) {
-          return _stateTheme.pressedStateLayerOpacity;
-        }
-        if (states.contains(WidgetState.hovered)) {
-          return _stateTheme.hoverStateLayerOpacity;
-        }
-        if (states.contains(WidgetState.focused)) {
-          return 0.0;
-        }
-        return 0.0;
-      });
-
   void _updateColorAnimations({
+    required OutlinedBorder containerShape,
     required Color containerColor,
-    required Color outlineColor,
+    required Outline containerOutline,
     required Color iconColor,
   }) {
-    // The animation is already in progress.
-    // There is no point in triggering it again
-    // because it would animate to the same value.
-    if (containerColor == _containerColorTween.end &&
-        outlineColor == _outlineColorTween.end &&
+    if (containerShape == _containerShapeTween.end &&
+        containerColor == _containerColorTween.end &&
+        containerOutline == _containerOutlineTween.end &&
         iconColor == _iconColorTween.end) {
       return;
     }
 
+    _containerShapeTween.begin =
+        _containerShapeAnimation.value ?? containerShape;
+    _containerShapeTween.end = containerShape;
+
     _containerColorTween.begin =
         _containerColorAnimation.value ?? containerColor;
     _containerColorTween.end = containerColor;
-    _outlineColorTween.begin = _outlineColorAnimation.value ?? outlineColor;
-    _outlineColorTween.end = outlineColor;
+
+    _containerOutlineTween.begin =
+        _containerOutlineAnimation.value ?? containerOutline;
+    _containerOutlineTween.end = containerOutline;
+
     _iconColorTween.begin = _iconColorAnimation.value ?? iconColor;
     _iconColorTween.end = iconColor;
 
-    // We don't have to animate between states
-    // if the initial state is the same as the target state.
-    if (_containerColorTween.begin == _containerColorTween.end &&
-        _outlineColorTween.begin == _outlineColorTween.end &&
+    if (_containerShapeTween.begin == _containerShapeTween.end &&
+        _containerColorTween.begin == _containerColorTween.end &&
+        _containerOutlineTween.begin == _containerOutlineTween.end &&
         _iconColorTween.begin == _iconColorTween.end) {
+      _effectsController.value = 1.0;
       return;
     }
 
-    final spring = _isCheckedOrIntermediate
-        ? _springTheme.defaultEffects
-        : _springTheme.fastEffects;
-    final simulation = SpringSimulation(
-      spring.toSpringDescription(),
-      0.0,
-      1.0,
-      0.0,
-    );
-    _colorController.animateWith(simulation);
+    final spring = _isCheckedOrIndeterminate
+        ? _springTheme.defaultEffects.toSpringDescription()
+        : _springTheme.fastEffects.toSpringDescription();
+    final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0);
+    _effectsController.animateWith(simulation);
   }
 
-  /// This method returns a [UnmodifiableSetView] over
-  /// [WidgetStatesController.value]. The returned collection must not be used
-  /// if changes were made to the [WidgetStatesController.value]. In that case,
-  /// this method must be called again to update [WidgetStatesController.value]
-  /// according to internal state.
-  ///
-  /// Returns an [UnmodifiableSetView].
-  WidgetStates _resolveStates() {
+  _CheckboxStates _resolveStates() {
     final states = _statesController.value;
 
-    final isDisabled = widget._onTap == null;
+    final _CheckboxStates result = widget._onTap == null
+        ? .disabled(isSelected: _isCheckedOrIndeterminate)
+        : .enabled(
+            isSelected: _isCheckedOrIndeterminate,
+            isHovered: states.contains(WidgetState.hovered),
+            isPressed: _pressed,
+            isFocused: _focused && !_pressed,
+          );
 
-    if (isDisabled) {
+    if (result.isSelected) {
+      states.add(WidgetState.selected);
+    } else {
+      states.remove(WidgetState.selected);
+    }
+    if (result.isDisabled) {
       states.add(WidgetState.disabled);
     } else {
       states.remove(WidgetState.disabled);
     }
-
-    if (!isDisabled && _pressed) {
+    if (result.isHovered) {
       states.add(WidgetState.pressed);
     } else {
       states.remove(WidgetState.pressed);
     }
-    if (!isDisabled && (_focused && !_pressed)) {
+    if (result.isFocused) {
       states.add(WidgetState.focused);
     } else {
       states.remove(WidgetState.focused);
     }
-    return UnmodifiableSetView(states);
+    if (result.isPressed) {
+      states.add(WidgetState.pressed);
+    } else {
+      states.remove(WidgetState.pressed);
+    }
+    return result;
   }
 
   void _statesListener() {
@@ -326,10 +374,13 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
       vsync: this,
       value: _crossCenterGravitation,
     );
-    _colorController = AnimationController(vsync: this, value: 0.0);
-    _containerColorAnimation = _containerColorTween.animate(_colorController);
-    _outlineColorAnimation = _outlineColorTween.animate(_colorController);
-    _iconColorAnimation = _iconColorTween.animate(_colorController);
+    _effectsController = AnimationController(vsync: this, value: 0.0);
+    _containerShapeAnimation = _containerShapeTween.animate(_effectsController);
+    _containerColorAnimation = _containerColorTween.animate(_effectsController);
+    _containerOutlineAnimation = _containerOutlineTween.animate(
+      _effectsController,
+    );
+    _iconColorAnimation = _iconColorTween.animate(_effectsController);
   }
 
   @override
@@ -417,15 +468,13 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _colorTheme = ColorTheme.of(context);
     _shapeTheme = ShapeTheme.of(context);
-    _stateTheme = StateTheme.of(context);
     _springTheme = SpringTheme.of(context);
   }
 
   @override
   void dispose() {
-    _colorController.dispose();
+    _effectsController.dispose();
     _crossCenterGravitationController.dispose();
     _checkFractionController.dispose();
     _statesController.dispose();
@@ -435,45 +484,58 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final states = _resolveStates();
-    final isDisabled = states.contains(WidgetState.disabled);
+
+    final checkboxTheme = CheckboxTheme.of(context);
 
     const minTapTargetSize = Size.square(48.0);
-    const stateLayerSize = 40.0;
-    final stateLayerShape = CornersBorder.rounded(
-      corners: Corners.all(_shapeTheme.corner.full),
-    );
+    final stateLayerSize = checkboxTheme.stateLayerSize.resolve(states);
+    final stateLayerShape = checkboxTheme.stateLayerShape.resolve(states);
+    final stateLayerColor = checkboxTheme.stateLayerColor;
+    final stateLayerOpacity = checkboxTheme.stateLayerOpacity;
+    final containerSize = checkboxTheme.containerSize.resolve(states);
+    final containerShape = checkboxTheme.containerShape.resolve(states);
+    final containerColor = checkboxTheme.containerColor.resolve(states);
+    final containerOutline = checkboxTheme.containerOutline.resolve(states);
+    final iconSize = checkboxTheme.iconSize.resolve(states);
+    final iconColor = checkboxTheme.iconColor.resolve(states);
 
-    final containerColor = _containerColor.resolve(states);
-    final outlineColor = _outlineColor.resolve(states);
-    final iconColor = _iconColor.resolve(states);
+    final overlayColor = WidgetStateProperty.resolveWith((widgetStates) {
+      final resolvedStates = _CheckboxStates.fromWidgetStates(
+        widgetStates,
+        isSelected: states.isSelected,
+      );
+      final resolvedColor = stateLayerColor.resolve(resolvedStates);
+      final resolvedOpacity = stateLayerOpacity.resolve(resolvedStates);
+      return resolvedOpacity > 0.0
+          ? resolvedColor.withValues(alpha: resolvedColor.a * resolvedOpacity)
+          : resolvedColor.withAlpha(0);
+    });
 
     _updateColorAnimations(
+      containerShape: containerShape,
       containerColor: containerColor,
-      outlineColor: outlineColor,
+      containerOutline: containerOutline,
       iconColor: iconColor,
     );
 
-    final child = SizedBox.square(
-      dimension: stateLayerSize,
+    final child = SizedBox.fromSize(
+      size: stateLayerSize,
       child: Listener(
         behavior: HitTestBehavior.deferToChild,
-        onPointerDown: !isDisabled ? _onPointerDown : null,
-        onPointerUp: !isDisabled ? _onPointerUp : null,
-        onPointerCancel: !isDisabled ? _onPointerCancel : null,
+        onPointerDown: !states.isDisabled ? _onPointerDown : null,
+        onPointerUp: !states.isDisabled ? _onPointerUp : null,
+        onPointerCancel: !states.isDisabled ? _onPointerCancel : null,
         child: Material.empty(
           child: InkWell(
             statesController: _statesController,
             customBorder: stateLayerShape,
-            overlayColor: WidgetStateLayerColor(
-              color: _stateLayerColor,
-              opacity: _stateLayerOpacity,
-            ),
-            enableFeedback: !isDisabled,
-            onTap: !isDisabled ? () => widget._onTap?.call() : null,
-            onTapDown: !isDisabled ? _onTapDown : null,
-            onTapUp: !isDisabled ? _onTapUp : null,
-            onTapCancel: !isDisabled ? _onTapCancel : null,
-            onFocusChange: !isDisabled ? _onFocusChange : null,
+            overlayColor: overlayColor,
+            enableFeedback: !states.isDisabled,
+            onTap: !states.isDisabled ? () => widget._onTap?.call() : null,
+            onTapDown: !states.isDisabled ? _onTapDown : null,
+            onTapUp: !states.isDisabled ? _onTapUp : null,
+            onTapCancel: !states.isDisabled ? _onTapCancel : null,
+            onFocusChange: !states.isDisabled ? _onFocusChange : null,
           ),
         ),
       ),
@@ -481,41 +543,45 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
 
     return RepaintBoundary(
       child: Semantics(
-        enabled: !states.contains(WidgetState.disabled),
+        enabled: !states.isDisabled,
         label: null,
         checked: _isChecked,
-        mixed: _isIntermediate,
+        mixed: _isIndeterminate,
         child: Align.center(
           widthFactor: 1.0,
           heightFactor: 1.0,
           child: TapRegion(
             behavior: HitTestBehavior.deferToChild,
             consumeOutsideTaps: false,
-            onTapOutside: !isDisabled ? _onTapOutside : null,
-            onTapUpOutside: !isDisabled ? _onTapUpOutside : null,
+            onTapOutside: !states.isDisabled ? _onTapOutside : null,
+            onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
             child: FocusRingTheme.merge(
               data: FocusRingThemeDataPartial.from(
-                shape: Corners.all(_shapeTheme.corner.full),
+                shape: CornersBorder.rounded(
+                  corners: .all(_shapeTheme.corner.full),
+                ),
               ),
               child: FocusRing(
-                visible: states.contains(WidgetState.focused),
+                visible: states.isFocused,
                 placement: FocusRingPlacement.outward,
                 layoutBuilder: (context, info, child) => Align.center(
-                  child: SizedBox.square(
-                    dimension: stateLayerSize,
-                    child: child,
-                  ),
+                  child: SizedBox.fromSize(size: stateLayerSize, child: child),
                 ),
                 child: _CheckboxPaint(
                   minTapTargetSize: minTapTargetSize,
-                  containerSize: const Size.square(18.0),
-                  containerShape: const Corners.all(Corner.circular(2.0)),
+                  containerSize: .square(containerSize),
+                  containerShape: _containerShapeAnimation
+                      .nonNullOr(containerShape)
+                      .mapValue(
+                        (value) =>
+                            (_containerOutlineAnimation.value ??
+                                    containerOutline)
+                                .apply(value),
+                      ),
                   containerColor: _containerColorAnimation.nonNullOr(
                     containerColor,
                   ),
-                  outlineColor: _outlineColorAnimation.nonNullOr(outlineColor),
-                  outlineWidth: 2.0,
-                  iconSize: 18.0,
+                  iconSize: iconSize,
                   iconColor: _iconColorAnimation.nonNullOr(iconColor),
                   iconStrokeWidth: 2.0,
                   iconStrokeCap: StrokeCap.round,
@@ -543,8 +609,6 @@ class _CheckboxPaint extends SingleChildRenderObjectWidget {
     required this.containerSize,
     required this.containerShape,
     required this.containerColor,
-    required this.outlineColor,
-    required this.outlineWidth,
     required this.iconSize,
     required this.iconColor,
     required this.iconStrokeWidth,
@@ -559,10 +623,8 @@ class _CheckboxPaint extends SingleChildRenderObjectWidget {
   final Size minTapTargetSize;
 
   final Size containerSize;
-  final CornersGeometry containerShape;
+  final ValueListenable<OutlinedBorder> containerShape;
   final ValueListenable<Color> containerColor;
-  final ValueListenable<Color> outlineColor;
-  final double outlineWidth;
 
   final double iconSize;
   final ValueListenable<Color> iconColor;
@@ -581,8 +643,6 @@ class _CheckboxPaint extends SingleChildRenderObjectWidget {
         containerSize: containerSize,
         containerShape: containerShape,
         containerColor: containerColor,
-        outlineColor: outlineColor,
-        outlineWidth: outlineWidth,
         iconSize: iconSize,
         iconColor: iconColor,
         iconStrokeWidth: iconStrokeWidth,
@@ -591,7 +651,6 @@ class _CheckboxPaint extends SingleChildRenderObjectWidget {
         checkFraction: checkFraction,
         crossCenterGravitation: crossCenterGravitation,
         childPosition: childPosition,
-        textDirection: Directionality.maybeOf(context),
       );
 
   @override
@@ -604,8 +663,6 @@ class _CheckboxPaint extends SingleChildRenderObjectWidget {
       ..containerSize = containerSize
       ..containerShape = containerShape
       ..containerColor = containerColor
-      ..outlineColor = outlineColor
-      ..outlineWidth = outlineWidth
       ..iconSize = iconSize
       ..iconColor = iconColor
       ..iconStrokeWidth = iconStrokeWidth
@@ -613,25 +670,17 @@ class _CheckboxPaint extends SingleChildRenderObjectWidget {
       ..iconStrokeJoin = iconStrokeJoin
       ..checkFraction = checkFraction
       ..crossCenterGravitation = crossCenterGravitation
-      ..childPosition = childPosition
-      ..textDirection = Directionality.maybeOf(context);
+      ..childPosition = childPosition;
   }
 }
 
 class _RenderCheckboxPaint extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
   _RenderCheckboxPaint({
-    // Tap target
     required Size minTapTargetSize,
-
-    // Container
     required Size containerSize,
-    required CornersGeometry containerShape,
+    required ValueListenable<OutlinedBorder> containerShape,
     required ValueListenable<Color> containerColor,
-    required ValueListenable<Color> outlineColor,
-    required double outlineWidth,
-
-    // Icon
     required double iconSize,
     required ValueListenable<Color> iconColor,
     required double iconStrokeWidth,
@@ -639,21 +688,12 @@ class _RenderCheckboxPaint extends RenderBox
     required StrokeJoin iconStrokeJoin,
     required ValueListenable<double> checkFraction,
     required ValueListenable<double> crossCenterGravitation,
-
-    // Child-related properties
     required _CheckboxChildPosition childPosition,
-
-    // Context
-    TextDirection? textDirection,
-
-    // Child
     RenderBox? child,
   }) : _minTapTargetSize = minTapTargetSize,
        _containerSize = containerSize,
        _containerShape = containerShape,
        _containerColor = containerColor,
-       _outlineColor = outlineColor,
-       _outlineWidth = outlineWidth,
        _iconSize = iconSize,
        _iconColor = iconColor,
        _iconStrokeWidth = iconStrokeWidth,
@@ -661,8 +701,7 @@ class _RenderCheckboxPaint extends RenderBox
        _iconStrokeJoin = iconStrokeJoin,
        _checkFraction = checkFraction,
        _crossCenterGravitation = crossCenterGravitation,
-       _childPosition = childPosition,
-       _textDirection = textDirection {
+       _childPosition = childPosition {
     this.child = child;
   }
 
@@ -686,18 +725,15 @@ class _RenderCheckboxPaint extends RenderBox
     markNeedsLayout();
   }
 
-  CornersGeometry _containerShape;
-  CornersGeometry get containerShape => _containerShape;
-  set containerShape(CornersGeometry value) {
+  ValueListenable<OutlinedBorder> _containerShape;
+  ValueListenable<OutlinedBorder> get containerShape => _containerShape;
+  set containerShape(ValueListenable<OutlinedBorder> value) {
     if (_containerShape == value) return;
+    _containerShape.removeListener(markNeedsPaint);
     _containerShape = value;
-    _resolvedContainerShapeCache = null;
+    _containerShape.addListener(markNeedsPaint);
     markNeedsPaint();
   }
-
-  Corners? _resolvedContainerShapeCache;
-  Corners get _resolvedContainerShape =>
-      _resolvedContainerShapeCache ??= containerShape.resolve(textDirection);
 
   ValueListenable<Color> _containerColor;
   ValueListenable<Color> get containerColor => _containerColor;
@@ -706,24 +742,6 @@ class _RenderCheckboxPaint extends RenderBox
     _containerColor.removeListener(markNeedsPaint);
     _containerColor = value;
     _containerColor.addListener(markNeedsPaint);
-    markNeedsPaint();
-  }
-
-  ValueListenable<Color> _outlineColor;
-  ValueListenable<Color> get outlineColor => _outlineColor;
-  set outlineColor(ValueListenable<Color> value) {
-    if (_outlineColor == value) return;
-    _outlineColor.removeListener(markNeedsPaint);
-    _outlineColor = value;
-    _outlineColor.addListener(markNeedsPaint);
-    markNeedsPaint();
-  }
-
-  double _outlineWidth;
-  double get outlineWidth => _outlineWidth;
-  set outlineWidth(double value) {
-    if (_outlineWidth == value) return;
-    _outlineWidth = value;
     markNeedsPaint();
   }
 
@@ -801,15 +819,6 @@ class _RenderCheckboxPaint extends RenderBox
     markNeedsPaint();
   }
 
-  TextDirection? _textDirection;
-  TextDirection? get textDirection => _textDirection;
-  set textDirection(TextDirection? value) {
-    if (_textDirection == value) return;
-    _textDirection = value;
-    _resolvedContainerShapeCache = null;
-    markNeedsLayout();
-  }
-
   Size _computeOuterSize() => Size(
     math.max(containerSize.width, minTapTargetSize.width),
     math.max(containerSize.height, minTapTargetSize.height),
@@ -828,13 +837,13 @@ class _RenderCheckboxPaint extends RenderBox
     );
   }
 
-  Offset _computeOuterCenter(Size outerSize) => outerSize.center(Offset.zero);
+  Offset _computeOuterCenter(Size outerSize) => outerSize.center(.zero);
 
   @override
   void attach(PipelineOwner owner) {
     super.attach(owner);
+    _containerShape.addListener(markNeedsPaint);
     _containerColor.addListener(markNeedsPaint);
-    _outlineColor.addListener(markNeedsPaint);
     _iconColor.addListener(markNeedsPaint);
     _checkFraction.addListener(markNeedsPaint);
     _crossCenterGravitation.addListener(markNeedsPaint);
@@ -842,12 +851,12 @@ class _RenderCheckboxPaint extends RenderBox
 
   @override
   void detach() {
-    _crossCenterGravitation.removeListener(markNeedsPaint);
-    _checkFraction.removeListener(markNeedsPaint);
-    _iconColor.removeListener(markNeedsPaint);
-    _outlineColor.removeListener(markNeedsPaint);
-    _containerColor.removeListener(markNeedsPaint);
     super.detach();
+    _containerShape.removeListener(markNeedsPaint);
+    _containerColor.removeListener(markNeedsPaint);
+    _iconColor.removeListener(markNeedsPaint);
+    _checkFraction.removeListener(markNeedsPaint);
+    _crossCenterGravitation.removeListener(markNeedsPaint);
   }
 
   @override
@@ -934,110 +943,38 @@ class _RenderCheckboxPaint extends RenderBox
   }
 
   void _paintBox(PaintingContext context, Rect shiftedRect) {
-    final borderRadius = _resolvedContainerShape.toBorderRadius(
-      shiftedRect.size,
-    );
-
-    final containerColor = this.containerColor.value;
-    final outlineColor = this.outlineColor.value;
-
-    final containerPaint = Paint()
+    final paint = Paint()
       ..style = .fill
-      ..color = containerColor;
-
-    // TODO: remove because RepaintBoundary seems to have fixed pixel alignment
-    if (containerColor == outlineColor || outlineColor.a >= 1.0) {
-      final rrect = borderRadius.toRRect(shiftedRect);
-      context.canvas.drawRRect(rrect, containerPaint);
-    } else {
-      final innerBorderRadius = borderRadius - .circular(outlineWidth);
-      final innerRRect = RRect.fromLTRBAndCorners(
-        shiftedRect.left + outlineWidth,
-        shiftedRect.top + outlineWidth,
-        shiftedRect.right - outlineWidth,
-        shiftedRect.bottom - outlineWidth,
-        topLeft: innerBorderRadius.topLeft.clamp(minimum: .zero),
-        topRight: innerBorderRadius.topRight.clamp(minimum: .zero),
-        bottomRight: innerBorderRadius.bottomRight.clamp(minimum: .zero),
-        bottomLeft: innerBorderRadius.bottomLeft.clamp(minimum: .zero),
-      );
-      context.canvas.drawRRect(innerRRect, containerPaint);
-    }
-    if (outlineWidth > 0.0 && containerColor != outlineColor) {
-      final halfOutlineWidth = math.max(0.0, outlineWidth / 2.0);
-
-      final outerBorderRadius = borderRadius - .circular(halfOutlineWidth);
-      final outerRRect = RRect.fromLTRBAndCorners(
-        shiftedRect.left + halfOutlineWidth,
-        shiftedRect.top + halfOutlineWidth,
-        shiftedRect.right - halfOutlineWidth,
-        shiftedRect.bottom - halfOutlineWidth,
-        topLeft: outerBorderRadius.topLeft.clamp(minimum: .zero),
-        topRight: outerBorderRadius.topRight.clamp(minimum: .zero),
-        bottomRight: outerBorderRadius.bottomRight.clamp(minimum: .zero),
-        bottomLeft: outerBorderRadius.bottomLeft.clamp(minimum: .zero),
-      );
-
-      final outlinePaint = Paint()
-        ..style = .stroke
-        ..color = outlineColor
-        ..strokeWidth = outlineWidth;
-
-      context.canvas.drawRRect(outerRRect, outlinePaint);
-    }
-
-    // if (outlineWidth > 0.0 && containerColor != outlineColor) {
-    //   final innerBorderRadius = borderRadius - .circular(outlineWidth);
-    //   final innerRRect = RRect.fromLTRBAndCorners(
-    //     shiftedRect.left + outlineWidth,
-    //     shiftedRect.top + outlineWidth,
-    //     shiftedRect.right - outlineWidth,
-    //     shiftedRect.bottom - outlineWidth,
-    //     topLeft: innerBorderRadius.topLeft.clamp(minimum: .zero),
-    //     topRight: innerBorderRadius.topRight.clamp(minimum: .zero),
-    //     bottomRight: innerBorderRadius.bottomRight.clamp(minimum: .zero),
-    //     bottomLeft: innerBorderRadius.bottomLeft.clamp(minimum: .zero),
-    //   );
-    //   context.canvas.drawRRect(innerRRect, containerPaint);
-
-    //   final halfOutlineWidth = math.max(0.0, outlineWidth / 2.0);
-    //   final outerBorderRadius = borderRadius - .circular(halfOutlineWidth);
-    //   final outerRRect = RRect.fromLTRBAndCorners(
-    //     shiftedRect.left + halfOutlineWidth,
-    //     shiftedRect.top + halfOutlineWidth,
-    //     shiftedRect.right - halfOutlineWidth,
-    //     shiftedRect.bottom - halfOutlineWidth,
-    //     topLeft: outerBorderRadius.topLeft.clamp(minimum: .zero),
-    //     topRight: outerBorderRadius.topRight.clamp(minimum: .zero),
-    //     bottomRight: outerBorderRadius.bottomRight.clamp(minimum: .zero),
-    //     bottomLeft: outerBorderRadius.bottomLeft.clamp(minimum: .zero),
-    //   );
-
-    //   final outlinePaint = Paint()
-    //     ..style = .stroke
-    //     ..color = outlineColor
-    //     ..strokeWidth = outlineWidth;
-
-    //   context.canvas.drawRRect(outerRRect, outlinePaint);
-    // } else {
-    //   final rrect = borderRadius.toRRect(shiftedRect);
-    //   context.canvas.drawRRect(rrect, containerPaint);
-    // }
+      ..color = containerColor.value;
+    containerShape.value
+      ..paintInterior(context.canvas, shiftedRect, paint)
+      ..paint(context.canvas, shiftedRect);
   }
 
   void _paintCheck(PaintingContext context, Rect shiftedRect) {
+    const relativeIconSize = 18.0;
+
     final iconColor = this.iconColor.value;
-    final iconPaint = Paint()
+    final checkFraction = this.checkFraction.value;
+    final crossCenterGravitation = this.crossCenterGravitation.value;
+
+    if (checkFraction <= 0.0 || iconColor.a <= 0.0) return;
+
+    final center = size.center(.zero);
+    final scale = iconSize / relativeIconSize;
+
+    final paint = Paint()
       ..style = .stroke
       ..color = iconColor
       ..strokeWidth = iconStrokeWidth
       ..strokeCap = iconStrokeCap
       ..strokeJoin = iconStrokeJoin;
 
-    final checkFraction = this.checkFraction.value;
-    final crossCenterGravitation = this.crossCenterGravitation.value;
+    context.withCanvasTransform((context) {
+      context.canvas.translate(center.dx, center.dy);
+      context.canvas.scale(scale);
+      context.canvas.translate(-center.dx, -center.dy);
 
-    if (checkFraction > 0.0) {
       const leftX = 0.25;
       const leftY = 0.5;
 
@@ -1052,15 +989,15 @@ class _RenderCheckboxPaint extends RenderBox
         middleX,
         0.5,
         crossCenterGravitation,
-      )!;
+      );
       final gravitatedMiddleY = lerpDouble(
         middleY,
         0.5,
         crossCenterGravitation,
-      )!;
+      );
       // gravitate only Y for end to achieve center line
-      final gravitatedLeftY = lerpDouble(leftY, 0.5, crossCenterGravitation)!;
-      final gravitatedRightY = lerpDouble(rightY, 0.5, crossCenterGravitation)!;
+      final gravitatedLeftY = lerpDouble(leftY, 0.5, crossCenterGravitation);
+      final gravitatedRightY = lerpDouble(rightY, 0.5, crossCenterGravitation);
 
       final scaledLeftX = iconSize * leftX;
       final scaledLeftY = iconSize * gravitatedLeftY;
@@ -1103,13 +1040,12 @@ class _RenderCheckboxPaint extends RenderBox
       // final checkLength2 = hasOvershoot
       //     ? (totalLength - (extendedTotalLength - leftLength) + rightLength)
       //     : totalLength;
-
       final checkLength = totalLength;
       final segmentPath = checkPathMetric
           .extractPath(0.0, checkLength * checkFraction, startWithMoveTo: true)
           .shift(shiftedRect.topLeft);
-      context.canvas.drawPath(segmentPath, iconPaint);
-    }
+      context.canvas.drawPath(segmentPath, paint);
+    });
   }
 
   void _paintChild(PaintingContext context) {
@@ -1133,7 +1069,7 @@ class _RenderCheckboxPaint extends RenderBox
     final innerRect = _computeInnerRect(outerSize);
 
     context.withCanvasTransform((context) {
-      if (offset != Offset.zero) {
+      if (offset != .zero) {
         context.canvas.translate(offset.dx, offset.dy);
       }
 
@@ -1161,7 +1097,7 @@ class _RenderCheckboxPaint extends RenderBox
     }
     final child = this.child;
     if (child == null) return false;
-    final Offset center = child.size.center(Offset.zero);
+    final center = child.size.center(.zero);
     return result.addWithRawTransform(
       transform: MatrixUtils.forceToPoint(center),
       position: center,

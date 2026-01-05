@@ -119,6 +119,45 @@ abstract class StateProperty<T extends Object?, S extends Object?> {
 
   static T resolveAs<T, S>(T value, S states) =>
       value is StateProperty<T, S> ? value.resolve(states) : value;
+
+  static StateProperty<T?, S>? lerp<T extends Object, S extends Object?>(
+    StateProperty<T?, S>? a,
+    StateProperty<T?, S>? b,
+    double t,
+    LerpFunction<T> lerpFunction,
+  ) =>
+      a != null || b != null ? _StatePropertyLerp(a, b, t, lerpFunction) : null;
+}
+
+typedef LerpFunction<T extends Object?> = T? Function(T? a, T? b, double t);
+
+class _StatePropertyLerp<T extends Object, S extends Object?>
+    implements StateProperty<T?, S> {
+  const _StatePropertyLerp(this._a, this._b, this._t, this._lerpFunction);
+
+  final StateProperty<T?, S>? _a;
+  final StateProperty<T?, S>? _b;
+  final double _t;
+  final LerpFunction<T> _lerpFunction;
+
+  @override
+  T? resolve(S states) =>
+      _lerpFunction(_a?.resolve(states), _b?.resolve(states), _t);
+}
+
+class StatePropertyTween<T extends Object, S extends Object?>
+    extends Tween<StateProperty<T?, S>?> {
+  StatePropertyTween({
+    required LerpFunction<T> lerpFunction,
+    super.begin,
+    super.end,
+  }) : _lerpFunction = lerpFunction;
+
+  final LerpFunction<T> _lerpFunction;
+
+  @override
+  StateProperty<T?, S>? lerp(double t) =>
+      StateProperty.lerp(begin, end, t, _lerpFunction);
 }
 
 @immutable
@@ -593,6 +632,10 @@ class _StatesControllerFromCodec<S extends Object?>
 
 typedef WidgetStatesCodec<S extends Object?> = Codec<S, WidgetStates>;
 
+abstract interface class SelectableStates {
+  bool get isSelected;
+}
+
 abstract interface class HoverableStates {
   bool get isHovered;
 }
@@ -620,7 +663,3 @@ abstract interface class InteractiveEnabledStates
         HoverableStates,
         FocusableStates,
         PressableStates {}
-
-abstract interface class SelectableStates {
-  bool get isSelected;
-}

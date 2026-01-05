@@ -1,6 +1,4 @@
-import 'dart:collection';
 import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:material/src/material/flutter.dart';
 import 'package:flutter/material.dart' as flutter;
@@ -8,6 +6,127 @@ import 'package:flutter/material.dart' as flutter;
 typedef SwitchLegacy = flutter.Switch;
 typedef SwitchThemeLegacy = flutter.SwitchTheme;
 typedef SwitchThemeDataLegacy = flutter.SwitchThemeData;
+
+sealed class _SwitchStates implements SwitchStates {
+  const _SwitchStates({required this.hasIcon, required this.isSelected});
+
+  const factory _SwitchStates.enabled({
+    required bool hasIcon,
+    required bool isSelected,
+    bool isHovered,
+    bool isFocused,
+    bool isPressed,
+  }) = _SwitchEnabledStates;
+
+  const factory _SwitchStates.disabled({
+    required bool hasIcon,
+    required bool isSelected,
+  }) = _SwitchDisabledStates;
+
+  factory _SwitchStates.fromWidgetStates(
+    WidgetStates states, {
+    required bool hasIcon,
+    bool? isSelected,
+    bool? isDisabled,
+    bool? isHovered,
+    bool? isFocused,
+    bool? isPressed,
+  }) {
+    final resolvedIsSelected =
+        isSelected ?? states.contains(WidgetState.selected);
+    final resolvedIsDisabled =
+        isDisabled ?? states.contains(WidgetState.disabled);
+    return resolvedIsDisabled
+        ? .disabled(hasIcon: hasIcon, isSelected: resolvedIsSelected)
+        : .enabled(
+            hasIcon: hasIcon,
+            isSelected: resolvedIsSelected,
+            isHovered: isHovered ?? states.contains(WidgetState.hovered),
+            isFocused: isFocused ?? states.contains(WidgetState.focused),
+            isPressed: isPressed ?? states.contains(WidgetState.pressed),
+          );
+  }
+
+  bool get isDisabled;
+
+  bool get isHovered;
+
+  bool get isFocused;
+
+  bool get isPressed;
+
+  @override
+  final bool hasIcon;
+
+  @override
+  final bool isSelected;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _SwitchStates &&
+          hasIcon == other.hasIcon &&
+          isSelected == other.isSelected &&
+          isDisabled == other.isDisabled &&
+          isHovered == other.isHovered &&
+          isFocused == other.isFocused &&
+          isPressed == other.isPressed;
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    hasIcon,
+    isSelected,
+    isDisabled,
+    isHovered,
+    isFocused,
+    isPressed,
+  );
+}
+
+class _SwitchDisabledStates extends _SwitchStates
+    implements SwitchDisabledStates {
+  const _SwitchDisabledStates({
+    required super.hasIcon,
+    required super.isSelected,
+  });
+
+  @override
+  bool get isDisabled => true;
+
+  @override
+  bool get isHovered => false;
+
+  @override
+  bool get isFocused => false;
+
+  @override
+  bool get isPressed => false;
+}
+
+class _SwitchEnabledStates extends _SwitchStates
+    implements SwitchEnabledStates {
+  const _SwitchEnabledStates({
+    required super.hasIcon,
+    required super.isSelected,
+    this.isHovered = false,
+    this.isFocused = false,
+    this.isPressed = false,
+  });
+
+  @override
+  bool get isDisabled => false;
+
+  @override
+  final bool isHovered;
+
+  @override
+  final bool isFocused;
+
+  @override
+  final bool isPressed;
+}
 
 class Switch extends StatefulWidget {
   const Switch({
@@ -36,113 +155,27 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   final Tween<Size?> _handleSizeTween = SizeTween();
   late Animation<Size?> _handleSizeAnimation;
 
-  late AnimationController _colorController;
-  final Tween<Color?> _trackColorTween = ColorTween();
-  final Tween<Color?> _outlineColorTween = ColorTween();
-  final Tween<Color?> _handleColorTween = ColorTween();
-  final Tween<Color?> _iconColorTween = ColorTween();
-  late Animation<Color?> _trackColorAnimation;
-  late Animation<Color?> _outlineColorAnimation;
-  late Animation<Color?> _handleColorAnimation;
-  late Animation<Color?> _iconColorAnimation;
+  late AnimationController _effectsController;
 
-  late ColorThemeData _colorTheme;
-  late ShapeThemeData _shapeTheme;
-  late StateThemeData _stateTheme;
+  final Tween<OutlinedBorder?> _trackShapeTween = OutlinedBorderTween();
+  late Animation<OutlinedBorder?> _trackShapeAnimation;
+
+  final Tween<Color?> _trackColorTween = ColorTween();
+  late Animation<Color?> _trackColorAnimation;
+
+  final Tween<Outline?> _trackOutlineTween = OutlineTween();
+  late Animation<Outline?> _trackOutlineAnimation;
+
+  final Tween<ShapeBorder?> _handleShapeTween = ShapeBorderTween();
+  late Animation<ShapeBorder?> _handleShapeAnimation;
+
+  final Tween<Color?> _handleColorTween = ColorTween();
+  late Animation<Color?> _handleColorAnimation;
+
   late SpringThemeData _springTheme;
 
   bool _pressed = false;
   bool _focused = false;
-
-  WidgetStateProperty<Color> get _trackColor =>
-      WidgetStateProperty.resolveWith((states) {
-        final isDisabled = states.contains(WidgetState.disabled);
-        return _isSelected
-            ? isDisabled
-                  ? _colorTheme.onSurface.withValues(alpha: 0.1)
-                  : _colorTheme.primary
-            : isDisabled
-            ? _colorTheme.surfaceContainerHighest.withValues(alpha: 0.1)
-            : _colorTheme.surfaceContainerHighest;
-      });
-
-  WidgetStateProperty<Color> get _handleColor =>
-      WidgetStateProperty.resolveWith((states) {
-        final isDisabled = states.contains(WidgetState.disabled);
-        return _isSelected
-            ? isDisabled
-                  ? _colorTheme.surface
-                  : _colorTheme.onPrimary
-            : isDisabled
-            ? _colorTheme.onSurface.withValues(alpha: 0.38)
-            : _colorTheme.outline;
-      });
-
-  WidgetStateProperty<double> get _outlineWidth =>
-      const WidgetStatePropertyAll(2.0);
-
-  WidgetStateProperty<Color> get _outlineColor =>
-      WidgetStateProperty.resolveWith((states) {
-        final isDisabled = states.contains(WidgetState.disabled);
-        return _isSelected
-            ? isDisabled
-                  ? _colorTheme.primary.withValues(alpha: 0.0)
-                  : _colorTheme.primary
-            : isDisabled
-            ? _colorTheme.onSurface.withValues(alpha: 0.1)
-            : _colorTheme.outline;
-      });
-
-  WidgetStateProperty<CornersGeometry> get _trackShape =>
-      WidgetStatePropertyAll(Corners.all(_shapeTheme.corner.full));
-
-  WidgetStateProperty<CornersGeometry> get _stateLayerShape =>
-      WidgetStatePropertyAll(Corners.all(_shapeTheme.corner.full));
-
-  WidgetStateProperty<Color> get _stateLayerColor =>
-      WidgetStateProperty.resolveWith(
-        (states) => _isSelected ? _colorTheme.primary : _colorTheme.onSurface,
-      );
-
-  WidgetStateProperty<double> get _stateLayerOpacity =>
-      WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.disabled)) {
-          return 0.0;
-        }
-        if (states.contains(WidgetState.pressed)) {
-          return _stateTheme.pressedStateLayerOpacity;
-        }
-        if (states.contains(WidgetState.hovered)) {
-          return _stateTheme.hoverStateLayerOpacity;
-        }
-        if (states.contains(WidgetState.focused)) {
-          return 0.0;
-        }
-        return 0.0;
-      });
-
-  WidgetStateProperty<Size> get _handleSize =>
-      WidgetStateProperty.resolveWith((states) {
-        final isDisabled = states.contains(WidgetState.disabled);
-        return !isDisabled && states.contains(WidgetState.pressed)
-            ? const Size.square(28.0)
-            : const Size.square(24.0);
-      });
-
-  WidgetStateProperty<CornersGeometry> get _handleShape =>
-      WidgetStatePropertyAll(Corners.all(_shapeTheme.corner.full));
-
-  WidgetStateProperty<Color> get _iconColor =>
-      WidgetStateProperty.resolveWith((states) {
-        final isDisabled = states.contains(WidgetState.disabled);
-        return _isSelected
-            ? isDisabled
-                  ? _colorTheme.onSurface.withValues(alpha: 0.38)
-                  : _colorTheme.primary
-            : isDisabled
-            ? _colorTheme.surfaceContainerHighest.withValues(alpha: 0.38)
-            : _colorTheme.surfaceContainerHighest;
-      });
 
   void _updateHandlePositionAnimation({required double handlePosition}) {
     if (handlePosition == _handlePositionTween.end) {
@@ -153,15 +186,12 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _handlePositionTween.end = handlePosition;
 
     if (_handlePositionTween.begin == _handlePositionTween.end) {
+      _handlePositionController.value = 1.0;
       return;
     }
 
-    final simulation = SpringSimulation(
-      _springTheme.fastSpatial.toSpringDescription(),
-      0.0,
-      1.0,
-      0.0,
-    );
+    final spring = _springTheme.fastSpatial.toSpringDescription();
+    final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0);
     _handlePositionController.animateWith(simulation);
   }
 
@@ -177,89 +207,94 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       return;
     }
 
-    final simulation = SpringSimulation(
-      _springTheme.fastEffects.toSpringDescription(),
-      0.0,
-      1.0,
-      0.0,
-    );
+    final spring = _springTheme.defaultEffects.toSpringDescription();
+    final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0);
     _handleSizeController.animateWith(simulation);
   }
 
-  void _updateColorAnimations({
+  void _updateEffectsAnimations({
+    required OutlinedBorder trackShape,
     required Color trackColor,
-    required Color outlineColor,
+    required Outline trackOutline,
+    required ShapeBorder handleShape,
     required Color handleColor,
-    required Color iconColor,
   }) {
-    // The animation is already in progress.
-    // There is no point in triggering it again
-    // because it would animate to the same value.
-    if (trackColor == _trackColorTween.end &&
-        outlineColor == _outlineColorTween.end &&
-        handleColor == _handleColorTween.end &&
-        iconColor == _iconColorTween.end) {
+    if (trackShape == _trackShapeTween.end &&
+        trackColor == _trackColorTween.end &&
+        trackOutline == _trackOutlineTween.end &&
+        handleShape == _handleShapeTween.end &&
+        handleColor == _handleColorTween.end) {
       return;
     }
+
+    _trackShapeTween.begin = _trackShapeAnimation.value ?? trackShape;
+    _trackShapeTween.end = trackShape;
 
     _trackColorTween.begin = _trackColorAnimation.value ?? trackColor;
     _trackColorTween.end = trackColor;
-    _outlineColorTween.begin = _outlineColorAnimation.value ?? outlineColor;
-    _outlineColorTween.end = outlineColor;
+
+    _trackOutlineTween.begin = _trackOutlineAnimation.value ?? trackOutline;
+    _trackOutlineTween.end = trackOutline;
+
+    _handleShapeTween.begin = _handleShapeAnimation.value ?? handleShape;
+    _handleShapeTween.end = handleShape;
+
     _handleColorTween.begin = _handleColorAnimation.value ?? handleColor;
     _handleColorTween.end = handleColor;
-    _iconColorTween.begin = _iconColorAnimation.value ?? iconColor;
-    _iconColorTween.end = iconColor;
 
-    // We don't have to animate between states
-    // if the initial state is the same as the target state.
-    if (_trackColorTween.begin == _trackColorTween.end &&
-        _outlineColorTween.begin == _outlineColorTween.end &&
-        _handleColorTween.begin == _handleColorTween.end &&
-        _iconColorTween.begin == _iconColorTween.end) {
-      _colorController.value = 1.0;
+    if (_trackShapeTween.begin == _trackShapeTween.end &&
+        _trackColorTween.begin == _trackColorTween.end &&
+        _trackOutlineTween.begin == _trackOutlineTween.end &&
+        _handleShapeTween.begin == _handleShapeTween.end &&
+        _handleColorTween.begin == _handleColorTween.end) {
+      _effectsController.value = 1.0;
       return;
     }
 
-    _colorController.value = 0.0;
-    _colorController.animateTo(
-      1.0,
-      duration: const Duration(milliseconds: 67),
-      curve: const EasingThemeData.fallback().linear,
-    );
+    final spring = _springTheme.defaultEffects.toSpringDescription();
+    final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0);
+    _effectsController.animateWith(simulation);
   }
 
-  /// This method returns a [UnmodifiableSetView] over
-  /// [WidgetStatesController.value]. The returned collection must not be used
-  /// if changes were made to the [WidgetStatesController.value]. In that case,
-  /// this method must be called again to update [WidgetStatesController.value]
-  /// according to internal state.
-  ///
-  /// Returns an [UnmodifiableSetView].
-  Set<WidgetState> _resolveStates() {
+  _SwitchStates _resolveStates() {
     final states = _statesController.value;
 
-    final isDisabled = widget.onCheckedChanged == null;
+    final _SwitchStates result = widget.onCheckedChanged == null
+        ? .disabled(hasIcon: true, isSelected: widget.checked)
+        : .enabled(
+            hasIcon: true,
+            isSelected: widget.checked,
+            isHovered: states.contains(WidgetState.hovered),
+            isPressed: _pressed,
+            isFocused: _focused && !_pressed,
+          );
 
-    if (isDisabled) {
+    if (result.isSelected) {
+      states.add(WidgetState.selected);
+    } else {
+      states.remove(WidgetState.selected);
+    }
+    if (result.isDisabled) {
       states.add(WidgetState.disabled);
     } else {
       states.remove(WidgetState.disabled);
     }
-
-    if (!isDisabled && _pressed) {
+    if (result.isHovered) {
       states.add(WidgetState.pressed);
     } else {
       states.remove(WidgetState.pressed);
     }
-    if (!isDisabled && (_focused && !_pressed)) {
+    if (result.isFocused) {
       states.add(WidgetState.focused);
     } else {
       states.remove(WidgetState.focused);
     }
-    // The set view returned must be used while no mutations are
-    // made to the parent.
-    return UnmodifiableSetView(states);
+    if (result.isPressed) {
+      states.add(WidgetState.pressed);
+    } else {
+      states.remove(WidgetState.pressed);
+    }
+    return result;
   }
 
   void _statesListener() {
@@ -356,25 +391,23 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     );
     _handleSizeAnimation = _handleSizeTween.animate(_handleSizeController);
 
-    _colorController = AnimationController(vsync: this, value: 1.0);
-    _trackColorAnimation = _trackColorTween.animate(_colorController);
-    _outlineColorAnimation = _outlineColorTween.animate(_colorController);
-    _handleColorAnimation = _handleColorTween.animate(_colorController);
-    _iconColorAnimation = _iconColorTween.animate(_colorController);
+    _effectsController = AnimationController(vsync: this, value: 1.0);
+    _trackShapeAnimation = _trackShapeTween.animate(_effectsController);
+    _trackColorAnimation = _trackColorTween.animate(_effectsController);
+    _trackOutlineAnimation = _trackOutlineTween.animate(_effectsController);
+    _handleShapeAnimation = _handleShapeTween.animate(_effectsController);
+    _handleColorAnimation = _handleColorTween.animate(_effectsController);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _colorTheme = ColorTheme.of(context);
-    _shapeTheme = ShapeTheme.of(context);
-    _stateTheme = StateTheme.of(context);
     _springTheme = SpringTheme.of(context);
   }
 
   @override
   void dispose() {
-    _colorController.dispose();
+    _effectsController.dispose();
     _handleSizeController.dispose();
     _handlePositionController.dispose();
     _statesController.dispose();
@@ -384,58 +417,69 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final states = _resolveStates();
-    final isDisabled = states.contains(WidgetState.disabled);
-    final outlineWidth = _outlineWidth.resolve(states);
-    final outlineColor = _outlineColor.resolve(states);
-    final trackColor = _trackColor.resolve(states);
-    final trackCorners = _trackShape.resolve(states);
-    final stateLayerCorners = _stateLayerShape.resolve(states);
-    final handleSize = _handleSize.resolve(states);
-    final handleColor = _handleColor.resolve(states);
-    final handleCorners = _handleShape.resolve(states);
-    final iconColor = _iconColor.resolve(states);
+    final switchTheme = SwitchTheme.of(context);
+
+    final trackSize = switchTheme.trackSize.resolve(states);
+    final trackShape = switchTheme.trackShape.resolve(states);
+    final trackColor = switchTheme.trackColor.resolve(states);
+    final trackOutline = switchTheme.trackOutline.resolve(states);
+    final stateLayerSize = switchTheme.stateLayerSize.resolve(states);
+    final stateLayerShape = switchTheme.stateLayerShape.resolve(states);
+
+    final handleSize = switchTheme.handleSize.resolve(states);
+    final handleShape = switchTheme.handleShape.resolve(states);
+    final handleColor = switchTheme.handleColor.resolve(states);
+    final iconTheme = switchTheme.iconTheme.resolve(states);
 
     const minTapTargetSize = Size(48.0, 48.0);
-    const stateLayerSize = 40.0;
-    const trackSize = Size(52.0, 32.0);
-
-    final stateLayerShape = CornersBorder.rounded(corners: stateLayerCorners);
-    final handleShape = CornersBorder.rounded(corners: handleCorners);
 
     final handlePosition = _isSelected ? 1.0 : 0.0;
 
+    final stateLayerColor = switchTheme.stateLayerColor;
+    final stateLayerOpacity = switchTheme.stateLayerOpacity;
+    final overlayColor = WidgetStateProperty.resolveWith((widgetStates) {
+      final resolvedStates = _SwitchStates.fromWidgetStates(
+        widgetStates,
+        hasIcon: states.hasIcon,
+        isSelected: states.isSelected,
+      );
+      final resolvedColor = stateLayerColor.resolve(resolvedStates);
+      final resolvedOpacity = stateLayerOpacity.resolve(resolvedStates);
+      return resolvedOpacity > 0.0
+          ? resolvedColor.withValues(alpha: resolvedColor.a * resolvedOpacity)
+          : resolvedColor.withAlpha(0);
+    });
+
     _updateHandlePositionAnimation(handlePosition: handlePosition);
     _updateHandleSizeAnimation(handleSize: handleSize);
-    _updateColorAnimations(
+    _updateEffectsAnimations(
+      trackShape: trackShape,
       trackColor: trackColor,
-      outlineColor: outlineColor,
+      trackOutline: trackOutline,
+      handleShape: handleShape,
       handleColor: handleColor,
-      iconColor: iconColor,
     );
 
-    final trackChild = SizedBox.square(
-      dimension: stateLayerSize,
+    final trackChild = SizedBox.fromSize(
+      size: stateLayerSize,
       child: Listener(
         behavior: HitTestBehavior.deferToChild,
-        onPointerDown: !isDisabled ? _onPointerDown : null,
-        onPointerUp: !isDisabled ? _onPointerUp : null,
-        onPointerCancel: !isDisabled ? _onPointerCancel : null,
+        onPointerDown: !states.isDisabled ? _onPointerDown : null,
+        onPointerUp: !states.isDisabled ? _onPointerUp : null,
+        onPointerCancel: !states.isDisabled ? _onPointerCancel : null,
         child: Material.empty(
           child: InkWell(
             statesController: _statesController,
             customBorder: stateLayerShape,
-            overlayColor: WidgetStateLayerColor(
-              color: _stateLayerColor,
-              opacity: _stateLayerOpacity,
-            ),
-            enableFeedback: !isDisabled,
-            onTap: !isDisabled
+            overlayColor: overlayColor,
+            enableFeedback: !states.isDisabled,
+            onTap: !states.isDisabled
                 ? () => widget.onCheckedChanged?.call(!_isSelected)
                 : null,
-            onTapDown: !isDisabled ? _onTapDown : null,
-            onTapUp: !isDisabled ? _onTapUp : null,
-            onTapCancel: !isDisabled ? _onTapCancel : null,
-            onFocusChange: !isDisabled ? _onFocusChange : null,
+            onTapDown: !states.isDisabled ? _onTapDown : null,
+            onTapUp: !states.isDisabled ? _onTapUp : null,
+            onTapCancel: !states.isDisabled ? _onTapCancel : null,
+            onFocusChange: !states.isDisabled ? _onFocusChange : null,
           ),
         ),
       ),
@@ -443,29 +487,29 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
 
     final handleChild = Align.center(
       child: AnimatedBuilder(
-        animation: _colorController,
+        animation: _effectsController,
         builder: (context, child) {
-          final resolvedIconColor = _iconColorAnimation.value ?? iconColor;
-          final resolvedIconOpacity = _colorController.value;
+          // final resolvedIconColor = _iconColorAnimation.value ?? iconColor;
+          // final resolvedIconOpacity = _effectsController.value;
           return IconTheme.merge(
             // We cannot use Opacity here because of an assertion error that
             // occurs due to us keeping track of canvas save count.
-            data: IconThemeDataPartial.from(
-              color: resolvedIconOpacity < 1.0
-                  ? resolvedIconColor.withValues(
-                      alpha: resolvedIconColor.a * resolvedIconOpacity,
-                    )
-                  : resolvedIconColor,
-              fill: 0.0,
-              grade: 0.0,
-              size: 16.0,
-              opticalSize: 24.0,
-              weight: 400.0,
-            ),
+            // data: iconTheme.copyWith(
+            //   color: resolvedIconOpacity < 1.0
+            //       ? iconTheme.color?.withValues(
+            //           alpha: resolvedIconColor.a * resolvedIconOpacity,
+            //         )
+            //       : resolvedIconColor,
+            //   fill: 0.0,
+            //   grade: 0.0,
+            //   size: 16.0,
+            //   opticalSize: 24.0,
+            //   weight: 400.0,
+            // ),
+            data: iconTheme,
             child: child!,
           );
         },
-
         child: _isSelected
             ? const Icon(Symbols.check_rounded, applyTextScaling: false)
             : const Icon(Symbols.close_rounded, applyTextScaling: false),
@@ -479,36 +523,34 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
         child: TapRegion(
           behavior: HitTestBehavior.deferToChild,
           consumeOutsideTaps: false,
-          onTapOutside: !isDisabled ? _onTapOutside : null,
-          onTapUpOutside: !isDisabled ? _onTapUpOutside : null,
-          child: FocusRingTheme.merge(
-            data: FocusRingThemeDataPartial.from(shape: trackCorners),
+          onTapOutside: !states.isDisabled ? _onTapOutside : null,
+          onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
+          child: AnimatedBuilder(
+            animation: _effectsController,
+            builder: (context, child) => FocusRingTheme.merge(
+              // data: .from(shape:  _trackShapeAnimation.value ?? trackShape)),
+              data: .from(shape: _trackShapeAnimation.value ?? trackShape),
+              child: child!,
+            ),
             child: FocusRing(
-              visible: states.contains(WidgetState.focused),
-              placement: FocusRingPlacement.outward,
+              visible: states.isFocused,
+              placement: .outward,
               layoutBuilder: (context, info, child) => Align.center(
                 child: SizedBox.fromSize(size: trackSize, child: child),
               ),
               child: _SwitchPaint(
                 handlePosition: _handlePositionAnimation,
-                trackShape: _outlineColorAnimation
-                    .nonNullOr(outlineColor)
+                trackShape: _trackShapeAnimation
+                    .nonNullOr(trackShape)
                     .mapValue(
-                      (value) => CornersBorder.rounded(
-                        corners: trackCorners,
-                        side: BorderSide(
-                          width: outlineWidth,
-                          color: _outlineColorAnimation.value!,
-                          strokeAlign: BorderSide.strokeAlignInside,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
+                      (value) => (_trackOutlineAnimation.value ?? trackOutline)
+                          .apply(value),
                     ),
                 trackColor: _trackColorAnimation.nonNullOr(trackColor),
                 minTapTargetSize: minTapTargetSize,
                 trackSize: trackSize,
                 handleSize: _handleSizeAnimation.nonNullOr(handleSize),
-                handleShape: handleShape,
+                handleShape: _handleShapeAnimation.nonNullOr(handleShape),
                 handleColor: _handleColorAnimation.nonNullOr(handleColor),
                 childrenPaintOrder: .handleChildIsTop,
                 trackChildPosition: .middle,
@@ -533,7 +575,6 @@ enum _SwitchChildrenPaintOrder { trackChildIsTop, handleChildIsTop }
 class _SwitchPaint
     extends SlottedMultiChildRenderObjectWidget<_SwitchSlot, RenderBox> {
   const _SwitchPaint({
-    // ignore: unused_element_parameter
     super.key,
     required this.handlePosition,
     required this.minTapTargetSize,
@@ -553,14 +594,11 @@ class _SwitchPaint
   final ValueListenable<double> handlePosition;
   final Size minTapTargetSize;
 
-  // Track
   final Size trackSize;
-  final ValueListenable<ShapeBorder> trackShape;
+  final ValueListenable<OutlinedBorder> trackShape;
   final ValueListenable<Color> trackColor;
-
-  // Handle
   final ValueListenable<Size> handleSize;
-  final ShapeBorder handleShape;
+  final ValueListenable<ShapeBorder> handleShape;
   final ValueListenable<Color> handleColor;
 
   final _SwitchChildrenPaintOrder childrenPaintOrder;
@@ -624,11 +662,11 @@ class _RenderSwitchPaint extends RenderBox
     required Size minTapTargetSize,
     // Track
     required Size trackSize,
-    required ValueListenable<ShapeBorder> trackShape,
+    required ValueListenable<OutlinedBorder> trackShape,
     required ValueListenable<Color> trackColor,
     // Handle
     required ValueListenable<Size> handleSize,
-    required ShapeBorder handleShape,
+    required ValueListenable<ShapeBorder> handleShape,
     required ValueListenable<Color> handleColor,
     // Children
     required _SwitchChildrenPaintOrder childrenPaintOrder,
@@ -675,9 +713,9 @@ class _RenderSwitchPaint extends RenderBox
     markNeedsLayout();
   }
 
-  ValueListenable<ShapeBorder> _trackShape;
-  ValueListenable<ShapeBorder> get trackShape => _trackShape;
-  set trackShape(ValueListenable<ShapeBorder> value) {
+  ValueListenable<OutlinedBorder> _trackShape;
+  ValueListenable<OutlinedBorder> get trackShape => _trackShape;
+  set trackShape(ValueListenable<OutlinedBorder> value) {
     if (_trackShape == value) return;
     _trackShape.removeListener(markNeedsPaint);
     _trackShape = value;
@@ -705,11 +743,13 @@ class _RenderSwitchPaint extends RenderBox
     markNeedsLayout();
   }
 
-  ShapeBorder _handleShape;
-  ShapeBorder get handleShape => _handleShape;
-  set handleShape(ShapeBorder value) {
+  ValueListenable<ShapeBorder> _handleShape;
+  ValueListenable<ShapeBorder> get handleShape => _handleShape;
+  set handleShape(ValueListenable<ShapeBorder> value) {
     if (_handleShape == value) return;
+    _handleShape.removeListener(markNeedsPaint);
     _handleShape = value;
+    _handleShape.addListener(markNeedsPaint);
     markNeedsPaint();
   }
 
@@ -789,7 +829,7 @@ class _RenderSwitchPaint extends RenderBox
     final innerCenterEnd = trackSize.width - innerCenterStart;
     final outerCenterEnd = innerRect.left + innerCenterEnd;
     return Offset(
-      lerpDouble(outerCenterStart, outerCenterEnd, _handlePosition.value)!,
+      lerpDouble(outerCenterStart, outerCenterEnd, _handlePosition.value),
       innerRect.top + innerRect.height / 2.0,
     );
   }
@@ -811,17 +851,19 @@ class _RenderSwitchPaint extends RenderBox
     _trackShape.addListener(markNeedsPaint);
     _trackColor.addListener(markNeedsPaint);
     _handleSize.addListener(markNeedsLayout);
+    _handleShape.addListener(markNeedsLayout);
     _handleColor.addListener(markNeedsPaint);
   }
 
   @override
   void detach() {
-    _handleColor.removeListener(markNeedsPaint);
-    _handleSize.removeListener(markNeedsLayout);
-    _trackColor.removeListener(markNeedsPaint);
-    _trackShape.removeListener(markNeedsPaint);
-    _handlePosition.removeListener(markNeedsLayout);
     super.detach();
+    _handlePosition.removeListener(markNeedsLayout);
+    _trackShape.removeListener(markNeedsPaint);
+    _trackColor.removeListener(markNeedsPaint);
+    _handleSize.removeListener(markNeedsLayout);
+    _handleShape.removeListener(markNeedsLayout);
+    _handleColor.removeListener(markNeedsPaint);
   }
 
   @override
@@ -930,11 +972,11 @@ class _RenderSwitchPaint extends RenderBox
   }
 
   void _paintTrack(PaintingContext context, Rect shiftedRect) {
-    final trackPaint = Paint()
-      ..style = PaintingStyle.fill
+    final paint = Paint()
+      ..style = .fill
       ..color = trackColor.value;
     trackShape.value
-      ..paintInterior(context.canvas, shiftedRect, trackPaint)
+      ..paintInterior(context.canvas, shiftedRect, paint)
       ..paint(context.canvas, shiftedRect);
   }
 
@@ -948,11 +990,11 @@ class _RenderSwitchPaint extends RenderBox
   }
 
   void _paintHandle(PaintingContext context, Rect shiftedRect) {
-    final handlePaint = Paint()
-      ..style = PaintingStyle.fill
+    final paint = Paint()
+      ..style = .fill
       ..color = handleColor.value;
-    handleShape
-      ..paintInterior(context.canvas, shiftedRect, handlePaint)
+    handleShape.value
+      ..paintInterior(context.canvas, shiftedRect, paint)
       ..paint(context.canvas, shiftedRect);
   }
 
@@ -989,7 +1031,7 @@ class _RenderSwitchPaint extends RenderBox
     final handleRect = _computeHandleRect(outerCenter);
 
     context.withCanvasTransform((context) {
-      if (offset != Offset.zero) {
+      if (offset != .zero) {
         context.canvas.translate(offset.dx, offset.dy);
       }
 
@@ -1019,7 +1061,7 @@ class _RenderSwitchPaint extends RenderBox
     if (trackChild == null) {
       return false;
     }
-    final Offset center = trackChild.size.center(Offset.zero);
+    final center = trackChild.size.center(.zero);
     return result.addWithRawTransform(
       transform: MatrixUtils.forceToPoint(center),
       position: center,

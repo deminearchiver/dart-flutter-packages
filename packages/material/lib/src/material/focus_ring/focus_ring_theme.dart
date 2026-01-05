@@ -9,7 +9,7 @@ abstract class FocusRingThemeDataPartial {
     Duration? duration,
     double? inwardOffset,
     double? outwardOffset,
-    CornersGeometry? shape,
+    OutlinedBorder? shape,
     double? width,
   }) = _FocusRingThemeDataPartial;
 
@@ -23,7 +23,7 @@ abstract class FocusRingThemeDataPartial {
 
   double? get outwardOffset;
 
-  CornersGeometry? get shape;
+  OutlinedBorder? get shape;
 
   double? get width;
 
@@ -33,7 +33,7 @@ abstract class FocusRingThemeDataPartial {
     Duration? duration,
     double? inwardOffset,
     double? outwardOffset,
-    CornersGeometry? shape,
+    OutlinedBorder? shape,
     double? width,
   }) =>
       activeWidth != null ||
@@ -120,7 +120,7 @@ class _FocusRingThemeDataPartial extends FocusRingThemeDataPartial {
   final double? outwardOffset;
 
   @override
-  final CornersGeometry? shape;
+  final OutlinedBorder? shape;
 
   @override
   final double? width;
@@ -135,7 +135,7 @@ abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
     required Duration duration,
     required double inwardOffset,
     required double outwardOffset,
-    required CornersGeometry shape,
+    required OutlinedBorder shape,
     required double width,
   }) = _FocusRingThemeData;
 
@@ -155,7 +155,7 @@ abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
   double get outwardOffset;
 
   @override
-  CornersGeometry get shape;
+  OutlinedBorder get shape;
 
   @override
   double get width;
@@ -167,7 +167,7 @@ abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
     Duration? duration,
     double? inwardOffset,
     double? outwardOffset,
-    CornersGeometry? shape,
+    OutlinedBorder? shape,
     double? width,
   }) =>
       activeWidth != null ||
@@ -254,7 +254,7 @@ class _FocusRingThemeData extends FocusRingThemeData {
   final double outwardOffset;
 
   @override
-  final CornersGeometry shape;
+  final OutlinedBorder shape;
 
   @override
   final double width;
@@ -289,7 +289,8 @@ class _FocusRingThemeDataFallback extends FocusRingThemeData {
   double get outwardOffset => 2.0;
 
   @override
-  CornersGeometry get shape => Corners.all(_shapeTheme.corner.full);
+  OutlinedBorder get shape =>
+      CornersBorder.rounded(corners: .all(_shapeTheme.corner.full));
 
   @override
   double get width => 3.0;
