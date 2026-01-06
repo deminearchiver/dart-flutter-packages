@@ -4217,7 +4217,7 @@ Future<ui.Image> _imageProviderToScaled(ImageProvider imageProvider) async {
       final height = image.height;
       var paintWidth = width.toDouble();
       var paintHeight = height.toDouble();
-      assert(width > 0 && height > 0);
+      assert(width > 0.0 && height > 0.0);
 
       final rescale = width > maxDimension || height > maxDimension;
       if (rescale) {

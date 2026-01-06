@@ -584,7 +584,7 @@ class _CheckboxThemeDataDefaults extends CheckboxThemeData {
   CheckboxStateProperty<Outline> get containerOutline => .resolveWith(
     (states) => .from(
       width: 2.0,
-      alignment: BorderSide.strokeAlignInside,
+      alignment: Outline.alignmentInside,
       color: switch (states) {
         CheckboxDisabledStates(isSelected: false) =>
           _colorTheme.onSurface.withValues(alpha: 0.38),

@@ -151,10 +151,6 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   final Tween<double> _handlePositionTween = Tween<double>();
   late Animation<double> _handlePositionAnimation;
 
-  late AnimationController _handleSizeController;
-  final Tween<Size?> _handleSizeTween = SizeTween();
-  late Animation<Size?> _handleSizeAnimation;
-
   late AnimationController _effectsController;
 
   final Tween<OutlinedBorder?> _trackShapeTween = OutlinedBorderTween();
@@ -166,11 +162,17 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   final Tween<Outline?> _trackOutlineTween = OutlineTween();
   late Animation<Outline?> _trackOutlineAnimation;
 
-  final Tween<ShapeBorder?> _handleShapeTween = ShapeBorderTween();
-  late Animation<ShapeBorder?> _handleShapeAnimation;
+  final Tween<Size?> _handleSizeTween = SizeTween();
+  late Animation<Size?> _handleSizeAnimation;
+
+  final Tween<OutlinedBorder?> _handleShapeTween = OutlinedBorderTween();
+  late Animation<OutlinedBorder?> _handleShapeAnimation;
 
   final Tween<Color?> _handleColorTween = ColorTween();
   late Animation<Color?> _handleColorAnimation;
+
+  final Tween<Outline?> _handleOutlineTween = OutlineTween();
+  late Animation<Outline?> _handleOutlineAnimation;
 
   final Tween<IconThemeData?> _iconThemeTween = IconThemeDataTween();
   late Animation<IconThemeData?> _iconThemeAnimation;
@@ -200,36 +202,23 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _handlePositionController.animateWith(simulation);
   }
 
-  void _updateHandleSizeAnimation({required Size handleSize}) {
-    if (handleSize == _handleSizeTween.end) {
-      return;
-    }
-
-    _handleSizeTween.begin = _handleSizeAnimation.value ?? handleSize;
-    _handleSizeTween.end = handleSize;
-
-    if (_handleSizeTween.begin == _handleSizeTween.end) {
-      return;
-    }
-
-    final spring = _springTheme.defaultEffects.toSpringDescription();
-    final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0);
-    _handleSizeController.animateWith(simulation);
-  }
-
   void _updateEffectsAnimations({
     required OutlinedBorder trackShape,
     required Color trackColor,
     required Outline trackOutline,
-    required ShapeBorder handleShape,
+    required Size handleSize,
+    required OutlinedBorder handleShape,
     required Color handleColor,
+    required Outline handleOutline,
     required IconThemeData iconTheme,
   }) {
     if (trackShape == _trackShapeTween.end &&
         trackColor == _trackColorTween.end &&
         trackOutline == _trackOutlineTween.end &&
+        handleSize == _handleSizeTween.end &&
         handleShape == _handleShapeTween.end &&
         handleColor == _handleColorTween.end &&
+        handleOutline == _handleOutlineTween.end &&
         iconTheme == _iconThemeTween.end) {
       return;
     }
@@ -243,11 +232,17 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _trackOutlineTween.begin = _trackOutlineAnimation.value ?? trackOutline;
     _trackOutlineTween.end = trackOutline;
 
+    _handleSizeTween.begin = _handleSizeAnimation.value ?? handleSize;
+    _handleSizeTween.end = handleSize;
+
     _handleShapeTween.begin = _handleShapeAnimation.value ?? handleShape;
     _handleShapeTween.end = handleShape;
 
     _handleColorTween.begin = _handleColorAnimation.value ?? handleColor;
     _handleColorTween.end = handleColor;
+
+    _handleOutlineTween.begin = _handleOutlineAnimation.value ?? handleOutline;
+    _handleOutlineTween.end = handleOutline;
 
     _iconThemeTween.begin = _iconThemeAnimation.value ?? iconTheme;
     _iconThemeTween.end = iconTheme;
@@ -255,8 +250,10 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     if (_trackShapeTween.begin == _trackShapeTween.end &&
         _trackColorTween.begin == _trackColorTween.end &&
         _trackOutlineTween.begin == _trackOutlineTween.end &&
+        _handleSizeTween.begin == _handleSizeTween.end &&
         _handleShapeTween.begin == _handleShapeTween.end &&
         _handleColorTween.begin == _handleColorTween.end &&
+        _handleOutlineTween.begin == _handleOutlineTween.end &&
         _iconThemeTween.begin == _iconThemeTween.end) {
       _effectsController.value = 1.0;
       return;
@@ -396,18 +393,14 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       _handlePositionController,
     );
 
-    _handleSizeController = AnimationController.unbounded(
-      vsync: this,
-      value: 1.0,
-    );
-    _handleSizeAnimation = _handleSizeTween.animate(_handleSizeController);
-
     _effectsController = AnimationController(vsync: this, value: 1.0);
     _trackShapeAnimation = _trackShapeTween.animate(_effectsController);
     _trackColorAnimation = _trackColorTween.animate(_effectsController);
     _trackOutlineAnimation = _trackOutlineTween.animate(_effectsController);
+    _handleSizeAnimation = _handleSizeTween.animate(_effectsController);
     _handleShapeAnimation = _handleShapeTween.animate(_effectsController);
     _handleColorAnimation = _handleColorTween.animate(_effectsController);
+    _handleOutlineAnimation = _handleOutlineTween.animate(_effectsController);
     _iconThemeAnimation = _iconThemeTween.animate(_effectsController);
   }
 
@@ -422,7 +415,6 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   @override
   void dispose() {
     _effectsController.dispose();
-    _handleSizeController.dispose();
     _handlePositionController.dispose();
     _statesController.dispose();
     super.dispose();
@@ -432,19 +424,18 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final states = _resolveStates();
 
+    final minTapTargetSize = _switchTheme.minTapTargetSize.resolve(states);
     final trackSize = _switchTheme.trackSize.resolve(states);
     final trackShape = _switchTheme.trackShape.resolve(states);
     final trackColor = _switchTheme.trackColor.resolve(states);
     final trackOutline = _switchTheme.trackOutline.resolve(states);
     final stateLayerSize = _switchTheme.stateLayerSize.resolve(states);
     final stateLayerShape = _switchTheme.stateLayerShape.resolve(states);
-
     final handleSize = _switchTheme.handleSize.resolve(states);
     final handleShape = _switchTheme.handleShape.resolve(states);
     final handleColor = _switchTheme.handleColor.resolve(states);
+    final handleOutline = _switchTheme.handleOutline.resolve(states);
     final iconTheme = _iconTheme.merge(_switchTheme.iconTheme.resolve(states));
-
-    const minTapTargetSize = Size(48.0, 48.0);
 
     final handlePosition = _isSelected ? 1.0 : 0.0;
 
@@ -464,13 +455,14 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     });
 
     _updateHandlePositionAnimation(handlePosition: handlePosition);
-    _updateHandleSizeAnimation(handleSize: handleSize);
     _updateEffectsAnimations(
       trackShape: trackShape,
       trackColor: trackColor,
       trackOutline: trackOutline,
+      handleSize: handleSize,
       handleShape: handleShape,
       handleColor: handleColor,
+      handleOutline: handleOutline,
       iconTheme: iconTheme,
     );
 
@@ -564,7 +556,13 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
                 minTapTargetSize: minTapTargetSize,
                 trackSize: trackSize,
                 handleSize: _handleSizeAnimation.nonNullOr(handleSize),
-                handleShape: _handleShapeAnimation.nonNullOr(handleShape),
+                handleShape: _handleShapeAnimation
+                    .nonNullOr(handleShape)
+                    .mapValue(
+                      (value) =>
+                          (_handleOutlineAnimation.value ?? handleOutline)
+                              .apply(value),
+                    ),
                 handleColor: _handleColorAnimation.nonNullOr(handleColor),
                 childrenPaintOrder: .handleChildIsTop,
                 trackChildPosition: .middle,
@@ -631,22 +629,21 @@ class _SwitchPaint
   };
 
   @override
-  _RenderSwitchPaint createRenderObject(BuildContext context) {
-    return _RenderSwitchPaint(
-      handlePosition: handlePosition,
-      minTapTargetSize: minTapTargetSize,
-      trackSize: trackSize,
-      trackShape: trackShape,
-      trackColor: trackColor,
-      handleSize: handleSize,
-      handleShape: handleShape,
-      handleColor: handleColor,
-      childrenPaintOrder: childrenPaintOrder,
-      trackChildPosition: trackChildPosition,
-      handleChildPosition: handleChildPosition,
-      textDirection: Directionality.maybeOf(context),
-    );
-  }
+  _RenderSwitchPaint createRenderObject(BuildContext context) =>
+      _RenderSwitchPaint(
+        handlePosition: handlePosition,
+        minTapTargetSize: minTapTargetSize,
+        trackSize: trackSize,
+        trackShape: trackShape,
+        trackColor: trackColor,
+        handleSize: handleSize,
+        handleShape: handleShape,
+        handleColor: handleColor,
+        childrenPaintOrder: childrenPaintOrder,
+        trackChildPosition: trackChildPosition,
+        handleChildPosition: handleChildPosition,
+        textDirection: Directionality.maybeOf(context),
+      );
 
   @override
   void updateRenderObject(

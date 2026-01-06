@@ -39,7 +39,7 @@ abstract class OutlinePartial with Diagnosticable {
 
   BorderSide toBorderSide() {
     final resolvedWidth = width ?? 0.0;
-    final resolvedStrokeAlign = alignment ?? BorderSide.strokeAlignInside;
+    final resolvedStrokeAlign = alignment ?? Outline.alignmentInside;
     final resolvedColor = color ?? Colors.transparent;
     return BorderSide(
       style: resolvedWidth > 0.0 ? .solid : .none,
@@ -198,6 +198,25 @@ abstract class Outline extends OutlinePartial {
   @override
   int get hashCode => Object.hash(runtimeType, width, alignment, color);
 
+  /// The border is drawn fully inside of the border path.
+  ///
+  /// This is a constant for use with [alignment].
+  ///
+  /// This is the default value for [alignment].
+  static const double alignmentInside = -1.0;
+
+  /// The border is drawn on the center of the border path, with half of the
+  /// [width] on the inside, and the other half on the outside of
+  /// the path.
+  ///
+  /// This is a constant for use with [alignment].
+  static const double alignmentCenter = 0.0;
+
+  /// The border is drawn on the outside of the border path.
+  ///
+  /// This is a constant for use with [alignment].
+  static const double alignmentOutside = 1.0;
+
   static Outline lerp(Outline a, Outline b, double t) {
     if (identical(a, b)) return a;
     if (t == 0.0) return a;
@@ -213,9 +232,9 @@ abstract class Outline extends OutlinePartial {
 class _Outline extends Outline {
   const _Outline({
     this.width = 0.0,
-    this.alignment = BorderSide.strokeAlignInside,
+    this.alignment = Outline.alignmentInside,
     this.color = Colors.transparent,
-  }) : assert(width > 0.0);
+  }) : assert(width >= 0.0);
 
   @override
   final double width;

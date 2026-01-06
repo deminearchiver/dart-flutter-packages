@@ -617,7 +617,7 @@ class _ListItemThemeDataDefaults extends ListItemThemeData {
 
   @override
   ListItemStateProperty<ShapeBorder> get containerShape =>
-      StateProperty.resolveWith((states) {
+      .resolveWith((states) {
         final outerCorner = _shapeTheme.corner.large;
         final innerCorner = _shapeTheme.corner.extraSmall;
         final CornersGeometry corners = switch (states) {
@@ -631,7 +631,7 @@ class _ListItemThemeDataDefaults extends ListItemThemeData {
             top: innerCorner,
             bottom: outerCorner,
           ),
-          _ => Corners.all(innerCorner),
+          _ => .all(innerCorner),
         };
         return CornersBorder.rounded(corners: corners);
       });
