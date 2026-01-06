@@ -172,7 +172,12 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   final Tween<Color?> _handleColorTween = ColorTween();
   late Animation<Color?> _handleColorAnimation;
 
+  final Tween<IconThemeData?> _iconThemeTween = IconThemeDataTween();
+  late Animation<IconThemeData?> _iconThemeAnimation;
+
   late SpringThemeData _springTheme;
+  late IconThemeData _iconTheme;
+  late SwitchThemeData _switchTheme;
 
   bool _pressed = false;
   bool _focused = false;
@@ -218,12 +223,14 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     required Outline trackOutline,
     required ShapeBorder handleShape,
     required Color handleColor,
+    required IconThemeData iconTheme,
   }) {
     if (trackShape == _trackShapeTween.end &&
         trackColor == _trackColorTween.end &&
         trackOutline == _trackOutlineTween.end &&
         handleShape == _handleShapeTween.end &&
-        handleColor == _handleColorTween.end) {
+        handleColor == _handleColorTween.end &&
+        iconTheme == _iconThemeTween.end) {
       return;
     }
 
@@ -242,11 +249,15 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _handleColorTween.begin = _handleColorAnimation.value ?? handleColor;
     _handleColorTween.end = handleColor;
 
+    _iconThemeTween.begin = _iconThemeAnimation.value ?? iconTheme;
+    _iconThemeTween.end = iconTheme;
+
     if (_trackShapeTween.begin == _trackShapeTween.end &&
         _trackColorTween.begin == _trackColorTween.end &&
         _trackOutlineTween.begin == _trackOutlineTween.end &&
         _handleShapeTween.begin == _handleShapeTween.end &&
-        _handleColorTween.begin == _handleColorTween.end) {
+        _handleColorTween.begin == _handleColorTween.end &&
+        _iconThemeTween.begin == _iconThemeTween.end) {
       _effectsController.value = 1.0;
       return;
     }
@@ -397,12 +408,15 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _trackOutlineAnimation = _trackOutlineTween.animate(_effectsController);
     _handleShapeAnimation = _handleShapeTween.animate(_effectsController);
     _handleColorAnimation = _handleColorTween.animate(_effectsController);
+    _iconThemeAnimation = _iconThemeTween.animate(_effectsController);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _springTheme = SpringTheme.of(context);
+    _iconTheme = IconTheme.of(context);
+    _switchTheme = SwitchTheme.of(context);
   }
 
   @override
@@ -417,26 +431,25 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final states = _resolveStates();
-    final switchTheme = SwitchTheme.of(context);
 
-    final trackSize = switchTheme.trackSize.resolve(states);
-    final trackShape = switchTheme.trackShape.resolve(states);
-    final trackColor = switchTheme.trackColor.resolve(states);
-    final trackOutline = switchTheme.trackOutline.resolve(states);
-    final stateLayerSize = switchTheme.stateLayerSize.resolve(states);
-    final stateLayerShape = switchTheme.stateLayerShape.resolve(states);
+    final trackSize = _switchTheme.trackSize.resolve(states);
+    final trackShape = _switchTheme.trackShape.resolve(states);
+    final trackColor = _switchTheme.trackColor.resolve(states);
+    final trackOutline = _switchTheme.trackOutline.resolve(states);
+    final stateLayerSize = _switchTheme.stateLayerSize.resolve(states);
+    final stateLayerShape = _switchTheme.stateLayerShape.resolve(states);
 
-    final handleSize = switchTheme.handleSize.resolve(states);
-    final handleShape = switchTheme.handleShape.resolve(states);
-    final handleColor = switchTheme.handleColor.resolve(states);
-    final iconTheme = switchTheme.iconTheme.resolve(states);
+    final handleSize = _switchTheme.handleSize.resolve(states);
+    final handleShape = _switchTheme.handleShape.resolve(states);
+    final handleColor = _switchTheme.handleColor.resolve(states);
+    final iconTheme = _iconTheme.merge(_switchTheme.iconTheme.resolve(states));
 
     const minTapTargetSize = Size(48.0, 48.0);
 
     final handlePosition = _isSelected ? 1.0 : 0.0;
 
-    final stateLayerColor = switchTheme.stateLayerColor;
-    final stateLayerOpacity = switchTheme.stateLayerOpacity;
+    final stateLayerColor = _switchTheme.stateLayerColor;
+    final stateLayerOpacity = _switchTheme.stateLayerOpacity;
     final overlayColor = WidgetStateProperty.resolveWith((widgetStates) {
       final resolvedStates = _SwitchStates.fromWidgetStates(
         widgetStates,
@@ -458,12 +471,13 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       trackOutline: trackOutline,
       handleShape: handleShape,
       handleColor: handleColor,
+      iconTheme: iconTheme,
     );
 
     final trackChild = SizedBox.fromSize(
       size: stateLayerSize,
       child: Listener(
-        behavior: HitTestBehavior.deferToChild,
+        behavior: .deferToChild,
         onPointerDown: !states.isDisabled ? _onPointerDown : null,
         onPointerUp: !states.isDisabled ? _onPointerUp : null,
         onPointerCancel: !states.isDisabled ? _onPointerCancel : null,
@@ -489,9 +503,10 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       child: AnimatedBuilder(
         animation: _effectsController,
         builder: (context, child) {
+          final resolvedIconTheme = _iconThemeAnimation.value ?? iconTheme;
           // final resolvedIconColor = _iconColorAnimation.value ?? iconColor;
           // final resolvedIconOpacity = _effectsController.value;
-          return IconTheme.merge(
+          return IconTheme(
             // We cannot use Opacity here because of an assertion error that
             // occurs due to us keeping track of canvas save count.
             // data: iconTheme.copyWith(
@@ -506,7 +521,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
             //   opticalSize: 24.0,
             //   weight: 400.0,
             // ),
-            data: iconTheme,
+            data: resolvedIconTheme,
             child: child!,
           );
         },
@@ -521,14 +536,13 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
         widthFactor: 1.0,
         heightFactor: 1.0,
         child: TapRegion(
-          behavior: HitTestBehavior.deferToChild,
+          behavior: .deferToChild,
           consumeOutsideTaps: false,
           onTapOutside: !states.isDisabled ? _onTapOutside : null,
           onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
           child: AnimatedBuilder(
             animation: _effectsController,
             builder: (context, child) => FocusRingTheme.merge(
-              // data: .from(shape:  _trackShapeAnimation.value ?? trackShape)),
               data: .from(shape: _trackShapeAnimation.value ?? trackShape),
               child: child!,
             ),
@@ -792,6 +806,7 @@ class _RenderSwitchPaint extends RenderBox
   set textDirection(TextDirection? value) {
     if (_textDirection == value) return;
     _textDirection = value;
+    markNeedsPaint();
   }
 
   RenderBox? get _trackChild => childForSlot(.trackChild);
@@ -972,12 +987,25 @@ class _RenderSwitchPaint extends RenderBox
   }
 
   void _paintTrack(PaintingContext context, Rect shiftedRect) {
+    final shape = trackShape.value;
     final paint = Paint()
       ..style = .fill
       ..color = trackColor.value;
-    trackShape.value
-      ..paintInterior(context.canvas, shiftedRect, paint)
-      ..paint(context.canvas, shiftedRect);
+    if (shape.preferPaintInterior) {
+      shape.paintInterior(
+        context.canvas,
+        shiftedRect,
+        paint,
+        textDirection: textDirection,
+      );
+    } else {
+      final path = shape.getOuterPath(
+        shiftedRect,
+        textDirection: textDirection,
+      );
+      context.canvas.drawPath(path, paint);
+    }
+    shape.paint(context.canvas, shiftedRect);
   }
 
   void _paintTrackChild(PaintingContext context) {
@@ -990,12 +1018,25 @@ class _RenderSwitchPaint extends RenderBox
   }
 
   void _paintHandle(PaintingContext context, Rect shiftedRect) {
+    final shape = handleShape.value;
     final paint = Paint()
       ..style = .fill
       ..color = handleColor.value;
-    handleShape.value
-      ..paintInterior(context.canvas, shiftedRect, paint)
-      ..paint(context.canvas, shiftedRect);
+    if (shape.preferPaintInterior) {
+      shape.paintInterior(
+        context.canvas,
+        shiftedRect,
+        paint,
+        textDirection: textDirection,
+      );
+    } else {
+      final path = shape.getOuterPath(
+        shiftedRect,
+        textDirection: textDirection,
+      );
+      context.canvas.drawPath(path, paint);
+    }
+    shape.paint(context.canvas, shiftedRect);
   }
 
   void _paintHandleChild(PaintingContext context) {

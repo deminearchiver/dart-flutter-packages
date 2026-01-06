@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:material/src/material/flutter.dart';
 import 'package:flutter/widgets.dart' as flutter;
+import 'package:material/src/material/flutter.dart';
 
 abstract interface class StatesConstraint<S extends Object?> {
   const factory StatesConstraint.any() = _AnyStates;
@@ -631,35 +631,3 @@ class _StatesControllerFromCodec<S extends Object?>
 }
 
 typedef WidgetStatesCodec<S extends Object?> = Codec<S, WidgetStates>;
-
-abstract interface class SelectableStates {
-  bool get isSelected;
-}
-
-abstract interface class HoverableStates {
-  bool get isHovered;
-}
-
-abstract interface class FocusableStates {
-  bool get isFocused;
-}
-
-abstract interface class PressableStates {
-  bool get isPressed;
-}
-
-abstract interface class DraggableStates {
-  bool get isDragged;
-}
-
-abstract interface class InteractiveStates {}
-
-abstract interface class InteractiveDisabledStates
-    implements InteractiveStates {}
-
-abstract interface class InteractiveEnabledStates
-    implements
-        InteractiveStates,
-        HoverableStates,
-        FocusableStates,
-        PressableStates {}

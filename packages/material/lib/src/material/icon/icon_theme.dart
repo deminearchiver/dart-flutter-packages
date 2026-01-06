@@ -91,6 +91,21 @@ abstract class IconThemeDataPartial with Diagnosticable {
   @override
   int get hashCode =>
       Object.hash(runtimeType, color, size, weight, grade, opticalSize, fill);
+
+  static IconThemeDataPartial? lerp(
+    IconThemeData? a,
+    IconThemeData? b,
+    double t,
+  ) => identical(a, b) || a == b
+      ? a
+      : .from(
+          color: Color.lerp(a?.color, b?.color, t),
+          size: lerpDoubleNullable(a?.size, b?.size, t),
+          weight: lerpDoubleNullable(a?.weight, b?.weight, t),
+          grade: lerpDoubleNullable(a?.grade, b?.grade, t),
+          opticalSize: lerpDoubleNullable(a?.opticalSize, b?.opticalSize, t),
+          fill: lerpDoubleNullable(a?.fill, b?.fill, t),
+        );
 }
 
 @immutable
@@ -218,6 +233,18 @@ abstract class IconThemeData extends IconThemeDataPartial {
   @override
   int get hashCode =>
       Object.hash(runtimeType, color, size, weight, grade, opticalSize, fill);
+
+  static IconThemeData lerp(IconThemeData a, IconThemeData b, double t) =>
+      identical(a, b)
+      ? a
+      : .from(
+          color: Color.lerp(a.color, b.color, t)!,
+          size: lerpDouble(a.size, b.size, t),
+          weight: lerpDouble(a.weight, b.weight, t),
+          grade: lerpDouble(a.grade, b.grade, t),
+          opticalSize: lerpDouble(a.opticalSize, b.opticalSize, t),
+          fill: lerpDouble(a.fill, b.fill, t),
+        );
 }
 
 @immutable
@@ -316,5 +343,24 @@ class IconTheme extends InheritedTheme {
     if (result != null) return result;
     final colorTheme = ColorTheme.of(context);
     return _IconThemeDataFallback(colorTheme: colorTheme);
+  }
+}
+
+class IconThemeDataTween extends Tween<IconThemeData?> {
+  IconThemeDataTween({super.begin, super.end});
+
+  @override
+  IconThemeData? lerp(double t) {
+    final a = begin;
+    final b = end;
+    if (identical(a, b) || a == b) return a;
+    return .from(
+      color: Color.lerp(a?.color, b?.color, t)!,
+      size: lerpDoubleNullable(a?.size, b?.size, t)!,
+      weight: lerpDoubleNullable(a?.weight, b?.weight, t)!,
+      grade: lerpDoubleNullable(a?.grade, b?.grade, t)!,
+      opticalSize: lerpDoubleNullable(a?.opticalSize, b?.opticalSize, t)!,
+      fill: lerpDoubleNullable(a?.fill, b?.fill, t)!,
+    );
   }
 }

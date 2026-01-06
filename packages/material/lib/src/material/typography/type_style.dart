@@ -1,11 +1,13 @@
 import 'package:material/src/material/flutter.dart';
 
+FontWeight? _closestFontWeightToOrNull(double? weight) =>
+    weight != null ? _closestFontWeightToOrNull(weight) : null;
+
 FontWeight _closestFontWeightTo(double weight) {
-  assert(weight >= 0, "Font weight cannot be negative.");
+  assert(weight >= 0.0, "Font weight cannot be negative.");
   final values = FontWeight.values;
-  assert(values.isNotEmpty);
   var closest = values[0];
-  for (int i = 1; i < values.length; i++) {
+  for (var i = 1; i < values.length; i++) {
     final element = values[i];
     if ((weight - element.value.toDouble()).abs() <=
         (weight - closest.value.toDouble()).abs()) {
@@ -15,82 +17,81 @@ FontWeight _closestFontWeightTo(double weight) {
   return closest;
 }
 
-(FontWeight? fontWeight, double? wght) _resolveFontWeights(
-  double? weight,
-  double? wght,
-) {
-  if (wght != null) {
-    final fontWeight = _closestFontWeightTo(wght);
-    return (fontWeight, wght);
-  } else if (weight != null && wght == null) {
-    final fontWeight = _closestFontWeightTo(weight);
-    return (fontWeight, weight);
-  } else {
-    return (null, null);
-  }
-}
+// (FontWeight? fontWeight, double? wght) _resolveFontWeights(
+//   double? weight,
+//   double? wght,
+// ) {
+//   if (wght != null) {
+//     final fontWeight = _closestFontWeightTo(wght);
+//     return (fontWeight, wght);
+//   } else if (weight != null && wght == null) {
+//     final fontWeight = _closestFontWeightTo(weight);
+//     return (fontWeight, weight);
+//   } else {
+//     return (null, null);
+//   }
+// }
 
-bool _debugTextStyleHasFont(TextStyle? style) {
-  if (style == null) return false;
-  if (style.fontFamily != null) return true;
-  if (style.fontFamilyFallback case final fontFamilyFallback?) {
-    return fontFamilyFallback.isNotEmpty;
-  }
-  return false;
-}
+// bool _debugTextStyleHasFont(TextStyle? style) {
+//   if (style == null) return false;
+//   if (style.fontFamily != null) return true;
+//   if (style.fontFamilyFallback case final fontFamilyFallback?) {
+//     return fontFamilyFallback.isNotEmpty;
+//   }
+//   return false;
+// }
 
-bool _debugTextStyleHasWeight(TextStyle? style) {
-  if (style == null) return false;
-  if (style.fontWeight != null) return true;
-  if (style.fontVariations case final fontVariations?) {
-    return fontVariations.any((fontVariation) => fontVariation.axis == "wght");
-  }
-  return false;
-}
+// bool _debugTextStyleHasWeight(TextStyle? style) {
+//   if (style == null) return false;
+//   if (style.fontWeight != null) return true;
+//   if (style.fontVariations case final fontVariations?) {
+//     return fontVariations.any((fontVariation) => fontVariation.axis == "wght");
+//   }
+//   return false;
+// }
 
-bool _debugTextStyleHasSize(TextStyle? style) {
-  if (style == null) return false;
-  return style.fontSize != null;
-}
+// bool _debugTextStyleHasSize(TextStyle? style) {
+//   if (style == null) return false;
+//   return style.fontSize != null;
+// }
 
-bool _debugTextStyleHasLineHeight(TextStyle? style) {
-  if (style == null) return false;
-  return style.fontSize != null && style.height != null;
-}
+// bool _debugTextStyleHasLineHeight(TextStyle? style) {
+//   if (style == null) return false;
+//   return style.fontSize != null && style.height != null;
+// }
 
-bool _debugTextStyleHasTracking(TextStyle? style) {
-  if (style == null) return false;
-  return style.letterSpacing != null;
-}
+// bool _debugTextStyleHasTracking(TextStyle? style) {
+//   if (style == null) return false;
+//   return style.letterSpacing != null;
+// }
 
-extension on FontWeight {
-  double _toDouble() => value.toDouble();
-}
+// extension on FontWeight {
+//   double _toDouble() => value.toDouble();
+// }
 
-extension on TextStyle {
-  Map<String, double>? get _variableFontAxesOrNull => <String, double>{
-    for (final fontVariation in fontVariations ?? const <FontVariation>[])
-      fontVariation.axis: fontVariation.value,
-  };
+// extension on TextStyle {
+//   Map<String, double>? get _variableFontAxesOrNull => <String, double>{
+//     for (final fontVariation in fontVariations ?? const <FontVariation>[])
+//       fontVariation.axis: fontVariation.value,
+//   };
 
-  // Map<String, double> get _variableFontAxes => _variableFontAxesOrNull ?? {};
+//   Map<String, double> get _variableFontAxes => _variableFontAxesOrNull ?? {};
 
-  double? _variableFontAxis(String axis) => _variableFontAxesOrNull?[axis];
-}
+//   double? _variableFontAxis(String axis) => _variableFontAxesOrNull?[axis];
+// }
 
 abstract final class _VariableFontAxes {
-  static const String wght = "wght";
-  static const String grad = "GRAD";
-  static const String wdth = "wdth";
-  static const String rond = "ROND";
-  static const String opsz = "opsz";
-  static const String crsv = "CRSV";
-  static const String slnt = "slnt";
-  static const String fill = "FILL";
-  static const String hexp = "HEXP";
+  static const wght = "wght";
+  static const grad = "GRAD";
+  static const wdth = "wdth";
+  static const rond = "ROND";
+  static const opsz = "opsz";
+  static const crsv = "CRSV";
+  static const slnt = "slnt";
+  static const fill = "FILL";
+  static const hexp = "HEXP";
 }
 
-@immutable
 abstract class TypeStylePartial with Diagnosticable {
   const TypeStylePartial();
 
@@ -278,17 +279,61 @@ abstract class TypeStylePartial with Diagnosticable {
     if (hexp case final hexp?) FontVariation(_VariableFontAxes.hexp, hexp),
   ];
 
-  TextStyle toTextStyle({Color? color}) {
+  TextStyle toTextStyle({
+    bool inherit = true,
+    Color? color,
+    Color? backgroundColor,
+    FontStyle? fontStyle,
+    double? wordSpacing,
+    TextBaseline? textBaseline,
+    TextLeadingDistribution? leadingDistribution,
+    Locale? locale,
+    Paint? foreground,
+    Paint? background,
+    List<Shadow>? shadows,
+    List<FontFeature>? fontFeatures,
+    List<FontVariation>? fontVariations,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    TextDecorationStyle? decorationStyle,
+    double? decorationThickness,
+    String? debugLabel,
+    TextOverflow? overflow,
+  }) {
+    final fontFamily = font?.firstOrNull;
+    final fontFamilyFallback = font?.skip(1).toList();
     return TextStyle(
-      inherit: true,
-      fontFamily: font?.firstOrNull,
-      fontFamilyFallback: font?.skip(1).toList(),
-      fontWeight: weight != null ? _closestFontWeightTo(weight!) : null,
-      fontSize: size,
-      height: size != null && lineHeight != null ? lineHeight! / size! : null,
-      letterSpacing: tracking,
-      fontVariations: fontVariations,
+      inherit: inherit,
       color: color,
+      backgroundColor: backgroundColor,
+      fontSize: size,
+      fontWeight: _closestFontWeightToOrNull(weight),
+      fontStyle: fontStyle,
+      letterSpacing: tracking,
+      wordSpacing: wordSpacing,
+      textBaseline: textBaseline,
+      height: switch ((size, lineHeight)) {
+        (final size?, final lineHeight?) => lineHeight / size,
+        _ => null,
+      },
+      leadingDistribution: leadingDistribution,
+      locale: locale,
+      foreground: foreground,
+      background: background,
+      shadows: shadows,
+      fontFeatures: fontFeatures,
+      fontVariations: fontVariations != null && fontVariations.isNotEmpty
+          ? [...this.fontVariations, ...fontVariations]
+          : this.fontVariations,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationStyle: decorationStyle,
+      decorationThickness: decorationThickness,
+      debugLabel: debugLabel,
+      fontFamily: fontFamily,
+      fontFamilyFallback: fontFamilyFallback,
+      package: null,
+      overflow: overflow,
     );
   }
 
@@ -376,7 +421,6 @@ abstract class TypeStylePartial with Diagnosticable {
   }
 }
 
-@immutable
 class _TypeStylePartial extends TypeStylePartial {
   const _TypeStylePartial({
     this.font,
@@ -438,7 +482,6 @@ class _TypeStylePartial extends TypeStylePartial {
   final double? hexp;
 }
 
-@immutable
 abstract class TypeStyle extends TypeStylePartial {
   const TypeStyle();
 
@@ -646,20 +689,58 @@ abstract class TypeStyle extends TypeStylePartial {
   ];
 
   @override
-  TextStyle toTextStyle({Color? color}) {
+  TextStyle toTextStyle({
+    bool inherit = true,
+    Color? color,
+    Color? backgroundColor,
+    FontStyle? fontStyle,
+    double? wordSpacing,
+    TextBaseline? textBaseline,
+    TextLeadingDistribution? leadingDistribution,
+    Locale? locale,
+    Paint? foreground,
+    Paint? background,
+    List<Shadow>? shadows,
+    List<FontFeature>? fontFeatures,
+    List<FontVariation>? fontVariations,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    TextDecorationStyle? decorationStyle,
+    double? decorationThickness,
+    String? debugLabel,
+    TextOverflow? overflow,
+  }) {
+    final fontFamily = font.first;
     final fontFamilyFallback = font.skip(1).toList();
     return TextStyle(
-      inherit: true,
-      fontFamily: font.first,
-      fontFamilyFallback: fontFamilyFallback.isNotEmpty
-          ? fontFamilyFallback
-          : null,
-      fontWeight: _closestFontWeightTo(weight),
-      fontSize: size,
-      height: lineHeight / size,
-      letterSpacing: tracking,
-      fontVariations: fontVariations,
+      inherit: inherit,
       color: color,
+      backgroundColor: backgroundColor,
+      fontSize: size,
+      fontWeight: _closestFontWeightTo(weight),
+      fontStyle: fontStyle,
+      letterSpacing: tracking,
+      wordSpacing: wordSpacing,
+      textBaseline: textBaseline,
+      height: lineHeight / size,
+      leadingDistribution: leadingDistribution,
+      locale: locale,
+      foreground: foreground,
+      background: background,
+      shadows: shadows,
+      fontFeatures: fontFeatures,
+      fontVariations: fontVariations != null && fontVariations.isNotEmpty
+          ? [...this.fontVariations, ...fontVariations]
+          : this.fontVariations,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationStyle: decorationStyle,
+      decorationThickness: decorationThickness,
+      debugLabel: debugLabel,
+      fontFamily: fontFamily,
+      fontFamilyFallback: fontFamilyFallback,
+      package: null,
+      overflow: overflow,
     );
   }
 
@@ -743,7 +824,6 @@ abstract class TypeStyle extends TypeStylePartial {
   }
 }
 
-@immutable
 class _TypeStyle extends TypeStyle {
   const _TypeStyle({
     required this.font,

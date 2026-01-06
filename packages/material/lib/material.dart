@@ -17,7 +17,8 @@ export 'src/material/shape/corners_border.dart';
 export 'src/material/shape/corners.dart';
 export 'src/material/shape/shape_theme.dart';
 
-export 'src/material/state/state.dart';
+export 'src/material/state/state_property.dart';
+export 'src/material/state/states.dart';
 export 'src/material/state/state_theme.dart';
 
 export 'src/material/typography/type_style.dart';

@@ -394,7 +394,7 @@ class _RadioButtonState extends State<RadioButton>
     final child = SizedBox.fromSize(
       size: stateLayerSize,
       child: Listener(
-        behavior: HitTestBehavior.deferToChild,
+        behavior: .deferToChild,
         onPointerDown: !states.isDisabled ? _onPointerDown : null,
         onPointerUp: !states.isDisabled ? _onPointerUp : null,
         onPointerCancel: !states.isDisabled ? _onPointerCancel : null,
@@ -423,7 +423,7 @@ class _RadioButtonState extends State<RadioButton>
           widthFactor: 1.0,
           heightFactor: 1.0,
           child: TapRegion(
-            behavior: HitTestBehavior.deferToChild,
+            behavior: .deferToChild,
             consumeOutsideTaps: false,
             onTapOutside: !states.isDisabled ? _onTapOutside : null,
             onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,

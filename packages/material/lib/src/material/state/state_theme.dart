@@ -1,16 +1,5 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart'
-    show
-        Color,
-        WidgetState,
-        Colors,
-        Widget,
-        BuildContext,
-        Builder,
-        InheritedTheme;
-import 'state.dart';
+import 'package:material/src/material/flutter.dart';
 
-@immutable
 abstract class StateThemeDataPartial with Diagnosticable {
   const StateThemeDataPartial();
 
@@ -59,6 +48,9 @@ abstract class StateThemeDataPartial with Diagnosticable {
           draggedStateLayerOpacity: other.draggedStateLayerOpacity,
         )
       : this;
+
+  WidgetStateProperty<double> get asWidgetStateLayerOpacity =>
+      _WidgetStateLayerOpacityFromStateThemeDataPartial(this);
 
   @override
   // ignore: must_call_super
@@ -114,7 +106,6 @@ abstract class StateThemeDataPartial with Diagnosticable {
   );
 }
 
-@immutable
 class _StateThemeDataPartial extends StateThemeDataPartial {
   const _StateThemeDataPartial({
     this.hoverStateLayerOpacity,
@@ -136,7 +127,6 @@ class _StateThemeDataPartial extends StateThemeDataPartial {
   final double? draggedStateLayerOpacity;
 }
 
-@immutable
 abstract class StateThemeData extends StateThemeDataPartial {
   const StateThemeData();
 
@@ -228,7 +218,6 @@ abstract class StateThemeData extends StateThemeDataPartial {
   );
 }
 
-@immutable
 class _StateThemeData extends StateThemeData {
   const _StateThemeData({
     required this.hoverStateLayerOpacity,
@@ -256,7 +245,6 @@ class _StateThemeData extends StateThemeData {
   final double draggedStateLayerOpacity;
 }
 
-@immutable
 class StateTheme extends InheritedTheme {
   const StateTheme({super.key, required this.data, required super.child});
 
@@ -291,93 +279,53 @@ class StateTheme extends InheritedTheme {
       maybeOf(context) ?? const StateThemeData.fallback();
 }
 
-// class _StateLayerOpacity implements WidgetStateProperty<double> {
-//   const _StateLayerOpacity({
-//     this.hoverStateLayerOpacity,
-//     this.focusStateLayerOpacity,
-//     this.pressedStateLayerOpacity,
-//     this.draggedStateLayerOpacity,
-//   });
+class _WidgetStateLayerOpacityFromStateThemeDataPartial
+    implements WidgetStateProperty<double> {
+  const _WidgetStateLayerOpacityFromStateThemeDataPartial(this._stateTheme);
 
-//   final double? hoverStateLayerOpacity;
-//   final double? focusStateLayerOpacity;
-//   final double? pressedStateLayerOpacity;
-//   final double? draggedStateLayerOpacity;
+  final StateThemeDataPartial _stateTheme;
 
-//   @override
-//   double resolve(Set<WidgetState> states) {
-//     if (states.contains(WidgetState.disabled)) {
-//       return 0.0;
-//     }
-//     if (draggedStateLayerOpacity != null &&
-//         states.contains(WidgetState.dragged)) {
-//       return draggedStateLayerOpacity!;
-//     }
-//     if (pressedStateLayerOpacity != null &&
-//         states.contains(WidgetState.pressed)) {
-//       return pressedStateLayerOpacity!;
-//     }
-//     if (focusStateLayerOpacity != null &&
-//         states.contains(WidgetState.focused)) {
-//       return focusStateLayerOpacity!;
-//     }
-//     if (hoverStateLayerOpacity != null &&
-//         states.contains(WidgetState.hovered)) {
-//       return hoverStateLayerOpacity!;
-//     }
-//     return 0.0;
-//   }
-// }
+  @override
+  double resolve(WidgetStates states) => switch (_stateTheme) {
+    _ when states.contains(WidgetState.disabled) => 0.0,
+    StateThemeDataPartial(:final draggedStateLayerOpacity?)
+        when states.contains(WidgetState.dragged) =>
+      draggedStateLayerOpacity,
+    StateThemeDataPartial(:final pressedStateLayerOpacity?)
+        when states.contains(WidgetState.pressed) =>
+      pressedStateLayerOpacity,
+    StateThemeDataPartial(:final focusStateLayerOpacity?)
+        when states.contains(WidgetState.focused) =>
+      focusStateLayerOpacity,
+    StateThemeDataPartial(:final hoverStateLayerOpacity?)
+        when states.contains(WidgetState.hovered) =>
+      hoverStateLayerOpacity,
+    _ => 0.0,
+  };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _WidgetStateLayerOpacityFromStateThemeDataPartial &&
+          _stateTheme == other._stateTheme;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _stateTheme);
+}
 
 extension StateThemeDataPartialExtension on StateThemeDataPartial {
+  @Deprecated("Use asWidgetStateLayerOpacity instead.")
   WidgetStateProperty<double> get stateLayerOpacity =>
-      WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.disabled)) {
-          return 0.0;
-        }
-        if (draggedStateLayerOpacity != null &&
-            states.contains(WidgetState.dragged)) {
-          return draggedStateLayerOpacity!;
-        }
-        if (pressedStateLayerOpacity != null &&
-            states.contains(WidgetState.pressed)) {
-          return pressedStateLayerOpacity!;
-        }
-        if (focusStateLayerOpacity != null &&
-            states.contains(WidgetState.focused)) {
-          return focusStateLayerOpacity!;
-        }
-        if (hoverStateLayerOpacity != null &&
-            states.contains(WidgetState.hovered)) {
-          return hoverStateLayerOpacity!;
-        }
-        return 0.0;
-      });
+      asWidgetStateLayerOpacity;
 }
 
 extension StateThemeDataExtension on StateThemeData {
+  @Deprecated("Use asWidgetStateLayerOpacity instead.")
   WidgetStateProperty<double> get stateLayerOpacity =>
-      WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.disabled)) {
-          return 0.0;
-        }
-        if (states.contains(WidgetState.dragged)) {
-          return draggedStateLayerOpacity;
-        }
-        if (states.contains(WidgetState.pressed)) {
-          return pressedStateLayerOpacity;
-        }
-        if (states.contains(WidgetState.focused)) {
-          return focusStateLayerOpacity;
-        }
-        if (states.contains(WidgetState.hovered)) {
-          return hoverStateLayerOpacity;
-        }
-        return 0.0;
-      });
+      asWidgetStateLayerOpacity;
 }
 
-@immutable
 class StateLayerColor<S extends Object?> implements StateProperty<Color, S> {
   const StateLayerColor({this.color, this.opacity});
 
@@ -388,12 +336,26 @@ class StateLayerColor<S extends Object?> implements StateProperty<Color, S> {
   Color resolve(S states) {
     final resolvedColor = color?.resolve(states);
     if (resolvedColor == null) return Colors.transparent;
+    if (resolvedColor.a <= 0.0) return resolvedColor;
+
     final resolvedOpacity = opacity?.resolve(states) ?? 0.0;
-    return resolvedColor.withValues(alpha: resolvedColor.a * resolvedOpacity);
+    return resolvedOpacity > 0.0
+        ? resolvedColor.withValues(alpha: resolvedColor.a * resolvedOpacity)
+        : resolvedColor.withAlpha(0);
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is StateLayerColor<S> &&
+          color == other.color &&
+          opacity == other.opacity;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, color, opacity);
 }
 
-@immutable
 class WidgetStateLayerColor extends StateLayerColor<WidgetStates>
     implements WidgetStateProperty<Color> {
   const WidgetStateLayerColor({super.color, super.opacity});

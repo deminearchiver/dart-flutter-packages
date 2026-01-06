@@ -521,7 +521,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
     final child = SizedBox.fromSize(
       size: stateLayerSize,
       child: Listener(
-        behavior: HitTestBehavior.deferToChild,
+        behavior: .deferToChild,
         onPointerDown: !states.isDisabled ? _onPointerDown : null,
         onPointerUp: !states.isDisabled ? _onPointerUp : null,
         onPointerCancel: !states.isDisabled ? _onPointerCancel : null,
@@ -551,7 +551,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
           widthFactor: 1.0,
           heightFactor: 1.0,
           child: TapRegion(
-            behavior: HitTestBehavior.deferToChild,
+            behavior: .deferToChild,
             consumeOutsideTaps: false,
             onTapOutside: !states.isDisabled ? _onTapOutside : null,
             onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
@@ -651,6 +651,7 @@ class _CheckboxPaint extends SingleChildRenderObjectWidget {
         checkFraction: checkFraction,
         crossCenterGravitation: crossCenterGravitation,
         childPosition: childPosition,
+        textDirection: Directionality.maybeOf(context),
       );
 
   @override
@@ -670,7 +671,8 @@ class _CheckboxPaint extends SingleChildRenderObjectWidget {
       ..iconStrokeJoin = iconStrokeJoin
       ..checkFraction = checkFraction
       ..crossCenterGravitation = crossCenterGravitation
-      ..childPosition = childPosition;
+      ..childPosition = childPosition
+      ..textDirection = Directionality.maybeOf(context);
   }
 }
 
@@ -689,6 +691,7 @@ class _RenderCheckboxPaint extends RenderBox
     required ValueListenable<double> checkFraction,
     required ValueListenable<double> crossCenterGravitation,
     required _CheckboxChildPosition childPosition,
+    TextDirection? textDirection,
     RenderBox? child,
   }) : _minTapTargetSize = minTapTargetSize,
        _containerSize = containerSize,
@@ -701,7 +704,8 @@ class _RenderCheckboxPaint extends RenderBox
        _iconStrokeJoin = iconStrokeJoin,
        _checkFraction = checkFraction,
        _crossCenterGravitation = crossCenterGravitation,
-       _childPosition = childPosition {
+       _childPosition = childPosition,
+       _textDirection = textDirection {
     this.child = child;
   }
 
@@ -816,6 +820,14 @@ class _RenderCheckboxPaint extends RenderBox
   set childPosition(_CheckboxChildPosition value) {
     if (_childPosition == value) return;
     _childPosition = value;
+    markNeedsPaint();
+  }
+
+  TextDirection? _textDirection;
+  TextDirection? get textDirection => _textDirection;
+  set textDirection(TextDirection? value) {
+    if (_textDirection == value) return;
+    _textDirection = value;
     markNeedsPaint();
   }
 
@@ -943,12 +955,25 @@ class _RenderCheckboxPaint extends RenderBox
   }
 
   void _paintBox(PaintingContext context, Rect shiftedRect) {
+    final shape = containerShape.value;
     final paint = Paint()
       ..style = .fill
       ..color = containerColor.value;
-    containerShape.value
-      ..paintInterior(context.canvas, shiftedRect, paint)
-      ..paint(context.canvas, shiftedRect);
+    if (shape.preferPaintInterior) {
+      shape.paintInterior(
+        context.canvas,
+        shiftedRect,
+        paint,
+        textDirection: textDirection,
+      );
+    } else {
+      final path = shape.getOuterPath(
+        shiftedRect,
+        textDirection: textDirection,
+      );
+      context.canvas.drawPath(path, paint);
+    }
+    shape.paint(context.canvas, shiftedRect);
   }
 
   void _paintCheck(PaintingContext context, Rect shiftedRect) {
