@@ -1,18 +1,13 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
-import 'package:material/src/material/flutter.dart';
-
+import 'package:material_color_utilities/material_color_utilities.dart'
+    as mcu_legacy
+    show QuantizerCelebi, QuantizerResult, Score;
 import 'package:material/material_color_utilities.dart'
-    show
-        Hct,
-        DynamicScheme,
-        Variant,
-        Platform,
-        SpecVersion,
-        Score,
-        QuantizerResult,
-        QuantizerCelebi;
+    show Hct, DynamicScheme, Variant, Platform, SpecVersion;
+
+import 'package:material/src/material/flutter.dart';
 
 typedef DynamicSchemePlatform = Platform;
 typedef DynamicSchemeSpecVersion = SpecVersion;
@@ -20,7 +15,7 @@ typedef ColorSchemeLegacy = ColorScheme;
 
 // TODO: replace with a typedef
 extension on DynamicSchemeVariant {
-  Variant _toVariant() => switch (this) {
+  Variant get _asVariant => switch (this) {
     .monochrome => .monochrome,
     .neutral => .neutral,
     .tonalSpot => .tonalSpot,
@@ -2315,7 +2310,7 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
   }) => ColorThemeData.fromDynamicScheme(
     DynamicScheme.fromPalettesOrKeyColors(
       sourceColorHct: sourceColor._toHct(),
-      variant: variant._toVariant(),
+      variant: variant._asVariant,
       // Important: exhaustive check in case new enum members get added
       isDark: switch (brightness) {
         .light => false,
@@ -4182,29 +4177,27 @@ Future<Color> _contentBasedSourceColor(ImageProvider image) async {
   );
 
   // Score colors for color scheme suitability.
-  final scoredResults = Score.score(colorToCount, 1);
-  final baseColor = Color(scoredResults.first);
-  return baseColor;
+  final scoredResults = mcu_legacy.Score.score(colorToCount, desired: 1);
+  return Color(scoredResults.first);
 }
 
 /// Extracts bytes from an [ImageProvider] and returns a [QuantizerResult]
 /// containing the most dominant colors.
-Future<QuantizerResult> _extractColorsFromImageProvider(
+Future<mcu_legacy.QuantizerResult> _extractColorsFromImageProvider(
   ImageProvider imageProvider,
 ) async {
   final scaledImage = await _imageProviderToScaled(imageProvider);
   final imageBytes = await scaledImage.toByteData();
 
-  final quantizerResult = const QuantizerCelebi().quantize(
+  final quantizerResult = await mcu_legacy.QuantizerCelebi().quantize(
     imageBytes!.buffer.asUint32List(),
     128,
-    // TODO: implement in upstream material-color-utilities-dart
-    // returnInputPixelToClusterPixel: true,
+    returnInputPixelToClusterPixel: true,
   );
   return quantizerResult;
 }
 
-/// Scale image size down to reduce computation time of color extraction.
+// Scale image size down to reduce computation time of color extraction.
 Future<ui.Image> _imageProviderToScaled(ImageProvider imageProvider) async {
   const maxDimension = 112.0;
   final stream = imageProvider.resolve(
@@ -4222,8 +4215,8 @@ Future<ui.Image> _imageProviderToScaled(ImageProvider imageProvider) async {
       final image = info.image;
       final width = image.width;
       final height = image.height;
-      double paintWidth = width.toDouble();
-      double paintHeight = height.toDouble();
+      var paintWidth = width.toDouble();
+      var paintHeight = height.toDouble();
       assert(width > 0 && height > 0);
 
       final rescale = width > maxDimension || height > maxDimension;
@@ -4239,7 +4232,7 @@ Future<ui.Image> _imageProviderToScaled(ImageProvider imageProvider) async {
       final canvas = Canvas(pictureRecorder);
       paintImage(
         canvas: canvas,
-        rect: .fromLTRB(0, 0, paintWidth, paintHeight),
+        rect: .fromLTRB(0.0, 0.0, paintWidth, paintHeight),
         image: image,
         filterQuality: .none,
       );
@@ -4252,21 +4245,28 @@ Future<ui.Image> _imageProviderToScaled(ImageProvider imageProvider) async {
       imageCompleter.complete(info.image);
     },
     onError: (exception, stackTrace) {
+      loadFailureTimeout?.cancel();
       stream.removeListener(listener);
-      throw Exception("Failed to render image: $exception");
+      imageCompleter.completeError(
+        Exception("Failed to render image: $exception"),
+        stackTrace,
+      );
     },
   );
+
   loadFailureTimeout = Timer(const Duration(seconds: 5), () {
     stream.removeListener(listener);
     imageCompleter.completeError(
       TimeoutException("Timeout occurred trying to load image"),
     );
   });
+
   stream.addListener(listener);
   await imageCompleter.future;
   return scaledImage;
 }
 
+// Converts AABBGGRR color int to AARRGGBB format.
 int _getArgbFromAbgr(int abgr) {
   const exceptRMask = 0xFF00FFFF;
   const onlyRMask = ~exceptRMask;

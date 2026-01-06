@@ -88,11 +88,11 @@ enum WindowWidthSizeClass implements Comparable<WindowWidthSizeClass> {
   int compareTo(WindowWidthSizeClass other) =>
       breakpoint.compareTo(other.breakpoint);
 
-  static const double _compactLowerBound = 0.0;
-  static const double _mediumLowerBound = 600.0;
-  static const double _expandedLowerBound = 840.0;
-  static const double _largeLowerBound = 1200.0;
-  static const double _extraLargeLowerBound = 1600.0;
+  static const _compactLowerBound = 0.0;
+  static const _mediumLowerBound = 600.0;
+  static const _expandedLowerBound = 840.0;
+  static const _largeLowerBound = 1200.0;
+  static const _extraLargeLowerBound = 1600.0;
 
   static WindowWidthSizeClass? maybeOf(BuildContext context) {
     final width = MediaQuery.maybeWidthOf(context);
@@ -135,9 +135,9 @@ enum WindowHeightSizeClass implements Comparable<WindowHeightSizeClass> {
   int compareTo(WindowHeightSizeClass other) =>
       breakpoint.compareTo(other.breakpoint);
 
-  static const double _compactLowerBound = 0.0;
-  static const double _mediumLowerBound = 480.0;
-  static const double _expandedLowerBound = 900.0;
+  static const _compactLowerBound = 0.0;
+  static const _mediumLowerBound = 480.0;
+  static const _expandedLowerBound = 900.0;
 
   static WindowHeightSizeClass? maybeOf(BuildContext context) {
     final height = MediaQuery.maybeHeightOf(context);

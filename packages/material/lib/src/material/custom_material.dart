@@ -1,5 +1,5 @@
-import 'package:material/src/material/flutter.dart';
 import 'package:flutter/material.dart' as flutter;
+import 'package:material/src/material/flutter.dart';
 
 /// A piece of material.
 ///
@@ -49,7 +49,7 @@ import 'package:flutter/material.dart' as flutter;
 /// ## Painting over the material
 ///
 /// Material widgets will often trigger reactions on their nearest material
-/// ancestor. For example, [ListTile.hoverColor] triggers a reaction on the
+/// ancestor. For example, [InkWell] triggers a reaction on the
 /// tile's material when a pointer is hovering over it. These reactions will be
 /// obscured if any widget in between them and the material paints in such a
 /// way as to obscure the material (such as setting a [BoxDecoration.color] on
@@ -65,13 +65,9 @@ import 'package:flutter/material.dart' as flutter;
 class Material extends StatelessWidget {
   /// Creates a piece of material.
   ///
-  /// The [elevation] must be non-negative.
+  /// Unspecified properties will be filled using inherited themes.
   ///
-  /// If a [shape] is specified, then the [borderRadius] property must be
-  /// null and the [type] property must not be [MaterialType.circle]. If the
-  /// [borderRadius] is specified, then the [type] property must not be
-  /// [MaterialType.circle]. In both cases, these restrictions are intended to
-  /// catch likely errors.
+  /// The [elevation] must be non-negative.
   const Material({
     super.key,
     this.clipBehavior = Clip.none,
@@ -83,7 +79,12 @@ class Material extends StatelessWidget {
     this.child,
   }) : assert(elevation == null || elevation >= 0.0);
 
-  const Material.empty({
+  /// Creates a piece of material.
+  ///
+  /// Unspecified properties will be set to constant values.
+  ///
+  /// The [elevation] must be non-negative.
+  const Material.raw({
     super.key,
     this.clipBehavior = Clip.none,
     this.borderOnForeground = true,
@@ -94,12 +95,7 @@ class Material extends StatelessWidget {
     this.child,
   }) : assert(elevation >= 0.0);
 
-  /// {@template flutter.material.Material.clipBehavior}
-  /// The content will be clipped (or not) according to this option.
-  ///
-  /// See the enum [Clip] for details of all possible options and their common
-  /// use cases.
-  /// {@endtemplate}
+  /// {@macro flutter.material.Material.clipBehavior}
   ///
   /// Defaults to [Clip.none].
   final Clip clipBehavior;
@@ -112,13 +108,8 @@ class Material extends StatelessWidget {
 
   /// Defines the material's shape as well its shadow.
   ///
-  /// {@template flutter.material.material.shape}
-  /// If shape is non null, the [borderRadius] is ignored and the material's
-  /// clip boundary and shadow are defined by the shape.
-  ///
   /// A shadow is only displayed if the [elevation] is greater than
   /// zero.
-  /// {@endtemplate}
   final ShapeBorder? shape;
 
   /// The color to paint the material.
@@ -251,17 +242,4 @@ class Material extends StatelessWidget {
   ///   no [Material] ancestor is found.
   static MaterialInkController of(BuildContext context) =>
       flutter.Material.of(context);
-}
-
-extension DefaultTextStyleExtension on DefaultTextStyle {
-  Widget wrap(BuildContext context, Widget child) => DefaultTextStyle(
-    style: style,
-    textAlign: textAlign,
-    maxLines: maxLines,
-    softWrap: softWrap,
-    overflow: overflow,
-    textWidthBasis: textWidthBasis,
-    textHeightBehavior: textHeightBehavior,
-    child: child,
-  );
 }

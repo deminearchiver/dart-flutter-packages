@@ -525,7 +525,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
         onPointerDown: !states.isDisabled ? _onPointerDown : null,
         onPointerUp: !states.isDisabled ? _onPointerUp : null,
         onPointerCancel: !states.isDisabled ? _onPointerCancel : null,
-        child: Material.empty(
+        child: Material.raw(
           child: InkWell(
             statesController: _statesController,
             customBorder: stateLayerShape,

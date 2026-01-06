@@ -178,13 +178,10 @@ class RenderCenterOptically extends RenderShiftedBox {
     final child = this.child;
     if (child == null) return constraints.smallest;
     final size = constraints.constrain(layoutChild(child, constraints));
-    if (enabled) {
-      final borderRadius = _resolvedCorners.toBorderRadius(size);
-      final paddingCorrection = _getPaddingCorrection(borderRadius);
-      positionChild(child, paddingCorrection);
-    } else {
-      positionChild(child, .zero);
-    }
+    final paddingCorrection = enabled
+        ? _getPaddingCorrection(_resolvedCorners.toBorderRadius(size))
+        : Offset.zero;
+    positionChild(child, paddingCorrection);
     return size;
   }
 
