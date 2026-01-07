@@ -9,7 +9,7 @@ import 'tone_delta_pair.dart';
 import 'contrast_curve.dart';
 import 'dynamic_scheme.dart';
 
-typedef DynamicSchemeCallback<T> = T Function(DynamicScheme s);
+typedef DynamicSchemeCallback<T> = T Function(DynamicScheme scheme);
 
 /// A color that adjusts itself based on UI state, represented by DynamicScheme.
 ///
@@ -332,8 +332,7 @@ final class DynamicColor {
 
   static DynamicSchemeCallback<double> getInitialToneFromBackground([
     DynamicSchemeCallback<DynamicColor?>? background,
-  ]) {
-    if (background == null) return (s) => 50.0;
-    return (scheme) => background.call(scheme)?.getTone(scheme) ?? 50.0;
-  }
+  ]) => background != null
+      ? (scheme) => background(scheme)?.getTone(scheme) ?? 50.0
+      : (_) => 50.0;
 }
