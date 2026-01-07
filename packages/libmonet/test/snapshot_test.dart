@@ -417,9 +417,11 @@ void main() {
   // );
 }
 
+final _materialDynamicColors = MaterialDynamicColors();
+
 void _expectMatchesSnapshot(String snapshotFilePath) {
   final dynamicColorsMap = Map<String, DynamicColor>.fromEntries(
-    const MaterialDynamicColors().allDynamicColors.map((callback) {
+    _materialDynamicColors.allDynamicColors.map((callback) {
       final dynamicColor = callback();
       return MapEntry(dynamicColor.name, dynamicColor);
     }),

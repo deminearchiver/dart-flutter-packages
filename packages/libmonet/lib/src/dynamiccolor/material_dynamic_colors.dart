@@ -1,11 +1,13 @@
+import 'dart:collection';
+
 import 'color_spec_2025.dart';
 import 'dynamic_color.dart';
 import 'dynamic_scheme.dart';
 
 final class MaterialDynamicColors {
-  const MaterialDynamicColors() : _colorSpec = const ColorSpec2025();
+  MaterialDynamicColors();
 
-  final ColorSpec2025 _colorSpec;
+  final ColorSpec2025 _colorSpec = const ColorSpec2025();
 
   DynamicColor highestSurface(DynamicScheme scheme) =>
       _colorSpec.highestSurface(scheme);
@@ -153,8 +155,8 @@ final class MaterialDynamicColors {
   DynamicColor get textHintInverse => _colorSpec.textHintInverse;
 
   /// All dynamic colors in Material Design system.
-  List<DynamicColor Function()> get allDynamicColors =>
-      <DynamicColor Function()>[
+  late final List<DynamicColor Function()> allDynamicColors =
+      UnmodifiableListView([
         () => primaryPaletteKeyColor,
         () => secondaryPaletteKeyColor,
         () => tertiaryPaletteKeyColor,
@@ -222,5 +224,5 @@ final class MaterialDynamicColors {
         () => textPrimaryInverseDisableOnly,
         () => textSecondaryAndTertiaryInverseDisabled,
         () => textHintInverse,
-      ];
+      ]);
 }

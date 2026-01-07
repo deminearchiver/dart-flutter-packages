@@ -204,6 +204,8 @@ class DynamicScheme {
 
   int getArgb(DynamicColor dynamicColor) => dynamicColor.getArgb(this);
 
+  final _dynamicColors = MaterialDynamicColors();
+
   int get primaryPaletteKeyColor =>
       getArgb(_dynamicColors.primaryPaletteKeyColor);
 
@@ -399,8 +401,6 @@ class DynamicScheme {
 
   static const SpecVersion defaultSpecVersion = .spec2021;
   static const Platform defaultPlatform = .phone;
-
-  static const MaterialDynamicColors _dynamicColors = MaterialDynamicColors();
 
   static DynamicScheme from(
     DynamicScheme other,
