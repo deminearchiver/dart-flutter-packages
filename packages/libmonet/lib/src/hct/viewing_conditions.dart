@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
-import '../utils/math_utils.dart';
 import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 
 import 'cam16.dart';
 

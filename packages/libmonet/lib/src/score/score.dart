@@ -1,5 +1,5 @@
-import '../utils/math_utils.dart';
 import '../hct/hct.dart';
+import '../utils/math_utils.dart';
 
 /// Given a large set of colors, remove colors that are unsuitable for
 /// a UI theme, and rank the rest based on suitability.

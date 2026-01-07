@@ -1,20 +1,6 @@
 // ignore_for_file: recursive_getters
 
-import 'dart:math' as math;
-
-import '../utils/math_utils.dart';
-import '../hct/hct.dart';
-import '../contrast/contrast.dart';
-import '../dislike/dislike_analyzer.dart';
-import '../temperature/temperature_cache.dart';
-import '../palettes/tonal_palette.dart';
-
-import 'color_spec.dart';
-import 'contrast_curve.dart';
-import 'dynamic_color.dart';
-import 'dynamic_scheme.dart';
-import 'tone_delta_pair.dart';
-import 'variant.dart';
+part of 'color_spec.dart';
 
 /// [ColorSpec] implementation for the 2021 spec.
 final class ColorSpec2021 implements ColorSpec {

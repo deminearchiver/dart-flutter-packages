@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
 import 'point_provider_lab.dart';
-import 'quantizer.dart';
 import 'quantizer_result.dart';
+import 'quantizer.dart';
 
 const int _maxIterations = 10;
 const double _minMovementDistance = 3.0;

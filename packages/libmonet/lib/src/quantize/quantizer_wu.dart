@@ -1,8 +1,8 @@
 import '../utils/color_utils.dart';
 
-import 'quantizer.dart';
 import 'quantizer_map.dart';
 import 'quantizer_result.dart';
+import 'quantizer.dart';
 
 const int _indexBits = 5;
 const int _indexCount = ((1 << _indexBits) + 1);

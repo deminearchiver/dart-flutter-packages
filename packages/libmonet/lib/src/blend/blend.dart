@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
-import '../utils/math_utils.dart';
-import '../utils/color_utils.dart';
 import '../hct/cam16.dart';
 import '../hct/hct.dart';
+import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 
 /// Functions for blending in HCT and CAM16.
 abstract final class Blend {

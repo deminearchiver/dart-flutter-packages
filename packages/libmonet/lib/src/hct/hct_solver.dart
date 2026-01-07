@@ -2,11 +2,11 @@ import 'dart:math' as math;
 
 import 'package:meta/meta.dart';
 
-import '../utils/math_utils.dart';
 import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 
-import 'viewing_conditions.dart';
 import 'cam16.dart';
+import 'viewing_conditions.dart';
 
 abstract final class HctSolver {
   static const _scaledDiscountFromLinrgb = <List<double>>[

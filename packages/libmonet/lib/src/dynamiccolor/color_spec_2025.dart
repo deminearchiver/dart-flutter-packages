@@ -1,49 +1,15 @@
 // ignore_for_file: recursive_getters
 
-import 'dart:math' as math;
-
-import '../utils/math_utils.dart';
-import '../hct/hct.dart';
-import '../contrast/contrast.dart';
-import '../palettes/tonal_palette.dart';
-
-import 'color_spec.dart';
-import 'color_spec_2021.dart';
-import 'contrast_curve.dart';
-import 'dynamic_color.dart';
-import 'dynamic_scheme.dart';
-import 'tone_delta_pair.dart';
-import 'variant.dart';
+part of 'color_spec.dart';
 
 /// [ColorSpec] implementation for the 2025 spec.
-final class ColorSpec2025 implements ColorSpec {
-  const ColorSpec2025() : _baseSpec = const ColorSpec2021();
-
-  final ColorSpec2021 _baseSpec;
-
-  @override
-  DynamicColor get primaryPaletteKeyColor => _baseSpec.primaryPaletteKeyColor;
-
-  @override
-  DynamicColor get secondaryPaletteKeyColor =>
-      _baseSpec.secondaryPaletteKeyColor;
-
-  @override
-  DynamicColor get tertiaryPaletteKeyColor => _baseSpec.tertiaryPaletteKeyColor;
-
-  @override
-  DynamicColor get neutralPaletteKeyColor => _baseSpec.neutralPaletteKeyColor;
-
-  @override
-  DynamicColor get neutralVariantPaletteKeyColor =>
-      _baseSpec.neutralVariantPaletteKeyColor;
-  @override
-  DynamicColor get errorPaletteKeyColor => _baseSpec.errorPaletteKeyColor;
+final class ColorSpec2025 extends ColorSpec2021 implements ColorSpec {
+  const ColorSpec2025();
 
   @override
   DynamicColor get background {
     final color2025 = surface.copyWith(name: "background");
-    return _baseSpec.background.extendSpecVersion(.spec2025, color2025);
+    return super.background.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -53,7 +19,7 @@ final class ColorSpec2025 implements ColorSpec {
       tone: (scheme) =>
           scheme.platform == .watch ? 100.0 : onSurface.getTone(scheme),
     );
-    return _baseSpec.onBackground.extendSpecVersion(.spec2025, color2025);
+    return super.onBackground.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -80,7 +46,7 @@ final class ColorSpec2025 implements ColorSpec {
       },
       isBackground: true,
     );
-    return _baseSpec.surface.extendSpecVersion(SpecVersion.spec2025, color2025);
+    return super.surface.extendSpecVersion(SpecVersion.spec2025, color2025);
   }
 
   @override
@@ -117,7 +83,7 @@ final class ColorSpec2025 implements ColorSpec {
         return 1.0;
       },
     );
-    return _baseSpec.surfaceDim.extendSpecVersion(.spec2025, color2025);
+    return super.surfaceDim.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -154,7 +120,7 @@ final class ColorSpec2025 implements ColorSpec {
         return 1.0;
       },
     );
-    return _baseSpec.surfaceBright.extendSpecVersion(.spec2025, color2025);
+    return super.surfaceBright.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -165,10 +131,7 @@ final class ColorSpec2025 implements ColorSpec {
       tone: (scheme) => scheme.isDark ? 0.0 : 100.0,
       isBackground: true,
     );
-    return _baseSpec.surfaceContainerLowest.extendSpecVersion(
-      .spec2025,
-      color2025,
-    );
+    return super.surfaceContainerLowest.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -209,10 +172,7 @@ final class ColorSpec2025 implements ColorSpec {
         return 1.0;
       },
     );
-    return _baseSpec.surfaceContainerLow.extendSpecVersion(
-      .spec2025,
-      color2025,
-    );
+    return super.surfaceContainerLow.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -253,7 +213,7 @@ final class ColorSpec2025 implements ColorSpec {
         return 1.0;
       },
     );
-    return _baseSpec.surfaceContainer.extendSpecVersion(.spec2025, color2025);
+    return super.surfaceContainer.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -294,10 +254,7 @@ final class ColorSpec2025 implements ColorSpec {
         return 1.0;
       },
     );
-    return _baseSpec.surfaceContainerHigh.extendSpecVersion(
-      .spec2025,
-      color2025,
-    );
+    return super.surfaceContainerHigh.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -332,7 +289,7 @@ final class ColorSpec2025 implements ColorSpec {
         return 1.0;
       },
     );
-    return _baseSpec.surfaceContainerHighest.extendSpecVersion(
+    return super.surfaceContainerHighest.extendSpecVersion(
       .spec2025,
       color2025,
     );
@@ -381,13 +338,13 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(11)
           : _getContrastCurve(9),
     );
-    return _baseSpec.onSurface.extendSpecVersion(.spec2025, color2025);
+    return super.onSurface.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
   DynamicColor get surfaceVariant {
     final color2025 = surfaceContainerHighest.copyWith(name: "surface_variant");
-    return _baseSpec.surfaceVariant.extendSpecVersion(.spec2025, color2025);
+    return super.surfaceVariant.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -422,7 +379,7 @@ final class ColorSpec2025 implements ColorSpec {
                 : _getContrastCurve(4.5)
           : _getContrastCurve(7.0),
     );
-    return _baseSpec.onSurfaceVariant.extendSpecVersion(.spec2025, color2025);
+    return super.onSurfaceVariant.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -433,7 +390,7 @@ final class ColorSpec2025 implements ColorSpec {
       tone: (scheme) => scheme.isDark ? 98.0 : 4.0,
       isBackground: true,
     );
-    return _baseSpec.inverseSurface.extendSpecVersion(.spec2025, color2025);
+    return super.inverseSurface.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -444,7 +401,7 @@ final class ColorSpec2025 implements ColorSpec {
       background: (scheme) => inverseSurface,
       contrastCurve: (scheme) => _getContrastCurve(7),
     );
-    return _baseSpec.inverseOnSurface.extendSpecVersion(.spec2025, color2025);
+    return super.inverseOnSurface.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -477,7 +434,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(3)
           : _getContrastCurve(4.5),
     );
-    return _baseSpec.outline.extendSpecVersion(SpecVersion.spec2025, color2025);
+    return super.outline.extendSpecVersion(SpecVersion.spec2025, color2025);
   }
 
   @override
@@ -510,19 +467,13 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(1.5)
           : _getContrastCurve(3),
     );
-    return _baseSpec.outlineVariant.extendSpecVersion(.spec2025, color2025);
+    return super.outlineVariant.extendSpecVersion(.spec2025, color2025);
   }
-
-  @override
-  DynamicColor get shadow => _baseSpec.shadow;
-
-  @override
-  DynamicColor get scrim => _baseSpec.scrim;
 
   @override
   DynamicColor get surfaceTint {
     final color2025 = primary.copyWith(name: "surface_tint");
-    return _baseSpec.surfaceTint.extendSpecVersion(.spec2025, color2025);
+    return super.surfaceTint.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -597,7 +548,7 @@ final class ColorSpec2025 implements ColorSpec {
             )
           : null,
     );
-    return _baseSpec.primary.extendSpecVersion(SpecVersion.spec2025, color2025);
+    return super.primary.extendSpecVersion(SpecVersion.spec2025, color2025);
   }
 
   @override
@@ -637,7 +588,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(6)
           : _getContrastCurve(7),
     );
-    return _baseSpec.onPrimary.extendSpecVersion(.spec2025, color2025);
+    return super.onPrimary.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -695,7 +646,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(1.5)
           : null,
     );
-    return _baseSpec.primaryContainer.extendSpecVersion(.spec2025, color2025);
+    return super.primaryContainer.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -708,7 +659,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(6)
           : _getContrastCurve(7),
     );
-    return _baseSpec.onPrimaryContainer.extendSpecVersion(.spec2025, color2025);
+    return super.onPrimaryContainer.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -722,7 +673,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(6)
           : _getContrastCurve(7),
     );
-    return _baseSpec.inversePrimary.extendSpecVersion(.spec2025, color2025);
+    return super.inversePrimary.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -767,7 +718,7 @@ final class ColorSpec2025 implements ColorSpec {
             )
           : null,
     );
-    return _baseSpec.secondary.extendSpecVersion(.spec2025, color2025);
+    return super.secondary.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -806,7 +757,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(6)
           : _getContrastCurve(7),
     );
-    return _baseSpec.onSecondary.extendSpecVersion(.spec2025, color2025);
+    return super.onSecondary.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -849,7 +800,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(1.5)
           : null,
     );
-    return _baseSpec.secondaryContainer.extendSpecVersion(.spec2025, color2025);
+    return super.secondaryContainer.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -862,10 +813,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(6)
           : _getContrastCurve(7),
     );
-    return _baseSpec.onSecondaryContainer.extendSpecVersion(
-      .spec2025,
-      color2025,
-    );
+    return super.onSecondaryContainer.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -915,7 +863,7 @@ final class ColorSpec2025 implements ColorSpec {
             )
           : null,
     );
-    return _baseSpec.tertiary.extendSpecVersion(.spec2025, color2025);
+    return super.tertiary.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -954,7 +902,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(6)
           : _getContrastCurve(7),
     );
-    return _baseSpec.onTertiary.extendSpecVersion(.spec2025, color2025);
+    return super.onTertiary.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1012,7 +960,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(1.5)
           : null,
     );
-    return _baseSpec.tertiaryContainer.extendSpecVersion(.spec2025, color2025);
+    return super.tertiaryContainer.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1025,10 +973,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(6)
           : _getContrastCurve(7),
     );
-    return _baseSpec.onTertiaryContainer.extendSpecVersion(
-      .spec2025,
-      color2025,
-    );
+    return super.onTertiaryContainer.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1066,7 +1011,7 @@ final class ColorSpec2025 implements ColorSpec {
             )
           : null,
     );
-    return _baseSpec.error.extendSpecVersion(SpecVersion.spec2025, color2025);
+    return super.error.extendSpecVersion(SpecVersion.spec2025, color2025);
   }
 
   @override
@@ -1098,7 +1043,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(6)
           : _getContrastCurve(7),
     );
-    return _baseSpec.onError.extendSpecVersion(SpecVersion.spec2025, color2025);
+    return super.onError.extendSpecVersion(SpecVersion.spec2025, color2025);
   }
 
   @override
@@ -1137,7 +1082,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(1.5)
           : null,
     );
-    return _baseSpec.errorContainer.extendSpecVersion(.spec2025, color2025);
+    return super.errorContainer.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1150,7 +1095,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(4.5)
           : _getContrastCurve(7.0),
     );
-    return _baseSpec.onErrorContainer.extendSpecVersion(.spec2025, color2025);
+    return super.onErrorContainer.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1174,7 +1119,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(1.5)
           : null,
     );
-    return _baseSpec.primaryFixed.extendSpecVersion(.spec2025, color2025);
+    return super.primaryFixed.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1192,7 +1137,7 @@ final class ColorSpec2025 implements ColorSpec {
         constraint: .exact,
       ),
     );
-    return _baseSpec.primaryFixedDim.extendSpecVersion(.spec2025, color2025);
+    return super.primaryFixedDim.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1203,7 +1148,7 @@ final class ColorSpec2025 implements ColorSpec {
       background: (_) => primaryFixedDim,
       contrastCurve: (_) => _getContrastCurve(7),
     );
-    return _baseSpec.onPrimaryFixed.extendSpecVersion(.spec2025, color2025);
+    return super.onPrimaryFixed.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1214,10 +1159,7 @@ final class ColorSpec2025 implements ColorSpec {
       background: (_) => primaryFixedDim,
       contrastCurve: (_) => _getContrastCurve(4.5),
     );
-    return _baseSpec.onPrimaryFixedVariant.extendSpecVersion(
-      .spec2025,
-      color2025,
-    );
+    return super.onPrimaryFixedVariant.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1239,7 +1181,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(1.5)
           : null,
     );
-    return _baseSpec.secondaryFixed.extendSpecVersion(.spec2025, color2025);
+    return super.secondaryFixed.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1257,7 +1199,7 @@ final class ColorSpec2025 implements ColorSpec {
         constraint: .exact,
       ),
     );
-    return _baseSpec.secondaryFixedDim.extendSpecVersion(.spec2025, color2025);
+    return super.secondaryFixedDim.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1268,7 +1210,7 @@ final class ColorSpec2025 implements ColorSpec {
       background: (_) => secondaryFixedDim,
       contrastCurve: (_) => _getContrastCurve(7),
     );
-    return _baseSpec.onSecondaryFixed.extendSpecVersion(.spec2025, color2025);
+    return super.onSecondaryFixed.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1279,7 +1221,7 @@ final class ColorSpec2025 implements ColorSpec {
       background: (_) => secondaryFixedDim,
       contrastCurve: (_) => _getContrastCurve(4.5),
     );
-    return _baseSpec.onSecondaryFixedVariant.extendSpecVersion(
+    return super.onSecondaryFixedVariant.extendSpecVersion(
       .spec2025,
       color2025,
     );
@@ -1304,7 +1246,7 @@ final class ColorSpec2025 implements ColorSpec {
           ? _getContrastCurve(1.5)
           : null,
     );
-    return _baseSpec.tertiaryFixed.extendSpecVersion(.spec2025, color2025);
+    return super.tertiaryFixed.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1322,7 +1264,7 @@ final class ColorSpec2025 implements ColorSpec {
         constraint: .exact,
       ),
     );
-    return _baseSpec.tertiaryFixedDim.extendSpecVersion(.spec2025, color2025);
+    return super.tertiaryFixedDim.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1333,7 +1275,7 @@ final class ColorSpec2025 implements ColorSpec {
       background: (_) => tertiaryFixedDim,
       contrastCurve: (_) => _getContrastCurve(7.0),
     );
-    return _baseSpec.onTertiaryFixed.extendSpecVersion(.spec2025, color2025);
+    return super.onTertiaryFixed.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1344,54 +1286,28 @@ final class ColorSpec2025 implements ColorSpec {
       background: (_) => tertiaryFixedDim,
       contrastCurve: (_) => _getContrastCurve(4.5),
     );
-    return _baseSpec.onTertiaryFixedVariant.extendSpecVersion(
-      .spec2025,
-      color2025,
-    );
+    return super.onTertiaryFixedVariant.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
   DynamicColor get controlActivated {
     // Remapped to primaryContainer for 2025 spec.
     final color2025 = primaryContainer.copyWith(name: "control_activated");
-    return _baseSpec.controlActivated.extendSpecVersion(.spec2025, color2025);
+    return super.controlActivated.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
   DynamicColor get controlNormal {
     // Remapped to onSurfaceVariant for 2025 spec.
     final color2025 = onSurfaceVariant.copyWith(name: "control_normal");
-    return _baseSpec.controlNormal.extendSpecVersion(.spec2025, color2025);
+    return super.controlNormal.extendSpecVersion(.spec2025, color2025);
   }
-
-  @override
-  DynamicColor get controlHighlight => _baseSpec.controlHighlight;
 
   @override
   DynamicColor get textPrimaryInverse {
     // Remapped to inverseOnSurface for 2025 spec.
     final color2025 = inverseOnSurface.copyWith(name: "text_primary_inverse");
-    return _baseSpec.textPrimaryInverse.extendSpecVersion(.spec2025, color2025);
-  }
-
-  @override
-  DynamicColor get textSecondaryAndTertiaryInverse =>
-      _baseSpec.textSecondaryAndTertiaryInverse;
-
-  @override
-  DynamicColor get textPrimaryInverseDisableOnly =>
-      _baseSpec.textPrimaryInverseDisableOnly;
-
-  @override
-  DynamicColor get textSecondaryAndTertiaryInverseDisabled =>
-      _baseSpec.textSecondaryAndTertiaryInverseDisabled;
-
-  @override
-  DynamicColor get textHintInverse => _baseSpec.textHintInverse;
-
-  @override
-  DynamicColor highestSurface(DynamicScheme scheme) {
-    return _baseSpec.highestSurface(scheme);
+    return super.textPrimaryInverse.extendSpecVersion(.spec2025, color2025);
   }
 
   @override
@@ -1602,7 +1518,7 @@ final class ColorSpec2025 implements ColorSpec {
       sourceColorHct.hue,
       platform == .phone ? 74.0 : 56.0,
     ),
-    _ => _baseSpec.getPrimaryPalette(
+    _ => super.getPrimaryPalette(
       variant,
       sourceColorHct,
       isDark,
@@ -1642,7 +1558,7 @@ final class ColorSpec2025 implements ColorSpec {
       ),
       platform == .phone ? 56.0 : 36.0,
     ),
-    _ => _baseSpec.getSecondaryPalette(
+    _ => super.getSecondaryPalette(
       variant,
       sourceColorHct,
       isDark,
@@ -1691,7 +1607,7 @@ final class ColorSpec2025 implements ColorSpec {
       ),
       56.0,
     ),
-    _ => _baseSpec.getTertiaryPalette(
+    _ => super.getTertiaryPalette(
       variant,
       sourceColorHct,
       isDark,
@@ -1724,7 +1640,7 @@ final class ColorSpec2025 implements ColorSpec {
       _getVibrantNeutralHue(sourceColorHct),
       _getVibrantNeutralChroma(sourceColorHct, platform),
     ),
-    _ => _baseSpec.getNeutralPalette(
+    _ => super.getNeutralPalette(
       variant,
       sourceColorHct,
       isDark,
@@ -1777,7 +1693,7 @@ final class ColorSpec2025 implements ColorSpec {
           vibrantNeutralChroma * 1.29,
         );
       default:
-        return _baseSpec.getNeutralVariantPalette(
+        return super.getNeutralVariantPalette(
           variant,
           sourceColorHct,
           isDark,
@@ -1811,7 +1727,7 @@ final class ColorSpec2025 implements ColorSpec {
         platform == .phone ? 64.0 : 48.0,
       ),
       .vibrant => .fromHueAndChroma(errorHue, platform == .phone ? 80.0 : 60.0),
-      _ => _baseSpec.getErrorPalette(
+      _ => super.getErrorPalette(
         variant,
         sourceColorHct,
         isDark,

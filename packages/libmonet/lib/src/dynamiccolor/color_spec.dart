@@ -1,9 +1,20 @@
+import 'dart:math' as math;
+
+import '../contrast/contrast.dart';
+import '../dislike/dislike_analyzer.dart';
 import '../hct/hct.dart';
 import '../palettes/tonal_palette.dart';
+import '../temperature/temperature_cache.dart';
+import '../utils/math_utils.dart';
 
+import 'contrast_curve.dart';
 import 'dynamic_color.dart';
 import 'dynamic_scheme.dart';
+import 'tone_delta_pair.dart';
 import 'variant.dart';
+
+part 'color_spec_2021.dart';
+part 'color_spec_2025.dart';
 
 /// All available spec versions.
 enum SpecVersion { spec2021, spec2025 }

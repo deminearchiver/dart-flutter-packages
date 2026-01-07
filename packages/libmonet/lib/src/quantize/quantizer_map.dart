@@ -1,5 +1,5 @@
-import 'quantizer.dart';
 import 'quantizer_result.dart';
+import 'quantizer.dart';
 
 final class QuantizerMap implements Quantizer {
   const QuantizerMap();

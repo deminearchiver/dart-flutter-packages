@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:meta/meta.dart';
 
-import '../utils/math_utils.dart';
 import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 
 import 'viewing_conditions.dart';
 

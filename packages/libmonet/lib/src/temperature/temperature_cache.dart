@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 import 'dart:collection';
 
-import '../utils/math_utils.dart';
-import '../utils/color_utils.dart';
 import '../hct/hct.dart';
+import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 
 final class TemperatureCache {
   final Hct input;

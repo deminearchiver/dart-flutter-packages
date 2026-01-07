@@ -1,7 +1,7 @@
-import 'quantizer.dart';
 import 'quantizer_result.dart';
 import 'quantizer_wsmeans.dart';
 import 'quantizer_wu.dart';
+import 'quantizer.dart';
 
 final class QuantizerCelebi implements Quantizer {
   const QuantizerCelebi();
