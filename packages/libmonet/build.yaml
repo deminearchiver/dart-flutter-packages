@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          format: true
+          to_json: true
+          copy_with: true
+          when: false
+          map: false

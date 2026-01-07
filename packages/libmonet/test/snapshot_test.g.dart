@@ -23,6 +23,17 @@ _SnapshotScheme _$SnapshotSchemeFromJson(Map<String, dynamic> json) =>
           const {},
     );
 
+Map<String, dynamic> _$SnapshotSchemeToJson(_SnapshotScheme instance) =>
+    <String, dynamic>{
+      'properties': instance.properties,
+      'material_dynamic_colors': instance.materialDynamicColors.map(
+        (k, e) => MapEntry(k, const ColorConverter().toJson(e)),
+      ),
+      'android_only_dynamic_colors': instance.androidOnlyDynamicColors.map(
+        (k, e) => MapEntry(k, const ColorConverter().toJson(e)),
+      ),
+    };
+
 _SnapshotSchemeProperties _$SnapshotSchemePropertiesFromJson(
   Map<String, dynamic> json,
 ) => _SnapshotSchemeProperties(
@@ -36,3 +47,15 @@ _SnapshotSchemeProperties _$SnapshotSchemePropertiesFromJson(
   ),
   platform: const PlatformConverter().fromJson(json['platform'] as String),
 );
+
+Map<String, dynamic> _$SnapshotSchemePropertiesToJson(
+  _SnapshotSchemeProperties instance,
+) => <String, dynamic>{
+  'fallback_constructor_name': instance.fallbackConstructorName,
+  'source_color': const ColorConverter().toJson(instance.sourceColor),
+  'is_dark': instance.isDark,
+  'contrast_level': instance.contrastLevel,
+  'variant': const VariantConverter().toJson(instance.variant),
+  'spec_version': const SpecVersionConverter().toJson(instance.specVersion),
+  'platform': const PlatformConverter().toJson(instance.platform),
+};
