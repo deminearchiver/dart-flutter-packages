@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Deprecated `MathUtils.signum` in favor of `num.sign`.
+
 ## 1.1.0
 
 - Added caching to `MaterialDynamicColors` which prevents the class from being const-constructable.
