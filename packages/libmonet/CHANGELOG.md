@@ -1,3 +1,7 @@
+## 1.1.2
+
+- Made sure Flutter-specific directories get ignored when publishing the package.
+
 ## 1.1.1
 
 - Deprecated `MathUtils.signum` in favor of `num.sign`.
