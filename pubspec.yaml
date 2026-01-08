@@ -7,6 +7,8 @@ environment:
 
 workspace:
   - packages/androidx_graphics_shapes
+  - packages/csscolorparser
+  - packages/csscolorparser_flutter
   - packages/deminearchiver_lints
   - packages/device_info_ffi
   - packages/device_info_ffi/example
@@ -16,6 +18,7 @@ workspace:
   - packages/libmonet
   - packages/lz4_ffi
   - packages/material
+  - packages/named_colors
   - packages/package_info_ffi
   - packages/package_info_ffi/example
   - packages/permissions_ffi

@@ -1,0 +1,19 @@
+struct Oklab {
+  l:double;
+  a:double;
+  b:double;
+}
+
+table NamedColorsCacheEntry {
+  argb:uint;
+  oklab:Oklab;
+  identities:[NamedColorIdentity];
+}
+
+table NamedColorsCache {
+  entries:[NamedColorsCacheEntry];
+}
+
+table NamedColorIdentity {
+  name:string;
+}

@@ -1,0 +1,20 @@
+name: csscolorparser_flutter
+description: CSS Color Parser for Flutter.
+version: 0.1.0-dev.2
+homepage: https://github.com/deminearchiver/dart-flutter-packages
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/csscolorparser_flutter
+issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
+resolution: workspace
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.38.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  deminearchiver_lints: ^1.1.1
