@@ -1,8 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:layout/layout.dart';
+import 'package:layout/src/layout/flutter.dart';
 
 /// A widget that insets its child by the given padding.
 ///

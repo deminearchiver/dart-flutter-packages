@@ -1,5 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter/rendering.dart';
+import 'package:layout/src/layout/flutter.dart';
 
 /// [SliverClip] clips its sliver child from its paintOrigin to its paintExtent.
 /// Also clips off any overlap if [clipOverlap] is `true`

@@ -1,5 +1,4 @@
-import 'package:flutter/rendering.dart';
-import 'package:meta/meta.dart';
+import 'package:layout/src/layout/flutter.dart';
 
 mixin ProxyConstraints<T extends ProxyConstraints<T>> implements Constraints {
   @protected

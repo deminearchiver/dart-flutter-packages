@@ -1,10 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-
-import 'sliver.dart';
+import 'package:layout/src/layout/flutter.dart';
 
 class SliverTransform extends SingleChildRenderObjectWidget {
   /// Creates a widget that transforms its child.

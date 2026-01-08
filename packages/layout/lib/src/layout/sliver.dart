@@ -1,4 +1,4 @@
-import 'package:flutter/rendering.dart';
+import 'package:layout/src/layout/flutter.dart';
 
 extension SliverHitTestResultExtension on SliverHitTestResult {
   Offset _resolvePosition({

@@ -1,5 +1,5 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter/widgets.dart' as flutter_widgets;
+import 'package:flutter/widgets.dart' as flutter;
+import 'package:layout/src/layout/flutter.dart';
 
 /// A widget that aligns its child within itself and optionally sizes itself
 /// based on the child's size.
@@ -135,7 +135,7 @@ import 'package:flutter/widgets.dart' as flutter_widgets;
 ///  * [FractionallySizedBox], which sizes its child based on a fraction of its
 ///    own size and positions the child according to an [Alignment] value.
 ///  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
-class Align extends flutter_widgets.Align {
+class Align extends flutter.Align {
   /// Creates an alignment widget.
   const Align({
     super.key,

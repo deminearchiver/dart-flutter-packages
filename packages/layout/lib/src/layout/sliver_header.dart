@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:flutter/rendering.dart' as flutter;
+import 'package:layout/src/layout/flutter.dart';
 
 @immutable
 class FloatingHeaderSnapConfiguration
