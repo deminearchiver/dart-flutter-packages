@@ -64,9 +64,9 @@ final class Cam16 {
     final bAF = math
         .pow(viewingConditions.fl * bD.abs() / 100.0, 0.42)
         .toDouble();
-    final rA = MathUtils.signum(rD) * 400.0 * rAF / (rAF + 27.13);
-    final gA = MathUtils.signum(gD) * 400.0 * gAF / (gAF + 27.13);
-    final bA = MathUtils.signum(bD) * 400.0 * bAF / (bAF + 27.13);
+    final rA = rD.sign * 400.0 * rAF / (rAF + 27.13);
+    final gA = gD.sign * 400.0 * gAF / (gAF + 27.13);
+    final bA = bD.sign * 400.0 * bAF / (bAF + 27.13);
 
     // redness-greenness
     final a = (11.0 * rA + -12.0 * gA + bA) / 11.0;

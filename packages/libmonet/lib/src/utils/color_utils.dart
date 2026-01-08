@@ -17,6 +17,9 @@ abstract final class ColorUtils {
 
   static const _whitePointD65 = <double>[95.047, 100.0, 108.883];
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static int argbFromRgb(int red, int green, int blue) =>
       (255 << 24) | ((red & 255) << 16) | ((green & 255) << 8) | (blue & 255);
 
@@ -27,14 +30,29 @@ abstract final class ColorUtils {
     return argbFromRgb(r, g, b);
   }
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static int alphaFromArgb(int argb) => (argb >> 24) & 255;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static int redFromArgb(int argb) => (argb >> 16) & 255;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static int greenFromArgb(int argb) => (argb >> 8) & 255;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static int blueFromArgb(int argb) => argb & 255;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static bool isOpaque(int argb) => alphaFromArgb(argb) >= 255;
 
   static int argbFromXyz(double x, double y, double z) {

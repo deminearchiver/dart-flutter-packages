@@ -297,7 +297,7 @@ abstract final class HctSolver {
   @internal
   static double chromaticAdaptation(double component) {
     final af = math.pow(component.abs(), 0.42).toDouble();
-    return MathUtils.signum(component) * 400.0 * af / (af + 27.13);
+    return component.sign * 400.0 * af / (af + 27.13);
   }
 
   @internal
@@ -467,7 +467,7 @@ abstract final class HctSolver {
   static double inverseChromaticAdaptation(double adapted) {
     final adaptedAbs = adapted.abs();
     final base = math.max(0.0, 27.13 * adaptedAbs / (400.0 - adaptedAbs));
-    return MathUtils.signum(adapted) * math.pow(base, 1.0 / 0.42).toDouble();
+    return adapted.sign * math.pow(base, 1.0 / 0.42).toDouble();
   }
 
   @internal
