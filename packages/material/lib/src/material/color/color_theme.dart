@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'dart:ui' as ui;
 
@@ -32,7 +34,6 @@ extension on Color {
   Hct _toHct() => .fromInt(toARGB32());
 }
 
-@immutable
 abstract class ColorThemeDataPartial with Diagnosticable {
   const ColorThemeDataPartial();
 
@@ -822,7 +823,6 @@ abstract class ColorThemeDataPartial with Diagnosticable {
   );
 }
 
-@immutable
 class _ColorThemeDataPartial extends ColorThemeDataPartial {
   const _ColorThemeDataPartial({
     this.brightness,
@@ -1068,7 +1068,6 @@ class _ColorThemeDataPartial extends ColorThemeDataPartial {
   final Color? onErrorContainer;
 }
 
-@immutable
 class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
   const _ColorThemeDataPartialFromLegacy(
     ColorSchemeLegacy colorScheme, {
@@ -1279,11 +1278,9 @@ class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
   Color? get errorPaletteKeyColor => _errorPaletteKeyColor;
 
   @override
-  // ignore: deprecated_member_use
   Color? get background => _background ?? _colorScheme.background;
 
   @override
-  // ignore: deprecated_member_use
   Color? get onBackground => _onBackground ?? _colorScheme.onBackground;
 
   @override
@@ -1319,7 +1316,6 @@ class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
   Color? get onSurface => _onSurface ?? _colorScheme.onSurface;
 
   @override
-  // ignore: deprecated_member_use
   Color? get surfaceVariant => _surfaceVariant ?? _colorScheme.surfaceVariant;
 
   @override
@@ -2161,7 +2157,6 @@ class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
   );
 }
 
-@immutable
 abstract class ColorThemeData extends ColorThemeDataPartial {
   const ColorThemeData();
 
@@ -3012,7 +3007,6 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
   );
 }
 
-@immutable
 class _ColorThemeData extends ColorThemeData {
   const _ColorThemeData({
     required this.brightness,
@@ -3258,7 +3252,6 @@ class _ColorThemeData extends ColorThemeData {
   final Color onErrorContainer;
 }
 
-@immutable
 class _LegacyFromColorThemeData
     with Diagnosticable
     implements ColorSchemeLegacy {
@@ -3791,11 +3784,8 @@ class _LegacyFromColorThemeData
         onInverseSurface: onInverseSurface,
         inversePrimary: inversePrimary,
         surfaceTint: surfaceTint,
-        // ignore: deprecated_member_use
         background: background,
-        // ignore: deprecated_member_use
         onBackground: onBackground,
-        // ignore: deprecated_member_use
         surfaceVariant: surfaceVariant,
       );
     }

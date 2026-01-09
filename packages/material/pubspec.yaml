@@ -21,6 +21,7 @@ dependencies:
   material_symbols_icons: ^4.2892.0
   meta: ^1.17.0
   libmonet: ^1.1.2
+  material_color_utilities: ^0.13.0
 
 dev_dependencies:
   flutter_test:
