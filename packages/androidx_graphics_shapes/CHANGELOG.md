@@ -1,6 +1,10 @@
-## Unreleased
+## 1.3.0
 
+- Added path caching to `RoundedPolygonBorder` and `MorphBorder` so they are no longer const-constructable.
+- Implemented morphing between `RoundedPolygonBorder` shapes and between `MorphBorder` shapes (with the same `morph` values).
+- Exposed `start` and `end` properties of `Morph` as internal members.
 - Internal updates to `MaterialShapes`.
+- Added inline pragmas to internal utils.
 
 ## 1.2.0
 
