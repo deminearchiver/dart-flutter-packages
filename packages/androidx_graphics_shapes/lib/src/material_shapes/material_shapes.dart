@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:vector_math/vector_math_64.dart';
 
-import '../shapes.dart';
+import '../shapes/shapes.dart';
 
 @internal
 extension RoundedPolygonInternalExtension on RoundedPolygon {
@@ -729,6 +729,7 @@ extension on double {
 abstract class _PathBorder extends OutlinedBorder {
   const _PathBorder({super.side, this.squash = 0.0});
 
+  @protected
   Path get path;
 
   /// How much of the aspect ratio of the attached widget to take on.
@@ -812,41 +813,43 @@ abstract class _PathBorder extends OutlinedBorder {
   int get hashCode => Object.hash(runtimeType, side, squash);
 }
 
-abstract class _CubicsBorder extends _PathBorder {
-  const _CubicsBorder({super.side, super.squash, required this.cubics});
+// abstract class _CubicsBorder extends _PathBorder {
+//   const _CubicsBorder({super.side, super.squash, required this.cubics});
 
-  final List<Cubic> cubics;
+//   final List<Cubic> cubics;
 
-  @override
-  Path get path;
+//   @override
+//   Path get path;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _CubicsBorder &&
-          side == other.side &&
-          squash == other.squash &&
-          listEquals(cubics, other.cubics);
+//   @override
+//   bool operator ==(Object other) =>
+//       identical(this, other) ||
+//       runtimeType == other.runtimeType &&
+//           other is _CubicsBorder &&
+//           side == other.side &&
+//           squash == other.squash &&
+//           listEquals(cubics, other.cubics);
 
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, side, squash, Object.hashAll(cubics));
-}
+//   @override
+//   int get hashCode =>
+//       Object.hash(runtimeType, side, squash, Object.hashAll(cubics));
+// }
 
 class RoundedPolygonBorder extends _PathBorder {
-  const RoundedPolygonBorder({
+  RoundedPolygonBorder({
     super.side,
     super.squash,
     required this.polygon,
     this.startAngle = 0.0,
-  });
+  }) : _path = polygon.toPath(startAngle: startAngle);
 
   final RoundedPolygon polygon;
   final double startAngle;
 
+  final Path _path;
+
   @override
-  Path get path => polygon.toPath(startAngle: startAngle);
+  Path get path => _path;
 
   @override
   RoundedPolygonBorder copyWith({
@@ -868,6 +871,34 @@ class RoundedPolygonBorder extends _PathBorder {
   );
 
   @override
+  ShapeBorder? lerpFrom(ShapeBorder? a, double t) {
+    if (a is RoundedPolygonBorder) {
+      return MorphBorder(
+        side: BorderSide.lerp(a.side, side, t),
+        squash: interpolateDouble(a.squash, squash, t),
+        morph: Morph(a.polygon, polygon),
+        progress: t,
+        startAngle: interpolateDouble(a.startAngle, startAngle, t),
+      );
+    }
+    return super.lerpFrom(a, t);
+  }
+
+  @override
+  ShapeBorder? lerpTo(ShapeBorder? b, double t) {
+    if (b is RoundedPolygonBorder) {
+      return MorphBorder(
+        side: BorderSide.lerp(side, b.side, t),
+        squash: interpolateDouble(squash, b.squash, t),
+        morph: Morph(polygon, b.polygon),
+        progress: t,
+        startAngle: interpolateDouble(startAngle, b.startAngle, t),
+      );
+    }
+    return super.lerpTo(b, t);
+  }
+
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
@@ -883,20 +914,22 @@ class RoundedPolygonBorder extends _PathBorder {
 }
 
 class MorphBorder extends _PathBorder {
-  const MorphBorder({
+  MorphBorder({
     super.side,
     super.squash,
     required this.morph,
     required this.progress,
     this.startAngle = 0.0,
-  });
+  }) : _path = morph.toPath(progress: progress, startAngle: startAngle);
 
   final Morph morph;
   final double progress;
   final double startAngle;
 
+  final Path _path;
+
   @override
-  Path get path => morph.toPath(progress: progress, startAngle: startAngle);
+  Path get path => _path;
 
   @override
   MorphBorder copyWith({
@@ -921,6 +954,34 @@ class MorphBorder extends _PathBorder {
     progress: progress,
     startAngle: startAngle,
   );
+
+  @override
+  ShapeBorder? lerpFrom(ShapeBorder? a, double t) {
+    if (a is MorphBorder) {
+      return MorphBorder(
+        side: BorderSide.lerp(a.side, side, t),
+        squash: interpolateDouble(a.squash, squash, t),
+        morph: t < 0.5 ? a.morph : morph,
+        progress: interpolateDouble(a.progress, progress, t),
+        startAngle: interpolateDouble(a.startAngle, startAngle, t),
+      );
+    }
+    return super.lerpFrom(a, t);
+  }
+
+  @override
+  ShapeBorder? lerpTo(ShapeBorder? b, double t) {
+    if (b is MorphBorder) {
+      return MorphBorder(
+        side: BorderSide.lerp(side, b.side, t),
+        squash: interpolateDouble(squash, b.squash, t),
+        morph: t < 0.5 ? morph : b.morph,
+        progress: interpolateDouble(progress, b.progress, t),
+        startAngle: interpolateDouble(startAngle, b.startAngle, t),
+      );
+    }
+    return super.lerpTo(b, t);
+  }
 
   @override
   bool operator ==(Object other) =>

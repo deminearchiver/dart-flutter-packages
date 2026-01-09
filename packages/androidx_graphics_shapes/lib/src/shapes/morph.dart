@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math' as math;
 import 'dart:ui';
 
@@ -10,23 +11,25 @@ import 'rounded_polygon.dart';
 import 'utils.dart';
 
 final class Morph {
-  Morph(this._start, this._end) : _morphMatch = match(_start, _end);
-
-  final RoundedPolygon _start;
-  final RoundedPolygon _end;
-
-  final List<(Cubic, Cubic)> _morphMatch;
+  Morph(this.start, this.end)
+    : morphMatch = UnmodifiableListView(match(start, end));
 
   @internal
-  List<(Cubic, Cubic)> get morphMatch => _morphMatch;
+  final RoundedPolygon start;
+
+  @internal
+  final RoundedPolygon end;
+
+  @internal
+  final List<(Cubic, Cubic)> morphMatch;
 
   Rect calculateBounds({bool approximate = true}) {
-    final startBounds = _start.calculateBounds(approximate: approximate);
+    final startBounds = start.calculateBounds(approximate: approximate);
     final minX = startBounds.left;
     final minY = startBounds.top;
     final maxX = startBounds.right;
     final maxY = startBounds.bottom;
-    final endBounds = _end.calculateBounds(approximate: approximate);
+    final endBounds = end.calculateBounds(approximate: approximate);
     return Rect.fromLTRB(
       math.min(minX, endBounds.left),
       math.min(minY, endBounds.top),
@@ -36,12 +39,12 @@ final class Morph {
   }
 
   Rect calculateMaxBounds() {
-    final startBounds = _start.calculateMaxBounds();
+    final startBounds = start.calculateMaxBounds();
     final minX = startBounds.left;
     final minY = startBounds.top;
     final maxX = startBounds.right;
     final maxY = startBounds.bottom;
-    final endBounds = _end.calculateMaxBounds();
+    final endBounds = end.calculateMaxBounds();
     return Rect.fromLTRB(
       math.min(minX, endBounds.left),
       math.min(minY, endBounds.top),
@@ -99,18 +102,18 @@ final class Morph {
   }
 
   @override
-  String toString() => "Morph($_start, $_end)";
+  String toString() => "Morph($start, $end)";
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is Morph &&
-          _start == other._start &&
-          _end == other._end;
+          start == other.start &&
+          end == other.end;
 
   @override
-  int get hashCode => Object.hash(runtimeType, _start, _end);
+  int get hashCode => Object.hash(runtimeType, start, end);
 
   @internal
   static List<(Cubic, Cubic)> match(RoundedPolygon p1, RoundedPolygon p2) {

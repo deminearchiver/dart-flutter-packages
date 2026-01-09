@@ -5,9 +5,15 @@ import 'package:meta/meta.dart';
 import 'point.dart';
 
 @internal
+@pragma("wasm:prefer-inline")
+@pragma("vm:prefer-inline")
+@pragma("dart2js:prefer-inline")
 double distance(double x, double y) => math.sqrt(x * x + y * y);
 
 @internal
+@pragma("wasm:prefer-inline")
+@pragma("vm:prefer-inline")
+@pragma("dart2js:prefer-inline")
 double distanceSquared(double x, double y) => x * x + y * y;
 
 /// Returns unit vector representing the direction to this point from (0, 0).
@@ -44,6 +50,9 @@ const relaxedDistanceEpsilon = 5.0e-3;
 
 extension PointExtension on Point {
   @internal
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   Point rotate90() => Point(-y, x);
 }
 
@@ -51,20 +60,28 @@ extension PointExtension on Point {
 const twoPi = 2.0 * math.pi;
 
 @internal
+@pragma("wasm:prefer-inline")
+@pragma("vm:prefer-inline")
+@pragma("dart2js:prefer-inline")
 double square(double x) => x * x;
 
 /// Linearly interpolate between [start] and [stop]
 /// with [fraction] fraction between them.
 @internal
-double interpolateDouble(double start, double stop, double fraction) {
-  return (1.0 - fraction) * start + fraction * stop;
-}
+@pragma("wasm:prefer-inline")
+@pragma("vm:prefer-inline")
+@pragma("dart2js:prefer-inline")
+double interpolateDouble(double start, double stop, double fraction) =>
+    (1.0 - fraction) * start + fraction * stop;
 
 /// Similar to num % mod, but ensures the result is always positive.
 /// For example: 4 % 3 = positiveModulo(4, 3) = 1,
 /// but: -4 % 3 = -1 positiveModulo(-4, 3) = 2
 // TODO: rename num
 @internal
+@pragma("wasm:prefer-inline")
+@pragma("vm:prefer-inline")
+@pragma("dart2js:prefer-inline")
 double positiveModulo(double num, double mod) => (num % mod + mod) % mod;
 
 /// Returns whether C is on the line defined by the two points AB.
