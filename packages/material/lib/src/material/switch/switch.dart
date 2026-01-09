@@ -535,7 +535,9 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
           child: AnimatedBuilder(
             animation: _effectsController,
             builder: (context, child) => FocusRingTheme.merge(
-              data: .from(shape: _trackShapeAnimation.value ?? trackShape),
+              data: .from(
+                shape: .all(_trackShapeAnimation.value ?? trackShape),
+              ),
               child: child!,
             ),
             child: FocusRing(

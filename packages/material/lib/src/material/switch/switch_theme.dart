@@ -1079,13 +1079,11 @@ class SwitchTheme extends InheritedTheme {
   static SwitchThemeData? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<SwitchTheme>()?.data;
 
-  static SwitchThemeData of(BuildContext context) {
-    final result = maybeOf(context);
-    if (result != null) return result;
-    return .fallback(
-      colorTheme: ColorTheme.of(context),
-      shapeTheme: ShapeTheme.of(context),
-      stateTheme: StateTheme.of(context),
-    );
-  }
+  static SwitchThemeData of(BuildContext context) =>
+      maybeOf(context) ??
+      .fallback(
+        colorTheme: ColorTheme.of(context),
+        shapeTheme: ShapeTheme.of(context),
+        stateTheme: StateTheme.of(context),
+      );
 }

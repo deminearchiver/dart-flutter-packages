@@ -429,8 +429,8 @@ class _RadioButtonState extends State<RadioButton>
             onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
             child: FocusRingTheme.merge(
               data: FocusRingThemeDataPartial.from(
-                shape: CornersBorder.rounded(
-                  corners: .all(_shapeTheme.corner.full),
+                shape: .all(
+                  CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
                 ),
               ),
               child: FocusRing(

@@ -1,69 +1,74 @@
 import 'package:material/src/material/flutter.dart';
 
+abstract interface class FocusRingStates {
+  FocusRingPlacement get placement;
+  bool get isVisible;
+  bool get isActive;
+}
+
+typedef FocusRingStateProperty<T extends Object?> =
+    StateProperty<T, FocusRingStates>;
+
 abstract class FocusRingThemeDataPartial {
   const FocusRingThemeDataPartial();
 
   const factory FocusRingThemeDataPartial.from({
-    double? activeWidth,
-    Color? color,
     Duration? duration,
-    double? inwardOffset,
-    double? outwardOffset,
-    OutlinedBorder? shape,
-    double? width,
+    FocusRingStateProperty<double?>? offset,
+    FocusRingStateProperty<OutlinedBorder?>? shape,
+    FocusRingStateProperty<OutlinePartial?>? outline,
   }) = _FocusRingThemeDataPartial;
-
-  double? get activeWidth;
-
-  Color? get color;
 
   Duration? get duration;
 
-  double? get inwardOffset;
+  FocusRingStateProperty<double?>? get offset;
 
-  double? get outwardOffset;
+  FocusRingStateProperty<OutlinedBorder?>? get shape;
 
-  OutlinedBorder? get shape;
-
-  double? get width;
+  FocusRingStateProperty<OutlinePartial?>? get outline;
 
   FocusRingThemeDataPartial copyWith({
-    double? activeWidth,
-    Color? color,
-    Duration? duration,
-    double? inwardOffset,
-    double? outwardOffset,
-    OutlinedBorder? shape,
-    double? width,
-  }) =>
-      activeWidth != null ||
-          color != null ||
-          duration != null ||
-          inwardOffset != null ||
-          outwardOffset != null ||
-          shape != null ||
-          width != null
+    covariant Duration? duration,
+    covariant FocusRingStateProperty<double?>? offset,
+    covariant FocusRingStateProperty<OutlinedBorder?>? shape,
+    covariant FocusRingStateProperty<OutlinePartial?>? outline,
+  }) => duration != null || offset != null || shape != null || outline != null
       ? .from(
-          activeWidth: activeWidth ?? this.activeWidth,
-          color: color ?? this.color,
           duration: duration ?? this.duration,
-          inwardOffset: inwardOffset ?? this.inwardOffset,
-          outwardOffset: outwardOffset ?? this.outwardOffset,
+          offset: offset ?? this.offset,
           shape: shape ?? this.shape,
-          width: width ?? this.width,
+          outline: outline ?? this.outline,
+        )
+      : this;
+
+  FocusRingThemeDataPartial mergeWith({
+    Duration? duration,
+    FocusRingStateProperty<double?>? offset,
+    FocusRingStateProperty<OutlinedBorder?>? shape,
+    FocusRingStateProperty<OutlinePartial?>? outline,
+  }) => duration != null || offset != null || shape != null || outline != null
+      ? .from(
+          duration: duration ?? this.duration,
+          offset: offset?.orElseMaybe(this.offset?.resolve) ?? this.offset,
+          shape: shape?.orElseMaybe(this.shape?.resolve) ?? this.shape,
+          outline:
+              outline
+                  ?.orElseMaybe(this.outline?.resolve)
+                  .mapValue(
+                    (states, value) =>
+                        this.outline?.resolve(states)?.merge(value) ?? value,
+                  ) ??
+              this.outline,
         )
       : this;
 
   FocusRingThemeDataPartial merge(FocusRingThemeDataPartial? other) =>
       other != null
-      ? copyWith(
-          activeWidth: other.activeWidth,
-          color: other.color,
+      ? mergeWith(
           duration: other.duration,
-          inwardOffset: other.inwardOffset,
-          outwardOffset: other.outwardOffset,
+          offset: other.offset,
           shape: other.shape,
-          width: other.width,
+          outline: other.outline,
         )
       : this;
 
@@ -72,132 +77,109 @@ abstract class FocusRingThemeDataPartial {
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is FocusRingThemeDataPartial &&
-          activeWidth == other.activeWidth &&
-          color == other.color &&
           duration == other.duration &&
-          inwardOffset == other.inwardOffset &&
-          outwardOffset == other.outwardOffset &&
+          offset == other.offset &&
           shape == other.shape &&
-          width == other.width;
+          outline == other.outline;
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    activeWidth,
-    color,
-    duration,
-    inwardOffset,
-    outwardOffset,
-    shape,
-    width,
-  );
+  int get hashCode =>
+      Object.hash(runtimeType, duration, offset, shape, outline);
 }
 
 class _FocusRingThemeDataPartial extends FocusRingThemeDataPartial {
   const _FocusRingThemeDataPartial({
-    this.activeWidth,
-    this.color,
     this.duration,
-    this.inwardOffset,
-    this.outwardOffset,
+    this.offset,
     this.shape,
-    this.width,
+    this.outline,
   });
-
-  @override
-  final double? activeWidth;
-
-  @override
-  final Color? color;
 
   @override
   final Duration? duration;
 
   @override
-  final double? inwardOffset;
+  final FocusRingStateProperty<double?>? offset;
 
   @override
-  final double? outwardOffset;
+  final FocusRingStateProperty<OutlinedBorder?>? shape;
 
   @override
-  final OutlinedBorder? shape;
-
-  @override
-  final double? width;
+  final FocusRingStateProperty<OutlinePartial?>? outline;
 }
 
 abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
   const FocusRingThemeData();
 
   const factory FocusRingThemeData.from({
-    required double activeWidth,
-    required Color color,
     required Duration duration,
-    required double inwardOffset,
-    required double outwardOffset,
-    required OutlinedBorder shape,
-    required double width,
+    required FocusRingStateProperty<double> offset,
+    required FocusRingStateProperty<OutlinedBorder> shape,
+    required FocusRingStateProperty<Outline> outline,
   }) = _FocusRingThemeData;
 
-  @override
-  double get activeWidth;
-
-  @override
-  Color get color;
+  const factory FocusRingThemeData.fallback({
+    required ColorThemeData colorTheme,
+    required DurationThemeData durationTheme,
+    required ShapeThemeData shapeTheme,
+  }) = _FocusRingThemeDataDefaults;
 
   @override
   Duration get duration;
 
   @override
-  double get inwardOffset;
+  FocusRingStateProperty<double> get offset;
 
   @override
-  double get outwardOffset;
+  FocusRingStateProperty<OutlinedBorder> get shape;
 
   @override
-  OutlinedBorder get shape;
-
-  @override
-  double get width;
+  FocusRingStateProperty<Outline> get outline;
 
   @override
   FocusRingThemeData copyWith({
-    double? activeWidth,
-    Color? color,
-    Duration? duration,
-    double? inwardOffset,
-    double? outwardOffset,
-    OutlinedBorder? shape,
-    double? width,
-  }) =>
-      activeWidth != null ||
-          color != null ||
-          duration != null ||
-          inwardOffset != null ||
-          outwardOffset != null ||
-          shape != null ||
-          width != null
+    covariant Duration? duration,
+    covariant FocusRingStateProperty<double>? offset,
+    covariant FocusRingStateProperty<OutlinedBorder>? shape,
+    covariant FocusRingStateProperty<Outline>? outline,
+  }) => duration != null || offset != null || shape != null || outline != null
       ? .from(
-          activeWidth: activeWidth ?? this.activeWidth,
-          color: color ?? this.color,
           duration: duration ?? this.duration,
-          inwardOffset: inwardOffset ?? this.inwardOffset,
-          outwardOffset: outwardOffset ?? this.outwardOffset,
+          offset: offset ?? this.offset,
           shape: shape ?? this.shape,
-          width: width ?? this.width,
+          outline: outline ?? this.outline,
+        )
+      : this;
+
+  @override
+  FocusRingThemeData mergeWith({
+    Duration? duration,
+    FocusRingStateProperty<double?>? offset,
+    FocusRingStateProperty<OutlinedBorder?>? shape,
+    FocusRingStateProperty<OutlinePartial?>? outline,
+  }) => duration != null || offset != null || shape != null || outline != null
+      ? .from(
+          duration: duration ?? this.duration,
+          offset: offset?.orElse(this.offset.resolve) ?? this.offset,
+          shape: shape?.orElse(this.shape.resolve) ?? this.shape,
+          outline:
+              outline
+                  ?.orElse(this.outline.resolve)
+                  .mapValue(
+                    (states, value) =>
+                        this.outline.resolve(states).merge(value),
+                  ) ??
+              this.outline,
         )
       : this;
 
   @override
   FocusRingThemeData merge(FocusRingThemeDataPartial? other) => other != null
-      ? copyWith(
-          activeWidth: other.activeWidth,
-          color: other.color,
+      ? mergeWith(
           duration: other.duration,
-          inwardOffset: other.inwardOffset,
-          outwardOffset: other.outwardOffset,
+          offset: other.offset,
           shape: other.shape,
-          width: other.width,
+          outline: other.outline,
         )
       : this;
 
@@ -206,94 +188,182 @@ abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is FocusRingThemeData &&
-          activeWidth == other.activeWidth &&
-          color == other.color &&
           duration == other.duration &&
-          inwardOffset == other.inwardOffset &&
-          outwardOffset == other.outwardOffset &&
+          offset == other.offset &&
           shape == other.shape &&
-          width == other.width;
+          outline == other.outline;
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    activeWidth,
-    color,
-    duration,
-    inwardOffset,
-    outwardOffset,
-    shape,
-    width,
-  );
+  int get hashCode =>
+      Object.hash(runtimeType, duration, offset, shape, outline);
 }
 
 class _FocusRingThemeData extends FocusRingThemeData {
   const _FocusRingThemeData({
-    required this.activeWidth,
-    required this.color,
     required this.duration,
-    required this.inwardOffset,
-    required this.outwardOffset,
+    required this.offset,
     required this.shape,
-    required this.width,
+    required this.outline,
   });
-
-  @override
-  final double activeWidth;
-
-  @override
-  final Color color;
 
   @override
   final Duration duration;
 
   @override
-  final double inwardOffset;
+  final FocusRingStateProperty<double> offset;
 
   @override
-  final double outwardOffset;
+  final FocusRingStateProperty<OutlinedBorder> shape;
 
   @override
-  final OutlinedBorder shape;
-
-  @override
-  final double width;
+  final FocusRingStateProperty<Outline> outline;
 }
 
-class _FocusRingThemeDataFallback extends FocusRingThemeData {
-  const _FocusRingThemeDataFallback({
+class _FocusRingThemeDataDefaults extends FocusRingThemeData {
+  const _FocusRingThemeDataDefaults({
     required ColorThemeData colorTheme,
-    required ShapeThemeData shapeTheme,
     required DurationThemeData durationTheme,
+    required ShapeThemeData shapeTheme,
+    Duration? duration,
+    FocusRingStateProperty<double?>? offset,
+    FocusRingStateProperty<OutlinedBorder?>? shape,
+    FocusRingStateProperty<OutlinePartial?>? outline,
   }) : _colorTheme = colorTheme,
+       _durationTheme = durationTheme,
        _shapeTheme = shapeTheme,
-       _durationTheme = durationTheme;
+       _duration = duration,
+       _offset = offset,
+       _shape = shape,
+       _outline = outline;
 
   final ColorThemeData _colorTheme;
-  final ShapeThemeData _shapeTheme;
   final DurationThemeData _durationTheme;
+  final ShapeThemeData _shapeTheme;
 
-  @override
-  double get activeWidth => 8.0;
-
-  @override
-  Color get color => _colorTheme.secondary;
+  final Duration? _duration;
+  final FocusRingStateProperty<double?>? _offset;
+  final FocusRingStateProperty<OutlinedBorder?>? _shape;
+  final FocusRingStateProperty<OutlinePartial?>? _outline;
 
   @override
   Duration get duration => _durationTheme.long4;
 
   @override
-  double get inwardOffset => 0.0;
+  FocusRingStateProperty<double> get offset => .resolveWith(
+    (states) =>
+        _offset?.resolve(states) ??
+        switch (states) {
+          FocusRingStates(placement: .inward) => 0.0,
+          FocusRingStates(placement: .outward) => 2.0,
+        },
+  );
 
   @override
-  double get outwardOffset => 2.0;
+  FocusRingStateProperty<OutlinedBorder> get shape => .resolveWith(
+    (states) =>
+        _shape?.resolve(states) ??
+        CornersBorder.rounded(
+          // TODO: change to something like md.sys.shape.corner.medium
+          corners: .all(_shapeTheme.corner.full),
+        ),
+  );
 
   @override
-  OutlinedBorder get shape =>
-      CornersBorder.rounded(corners: .all(_shapeTheme.corner.full));
+  FocusRingStateProperty<Outline> get outline => .resolveWith(
+    (states) => .from(
+      alignment: switch (states) {
+        FocusRingStates(placement: .inward) => Outline.alignmentInside,
+        FocusRingStates(placement: .outward) => Outline.alignmentOutside,
+      },
+      width: switch (states) {
+        FocusRingStates(isVisible: false) => 0.0,
+        FocusRingStates(isActive: true) => 8.0,
+        FocusRingStates(isVisible: true) => 3.0,
+      },
+      color: _colorTheme.secondary,
+    ).merge(_outline?.resolve(states)),
+  );
 
   @override
-  double get width => 3.0;
+  FocusRingThemeData copyWith({
+    covariant Duration? duration,
+    covariant FocusRingStateProperty<double>? offset,
+    covariant FocusRingStateProperty<OutlinedBorder>? shape,
+    covariant FocusRingStateProperty<Outline>? outline,
+  }) => duration != null && offset != null && shape != null && outline != null
+      ? .from(
+          duration: duration,
+          offset: offset,
+          shape: shape,
+          outline: outline,
+        )
+      : _FocusRingThemeDataDefaults(
+          colorTheme: _colorTheme,
+          durationTheme: _durationTheme,
+          shapeTheme: _shapeTheme,
+          duration: duration ?? _duration,
+          offset: offset ?? _offset,
+          shape: shape ?? _shape,
+          outline: outline ?? _outline,
+        );
+
+  @override
+  FocusRingThemeData mergeWith({
+    Duration? duration,
+    FocusRingStateProperty<double?>? offset,
+    FocusRingStateProperty<OutlinedBorder?>? shape,
+    FocusRingStateProperty<OutlinePartial?>? outline,
+  }) => _FocusRingThemeDataDefaults(
+    colorTheme: _colorTheme,
+    durationTheme: _durationTheme,
+    shapeTheme: _shapeTheme,
+    duration: duration ?? _duration,
+    offset: offset?.orElseMaybe(_offset?.resolve) ?? _offset,
+    shape: shape?.orElseMaybe(_shape?.resolve) ?? _shape,
+    outline:
+        outline
+            ?.orElseMaybe(_outline?.resolve)
+            .mapValue(
+              (states, value) =>
+                  _outline?.resolve(states)?.merge(value) ?? value,
+            ) ??
+        _outline,
+  );
+
+  @override
+  FocusRingThemeData merge(FocusRingThemeDataPartial? other) => other != null
+      ? mergeWith(
+          duration: other.duration,
+          offset: other.offset,
+          shape: other.shape,
+          outline: other.outline,
+        )
+      : this;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _FocusRingThemeDataDefaults &&
+          _colorTheme == other._colorTheme &&
+          _durationTheme == other._durationTheme &&
+          _shapeTheme == other._shapeTheme &&
+          _duration == other._duration &&
+          _offset == other._offset &&
+          _shape == other._shape &&
+          _outline == other._outline;
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    _colorTheme,
+    _durationTheme,
+    _shapeTheme,
+    _duration,
+    _offset,
+    _shape,
+    _outline,
+  );
 }
 
 class FocusRingTheme extends InheritedTheme {
@@ -328,9 +398,9 @@ class FocusRingTheme extends InheritedTheme {
 
   static FocusRingThemeData of(BuildContext context) =>
       maybeOf(context) ??
-      _FocusRingThemeDataFallback(
+      .fallback(
         colorTheme: ColorTheme.of(context),
-        shapeTheme: ShapeTheme.of(context),
         durationTheme: DurationTheme.of(context),
+        shapeTheme: ShapeTheme.of(context),
       );
 }
