@@ -4,7 +4,7 @@ import 'package:flutter/material.dart' as flutter;
 typedef IconLegacy = flutter.Icon;
 
 /// A graphical icon widget drawn with a glyph from a font described in
-/// an [IconData] such as material's predefined [IconData]s in [Symbols].
+/// an [IconData] such as material's predefined [IconData]s in [Icons].
 ///
 /// Icons are not interactive. For an interactive icon, consider material's
 /// [IconButton].
@@ -18,14 +18,14 @@ typedef IconLegacy = flutter.Icon;
 ///
 /// {@tool snippet}
 ///
-/// This example shows how to create a [Flex.horizontal] of [Icon]s in different colors and
+/// This example shows how to create a [Row] of [Icon]s in different colors and
 /// sizes. The first [Icon] uses a [semanticLabel] to announce in accessibility
 /// modes like TalkBack and VoiceOver.
 ///
 /// ![The following code snippet would generate a row of icons consisting of a pink heart, a green musical note, and a blue umbrella, each progressively bigger than the last.](https://flutter.github.io/assets-for-api-docs/assets/widgets/icon.png)
 ///
 /// ```dart
-/// const Flex.horizontal(
+/// const Row(
 ///   mainAxisAlignment: MainAxisAlignment.spaceAround,
 ///   children: <Widget>[
 ///     Icon(
@@ -55,43 +55,30 @@ typedef IconLegacy = flutter.Icon;
 ///  * [Icons], for the list of available Material Icons for use with this class.
 ///  * [IconTheme], which provides ambient configuration for icons.
 ///  * [ImageIcon], for showing icons from [AssetImage]s or other [ImageProvider]s.
-class Icon extends StatelessWidget {
+class Icon extends IconLegacy {
   /// Creates an icon.
   const Icon(
-    this.icon, {
+    super.icon, {
     super.key,
-    this.size,
-    this.fill,
-    this.weight,
-    this.grade,
-    this.opticalSize,
-    this.color,
-    this.shadows,
-    this.semanticLabel,
-    this.textDirection,
-    this.applyTextScaling,
-    this.blendMode,
-  }) : assert(fill == null || (0.0 <= fill && fill <= 1.0)),
-       assert(weight == null || (0.0 < weight)),
-       assert(opticalSize == null || (0.0 < opticalSize));
+    super.size,
+    super.fill,
+    super.weight,
+    super.grade,
+    super.opticalSize,
+    super.color,
+    super.shadows,
+    super.applyTextScaling,
+    super.blendMode,
+    super.semanticLabel,
+    super.textDirection,
+  }) : super(fontWeight: null);
 
   /// The icon to display. The available icons are described in [Icons].
   ///
   /// The icon can be null, in which case the widget will render as an empty
   /// space of the specified [size].
-  final IconData? icon;
-
-  /// The size of the icon in logical pixels.
-  ///
-  /// Icons occupy a square with width and height equal to size.
-  ///
-  /// Defaults to the nearest [IconTheme]'s [IconThemeData.size].
-  ///
-  /// If this [Icon] is being placed inside an [IconButton], then use
-  /// [IconButton.iconSize] instead, so that the [IconButton] can make the splash
-  /// area the appropriate size as well. The [IconButton] uses an [IconTheme] to
-  /// pass down the size to the [Icon].
-  final double? size;
+  @override
+  IconData? get icon => super.icon;
 
   /// The fill for drawing the icon.
   ///
@@ -108,7 +95,8 @@ class Icon extends StatelessWidget {
   ///  * [weight], for controlling stroke weight.
   ///  * [grade], for controlling stroke weight in a more granular way.
   ///  * [opticalSize], for controlling optical size.
-  final double? fill;
+  @override
+  double? get fill => super.fill;
 
   /// The stroke weight for drawing the icon.
   ///
@@ -123,7 +111,8 @@ class Icon extends StatelessWidget {
   ///  * [grade], for controlling stroke weight in a more granular way.
   ///  * [opticalSize], for controlling optical size.
   ///  * https://fonts.google.com/knowledge/glossary/weight_axis
-  final double? weight;
+  @override
+  double? get weight => super.weight;
 
   /// The grade (granular stroke weight) for drawing the icon.
   ///
@@ -146,7 +135,8 @@ class Icon extends StatelessWidget {
   ///  * [weight], for controlling stroke weight in a less granular way.
   ///  * [opticalSize], for controlling optical size.
   ///  * https://fonts.google.com/knowledge/glossary/grade_axis
-  final double? grade;
+  @override
+  double? get grade => super.grade;
 
   /// The optical size for drawing the icon.
   ///
@@ -165,7 +155,21 @@ class Icon extends StatelessWidget {
   ///  * [weight], for controlling stroke weight.
   ///  * [grade], for controlling stroke weight in a more granular way.
   ///  * https://fonts.google.com/knowledge/glossary/optical_size_axis
-  final double? opticalSize;
+  @override
+  double? get opticalSize => super.opticalSize;
+
+  /// The size of the icon in logical pixels.
+  ///
+  /// Icons occupy a square with width and height equal to size.
+  ///
+  /// Defaults to the nearest [IconTheme]'s [IconThemeData.size].
+  ///
+  /// If this [Icon] is being placed inside an [IconButton], then use
+  /// [IconButton.iconSize] instead, so that the [IconButton] can make the splash
+  /// area the appropriate size as well. The [IconButton] uses an [IconTheme] to
+  /// pass down the size to the [Icon].
+  @override
+  double? get size => super.size;
 
   /// The color to use when drawing the icon.
   ///
@@ -185,7 +189,8 @@ class Icon extends StatelessWidget {
   /// )
   /// ```
   /// {@end-tool}
-  final Color? color;
+  @override
+  Color? get color => super.color;
 
   /// A list of [Shadow]s that will be painted underneath the icon.
   ///
@@ -196,7 +201,25 @@ class Icon extends StatelessWidget {
   /// equivalent as order produces differing transparency.
   ///
   /// Defaults to the nearest [IconTheme]'s [IconThemeData.shadows].
-  final List<Shadow>? shadows;
+  @override
+  List<Shadow>? get shadows => super.shadows;
+
+  /// Whether to scale the size of this widget using the ambient [MediaQuery]'s [TextScaler].
+  ///
+  /// This is specially useful when you have an icon associated with a text, as
+  /// scaling the text without scaling the icon would result in a confusing
+  /// interface.
+  ///
+  /// Defaults to the nearest [IconTheme]'s
+  /// [IconThemeData.applyTextScaling].
+  @override
+  bool? get applyTextScaling => super.applyTextScaling;
+
+  /// The [BlendMode] to apply to the foreground of the icon.
+  ///
+  /// Defaults to [BlendMode.srcOver]
+  @override
+  BlendMode? get blendMode => super.blendMode;
 
   /// Semantic label for the icon.
   ///
@@ -205,7 +228,8 @@ class Icon extends StatelessWidget {
   ///
   ///  * [SemanticsProperties.label], which is set to [semanticLabel] in the
   ///    underlying	 [Semantics] widget.
-  final String? semanticLabel;
+  @override
+  String? get semanticLabel => super.semanticLabel;
 
   /// The text direction to use for rendering the icon.
   ///
@@ -220,112 +244,97 @@ class Icon extends StatelessWidget {
   /// This property has no effect if the [icon]'s [IconData.matchTextDirection]
   /// field is false, but for consistency a text direction value must always be
   /// specified, either directly using this property or using [Directionality].
-  final TextDirection? textDirection;
+  @override
+  TextDirection? get textDirection => super.textDirection;
 
-  /// Whether to scale the size of this widget using the ambient [MediaQuery]'s [TextScaler].
-  ///
-  /// This is specially useful when you have an icon associated with a text, as
-  /// scaling the text without scaling the icon would result in a confusing
-  /// interface.
-  ///
-  /// Defaults to the nearest [IconTheme]'s
-  /// [IconThemeData.applyTextScaling].
-  final bool? applyTextScaling;
-
-  /// The [BlendMode] to apply to the foreground of the icon.
-  ///
-  /// Defaults to [BlendMode.srcOver]
-  final BlendMode? blendMode;
+  @override
+  FontWeight? get fontWeight => null;
 
   @override
   Widget build(BuildContext context) {
     assert(this.textDirection != null || debugCheckHasDirectionality(context));
     final textDirection = this.textDirection ?? Directionality.of(context);
 
-    final iconTheme = IconTheme.of(context);
+    final iconTheme = _mergedIconThemeDataOf(context);
 
-    final applyTextScaling = this.applyTextScaling ?? false;
+    final icon = this.icon;
+    final fill = this.fill ?? iconTheme.fill;
+    final weight = this.weight ?? iconTheme.weight;
+    final grade = this.grade ?? iconTheme.grade;
+    final opticalSize = this.opticalSize ?? iconTheme.opticalSize;
+    var size = this.size ?? iconTheme.size;
+    final shadows = this.shadows ?? iconTheme.shadows;
+    final applyTextScaling =
+        this.applyTextScaling ?? iconTheme.applyTextScaling;
 
-    final tentativeIconSize = size ?? iconTheme.size;
+    size = applyTextScaling
+        ? MediaQuery.textScalerOf(context).scale(size)
+        : size;
 
-    final iconSize = applyTextScaling
-        ? MediaQuery.textScalerOf(context).scale(tentativeIconSize)
-        : tentativeIconSize;
-
-    final iconFill = fill ?? iconTheme.fill;
-
-    final iconWeight = weight ?? iconTheme.weight;
-
-    final iconGrade = grade ?? iconTheme.grade;
-
-    final iconOpticalSize = opticalSize ?? iconTheme.opticalSize;
-
-    final iconShadows = shadows ?? const [];
-
-    final IconData? icon = this.icon;
     if (icon == null) {
       return Semantics(
         label: semanticLabel,
-        child: SizedBox(width: iconSize, height: iconSize),
+        child: SizedBox(width: size, height: size),
       );
     }
 
-    Color? iconColor = color ?? iconTheme.color;
+    Color? color = this.color ?? iconTheme.color;
+
+    final opacity = iconTheme.opacity;
+    if (opacity != 1.0) {
+      color = color.withValues(alpha: color.a * opacity);
+    }
+
     Paint? foreground;
     if (blendMode != null) {
       foreground = Paint()
         ..blendMode = blendMode!
-        ..color = iconColor;
-      // Cannot provide both a color and a foreground.
-      iconColor = null;
+        ..color = color;
+      color = null;
     }
 
     final fontStyle = TextStyle(
-      fontVariations: <FontVariation>[
-        FontVariation("FILL", iconFill),
-        FontVariation("wght", iconWeight),
-        FontVariation("GRAD", iconGrade),
-        FontVariation("opsz", iconOpticalSize),
-      ],
       inherit: false,
-      color: iconColor,
-      fontSize: iconSize,
-      fontFamily: icon.fontFamily,
-      package: icon.fontPackage,
-      fontFamilyFallback: icon.fontFamilyFallback,
-      shadows: iconShadows,
-      height:
-          1.0, // Makes sure the font's body is vertically centered within the iconSize x iconSize square.
-      leadingDistribution: TextLeadingDistribution.even,
+      color: color,
+      fontSize: size,
+      height: 1.0,
+      leadingDistribution: .even,
       foreground: foreground,
+      shadows: shadows,
+      fontVariations: <FontVariation>[
+        FontVariation("FILL", fill),
+        FontVariation("wght", weight),
+        FontVariation("GRAD", grade),
+        FontVariation("opsz", opticalSize),
+      ],
+      fontFamily: icon.fontFamily,
+      fontFamilyFallback: icon.fontFamilyFallback,
+      package: icon.fontPackage,
     );
+
+    Widget result = RichText(
+      overflow: .visible,
+      textDirection: textDirection,
+      text: TextSpan(text: .fromCharCode(icon.codePoint), style: fontStyle),
+    );
+
+    if (icon.matchTextDirection && textDirection == .rtl) {
+      // TextDirection changes infrequently.
+      result = Transform(
+        transform: .diagonal3Values(-1.0, 1.0, 1.0),
+        alignment: .center,
+        transformHitTests: false,
+        child: result,
+      );
+    }
 
     return Semantics(
       label: semanticLabel,
       child: ExcludeSemantics(
         child: SizedBox(
-          width: iconSize,
-          height: iconSize,
-          child: Align.center(
-            child: Transform.scale(
-              scaleX:
-                  icon.matchTextDirection && textDirection == TextDirection.rtl
-                  ? -1.0
-                  : 1.0,
-              scaleY: 1.0,
-              alignment: Alignment.center,
-              transformHitTests: false,
-              child: RichText(
-                overflow: TextOverflow.visible, // Never clip.
-                textDirection:
-                    textDirection, // Since we already fetched it for the assert...
-                text: TextSpan(
-                  text: String.fromCharCode(icon.codePoint),
-                  style: fontStyle,
-                ),
-              ),
-            ),
-          ),
+          width: size,
+          height: size,
+          child: Align.center(child: result),
         ),
       ),
     );
@@ -336,13 +345,20 @@ class Icon extends StatelessWidget {
     super.debugFillProperties(properties);
     properties
       ..add(IconDataProperty("icon", icon, ifNull: "<empty>", showName: false))
-      ..add(DoubleProperty("size", size, defaultValue: null))
       ..add(DoubleProperty("fill", fill, defaultValue: null))
       ..add(DoubleProperty("weight", weight, defaultValue: null))
       ..add(DoubleProperty("grade", grade, defaultValue: null))
       ..add(DoubleProperty("opticalSize", opticalSize, defaultValue: null))
+      ..add(DoubleProperty("size", size, defaultValue: null))
       ..add(ColorProperty("color", color, defaultValue: null))
       ..add(IterableProperty<Shadow>("shadows", shadows, defaultValue: null))
+      ..add(
+        DiagnosticsProperty<bool>(
+          "applyTextScaling",
+          applyTextScaling,
+          defaultValue: null,
+        ),
+      )
       ..add(StringProperty("semanticLabel", semanticLabel, defaultValue: null))
       ..add(
         EnumProperty<TextDirection>(
@@ -350,13 +366,42 @@ class Icon extends StatelessWidget {
           textDirection,
           defaultValue: null,
         ),
-      )
-      ..add(
-        DiagnosticsProperty<bool>(
-          "applyTextScaling",
-          applyTextScaling,
-          defaultValue: null,
-        ),
       );
   }
+
+  static IconThemeData _mergedIconThemeDataOf(BuildContext context) {
+    final _InheritedIconThemeData<IconThemeData>? newData = switch ((
+      context.getElementForInheritedWidgetOfExactType<IconTheme>(),
+      context.dependOnInheritedWidgetOfExactType<IconTheme>()?.data,
+    )) {
+      (final element?, final theme?) => (element: element, theme: theme),
+      _ => null,
+    };
+
+    final _InheritedIconThemeData<IconThemeDataLegacy>? legacyData = switch ((
+      context.getElementForInheritedWidgetOfExactType<IconThemeLegacy>(),
+      context.dependOnInheritedWidgetOfExactType<IconThemeLegacy>()?.data,
+    )) {
+      (final element?, final theme?) => (element: element, theme: theme),
+      _ => null,
+    };
+
+    if (newData != null &&
+        (legacyData == null ||
+            newData.element.depth >= legacyData.element.depth)) {
+      return newData.theme;
+    }
+
+    final fallbackTheme = IconThemeData.fallback(
+      colorTheme: ColorTheme.of(context),
+    );
+    return legacyData != null
+        ? fallbackTheme.merge(.fromLegacy(legacyData.theme.resolve(context)))
+        : fallbackTheme;
+  }
 }
+
+typedef _InheritedIconThemeData<T extends Object?> = ({
+  InheritedElement element,
+  T theme,
+});
