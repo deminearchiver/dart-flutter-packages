@@ -703,13 +703,24 @@ class IconThemeDataPartialTween extends Tween<IconThemeDataPartial?> {
   IconThemeDataPartial? lerp(double t) => .lerp(begin, end, t);
 }
 
-class IconThemeDataTween extends Tween<IconThemeData> {
+class IconThemeDataTween extends Tween<IconThemeData?> {
   IconThemeDataTween({super.begin, super.end});
 
   @override
-  IconThemeData lerp(double t) {
-    assert(begin != null);
-    assert(end != null);
-    return .lerp(begin!, end!, t);
+  IconThemeData? lerp(double t) {
+    final a = begin;
+    final b = end;
+    if (identical(a, b) || a == b) return a;
+    return .from(
+      fill: lerpDoubleNullable(a?.fill, b?.fill, t)!,
+      weight: lerpDoubleNullable(a?.weight, b?.weight, t)!,
+      grade: lerpDoubleNullable(a?.grade, b?.grade, t)!,
+      opticalSize: lerpDoubleNullable(a?.opticalSize, b?.opticalSize, t)!,
+      size: lerpDoubleNullable(a?.size, b?.size, t)!,
+      color: Color.lerp(a?.color, b?.color, t)!,
+      opacity: lerpDoubleNullable(a?.opacity, b?.opacity, t)!,
+      shadows: Shadow.lerpList(a?.shadows, b?.shadows, t)!,
+      applyTextScaling: t < 0.5 ? a!.applyTextScaling : b!.applyTextScaling,
+    );
   }
 }
