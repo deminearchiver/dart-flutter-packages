@@ -147,7 +147,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
 
   late final WidgetStatesController _statesController;
 
-  late AnimationController _handlePositionController;
+  late AnimationController _spatialController;
   final Tween<double> _handlePositionTween = Tween<double>();
   late Animation<double> _handlePositionAnimation;
 
@@ -177,6 +177,9 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   final Tween<IconThemeData?> _iconThemeTween = IconThemeDataTween();
   late Animation<IconThemeData?> _iconThemeAnimation;
 
+  final Tween<double> _selectionProgressTween = Tween<double>();
+  late Animation<double> _selectionProgressAnimation;
+
   late SpringThemeData _springTheme;
   late IconThemeData _iconTheme;
   late SwitchThemeData _switchTheme;
@@ -184,7 +187,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   bool _pressed = false;
   bool _focused = false;
 
-  void _updateHandlePositionAnimation({required double handlePosition}) {
+  void _updateSpatialAnimations({required double handlePosition}) {
     if (handlePosition == _handlePositionTween.end) {
       return;
     }
@@ -193,13 +196,19 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _handlePositionTween.end = handlePosition;
 
     if (_handlePositionTween.begin == _handlePositionTween.end) {
-      _handlePositionController.value = 1.0;
+      _spatialController.value = 1.0;
       return;
     }
 
-    final spring = _springTheme.fastSpatial.toSpringDescription();
-    final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0);
-    _handlePositionController.animateWith(simulation);
+    final simulation = SpringSimulation(
+      _springTheme.fastSpatial.toSpringDescription(),
+      0.0,
+      1.0,
+      0.0,
+      // TODO(deminearchiver): investigate if this makes animations look worse.
+      snapToEnd: true,
+    );
+    _spatialController.animateWith(simulation);
   }
 
   void _updateEffectsAnimations({
@@ -211,6 +220,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     required Color handleColor,
     required Outline handleOutline,
     required IconThemeData iconTheme,
+    required double selectionProgress,
   }) {
     if (trackShape == _trackShapeTween.end &&
         trackColor == _trackColorTween.end &&
@@ -219,7 +229,8 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
         handleShape == _handleShapeTween.end &&
         handleColor == _handleColorTween.end &&
         handleOutline == _handleOutlineTween.end &&
-        iconTheme == _iconThemeTween.end) {
+        iconTheme == _iconThemeTween.end &&
+        selectionProgress == _selectionProgressTween.end) {
       return;
     }
 
@@ -247,6 +258,9 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _iconThemeTween.begin = _iconThemeAnimation.value ?? iconTheme;
     _iconThemeTween.end = iconTheme;
 
+    _selectionProgressTween.begin = _selectionProgressAnimation.value;
+    _selectionProgressTween.end = selectionProgress;
+
     if (_trackShapeTween.begin == _trackShapeTween.end &&
         _trackColorTween.begin == _trackColorTween.end &&
         _trackOutlineTween.begin == _trackOutlineTween.end &&
@@ -254,13 +268,20 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
         _handleShapeTween.begin == _handleShapeTween.end &&
         _handleColorTween.begin == _handleColorTween.end &&
         _handleOutlineTween.begin == _handleOutlineTween.end &&
-        _iconThemeTween.begin == _iconThemeTween.end) {
+        _iconThemeTween.begin == _iconThemeTween.end &&
+        _selectionProgressTween.begin == _selectionProgressTween.end) {
       _effectsController.value = 1.0;
       return;
     }
 
-    final spring = _springTheme.defaultEffects.toSpringDescription();
-    final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0);
+    final simulation = SpringSimulation(
+      _springTheme.defaultEffects.toSpringDescription(),
+      0.0,
+      1.0,
+      0.0,
+      // TODO(deminearchiver): investigate if this makes animations look worse.
+      snapToEnd: true,
+    );
     _effectsController.animateWith(simulation);
   }
 
@@ -385,13 +406,12 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _handlePositionTween.begin = handlePosition;
     _handlePositionTween.end = handlePosition;
 
-    _handlePositionController = AnimationController.unbounded(
-      vsync: this,
-      value: 1.0,
-    );
-    _handlePositionAnimation = _handlePositionTween.animate(
-      _handlePositionController,
-    );
+    _spatialController = AnimationController.unbounded(vsync: this, value: 1.0);
+    _handlePositionAnimation = _handlePositionTween.animate(_spatialController);
+
+    final selectionProgress = _isSelected ? 1.0 : 0.0;
+    _selectionProgressTween.begin = selectionProgress;
+    _selectionProgressTween.end = selectionProgress;
 
     _effectsController = AnimationController(vsync: this, value: 1.0);
     _trackShapeAnimation = _trackShapeTween.animate(_effectsController);
@@ -402,6 +422,9 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _handleColorAnimation = _handleColorTween.animate(_effectsController);
     _handleOutlineAnimation = _handleOutlineTween.animate(_effectsController);
     _iconThemeAnimation = _iconThemeTween.animate(_effectsController);
+    _selectionProgressAnimation = _selectionProgressTween.animate(
+      _effectsController,
+    );
   }
 
   @override
@@ -415,7 +438,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   @override
   void dispose() {
     _effectsController.dispose();
-    _handlePositionController.dispose();
+    _spatialController.dispose();
     _statesController.dispose();
     super.dispose();
   }
@@ -454,7 +477,8 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
           : resolvedColor.withAlpha(0);
     });
 
-    _updateHandlePositionAnimation(handlePosition: handlePosition);
+    _updateSpatialAnimations(handlePosition: handlePosition);
+
     _updateEffectsAnimations(
       trackShape: trackShape,
       trackColor: trackColor,
@@ -464,6 +488,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       handleColor: handleColor,
       handleOutline: handleOutline,
       iconTheme: iconTheme,
+      selectionProgress: states.isSelected ? 1.0 : 0.0,
     );
 
     final trackChild = SizedBox.fromSize(
@@ -495,31 +520,39 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       child: AnimatedBuilder(
         animation: _effectsController,
         builder: (context, child) {
+          final selectionProgress = _selectionProgressAnimation.value;
+          final unselectedIconOpacity = clampDouble(
+            1.0 - selectionProgress,
+            0.0,
+            1.0,
+          );
+          final selectedIconOpacity = clampDouble(selectionProgress, 0.0, 1.0);
           final resolvedIconTheme = _iconThemeAnimation.value ?? iconTheme;
-          // final resolvedIconColor = _iconColorAnimation.value ?? iconColor;
-          // final resolvedIconOpacity = _effectsController.value;
-          return IconTheme(
-            // We cannot use Opacity here because of an assertion error that
-            // occurs due to us keeping track of canvas save count.
-            // data: iconTheme.copyWith(
-            //   color: resolvedIconOpacity < 1.0
-            //       ? iconTheme.color?.withValues(
-            //           alpha: resolvedIconColor.a * resolvedIconOpacity,
-            //         )
-            //       : resolvedIconColor,
-            //   fill: 0.0,
-            //   grade: 0.0,
-            //   size: 16.0,
-            //   opticalSize: 24.0,
-            //   weight: 400.0,
-            // ),
-            data: resolvedIconTheme,
-            child: child!,
+          final unselectedIconTheme = resolvedIconTheme.mergeWith(
+            opacity: resolvedIconTheme.opacity * unselectedIconOpacity,
+          );
+          final selectedIconTheme = resolvedIconTheme.mergeWith(
+            opacity: resolvedIconTheme.opacity * selectedIconOpacity,
+          );
+          return Stack(
+            children: [
+              Visibility(
+                visible: unselectedIconOpacity > 0.0,
+                child: IconTheme(
+                  data: unselectedIconTheme,
+                  child: const Icon(Symbols.close_rounded),
+                ),
+              ),
+              Visibility(
+                visible: selectedIconOpacity > 0.0,
+                child: IconTheme(
+                  data: selectedIconTheme,
+                  child: const Icon(Symbols.check_rounded),
+                ),
+              ),
+            ],
           );
         },
-        child: _isSelected
-            ? const Icon(Symbols.check_rounded, applyTextScaling: false)
-            : const Icon(Symbols.close_rounded, applyTextScaling: false),
       ),
     );
 
