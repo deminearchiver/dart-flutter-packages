@@ -662,40 +662,6 @@ class _IconThemeDataDefaults extends IconThemeData {
   );
 }
 
-class IconTheme extends InheritedTheme {
-  const IconTheme({super.key, required this.data, required super.child});
-
-  final IconThemeData data;
-
-  @override
-  bool updateShouldNotify(IconTheme oldWidget) => data != oldWidget.data;
-
-  @override
-  Widget wrap(BuildContext context, Widget child) =>
-      IconTheme(data: data, child: child);
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<IconThemeData>("data", data));
-  }
-
-  static Widget merge({
-    Key? key,
-    required IconThemeDataPartial data,
-    required Widget child,
-  }) => Builder(
-    builder: (context) =>
-        IconTheme(key: key, data: of(context).merge(data), child: child),
-  );
-
-  static IconThemeData? maybeOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<IconTheme>()?.data;
-
-  static IconThemeData of(BuildContext context) =>
-      maybeOf(context) ?? .fallback(colorTheme: ColorTheme.of(context));
-}
-
 class IconThemeDataPartialTween extends Tween<IconThemeDataPartial?> {
   IconThemeDataPartialTween({super.begin, super.end});
 
@@ -723,4 +689,106 @@ class IconThemeDataTween extends Tween<IconThemeData?> {
       applyTextScaling: t < 0.5 ? a!.applyTextScaling : b!.applyTextScaling,
     );
   }
+}
+
+class IconTheme extends InheritedTheme {
+  const IconTheme({super.key, required this.data, required super.child});
+
+  final IconThemeData data;
+
+  @override
+  bool updateShouldNotify(IconTheme oldWidget) => data != oldWidget.data;
+
+  @override
+  Widget wrap(BuildContext context, Widget child) =>
+      IconTheme(data: data, child: child);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<IconThemeData>("data", data));
+  }
+
+  static Widget merge({
+    Key? key,
+    required IconThemeDataPartial data,
+    required Widget child,
+  }) => Builder(
+    builder: (context) =>
+        IconTheme(key: key, data: of(context).merge(data), child: child),
+  );
+
+  static IconThemeData _fallbackOf(BuildContext context) =>
+      .fallback(colorTheme: ColorTheme.of(context));
+
+  static _InheritedDataUnion<IconThemeData>? _modernDataOf(
+    BuildContext context,
+  ) => switch ((
+    context.getElementForInheritedWidgetOfExactType<IconTheme>(),
+    context.dependOnInheritedWidgetOfExactType<IconTheme>()?.data,
+  )) {
+    (final element?, final theme?) => _InheritedDataUnion(
+      element: element,
+      theme: theme,
+    ),
+    _ => null,
+  };
+
+  static _InheritedDataUnion<IconThemeDataLegacy>? _legacyDataOf(
+    BuildContext context,
+  ) => switch ((
+    context.getElementForInheritedWidgetOfExactType<IconThemeLegacy>(),
+    context.dependOnInheritedWidgetOfExactType<IconThemeLegacy>()?.data,
+  )) {
+    (final element?, final theme?) => _InheritedDataUnion(
+      element: element,
+      theme: theme,
+    ),
+    _ => null,
+  };
+
+  static IconThemeData? _maybeOfWithFallback(
+    BuildContext context,
+    IconThemeData fallbackTheme,
+    bool allowLegacy,
+  ) {
+    final modernData = _modernDataOf(context);
+    final legacyData = _legacyDataOf(context);
+
+    if (!allowLegacy) return modernData?.theme;
+
+    if (modernData != null &&
+        (legacyData == null ||
+            modernData.element.depth >= legacyData.element.depth)) {
+      return modernData.theme;
+    }
+
+    return legacyData != null
+        ? fallbackTheme.merge(.fromLegacy(legacyData.theme.resolve(context)))
+        : null;
+  }
+
+  static IconThemeData? maybeOf(
+    BuildContext context, {
+    bool allowLegacy = true,
+  }) => _maybeOfWithFallback(context, _fallbackOf(context), allowLegacy);
+
+  static IconThemeData of(BuildContext context, {bool allowLegacy = true}) {
+    final fallbackTheme = _fallbackOf(context);
+    return _maybeOfWithFallback(context, fallbackTheme, allowLegacy) ??
+        fallbackTheme;
+  }
+}
+
+extension type const _InheritedDataUnion<T extends Object?>._(
+  ({InheritedElement element, T theme}) _
+) {
+  const _InheritedDataUnion({
+    required InheritedElement element,
+    required T theme,
+  }) : this._((element: element, theme: theme));
+
+  InheritedElement get element => _.element;
+
+  T get theme => _.theme;
 }

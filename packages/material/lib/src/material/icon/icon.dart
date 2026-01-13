@@ -255,7 +255,7 @@ class Icon extends IconLegacy {
     assert(this.textDirection != null || debugCheckHasDirectionality(context));
     final textDirection = this.textDirection ?? Directionality.of(context);
 
-    final iconTheme = _mergedIconThemeDataOf(context);
+    final iconTheme = IconTheme.of(context, allowLegacy: true);
 
     final icon = this.icon;
     final fill = this.fill ?? iconTheme.fill;
@@ -301,7 +301,7 @@ class Icon extends IconLegacy {
       leadingDistribution: .even,
       foreground: foreground,
       shadows: shadows,
-      fontVariations: <FontVariation>[
+      fontVariations: [
         FontVariation("FILL", fill),
         FontVariation("wght", weight),
         FontVariation("GRAD", grade),
@@ -319,10 +319,10 @@ class Icon extends IconLegacy {
     );
 
     if (icon.matchTextDirection && textDirection == .rtl) {
-      // TextDirection changes infrequently.
-      result = Transform(
-        transform: .diagonal3Values(-1.0, 1.0, 1.0),
-        alignment: .center,
+      // TextDirection changes infrequently and the tree is relatively small,
+      // which means that we can conditionally wrap the widget in Transform.
+      result = Transform.flip(
+        flipX: true,
         transformHitTests: false,
         child: result,
       );
@@ -368,40 +368,4 @@ class Icon extends IconLegacy {
         ),
       );
   }
-
-  static IconThemeData _mergedIconThemeDataOf(BuildContext context) {
-    final _InheritedIconThemeData<IconThemeData>? newData = switch ((
-      context.getElementForInheritedWidgetOfExactType<IconTheme>(),
-      context.dependOnInheritedWidgetOfExactType<IconTheme>()?.data,
-    )) {
-      (final element?, final theme?) => (element: element, theme: theme),
-      _ => null,
-    };
-
-    final _InheritedIconThemeData<IconThemeDataLegacy>? legacyData = switch ((
-      context.getElementForInheritedWidgetOfExactType<IconThemeLegacy>(),
-      context.dependOnInheritedWidgetOfExactType<IconThemeLegacy>()?.data,
-    )) {
-      (final element?, final theme?) => (element: element, theme: theme),
-      _ => null,
-    };
-
-    if (newData != null &&
-        (legacyData == null ||
-            newData.element.depth >= legacyData.element.depth)) {
-      return newData.theme;
-    }
-
-    final fallbackTheme = IconThemeData.fallback(
-      colorTheme: ColorTheme.of(context),
-    );
-    return legacyData != null
-        ? fallbackTheme.merge(.fromLegacy(legacyData.theme.resolve(context)))
-        : fallbackTheme;
-  }
 }
-
-typedef _InheritedIconThemeData<T extends Object?> = ({
-  InheritedElement element,
-  T theme,
-});
