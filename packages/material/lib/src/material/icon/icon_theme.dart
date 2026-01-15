@@ -755,14 +755,19 @@ class IconTheme extends InheritedTheme {
     final modernData = _modernDataOf(context);
     final legacyData = _legacyDataOf(context);
 
-    if (!allowLegacy) return modernData?.theme;
+    if (!allowLegacy) {
+      // If only modern theme is allowed, return it if exists, or null.
+      return modernData?.theme;
+    }
 
     if (modernData != null &&
         (legacyData == null ||
             modernData.element.depth >= legacyData.element.depth)) {
+      // If modern theme exists and it is closer than legacy, return it.
       return modernData.theme;
     }
 
+    // If legacy theme exists, merge it with fallback, and return the result.
     return legacyData != null
         ? fallbackTheme.merge(.fromLegacy(legacyData.theme.resolve(context)))
         : null;
