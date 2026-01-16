@@ -148,8 +148,12 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   late final WidgetStatesController _statesController;
 
   late AnimationController _spatialController;
+
   final Tween<double> _handlePositionTween = Tween<double>();
   late Animation<double> _handlePositionAnimation;
+
+  final Tween<double> _selectionSpatialProgressTween = Tween<double>();
+  late Animation<double> _selectionSpatialProgressAnimation;
 
   late AnimationController _effectsController;
 
@@ -177,8 +181,8 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   final Tween<IconThemeData?> _iconThemeTween = IconThemeDataTween();
   late Animation<IconThemeData?> _iconThemeAnimation;
 
-  final Tween<double> _selectionProgressTween = Tween<double>();
-  late Animation<double> _selectionProgressAnimation;
+  final Tween<double> _selectionEffectsProgressTween = Tween<double>();
+  late Animation<double> _selectionEffectsProgressAnimation;
 
   late SpringThemeData _springTheme;
   late IconThemeData _iconTheme;
@@ -187,15 +191,25 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   bool _pressed = false;
   bool _focused = false;
 
-  void _updateSpatialAnimations({required double handlePosition}) {
-    if (handlePosition == _handlePositionTween.end) {
+  void _updateSpatialAnimations({
+    required double handlePosition,
+    required double selectionProgress,
+  }) {
+    if (handlePosition == _handlePositionTween.end &&
+        selectionProgress == _selectionSpatialProgressTween.end) {
       return;
     }
 
     _handlePositionTween.begin = _handlePositionAnimation.value;
     _handlePositionTween.end = handlePosition;
 
-    if (_handlePositionTween.begin == _handlePositionTween.end) {
+    _selectionSpatialProgressTween.begin =
+        _selectionSpatialProgressAnimation.value;
+    _selectionSpatialProgressTween.end = selectionProgress;
+
+    if (_handlePositionTween.begin == _handlePositionTween.end &&
+        _selectionSpatialProgressTween.begin ==
+            _selectionSpatialProgressTween.end) {
       _spatialController.value = 1.0;
       return;
     }
@@ -230,7 +244,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
         handleColor == _handleColorTween.end &&
         handleOutline == _handleOutlineTween.end &&
         iconTheme == _iconThemeTween.end &&
-        selectionProgress == _selectionProgressTween.end) {
+        selectionProgress == _selectionEffectsProgressTween.end) {
       return;
     }
 
@@ -258,8 +272,9 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _iconThemeTween.begin = _iconThemeAnimation.value ?? iconTheme;
     _iconThemeTween.end = iconTheme;
 
-    _selectionProgressTween.begin = _selectionProgressAnimation.value;
-    _selectionProgressTween.end = selectionProgress;
+    _selectionEffectsProgressTween.begin =
+        _selectionEffectsProgressAnimation.value;
+    _selectionEffectsProgressTween.end = selectionProgress;
 
     if (_trackShapeTween.begin == _trackShapeTween.end &&
         _trackColorTween.begin == _trackColorTween.end &&
@@ -269,7 +284,8 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
         _handleColorTween.begin == _handleColorTween.end &&
         _handleOutlineTween.begin == _handleOutlineTween.end &&
         _iconThemeTween.begin == _iconThemeTween.end &&
-        _selectionProgressTween.begin == _selectionProgressTween.end) {
+        _selectionEffectsProgressTween.begin ==
+            _selectionEffectsProgressTween.end) {
       _effectsController.value = 1.0;
       return;
     }
@@ -406,12 +422,17 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _handlePositionTween.begin = handlePosition;
     _handlePositionTween.end = handlePosition;
 
+    final selectionProgress = _isSelected ? 1.0 : 0.0;
+    _selectionSpatialProgressTween.begin = selectionProgress;
+    _selectionSpatialProgressTween.end = selectionProgress;
+    _selectionEffectsProgressTween.begin = selectionProgress;
+    _selectionEffectsProgressTween.end = selectionProgress;
+
     _spatialController = AnimationController.unbounded(vsync: this, value: 1.0);
     _handlePositionAnimation = _handlePositionTween.animate(_spatialController);
-
-    final selectionProgress = _isSelected ? 1.0 : 0.0;
-    _selectionProgressTween.begin = selectionProgress;
-    _selectionProgressTween.end = selectionProgress;
+    _selectionSpatialProgressAnimation = _selectionSpatialProgressTween.animate(
+      _spatialController,
+    );
 
     _effectsController = AnimationController(vsync: this, value: 1.0);
     _trackShapeAnimation = _trackShapeTween.animate(_effectsController);
@@ -422,7 +443,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _handleColorAnimation = _handleColorTween.animate(_effectsController);
     _handleOutlineAnimation = _handleOutlineTween.animate(_effectsController);
     _iconThemeAnimation = _iconThemeTween.animate(_effectsController);
-    _selectionProgressAnimation = _selectionProgressTween.animate(
+    _selectionEffectsProgressAnimation = _selectionEffectsProgressTween.animate(
       _effectsController,
     );
   }
@@ -477,7 +498,12 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
           : resolvedColor.withAlpha(0);
     });
 
-    _updateSpatialAnimations(handlePosition: handlePosition);
+    final selectionProgress = states.isSelected ? 1.0 : 0.0;
+
+    _updateSpatialAnimations(
+      handlePosition: handlePosition,
+      selectionProgress: selectionProgress,
+    );
 
     _updateEffectsAnimations(
       trackShape: trackShape,
@@ -488,10 +514,10 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       handleColor: handleColor,
       handleOutline: handleOutline,
       iconTheme: iconTheme,
-      selectionProgress: states.isSelected ? 1.0 : 0.0,
+      selectionProgress: selectionProgress,
     );
 
-    final trackChild = SizedBox.fromSize(
+    final Widget trackChild = SizedBox.fromSize(
       size: stateLayerSize,
       child: Listener(
         behavior: .deferToChild,
@@ -516,39 +542,77 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       ),
     );
 
-    final handleChild = Align.center(
+    const maxIconRotation = math.pi / 3.0;
+    const iconOpacityInterval = Interval(1.0 / 3.0, 1.0);
+
+    final Widget unselectedIcon = AnimatedBuilder(
+      animation: _spatialController,
+      builder: (context, child) {
+        final rotation = lerpDouble(
+          maxIconRotation,
+          0.0,
+          1.0 - _selectionSpatialProgressAnimation.value,
+        );
+        return Transform.rotate(
+          angle: rotation,
+          transformHitTests: false,
+          child: child!,
+        );
+      },
+      child: const Icon(Symbols.close_rounded),
+    );
+
+    final Widget selectedIcon = AnimatedBuilder(
+      animation: _spatialController,
+      builder: (context, child) {
+        final rotation = lerpDouble(
+          -maxIconRotation,
+          0.0,
+          _selectionSpatialProgressAnimation.value,
+        );
+        return Transform.rotate(
+          angle: rotation,
+          transformHitTests: false,
+          child: child!,
+        );
+      },
+      child: const Icon(Symbols.check_rounded),
+    );
+
+    final Widget handleChild = Align.center(
       child: AnimatedBuilder(
         animation: _effectsController,
         builder: (context, child) {
-          final selectionProgress = _selectionProgressAnimation.value;
-          final unselectedIconOpacity = clampDouble(
-            1.0 - selectionProgress,
-            0.0,
-            1.0,
-          );
-          final selectedIconOpacity = clampDouble(selectionProgress, 0.0, 1.0);
           final resolvedIconTheme = _iconThemeAnimation.value ?? iconTheme;
+
+          final progress = _selectionEffectsProgressAnimation.value;
+
+          final unselectedIconOpacity = iconOpacityInterval.transform(
+            clampDouble(1.0 - progress, 0.0, 1.0),
+          );
           final unselectedIconTheme = resolvedIconTheme.mergeWith(
             opacity: resolvedIconTheme.opacity * unselectedIconOpacity,
+          );
+
+          final selectedIconOpacity = iconOpacityInterval.transform(
+            clampDouble(progress, 0.0, 1.0),
           );
           final selectedIconTheme = resolvedIconTheme.mergeWith(
             opacity: resolvedIconTheme.opacity * selectedIconOpacity,
           );
+
           return Stack(
             children: [
               Visibility(
                 visible: unselectedIconOpacity > 0.0,
                 child: IconTheme(
                   data: unselectedIconTheme,
-                  child: const Icon(Symbols.close_rounded),
+                  child: unselectedIcon,
                 ),
               ),
               Visibility(
                 visible: selectedIconOpacity > 0.0,
-                child: IconTheme(
-                  data: selectedIconTheme,
-                  child: const Icon(Symbols.check_rounded),
-                ),
+                child: IconTheme(data: selectedIconTheme, child: selectedIcon),
               ),
             ],
           );
