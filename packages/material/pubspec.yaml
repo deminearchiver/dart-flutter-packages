@@ -19,7 +19,7 @@ dependencies:
   androidx_graphics_shapes: ^1.3.0
   collection: ^1.19.1
   material_symbols_icons: ^4.2892.0
-  meta: ^1.17.0
+  meta: ^1.18.0
   libmonet: ^1.1.2
   material_color_utilities: ^0.13.0
 
