@@ -3,6 +3,32 @@ import 'dart:math' as math;
 import 'package:material/src/material/flutter.dart';
 import 'package:flutter/material.dart' as flutter;
 
+extension type const _TypedSet<E extends Object>(Set<E> _) implements Set<E> {
+  @redeclare
+  bool contains(E value) => _.contains(value);
+
+  @redeclare
+  bool remove(E value) => _.remove(value);
+
+  @redeclare
+  E? lookup(E object) => _.lookup(object);
+
+  @redeclare
+  void removeAll(Iterable<E> elements) => _.removeAll(elements);
+
+  @redeclare
+  void retainAll(Iterable<E> elements) => _.retainAll(elements);
+
+  @redeclare
+  bool containsAll(Iterable<E> other) => _.containsAll(other);
+
+  @redeclare
+  Set<E> intersection(Set<E> other) => _.intersection(other);
+
+  @redeclare
+  Set<E> difference(Set<E> other) => _.difference(other);
+}
+
 typedef SwitchLegacy = flutter.Switch;
 typedef SwitchThemeLegacy = flutter.SwitchTheme;
 typedef SwitchThemeDataLegacy = flutter.SwitchThemeData;
@@ -32,10 +58,9 @@ sealed class _SwitchStates implements SwitchStates {
     bool? isFocused,
     bool? isPressed,
   }) {
-    final resolvedIsSelected =
-        isSelected ?? states.contains(WidgetState.selected);
-    final resolvedIsDisabled =
-        isDisabled ?? states.contains(WidgetState.disabled);
+    states as _TypedSet<WidgetState>;
+    final resolvedIsSelected = isSelected ?? states.contains(.selected);
+    final resolvedIsDisabled = isDisabled ?? states.contains(.disabled);
     return resolvedIsDisabled
         ? .disabled(hasIcon: hasIcon, isSelected: resolvedIsSelected)
         : .enabled(
@@ -145,8 +170,20 @@ class Switch extends StatefulWidget {
 class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   bool get _isSelected => widget.checked;
 
+  late double _selectionProgress;
+  late double _handlePosition;
+  late OutlinedBorder _trackShape;
+  late Color _trackColor;
+  late Outline _trackOutline;
+  late Size _handleSize;
+  late OutlinedBorder _handleShape;
+  late Color _handleColor;
+  late Outline _handleOutline;
+  late IconThemeData _resolvedIconTheme;
+
   late final WidgetStatesController _statesController;
 
+  late SpringDescription _spatialSpring;
   late AnimationController _spatialController;
 
   final Tween<double> _handlePositionTween = Tween<double>();
@@ -155,6 +192,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   final Tween<double> _selectionSpatialProgressTween = Tween<double>();
   late Animation<double> _selectionSpatialProgressAnimation;
 
+  late SpringDescription _effectsSpring;
   late AnimationController _effectsController;
 
   final Tween<OutlinedBorder?> _trackShapeTween = OutlinedBorderTween();
@@ -184,6 +222,13 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   final Tween<double> _selectionEffectsProgressTween = Tween<double>();
   late Animation<double> _selectionEffectsProgressAnimation;
 
+  late Animation<OutlinedBorder> _resolvedTrackShapeAnimation;
+  late Animation<Color> _resolvedTrackColorAnimation;
+  late Animation<Size> _resolvedHandleSizeAnimation;
+  late Animation<OutlinedBorder> _resolvedHandleShapeAnimation;
+  late Animation<Color> _resolvedHandleColorAnimation;
+  late Animation<IconThemeData> _resolvedIconThemeAnimation;
+
   late SpringThemeData _springTheme;
   late IconThemeData _iconTheme;
   late SwitchThemeData _switchTheme;
@@ -191,41 +236,42 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   bool _pressed = false;
   bool _focused = false;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  SpringSimulation _createImplicitSpringSimulation(SpringDescription spring) =>
+      // TODO(deminearchiver): does snapToEnd degrade animation quality?
+      SpringSimulation(spring, 0.0, 1.0, 0.0, snapToEnd: true);
+
   void _updateSpatialAnimations({
-    required double handlePosition,
     required double selectionProgress,
+    required double handlePosition,
   }) {
-    if (handlePosition == _handlePositionTween.end &&
-        selectionProgress == _selectionSpatialProgressTween.end) {
+    if (selectionProgress == _selectionSpatialProgressTween.end &&
+        handlePosition == _handlePositionTween.end) {
       return;
     }
-
-    _handlePositionTween.begin = _handlePositionAnimation.value;
-    _handlePositionTween.end = handlePosition;
 
     _selectionSpatialProgressTween.begin =
         _selectionSpatialProgressAnimation.value;
     _selectionSpatialProgressTween.end = selectionProgress;
 
-    if (_handlePositionTween.begin == _handlePositionTween.end &&
-        _selectionSpatialProgressTween.begin ==
-            _selectionSpatialProgressTween.end) {
+    _handlePositionTween.begin = _handlePositionAnimation.value;
+    _handlePositionTween.end = handlePosition;
+
+    if (_selectionSpatialProgressTween.begin ==
+            _selectionSpatialProgressTween.end &&
+        _handlePositionTween.begin == _handlePositionTween.end) {
       _spatialController.value = 1.0;
       return;
     }
 
-    final simulation = SpringSimulation(
-      _springTheme.fastSpatial.toSpringDescription(),
-      0.0,
-      1.0,
-      0.0,
-      // TODO(deminearchiver): investigate if this makes animations look worse.
-      snapToEnd: true,
-    );
+    final simulation = _createImplicitSpringSimulation(_spatialSpring);
     _spatialController.animateWith(simulation);
   }
 
   void _updateEffectsAnimations({
+    required double selectionProgress,
     required OutlinedBorder trackShape,
     required Color trackColor,
     required Outline trackOutline,
@@ -234,19 +280,22 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     required Color handleColor,
     required Outline handleOutline,
     required IconThemeData iconTheme,
-    required double selectionProgress,
   }) {
-    if (trackShape == _trackShapeTween.end &&
+    if (selectionProgress == _selectionEffectsProgressTween.end &&
+        trackShape == _trackShapeTween.end &&
         trackColor == _trackColorTween.end &&
         trackOutline == _trackOutlineTween.end &&
         handleSize == _handleSizeTween.end &&
         handleShape == _handleShapeTween.end &&
         handleColor == _handleColorTween.end &&
         handleOutline == _handleOutlineTween.end &&
-        iconTheme == _iconThemeTween.end &&
-        selectionProgress == _selectionEffectsProgressTween.end) {
+        iconTheme == _iconThemeTween.end) {
       return;
     }
+
+    _selectionEffectsProgressTween.begin =
+        _selectionEffectsProgressAnimation.value;
+    _selectionEffectsProgressTween.end = selectionProgress;
 
     _trackShapeTween.begin = _trackShapeAnimation.value ?? trackShape;
     _trackShapeTween.end = trackShape;
@@ -272,72 +321,61 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _iconThemeTween.begin = _iconThemeAnimation.value ?? iconTheme;
     _iconThemeTween.end = iconTheme;
 
-    _selectionEffectsProgressTween.begin =
-        _selectionEffectsProgressAnimation.value;
-    _selectionEffectsProgressTween.end = selectionProgress;
-
-    if (_trackShapeTween.begin == _trackShapeTween.end &&
+    if (_selectionEffectsProgressTween.begin ==
+            _selectionEffectsProgressTween.end &&
+        _trackShapeTween.begin == _trackShapeTween.end &&
         _trackColorTween.begin == _trackColorTween.end &&
         _trackOutlineTween.begin == _trackOutlineTween.end &&
         _handleSizeTween.begin == _handleSizeTween.end &&
         _handleShapeTween.begin == _handleShapeTween.end &&
         _handleColorTween.begin == _handleColorTween.end &&
         _handleOutlineTween.begin == _handleOutlineTween.end &&
-        _iconThemeTween.begin == _iconThemeTween.end &&
-        _selectionEffectsProgressTween.begin ==
-            _selectionEffectsProgressTween.end) {
+        _iconThemeTween.begin == _iconThemeTween.end) {
       _effectsController.value = 1.0;
       return;
     }
 
-    final simulation = SpringSimulation(
-      _springTheme.defaultEffects.toSpringDescription(),
-      0.0,
-      1.0,
-      0.0,
-      // TODO(deminearchiver): investigate if this makes animations look worse.
-      snapToEnd: true,
-    );
+    final simulation = _createImplicitSpringSimulation(_effectsSpring);
     _effectsController.animateWith(simulation);
   }
 
   _SwitchStates _resolveStates() {
-    final states = _statesController.value;
+    final states = _statesController.value as _TypedSet<WidgetState>;
 
     final _SwitchStates result = widget.onCheckedChanged == null
         ? .disabled(hasIcon: true, isSelected: widget.checked)
         : .enabled(
             hasIcon: true,
             isSelected: widget.checked,
-            isHovered: states.contains(WidgetState.hovered),
+            isHovered: states.contains(.hovered),
             isPressed: _pressed,
             isFocused: _focused && !_pressed,
           );
 
     if (result.isSelected) {
-      states.add(WidgetState.selected);
+      states.add(.selected);
     } else {
-      states.remove(WidgetState.selected);
+      states.remove(.selected);
     }
     if (result.isDisabled) {
-      states.add(WidgetState.disabled);
+      states.add(.disabled);
     } else {
-      states.remove(WidgetState.disabled);
+      states.remove(.disabled);
     }
     if (result.isHovered) {
-      states.add(WidgetState.pressed);
+      states.add(.pressed);
     } else {
-      states.remove(WidgetState.pressed);
+      states.remove(.pressed);
     }
     if (result.isFocused) {
-      states.add(WidgetState.focused);
+      states.add(.focused);
     } else {
-      states.remove(WidgetState.focused);
+      states.remove(.focused);
     }
     if (result.isPressed) {
-      states.add(WidgetState.pressed);
+      states.add(.pressed);
     } else {
-      states.remove(WidgetState.pressed);
+      states.remove(.pressed);
     }
     return result;
   }
@@ -418,15 +456,15 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     super.initState();
     _statesController = WidgetStatesController()..addListener(_statesListener);
 
-    final handlePosition = _isSelected ? 1.0 : 0.0;
-    _handlePositionTween.begin = handlePosition;
-    _handlePositionTween.end = handlePosition;
+    _selectionProgress = _isSelected ? 1.0 : 0.0;
+    _selectionSpatialProgressTween.begin = _selectionProgress;
+    _selectionSpatialProgressTween.end = _selectionProgress;
+    _selectionEffectsProgressTween.begin = _selectionProgress;
+    _selectionEffectsProgressTween.end = _selectionProgress;
 
-    final selectionProgress = _isSelected ? 1.0 : 0.0;
-    _selectionSpatialProgressTween.begin = selectionProgress;
-    _selectionSpatialProgressTween.end = selectionProgress;
-    _selectionEffectsProgressTween.begin = selectionProgress;
-    _selectionEffectsProgressTween.end = selectionProgress;
+    _handlePosition = _isSelected ? 1.0 : 0.0;
+    _handlePositionTween.begin = _handlePosition;
+    _handlePositionTween.end = _handlePosition;
 
     _spatialController = AnimationController.unbounded(vsync: this, value: 1.0);
     _handlePositionAnimation = _handlePositionTween.animate(_spatialController);
@@ -446,6 +484,36 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _selectionEffectsProgressAnimation = _selectionEffectsProgressTween.animate(
       _effectsController,
     );
+
+    _resolvedTrackShapeAnimation = _trackShapeAnimation
+        .nonNullOrElse(() => _trackShape)
+        .mapValue(
+          (value) =>
+              (_trackOutlineAnimation.value ?? _trackOutline).apply(value),
+        );
+
+    _resolvedTrackColorAnimation = _trackColorAnimation.nonNullOrElse(
+      () => _trackColor,
+    );
+
+    _resolvedHandleSizeAnimation = _handleSizeAnimation.nonNullOrElse(
+      () => _handleSize,
+    );
+
+    _resolvedHandleShapeAnimation = _handleShapeAnimation
+        .nonNullOrElse(() => _handleShape)
+        .mapValue(
+          (value) =>
+              (_handleOutlineAnimation.value ?? _handleOutline).apply(value),
+        );
+
+    _resolvedHandleColorAnimation = _handleColorAnimation.nonNullOrElse(
+      () => _handleColor,
+    );
+
+    _resolvedIconThemeAnimation = _iconThemeAnimation.nonNullOrElse(
+      () => _resolvedIconTheme,
+    );
   }
 
   @override
@@ -454,6 +522,9 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _springTheme = SpringTheme.of(context);
     _iconTheme = IconTheme.of(context);
     _switchTheme = SwitchTheme.of(context);
+
+    _spatialSpring = _springTheme.fastSpatial.toSpringDescription();
+    _effectsSpring = _springTheme.defaultEffects.toSpringDescription();
   }
 
   @override
@@ -470,18 +541,18 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
 
     final minTapTargetSize = _switchTheme.minTapTargetSize.resolve(states);
     final trackSize = _switchTheme.trackSize.resolve(states);
-    final trackShape = _switchTheme.trackShape.resolve(states);
-    final trackColor = _switchTheme.trackColor.resolve(states);
-    final trackOutline = _switchTheme.trackOutline.resolve(states);
+    _trackShape = _switchTheme.trackShape.resolve(states);
+    _trackColor = _switchTheme.trackColor.resolve(states);
+    _trackOutline = _switchTheme.trackOutline.resolve(states);
     final stateLayerSize = _switchTheme.stateLayerSize.resolve(states);
     final stateLayerShape = _switchTheme.stateLayerShape.resolve(states);
-    final handleSize = _switchTheme.handleSize.resolve(states);
-    final handleShape = _switchTheme.handleShape.resolve(states);
-    final handleColor = _switchTheme.handleColor.resolve(states);
-    final handleOutline = _switchTheme.handleOutline.resolve(states);
-    final iconTheme = _iconTheme.merge(_switchTheme.iconTheme.resolve(states));
-
-    final handlePosition = _isSelected ? 1.0 : 0.0;
+    _handleSize = _switchTheme.handleSize.resolve(states);
+    _handleShape = _switchTheme.handleShape.resolve(states);
+    _handleColor = _switchTheme.handleColor.resolve(states);
+    _handleOutline = _switchTheme.handleOutline.resolve(states);
+    _resolvedIconTheme = _iconTheme.merge(
+      _switchTheme.iconTheme.resolve(states),
+    );
 
     final stateLayerColor = _switchTheme.stateLayerColor;
     final stateLayerOpacity = _switchTheme.stateLayerOpacity;
@@ -498,23 +569,24 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
           : resolvedColor.withAlpha(0);
     });
 
-    final selectionProgress = states.isSelected ? 1.0 : 0.0;
+    _selectionProgress = states.isSelected ? 1.0 : 0.0;
+    _handlePosition = _isSelected ? 1.0 : 0.0;
 
     _updateSpatialAnimations(
-      handlePosition: handlePosition,
-      selectionProgress: selectionProgress,
+      selectionProgress: _selectionProgress,
+      handlePosition: _handlePosition,
     );
 
     _updateEffectsAnimations(
-      trackShape: trackShape,
-      trackColor: trackColor,
-      trackOutline: trackOutline,
-      handleSize: handleSize,
-      handleShape: handleShape,
-      handleColor: handleColor,
-      handleOutline: handleOutline,
-      iconTheme: iconTheme,
-      selectionProgress: selectionProgress,
+      selectionProgress: _selectionProgress,
+      trackShape: _trackShape,
+      trackColor: _trackColor,
+      trackOutline: _trackOutline,
+      handleSize: _handleSize,
+      handleShape: _handleShape,
+      handleColor: _handleColor,
+      handleOutline: _handleOutline,
+      iconTheme: _resolvedIconTheme,
     );
 
     final Widget trackChild = SizedBox.fromSize(
@@ -542,82 +614,82 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       ),
     );
 
-    const maxIconRotation = math.pi / 3.0;
+    const iconRotationDisplacement = math.pi / 3.0;
     const iconOpacityInterval = Interval(1.0 / 3.0, 1.0);
 
-    final Widget unselectedIcon = AnimatedBuilder(
-      animation: _spatialController,
-      builder: (context, child) {
-        final rotation = lerpDouble(
-          maxIconRotation,
-          0.0,
-          1.0 - _selectionSpatialProgressAnimation.value,
-        );
-        return Transform.rotate(
-          angle: rotation,
-          transformHitTests: false,
-          child: child!,
-        );
-      },
+    final Widget unselectedIcon = Transform.rotate(
+      angle: iconRotationDisplacement,
+      transformHitTests: false,
       child: const Icon(Symbols.close_rounded),
     );
 
-    final Widget selectedIcon = AnimatedBuilder(
-      animation: _spatialController,
-      builder: (context, child) {
-        final rotation = lerpDouble(
-          -maxIconRotation,
-          0.0,
-          _selectionSpatialProgressAnimation.value,
-        );
-        return Transform.rotate(
-          angle: rotation,
-          transformHitTests: false,
-          child: child!,
-        );
-      },
+    final Widget selectedIcon = Transform.rotate(
+      angle: 0.0,
+      transformHitTests: false,
       child: const Icon(Symbols.check_rounded),
     );
 
-    final Widget handleChild = Align.center(
+    final Widget handleChild = AnimatedBuilder(
+      animation: _spatialController,
+      builder: (context, child) => Transform.rotate(
+        angle: lerpDouble(
+          -iconRotationDisplacement,
+          0.0,
+          _selectionSpatialProgressAnimation.value,
+        ),
+        transformHitTests: false,
+        child: child!,
+      ),
       child: AnimatedBuilder(
         animation: _effectsController,
         builder: (context, child) {
-          final resolvedIconTheme = _iconThemeAnimation.value ?? iconTheme;
-
-          final progress = _selectionEffectsProgressAnimation.value;
-
+          final animatedIconTheme = _resolvedIconThemeAnimation.value;
+          final progress = clampDouble(
+            _selectionEffectsProgressAnimation.value,
+            0.0,
+            1.0,
+          );
           final unselectedIconOpacity = iconOpacityInterval.transform(
-            clampDouble(1.0 - progress, 0.0, 1.0),
+            1.0 - progress,
           );
-          final unselectedIconTheme = resolvedIconTheme.mergeWith(
-            opacity: resolvedIconTheme.opacity * unselectedIconOpacity,
-          );
-
-          final selectedIconOpacity = iconOpacityInterval.transform(
-            clampDouble(progress, 0.0, 1.0),
-          );
-          final selectedIconTheme = resolvedIconTheme.mergeWith(
-            opacity: resolvedIconTheme.opacity * selectedIconOpacity,
-          );
-
+          final selectedIconOpacity = iconOpacityInterval.transform(progress);
           return Stack(
+            alignment: .center,
             children: [
-              Visibility(
-                visible: unselectedIconOpacity > 0.0,
-                child: IconTheme(
-                  data: unselectedIconTheme,
+              if (unselectedIconOpacity > 0.0)
+                IconTheme(
+                  data: animatedIconTheme.copyWith(
+                    opacity: animatedIconTheme.opacity * unselectedIconOpacity,
+                  ),
                   child: unselectedIcon,
                 ),
-              ),
-              Visibility(
-                visible: selectedIconOpacity > 0.0,
-                child: IconTheme(data: selectedIconTheme, child: selectedIcon),
-              ),
+              if (selectedIconOpacity > 0.0)
+                IconTheme(
+                  data: animatedIconTheme.copyWith(
+                    opacity: animatedIconTheme.opacity * selectedIconOpacity,
+                  ),
+                  child: selectedIcon,
+                ),
             ],
           );
         },
       ),
+    );
+
+    final Widget paint = _SwitchPaint(
+      handlePosition: _handlePositionAnimation,
+      trackShape: _resolvedTrackShapeAnimation,
+      trackColor: _resolvedTrackColorAnimation,
+      minTapTargetSize: minTapTargetSize,
+      trackSize: trackSize,
+      handleSize: _resolvedHandleSizeAnimation,
+      handleShape: _resolvedHandleShapeAnimation,
+      handleColor: _resolvedHandleColorAnimation,
+      childrenPaintOrder: .handleChildIsTop,
+      trackChildPosition: .middle,
+      trackChild: trackChild,
+      handleChildPosition: .top,
+      handleChild: handleChild,
     );
 
     return RepaintBoundary(
@@ -633,7 +705,8 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
             animation: _effectsController,
             builder: (context, child) => FocusRingTheme.merge(
               data: .from(
-                shape: .all(_trackShapeAnimation.value ?? trackShape),
+                // Don't use _resolvedTrackShapeAnimation because it has border.
+                shape: .all(_trackShapeAnimation.value ?? _trackShape),
               ),
               child: child!,
             ),
@@ -643,32 +716,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
               layoutBuilder: (context, info, child) => Align.center(
                 child: SizedBox.fromSize(size: trackSize, child: child),
               ),
-              child: _SwitchPaint(
-                handlePosition: _handlePositionAnimation,
-                trackShape: _trackShapeAnimation
-                    .nonNullOr(trackShape)
-                    .mapValue(
-                      (value) => (_trackOutlineAnimation.value ?? trackOutline)
-                          .apply(value),
-                    ),
-                trackColor: _trackColorAnimation.nonNullOr(trackColor),
-                minTapTargetSize: minTapTargetSize,
-                trackSize: trackSize,
-                handleSize: _handleSizeAnimation.nonNullOr(handleSize),
-                handleShape: _handleShapeAnimation
-                    .nonNullOr(handleShape)
-                    .mapValue(
-                      (value) =>
-                          (_handleOutlineAnimation.value ?? handleOutline)
-                              .apply(value),
-                    ),
-                handleColor: _handleColorAnimation.nonNullOr(handleColor),
-                childrenPaintOrder: .handleChildIsTop,
-                trackChildPosition: .middle,
-                trackChild: trackChild,
-                handleChildPosition: .top,
-                handleChild: handleChild,
-              ),
+              child: paint,
             ),
           ),
         ),
