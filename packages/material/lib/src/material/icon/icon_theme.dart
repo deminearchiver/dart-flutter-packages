@@ -42,15 +42,15 @@ abstract class IconThemeDataPartial with Diagnosticable {
   bool? get applyTextScaling;
 
   IconThemeDataPartial copyWith({
-    covariant double? fill,
-    covariant double? weight,
-    covariant double? grade,
-    covariant double? opticalSize,
-    covariant double? size,
-    covariant Color? color,
-    covariant double? opacity,
-    covariant List<Shadow>? shadows,
-    covariant bool? applyTextScaling,
+    double? fill,
+    double? weight,
+    double? grade,
+    double? opticalSize,
+    double? size,
+    Color? color,
+    double? opacity,
+    List<Shadow>? shadows,
+    bool? applyTextScaling,
   }) =>
       fill != null ||
           weight != null ||
@@ -290,15 +290,15 @@ abstract class IconThemeData extends IconThemeDataPartial {
 
   @override
   IconThemeData copyWith({
-    covariant double? fill,
-    covariant double? weight,
-    covariant double? grade,
-    covariant double? opticalSize,
-    covariant double? size,
-    covariant Color? color,
-    covariant double? opacity,
-    covariant List<Shadow>? shadows,
-    covariant bool? applyTextScaling,
+    double? fill,
+    double? weight,
+    double? grade,
+    double? opticalSize,
+    double? size,
+    Color? color,
+    double? opacity,
+    List<Shadow>? shadows,
+    bool? applyTextScaling,
   }) =>
       fill != null ||
           weight != null ||
@@ -548,15 +548,15 @@ class _IconThemeDataDefaults extends IconThemeData {
 
   @override
   IconThemeData copyWith({
-    covariant double? fill,
-    covariant double? weight,
-    covariant double? grade,
-    covariant double? opticalSize,
-    covariant double? size,
-    covariant Color? color,
-    covariant double? opacity,
-    covariant List<Shadow>? shadows,
-    covariant bool? applyTextScaling,
+    double? fill,
+    double? weight,
+    double? grade,
+    double? opticalSize,
+    double? size,
+    Color? color,
+    double? opacity,
+    List<Shadow>? shadows,
+    bool? applyTextScaling,
   }) =>
       fill != null &&
           weight != null &&
