@@ -3,32 +3,6 @@ import 'dart:math' as math;
 import 'package:material/src/material/flutter.dart';
 import 'package:flutter/material.dart' as flutter;
 
-extension type const _TypedSet<E extends Object>(Set<E> _) implements Set<E> {
-  @redeclare
-  bool contains(E value) => _.contains(value);
-
-  @redeclare
-  bool remove(E value) => _.remove(value);
-
-  @redeclare
-  E? lookup(E object) => _.lookup(object);
-
-  @redeclare
-  void removeAll(Iterable<E> elements) => _.removeAll(elements);
-
-  @redeclare
-  void retainAll(Iterable<E> elements) => _.retainAll(elements);
-
-  @redeclare
-  bool containsAll(Iterable<E> other) => _.containsAll(other);
-
-  @redeclare
-  Set<E> intersection(Set<E> other) => _.intersection(other);
-
-  @redeclare
-  Set<E> difference(Set<E> other) => _.difference(other);
-}
-
 typedef SwitchLegacy = flutter.Switch;
 typedef SwitchThemeLegacy = flutter.SwitchTheme;
 typedef SwitchThemeDataLegacy = flutter.SwitchThemeData;
@@ -58,7 +32,7 @@ sealed class _SwitchStates implements SwitchStates {
     bool? isFocused,
     bool? isPressed,
   }) {
-    states as _TypedSet<WidgetState>;
+    states as StrictSet<WidgetState>;
     final resolvedIsSelected = isSelected ?? states.contains(.selected);
     final resolvedIsDisabled = isDisabled ?? states.contains(.disabled);
     return resolvedIsDisabled
@@ -340,7 +314,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   }
 
   _SwitchStates _resolveStates() {
-    final states = _statesController.value as _TypedSet<WidgetState>;
+    final states = _statesController.value as StrictSet<WidgetState>;
 
     final _SwitchStates result = widget.onCheckedChanged == null
         ? .disabled(hasIcon: true, isSelected: widget.checked)

@@ -370,3 +370,30 @@ extension DefaultTextStyleWrapExtension on DefaultTextStyle {
     child: child,
   );
 }
+
+extension type const StrictSet<E extends Object?>._(Set<E> _)
+    implements Set<E> {
+  @redeclare
+  bool contains(E value) => _.contains(value);
+
+  @redeclare
+  bool remove(E value) => _.remove(value);
+
+  @redeclare
+  E? lookup(E object) => _.lookup(object);
+
+  @redeclare
+  void removeAll(Iterable<E> elements) => _.removeAll(elements);
+
+  @redeclare
+  void retainAll(Iterable<E> elements) => _.retainAll(elements);
+
+  @redeclare
+  bool containsAll(Iterable<E> other) => _.containsAll(other);
+
+  @redeclare
+  Set<E> intersection(Set<E> other) => _.intersection(other);
+
+  @redeclare
+  Set<E> difference(Set<E> other) => _.difference(other);
+}
