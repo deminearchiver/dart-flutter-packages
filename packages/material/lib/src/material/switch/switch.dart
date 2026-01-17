@@ -40,9 +40,9 @@ sealed class _SwitchStates implements SwitchStates {
         : .enabled(
             hasIcon: hasIcon,
             isSelected: resolvedIsSelected,
-            isHovered: isHovered ?? states.contains(WidgetState.hovered),
-            isFocused: isFocused ?? states.contains(WidgetState.focused),
-            isPressed: isPressed ?? states.contains(WidgetState.pressed),
+            isHovered: isHovered ?? states.contains(.hovered),
+            isFocused: isFocused ?? states.contains(.focused),
+            isPressed: isPressed ?? states.contains(.pressed),
           );
   }
 
@@ -520,6 +520,8 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _trackOutline = _switchTheme.trackOutline.resolve(states);
     final stateLayerSize = _switchTheme.stateLayerSize.resolve(states);
     final stateLayerShape = _switchTheme.stateLayerShape.resolve(states);
+    final stateLayerColor = _switchTheme.stateLayerColor;
+    final stateLayerOpacity = _switchTheme.stateLayerOpacity;
     _handleSize = _switchTheme.handleSize.resolve(states);
     _handleShape = _switchTheme.handleShape.resolve(states);
     _handleColor = _switchTheme.handleColor.resolve(states);
@@ -528,20 +530,15 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       _switchTheme.iconTheme.resolve(states),
     );
 
-    final stateLayerColor = _switchTheme.stateLayerColor;
-    final stateLayerOpacity = _switchTheme.stateLayerOpacity;
-    final overlayColor = WidgetStateProperty.resolveWith((widgetStates) {
-      final resolvedStates = _SwitchStates.fromWidgetStates(
+    final overlayColor = MixedWidgetStateLayerColor<SwitchStates>.from(
+      (widgetStates) => _SwitchStates.fromWidgetStates(
         widgetStates,
         hasIcon: states.hasIcon,
         isSelected: states.isSelected,
-      );
-      final resolvedColor = stateLayerColor.resolve(resolvedStates);
-      final resolvedOpacity = stateLayerOpacity.resolve(resolvedStates);
-      return resolvedOpacity > 0.0
-          ? resolvedColor.withValues(alpha: resolvedColor.a * resolvedOpacity)
-          : resolvedColor.withAlpha(0);
-    });
+      ),
+      color: stateLayerColor,
+      opacity: stateLayerOpacity,
+    );
 
     _selectionProgress = states.isSelected ? 1.0 : 0.0;
     _handlePosition = _isSelected ? 1.0 : 0.0;

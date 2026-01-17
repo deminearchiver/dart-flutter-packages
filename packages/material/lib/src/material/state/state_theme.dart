@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:material/src/material/flutter.dart';
 
 abstract class StateThemeDataPartial with Diagnosticable {
@@ -28,7 +30,7 @@ abstract class StateThemeDataPartial with Diagnosticable {
           focusStateLayerOpacity != null ||
           pressedStateLayerOpacity != null ||
           draggedStateLayerOpacity != null
-      ? StateThemeDataPartial.from(
+      ? .from(
           hoverStateLayerOpacity:
               hoverStateLayerOpacity ?? this.hoverStateLayerOpacity,
           focusStateLayerOpacity:
@@ -162,7 +164,7 @@ abstract class StateThemeData extends StateThemeDataPartial {
           focusStateLayerOpacity != null ||
           pressedStateLayerOpacity != null ||
           draggedStateLayerOpacity != null
-      ? StateThemeData.from(
+      ? .from(
           hoverStateLayerOpacity:
               hoverStateLayerOpacity ?? this.hoverStateLayerOpacity,
           focusStateLayerOpacity:
@@ -276,7 +278,7 @@ class StateTheme extends InheritedTheme {
       context.dependOnInheritedWidgetOfExactType<StateTheme>()?.data;
 
   static StateThemeData of(BuildContext context) =>
-      maybeOf(context) ?? const StateThemeData.fallback();
+      maybeOf(context) ?? const .fallback();
 }
 
 class _WidgetStateLayerOpacityFromStateThemeDataPartial
@@ -286,22 +288,25 @@ class _WidgetStateLayerOpacityFromStateThemeDataPartial
   final StateThemeDataPartial _stateTheme;
 
   @override
-  double resolve(WidgetStates states) => switch (_stateTheme) {
-    _ when states.contains(WidgetState.disabled) => 0.0,
-    StateThemeDataPartial(:final draggedStateLayerOpacity?)
-        when states.contains(WidgetState.dragged) =>
-      draggedStateLayerOpacity,
-    StateThemeDataPartial(:final pressedStateLayerOpacity?)
-        when states.contains(WidgetState.pressed) =>
-      pressedStateLayerOpacity,
-    StateThemeDataPartial(:final focusStateLayerOpacity?)
-        when states.contains(WidgetState.focused) =>
-      focusStateLayerOpacity,
-    StateThemeDataPartial(:final hoverStateLayerOpacity?)
-        when states.contains(WidgetState.hovered) =>
-      hoverStateLayerOpacity,
-    _ => 0.0,
-  };
+  double resolve(WidgetStates states) {
+    states as StrictSet<WidgetState>;
+    return switch (_stateTheme) {
+      _ when states.contains(.disabled) => 0.0,
+      StateThemeDataPartial(:final draggedStateLayerOpacity?)
+          when states.contains(.dragged) =>
+        draggedStateLayerOpacity,
+      StateThemeDataPartial(:final pressedStateLayerOpacity?)
+          when states.contains(.pressed) =>
+        pressedStateLayerOpacity,
+      StateThemeDataPartial(:final focusStateLayerOpacity?)
+          when states.contains(.focused) =>
+        focusStateLayerOpacity,
+      StateThemeDataPartial(:final hoverStateLayerOpacity?)
+          when states.contains(.hovered) =>
+        hoverStateLayerOpacity,
+      _ => 0.0,
+    };
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -314,49 +319,161 @@ class _WidgetStateLayerOpacityFromStateThemeDataPartial
   int get hashCode => Object.hash(runtimeType, _stateTheme);
 }
 
-extension StateThemeDataPartialExtension on StateThemeDataPartial {
-  @Deprecated("Use asWidgetStateLayerOpacity instead.")
-  WidgetStateProperty<double> get stateLayerOpacity =>
-      asWidgetStateLayerOpacity;
-}
+abstract interface class StateLayerColor<S extends Object?>
+    implements StateProperty<Color, S> {
+  const factory StateLayerColor({
+    StateProperty<Color?, S>? color,
+    StateProperty<double?, S>? opacity,
+  }) = _StateLayerColor;
 
-extension StateThemeDataExtension on StateThemeData {
-  @Deprecated("Use asWidgetStateLayerOpacity instead.")
-  WidgetStateProperty<double> get stateLayerOpacity =>
-      asWidgetStateLayerOpacity;
-}
-
-class StateLayerColor<S extends Object?> implements StateProperty<Color, S> {
-  const StateLayerColor({this.color, this.opacity});
-
-  final StateProperty<Color?, S>? color;
-  final StateProperty<double?, S>? opacity;
-
-  @override
-  Color resolve(S states) {
+  static Color defaultResolver<S extends Object?>(
+    S states, {
+    StateProperty<Color?, S>? color,
+    StateProperty<double?, S>? opacity,
+  }) {
     final resolvedColor = color?.resolve(states);
     if (resolvedColor == null) return Colors.transparent;
     if (resolvedColor.a <= 0.0) return resolvedColor;
-
     final resolvedOpacity = opacity?.resolve(states) ?? 0.0;
     return resolvedOpacity > 0.0
         ? resolvedColor.withValues(alpha: resolvedColor.a * resolvedOpacity)
         : resolvedColor.withAlpha(0);
   }
+}
+
+class _StateLayerColor<S extends Object?> implements StateLayerColor<S> {
+  const _StateLayerColor({
+    StateProperty<Color?, S>? color,
+    StateProperty<double?, S>? opacity,
+  }) : _color = color,
+       _opacity = opacity;
+
+  final StateProperty<Color?, S>? _color;
+  final StateProperty<double?, S>? _opacity;
+
+  @override
+  Color resolve(S states) =>
+      StateLayerColor.defaultResolver(states, color: _color, opacity: _opacity);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
-          other is StateLayerColor<S> &&
-          color == other.color &&
-          opacity == other.opacity;
+          other is _StateLayerColor<S> &&
+          _color == other._color &&
+          _opacity == other._opacity;
 
   @override
-  int get hashCode => Object.hash(runtimeType, color, opacity);
+  int get hashCode => Object.hash(runtimeType, _color, _opacity);
 }
 
-class WidgetStateLayerColor extends StateLayerColor<WidgetStates>
-    implements WidgetStateProperty<Color> {
-  const WidgetStateLayerColor({super.color, super.opacity});
+abstract interface class WidgetStateLayerColor
+    implements WidgetStateProperty<Color>, StateLayerColor<WidgetStates> {
+  const factory WidgetStateLayerColor({
+    WidgetStateProperty<Color?>? color,
+    WidgetStateProperty<double?>? opacity,
+  }) = _WidgetStateLayerColor;
+}
+
+class _WidgetStateLayerColor extends _StateLayerColor<WidgetStates>
+    implements WidgetStateLayerColor {
+  const _WidgetStateLayerColor({super.color, super.opacity});
+}
+
+abstract class MixedWidgetStateLayerColor<S extends Object?>
+    implements WidgetStateLayerColor {
+  const MixedWidgetStateLayerColor({
+    StateProperty<Color?, S>? color,
+    StateProperty<double?, S>? opacity,
+  }) : _color = color,
+       _opacity = opacity;
+
+  const factory MixedWidgetStateLayerColor.from(
+    S Function(WidgetStates widgetStates) transformer, {
+    StateProperty<Color?, S>? color,
+    StateProperty<double?, S>? opacity,
+  }) = _CustomWidgetStateLayerColorWithCallback;
+
+  const factory MixedWidgetStateLayerColor.withConverter(
+    Converter<WidgetStates, S> converter, {
+    StateProperty<Color?, S>? color,
+    StateProperty<double?, S>? opacity,
+  }) = _CustomWidgetStateLayerColorWithConverter;
+
+  final StateProperty<Color?, S>? _color;
+  final StateProperty<double?, S>? _opacity;
+
+  @protected
+  S resolveStates(WidgetStates widgetStates);
+
+  @override
+  Color resolve(WidgetStates widgetStates) => StateLayerColor.defaultResolver(
+    resolveStates(widgetStates),
+    color: _color,
+    opacity: _opacity,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is MixedWidgetStateLayerColor<S> &&
+          _color == other._color &&
+          _opacity == other._opacity;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _color, _opacity);
+}
+
+class _CustomWidgetStateLayerColorWithCallback<S extends Object?>
+    extends MixedWidgetStateLayerColor<S> {
+  const _CustomWidgetStateLayerColorWithCallback(
+    S Function(WidgetStates widgetStates) transformer, {
+    super.color,
+    super.opacity,
+  }) : _transformer = transformer;
+
+  final S Function(WidgetStates widgetStates) _transformer;
+
+  @override
+  S resolveStates(WidgetStates widgetStates) => _transformer(widgetStates);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _CustomWidgetStateLayerColorWithCallback<S> &&
+          _color == other._color &&
+          _opacity == other._opacity &&
+          _transformer == other._transformer;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _color, _opacity, _transformer);
+}
+
+class _CustomWidgetStateLayerColorWithConverter<S extends Object?>
+    extends MixedWidgetStateLayerColor<S> {
+  const _CustomWidgetStateLayerColorWithConverter(
+    Converter<WidgetStates, S> converter, {
+    super.color,
+    super.opacity,
+  }) : _converter = converter;
+
+  final Converter<WidgetStates, S> _converter;
+
+  @override
+  S resolveStates(WidgetStates widgetStates) =>
+      _converter.convert(widgetStates);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _CustomWidgetStateLayerColorWithConverter<S> &&
+          _color == other._color &&
+          _opacity == other._opacity &&
+          _converter == other._converter;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _color, _opacity, _converter);
 }

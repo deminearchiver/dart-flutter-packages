@@ -32,17 +32,16 @@ sealed class _RadioButtonStates implements RadioButtonStates {
     bool? isFocused,
     bool? isPressed,
   }) {
-    final resolvedIsSelected =
-        isSelected ?? states.contains(WidgetState.selected);
-    final resolvedIsDisabled =
-        isDisabled ?? states.contains(WidgetState.disabled);
+    states as StrictSet<WidgetState>;
+    final resolvedIsSelected = isSelected ?? states.contains(.selected);
+    final resolvedIsDisabled = isDisabled ?? states.contains(.disabled);
     return resolvedIsDisabled
         ? .disabled(isSelected: resolvedIsSelected)
         : .enabled(
             isSelected: resolvedIsSelected,
-            isHovered: isHovered ?? states.contains(WidgetState.hovered),
-            isFocused: isFocused ?? states.contains(WidgetState.focused),
-            isPressed: isPressed ?? states.contains(WidgetState.pressed),
+            isHovered: isHovered ?? states.contains(.hovered),
+            isFocused: isFocused ?? states.contains(.focused),
+            isPressed: isPressed ?? states.contains(.pressed),
           );
   }
 
@@ -136,6 +135,10 @@ class _RadioButtonState extends State<RadioButton>
   bool _pressed = false;
   bool _focused = false;
 
+  late Color _resolvedIconBackgroundColor;
+  late Color _resolvedIconOutlineColor;
+  late Color _resolvedIconDotColor;
+
   late AnimationController _animationController;
 
   late AnimationController _effectsController;
@@ -149,8 +152,13 @@ class _RadioButtonState extends State<RadioButton>
   final Tween<Color?> _iconDotColorTween = ColorTween();
   late Animation<Color?> _iconDotColorAnimation;
 
+  late Animation<Color> _resolvedIconBackgroundColorAnimation;
+  late Animation<Color> _resolvedIconOutlineColorAnimation;
+  late Animation<Color> _resolvedIconDotColorAnimation;
+
   late ShapeThemeData _shapeTheme;
   late SpringThemeData _springTheme;
+  late RadioButtonThemeData _radioButtonTheme;
 
   void _updateColorAnimations({
     required Color iconBackgroundColor,
@@ -187,41 +195,41 @@ class _RadioButtonState extends State<RadioButton>
   }
 
   _RadioButtonStates _resolveStates() {
-    final states = _statesController.value;
+    final states = _statesController.value as StrictSet<WidgetState>;
 
     final _RadioButtonStates result = widget.onTap == null
         ? .disabled(isSelected: widget.selected)
         : .enabled(
             isSelected: widget.selected,
-            isHovered: states.contains(WidgetState.hovered),
+            isHovered: states.contains(.hovered),
             isPressed: _pressed,
             isFocused: _focused && !_pressed,
           );
 
     if (result.isSelected) {
-      states.add(WidgetState.selected);
+      states.add(.selected);
     } else {
-      states.remove(WidgetState.selected);
+      states.remove(.selected);
     }
     if (result.isDisabled) {
-      states.add(WidgetState.disabled);
+      states.add(.disabled);
     } else {
-      states.remove(WidgetState.disabled);
+      states.remove(.disabled);
     }
     if (result.isHovered) {
-      states.add(WidgetState.pressed);
+      states.add(.pressed);
     } else {
-      states.remove(WidgetState.pressed);
+      states.remove(.pressed);
     }
     if (result.isFocused) {
-      states.add(WidgetState.focused);
+      states.add(.focused);
     } else {
-      states.remove(WidgetState.focused);
+      states.remove(.focused);
     }
     if (result.isPressed) {
-      states.add(WidgetState.pressed);
+      states.add(.pressed);
     } else {
-      states.remove(WidgetState.pressed);
+      states.remove(.pressed);
     }
     return result;
   }
@@ -315,6 +323,16 @@ class _RadioButtonState extends State<RadioButton>
       _effectsController,
     );
     _iconDotColorAnimation = _iconDotColorTween.animate(_effectsController);
+
+    _resolvedIconBackgroundColorAnimation = _iconBackgroundColorAnimation
+        .nonNullOrElse(() => _resolvedIconBackgroundColor);
+
+    _resolvedIconOutlineColorAnimation = _iconOutlineColorAnimation
+        .nonNullOrElse(() => _resolvedIconOutlineColor);
+
+    _resolvedIconDotColorAnimation = _iconDotColorAnimation.nonNullOrElse(
+      () => _resolvedIconDotColor,
+    );
   }
 
   @override
@@ -346,6 +364,7 @@ class _RadioButtonState extends State<RadioButton>
     super.didChangeDependencies();
     _shapeTheme = ShapeTheme.of(context);
     _springTheme = SpringTheme.of(context);
+    _radioButtonTheme = RadioButtonTheme.of(context);
   }
 
   @override
@@ -359,39 +378,35 @@ class _RadioButtonState extends State<RadioButton>
   Widget build(BuildContext context) {
     final states = _resolveStates();
 
-    final radioButtonTheme = RadioButtonTheme.of(context);
-
     const minTapTargetSize = Size.square(48.0);
-    final stateLayerSize = radioButtonTheme.stateLayerSize.resolve(states);
-    final stateLayerShape = radioButtonTheme.stateLayerShape.resolve(states);
-    final stateLayerColor = radioButtonTheme.stateLayerColor;
-    final stateLayerOpacity = radioButtonTheme.stateLayerOpacity;
-    final iconSize = radioButtonTheme.iconSize.resolve(states);
-    final iconBackgroundColor = radioButtonTheme.iconBackgroundColor.resolve(
+    final stateLayerSize = _radioButtonTheme.stateLayerSize.resolve(states);
+    final stateLayerShape = _radioButtonTheme.stateLayerShape.resolve(states);
+    final stateLayerColor = _radioButtonTheme.stateLayerColor;
+    final stateLayerOpacity = _radioButtonTheme.stateLayerOpacity;
+    final iconSize = _radioButtonTheme.iconSize.resolve(states);
+    _resolvedIconBackgroundColor = _radioButtonTheme.iconBackgroundColor
+        .resolve(states);
+    _resolvedIconOutlineColor = _radioButtonTheme.iconOutlineColor.resolve(
       states,
     );
-    final iconOutlineColor = radioButtonTheme.iconOutlineColor.resolve(states);
-    final iconDotColor = radioButtonTheme.iconDotColor.resolve(states);
+    _resolvedIconDotColor = _radioButtonTheme.iconDotColor.resolve(states);
 
-    final overlayColor = WidgetStateProperty.resolveWith((widgetStates) {
-      final resolvedStates = _RadioButtonStates.fromWidgetStates(
+    final overlayColor = MixedWidgetStateLayerColor<RadioButtonStates>.from(
+      (widgetStates) => _RadioButtonStates.fromWidgetStates(
         widgetStates,
         isSelected: states.isSelected,
-      );
-      final resolvedColor = stateLayerColor.resolve(resolvedStates);
-      final resolvedOpacity = stateLayerOpacity.resolve(resolvedStates);
-      return resolvedOpacity > 0.0
-          ? resolvedColor.withValues(alpha: resolvedColor.a * resolvedOpacity)
-          : resolvedColor.withAlpha(0);
-    });
-
-    _updateColorAnimations(
-      iconBackgroundColor: iconBackgroundColor,
-      iconOutlineColor: iconOutlineColor,
-      iconDotColor: iconDotColor,
+      ),
+      color: stateLayerColor,
+      opacity: stateLayerOpacity,
     );
 
-    final child = SizedBox.fromSize(
+    _updateColorAnimations(
+      iconBackgroundColor: _resolvedIconBackgroundColor,
+      iconOutlineColor: _resolvedIconOutlineColor,
+      iconDotColor: _resolvedIconDotColor,
+    );
+
+    final Widget child = SizedBox.fromSize(
       size: stateLayerSize,
       child: Listener(
         behavior: .deferToChild,
@@ -414,6 +429,16 @@ class _RadioButtonState extends State<RadioButton>
       ),
     );
 
+    final Widget paint = _RadioButtonPaint(
+      minTapTargetSize: const _ValueListenable(minTapTargetSize),
+      iconSize: _ValueListenable(iconSize),
+      iconBackgroundColor: _resolvedIconBackgroundColorAnimation,
+      iconOutlineColor: _resolvedIconOutlineColorAnimation,
+      iconDotColor: _resolvedIconDotColorAnimation,
+      animation: _animationController,
+      child: child,
+    );
+
     return RepaintBoundary(
       child: Semantics(
         enabled: !states.isDisabled,
@@ -428,30 +453,18 @@ class _RadioButtonState extends State<RadioButton>
             onTapOutside: !states.isDisabled ? _onTapOutside : null,
             onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
             child: FocusRingTheme.merge(
-              data: FocusRingThemeDataPartial.from(
+              data: .from(
                 shape: .all(
                   CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
                 ),
               ),
               child: FocusRing(
                 visible: states.isFocused,
-                placement: FocusRingPlacement.outward,
+                placement: .outward,
                 layoutBuilder: (context, info, child) => Align.center(
                   child: SizedBox.fromSize(size: stateLayerSize, child: child),
                 ),
-                child: _RadioButtonPaint(
-                  minTapTargetSize: const _ValueListenable(minTapTargetSize),
-                  iconSize: _ValueListenable(iconSize),
-                  iconBackgroundColor: _iconBackgroundColorAnimation.nonNullOr(
-                    iconBackgroundColor,
-                  ),
-                  iconOutlineColor: _iconOutlineColorAnimation.nonNullOr(
-                    iconOutlineColor,
-                  ),
-                  iconDotColor: _iconDotColorAnimation.nonNullOr(iconDotColor),
-                  animation: _animationController,
-                  child: child,
-                ),
+                child: paint,
               ),
             ),
           ),

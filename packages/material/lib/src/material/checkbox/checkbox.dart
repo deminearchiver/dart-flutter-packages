@@ -31,17 +31,16 @@ sealed class _CheckboxStates implements CheckboxStates {
     bool? isFocused,
     bool? isPressed,
   }) {
-    final resolvedIsSelected =
-        isSelected ?? states.contains(WidgetState.selected);
-    final resolvedIsDisabled =
-        isDisabled ?? states.contains(WidgetState.disabled);
+    states as StrictSet<WidgetState>;
+    final resolvedIsSelected = isSelected ?? states.contains(.selected);
+    final resolvedIsDisabled = isDisabled ?? states.contains(.disabled);
     return resolvedIsDisabled
         ? .disabled(isSelected: resolvedIsSelected)
         : .enabled(
             isSelected: resolvedIsSelected,
-            isHovered: isHovered ?? states.contains(WidgetState.hovered),
-            isFocused: isFocused ?? states.contains(WidgetState.focused),
-            isPressed: isPressed ?? states.contains(WidgetState.pressed),
+            isHovered: isHovered ?? states.contains(.hovered),
+            isFocused: isFocused ?? states.contains(.focused),
+            isPressed: isPressed ?? states.contains(.pressed),
           );
   }
 
@@ -189,13 +188,20 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
 
   late ShapeThemeData _shapeTheme;
   late SpringThemeData _springTheme;
+  late CheckboxThemeData _checkboxTheme;
 
   late final WidgetStatesController _statesController;
   bool _pressed = false;
   bool _focused = false;
 
+  late OutlinedBorder _resolvedContainerShape;
+  late Color _resolvedContainerColor;
+  late Outline _resolvedContainerOutline;
+  late Color _resolvedIconColor;
+
   late final AnimationController _checkFractionController;
   late final AnimationController _crossCenterGravitationController;
+
   late final AnimationController _effectsController;
 
   final Tween<OutlinedBorder?> _containerShapeTween = OutlinedBorderTween();
@@ -207,6 +213,10 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
   late Animation<Color?> _containerColorAnimation;
   late Animation<Outline?> _containerOutlineAnimation;
   late Animation<Color?> _iconColorAnimation;
+
+  late Animation<OutlinedBorder> _resolvedContainerShapeAnimation;
+  late Animation<Color> _resolvedContainerColorAnimation;
+  late Animation<Color> _resolvedIconColorAnimation;
 
   void _updateColorAnimations({
     required OutlinedBorder containerShape,
@@ -252,41 +262,41 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
   }
 
   _CheckboxStates _resolveStates() {
-    final states = _statesController.value;
+    final states = _statesController.value as StrictSet<WidgetState>;
 
     final _CheckboxStates result = widget._onTap == null
         ? .disabled(isSelected: _isCheckedOrIndeterminate)
         : .enabled(
             isSelected: _isCheckedOrIndeterminate,
-            isHovered: states.contains(WidgetState.hovered),
+            isHovered: states.contains(.hovered),
             isPressed: _pressed,
             isFocused: _focused && !_pressed,
           );
 
     if (result.isSelected) {
-      states.add(WidgetState.selected);
+      states.add(.selected);
     } else {
-      states.remove(WidgetState.selected);
+      states.remove(.selected);
     }
     if (result.isDisabled) {
-      states.add(WidgetState.disabled);
+      states.add(.disabled);
     } else {
-      states.remove(WidgetState.disabled);
+      states.remove(.disabled);
     }
     if (result.isHovered) {
-      states.add(WidgetState.pressed);
+      states.add(.pressed);
     } else {
-      states.remove(WidgetState.pressed);
+      states.remove(.pressed);
     }
     if (result.isFocused) {
-      states.add(WidgetState.focused);
+      states.add(.focused);
     } else {
-      states.remove(WidgetState.focused);
+      states.remove(.focused);
     }
     if (result.isPressed) {
-      states.add(WidgetState.pressed);
+      states.add(.pressed);
     } else {
-      states.remove(WidgetState.pressed);
+      states.remove(.pressed);
     }
     return result;
   }
@@ -381,6 +391,22 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
       _effectsController,
     );
     _iconColorAnimation = _iconColorTween.animate(_effectsController);
+
+    _resolvedContainerShapeAnimation = _containerShapeAnimation
+        .nonNullOrElse(() => _resolvedContainerShape)
+        .mapValue(
+          (value) =>
+              (_containerOutlineAnimation.value ?? _resolvedContainerOutline)
+                  .apply(value),
+        );
+
+    _resolvedContainerColorAnimation = _containerColorAnimation.nonNullOrElse(
+      () => _resolvedContainerColor,
+    );
+
+    _resolvedIconColorAnimation = _iconColorAnimation.nonNullOrElse(
+      () => _resolvedIconColor,
+    );
   }
 
   @override
@@ -470,6 +496,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
     super.didChangeDependencies();
     _shapeTheme = ShapeTheme.of(context);
     _springTheme = SpringTheme.of(context);
+    _checkboxTheme = CheckboxTheme.of(context);
   }
 
   @override
@@ -485,40 +512,35 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final states = _resolveStates();
 
-    final checkboxTheme = CheckboxTheme.of(context);
-
     const minTapTargetSize = Size.square(48.0);
-    final stateLayerSize = checkboxTheme.stateLayerSize.resolve(states);
-    final stateLayerShape = checkboxTheme.stateLayerShape.resolve(states);
-    final stateLayerColor = checkboxTheme.stateLayerColor;
-    final stateLayerOpacity = checkboxTheme.stateLayerOpacity;
-    final containerSize = checkboxTheme.containerSize.resolve(states);
-    final containerShape = checkboxTheme.containerShape.resolve(states);
-    final containerColor = checkboxTheme.containerColor.resolve(states);
-    final containerOutline = checkboxTheme.containerOutline.resolve(states);
-    final iconSize = checkboxTheme.iconSize.resolve(states);
-    final iconColor = checkboxTheme.iconColor.resolve(states);
+    final stateLayerSize = _checkboxTheme.stateLayerSize.resolve(states);
+    final stateLayerShape = _checkboxTheme.stateLayerShape.resolve(states);
+    final stateLayerColor = _checkboxTheme.stateLayerColor;
+    final stateLayerOpacity = _checkboxTheme.stateLayerOpacity;
+    final containerSize = _checkboxTheme.containerSize.resolve(states);
+    _resolvedContainerShape = _checkboxTheme.containerShape.resolve(states);
+    _resolvedContainerColor = _checkboxTheme.containerColor.resolve(states);
+    _resolvedContainerOutline = _checkboxTheme.containerOutline.resolve(states);
+    final iconSize = _checkboxTheme.iconSize.resolve(states);
+    _resolvedIconColor = _checkboxTheme.iconColor.resolve(states);
 
-    final overlayColor = WidgetStateProperty.resolveWith((widgetStates) {
-      final resolvedStates = _CheckboxStates.fromWidgetStates(
+    final overlayColor = MixedWidgetStateLayerColor<CheckboxStates>.from(
+      (widgetStates) => _CheckboxStates.fromWidgetStates(
         widgetStates,
         isSelected: states.isSelected,
-      );
-      final resolvedColor = stateLayerColor.resolve(resolvedStates);
-      final resolvedOpacity = stateLayerOpacity.resolve(resolvedStates);
-      return resolvedOpacity > 0.0
-          ? resolvedColor.withValues(alpha: resolvedColor.a * resolvedOpacity)
-          : resolvedColor.withAlpha(0);
-    });
-
-    _updateColorAnimations(
-      containerShape: containerShape,
-      containerColor: containerColor,
-      containerOutline: containerOutline,
-      iconColor: iconColor,
+      ),
+      color: stateLayerColor,
+      opacity: stateLayerOpacity,
     );
 
-    final child = SizedBox.fromSize(
+    _updateColorAnimations(
+      containerShape: _resolvedContainerShape,
+      containerColor: _resolvedContainerColor,
+      containerOutline: _resolvedContainerOutline,
+      iconColor: _resolvedIconColor,
+    );
+
+    final Widget child = SizedBox.fromSize(
       size: stateLayerSize,
       child: Listener(
         behavior: .deferToChild,
@@ -541,6 +563,22 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
       ),
     );
 
+    final Widget paint = _CheckboxPaint(
+      minTapTargetSize: minTapTargetSize,
+      containerSize: .square(containerSize),
+      containerShape: _resolvedContainerShapeAnimation,
+      containerColor: _resolvedContainerColorAnimation,
+      iconSize: iconSize,
+      iconColor: _resolvedIconColorAnimation,
+      iconStrokeWidth: 2.0,
+      iconStrokeCap: .round,
+      iconStrokeJoin: .round,
+      checkFraction: _checkFractionController,
+      crossCenterGravitation: _crossCenterGravitationController,
+      childPosition: .bottom,
+      child: child,
+    );
+
     return RepaintBoundary(
       child: Semantics(
         enabled: !states.isDisabled,
@@ -556,41 +594,18 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
             onTapOutside: !states.isDisabled ? _onTapOutside : null,
             onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
             child: FocusRingTheme.merge(
-              data: FocusRingThemeDataPartial.from(
+              data: .from(
                 shape: .all(
                   CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
                 ),
               ),
               child: FocusRing(
                 visible: states.isFocused,
-                placement: FocusRingPlacement.outward,
+                placement: .outward,
                 layoutBuilder: (context, info, child) => Align.center(
                   child: SizedBox.fromSize(size: stateLayerSize, child: child),
                 ),
-                child: _CheckboxPaint(
-                  minTapTargetSize: minTapTargetSize,
-                  containerSize: .square(containerSize),
-                  containerShape: _containerShapeAnimation
-                      .nonNullOr(containerShape)
-                      .mapValue(
-                        (value) =>
-                            (_containerOutlineAnimation.value ??
-                                    containerOutline)
-                                .apply(value),
-                      ),
-                  containerColor: _containerColorAnimation.nonNullOr(
-                    containerColor,
-                  ),
-                  iconSize: iconSize,
-                  iconColor: _iconColorAnimation.nonNullOr(iconColor),
-                  iconStrokeWidth: 2.0,
-                  iconStrokeCap: StrokeCap.round,
-                  iconStrokeJoin: StrokeJoin.round,
-                  checkFraction: _checkFractionController,
-                  crossCenterGravitation: _crossCenterGravitationController,
-                  childPosition: .bottom,
-                  child: child,
-                ),
+                child: paint,
               ),
             ),
           ),
