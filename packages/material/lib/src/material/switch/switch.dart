@@ -667,30 +667,34 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     );
 
     return RepaintBoundary(
-      child: Align.center(
-        widthFactor: 1.0,
-        heightFactor: 1.0,
-        child: TapRegion(
-          behavior: .deferToChild,
-          consumeOutsideTaps: false,
-          onTapOutside: !states.isDisabled ? _onTapOutside : null,
-          onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
-          child: AnimatedBuilder(
-            animation: _effectsController,
-            builder: (context, child) => FocusRingTheme.merge(
-              data: .from(
-                // Don't use _resolvedTrackShapeAnimation because it has border.
-                shape: .all(_trackShapeAnimation.value ?? _trackShape),
+      child: Semantics(
+        enabled: !states.isDisabled,
+        toggled: _isSelected,
+        child: Align.center(
+          widthFactor: 1.0,
+          heightFactor: 1.0,
+          child: TapRegion(
+            behavior: .deferToChild,
+            consumeOutsideTaps: false,
+            onTapOutside: !states.isDisabled ? _onTapOutside : null,
+            onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
+            child: AnimatedBuilder(
+              animation: _effectsController,
+              builder: (context, child) => FocusRingTheme.merge(
+                data: .from(
+                  // Don't use _resolvedTrackShapeAnimation because it has border.
+                  shape: .all(_trackShapeAnimation.value ?? _trackShape),
+                ),
+                child: child!,
               ),
-              child: child!,
-            ),
-            child: FocusRing(
-              visible: states.isFocused,
-              placement: .outward,
-              layoutBuilder: (context, info, child) => Align.center(
-                child: SizedBox.fromSize(size: trackSize, child: child),
+              child: FocusRing(
+                visible: states.isFocused,
+                placement: .outward,
+                layoutBuilder: (context, info, child) => Align.center(
+                  child: SizedBox.fromSize(size: trackSize, child: child),
+                ),
+                child: paint,
               ),
-              child: paint,
             ),
           ),
         ),
