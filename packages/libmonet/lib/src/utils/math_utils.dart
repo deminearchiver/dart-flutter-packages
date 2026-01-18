@@ -4,12 +4,6 @@ abstract final class MathUtils {
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")
-  @Deprecated("Use num.sign instead.")
-  static T signum<T extends num>(T value) => value.sign as T;
-
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
   static double lerp(double start, double stop, double amount) =>
       (1.0 - amount) * start + amount * stop;
 
@@ -31,6 +25,9 @@ abstract final class MathUtils {
       ? max
       : input;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static int sanitizeDegreesInt(int degrees) {
     degrees = degrees % 360;
     if (degrees < 0) {
@@ -39,6 +36,9 @@ abstract final class MathUtils {
     return degrees;
   }
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static double sanitizeDegreesDouble(double degrees) {
     degrees = degrees % 360.0;
     if (degrees < 0.0) {
@@ -47,6 +47,9 @@ abstract final class MathUtils {
     return degrees;
   }
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static double rotationDirection(double from, double to) =>
       sanitizeDegreesDouble(to - from) <= 180.0 ? 1.0 : -1.0;
 
