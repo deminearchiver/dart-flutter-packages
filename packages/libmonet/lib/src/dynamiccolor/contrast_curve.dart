@@ -21,15 +21,13 @@ final class ContrastCurve {
   final double high;
 
   /// Returns the value at a given contrast level.
-  double get(double contrastLevel) => contrastLevel <= -1.0
-      ? low
-      : contrastLevel < 0.0
-      ? MathUtils.lerp(low, normal, (contrastLevel - -1.0) / 1.0)
-      : contrastLevel < 0.5
-      ? MathUtils.lerp(normal, medium, (contrastLevel - 0.0) / 0.5)
-      : contrastLevel < 1.0
-      ? MathUtils.lerp(medium, high, (contrastLevel - 0.5) / 0.5)
-      : high;
+  double get(double contrastLevel) => switch (contrastLevel) {
+    <= -1.0 => low,
+    < 0.0 => MathUtils.lerp(low, normal, contrastLevel + 1.0),
+    < 0.5 => MathUtils.lerp(normal, medium, contrastLevel / 0.5),
+    < 1.0 => MathUtils.lerp(medium, high, (contrastLevel - 0.5) / 0.5),
+    _ => high,
+  };
 
   @override
   String toString() => "ContrastCurve($low, $normal, $medium, $high)";
