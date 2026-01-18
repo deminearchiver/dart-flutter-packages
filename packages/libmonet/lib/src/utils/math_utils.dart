@@ -13,12 +13,18 @@ abstract final class MathUtils {
   static double lerp(double start, double stop, double amount) =>
       (1.0 - amount) * start + amount * stop;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static int clampInt(int min, int max, int input) => input < min
       ? min
       : input > max
       ? max
       : input;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static double clampDouble(double min, double max, double input) => input < min
       ? min
       : input > max
