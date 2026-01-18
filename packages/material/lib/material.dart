@@ -52,6 +52,38 @@ export 'src/material/loading_indicator/loading_indicator_theme.dart';
 
 import 'package:material/src/material/flutter.dart';
 
+/// Same as [num.clamp] but optimized for a non-null [int].
+///
+/// This is faster because it avoids polymorphism, boxing,
+/// and some special cases.
+@pragma("wasm:prefer-inline")
+@pragma("vm:prefer-inline")
+@pragma("dart2js:prefer-inline")
+int clampInt(int value, int min, int max) {
+  assert(min <= max);
+  return value < min
+      ? min
+      : value > max
+      ? max
+      : value;
+}
+
+/// Same as [num.clamp] but optimized for a non-null [double].
+///
+/// This is faster because it avoids polymorphism, boxing,
+/// and some special cases.
+@pragma("wasm:prefer-inline")
+@pragma("vm:prefer-inline")
+@pragma("dart2js:prefer-inline")
+double clampDouble(double value, double min, double max) {
+  assert(min <= max && !max.isNaN && !min.isNaN);
+  return value < min
+      ? min
+      : value > max || value.isNaN
+      ? max
+      : value;
+}
+
 /// Linearly interpolate between two integers.
 @pragma("wasm:prefer-inline")
 @pragma("vm:prefer-inline")
