@@ -1,11 +1,10 @@
 {
   "recommendations": [
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
     "dart-code.dart-code",
     "dart-code.flutter",
-    "fill-labs.dependi",
-    "edwinhuish.better-comments-next",
-    "editorconfig.editorconfig",
-    "usernamehw.errorlens",
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "fill-labs.dependi"
   ]
 }

@@ -6,9 +6,16 @@
     "**/.dart_tool": true,
     "**/.git": true
   },
-  "[json][jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-  "java.configuration.updateBuildConfiguration": "disabled"
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  }
 }
