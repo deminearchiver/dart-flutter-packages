@@ -22,6 +22,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
+          cache: true
       - id: install
         run: flutter pub get
       - name: Check formatting
@@ -43,6 +44,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
+          cache: true
       - id: install
         run: flutter pub get
       - run: flutter test
