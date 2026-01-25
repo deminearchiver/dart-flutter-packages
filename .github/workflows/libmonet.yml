@@ -32,7 +32,6 @@ jobs:
         if: always() && steps.install.outcome == 'success'
 
   test:
-    needs: analyze
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
