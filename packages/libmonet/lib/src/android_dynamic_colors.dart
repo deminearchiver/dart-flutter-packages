@@ -49,7 +49,7 @@ final class AndroidDynamicColors {
     tone: (scheme) => scheme.isDark ? 90.0 : 40.0,
     isBackground: false,
     background: (_) => widgetBackground,
-    // TODO: investigate if 70 should be changed to 7 (maybe a typo?)
+    // TODO(deminearchiver): investigate if 70 should be changed to 7 (maybe a typo?)
     contrastCurve: (_) => const ContrastCurve(5.0, 5.0, 70.0, 11.0),
   );
 
@@ -59,7 +59,7 @@ final class AndroidDynamicColors {
     tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
     isBackground: false,
     background: (_) => widgetBackground,
-    // TODO: investigate if 70 should be changed to 7 (maybe a typo?)
+    // TODO(deminearchiver): investigate if 70 should be changed to 7 (maybe a typo?)
     contrastCurve: (_) => const ContrastCurve(5.0, 5.0, 70.0, 11.0),
   );
 

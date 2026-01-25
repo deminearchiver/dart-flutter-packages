@@ -11,37 +11,37 @@ sealed class Color {
   String get hex;
   Hct get hct;
 
-  static (double, bool)? _parsePercentOrFloat(String source) {
-    if (source.endsWith("%")) {
-      source = source.substring(0, source.length - 1);
-      final t = double.tryParse(source);
-      if (t != null) {
-        return (t / 100.0, true);
-      }
-    } else {
-      final t = double.tryParse(source);
-      if (t != null) {
-        return (t, false);
-      }
-    }
-    return null;
-  }
+  // static (double, bool)? _parsePercentOrFloat(String source) {
+  //   if (source.endsWith("%")) {
+  //     source = source.substring(0, source.length - 1);
+  //     final t = double.tryParse(source);
+  //     if (t != null) {
+  //       return (t / 100.0, true);
+  //     }
+  //   } else {
+  //     final t = double.tryParse(source);
+  //     if (t != null) {
+  //       return (t, false);
+  //     }
+  //   }
+  //   return null;
+  // }
 
-  static (double, bool)? _parsePercentOr255(String source) {
-    if (source.endsWith("%")) {
-      source = source.substring(0, source.length - 1);
-      final t = double.tryParse(source);
-      if (t != null) {
-        return (t / 100.0, true);
-      }
-    } else {
-      final t = double.tryParse(source);
-      if (t != null) {
-        return (t / 255.0, false);
-      }
-    }
-    return null;
-  }
+  // static (double, bool)? _parsePercentOr255(String source) {
+  //   if (source.endsWith("%")) {
+  //     source = source.substring(0, source.length - 1);
+  //     final t = double.tryParse(source);
+  //     if (t != null) {
+  //       return (t / 100.0, true);
+  //     }
+  //   } else {
+  //     final t = double.tryParse(source);
+  //     if (t != null) {
+  //       return (t / 255.0, false);
+  //     }
+  //   }
+  //   return null;
+  // }
 
   static int? _parseSingleDigit(String digit) {
     final result = int.tryParse(digit, radix: 16);
@@ -86,7 +86,7 @@ sealed class Color {
       return _parseHex(hex);
     }
 
-    // TODO: add rgb / rgba formats here
+    // TODO(deminearchiver): add rgb / rgba formats here
     final i = source.indexOf("(");
     if (i != -1 && source.endsWith(")")) {
       final fname = source.substring(0, i).trimRight();
@@ -102,20 +102,20 @@ sealed class Color {
           if (pLen != 3 && pLen != 4) {
             return null;
           }
-          final r = _parsePercentOr255(params[0]);
-          final g = _parsePercentOr255(params[1]);
-          final b = _parsePercentOr255(params[2]);
-          final a = pLen == 4 ? _parsePercentOrFloat(params[3]) : (1.0, true);
-          if ((r, g, b, a) case (
-            (final r, final rFormat)?,
-            (final g, final gFormat)?,
-            (final b, final bFormat)?,
-            (final a, _)?,
-          )) {
-            if (rFormat == gFormat && gFormat == bFormat) {
-              // return Color.rgba(r, g, b);
-            }
-          }
+          // final r = _parsePercentOr255(params[0]);
+          // final g = _parsePercentOr255(params[1]);
+          // final b = _parsePercentOr255(params[2]);
+          // final a = pLen == 4 ? _parsePercentOrFloat(params[3]) : (1.0, true);
+          // if ((r, g, b, a) case (
+          //   (final r, final rFormat)?,
+          //   (final g, final gFormat)?,
+          //   (final b, final bFormat)?,
+          //   (final a, _)?,
+          // )) {
+          //   if (rFormat == gFormat && gFormat == bFormat) {
+          //     // return Color.rgba(r, g, b);
+          //   }
+          // }
           break;
         default:
           return null;
