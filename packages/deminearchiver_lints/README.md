@@ -12,14 +12,13 @@ Used in projects created or maintained by [**@deminearchiver**](https://github.c
 - [Getting started](#getting-started)
   - [Installation](#installation)
 - [Usage](#usage)
-  - [Separate lints for Dart-only and Flutter projects](#separate-lints-for-dart-only-and-flutter-projects)
+  - [Composition over inheritance](#composition-over-inheritance)
+  - [Always include the base preset first](#always-include-the-base-preset-first)
 - [Additional information](#additional-information)
-  - [Composite presets information](#composite-presets-information)
+  - [Composite presets table](#composite-presets-table)
 - [Acknowledgements](#acknowledgements)
 
 </details>
-
-
 
 ## Getting started
 
@@ -54,6 +53,8 @@ flutter pub add dev:deminearchiver_lints
 
 ## Usage
 
+### Composition over inheritance
+
 This package is built on the principle of using composition over inheritance:
 
 ```yaml
@@ -63,11 +64,23 @@ include:
   - package:deminearchiver_lints/c.yaml
 ```
 
-### Separate lints for Dart-only and Flutter projects
+### Always include the base preset first
+
+The intended way to use the provided presets is to include the base preset first, as following:
+
+```yaml
+include:
+  - package:deminearchiver_lints/base.yaml
+  # Further overlays must be added after the base.
+```
 
 <!-- This section is WIP -->
 
-<!-- Flutter-specific lints are commonly ...?????.... -->
+<!--
+### Separate lints for Dart-only and Flutter projects
+
+Flutter-specific lints are commonly ...?????......????
+-->
 
 <!--
 The lints enable strict typing by default.
@@ -85,7 +98,7 @@ analyzer:
 
 ## Additional information
 
-### Composite presets information
+### Composite presets table
 
 The table below presents information about the composite presets included in this package.
 
@@ -93,12 +106,22 @@ For brevity, the package name (`package:deminearchiver_lints/`) and the file ext
 
 While possible, it's not recommended to mix together presets marked as incompatible.
 
+#### Base layer
+
 | Name | Incompatibilities | Description |
 | - | - | - |
-| [`base`](#) | | |
-| [`package`](#) | `app` | |
-| [`app`](#) | `package` | Relaxes certain rules which mostly don't matter when building Flutter apps that don't have a public API surface, unlike packages. |
+| [`base`](#) | None. | The base for all other presets to be overlayed onto. |
+
+#### Public APIs layer
+
+| Name | Incompatibilities | Description |
+| - | - | - |
+| [`app`](#) | `package`, `package_loose`. | Relaxes all the requirements which are enabled by the `package` preset, as they mostly don't matter when building Flutter apps that don't have a public API surface, unlike packages. |
+| [`package_loose`](#) | `app`, `package`. | Same as `package`, but relaxes the requirement of having to document every public API member. |
+| [`package`](#) | `app`, `package_loose`. | The strictest of the three, requiring to both annotate with types and document public API members. |
 
 ## Acknowledgements
 
-- [`lintervention`](https://pub.dev/packages/lintervention) package for inspiring the creating of separate linter rules for package and app projects.
+- [`very_good_analysis`](https://pub.dev/packages/very_good_analysis) package for being the solid foundation for linting production-ready Dart & Flutter projects.
+
+- [`lintervention`](https://pub.dev/packages/lintervention) package for inspiring the separation of linter rules for package and app projects.
