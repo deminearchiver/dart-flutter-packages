@@ -256,15 +256,15 @@ abstract class TypeStylePartial with Diagnosticable {
       : this;
 
   Map<String, double> get variableFontAxes => {
-    if (wght case final wght?) _VariableFontAxes.wght: wght,
-    if (grad case final grad?) _VariableFontAxes.grad: grad,
-    if (wdth case final wdth?) _VariableFontAxes.wdth: wdth,
-    if (rond case final rond?) _VariableFontAxes.rond: rond,
-    if (opsz case final opsz?) _VariableFontAxes.opsz: opsz,
-    if (crsv case final crsv?) _VariableFontAxes.crsv: crsv,
-    if (slnt case final slnt?) _VariableFontAxes.slnt: slnt,
-    if (fill case final fill?) _VariableFontAxes.fill: fill,
-    if (hexp case final hexp?) _VariableFontAxes.hexp: hexp,
+    _VariableFontAxes.wght: ?wght,
+    _VariableFontAxes.grad: ?grad,
+    _VariableFontAxes.wdth: ?wdth,
+    _VariableFontAxes.rond: ?rond,
+    _VariableFontAxes.opsz: ?opsz,
+    _VariableFontAxes.crsv: ?crsv,
+    _VariableFontAxes.slnt: ?slnt,
+    _VariableFontAxes.fill: ?fill,
+    _VariableFontAxes.hexp: ?hexp,
   };
 
   List<FontVariation> get fontVariations => [

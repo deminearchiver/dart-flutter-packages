@@ -371,6 +371,17 @@ abstract class WidgetStateProperty<T extends Object?>
     implements StateProperty<T, WidgetStates>, flutter.WidgetStateProperty<T> {
   WidgetStateProperty();
 
+  const factory WidgetStateProperty.all(T value) = WidgetStatePropertyAll<T>;
+
+  /// Convenience method for creating a [WidgetStateProperty] from a
+  /// [WidgetPropertyResolver] function alone.
+  const factory WidgetStateProperty.resolveWith(
+    WidgetPropertyResolver<T> callback,
+  ) = _WidgetStatePropertyWith<T>;
+
+  const factory WidgetStateProperty.fromMap(WidgetStateMap<T> map) =
+      WidgetStateMapper<T>;
+
   static T resolveAs<T>(T value, Set<WidgetState> states) {
     if (value is WidgetStateProperty<T>) {
       return value.resolve(states);
@@ -380,18 +391,6 @@ abstract class WidgetStateProperty<T extends Object?>
     }
     return value;
   }
-
-  /// Convenience method for creating a [WidgetStateProperty] from a
-  /// [WidgetPropertyResolver] function alone.
-  static WidgetStateProperty<T> resolveWith<T>(
-    WidgetPropertyResolver<T> callback,
-  ) => _WidgetStatePropertyWith<T>(callback);
-
-  const factory WidgetStateProperty.fromMap(WidgetStateMap<T> map) =
-      WidgetStateMapper<T>;
-
-  static WidgetStateProperty<T> all<T>(T value) =>
-      WidgetStatePropertyAll<T>(value);
 
   /// Returns a value of type `T` that depends on [states].
   ///
@@ -484,7 +483,7 @@ class WidgetStatePropertyAll<T extends Object?>
 class _WidgetStatePropertyWith<T extends Object?>
     extends _StatePropertyWith<T, WidgetStates>
     implements WidgetStateProperty<T> {
-  const _WidgetStatePropertyWith(super.resolve);
+  const _WidgetStatePropertyWith(super._resolve);
 }
 
 abstract interface class StatesController<S extends Object?>
