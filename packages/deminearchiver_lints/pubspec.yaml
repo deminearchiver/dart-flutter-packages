@@ -1,6 +1,6 @@
 name: deminearchiver_lints
 description: Opinionated lints for Dart and Flutter projects.
-version: 2.0.0
+version: 2.0.1
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/deminearchiver_lints
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues

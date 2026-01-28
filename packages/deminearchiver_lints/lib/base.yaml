@@ -56,8 +56,11 @@ linter:
     # Enabled rules without additional comments.
     prefer_contains: true
 
-    # TODO(deminearchiver): should this be enabled?
-    type_annotate_public_apis: false
+    # Flutter's `Error` type doesn't inherit from `Exception`
+    avoid_catching_errors: false
+
+    # This gets annoying as static methods such as lerp should be allowed.
+    prefer_constructors_over_static_methods: false
 
     # Recommended when working with extension types.
     annotate_redeclares: true
@@ -95,6 +98,9 @@ linter:
     omit_obvious_property_types: false
     specify_nonobvious_local_variable_types: false
     specify_nonobvious_property_types: false
+
+    # This specific rule sometimes messes with dot shorthands.
+    omit_local_variable_types: false
 
     # Disabled to allow maintaining feature parity between SDK updates,
     # such as when a new field is added to a class from SDK.
