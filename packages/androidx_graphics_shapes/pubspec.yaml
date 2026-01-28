@@ -14,7 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
   collection: ^1.19.1
-  meta: ^1.18.0
+  meta: ^1.18.1
   vector_math: ^2.2.0
 
 dev_dependencies:

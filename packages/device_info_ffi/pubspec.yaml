@@ -18,7 +18,7 @@ dependencies:
   ffi: ^2.1.5
   file: ^7.0.1
   jni: ^0.15.2
-  meta: ^1.18.0
+  meta: ^1.18.1
   plugin_platform_interface: ^2.1.8
   web: ^1.1.1
   win32: ^5.15.0
