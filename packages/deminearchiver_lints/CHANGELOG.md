@@ -1,6 +1,10 @@
-## Unreleased
+## 2.0.0
 
+- Introduced a new composition-based system for applying linter presets.
+- Unified Dart and Flutter lints into a single configuration.
 - Added an empty Dart library with documentation comments.
+- Expanded the README to provide more information for third-party users of the package.
+- Specified relevant topics in `pubspec.yaml` for easier discovery.
 
 ## 1.1.1
 

@@ -1,5 +1,5 @@
 name: named_colors
-description:  Named colors.
+description: Named colors.
 version: 0.1.0-dev.1
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/named_colors
@@ -24,7 +24,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  deminearchiver_lints: ^1.1.1
+  deminearchiver_lints: ^2.0.0
 
 flutter:
   assets:
