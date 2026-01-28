@@ -1,4 +1,5 @@
 linter:
   rules:
+    lines_longer_than_80_chars: true
     public_member_api_docs: true
     type_annotate_public_apis: true

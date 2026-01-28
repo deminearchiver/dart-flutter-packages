@@ -1,3 +1,7 @@
+## 2.0.2
+
+- Disabled the [`lines_longer_than_80_chars`](https://dart.dev/lints/lines_longer_than_80_chars) lint rule in the `app` preset because it is meant to be more relaxed than `package_loose`.
+
 ## 2.0.1
 
 - Disabled the [`prefer_constructors_over_static_methods`](https://dart.dev/lints/prefer_constructors_over_static_methods) lint rule, as it conflicts with static `lerp` methods usually found in theme classes.
