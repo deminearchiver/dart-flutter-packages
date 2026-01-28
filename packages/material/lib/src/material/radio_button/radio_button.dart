@@ -653,11 +653,6 @@ class _RenderRadioButtonPaint extends RenderBox
     return _computeOuterSize().height;
   }
 
-  void _positionChild(RenderBox child, Offset position) {
-    assert(child.parentData != null && child.parentData is BoxParentData);
-    (child.parentData! as BoxParentData).offset = position;
-  }
-
   Size _layout({
     required BoxConstraints constraints,
     required ChildLayouter layoutChild,
@@ -691,30 +686,26 @@ class _RenderRadioButtonPaint extends RenderBox
   Size computeDryLayout(BoxConstraints constraints) => _layout(
     constraints: constraints,
     layoutChild: ChildLayoutHelper.dryLayoutChild,
-    positionChild: (_, _) {},
+    positionChild: ChildLayoutHelper.dryPositionChild,
   );
-
-  @override
-  double? computeDryBaseline(
-    BoxConstraints constraints,
-    TextBaseline baseline,
-  ) {
-    return null;
-  }
-
-  @override
-  double? computeDistanceToActualBaseline(TextBaseline baseline) {
-    return null;
-  }
 
   @override
   void performLayout() {
     size = _layout(
       constraints: constraints,
       layoutChild: ChildLayoutHelper.layoutChild,
-      positionChild: _positionChild,
+      positionChild: ChildLayoutHelper.positionChild,
     );
   }
+
+  @override
+  double? computeDryBaseline(
+    BoxConstraints constraints,
+    TextBaseline baseline,
+  ) => null;
+
+  @override
+  double? computeDistanceToActualBaseline(TextBaseline baseline) => null;
 
   void _paintIcon(PaintingContext context) {
     const relativeIconSize = 20.0;

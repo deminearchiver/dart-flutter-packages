@@ -6,12 +6,13 @@ export 'package:flutter/physics.dart';
 
 export 'package:flutter/rendering.dart'
     hide
-        RenderPadding,
+        ChildLayoutHelper,
         FlexParentData,
-        RenderFlex,
         FloatingHeaderSnapConfiguration,
+        OverScrollHeaderStretchConfiguration,
         PersistentHeaderShowOnScreenConfiguration,
-        OverScrollHeaderStretchConfiguration;
+        RenderFlex,
+        RenderPadding;
 
 export 'package:flutter/widgets.dart'
     hide Padding, Align, Center, Flex, Row, Column, Flexible, Expanded, Spacer;

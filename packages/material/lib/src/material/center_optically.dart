@@ -163,13 +163,6 @@ class RenderCenterOptically extends RenderShiftedBox {
     getVerticalPaddingCorrection(borderRadius),
   );
 
-  void _dryPositionChild(RenderBox _, Offset _) {}
-
-  void _positionChild(RenderBox child, Offset position) {
-    assert(child.parentData != null && child.parentData is BoxParentData);
-    (child.parentData! as BoxParentData).offset = position;
-  }
-
   Size _layout({
     required BoxConstraints constraints,
     required ChildLayouter layoutChild,
@@ -189,7 +182,7 @@ class RenderCenterOptically extends RenderShiftedBox {
   Size computeDryLayout(BoxConstraints constraints) => _layout(
     constraints: constraints,
     layoutChild: ChildLayoutHelper.dryLayoutChild,
-    positionChild: _dryPositionChild,
+    positionChild: ChildLayoutHelper.dryPositionChild,
   );
 
   @override
@@ -197,7 +190,7 @@ class RenderCenterOptically extends RenderShiftedBox {
     size = _layout(
       constraints: constraints,
       layoutChild: ChildLayoutHelper.layoutChild,
-      positionChild: _positionChild,
+      positionChild: ChildLayoutHelper.positionChild,
     );
   }
 
