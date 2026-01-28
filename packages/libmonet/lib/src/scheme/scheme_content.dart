@@ -12,6 +12,7 @@ import '../dynamiccolor/dynamic_scheme.dart';
 /// appearance.
 @Deprecated("Use DynamicScheme directly instead")
 class SchemeContent extends DynamicScheme {
+  @Deprecated("Use DynamicScheme.fromPalettesOrKeyColors instead.")
   SchemeContent({
     required super.sourceColorHct,
     required super.isDark,

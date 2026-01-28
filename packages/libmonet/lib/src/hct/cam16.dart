@@ -135,7 +135,7 @@ final class Cam16 {
   ) {
     final red = (argb & 0x00ff0000) >> 16;
     final green = (argb & 0x0000ff00) >> 8;
-    final blue = (argb & 0x000000ff);
+    final blue = argb & 0x000000ff;
     final redL = ColorUtils.linearized(red);
     final greenL = ColorUtils.linearized(green);
     final blueL = ColorUtils.linearized(blue);
@@ -270,7 +270,7 @@ final class Cam16 {
         math.pow(j / 100.0, 1.0 / viewingConditions.c / viewingConditions.z);
     final p1 =
         eHue * (50000.0 / 13.0) * viewingConditions.nc * viewingConditions.ncb;
-    final p2 = (ac / viewingConditions.nbb);
+    final p2 = ac / viewingConditions.nbb;
 
     final hSin = math.sin(hRad);
     final hCos = math.cos(hRad);

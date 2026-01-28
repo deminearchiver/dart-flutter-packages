@@ -46,8 +46,8 @@ final class ViewingConditions {
         (xyz[2] * matrix[2][2]);
     final f = 0.8 + (surround / 10.0);
     final c = (f >= 0.9)
-        ? MathUtils.lerp(0.59, 0.69, ((f - 0.9) * 10.0))
-        : MathUtils.lerp(0.525, 0.59, ((f - 0.8) * 10.0));
+        ? MathUtils.lerp(0.59, 0.69, (f - 0.9) * 10.0)
+        : MathUtils.lerp(0.525, 0.59, (f - 0.8) * 10.0);
     var d = discountingIlluminant
         ? 1.0
         : f *
@@ -69,7 +69,7 @@ final class ViewingConditions {
             k4F *
             k4F *
             math.pow(5.0 * adaptingLuminance, 1.0 / 3.0).toDouble());
-    final n = (ColorUtils.yFromLstar(backgroundLstar) / whitePoint[1]);
+    final n = ColorUtils.yFromLstar(backgroundLstar) / whitePoint[1];
     final z = 1.48 + math.sqrt(n);
     final nbb = 0.725 / math.pow(n, 0.2);
     final ncb = nbb;
@@ -102,7 +102,7 @@ final class ViewingConditions {
 
   factory ViewingConditions.defaultWithBackgroundLstar(double lstar) => .make(
     ColorUtils.whitePointD65(),
-    (200.0 / math.pi * ColorUtils.yFromLstar(50.0) / 100.0),
+    200.0 / math.pi * ColorUtils.yFromLstar(50.0) / 100.0,
     lstar,
     2.0,
     false,

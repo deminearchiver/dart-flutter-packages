@@ -792,9 +792,9 @@ final class ColorSpec2021 implements ColorSpec {
       final stayTogether = toneDeltaPair.stayTogether;
 
       final aIsNearer =
-          (toneDeltaPair.constraint == .nearer ||
+          toneDeltaPair.constraint == .nearer ||
           (polarity == .lighter && !scheme.isDark) ||
-          (polarity == .darker && !scheme.isDark));
+          (polarity == .darker && !scheme.isDark);
       final nearer = aIsNearer ? roleA : roleB;
       final farther = aIsNearer ? roleB : roleA;
       final amNearer = color.name == nearer.name;

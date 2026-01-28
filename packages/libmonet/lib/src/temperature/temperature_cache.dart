@@ -6,13 +6,13 @@ import '../utils/color_utils.dart';
 import '../utils/math_utils.dart';
 
 final class TemperatureCache {
+  TemperatureCache(this.input);
+
   final Hct input;
   Hct? _precomputedComplement;
   List<Hct>? _precomputedHctsByTemp;
   List<Hct>? _precomputedHctsByHue;
   Map<Hct, double>? _precomputedTempsByHct;
-
-  TemperatureCache(this.input);
 
   Hct getComplement() {
     if (_precomputedComplement case final precomputedComplement?) {
@@ -30,12 +30,12 @@ final class TemperatureCache {
     );
     final startHue = startHueIsColdestToWarmest ? warmestHue : coldestHue;
     final endHue = startHueIsColdestToWarmest ? coldestHue : warmestHue;
-    final directionOfRotation = 1.0;
+    const directionOfRotation = 1.0;
 
     var smallestError = 1000.0;
     var answer = _getHctsByHue()[input.hue.round()];
 
-    final complementRelativeTemp = (1.0 - getRelativeTemperature(input));
+    final complementRelativeTemp = 1.0 - getRelativeTemperature(input);
 
     // Find the color in the other section, closest to the inverse percentile
     // of the input color. This is the complement.
@@ -62,7 +62,7 @@ final class TemperatureCache {
     // The starting hue is the hue of the input color.
     final startHue = input.hue.round();
     final startHct = _getHctsByHue()[startHue];
-    double lastTemp = getRelativeTemperature(startHct);
+    var lastTemp = getRelativeTemperature(startHct);
 
     final allColors = <Hct>[startHct];
 
@@ -87,7 +87,7 @@ final class TemperatureCache {
       final tempDelta = (temp - lastTemp).abs();
       totalTempDelta += tempDelta;
 
-      var desiredTotalTempDeltaForIndex = (allColors.length * tempStep);
+      var desiredTotalTempDeltaForIndex = allColors.length * tempStep;
       var indexSatisfied = totalTempDelta >= desiredTotalTempDeltaForIndex;
       var indexAddend = 1;
       // Keep adding this hue to the answers until its temperature is
@@ -101,7 +101,7 @@ final class TemperatureCache {
       while (indexSatisfied && allColors.length < divisions) {
         allColors.add(hct);
         desiredTotalTempDeltaForIndex =
-            ((allColors.length + indexAddend) * tempStep);
+            (allColors.length + indexAddend) * tempStep;
         indexSatisfied = totalTempDelta >= desiredTotalTempDeltaForIndex;
         indexAddend++;
       }

@@ -19,7 +19,7 @@ final class QuantizerWsmeans implements Quantizer {
     final random = math.Random(0x42688);
 
     final pixelToCount = <int, int>{};
-    final List<List<double>> points = List.generate(
+    final points = List<List<double>>.generate(
       inputPixels.length,
       (index) => [],
     );
@@ -75,12 +75,12 @@ final class QuantizerWsmeans implements Quantizer {
       (index) => List<int>.filled(clusterCount, 0),
     );
 
-    final List<List<_Distance>> distanceToIndexMatrix = List.generate(
+    final distanceToIndexMatrix = List<List<_Distance>>.generate(
       clusterCount,
       (index) => List.generate(clusterCount, (_) => _Distance()),
     );
 
-    List<int> pixelCountSums = [];
+    var pixelCountSums = <int>[];
     for (var iteration = 0; iteration < _maxIterations; iteration++) {
       for (var i = 0; i < clusterCount; i++) {
         for (var j = i + 1; j < clusterCount; j++) {
@@ -138,9 +138,9 @@ final class QuantizerWsmeans implements Quantizer {
         final point = points[i];
         final count = counts[i];
         pixelCountSums[clusterIndex] += count;
-        componentASums[clusterIndex] += (point[0] * count);
-        componentBSums[clusterIndex] += (point[1] * count);
-        componentCSums[clusterIndex] += (point[2] * count);
+        componentASums[clusterIndex] += point[0] * count;
+        componentBSums[clusterIndex] += point[1] * count;
+        componentCSums[clusterIndex] += point[2] * count;
       }
 
       for (var i = 0; i < clusterCount; i++) {

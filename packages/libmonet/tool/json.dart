@@ -338,7 +338,6 @@ abstract class FigmaScheme with _$FigmaScheme {
   factory FigmaScheme.fromJson(Map<String, Object?> json) =>
       _$FigmaSchemeFromJson(json);
 
-  // ignore: prefer_const_constructors
   static final MaterialDynamicColors _mdc = MaterialDynamicColors();
   static final AndroidDynamicColors _adc = AndroidDynamicColors();
 }

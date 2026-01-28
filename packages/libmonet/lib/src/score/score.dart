@@ -24,7 +24,7 @@ abstract final class Score {
     // Get the HCT color for each Argb value, while finding the per hue count and
     // total count.
     final colorsHct = <Hct>[];
-    final List<int> huePopulation = List.filled(360, 0);
+    final huePopulation = List<int>.filled(360, 0);
     var populationSum = 0.0;
     for (final MapEntry(:key, :value) in colorsToPopulation.entries) {
       final hct = Hct.fromInt(key);
@@ -35,7 +35,7 @@ abstract final class Score {
     }
 
     // Hues with more usage in neighboring 30 degree slice get a larger number.
-    final List<double> hueExcitedProportions = List.filled(360, 0.0);
+    final hueExcitedProportions = List<double>.filled(360, 0.0);
     for (var hue = 0; hue < 360; hue++) {
       final proportion = huePopulation[hue].toDouble() / populationSum;
       for (var i = hue - 14; i < hue + 16; i++) {

@@ -53,17 +53,15 @@ final class TonalPalette {
 
 /// Key color is a color that represents the hue and chroma of a tonal palette.
 final class _KeyColor {
-  _KeyColor(double hue, double requestedChroma)
-    : _hue = hue,
-      _requestedChroma = requestedChroma;
+  _KeyColor(this.hue, this.requestedChroma);
 
-  final double _hue;
-  final double _requestedChroma;
+  final double hue;
+  final double requestedChroma;
 
   /// Cache that maps tone to max chroma to avoid duplicated HCT calculation.
   final Map<int, double> _chromaCache = <int, double>{};
 
-  /// Creates a key color from a [hue] and a [chroma].
+  /// Creates a key color from a [hue] and a [requestedChroma].
   /// The key color is the first tone, starting from T50,
   /// matching the given hue and chroma.
   ///
@@ -85,8 +83,7 @@ final class _KeyColor {
       final midTone = (lowerTone + upperTone) ~/ 2;
       final isAscending =
           _maxChroma(midTone) < _maxChroma(midTone + toneStepSize);
-      final sufficientChroma =
-          _maxChroma(midTone) >= _requestedChroma - epsilon;
+      final sufficientChroma = _maxChroma(midTone) >= requestedChroma - epsilon;
 
       if (sufficientChroma) {
         // Either range [lowerTone, midTone] or [midTone, upperTone] has
@@ -95,7 +92,7 @@ final class _KeyColor {
           upperTone = midTone;
         } else {
           if (lowerTone == midTone) {
-            return Hct.from(_hue, _requestedChroma, lowerTone.toDouble());
+            return Hct.from(hue, requestedChroma, lowerTone.toDouble());
           }
           lowerTone = midTone;
         }
@@ -110,13 +107,13 @@ final class _KeyColor {
         }
       }
     }
-    return Hct.from(_hue, _requestedChroma, lowerTone.toDouble());
+    return Hct.from(hue, requestedChroma, lowerTone.toDouble());
   }
 
   /// Find the maximum chroma for a given tone.
   double _maxChroma(int tone) => _chromaCache.putIfAbsent(
     tone,
-    () => Hct.from(_hue, _maxChromaValue, tone.toDouble()).chroma,
+    () => Hct.from(hue, _maxChromaValue, tone.toDouble()).chroma,
   );
 
   static const _maxChromaValue = 200.0;

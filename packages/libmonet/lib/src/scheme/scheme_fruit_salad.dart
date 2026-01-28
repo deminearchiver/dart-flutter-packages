@@ -3,6 +3,7 @@ import '../dynamiccolor/dynamic_scheme.dart';
 /// A playful theme - the source color's hue does not appear in the theme.
 @Deprecated("Use DynamicScheme directly instead")
 class SchemeFruitSalad extends DynamicScheme {
+  @Deprecated("Use DynamicScheme.fromPalettesOrKeyColors instead.")
   SchemeFruitSalad({
     required super.sourceColorHct,
     required super.isDark,

@@ -151,8 +151,8 @@ abstract final class ColorUtils {
   static List<double> whitePointD65() => _whitePointD65;
 
   static double _labF(double t) {
-    final e = 216.0 / 24389.0;
-    final kappa = 24389.0 / 27.0;
+    const e = 216.0 / 24389.0;
+    const kappa = 24389.0 / 27.0;
     if (t > e) {
       return math.pow(t, 1.0 / 3.0).toDouble();
     } else {
@@ -161,8 +161,8 @@ abstract final class ColorUtils {
   }
 
   static double _labInvf(double ft) {
-    final e = 216.0 / 24389.0;
-    final kappa = 24389.0 / 27.0;
+    const e = 216.0 / 24389.0;
+    const kappa = 24389.0 / 27.0;
     final ft3 = ft * ft * ft;
     if (ft3 > e) {
       return ft3;

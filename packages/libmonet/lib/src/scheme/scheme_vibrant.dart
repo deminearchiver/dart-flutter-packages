@@ -6,6 +6,7 @@ import '../dynamiccolor/dynamic_scheme.dart';
 /// Primary Tonal Palette.
 @Deprecated("Use DynamicScheme directly instead")
 class SchemeVibrant extends DynamicScheme {
+  @Deprecated("Use DynamicScheme.fromPalettesOrKeyColors instead.")
   SchemeVibrant({
     required super.sourceColorHct,
     required super.isDark,

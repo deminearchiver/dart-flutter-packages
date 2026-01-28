@@ -1358,7 +1358,6 @@ final class ColorSpec2025 extends ColorSpec2021 implements ColorSpec {
             100.0,
             referenceTone + relativeDelta,
           );
-          break;
         case .nearer:
           if (relativeDelta > 0.0) {
             selfTone = MathUtils.clampDouble(
@@ -1381,7 +1380,6 @@ final class ColorSpec2025 extends ColorSpec2021 implements ColorSpec {
               ),
             );
           }
-          break;
         case .farther:
           if (relativeDelta > 0.0) {
             selfTone = MathUtils.clampDouble(
@@ -1396,7 +1394,6 @@ final class ColorSpec2025 extends ColorSpec2021 implements ColorSpec {
               selfTone,
             );
           }
-          break;
       }
 
       if (color.background != null && color.contrastCurve != null) {
@@ -1426,7 +1423,7 @@ final class ColorSpec2025 extends ColorSpec2021 implements ColorSpec {
       return selfTone;
     } else {
       // Case 1: No tone delta pair; just solve for itself.
-      double answer = color.tone(scheme);
+      var answer = color.tone(scheme);
 
       if (color.background?.call(scheme) == null ||
           color.contrastCurve?.call(scheme) == null) {

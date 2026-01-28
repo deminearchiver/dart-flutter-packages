@@ -111,21 +111,20 @@ sealed class Color {
           if (pLen != 3 && pLen != 4) {
             return null;
           }
-          // final r = _parsePercentOr255(params[0]);
-          // final g = _parsePercentOr255(params[1]);
-          // final b = _parsePercentOr255(params[2]);
-          // final a = pLen == 4 ? _parsePercentOrFloat(params[3]) : (1.0, true);
-          // if ((r, g, b, a) case (
-          //   (final r, final rFormat)?,
-          //   (final g, final gFormat)?,
-          //   (final b, final bFormat)?,
-          //   (final a, _)?,
-          // )) {
-          //   if (rFormat == gFormat && gFormat == bFormat) {
-          //     // return Color.rgba(r, g, b);
-          //   }
-          // }
-          break;
+        // final r = _parsePercentOr255(params[0]);
+        // final g = _parsePercentOr255(params[1]);
+        // final b = _parsePercentOr255(params[2]);
+        // final a = pLen == 4 ? _parsePercentOrFloat(params[3]) : (1.0, true);
+        // if ((r, g, b, a) case (
+        //   (final r, final rFormat)?,
+        //   (final g, final gFormat)?,
+        //   (final b, final bFormat)?,
+        //   (final a, _)?,
+        // )) {
+        //   if (rFormat == gFormat && gFormat == bFormat) {
+        //     // return Color.rgba(r, g, b);
+        //   }
+        // }
         default:
           return null;
       }

@@ -165,6 +165,25 @@ class DynamicScheme {
          errorPaletteKeyColor: errorPaletteKeyColor,
        );
 
+  factory DynamicScheme.from(
+    DynamicScheme other,
+    bool isDark, [
+    double? contrastLevel,
+  ]) => DynamicScheme(
+    sourceColorHct: other.sourceColorHct,
+    variant: other.variant,
+    isDark: isDark,
+    contrastLevel: contrastLevel ?? other.contrastLevel,
+    platform: other.platform,
+    specVersion: other.specVersion,
+    primaryPalette: other.primaryPalette,
+    secondaryPalette: other.secondaryPalette,
+    tertiaryPalette: other.tertiaryPalette,
+    neutralPalette: other.neutralPalette,
+    neutralVariantPalette: other.neutralVariantPalette,
+    errorPalette: other.errorPalette,
+  );
+
   /// The source color of the scheme in HCT format.
   final Hct sourceColorHct;
 
@@ -401,25 +420,6 @@ class DynamicScheme {
 
   static const SpecVersion defaultSpecVersion = .spec2021;
   static const Platform defaultPlatform = .phone;
-
-  static DynamicScheme from(
-    DynamicScheme other,
-    bool isDark, [
-    double? contrastLevel,
-  ]) => DynamicScheme(
-    sourceColorHct: other.sourceColorHct,
-    variant: other.variant,
-    isDark: isDark,
-    contrastLevel: contrastLevel ?? other.contrastLevel,
-    platform: other.platform,
-    specVersion: other.specVersion,
-    primaryPalette: other.primaryPalette,
-    secondaryPalette: other.secondaryPalette,
-    tertiaryPalette: other.tertiaryPalette,
-    neutralPalette: other.neutralPalette,
-    neutralVariantPalette: other.neutralVariantPalette,
-    errorPalette: other.errorPalette,
-  );
 
   static double getPiecewiseValue(
     Hct sourceColorHct,

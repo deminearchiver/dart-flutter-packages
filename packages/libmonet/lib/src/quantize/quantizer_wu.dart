@@ -5,7 +5,7 @@ import 'quantizer_result.dart';
 import 'quantizer.dart';
 
 const int _indexBits = 5;
-const int _indexCount = ((1 << _indexBits) + 1);
+const int _indexCount = (1 << _indexBits) + 1;
 const int _totalSize = _indexCount * _indexCount * _indexCount;
 
 // const int _indexBits = 5;
@@ -45,27 +45,27 @@ final class QuantizerWu implements Quantizer {
       final red = ColorUtils.redFromArgb(pixel);
       final green = ColorUtils.greenFromArgb(pixel);
       final blue = ColorUtils.blueFromArgb(pixel);
-      final bitsToRemove = 8 - _indexBits;
+      const bitsToRemove = 8 - _indexBits;
       final iR = (red >> bitsToRemove) + 1;
       final iG = (green >> bitsToRemove) + 1;
       final iB = (blue >> bitsToRemove) + 1;
       final index = _getIndex(iR, iG, iB);
       _weights[index] += count;
-      _momentsR[index] += (red * count);
-      _momentsG[index] += (green * count);
-      _momentsB[index] += (blue * count);
+      _momentsR[index] += red * count;
+      _momentsG[index] += green * count;
+      _momentsB[index] += blue * count;
       _moments[index] +=
-          (count * ((red * red) + (green * green) + (blue * blue)));
+          count * ((red * red) + (green * green) + (blue * blue));
     }
   }
 
   void _createMoments() {
     for (var r = 1; r < _indexCount; ++r) {
-      final List<int> area = List.filled(_indexCount, 0);
-      final List<int> areaR = List.filled(_indexCount, 0);
-      final List<int> areaG = List.filled(_indexCount, 0);
-      final List<int> areaB = List.filled(_indexCount, 0);
-      final List<double> area2 = List.filled(_indexCount, 0.0);
+      final area = List<int>.filled(_indexCount, 0);
+      final areaR = List<int>.filled(_indexCount, 0);
+      final areaG = List<int>.filled(_indexCount, 0);
+      final areaB = List<int>.filled(_indexCount, 0);
+      final area2 = List<double>.filled(_indexCount, 0.0);
 
       for (var g = 1; g < _indexCount; ++g) {
         var line = 0;
@@ -100,7 +100,7 @@ final class QuantizerWu implements Quantizer {
 
   _CreateBoxesResult _createBoxes(int maxColorCount) {
     _cubes = List.generate(maxColorCount, (_) => _Box());
-    final List<double> volumeVariance = List.filled(maxColorCount, 0.0);
+    final volumeVariance = List<double>.filled(maxColorCount, 0.0);
     _cubes.first
       ..r1 = _indexCount - 1
       ..g1 = _indexCount - 1
@@ -233,19 +233,16 @@ final class QuantizerWu implements Quantizer {
         two.r0 = one.r1;
         two.g0 = one.g0;
         two.b0 = one.b0;
-        break;
       case .green:
         one.g1 = maxGResult.cutLocation;
         two.r0 = one.r0;
         two.g0 = one.g1;
         two.b0 = one.b0;
-        break;
       case .blue:
         one.b1 = maxBResult.cutLocation;
         two.r0 = one.r0;
         two.g0 = one.g0;
         two.b0 = one.b1;
-        break;
     }
 
     one.vol = (one.r1 - one.r0) * (one.g1 - one.g0) * (one.b1 - one.b0);
@@ -301,7 +298,7 @@ final class QuantizerWu implements Quantizer {
       tempNumerator = (halfR * halfR + halfG * halfG + halfB * halfB)
           .toDouble();
       tempDenominator = halfW.toDouble();
-      temp += (tempNumerator / tempDenominator);
+      temp += tempNumerator / tempDenominator;
 
       if (temp > max) {
         max = temp;
@@ -320,14 +317,14 @@ final class QuantizerWu implements Quantizer {
       b;
 
   static int _volume(_Box cube, List<int> moment) =>
-      (moment[_getIndex(cube.r1, cube.g1, cube.b1)] -
+      moment[_getIndex(cube.r1, cube.g1, cube.b1)] -
       moment[_getIndex(cube.r1, cube.g1, cube.b0)] -
       moment[_getIndex(cube.r1, cube.g0, cube.b1)] +
       moment[_getIndex(cube.r1, cube.g0, cube.b0)] -
       moment[_getIndex(cube.r0, cube.g1, cube.b1)] +
       moment[_getIndex(cube.r0, cube.g1, cube.b0)] +
       moment[_getIndex(cube.r0, cube.g0, cube.b1)] -
-      moment[_getIndex(cube.r0, cube.g0, cube.b0)]);
+      moment[_getIndex(cube.r0, cube.g0, cube.b0)];
 
   static int _bottom(_Box cube, _Direction direction, List<int> moment) =>
       switch (direction) {
