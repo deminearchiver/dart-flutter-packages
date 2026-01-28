@@ -1,3 +1,7 @@
+## Unreleased
+
+- Added an empty Dart library with documentation comments.
+
 ## 1.1.1
 
 - Updated package metadata.
