@@ -14,4 +14,4 @@ dependencies:
   meta: ^1.18.1
 
 dev_dependencies:
-  deminearchiver_lints: ^2.0.1
+  deminearchiver_lints: ^2.0.2
