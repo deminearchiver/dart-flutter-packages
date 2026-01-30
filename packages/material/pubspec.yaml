@@ -20,7 +20,7 @@ dependencies:
   collection: ^1.19.1
   material_symbols_icons: ^4.2892.0
   meta: ^1.18.1
-  libmonet: ^1.1.2
+  libmonet: ^1.2.0
   material_color_utilities: ^0.13.0
 
 dev_dependencies:
