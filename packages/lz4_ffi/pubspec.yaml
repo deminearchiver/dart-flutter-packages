@@ -18,5 +18,5 @@ dependencies:
   native_toolchain_c: ^0.17.4
 
 dev_dependencies:
-  deminearchiver_lints: ^2.1.0
+  deminearchiver_lints: ^2.1.1
   ffigen: ^20.1.1
