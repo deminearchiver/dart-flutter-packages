@@ -1,3 +1,11 @@
+## 1.2.0
+
+- Inlined more utility functions.
+- Removed `MathUtils.signum` in favor of `num.sign`.
+- Addressed linter feedback.
+- Code style updates.
+- Upgraded dependencies.
+
 ## 1.1.2
 
 - Made sure Flutter-specific directories get ignored when publishing the package.
