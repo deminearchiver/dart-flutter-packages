@@ -1,3 +1,8 @@
+## 2.1.1
+
+- Disabled the [`missing_whitespace_between_adjacent_strings`](https://dart.dev/lints/missing_whitespace_between_adjacent_strings) linter rule.
+- Disabled the [`avoid_setters_without_getters`](https://dart.dev/lints/avoid_setters_without_getters) linter rule.
+
 ## 2.1.0
 
 - Disabled linter rules related to sorting in order to facilitate manual grouping and sorting by the user.

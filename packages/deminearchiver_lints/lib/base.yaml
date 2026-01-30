@@ -53,6 +53,8 @@ linter:
     avoid_multiple_declarations_per_line: false
     unnecessary_library_directive: false
     unnecessary_raw_strings: false
+    missing_whitespace_between_adjacent_strings: false
+    avoid_setters_without_getters: false
 
     # Enabled rules without additional comments.
     prefer_contains: true
