@@ -1,0 +1,33 @@
+name: embedded_photo_picker
+description: Embed the photo picker view into the Flutter widget tree.
+version: 0.1.0-dev.0
+homepage: https://github.com/deminearchiver/dart-flutter-packages
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/dynamic_color_ffi
+issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
+resolution: workspace
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.38.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  jni: ^0.15.2
+  meta: ^1.18.1
+  plugin_platform_interface: ^2.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  deminearchiver_lints: ^2.1.1
+  jnigen: ^0.15.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: dev.deminearchiver.embedded_photo_picker
+        pluginClass: EmbeddedPhotoPickerPlugin
+      ios:
+        pluginClass: EmbeddedPhotoPickerPlugin

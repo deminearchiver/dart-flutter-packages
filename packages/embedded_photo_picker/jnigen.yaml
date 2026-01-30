@@ -1,0 +1,14 @@
+android_sdk_config:
+  add_gradle_deps: true
+  android_example: example/
+
+source_path:
+  - android/src/main/kotlin
+
+classes:
+  - dev.deminearchiver.embedded_photo_picker.EmbeddedPhotoPickerPlugin
+
+output:
+  dart:
+    path: lib/src/jni_bindings.g.dart
+    structure: single_file
