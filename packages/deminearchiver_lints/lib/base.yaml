@@ -47,17 +47,26 @@ linter:
     always_put_required_named_parameters_first: false
     avoid_equals_and_hash_code_on_mutable_classes: false
     document_ignores: false
-    sort_unnamed_constructors_first: false
     prefer_asserts_with_message: false
-    directives_ordering: false
     no_default_cases: false
     one_member_abstracts: false
+    avoid_multiple_declarations_per_line: false
+    unnecessary_library_directive: false
+    unnecessary_raw_strings: false
 
     # Enabled rules without additional comments.
     prefer_contains: true
 
-    # Flutter's `Error` type doesn't inherit from `Exception`
+    # Disable rules related to ordering to facilitate manual grouping and sorting.
+    combinators_ordering: false
+    directives_ordering: false
+    sort_constructors_first: false
+    sort_unnamed_constructors_first: false
+    sort_pub_dependencies: false
+
+    # Rules related to errors.
     avoid_catching_errors: false
+    only_throw_errors: false
 
     # This gets annoying as static methods such as lerp should be allowed.
     prefer_constructors_over_static_methods: false
@@ -74,9 +83,6 @@ linter:
     prefer_const_constructors_in_immutables: true
     prefer_const_declarations: true
     prefer_const_literals_to_create_immutables: true
-
-    # Facilitate manual grouping and sorting of dependencies
-    sort_pub_dependencies: false
 
     # The desired quotes style cannot be enforced with existing lints,
     # so quotes-related linter rules must be forcefully disabled.

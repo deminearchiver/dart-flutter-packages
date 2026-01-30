@@ -1,3 +1,11 @@
+## 2.1.0
+
+- Disabled linter rules related to sorting in order to facilitate manual grouping and sorting by the user.
+- Disabled linter rules related to throwing and catching errors.
+- Disabled the [`avoid_multiple_declarations_per_line`](https://dart.dev/lints/avoid_multiple_declarations_per_line) linter rule.
+- Disabled the [`unnecessary_raw_strings`](https://dart.dev/diagnostics/unnecessary_raw_strings) linter rule.
+- Disabled the [`unnecessary_library_directive`](https://dart.dev/lints/unnecessary_library_directive) linter rule.
+
 ## 2.0.2
 
 - Disabled the [`lines_longer_than_80_chars`](https://dart.dev/lints/lines_longer_than_80_chars) lint rule in the `app` preset because it is meant to be more relaxed than `package_loose`.
