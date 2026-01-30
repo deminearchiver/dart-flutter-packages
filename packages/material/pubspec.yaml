@@ -14,6 +14,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   layout:
     path: ../layout
   androidx_graphics_shapes: ^1.3.0
