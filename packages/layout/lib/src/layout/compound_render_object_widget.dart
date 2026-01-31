@@ -158,7 +158,7 @@ class CompoundRenderObjectElement<
       // If key matching fails, resort to `oldSlotChild` from the same slot.
       final Element? fromElement;
       if (oldKeyChild != null) {
-        final oldKeySlot = oldKeyChild.slot as KeyedSlot<SlotType>;
+        final oldKeySlot = oldKeyChild.slot! as KeyedSlot<SlotType>;
         fromElement = oldSlotToChild.remove(oldKeySlot.key);
       } else if (oldSlotChild?.widget.key == null) {
         fromElement = oldSlotToChild.remove(slot);

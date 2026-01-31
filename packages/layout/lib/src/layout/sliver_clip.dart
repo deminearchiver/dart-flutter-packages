@@ -10,15 +10,11 @@ class SliverClip extends SingleChildRenderObjectWidget {
   final bool clipOverlap;
 
   @override
-  RenderSliverClip createRenderObject(BuildContext context) {
-    return RenderSliverClip(clipOverlap: clipOverlap);
-  }
+  RenderSliverClip createRenderObject(BuildContext context) =>
+      RenderSliverClip(clipOverlap: clipOverlap);
 
   @override
-  void updateRenderObject(
-    BuildContext context,
-    covariant RenderSliverClip renderObject,
-  ) {
+  void updateRenderObject(BuildContext context, RenderSliverClip renderObject) {
     renderObject.clipOverlap = clipOverlap;
   }
 }
@@ -47,43 +43,33 @@ class RenderSliverClip extends RenderProxySliver {
       constraints.axisDirection,
       constraints.growthDirection,
     );
-    Rect rect;
-    final double overlapCorrection = (clipOverlap ? constraints.overlap : 0);
-    switch (axisDirection) {
-      case AxisDirection.up:
-        rect = Rect.fromLTWH(
-          0,
-          0,
-          constraints.crossAxisExtent,
-          geometry!.paintExtent - overlapCorrection,
-        );
-        break;
-      case AxisDirection.right:
-        rect = Rect.fromLTWH(
-          geometry!.paintOrigin + overlapCorrection,
-          0,
-          geometry!.paintExtent - overlapCorrection,
-          constraints.crossAxisExtent,
-        );
-        break;
-      case AxisDirection.down:
-        rect = Rect.fromLTWH(
-          0,
-          geometry!.paintOrigin + overlapCorrection,
-          constraints.crossAxisExtent,
-          geometry!.paintExtent - overlapCorrection,
-        );
-        break;
-      case AxisDirection.left:
-        rect = Rect.fromLTWH(
-          0,
-          0,
-          geometry!.paintExtent - overlapCorrection,
-          constraints.crossAxisExtent,
-        );
-        break;
-    }
-    return rect;
+    final overlapCorrection = (clipOverlap ? constraints.overlap : 0.0);
+    return switch (axisDirection) {
+      .up => .fromLTWH(
+        0,
+        0,
+        constraints.crossAxisExtent,
+        geometry!.paintExtent - overlapCorrection,
+      ),
+      .right => .fromLTWH(
+        geometry!.paintOrigin + overlapCorrection,
+        0,
+        geometry!.paintExtent - overlapCorrection,
+        constraints.crossAxisExtent,
+      ),
+      .down => .fromLTWH(
+        0,
+        geometry!.paintOrigin + overlapCorrection,
+        constraints.crossAxisExtent,
+        geometry!.paintExtent - overlapCorrection,
+      ),
+      .left => .fromLTWH(
+        0,
+        0,
+        geometry!.paintExtent - overlapCorrection,
+        constraints.crossAxisExtent,
+      ),
+    };
   }
 
   @override
@@ -92,15 +78,15 @@ class RenderSliverClip extends RenderProxySliver {
     required double mainAxisPosition,
     required double crossAxisPosition,
   }) {
-    final double overlapCorrection = (clipOverlap ? constraints.overlap : 0);
+    final overlapCorrection = (clipOverlap ? constraints.overlap : 0.0);
     return child != null &&
         clipRect != null &&
-        child!.geometry!.hitTestExtent > 0 &&
+        child!.geometry!.hitTestExtent > 0.0 &&
         mainAxisPosition > (geometry!.paintOrigin + overlapCorrection) &&
         mainAxisPosition <
             (geometry!.paintOrigin +
                 overlapCorrection +
-                (constraints.axis == Axis.vertical
+                (constraints.axis == .vertical
                     ? clipRect!.height
                     : clipRect!.width)) &&
         child!.hitTest(

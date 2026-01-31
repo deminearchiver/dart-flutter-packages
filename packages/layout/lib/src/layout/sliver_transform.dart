@@ -281,7 +281,7 @@ class SliverTransform extends SingleChildRenderObjectWidget {
   ///
   /// {@template flutter.widgets.Transform.optional.FilterQuality}
   /// The transform will be applied by re-rendering the child if [filterQuality] is null,
-  /// otherwise it controls the quality of an [ImageFilter.matrix] applied to a bitmap
+  /// otherwise it controls the quality of an [ui.ImageFilter.matrix] applied to a bitmap
   /// rendering of the child.
   /// {@endtemplate}
   final FilterQuality? filterQuality;
@@ -340,9 +340,7 @@ class RenderSliverTransform extends RenderProxySliver {
   Offset? get origin => _origin;
   Offset? _origin;
   set origin(Offset? value) {
-    if (_origin == value) {
-      return;
-    }
+    if (_origin == value) return;
     _origin = value;
     markNeedsPaint();
     markNeedsSemanticsUpdate();
@@ -362,9 +360,7 @@ class RenderSliverTransform extends RenderProxySliver {
   AlignmentGeometry? get alignment => _alignment;
   AlignmentGeometry? _alignment;
   set alignment(AlignmentGeometry? value) {
-    if (_alignment == value) {
-      return;
-    }
+    if (_alignment == value) return;
     _alignment = value;
     markNeedsPaint();
     markNeedsSemanticsUpdate();
@@ -377,9 +373,7 @@ class RenderSliverTransform extends RenderProxySliver {
   TextDirection? get textDirection => _textDirection;
   TextDirection? _textDirection;
   set textDirection(TextDirection? value) {
-    if (_textDirection == value) {
-      return;
-    }
+    if (_textDirection == value) return;
     _textDirection = value;
     markNeedsPaint();
     markNeedsSemanticsUpdate();
@@ -392,7 +386,7 @@ class RenderSliverTransform extends RenderProxySliver {
   /// child as it is painted. When set to false, hit tests are performed
   /// ignoring the transformation.
   ///
-  /// [applyPaintTransform], and therefore [localToGlobal] and [globalToLocal],
+  /// [applyPaintTransform], and therefore [RenderBox.localToGlobal] and [RenderBox.globalToLocal],
   /// always honor the transformation, regardless of the value of this property.
   bool transformHitTests;
 
@@ -404,11 +398,8 @@ class RenderSliverTransform extends RenderProxySliver {
   /// There is no getter for [transform], because [Matrix4] is mutable, and
   /// mutations outside of the control of the render object could not reliably
   /// be reflected in the rendering.
-  // ignore: avoid_setters_without_getters
   set transform(Matrix4 value) {
-    if (_transform == value) {
-      return;
-    }
+    if (_transform == value) return;
     _transform = .copy(value);
     markNeedsPaint();
     markNeedsSemanticsUpdate();
@@ -420,10 +411,8 @@ class RenderSliverTransform extends RenderProxySliver {
   FilterQuality? get filterQuality => _filterQuality;
   FilterQuality? _filterQuality;
   set filterQuality(FilterQuality? value) {
-    if (_filterQuality == value) {
-      return;
-    }
-    final bool didNeedCompositing = alwaysNeedsCompositing;
+    if (_filterQuality == value) return;
+    final didNeedCompositing = alwaysNeedsCompositing;
     _filterQuality = value;
     if (didNeedCompositing != alwaysNeedsCompositing) {
       markNeedsCompositingBitsUpdate();
