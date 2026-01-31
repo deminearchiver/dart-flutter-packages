@@ -621,10 +621,10 @@ abstract final class MaterialShapes {
           final i = it.isEven ? index : points.length - 1 - index;
           if (i > 0 || it.isEven) {
             final a =
-                (sectionAngle * it +
+                sectionAngle * it +
                 (it.isEven
                     ? angles[i]
-                    : sectionAngle - angles[i] + 2.0 * angles[0]));
+                    : sectionAngle - angles[i] + 2.0 * angles[0]);
             final finalPoint =
                 Offset(math.cos(a), math.sin(a)) * distances[i] + center;
             result.add(_OffsetAndRounding(finalPoint, points[i].rounding));
@@ -677,19 +677,21 @@ class _OffsetAndRounding {
       ? _OffsetAndRounding(offset ?? this.offset, rounding ?? this.rounding)
       : this;
 
-  _OffsetAndRounding _toRadial(Offset center) {
-    final vertex = offset - center;
-    return copyWith(
-      offset: Offset(math.atan2(vertex.dy, vertex.dx), vertex.distance),
-    );
-  }
+  // TODO(deminearchiver): finish this implementation
 
-  _OffsetAndRounding _toCartesian(Offset center) => copyWith(
-    offset: Offset(
-      (offset.dy * math.cos(offset.dx) + center.dx),
-      (offset.dy * math.sin(offset.dx) + center.dy),
-    ),
-  );
+  // _OffsetAndRounding _toRadial(Offset center) {
+  //   final vertex = offset - center;
+  //   return copyWith(
+  //     offset: Offset(math.atan2(vertex.dy, vertex.dx), vertex.distance),
+  //   );
+  // }
+
+  // _OffsetAndRounding _toCartesian(Offset center) => copyWith(
+  //   offset: Offset(
+  //     offset.dy * math.cos(offset.dx) + center.dx,
+  //     offset.dy * math.sin(offset.dx) + center.dy,
+  //   ),
+  // );
 
   @override
   String toString() =>

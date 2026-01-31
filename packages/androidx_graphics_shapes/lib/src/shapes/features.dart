@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import 'cubic.dart';
+import 'morph.dart';
 import 'utils.dart';
 
 /// While a polygon's shape can be drawn solely using a list of [Cubic] objects
@@ -13,7 +14,7 @@ import 'utils.dart';
 ///   (as seen in the rounded rectangle example).
 /// - Mapping Base: The grouping serves as the base set for [Morph]'s mapping process.
 /// - Curve Type Mapping: [Morph] maps similar curve types (convex, concave) together. Note that
-///   edges or features created with [buildIgnorableFeature] are ignored in the default mapping.
+///   edges or features created with [Feature.ignorable] are ignored in the default mapping.
 ///
 /// By using features, you can manipulate polygon shapes
 /// with more context and control.

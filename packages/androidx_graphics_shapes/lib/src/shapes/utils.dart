@@ -77,12 +77,11 @@ double interpolateDouble(double start, double stop, double fraction) =>
 /// Similar to num % mod, but ensures the result is always positive.
 /// For example: 4 % 3 = positiveModulo(4, 3) = 1,
 /// but: -4 % 3 = -1 positiveModulo(-4, 3) = 2
-// TODO: rename num
 @internal
 @pragma("wasm:prefer-inline")
 @pragma("vm:prefer-inline")
 @pragma("dart2js:prefer-inline")
-double positiveModulo(double num, double mod) => (num % mod + mod) % mod;
+double positiveModulo(double value, double mod) => (value % mod + mod) % mod;
 
 /// Returns whether C is on the line defined by the two points AB.
 @internal

@@ -225,7 +225,7 @@ final class RoundedPolygon {
     }
 
     // TODO: is is the most optimal solution? if not, optimize this implementation
-    final vertices = [
+    final vertices = <double>[
       for (final feature in features)
         for (final cubic in feature.cubics) ...[cubic.anchor0X, cubic.anchor0Y],
     ];
@@ -740,7 +740,7 @@ final class _RoundedCorner {
   final double sinAngle;
   final double expectedRoundCut;
 
-  double get expectedCut => ((1.0 + smoothing) * expectedRoundCut);
+  double get expectedCut => (1.0 + smoothing) * expectedRoundCut;
 
   Point center = .zero;
 
@@ -886,7 +886,7 @@ List<double> _verticesFromNumVerts(
   var arrayIndex = 0;
   for (var i = 0; i < numVertices; i++) {
     final vertex =
-        radialToCartesian(radius, (math.pi / numVertices * 2.0 * i)) + center;
+        radialToCartesian(radius, math.pi / numVertices * 2.0 * i) + center;
     result[arrayIndex++] = vertex.x;
     result[arrayIndex++] = vertex.y;
   }
@@ -1043,13 +1043,13 @@ List<double> _starVerticesFromNumVerts(
   for (var i = 0; i < numVerticesPerRadius; i++) {
     var vertex = radialToCartesian(
       radius,
-      (math.pi / numVerticesPerRadius * 2 * i),
+      math.pi / numVerticesPerRadius * (2 * i),
     );
     result[arrayIndex++] = vertex.x + centerX;
     result[arrayIndex++] = vertex.y + centerY;
     vertex = radialToCartesian(
       innerRadius,
-      (math.pi / numVerticesPerRadius * (2 * i + 1)),
+      math.pi / numVerticesPerRadius * (2 * i + 1),
     );
     result[arrayIndex++] = vertex.x + centerX;
     result[arrayIndex++] = vertex.y + centerY;

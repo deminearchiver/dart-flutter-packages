@@ -1,3 +1,10 @@
+## 1.3.1
+
+- Removed usages of the `@immutable` annotation.
+- Internal changes.
+- Addressed linter feedback.
+- Upgraded dependencies.
+
 ## 1.3.0
 
 - Added path caching to `RoundedPolygonBorder` and `MorphBorder` so they are no longer const-constructable.

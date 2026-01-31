@@ -101,10 +101,10 @@ abstract class Cubic {
     final u = 1.0 - t;
 
     // Shared calculations
-    final uCb = (u * u * u);
-    final tCb = (t * t * t);
-    final threeTUSq = (3.0 * t * u * u);
-    final threeUTSq = (3.0 * t * t * u);
+    final uCb = u * u * u;
+    final tCb = t * t * t;
+    final threeTUSq = 3.0 * t * u * u;
+    final threeUTSq = 3.0 * t * t * u;
 
     return Point(
       anchor0X * uCb +
