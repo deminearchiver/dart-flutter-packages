@@ -1,6 +1,5 @@
 import 'package:material/src/material/flutter.dart';
 
-@immutable
 abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
   const LoadingIndicatorThemeDataPartial();
 
@@ -127,7 +126,6 @@ class _LoadingIndicatorThemeDataPartial
   final Color? containedIndicatorColor;
 }
 
-@immutable
 abstract class LoadingIndicatorThemeData
     extends LoadingIndicatorThemeDataPartial {
   const LoadingIndicatorThemeData();

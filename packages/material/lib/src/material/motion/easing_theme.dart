@@ -1,6 +1,5 @@
 import 'package:material/src/material/flutter.dart';
 
-@immutable
 class _Linear extends Curve {
   const _Linear();
 
@@ -16,7 +15,6 @@ class _Linear extends Curve {
   int get hashCode => runtimeType.hashCode;
 }
 
-@immutable
 abstract class EasingThemeDataPartial with Diagnosticable {
   const EasingThemeDataPartial();
 
@@ -189,7 +187,6 @@ abstract class EasingThemeDataPartial with Diagnosticable {
   );
 }
 
-@immutable
 class _EasingThemeDataPartial extends EasingThemeDataPartial {
   const _EasingThemeDataPartial.from({
     this.emphasized,
@@ -235,7 +232,6 @@ class _EasingThemeDataPartial extends EasingThemeDataPartial {
   final Curve? linear;
 }
 
-@immutable
 abstract class EasingThemeData extends EasingThemeDataPartial {
   const EasingThemeData();
 
@@ -401,7 +397,6 @@ abstract class EasingThemeData extends EasingThemeDataPartial {
   );
 }
 
-@immutable
 class _EasingThemeData extends EasingThemeData {
   const _EasingThemeData.from({
     required this.emphasized,
@@ -465,7 +460,6 @@ class _EasingThemeData extends EasingThemeData {
   final Curve linear;
 }
 
-@immutable
 class EasingTheme extends InheritedTheme {
   const EasingTheme({super.key, required this.data, required super.child});
 

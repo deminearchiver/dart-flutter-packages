@@ -6,7 +6,6 @@ import 'package:layout/src/layout/flutter.dart';
 //  a multi-dimensional multi-child render object widget which would be able to hold
 //  multiple arrays of children, maps of slots and other custom dimensions.
 
-@immutable
 class KeyedSlot<T extends Object?> {
   const KeyedSlot(this.key);
 

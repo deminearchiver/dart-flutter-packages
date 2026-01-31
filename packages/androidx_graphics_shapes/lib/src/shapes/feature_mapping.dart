@@ -9,7 +9,6 @@ import 'utils.dart';
 typedef MeasuredFeatures = List<ProgressableFeature>;
 
 @internal
-@immutable
 final class ProgressableFeature {
   const ProgressableFeature(this.progress, this.feature);
 
@@ -74,7 +73,6 @@ DoubleMapper featureMapper(
 }
 
 @internal
-@immutable
 final class DistanceVertex {
   const DistanceVertex(this.distance, this.f1, this.f2);
 

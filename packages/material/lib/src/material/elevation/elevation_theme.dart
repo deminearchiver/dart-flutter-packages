@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-@immutable
 abstract class ElevationThemeDataPartial with Diagnosticable {
   const ElevationThemeDataPartial();
 
@@ -97,7 +96,6 @@ abstract class ElevationThemeDataPartial with Diagnosticable {
       Object.hash(runtimeType, level0, level1, level2, level3, level4, level5);
 }
 
-@immutable
 class _ElevationThemeDataPartial extends ElevationThemeDataPartial {
   const _ElevationThemeDataPartial.from({
     this.level0,
@@ -127,7 +125,6 @@ class _ElevationThemeDataPartial extends ElevationThemeDataPartial {
   final double? level5;
 }
 
-@immutable
 abstract class ElevationThemeData extends ElevationThemeDataPartial {
   const ElevationThemeData();
 
@@ -226,7 +223,6 @@ abstract class ElevationThemeData extends ElevationThemeDataPartial {
       Object.hash(runtimeType, level0, level1, level2, level3, level4, level5);
 }
 
-@immutable
 class _ElevationThemeData extends ElevationThemeData {
   const _ElevationThemeData({
     required this.level0,
@@ -264,7 +260,6 @@ class _ElevationThemeData extends ElevationThemeData {
   final double level5;
 }
 
-@immutable
 class ElevationTheme extends InheritedTheme {
   const ElevationTheme({super.key, required this.data, required super.child});
 

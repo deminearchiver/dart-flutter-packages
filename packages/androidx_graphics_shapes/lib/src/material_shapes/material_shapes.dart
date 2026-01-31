@@ -666,7 +666,6 @@ abstract final class MaterialShapes {
   }
 }
 
-@immutable
 class _OffsetAndRounding {
   const _OffsetAndRounding(this.offset, [this.rounding = .unrounded]);
 

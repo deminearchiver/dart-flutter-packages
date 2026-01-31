@@ -1,6 +1,5 @@
 import 'package:material/src/material/flutter.dart';
 
-@immutable
 abstract class ShapeCornerThemeDataPartial with Diagnosticable {
   const ShapeCornerThemeDataPartial();
 
@@ -172,7 +171,6 @@ abstract class ShapeCornerThemeDataPartial with Diagnosticable {
   );
 }
 
-@immutable
 class _ShapeCornerThemeDataPartial extends ShapeCornerThemeDataPartial {
   const _ShapeCornerThemeDataPartial.from({
     this.none,
@@ -238,7 +236,6 @@ class _ShapeCornerThemeDataPartial extends ShapeCornerThemeDataPartial {
   final Corner? full;
 }
 
-@immutable
 abstract class ShapeCornerThemeData extends ShapeCornerThemeDataPartial {
   const ShapeCornerThemeData();
 
@@ -430,7 +427,6 @@ abstract class ShapeCornerThemeData extends ShapeCornerThemeDataPartial {
   );
 }
 
-@immutable
 class _ShapeCornerThemeData extends ShapeCornerThemeData {
   const _ShapeCornerThemeData.from({
     required this.none,
@@ -521,7 +517,6 @@ class _ShapeCornerThemeData extends ShapeCornerThemeData {
   final Corner full;
 }
 
-@immutable
 abstract class ShapeCornerValueThemeDataPartial with Diagnosticable {
   const ShapeCornerValueThemeDataPartial();
 
@@ -652,7 +647,6 @@ abstract class ShapeCornerValueThemeDataPartial with Diagnosticable {
   );
 }
 
-@immutable
 class _ShapeCornerValueThemeDataPartial
     extends ShapeCornerValueThemeDataPartial {
   const _ShapeCornerValueThemeDataPartial.from({
@@ -695,7 +689,6 @@ class _ShapeCornerValueThemeDataPartial
   final double? extraExtraLarge;
 }
 
-@immutable
 abstract class ShapeCornerValueThemeData
     extends ShapeCornerValueThemeDataPartial {
   const ShapeCornerValueThemeData();
@@ -837,7 +830,6 @@ abstract class ShapeCornerValueThemeData
   );
 }
 
-@immutable
 class _ShapeCornerValueThemeData extends ShapeCornerValueThemeData {
   const _ShapeCornerValueThemeData.from({
     required this.none,
@@ -890,7 +882,6 @@ class _ShapeCornerValueThemeData extends ShapeCornerValueThemeData {
   final double extraExtraLarge;
 }
 
-@immutable
 abstract class ShapeThemeDataPartial with Diagnosticable {
   const ShapeThemeDataPartial();
 
@@ -959,7 +950,6 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
   int get hashCode => Object.hash(runtimeType, corner, cornerValue);
 }
 
-@immutable
 class _ShapeThemeDataPartial extends ShapeThemeDataPartial {
   const _ShapeThemeDataPartial.from({this.corner, this.cornerValue});
 
@@ -970,7 +960,6 @@ class _ShapeThemeDataPartial extends ShapeThemeDataPartial {
   final ShapeCornerValueThemeDataPartial? cornerValue;
 }
 
-@immutable
 abstract class ShapeThemeData extends ShapeThemeDataPartial {
   const ShapeThemeData();
 
@@ -1039,7 +1028,6 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
   int get hashCode => Object.hash(runtimeType, corner, cornerValue);
 }
 
-@immutable
 class _ShapeThemeData extends ShapeThemeData {
   const _ShapeThemeData.from({required this.corner, required this.cornerValue});
 
@@ -1054,7 +1042,6 @@ class _ShapeThemeData extends ShapeThemeData {
   final ShapeCornerValueThemeData cornerValue;
 }
 
-@immutable
 class ShapeTheme extends InheritedTheme {
   const ShapeTheme({super.key, required this.data, required super.child});
 

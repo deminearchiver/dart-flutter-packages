@@ -6,7 +6,6 @@ import 'cubic.dart';
 import 'utils.dart';
 
 @internal
-@immutable
 extension type const Point._((double x, double y) _) {
   @internal
   const Point.fromRaw((double x, double y) value) : this._(value);

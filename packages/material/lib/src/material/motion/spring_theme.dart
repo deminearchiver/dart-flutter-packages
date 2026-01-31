@@ -1,6 +1,5 @@
 import 'package:material/src/material/flutter.dart';
 
-@immutable
 abstract class SpringPartial with Diagnosticable {
   const SpringPartial();
 
@@ -43,7 +42,6 @@ abstract class SpringPartial with Diagnosticable {
   int get hashCode => Object.hash(runtimeType, stiffness, damping);
 }
 
-@immutable
 class _SpringPartial extends SpringPartial {
   const _SpringPartial.from({this.stiffness, this.damping});
 
@@ -54,7 +52,6 @@ class _SpringPartial extends SpringPartial {
   final double? damping;
 }
 
-@immutable
 abstract class Spring extends SpringPartial {
   const Spring();
 
@@ -109,7 +106,6 @@ abstract class Spring extends SpringPartial {
   int get hashCode => Object.hash(runtimeType, stiffness, damping);
 }
 
-@immutable
 class _Spring extends Spring {
   const _Spring.from({required this.stiffness, required this.damping});
 
@@ -120,7 +116,6 @@ class _Spring extends Spring {
   final double damping;
 }
 
-@immutable
 abstract class SpringThemeDataPartial with Diagnosticable {
   const SpringThemeDataPartial();
 
@@ -259,7 +254,6 @@ class _SpringThemeDataPartial extends SpringThemeDataPartial {
   final SpringPartial? slowEffects;
 }
 
-@immutable
 abstract class SpringThemeData extends SpringThemeDataPartial {
   const SpringThemeData();
 
@@ -380,7 +374,6 @@ abstract class SpringThemeData extends SpringThemeDataPartial {
   );
 }
 
-@immutable
 class _SpringThemeData extends SpringThemeData {
   const _SpringThemeData.from({
     required this.fastSpatial,
@@ -426,7 +419,6 @@ class _SpringThemeData extends SpringThemeData {
   final Spring slowEffects;
 }
 
-@immutable
 class SpringTheme extends InheritedTheme {
   const SpringTheme({super.key, required this.data, required super.child});
 

@@ -1,7 +1,6 @@
 import 'package:flutter/rendering.dart' as flutter;
 import 'package:layout/src/layout/flutter.dart';
 
-@immutable
 class FloatingHeaderSnapConfiguration
     implements flutter.FloatingHeaderSnapConfiguration {
   const FloatingHeaderSnapConfiguration({
@@ -27,7 +26,6 @@ class FloatingHeaderSnapConfiguration
   int get hashCode => Object.hash(runtimeType, curve, duration);
 }
 
-@immutable
 class PersistentHeaderShowOnScreenConfiguration
     implements flutter.PersistentHeaderShowOnScreenConfiguration {
   const PersistentHeaderShowOnScreenConfiguration({
@@ -54,7 +52,6 @@ class PersistentHeaderShowOnScreenConfiguration
       Object.hash(runtimeType, minShowOnScreenExtent, maxShowOnScreenExtent);
 }
 
-@immutable
 class OverScrollHeaderStretchConfiguration
     implements flutter.OverScrollHeaderStretchConfiguration {
   const OverScrollHeaderStretchConfiguration({

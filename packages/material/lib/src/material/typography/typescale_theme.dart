@@ -1,6 +1,5 @@
 import 'package:material/src/material/flutter.dart';
 
-@immutable
 abstract class TypescaleThemeDataPartial with Diagnosticable {
   const TypescaleThemeDataPartial();
 
@@ -701,7 +700,6 @@ abstract class TypescaleThemeDataPartial with Diagnosticable {
   );
 }
 
-@immutable
 class _TypescaleThemeDataPartial extends TypescaleThemeDataPartial {
   const _TypescaleThemeDataPartial({
     this.displayLarge,
@@ -827,7 +825,6 @@ class _TypescaleThemeDataPartial extends TypescaleThemeDataPartial {
   final TypeStylePartial? labelSmallEmphasized;
 }
 
-@immutable
 abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
   const TypescaleThemeData();
 
@@ -1416,7 +1413,6 @@ abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
   );
 }
 
-@immutable
 class _TypescaleThemeData extends TypescaleThemeData {
   const _TypescaleThemeData({
     required this.displayLarge,
@@ -1542,7 +1538,6 @@ class _TypescaleThemeData extends TypescaleThemeData {
   final TypeStyle labelSmallEmphasized;
 }
 
-@immutable
 class _TypescaleThemeDataFallback extends TypescaleThemeData {
   const _TypescaleThemeDataFallback({required TypefaceThemeData typefaceTheme})
     : _typefaceTheme = typefaceTheme;

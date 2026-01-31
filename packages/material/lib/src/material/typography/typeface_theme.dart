@@ -1,6 +1,5 @@
 import 'package:material/src/material/flutter.dart';
 
-@immutable
 abstract class TypefaceThemeDataPartial with Diagnosticable {
   const TypefaceThemeDataPartial();
 
@@ -113,7 +112,6 @@ abstract class TypefaceThemeDataPartial with Diagnosticable {
   );
 }
 
-@immutable
 class _TypefaceThemeDataPartial extends TypefaceThemeDataPartial {
   const _TypefaceThemeDataPartial({
     this.plain,
@@ -139,7 +137,6 @@ class _TypefaceThemeDataPartial extends TypefaceThemeDataPartial {
   final double? weightBold;
 }
 
-@immutable
 abstract class TypefaceThemeData extends TypefaceThemeDataPartial {
   const TypefaceThemeData();
 
@@ -256,7 +253,6 @@ abstract class TypefaceThemeData extends TypefaceThemeDataPartial {
   );
 }
 
-@immutable
 class _TypefaceThemeData extends TypefaceThemeData {
   const _TypefaceThemeData({
     required this.plain,

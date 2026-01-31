@@ -1,6 +1,5 @@
 import 'package:material/src/material/flutter.dart';
 
-@immutable
 abstract class DurationThemeDataPartial with Diagnosticable {
   const DurationThemeDataPartial();
   const factory DurationThemeDataPartial.from({
@@ -228,7 +227,6 @@ abstract class DurationThemeDataPartial with Diagnosticable {
   );
 }
 
-@immutable
 class _DurationThemeDataPartial extends DurationThemeDataPartial {
   const _DurationThemeDataPartial.from({
     this.short1,
@@ -298,7 +296,6 @@ class _DurationThemeDataPartial extends DurationThemeDataPartial {
   final Duration? extraLong4;
 }
 
-@immutable
 abstract class DurationThemeData extends DurationThemeDataPartial {
   const DurationThemeData();
 
@@ -514,7 +511,6 @@ abstract class DurationThemeData extends DurationThemeDataPartial {
   );
 }
 
-@immutable
 class _DurationThemeData extends DurationThemeData {
   const _DurationThemeData.from({
     required this.short1,
@@ -602,7 +598,6 @@ class _DurationThemeData extends DurationThemeData {
   final Duration extraLong4;
 }
 
-@immutable
 class DurationTheme extends InheritedTheme {
   const DurationTheme({super.key, required this.data, required super.child});
 

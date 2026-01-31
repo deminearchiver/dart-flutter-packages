@@ -10,7 +10,6 @@ abstract interface class StatesConstraint<S extends Object?> {
   bool isSatisfiedBy(S states);
 }
 
-@immutable
 sealed class _StateCombo<S extends Object?> implements StatesConstraint<S> {
   const _StateCombo(this.first, this.second);
 
@@ -51,7 +50,6 @@ class _StateOr<S extends Object?> extends _StateCombo<S> {
   String toString() => "($first | $second)";
 }
 
-@immutable
 class _StateNot<S extends Object?> implements StatesConstraint<S> {
   const _StateNot(this.value);
 
@@ -160,7 +158,6 @@ class StatePropertyTween<T extends Object, S extends Object?>
       StateProperty.lerp(begin, end, t, _lerpFunction);
 }
 
-@immutable
 class StateMapper<T extends Object?, S extends Object?>
     with Diagnosticable
     implements StateProperty<T, S> {
@@ -250,7 +247,6 @@ class _StatePropertyOnce<T extends Object?, S extends Object?>
   int get hashCode => Object.hash(runtimeType, _resolve);
 }
 
-@immutable
 class _StatePropertyAll<T extends Object?, S extends Object?>
     implements StateProperty<T, S> {
   const _StatePropertyAll(this.value);
@@ -430,7 +426,6 @@ class _AnyWidgetStates implements WidgetStatesConstraint {
 
 typedef WidgetStateMap<T extends Object?> = StateMap<T, WidgetStates>;
 
-@immutable
 class WidgetStateMapper<T extends Object?> extends StateMapper<T, WidgetStates>
     implements WidgetStateProperty<T>, flutter.WidgetStateMapper<T> {
   const WidgetStateMapper(super.map);

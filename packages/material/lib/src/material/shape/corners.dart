@@ -12,7 +12,6 @@ double? _clampCornerComponent(double? value, double? min, double? max) {
   return value > max ? max : value;
 }
 
-@immutable
 class Corner {
   const Corner.circular(double? radius) : this.elliptical(radius, radius);
   const Corner.elliptical(this.x, this.y);
@@ -155,7 +154,6 @@ class Corner {
   static const Corner full = Corner.circular(null);
 }
 
-@immutable
 class _CornerLerp implements Corner {
   const _CornerLerp(this.a, this.b, this.t);
 
@@ -256,7 +254,6 @@ class _CornerLerp implements Corner {
   int get hashCode => Object.hash(runtimeType, a, b, t);
 }
 
-@immutable
 abstract class CornersGeometry {
   const CornersGeometry();
 
@@ -466,7 +463,6 @@ abstract class CornersGeometry {
   }
 }
 
-@immutable
 class _CornersGeometryLerp extends CornersGeometry {
   const _CornersGeometryLerp(this.a, this.b, this.t);
 
@@ -541,7 +537,6 @@ class _CornersGeometryLerp extends CornersGeometry {
   int get hashCode => Object.hash(runtimeType, a, b, t);
 }
 
-@immutable
 class Corners extends CornersGeometry {
   const Corners.all(Corner corner)
     : this.only(
@@ -756,7 +751,6 @@ class Corners extends CornersGeometry {
   }
 }
 
-@immutable
 class _CornersGeometryFromBorderRadiusGeometry extends CornersGeometry {
   const _CornersGeometryFromBorderRadiusGeometry(this._borderRadius);
 
@@ -840,7 +834,6 @@ class _CornersGeometryFromBorderRadiusGeometry extends CornersGeometry {
   int get hashCode => Object.hash(runtimeType, _borderRadius);
 }
 
-@immutable
 class _CornersLerp extends Corners {
   const _CornersLerp(this.a, this.b, this.t) : super.only();
 
@@ -865,7 +858,6 @@ class _CornersLerp extends Corners {
   int get hashCode => Object.hash(runtimeType, a, b, t);
 }
 
-@immutable
 class CornersDirectional extends CornersGeometry {
   const CornersDirectional.all(Corner radius)
     : this.only(
@@ -1088,7 +1080,6 @@ class CornersDirectional extends CornersGeometry {
   }
 }
 
-@immutable
 class _CornersDirectionalLerp extends CornersDirectional {
   const _CornersDirectionalLerp(this.a, this.b, this.t) : super.only();
 
@@ -1113,7 +1104,6 @@ class _CornersDirectionalLerp extends CornersDirectional {
   int get hashCode => Object.hash(runtimeType, a, b, t);
 }
 
-@immutable
 class _CornersMixed extends CornersGeometry {
   const _CornersMixed(
     this._topLeft,

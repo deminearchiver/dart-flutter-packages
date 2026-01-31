@@ -1,6 +1,5 @@
 import 'package:material/src/material/flutter.dart';
 
-@immutable
 abstract class BaselinePaletteThemeDataPartial with Diagnosticable {
   const BaselinePaletteThemeDataPartial();
 
@@ -1018,7 +1017,6 @@ abstract class BaselinePaletteThemeDataPartial with Diagnosticable {
   );
 }
 
-@immutable
 class _BaselinePaletteThemeDataPartial extends BaselinePaletteThemeDataPartial {
   const _BaselinePaletteThemeDataPartial({
     this.primary0,
@@ -1400,7 +1398,6 @@ class _BaselinePaletteThemeDataPartial extends BaselinePaletteThemeDataPartial {
   final Color? error100;
 }
 
-@immutable
 abstract class BaselinePaletteThemeData
     extends BaselinePaletteThemeDataPartial {
   const BaselinePaletteThemeData();
@@ -2485,7 +2482,6 @@ abstract class BaselinePaletteThemeData
   );
 }
 
-@immutable
 class _BaselinePaletteThemeData extends BaselinePaletteThemeData {
   const _BaselinePaletteThemeData.from({
     required this.primary0,
@@ -2963,7 +2959,6 @@ class _BaselinePaletteThemeData extends BaselinePaletteThemeData {
   final Color error100;
 }
 
-@immutable
 abstract class StaticPaletteThemeDataPartial with Diagnosticable {
   const StaticPaletteThemeDataPartial();
 
@@ -4464,7 +4459,6 @@ abstract class StaticPaletteThemeDataPartial with Diagnosticable {
   );
 }
 
-@immutable
 class _StaticPaletteThemeDataPartial extends StaticPaletteThemeDataPartial {
   const _StaticPaletteThemeDataPartial({
     this.white,
@@ -5050,7 +5044,6 @@ class _StaticPaletteThemeDataPartial extends StaticPaletteThemeDataPartial {
   final Color? pink100;
 }
 
-@immutable
 abstract class StaticPaletteThemeData extends StaticPaletteThemeDataPartial {
   const StaticPaletteThemeData();
 
@@ -6701,7 +6694,6 @@ abstract class StaticPaletteThemeData extends StaticPaletteThemeDataPartial {
   );
 }
 
-@immutable
 class _StaticPaletteThemeData extends StaticPaletteThemeData {
   const _StaticPaletteThemeData.from({
     required this.white,
@@ -7434,7 +7426,6 @@ class _StaticPaletteThemeData extends StaticPaletteThemeData {
   final Color pink100;
 }
 
-@immutable
 class BaselinePaletteTheme extends InheritedTheme {
   const BaselinePaletteTheme({
     super.key,
@@ -7480,7 +7471,6 @@ class BaselinePaletteTheme extends InheritedTheme {
   }
 }
 
-@immutable
 class StaticPaletteTheme extends InheritedTheme {
   const StaticPaletteTheme({
     super.key,
