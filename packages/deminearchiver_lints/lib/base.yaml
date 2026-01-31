@@ -55,6 +55,7 @@ linter:
     unnecessary_raw_strings: false
     missing_whitespace_between_adjacent_strings: false
     avoid_setters_without_getters: false
+    avoid_private_typedef_functions: false
 
     # Enabled rules without additional comments.
     prefer_contains: true

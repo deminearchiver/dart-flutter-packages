@@ -1,3 +1,7 @@
+## 2.1.2
+
+- Disabled the [`avoid_private_typedef_functions`](https://dart.dev/lints/avoid_private_typedef_functions) linter rule.
+
 ## 2.1.1
 
 - Disabled the [`missing_whitespace_between_adjacent_strings`](https://dart.dev/lints/missing_whitespace_between_adjacent_strings) linter rule.
