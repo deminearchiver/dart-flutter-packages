@@ -447,29 +447,21 @@ class _ShapeCornerThemeData extends ShapeCornerThemeData {
   });
 
   const _ShapeCornerThemeData.fallback()
-    : none = const Corner.circular(0.0),
-      extraSmall = const Corner.circular(4.0),
-      extraSmallTop = const CornersDirectional.vertical(
-        top: Corner.circular(4.0),
-      ),
-      small = const Corner.circular(8.0),
-      medium = const Corner.circular(12.0),
-      large = const Corner.circular(16.0),
-      largeStart = const CornersDirectional.horizontal(
-        start: Corner.circular(16.0),
-      ),
-      largeEnd = const CornersDirectional.horizontal(
-        end: Corner.circular(16.0),
-      ),
-      largeTop = const CornersDirectional.vertical(top: Corner.circular(16.0)),
-      largeIncreased = const Corner.circular(20.0),
-      extraLarge = const Corner.circular(28.0),
-      extraLargeTop = const CornersDirectional.vertical(
-        top: Corner.circular(28.0),
-      ),
-      extraLargeIncreased = const Corner.circular(32.0),
-      extraExtraLarge = const Corner.circular(48.0),
-      full = Corner.full;
+    : none = .none,
+      extraSmall = const .circular(4.0),
+      extraSmallTop = const .vertical(top: .circular(4.0)),
+      small = const .circular(8.0),
+      medium = const .circular(12.0),
+      large = const .circular(16.0),
+      largeStart = const CornersDirectional.horizontal(start: .circular(16.0)),
+      largeEnd = const CornersDirectional.horizontal(end: .circular(16.0)),
+      largeTop = const CornersDirectional.vertical(top: .circular(16.0)),
+      largeIncreased = const .circular(20.0),
+      extraLarge = const .circular(28.0),
+      extraLargeTop = const CornersDirectional.vertical(top: .circular(28.0)),
+      extraLargeIncreased = const .circular(32.0),
+      extraExtraLarge = const .circular(48.0),
+      full = .full;
 
   @override
   final Corner none;

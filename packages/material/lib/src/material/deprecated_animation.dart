@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:material/src/material/flutter.dart';
 
@@ -144,7 +146,7 @@ class CurveImplicitAnimation<T extends Object?> extends ImplicitAnimation<T> {
       return;
     }
     controller.duration = value;
-    startAnimation();
+    unawaited(startAnimation());
   }
 
   Curve _curve;
@@ -156,7 +158,7 @@ class CurveImplicitAnimation<T extends Object?> extends ImplicitAnimation<T> {
     _curve = value;
     _animation.dispose();
     _animation = _createAnimation();
-    startAnimation();
+    unawaited(startAnimation());
   }
 
   TweenBuilder<T> _builder;
@@ -168,7 +170,7 @@ class CurveImplicitAnimation<T extends Object?> extends ImplicitAnimation<T> {
     if (_builder == value) return;
     _builder = value;
     final current = _tween?.evaluate(_animation);
-    startAnimation(from: current);
+    unawaited(startAnimation(from: current));
   }
 
   T _targetValue;
@@ -179,7 +181,7 @@ class CurveImplicitAnimation<T extends Object?> extends ImplicitAnimation<T> {
   set targetValue(T value) {
     if (_targetValue == value) return;
     _targetValue = value;
-    startAnimation();
+    unawaited(startAnimation());
   }
 
   @override
@@ -215,7 +217,7 @@ class SpringImplicitAnimation<T extends Object?> extends ImplicitAnimation<T> {
   set spring(SpringDescription value) {
     if (_spring == value) return;
     _spring = value;
-    startAnimation();
+    unawaited(startAnimation());
   }
 
   TweenBuilder<T> _builder;
@@ -228,7 +230,7 @@ class SpringImplicitAnimation<T extends Object?> extends ImplicitAnimation<T> {
     _builder = value;
     final current = tween?.evaluate(controller);
     tween = null;
-    startAnimation(from: current);
+    unawaited(startAnimation(from: current));
   }
 
   T _targetValue;
@@ -239,7 +241,7 @@ class SpringImplicitAnimation<T extends Object?> extends ImplicitAnimation<T> {
   set targetValue(T value) {
     if (_targetValue == value) return;
     _targetValue = value;
-    startAnimation();
+    unawaited(startAnimation());
   }
 
   @override

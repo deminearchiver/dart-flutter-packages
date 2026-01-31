@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use_from_same_package, deprecated_member_use
 
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart' as flutter;
@@ -191,7 +192,7 @@ class _RadioButtonState extends State<RadioButton>
 
     final spring = _springTheme.defaultEffects.toSpringDescription();
     final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0);
-    _effectsController.animateWith(simulation);
+    unawaited(_effectsController.animateWith(simulation));
   }
 
   _RadioButtonStates _resolveStates() {
@@ -352,9 +353,9 @@ class _RadioButtonState extends State<RadioButton>
         0.0,
       );
       if (newValue >= oldValue) {
-        _animationController.animateWith(simulation);
+        unawaited(_animationController.animateWith(simulation));
       } else {
-        _animationController.animateBackWith(simulation);
+        unawaited(_animationController.animateBackWith(simulation));
       }
     }
   }

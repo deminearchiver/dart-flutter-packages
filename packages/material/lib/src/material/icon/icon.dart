@@ -52,7 +52,6 @@ typedef IconLegacy = flutter.Icon;
 /// See also:
 ///
 ///  * [IconButton], for interactive icons.
-///  * [Icons], for the list of available Material Icons for use with this class.
 ///  * [IconTheme], which provides ambient configuration for icons.
 ///  * [ImageIcon], for showing icons from [AssetImage]s or other [ImageProvider]s.
 class Icon extends IconLegacy {
@@ -73,8 +72,6 @@ class Icon extends IconLegacy {
     super.textDirection,
   }) : super(fontWeight: null);
 
-  /// The icon to display. The available icons are described in [Icons].
-  ///
   /// The icon can be null, in which case the widget will render as an empty
   /// space of the specified [size].
   @override

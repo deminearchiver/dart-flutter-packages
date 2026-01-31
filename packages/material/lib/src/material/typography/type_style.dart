@@ -5,7 +5,7 @@ FontWeight? _closestFontWeightToOrNull(double? weight) =>
 
 FontWeight _closestFontWeightTo(double weight) {
   assert(weight >= 0.0, "Font weight cannot be negative.");
-  final values = FontWeight.values;
+  const values = FontWeight.values;
   var closest = values[0];
   for (var i = 1; i < values.length; i++) {
     final element = values[i];

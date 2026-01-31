@@ -170,7 +170,7 @@ class _CutCornersBorderDelegate extends CornersBorderDelegate {
     final brRadiusX = math.max(0.0, rrect.brRadiusX);
     final brRadiusY = math.max(0.0, rrect.brRadiusY);
 
-    final List<Offset> vertices = <Offset>[
+    final vertices = <Offset>[
       Offset(rrect.left, math.min(centerLeft.dy, rrect.top + tlRadiusY)),
       Offset(math.min(centerTop.dx, rrect.left + tlRadiusX), rrect.top),
       Offset(math.max(centerTop.dx, rrect.right - trRadiusX), rrect.top),

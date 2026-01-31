@@ -161,7 +161,7 @@ class StatePropertyTween<T extends Object, S extends Object?>
 class StateMapper<T extends Object?, S extends Object?>
     with Diagnosticable
     implements StateProperty<T, S> {
-  /// Creates a [WidgetCustomStateProperty] object that can resolve
+  /// Creates a [WidgetStateProperty] object that can resolve
   /// to a value of type [T] using the provided [map].
   const StateMapper(StateMap<T, S> map) : _map = map;
 

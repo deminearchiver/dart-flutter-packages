@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:material/src/material/flutter.dart';
 
 enum ButtonSize { extraSmall, small, medium, large, extraLarge }
@@ -75,7 +77,7 @@ class _ButtonState extends State<Button> with TickerProviderStateMixin {
     final spring = const SpringThemeData.expressive().fastSpatial
         .toSpringDescription();
     final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0, snapToEnd: true);
-    _shapeController.animateWith(simulation);
+    unawaited(_shapeController.animateWith(simulation));
   }
 
   ButtonStates _resolveStates() {

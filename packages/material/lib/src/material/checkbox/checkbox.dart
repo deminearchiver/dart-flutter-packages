@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart' as flutter;
@@ -258,7 +259,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
         ? _springTheme.defaultEffects.toSpringDescription()
         : _springTheme.fastEffects.toSpringDescription();
     final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0);
-    _effectsController.animateWith(simulation);
+    unawaited(_effectsController.animateWith(simulation));
   }
 
   _CheckboxStates _resolveStates() {
@@ -431,23 +432,31 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
         const duration = Duration(milliseconds: 100);
         const curve = Threshold(1.0);
         if (newCheckFraction >= oldCheckFraction) {
-          _checkFractionController.animateTo(
-            newCheckFraction,
-            duration: duration,
-            curve: curve,
+          unawaited(
+            _checkFractionController.animateTo(
+              newCheckFraction,
+              duration: duration,
+              curve: curve,
+            ),
           );
         } else {
-          _checkFractionController.animateBack(
-            newCheckFraction,
-            duration: duration,
-            curve: curve,
+          unawaited(
+            _checkFractionController.animateBack(
+              newCheckFraction,
+              duration: duration,
+              curve: curve,
+            ),
           );
         }
       } else {
         if (newCheckFraction >= oldCheckFraction) {
-          _checkFractionController.animateWith(checkFractionSimulation);
+          unawaited(
+            _checkFractionController.animateWith(checkFractionSimulation),
+          );
         } else {
-          _checkFractionController.animateBackWith(checkFractionSimulation);
+          unawaited(
+            _checkFractionController.animateBackWith(checkFractionSimulation),
+          );
         }
       }
 
@@ -465,26 +474,34 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
         const duration = Duration(milliseconds: 100);
         const curve = Threshold(1.0);
         if (newCrossCenterGravitation >= oldCrossCenterGravitation) {
-          _crossCenterGravitationController.animateTo(
-            newCrossCenterGravitation,
-            duration: duration,
-            curve: curve,
+          unawaited(
+            _crossCenterGravitationController.animateTo(
+              newCrossCenterGravitation,
+              duration: duration,
+              curve: curve,
+            ),
           );
         } else {
-          _crossCenterGravitationController.animateBack(
-            newCrossCenterGravitation,
-            duration: duration,
-            curve: curve,
+          unawaited(
+            _crossCenterGravitationController.animateBack(
+              newCrossCenterGravitation,
+              duration: duration,
+              curve: curve,
+            ),
           );
         }
       } else {
         if (newCrossCenterGravitation >= oldCrossCenterGravitation) {
-          _crossCenterGravitationController.animateWith(
-            crossCenterGravitationSimulation,
+          unawaited(
+            _crossCenterGravitationController.animateWith(
+              crossCenterGravitationSimulation,
+            ),
           );
         } else {
-          _crossCenterGravitationController.animateBackWith(
-            crossCenterGravitationSimulation,
+          unawaited(
+            _crossCenterGravitationController.animateBackWith(
+              crossCenterGravitationSimulation,
+            ),
           );
         }
       }

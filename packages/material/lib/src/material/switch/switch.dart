@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:material/src/material/flutter.dart';
@@ -241,7 +242,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     }
 
     final simulation = _createImplicitSpringSimulation(_spatialSpring);
-    _spatialController.animateWith(simulation);
+    unawaited(_spatialController.animateWith(simulation));
   }
 
   void _updateEffectsAnimations({
@@ -310,7 +311,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     }
 
     final simulation = _createImplicitSpringSimulation(_effectsSpring);
-    _effectsController.animateWith(simulation);
+    unawaited(_effectsController.animateWith(simulation));
   }
 
   _SwitchStates _resolveStates() {
@@ -609,7 +610,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
           _selectionSpatialProgressAnimation.value,
         ),
         transformHitTests: false,
-        child: child!,
+        child: child,
       ),
       child: AnimatedBuilder(
         animation: _effectsController,

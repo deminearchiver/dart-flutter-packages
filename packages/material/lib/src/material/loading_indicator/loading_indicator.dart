@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:material/src/material_shapes/material_shapes.dart';
@@ -141,7 +142,7 @@ class _DeterminateLoadingIndicatorState
     // Adjust the active morph index according to the progress.
     final activeMorphIndex = math.min(
       (_morphSequence.length * _progressValue).toInt(),
-      (_morphSequence.length - 1),
+      _morphSequence.length - 1,
     );
 
     // Prepare the progress value that will be used for the active Morph.
@@ -318,7 +319,7 @@ class _IndeterminateLoadingIndicatorState
     _globalAngle.value =
         (_globalAngle.value + _kSingleRotationAngle) % _kFullRotationAngle;
     _morphIndex.value = (_morphIndex.value + 1) % _morphSequence.length;
-    _controller.forward(from: 0.0);
+    unawaited(_controller.forward(from: 0.0));
   }
 
   @override
@@ -331,13 +332,11 @@ class _IndeterminateLoadingIndicatorState
     );
     _updateMorphScaleFactor(widget._indicatorPolygons);
 
-    _controller =
-        AnimationController(
-            vsync: this,
-            duration: const Duration(milliseconds: 650),
-          )
-          ..addStatusListener(_statusListener)
-          ..forward();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 650),
+    )..addStatusListener(_statusListener);
+    unawaited(_controller.forward());
 
     _rotation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
 

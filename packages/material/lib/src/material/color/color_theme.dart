@@ -4171,7 +4171,7 @@ Future<Color> _contentBasedSourceColor(ImageProvider image) async {
   return Color(scoredResults.first);
 }
 
-/// Extracts bytes from an [ImageProvider] and returns a [QuantizerResult]
+/// Extracts bytes from an [ImageProvider] and returns a [mcu_legacy.QuantizerResult]
 /// containing the most dominant colors.
 Future<mcu_legacy.QuantizerResult> _extractColorsFromImageProvider(
   ImageProvider imageProvider,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:material/src/material/flutter.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -222,9 +224,14 @@ class _FocusRingState extends State<FocusRing>
     }
     if (widget.visible != oldWidget.visible) {
       if (widget.visible) {
-        _animationController.animateTo(1.0, duration: _focusRingTheme.duration);
+        unawaited(
+          _animationController.animateTo(
+            1.0,
+            duration: _focusRingTheme.duration,
+          ),
+        );
       } else {
-        _animationController.animateBack(0.0, duration: .zero);
+        unawaited(_animationController.animateBack(0.0, duration: .zero));
       }
     }
   }
