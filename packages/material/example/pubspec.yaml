@@ -19,7 +19,7 @@ dependencies:
     path: ../
 
   # Hosted dependencies
-  meta: ^1.18.1
+  meta: ^1.17.0
 
 dev_dependencies:
   # SDK dependencies
