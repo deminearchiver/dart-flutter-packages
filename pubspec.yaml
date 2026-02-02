@@ -19,6 +19,7 @@ workspace:
   - packages/layout
   - packages/libmonet
   - packages/lz4_ffi
+  - packages/material/example
   - packages/material
   - packages/named_colors
   - packages/package_info_ffi
@@ -37,4 +38,4 @@ dev_dependencies:
 
 dependency_overrides:
   material_color_utilities: ^0.13.0
-  meta: ^1.18.0
+  meta: ^1.17.0

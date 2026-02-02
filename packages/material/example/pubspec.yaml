@@ -1,0 +1,33 @@
+name: material_example
+description: Material Example
+version: 0.1.0+1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  # SDK dependencies
+  flutter:
+    sdk: flutter
+
+  # Workspace dependencies
+  layout:
+    path: ../../layout
+  material:
+    path: ../
+
+  # Hosted dependencies
+  meta: ^1.18.1
+
+dev_dependencies:
+  # SDK dependencies
+  flutter_test:
+    sdk: flutter
+
+  # Hosted dependencies
+  deminearchiver_lints: ^2.1.2
+
+flutter:
+  uses-material-design: true
