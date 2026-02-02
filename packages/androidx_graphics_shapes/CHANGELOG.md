@@ -1,3 +1,7 @@
+## 1.3.2
+
+- Downgraded the dependency constraint of `meta` to `^1.17.0` to match the version pinned by the stable SDK.
+
 ## 1.3.1
 
 - Removed usages of the `@immutable` annotation.
