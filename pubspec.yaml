@@ -3,7 +3,7 @@ publish_to: none
 
 environment:
   sdk: ^3.10.0
-  flutter: ">=3.38.0"
+  flutter: ">=3.41.0"
 
 workspace:
   - packages/androidx_graphics_shapes
