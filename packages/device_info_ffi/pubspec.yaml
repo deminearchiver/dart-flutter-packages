@@ -15,7 +15,7 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  ffi: ^2.1.5
+  ffi: ^2.2.0
   file: ^7.0.1
   jni: ^0.15.2
   meta: ^1.17.0
