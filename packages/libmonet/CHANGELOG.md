@@ -1,3 +1,7 @@
+## 2.0.0
+
+- Bumped minimum SDK versions to Dart 3.11 and Flutter 3.41 stable.
+
 ## 1.2.0
 
 - Inlined more utility functions.
