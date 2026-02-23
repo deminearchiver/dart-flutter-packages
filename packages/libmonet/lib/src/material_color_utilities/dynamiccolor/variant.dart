@@ -9,4 +9,5 @@ enum Variant {
   content,
   rainbow,
   fruitSalad,
+  cmf,
 }

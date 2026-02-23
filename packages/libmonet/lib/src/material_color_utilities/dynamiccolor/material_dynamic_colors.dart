@@ -1,13 +1,13 @@
 import 'dart:collection';
 
-import 'color_spec_2025.dart';
+import 'color_spec_2026.dart';
 import 'dynamic_color.dart';
 import 'dynamic_scheme.dart';
 
 final class MaterialDynamicColors {
   MaterialDynamicColors();
 
-  final ColorSpec2025 _colorSpec = const ColorSpec2025();
+  final ColorSpec2026 _colorSpec = const ColorSpec2026();
 
   DynamicColor highestSurface(DynamicScheme scheme) =>
       _colorSpec.highestSurface(scheme);

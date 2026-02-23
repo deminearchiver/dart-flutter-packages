@@ -1,6 +1,19 @@
 ## 2.0.0
 
 - Bumped minimum SDK versions to Dart 3.11 and Flutter 3.41 stable.
+- Ported upstream commits:
+  - [`19ad665`](https://github.com/material-foundation/material-color-utilities/commit/19ad665aff08662e949f6759d34d65ba8acc1b83): *"Added CMF Scheme in 2026 spec."*
+  - [`4578d0a`](https://github.com/material-foundation/material-color-utilities/commit/4578d0a1d40f1d17f1ca6f34cc9c484bea8f0a9d): *"Refactor DynamicScheme to accept a list of source colors."*
+- Massively refactored `DynamicScheme` (including deviations from upstream):
+  - Removed custom palette key colors support from `DynamicScheme`.
+  - Replaced `sourceColorHct` with `sourceColor` of type `TonalPaletteSourceColor`.
+  - Renamed `DynamicScheme.fromPalettesOrKeyColors` to `DynamicScheme.withDefaults`.
+  - All `DynamicScheme.withDefaults` and `Scheme*` constructor parameters are now optional (`isDark` defaults to `false` as per `md.sys.color` token defaults).
+- Added `year` property in order to make `SpecVersion` values comparable.
+- Other minor breaking changes.
+- Refactored internal file structure.
+- Fixed errors in test runners.
+- Removed unfinished tools.
 
 ## 1.2.0
 

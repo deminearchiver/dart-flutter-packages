@@ -8,12 +8,12 @@ import '../dynamiccolor/dynamic_scheme.dart';
 /// The default Material You theme on Android 12 and 13.
 @Deprecated("Use DynamicScheme directly instead")
 class SchemeTonalSpot extends DynamicScheme {
-  @Deprecated("Use DynamicScheme.fromPalettesOrKeyColors instead.")
+  @Deprecated("Use DynamicScheme.withDefaults(variant: .tonalSpot) instead.")
   SchemeTonalSpot({
-    required super.sourceColorHct,
-    required super.isDark,
-    required super.contrastLevel,
-    super.specVersion = DynamicScheme.defaultSpecVersion,
-    super.platform = DynamicScheme.defaultPlatform,
-  }) : super.fromPalettesOrKeyColors(variant: .tonalSpot);
+    super.sourceColor,
+    super.isDark,
+    super.contrastLevel,
+    super.platform,
+    super.specVersion,
+  }) : super.withDefaults(variant: .tonalSpot);
 }

@@ -2,7 +2,7 @@
 
 import 'dart:collection';
 
-import 'material_color_utilities.dart';
+import 'package:libmonet/material_color_utilities.dart';
 
 final class AndroidDynamicColors {
   AndroidDynamicColors();

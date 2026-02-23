@@ -6,7 +6,23 @@ import 'dynamic_scheme.dart';
 import 'variant.dart';
 
 /// All available spec versions.
-enum SpecVersion { spec2021, spec2025 }
+enum SpecVersion implements Comparable<SpecVersion> {
+  spec2021(2021),
+  spec2025(2025),
+  spec2026(2026);
+
+  const SpecVersion(this.year);
+
+  final int year;
+
+  bool operator >(SpecVersion other) => year > other.year;
+  bool operator >=(SpecVersion other) => year >= other.year;
+  bool operator <(SpecVersion other) => year < other.year;
+  bool operator <=(SpecVersion other) => year <= other.year;
+
+  @override
+  int compareTo(SpecVersion other) => year.compareTo(other.year);
+}
 
 /// An interface defining all the necessary methods that could be different
 /// between specs.
@@ -138,50 +154,56 @@ abstract interface class ColorSpec {
   // ////////////////////////////////////////////////////////////////
 
   TonalPalette getPrimaryPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   );
 
   TonalPalette getSecondaryPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   );
 
   TonalPalette getTertiaryPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   );
 
   TonalPalette getNeutralPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   );
 
   TonalPalette getNeutralVariantPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   );
 
   TonalPalette getErrorPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   );
 }

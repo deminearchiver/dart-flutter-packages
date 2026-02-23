@@ -1116,7 +1116,9 @@ class ColorSpec2025 extends ColorSpec2021 {
       name: "primary_fixed",
       palette: (scheme) => scheme.primaryPalette,
       tone: (scheme) {
-        return primaryContainer.getTone(.from(scheme, false, 0.0));
+        return primaryContainer.getTone(
+          scheme.copyWith(isDark: false, contrastLevel: 0.0),
+        );
       },
       isBackground: true,
       background: (scheme) {
@@ -1179,7 +1181,9 @@ class ColorSpec2025 extends ColorSpec2021 {
     final color2025 = DynamicColor(
       name: "secondary_fixed",
       palette: (scheme) => scheme.secondaryPalette,
-      tone: (scheme) => secondaryContainer.getTone(.from(scheme, false, 0.0)),
+      tone: (scheme) => secondaryContainer.getTone(
+        scheme.copyWith(isDark: false, contrastLevel: 0.0),
+      ),
       isBackground: true,
       background: (scheme) {
         if (scheme.platform == .phone) {
@@ -1244,7 +1248,9 @@ class ColorSpec2025 extends ColorSpec2021 {
     final color2025 = DynamicColor(
       name: "tertiary_fixed",
       palette: (scheme) => scheme.tertiaryPalette,
-      tone: (scheme) => tertiaryContainer.getTone(.from(scheme, false, 0.0)),
+      tone: (scheme) => tertiaryContainer.getTone(
+        scheme.copyWith(isDark: false, contrastLevel: 0.0),
+      ),
       isBackground: true,
       background: (scheme) {
         if (scheme.platform == .phone) {
@@ -1503,57 +1509,60 @@ class ColorSpec2025 extends ColorSpec2021 {
 
   @override
   TonalPalette getPrimaryPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) => switch (variant) {
     .neutral => .fromHueAndChroma(
-      sourceColorHct.hue,
+      sourceColor.asHct.hue,
       platform == .phone
-          ? (Hct.isBlue(sourceColorHct.hue) ? 12.0 : 8.0)
-          : (Hct.isBlue(sourceColorHct.hue) ? 16.0 : 12.0),
+          ? (Hct.isBlue(sourceColor.asHct.hue) ? 12.0 : 8.0)
+          : (Hct.isBlue(sourceColor.asHct.hue) ? 16.0 : 12.0),
     ),
     .tonalSpot => .fromHueAndChroma(
-      sourceColorHct.hue,
+      sourceColor.asHct.hue,
       platform == .phone && isDark ? 26.0 : 32.0,
     ),
     .expressive => .fromHueAndChroma(
-      sourceColorHct.hue,
+      sourceColor.asHct.hue,
       platform == .phone ? (isDark ? 36.0 : 48.0) : 40.0,
     ),
     .vibrant => .fromHueAndChroma(
-      sourceColorHct.hue,
+      sourceColor.asHct.hue,
       platform == .phone ? 74.0 : 56.0,
     ),
     _ => super.getPrimaryPalette(
+      sourceColor,
       variant,
-      sourceColorHct,
       isDark,
-      platform,
       contrastLevel,
+      platform,
+      specVersion,
     ),
   };
 
   @override
   TonalPalette getSecondaryPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) => switch (variant) {
     .neutral => .fromHueAndChroma(
-      sourceColorHct.hue,
+      sourceColor.asHct.hue,
       platform == .phone
-          ? (Hct.isBlue(sourceColorHct.hue) ? 6.0 : 4.0)
-          : (Hct.isBlue(sourceColorHct.hue) ? 10.0 : 6.0),
+          ? (Hct.isBlue(sourceColor.asHct.hue) ? 6.0 : 4.0)
+          : (Hct.isBlue(sourceColor.asHct.hue) ? 10.0 : 6.0),
     ),
-    .tonalSpot => .fromHueAndChroma(sourceColorHct.hue, 16.0),
+    .tonalSpot => .fromHueAndChroma(sourceColor.asHct.hue, 16.0),
     .expressive => .fromHueAndChroma(
       DynamicScheme.getRotatedHue(
-        sourceColorHct,
+        sourceColor.asHct,
         const [0.0, 105.0, 140.0, 204.0, 253.0, 278.0, 300.0, 333.0, 360.0],
         const [-160.0, 155.0, -100.0, 96.0, -96.0, -156.0, -165.0, -160.0],
       ),
@@ -1561,32 +1570,34 @@ class ColorSpec2025 extends ColorSpec2021 {
     ),
     .vibrant => .fromHueAndChroma(
       DynamicScheme.getRotatedHue(
-        sourceColorHct,
+        sourceColor.asHct,
         const [0.0, 38.0, 105.0, 140.0, 333.0, 360.0],
         const [-14.0, 10.0, -14.0, 10.0, -14.0],
       ),
       platform == .phone ? 56.0 : 36.0,
     ),
     _ => super.getSecondaryPalette(
+      sourceColor,
       variant,
-      sourceColorHct,
       isDark,
-      platform,
       contrastLevel,
+      platform,
+      specVersion,
     ),
   };
 
   @override
   TonalPalette getTertiaryPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) => switch (variant) {
     .neutral => .fromHueAndChroma(
       DynamicScheme.getRotatedHue(
-        sourceColorHct,
+        sourceColor.asHct,
         const [0.0, 38.0, 105.0, 161.0, 204.0, 278.0, 333.0, 360.0],
         const [-32.0, 26.0, 10.0, -39.0, 24.0, -15.0, -32.0],
       ),
@@ -1594,7 +1605,7 @@ class ColorSpec2025 extends ColorSpec2021 {
     ),
     .tonalSpot => .fromHueAndChroma(
       DynamicScheme.getRotatedHue(
-        sourceColorHct,
+        sourceColor.asHct,
         const [0.0, 20.0, 71.0, 161.0, 333.0, 360.0],
         const [-40.0, 48.0, -32.0, 40.0, -32.0],
       ),
@@ -1602,7 +1613,7 @@ class ColorSpec2025 extends ColorSpec2021 {
     ),
     .expressive => .fromHueAndChroma(
       DynamicScheme.getRotatedHue(
-        sourceColorHct,
+        sourceColor.asHct,
         const [0.0, 105.0, 140.0, 204.0, 253.0, 278.0, 300.0, 333.0, 360.0],
         const [-165.0, 160.0, -105.0, 101.0, -101.0, -160.0, -170.0, -165.0],
       ),
@@ -1610,77 +1621,83 @@ class ColorSpec2025 extends ColorSpec2021 {
     ),
     .vibrant => .fromHueAndChroma(
       DynamicScheme.getRotatedHue(
-        sourceColorHct,
+        sourceColor.asHct,
         const [0.0, 38.0, 71.0, 105.0, 140.0, 161.0, 253.0, 333.0, 360.0],
         const [-72.0, 35.0, 24.0, -24.0, 62.0, 50.0, 62.0, -72.0],
       ),
       56.0,
     ),
     _ => super.getTertiaryPalette(
+      sourceColor,
       variant,
-      sourceColorHct,
       isDark,
-      platform,
       contrastLevel,
+      platform,
+      specVersion,
     ),
   };
 
   @override
   TonalPalette getNeutralPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) => switch (variant) {
     .neutral => .fromHueAndChroma(
-      sourceColorHct.hue,
+      sourceColor.asHct.hue,
       platform == .phone ? 1.4 : 6.0,
     ),
     .tonalSpot => .fromHueAndChroma(
-      sourceColorHct.hue,
+      sourceColor.asHct.hue,
       platform == .phone ? 5.0 : 10.0,
     ),
     .expressive => .fromHueAndChroma(
-      _getExpressiveNeutralHue(sourceColorHct),
-      _getExpressiveNeutralChroma(sourceColorHct, isDark, platform),
+      _getExpressiveNeutralHue(sourceColor.asHct),
+      _getExpressiveNeutralChroma(sourceColor.asHct, isDark, platform),
     ),
     .vibrant => .fromHueAndChroma(
-      _getVibrantNeutralHue(sourceColorHct),
-      _getVibrantNeutralChroma(sourceColorHct, platform),
+      _getVibrantNeutralHue(sourceColor.asHct),
+      _getVibrantNeutralChroma(sourceColor.asHct, platform),
     ),
     _ => super.getNeutralPalette(
+      sourceColor,
       variant,
-      sourceColorHct,
       isDark,
-      platform,
       contrastLevel,
+      platform,
+      specVersion,
     ),
   };
 
   @override
   TonalPalette getNeutralVariantPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) {
     switch (variant) {
       case .neutral:
         return .fromHueAndChroma(
-          sourceColorHct.hue,
+          sourceColor.asHct.hue,
           (platform == .phone ? 1.4 : 6.0) * 2.2,
         );
       case .tonalSpot:
         return .fromHueAndChroma(
-          sourceColorHct.hue,
+          sourceColor.asHct.hue,
           (platform == .phone ? 5.0 : 10.0) * 1.7,
         );
       case .expressive:
-        final expressiveNeutralHue = _getExpressiveNeutralHue(sourceColorHct);
+        final expressiveNeutralHue = _getExpressiveNeutralHue(
+          sourceColor.asHct,
+        );
         final expressiveNeutralChroma = _getExpressiveNeutralChroma(
-          sourceColorHct,
+          sourceColor.asHct,
           isDark,
           platform,
         );
@@ -1692,9 +1709,9 @@ class ColorSpec2025 extends ColorSpec2021 {
                   : 2.3),
         );
       case .vibrant:
-        final vibrantNeutralHue = _getVibrantNeutralHue(sourceColorHct);
+        final vibrantNeutralHue = _getVibrantNeutralHue(sourceColor.asHct);
         final vibrantNeutralChroma = _getVibrantNeutralChroma(
-          sourceColorHct,
+          sourceColor.asHct,
           platform,
         );
         return .fromHueAndChroma(
@@ -1703,25 +1720,27 @@ class ColorSpec2025 extends ColorSpec2021 {
         );
       default:
         return super.getNeutralVariantPalette(
+          sourceColor,
           variant,
-          sourceColorHct,
           isDark,
-          platform,
           contrastLevel,
+          platform,
+          specVersion,
         );
     }
   }
 
   @override
   TonalPalette getErrorPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) {
     final errorHue = DynamicScheme.getPiecewiseValue(
-      sourceColorHct,
+      sourceColor.asHct,
       const [0.0, 3.0, 13.0, 23.0, 33.0, 43.0, 153.0, 273.0, 360.0],
       const [12.0, 22.0, 32.0, 12.0, 22.0, 32.0, 22.0, 12.0],
     );
@@ -1737,15 +1756,19 @@ class ColorSpec2025 extends ColorSpec2021 {
       ),
       .vibrant => .fromHueAndChroma(errorHue, platform == .phone ? 80.0 : 60.0),
       _ => super.getErrorPalette(
+        sourceColor,
         variant,
-        sourceColorHct,
         isDark,
-        platform,
         contrastLevel,
+        platform,
+        specVersion,
       ),
     };
   }
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static double _getExpressiveNeutralHue(Hct sourceColorHct) =>
       DynamicScheme.getRotatedHue(
         sourceColorHct,
@@ -1753,6 +1776,9 @@ class ColorSpec2025 extends ColorSpec2021 {
         const [10.0, 0.0, 10.0, 0.0, 10.0, 0.0],
       );
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static double _getExpressiveNeutralChroma(
     Hct sourceColorHct,
     bool isDark,
@@ -1765,6 +1791,9 @@ class ColorSpec2025 extends ColorSpec2021 {
             : 18.0
       : 12.0;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static double _getVibrantNeutralHue(Hct sourceColorHct) =>
       DynamicScheme.getRotatedHue(
         sourceColorHct,
@@ -1772,6 +1801,9 @@ class ColorSpec2025 extends ColorSpec2021 {
         const [-14.0, 10.0, -14.0, 10.0, -14.0],
       );
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static double _getVibrantNeutralChroma(
     Hct sourceColorHct,
     Platform platform,
@@ -1829,6 +1861,9 @@ class ColorSpec2025 extends ColorSpec2021 {
     return answer;
   }
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static ContrastCurve _getContrastCurve(double defaultContrast) =>
       switch (defaultContrast) {
         1.5 => const ContrastCurve(1.5, 1.5, 3.0, 5.5),

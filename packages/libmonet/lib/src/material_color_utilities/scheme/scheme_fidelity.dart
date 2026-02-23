@@ -10,12 +10,12 @@ import '../dynamiccolor/dynamic_scheme.dart';
 /// maintains constant appearance.
 @Deprecated("Use DynamicScheme directly instead")
 class SchemeFidelity extends DynamicScheme {
-  @Deprecated("Use DynamicScheme.fromPalettesOrKeyColors instead.")
+  @Deprecated("Use DynamicScheme.withDefaults(variant: .fidelity) instead.")
   SchemeFidelity({
-    required super.sourceColorHct,
-    required super.isDark,
-    required super.contrastLevel,
-    super.specVersion = DynamicScheme.defaultSpecVersion,
-    super.platform = DynamicScheme.defaultPlatform,
-  }) : super.fromPalettesOrKeyColors(variant: .vibrant);
+    super.sourceColor,
+    super.isDark,
+    super.contrastLevel,
+    super.platform,
+    super.specVersion,
+  }) : super.withDefaults(variant: .vibrant);
 }

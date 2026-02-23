@@ -967,52 +967,61 @@ class ColorSpec2021 implements ColorSpec {
 
   @override
   TonalPalette getPrimaryPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) => switch (variant) {
-    .content ||
-    .fidelity => .fromHueAndChroma(sourceColorHct.hue, sourceColorHct.chroma),
+    .content || .fidelity => .fromHueAndChroma(
+      sourceColor.asHct.hue,
+      sourceColor.asHct.chroma,
+    ),
     .fruitSalad => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColorHct.hue - 50.0),
+      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue - 50.0),
       48.0,
     ),
-    .monochrome => .fromHueAndChroma(sourceColorHct.hue, 0.0),
-    .neutral => .fromHueAndChroma(sourceColorHct.hue, 12.0),
-    .rainbow => .fromHueAndChroma(sourceColorHct.hue, 48.0),
-    .tonalSpot => .fromHueAndChroma(sourceColorHct.hue, 36.0),
+    .monochrome => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
+    .neutral => .fromHueAndChroma(sourceColor.asHct.hue, 12.0),
+    .rainbow => .fromHueAndChroma(sourceColor.asHct.hue, 48.0),
+    .tonalSpot => .fromHueAndChroma(sourceColor.asHct.hue, 36.0),
     .expressive => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 240.0),
+      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue + 240.0),
       40.0,
     ),
-    .vibrant => .fromHueAndChroma(sourceColorHct.hue, 200.0),
+    .vibrant => .fromHueAndChroma(sourceColor.asHct.hue, 200.0),
+    _ => throw ArgumentError.value(
+      variant,
+      "variant",
+      "Variant is not supported in current spec.",
+    ),
   };
 
   @override
   TonalPalette getSecondaryPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) => switch (variant) {
     .content || .fidelity => .fromHueAndChroma(
-      sourceColorHct.hue,
-      math.max(sourceColorHct.chroma - 32.0, sourceColorHct.chroma * 0.5),
+      sourceColor.asHct.hue,
+      math.max(sourceColor.asHct.chroma - 32.0, sourceColor.asHct.chroma * 0.5),
     ),
     .fruitSalad => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColorHct.hue - 50.0),
+      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue - 50.0),
       36.0,
     ),
-    .monochrome => .fromHueAndChroma(sourceColorHct.hue, 0.0),
-    .neutral => .fromHueAndChroma(sourceColorHct.hue, 8.0),
-    .rainbow => .fromHueAndChroma(sourceColorHct.hue, 16.0),
-    .tonalSpot => .fromHueAndChroma(sourceColorHct.hue, 16.0),
+    .monochrome => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
+    .neutral => .fromHueAndChroma(sourceColor.asHct.hue, 8.0),
+    .rainbow => .fromHueAndChroma(sourceColor.asHct.hue, 16.0),
+    .tonalSpot => .fromHueAndChroma(sourceColor.asHct.hue, 16.0),
     .expressive => .fromHueAndChroma(
       DynamicScheme.getRotatedHue(
-        sourceColorHct,
+        sourceColor.asHct,
         [0.0, 21.0, 51.0, 121.0, 151.0, 191.0, 271.0, 321.0, 360.0],
         [45.0, 95.0, 45.0, 20.0, 45.0, 90.0, 45.0, 45.0, 45.0],
       ),
@@ -1020,42 +1029,48 @@ class ColorSpec2021 implements ColorSpec {
     ),
     .vibrant => .fromHueAndChroma(
       DynamicScheme.getRotatedHue(
-        sourceColorHct,
+        sourceColor.asHct,
         const [0.0, 41.0, 61.0, 101.0, 131.0, 181.0, 251.0, 301.0, 360.0],
         const [18.0, 15.0, 10.0, 12.0, 15.0, 18.0, 15.0, 12.0, 12.0],
       ),
       24.0,
     ),
+    _ => throw ArgumentError.value(
+      variant,
+      "variant",
+      "Variant is not supported in current spec.",
+    ),
   };
 
   @override
   TonalPalette getTertiaryPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) => switch (variant) {
     .content => .fromHct(
       DislikeAnalyzer.fixIfDisliked(
-        TemperatureCache(sourceColorHct).getAnalogousColors(3, 6)[2],
+        TemperatureCache(sourceColor.asHct).getAnalogousColors(3, 6)[2],
       ),
     ),
     .fidelity => .fromHct(
       DislikeAnalyzer.fixIfDisliked(
-        TemperatureCache(sourceColorHct).getComplement(),
+        TemperatureCache(sourceColor.asHct).getComplement(),
       ),
     ),
-    .fruitSalad => .fromHueAndChroma(sourceColorHct.hue, 36.0),
-    .monochrome => .fromHueAndChroma(sourceColorHct.hue, 0.0),
-    .neutral => .fromHueAndChroma(sourceColorHct.hue, 16.0),
+    .fruitSalad => .fromHueAndChroma(sourceColor.asHct.hue, 36.0),
+    .monochrome => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
+    .neutral => .fromHueAndChroma(sourceColor.asHct.hue, 16.0),
     .rainbow || .tonalSpot => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 60.0),
+      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue + 60.0),
       24.0,
     ),
     .expressive => .fromHueAndChroma(
       DynamicScheme.getRotatedHue(
-        sourceColorHct,
+        sourceColor.asHct,
         [0.0, 21.0, 51.0, 121.0, 151.0, 191.0, 271.0, 321.0, 360.0],
         [120.0, 120.0, 20.0, 45.0, 20.0, 15.0, 20.0, 120.0, 120.0],
       ),
@@ -1063,74 +1078,98 @@ class ColorSpec2021 implements ColorSpec {
     ),
     .vibrant => .fromHueAndChroma(
       DynamicScheme.getRotatedHue(
-        sourceColorHct,
+        sourceColor.asHct,
         [0.0, 41.0, 61.0, 101.0, 131.0, 181.0, 251.0, 301.0, 360.0],
         [35.0, 30.0, 20.0, 25.0, 30.0, 35.0, 30.0, 25.0, 25.0],
       ),
       32.0,
     ),
+    _ => throw ArgumentError.value(
+      variant,
+      "variant",
+      "Variant is not supported in current spec.",
+    ),
   };
 
   @override
   TonalPalette getNeutralPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) => switch (variant) {
     .content || .fidelity => .fromHueAndChroma(
-      sourceColorHct.hue,
-      sourceColorHct.chroma / 8.0,
+      sourceColor.asHct.hue,
+      sourceColor.asHct.chroma / 8.0,
     ),
-    .fruitSalad => .fromHueAndChroma(sourceColorHct.hue, 10.0),
-    .monochrome => .fromHueAndChroma(sourceColorHct.hue, 0.0),
-    .neutral => .fromHueAndChroma(sourceColorHct.hue, 2.0),
-    .rainbow => .fromHueAndChroma(sourceColorHct.hue, 0.0),
-    .tonalSpot => .fromHueAndChroma(sourceColorHct.hue, 6.0),
+    .fruitSalad => .fromHueAndChroma(sourceColor.asHct.hue, 10.0),
+    .monochrome => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
+    .neutral => .fromHueAndChroma(sourceColor.asHct.hue, 2.0),
+    .rainbow => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
+    .tonalSpot => .fromHueAndChroma(sourceColor.asHct.hue, 6.0),
     .expressive => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 15.0),
+      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue + 15.0),
       8.0,
     ),
-    .vibrant => .fromHueAndChroma(sourceColorHct.hue, 10.0),
+    .vibrant => .fromHueAndChroma(sourceColor.asHct.hue, 10.0),
+    _ => throw ArgumentError.value(
+      variant,
+      "variant",
+      "Variant is not supported in current spec.",
+    ),
   };
 
   @override
   TonalPalette getNeutralVariantPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) => switch (variant) {
     .content || .fidelity => .fromHueAndChroma(
-      sourceColorHct.hue,
-      (sourceColorHct.chroma / 8.0) + 4.0,
+      sourceColor.asHct.hue,
+      (sourceColor.asHct.chroma / 8.0) + 4.0,
     ),
-    .fruitSalad => .fromHueAndChroma(sourceColorHct.hue, 16.0),
-    .monochrome => .fromHueAndChroma(sourceColorHct.hue, 0.0),
-    .neutral => .fromHueAndChroma(sourceColorHct.hue, 2.0),
-    .rainbow => .fromHueAndChroma(sourceColorHct.hue, 0.0),
-    .tonalSpot => .fromHueAndChroma(sourceColorHct.hue, 8.0),
+    .fruitSalad => .fromHueAndChroma(sourceColor.asHct.hue, 16.0),
+    .monochrome => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
+    .neutral => .fromHueAndChroma(sourceColor.asHct.hue, 2.0),
+    .rainbow => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
+    .tonalSpot => .fromHueAndChroma(sourceColor.asHct.hue, 8.0),
     .expressive => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 15.0),
+      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue + 15.0),
       12.0,
     ),
-    .vibrant => .fromHueAndChroma(sourceColorHct.hue, 12.0),
+    .vibrant => .fromHueAndChroma(sourceColor.asHct.hue, 12.0),
+    _ => throw ArgumentError.value(
+      variant,
+      "variant",
+      "Variant is not supported in current spec.",
+    ),
   };
 
   @override
   TonalPalette getErrorPalette(
+    TonalPaletteSourceColor sourceColor,
     Variant variant,
-    Hct sourceColorHct,
     bool isDark,
-    Platform platform,
     double contrastLevel,
+    Platform platform,
+    SpecVersion specVersion,
   ) => .fromHueAndChroma(25.0, 84.0);
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static bool _isMonochrome(DynamicScheme scheme) =>
       scheme.variant == .monochrome;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static bool _isFidelity(DynamicScheme scheme) =>
       scheme.variant == .fidelity || scheme.variant == .content;
 
@@ -1141,7 +1180,6 @@ class ColorSpec2021 implements ColorSpec {
     bool byDecreasingTone,
   ) {
     var answer = tone;
-
     var closestToChroma = Hct.from(hue, chroma, tone);
     if (closestToChroma.chroma < chroma) {
       var chromaPeak = closestToChroma.chroma;
@@ -1163,7 +1201,6 @@ class ColorSpec2021 implements ColorSpec {
         chromaPeak = math.max(chromaPeak, potentialSolution.chroma);
       }
     }
-
     return answer;
   }
 }

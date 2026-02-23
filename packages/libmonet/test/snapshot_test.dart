@@ -305,6 +305,7 @@ class VariantConverter extends JsonConverter<Variant, String> {
     "content" => .content,
     "rainbow" => .rainbow,
     "fruit_salad" => .fruitSalad,
+    "cmf" => .cmf,
     _ when defaultValue != null => defaultValue!,
     _ => throw ArgumentError.value(json),
   };
@@ -320,6 +321,7 @@ class VariantConverter extends JsonConverter<Variant, String> {
     .content => "content",
     .rainbow => "rainbow",
     .fruitSalad => "fruit_salad",
+    .cmf => "cmf",
   };
 }
 
@@ -332,6 +334,7 @@ class SpecVersionConverter extends JsonConverter<SpecVersion, String> {
   SpecVersion fromJson(String json) => switch (json.toLowerCase()) {
     "spec_2021" => .spec2021,
     "spec_2025" => .spec2025,
+    "spec_2026" => .spec2026,
     _ when defaultValue != null => defaultValue!,
     _ => throw ArgumentError.value(json),
   };
@@ -340,6 +343,7 @@ class SpecVersionConverter extends JsonConverter<SpecVersion, String> {
   String toJson(SpecVersion object) => switch (object) {
     .spec2021 => "spec_2021",
     .spec2025 => "spec_2025",
+    .spec2026 => "spec_2026",
   };
 }
 
@@ -439,9 +443,9 @@ void _expectMatchesSnapshot(String snapshotFilePath) {
   final snapshots = _tryParseSnapshots(validJson);
 
   for (final snapshot in snapshots) {
-    final scheme = DynamicScheme.fromPalettesOrKeyColors(
+    final scheme = DynamicScheme.withDefaults(
       isDark: snapshot.properties.isDark,
-      sourceColorHct: snapshot.properties.sourceColor.hct,
+      sourceColor: .fromArgb(snapshot.properties.sourceColor.argb),
       contrastLevel: snapshot.properties.contrastLevel,
       variant: snapshot.properties.variant,
       platform: snapshot.properties.platform,

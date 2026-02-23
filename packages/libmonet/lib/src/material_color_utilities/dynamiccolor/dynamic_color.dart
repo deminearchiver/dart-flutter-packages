@@ -181,40 +181,40 @@ final class DynamicColor {
     return DynamicColor(
       name: name,
       isBackground: isBackground,
-      palette: (scheme) => scheme.specVersion == specVersion
+      palette: (scheme) => scheme.specVersion >= specVersion
           ? extendedColor.palette(scheme)
           : palette(scheme),
-      tone: (scheme) => scheme.specVersion == specVersion
+      tone: (scheme) => scheme.specVersion >= specVersion
           ? extendedColor.tone(scheme)
           : tone(scheme),
       chromaMultiplier: (scheme) =>
-          (scheme.specVersion == specVersion
+          (scheme.specVersion >= specVersion
                   ? extendedColor.chromaMultiplier
                   : chromaMultiplier)
               ?.call(scheme) ??
           1.0,
       background: (scheme) =>
-          (scheme.specVersion == specVersion
+          (scheme.specVersion >= specVersion
                   ? extendedColor.background
                   : background)
               ?.call(scheme),
       secondBackground: (scheme) =>
-          (scheme.specVersion == specVersion
+          (scheme.specVersion >= specVersion
                   ? extendedColor.secondBackground
                   : secondBackground)
               ?.call(scheme),
       contrastCurve: (scheme) =>
-          (scheme.specVersion == specVersion
+          (scheme.specVersion >= specVersion
                   ? extendedColor.contrastCurve
                   : contrastCurve)
               ?.call(scheme),
       toneDeltaPair: (scheme) =>
-          (scheme.specVersion == specVersion
+          (scheme.specVersion >= specVersion
                   ? extendedColor.toneDeltaPair
                   : toneDeltaPair)
               ?.call(scheme),
       opacity: (scheme) =>
-          (scheme.specVersion == specVersion ? extendedColor.opacity : opacity)
+          (scheme.specVersion >= specVersion ? extendedColor.opacity : opacity)
               ?.call(scheme),
     );
   }
