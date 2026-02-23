@@ -1,5 +1,6 @@
 export 'dynamiccolor/color_spec_2021.dart';
 export 'dynamiccolor/color_spec_2025.dart';
+export 'dynamiccolor/color_spec_2026.dart';
 export 'dynamiccolor/color_spec.dart';
 export 'dynamiccolor/color_specs.dart';
 export 'dynamiccolor/contrast_curve.dart';
