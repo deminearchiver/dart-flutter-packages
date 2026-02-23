@@ -3,21 +3,38 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:flutter/material.dart' as flutter;
 import 'package:material_color_utilities/material_color_utilities.dart'
     as mcu_legacy
     show QuantizerCelebi, QuantizerResult, Score;
 import 'package:material/material_color_utilities.dart'
-    show Hct, DynamicScheme, Variant, Platform, SpecVersion;
+    show DynamicScheme, Variant, Platform, SpecVersion;
 
 import 'package:material/src/material/flutter.dart';
 
+typedef DynamicSchemeVariant = Variant;
 typedef DynamicSchemePlatform = Platform;
 typedef DynamicSchemeSpecVersion = SpecVersion;
 typedef ColorSchemeLegacy = ColorScheme;
 
-// TODO: replace with a typedef
-extension on DynamicSchemeVariant {
-  Variant get _asVariant => switch (this) {
+extension DynamicSchemeVariantExtension on DynamicSchemeVariant {
+  flutter.DynamicSchemeVariant? get asLegacy => switch (this) {
+    .monochrome => .monochrome,
+    .neutral => .neutral,
+    .tonalSpot => .tonalSpot,
+    .vibrant => .vibrant,
+    .expressive => .expressive,
+    .fidelity => .fidelity,
+    .content => .content,
+    .rainbow => .rainbow,
+    .fruitSalad => .fruitSalad,
+    _ => null,
+  };
+}
+
+extension DynamicSchemeVariantLegacyExtension on flutter.DynamicSchemeVariant {
+  // TODO: decide with the name of this method
+  DynamicSchemeVariant get asModern => switch (this) {
     .monochrome => .monochrome,
     .neutral => .neutral,
     .tonalSpot => .tonalSpot,
@@ -28,10 +45,6 @@ extension on DynamicSchemeVariant {
     .rainbow => .rainbow,
     .fruitSalad => .fruitSalad,
   };
-}
-
-extension on Color {
-  Hct _toHct() => .fromInt(toARGB32());
 }
 
 abstract class ColorThemeDataPartial with Diagnosticable {
@@ -1643,7 +1656,7 @@ class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
         onError != null &&
         errorContainer != null &&
         onErrorContainer != null) {
-      return ColorThemeData.from(
+      return .from(
         brightness: brightness,
         primaryPaletteKeyColor: primaryPaletteKeyColor,
         secondaryPaletteKeyColor: secondaryPaletteKeyColor,
@@ -2223,71 +2236,68 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     required Color onErrorContainer,
   }) = _ColorThemeData;
 
-  factory ColorThemeData.fromDynamicScheme(DynamicScheme scheme) =>
-      ColorThemeData.from(
-        brightness: scheme.isDark ? .dark : .light,
-        primaryPaletteKeyColor: Color(scheme.primaryPaletteKeyColor),
-        secondaryPaletteKeyColor: Color(scheme.secondaryPaletteKeyColor),
-        tertiaryPaletteKeyColor: Color(scheme.tertiaryPaletteKeyColor),
-        neutralPaletteKeyColor: Color(scheme.neutralPaletteKeyColor),
-        neutralVariantPaletteKeyColor: Color(
-          scheme.neutralVariantPaletteKeyColor,
-        ),
-        errorPaletteKeyColor: Color(scheme.errorPaletteKeyColor),
-        background: Color(scheme.background),
-        onBackground: Color(scheme.onBackground),
-        surface: Color(scheme.surface),
-        surfaceDim: Color(scheme.surfaceDim),
-        surfaceBright: Color(scheme.surfaceBright),
-        surfaceContainerLowest: Color(scheme.surfaceContainerLowest),
-        surfaceContainerLow: Color(scheme.surfaceContainerLow),
-        surfaceContainer: Color(scheme.surfaceContainer),
-        surfaceContainerHigh: Color(scheme.surfaceContainerHigh),
-        surfaceContainerHighest: Color(scheme.surfaceContainerHighest),
-        onSurface: Color(scheme.onSurface),
-        surfaceVariant: Color(scheme.surfaceVariant),
-        onSurfaceVariant: Color(scheme.onSurfaceVariant),
-        outline: Color(scheme.outline),
-        outlineVariant: Color(scheme.outlineVariant),
-        inverseSurface: Color(scheme.inverseSurface),
-        inverseOnSurface: Color(scheme.inverseOnSurface),
-        shadow: Color(scheme.shadow),
-        scrim: Color(scheme.scrim),
-        surfaceTint: Color(scheme.surfaceTint),
-        primary: Color(scheme.primary),
-        primaryDim: Color(scheme.primaryDim),
-        onPrimary: Color(scheme.onPrimary),
-        primaryContainer: Color(scheme.primaryContainer),
-        onPrimaryContainer: Color(scheme.onPrimaryContainer),
-        primaryFixed: Color(scheme.primaryFixed),
-        primaryFixedDim: Color(scheme.primaryFixedDim),
-        onPrimaryFixed: Color(scheme.onPrimaryFixed),
-        onPrimaryFixedVariant: Color(scheme.onPrimaryFixedVariant),
-        inversePrimary: Color(scheme.inversePrimary),
-        secondary: Color(scheme.secondary),
-        secondaryDim: Color(scheme.secondaryDim),
-        onSecondary: Color(scheme.onSecondary),
-        secondaryContainer: Color(scheme.secondaryContainer),
-        onSecondaryContainer: Color(scheme.onSecondaryContainer),
-        secondaryFixed: Color(scheme.secondaryFixed),
-        secondaryFixedDim: Color(scheme.secondaryFixedDim),
-        onSecondaryFixed: Color(scheme.onSecondaryFixed),
-        onSecondaryFixedVariant: Color(scheme.onSecondaryFixedVariant),
-        tertiary: Color(scheme.tertiary),
-        tertiaryDim: Color(scheme.tertiaryDim),
-        onTertiary: Color(scheme.onTertiary),
-        tertiaryContainer: Color(scheme.tertiaryContainer),
-        onTertiaryContainer: Color(scheme.onTertiaryContainer),
-        tertiaryFixed: Color(scheme.tertiaryFixed),
-        tertiaryFixedDim: Color(scheme.tertiaryFixedDim),
-        onTertiaryFixed: Color(scheme.onTertiaryFixed),
-        onTertiaryFixedVariant: Color(scheme.onTertiaryFixedVariant),
-        error: Color(scheme.error),
-        errorDim: Color(scheme.errorDim),
-        onError: Color(scheme.onError),
-        errorContainer: Color(scheme.errorContainer),
-        onErrorContainer: Color(scheme.onErrorContainer),
-      );
+  factory ColorThemeData.fromDynamicScheme(DynamicScheme scheme) => .from(
+    brightness: scheme.isDark ? .dark : .light,
+    primaryPaletteKeyColor: Color(scheme.primaryPaletteKeyColor),
+    secondaryPaletteKeyColor: Color(scheme.secondaryPaletteKeyColor),
+    tertiaryPaletteKeyColor: Color(scheme.tertiaryPaletteKeyColor),
+    neutralPaletteKeyColor: Color(scheme.neutralPaletteKeyColor),
+    neutralVariantPaletteKeyColor: Color(scheme.neutralVariantPaletteKeyColor),
+    errorPaletteKeyColor: Color(scheme.errorPaletteKeyColor),
+    background: Color(scheme.background),
+    onBackground: Color(scheme.onBackground),
+    surface: Color(scheme.surface),
+    surfaceDim: Color(scheme.surfaceDim),
+    surfaceBright: Color(scheme.surfaceBright),
+    surfaceContainerLowest: Color(scheme.surfaceContainerLowest),
+    surfaceContainerLow: Color(scheme.surfaceContainerLow),
+    surfaceContainer: Color(scheme.surfaceContainer),
+    surfaceContainerHigh: Color(scheme.surfaceContainerHigh),
+    surfaceContainerHighest: Color(scheme.surfaceContainerHighest),
+    onSurface: Color(scheme.onSurface),
+    surfaceVariant: Color(scheme.surfaceVariant),
+    onSurfaceVariant: Color(scheme.onSurfaceVariant),
+    outline: Color(scheme.outline),
+    outlineVariant: Color(scheme.outlineVariant),
+    inverseSurface: Color(scheme.inverseSurface),
+    inverseOnSurface: Color(scheme.inverseOnSurface),
+    shadow: Color(scheme.shadow),
+    scrim: Color(scheme.scrim),
+    surfaceTint: Color(scheme.surfaceTint),
+    primary: Color(scheme.primary),
+    primaryDim: Color(scheme.primaryDim),
+    onPrimary: Color(scheme.onPrimary),
+    primaryContainer: Color(scheme.primaryContainer),
+    onPrimaryContainer: Color(scheme.onPrimaryContainer),
+    primaryFixed: Color(scheme.primaryFixed),
+    primaryFixedDim: Color(scheme.primaryFixedDim),
+    onPrimaryFixed: Color(scheme.onPrimaryFixed),
+    onPrimaryFixedVariant: Color(scheme.onPrimaryFixedVariant),
+    inversePrimary: Color(scheme.inversePrimary),
+    secondary: Color(scheme.secondary),
+    secondaryDim: Color(scheme.secondaryDim),
+    onSecondary: Color(scheme.onSecondary),
+    secondaryContainer: Color(scheme.secondaryContainer),
+    onSecondaryContainer: Color(scheme.onSecondaryContainer),
+    secondaryFixed: Color(scheme.secondaryFixed),
+    secondaryFixedDim: Color(scheme.secondaryFixedDim),
+    onSecondaryFixed: Color(scheme.onSecondaryFixed),
+    onSecondaryFixedVariant: Color(scheme.onSecondaryFixedVariant),
+    tertiary: Color(scheme.tertiary),
+    tertiaryDim: Color(scheme.tertiaryDim),
+    onTertiary: Color(scheme.onTertiary),
+    tertiaryContainer: Color(scheme.tertiaryContainer),
+    onTertiaryContainer: Color(scheme.onTertiaryContainer),
+    tertiaryFixed: Color(scheme.tertiaryFixed),
+    tertiaryFixedDim: Color(scheme.tertiaryFixedDim),
+    onTertiaryFixed: Color(scheme.onTertiaryFixed),
+    onTertiaryFixedVariant: Color(scheme.onTertiaryFixedVariant),
+    error: Color(scheme.error),
+    errorDim: Color(scheme.errorDim),
+    onError: Color(scheme.onError),
+    errorContainer: Color(scheme.errorContainer),
+    onErrorContainer: Color(scheme.onErrorContainer),
+  );
 
   factory ColorThemeData.fromSeed({
     Color sourceColor = const Color(0xFF6750A4),
@@ -2296,16 +2306,16 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     DynamicSchemePlatform platform = DynamicScheme.defaultPlatform,
     double contrastLevel = 0.0,
     DynamicSchemeSpecVersion? specVersion = DynamicScheme.defaultSpecVersion,
-    Color? primaryPaletteKeyColor,
-    Color? secondaryPaletteKeyColor,
-    Color? tertiaryPaletteKeyColor,
-    Color? neutralPaletteKeyColor,
-    Color? neutralVariantPaletteKeyColor,
-    Color? errorPaletteKeyColor,
-  }) => ColorThemeData.fromDynamicScheme(
-    DynamicScheme.fromPalettesOrKeyColors(
-      sourceColorHct: sourceColor._toHct(),
-      variant: variant._asVariant,
+    // Color? primaryPaletteKeyColor,
+    // Color? secondaryPaletteKeyColor,
+    // Color? tertiaryPaletteKeyColor,
+    // Color? neutralPaletteKeyColor,
+    // Color? neutralVariantPaletteKeyColor,
+    // Color? errorPaletteKeyColor,
+  }) => .fromDynamicScheme(
+    .withDefaults(
+      sourceColor: .fromArgb(sourceColor.toARGB32()),
+      variant: variant,
       // Important: exhaustive check in case new enum members get added
       isDark: switch (brightness) {
         .light => false,
@@ -2314,12 +2324,12 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
       platform: platform,
       contrastLevel: contrastLevel,
       specVersion: specVersion,
-      primaryPaletteKeyColor: primaryPaletteKeyColor?._toHct(),
-      secondaryPaletteKeyColor: secondaryPaletteKeyColor?._toHct(),
-      tertiaryPaletteKeyColor: tertiaryPaletteKeyColor?._toHct(),
-      neutralPaletteKeyColor: neutralPaletteKeyColor?._toHct(),
-      neutralVariantPaletteKeyColor: neutralVariantPaletteKeyColor?._toHct(),
-      errorPaletteKeyColor: errorPaletteKeyColor?._toHct(),
+      // primaryPaletteKeyColor: primaryPaletteKeyColor?._toHct(),
+      // secondaryPaletteKeyColor: secondaryPaletteKeyColor?._toHct(),
+      // tertiaryPaletteKeyColor: tertiaryPaletteKeyColor?._toHct(),
+      // neutralPaletteKeyColor: neutralPaletteKeyColor?._toHct(),
+      // neutralVariantPaletteKeyColor: neutralVariantPaletteKeyColor?._toHct(),
+      // errorPaletteKeyColor: errorPaletteKeyColor?._toHct(),
     ),
   );
 
@@ -2997,7 +3007,7 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     DynamicSchemePlatform platform = DynamicScheme.defaultPlatform,
     double contrastLevel = 0.0,
     DynamicSchemeSpecVersion? specVersion = DynamicScheme.defaultSpecVersion,
-  }) async => ColorThemeData.fromSeed(
+  }) async => .fromSeed(
     sourceColor: await _contentBasedSourceColor(image),
     variant: variant,
     brightness: brightness,
@@ -4303,7 +4313,7 @@ class ColorTheme extends InheritedTheme {
     final brightness =
         Theme.maybeBrightnessOf(context) ??
         MediaQuery.maybePlatformBrightnessOf(context) ??
-        Brightness.light;
+        .light;
     return switch (brightness) {
       Brightness.light => ColorThemeData._baselineLight2021,
       Brightness.dark => ColorThemeData._baselineDark2021,
