@@ -6,48 +6,56 @@ abstract class StateThemeDataPartial with Diagnosticable {
   const StateThemeDataPartial();
 
   const factory StateThemeDataPartial.from({
-    double? hoverStateLayerOpacity,
-    double? focusStateLayerOpacity,
-    double? pressedStateLayerOpacity,
+    double? disabledStateLayerOpacity,
     double? draggedStateLayerOpacity,
+    double? focusStateLayerOpacity,
+    double? hoverStateLayerOpacity,
+    double? pressedStateLayerOpacity,
   }) = _StateThemeDataPartial;
 
-  double? get hoverStateLayerOpacity;
-
-  double? get focusStateLayerOpacity;
-
-  double? get pressedStateLayerOpacity;
+  double? get disabledStateLayerOpacity;
 
   double? get draggedStateLayerOpacity;
 
+  double? get focusStateLayerOpacity;
+
+  double? get hoverStateLayerOpacity;
+
+  double? get pressedStateLayerOpacity;
+
   StateThemeDataPartial copyWith({
-    covariant double? hoverStateLayerOpacity,
-    covariant double? focusStateLayerOpacity,
-    covariant double? pressedStateLayerOpacity,
-    covariant double? draggedStateLayerOpacity,
+    double? disabledStateLayerOpacity,
+    double? draggedStateLayerOpacity,
+    double? focusStateLayerOpacity,
+    double? hoverStateLayerOpacity,
+    double? pressedStateLayerOpacity,
   }) =>
-      hoverStateLayerOpacity != null ||
+      disabledStateLayerOpacity != null ||
+          draggedStateLayerOpacity != null ||
           focusStateLayerOpacity != null ||
-          pressedStateLayerOpacity != null ||
-          draggedStateLayerOpacity != null
+          hoverStateLayerOpacity != null ||
+          pressedStateLayerOpacity != null
       ? .from(
-          hoverStateLayerOpacity:
-              hoverStateLayerOpacity ?? this.hoverStateLayerOpacity,
-          focusStateLayerOpacity:
-              focusStateLayerOpacity ?? this.focusStateLayerOpacity,
-          pressedStateLayerOpacity:
-              pressedStateLayerOpacity ?? this.pressedStateLayerOpacity,
+          disabledStateLayerOpacity:
+              disabledStateLayerOpacity ?? this.disabledStateLayerOpacity,
           draggedStateLayerOpacity:
               draggedStateLayerOpacity ?? this.draggedStateLayerOpacity,
+          focusStateLayerOpacity:
+              focusStateLayerOpacity ?? this.focusStateLayerOpacity,
+          hoverStateLayerOpacity:
+              hoverStateLayerOpacity ?? this.hoverStateLayerOpacity,
+          pressedStateLayerOpacity:
+              pressedStateLayerOpacity ?? this.pressedStateLayerOpacity,
         )
       : this;
 
   StateThemeDataPartial merge(StateThemeDataPartial? other) => other != null
       ? copyWith(
-          hoverStateLayerOpacity: other.hoverStateLayerOpacity,
-          focusStateLayerOpacity: other.focusStateLayerOpacity,
-          pressedStateLayerOpacity: other.pressedStateLayerOpacity,
+          disabledStateLayerOpacity: other.disabledStateLayerOpacity,
           draggedStateLayerOpacity: other.draggedStateLayerOpacity,
+          focusStateLayerOpacity: other.focusStateLayerOpacity,
+          hoverStateLayerOpacity: other.hoverStateLayerOpacity,
+          pressedStateLayerOpacity: other.pressedStateLayerOpacity,
         )
       : this;
 
@@ -59,30 +67,37 @@ abstract class StateThemeDataPartial with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
       ..add(
-        DiagnosticsProperty<double>(
-          "hoverStateLayerOpacity",
-          hoverStateLayerOpacity,
+        DoubleProperty(
+          "disabledStateLayerOpacity",
+          disabledStateLayerOpacity,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<double>(
+        DoubleProperty(
+          "draggedStateLayerOpacity",
+          draggedStateLayerOpacity,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DoubleProperty(
           "focusStateLayerOpacity",
           focusStateLayerOpacity,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<double>(
-          "pressedStateLayerOpacity",
-          pressedStateLayerOpacity,
+        DoubleProperty(
+          "hoverStateLayerOpacity",
+          hoverStateLayerOpacity,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<double>(
-          "draggedStateLayerOpacity",
-          draggedStateLayerOpacity,
+        DoubleProperty(
+          "pressedStateLayerOpacity",
+          pressedStateLayerOpacity,
           defaultValue: null,
         ),
       );
@@ -93,96 +108,111 @@ abstract class StateThemeDataPartial with Diagnosticable {
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is StateThemeDataPartial &&
-          hoverStateLayerOpacity == other.hoverStateLayerOpacity &&
+          disabledStateLayerOpacity == other.disabledStateLayerOpacity &&
+          draggedStateLayerOpacity == other.draggedStateLayerOpacity &&
           focusStateLayerOpacity == other.focusStateLayerOpacity &&
-          pressedStateLayerOpacity == other.pressedStateLayerOpacity &&
-          draggedStateLayerOpacity == other.draggedStateLayerOpacity;
+          hoverStateLayerOpacity == other.hoverStateLayerOpacity &&
+          pressedStateLayerOpacity == other.pressedStateLayerOpacity;
 
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    hoverStateLayerOpacity,
-    focusStateLayerOpacity,
-    pressedStateLayerOpacity,
+    disabledStateLayerOpacity,
     draggedStateLayerOpacity,
+    focusStateLayerOpacity,
+    hoverStateLayerOpacity,
+    pressedStateLayerOpacity,
   );
 }
 
 class _StateThemeDataPartial extends StateThemeDataPartial {
   const _StateThemeDataPartial({
-    this.hoverStateLayerOpacity,
-    this.focusStateLayerOpacity,
-    this.pressedStateLayerOpacity,
+    this.disabledStateLayerOpacity,
     this.draggedStateLayerOpacity,
+    this.focusStateLayerOpacity,
+    this.hoverStateLayerOpacity,
+    this.pressedStateLayerOpacity,
   });
 
   @override
-  final double? hoverStateLayerOpacity;
+  final double? disabledStateLayerOpacity;
+
+  @override
+  final double? draggedStateLayerOpacity;
 
   @override
   final double? focusStateLayerOpacity;
 
   @override
-  final double? pressedStateLayerOpacity;
+  final double? hoverStateLayerOpacity;
 
   @override
-  final double? draggedStateLayerOpacity;
+  final double? pressedStateLayerOpacity;
 }
 
 abstract class StateThemeData extends StateThemeDataPartial {
   const StateThemeData();
 
   const factory StateThemeData.from({
-    required double hoverStateLayerOpacity,
-    required double focusStateLayerOpacity,
-    required double pressedStateLayerOpacity,
+    required double disabledStateLayerOpacity,
     required double draggedStateLayerOpacity,
+    required double focusStateLayerOpacity,
+    required double hoverStateLayerOpacity,
+    required double pressedStateLayerOpacity,
   }) = _StateThemeData;
 
   const factory StateThemeData.fallback() = _StateThemeData.fallback;
 
   @override
-  double get hoverStateLayerOpacity;
-
-  @override
-  double get focusStateLayerOpacity;
-
-  @override
-  double get pressedStateLayerOpacity;
+  double get disabledStateLayerOpacity;
 
   @override
   double get draggedStateLayerOpacity;
 
   @override
+  double get focusStateLayerOpacity;
+
+  @override
+  double get hoverStateLayerOpacity;
+
+  @override
+  double get pressedStateLayerOpacity;
+
+  @override
   StateThemeData copyWith({
-    double? hoverStateLayerOpacity,
-    double? focusStateLayerOpacity,
-    double? pressedStateLayerOpacity,
+    double? disabledStateLayerOpacity,
     double? draggedStateLayerOpacity,
+    double? focusStateLayerOpacity,
+    double? hoverStateLayerOpacity,
+    double? pressedStateLayerOpacity,
   }) =>
-      hoverStateLayerOpacity != null ||
+      disabledStateLayerOpacity != null ||
+          draggedStateLayerOpacity != null ||
           focusStateLayerOpacity != null ||
-          pressedStateLayerOpacity != null ||
-          draggedStateLayerOpacity != null
+          hoverStateLayerOpacity != null ||
+          pressedStateLayerOpacity != null
       ? .from(
-          hoverStateLayerOpacity:
-              hoverStateLayerOpacity ?? this.hoverStateLayerOpacity,
-          focusStateLayerOpacity:
-              focusStateLayerOpacity ?? this.focusStateLayerOpacity,
-          pressedStateLayerOpacity:
-              pressedStateLayerOpacity ?? this.pressedStateLayerOpacity,
+          disabledStateLayerOpacity:
+              disabledStateLayerOpacity ?? this.disabledStateLayerOpacity,
           draggedStateLayerOpacity:
               draggedStateLayerOpacity ?? this.draggedStateLayerOpacity,
+          focusStateLayerOpacity:
+              focusStateLayerOpacity ?? this.focusStateLayerOpacity,
+          hoverStateLayerOpacity:
+              hoverStateLayerOpacity ?? this.hoverStateLayerOpacity,
+          pressedStateLayerOpacity:
+              pressedStateLayerOpacity ?? this.pressedStateLayerOpacity,
         )
       : this;
 
   @override
   StateThemeData merge(StateThemeDataPartial? other) => other != null
       ? copyWith(
-          hoverStateLayerOpacity: other.hoverStateLayerOpacity,
-          focusStateLayerOpacity: other.focusStateLayerOpacity,
-          pressedStateLayerOpacity: other.pressedStateLayerOpacity,
+          disabledStateLayerOpacity: other.disabledStateLayerOpacity,
           draggedStateLayerOpacity: other.draggedStateLayerOpacity,
+          focusStateLayerOpacity: other.focusStateLayerOpacity,
+          hoverStateLayerOpacity: other.hoverStateLayerOpacity,
+          pressedStateLayerOpacity: other.pressedStateLayerOpacity,
         )
       : this;
 
@@ -190,13 +220,16 @@ abstract class StateThemeData extends StateThemeDataPartial {
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
-      ..add(DoubleProperty("hoverStateLayerOpacity", hoverStateLayerOpacity))
-      ..add(DoubleProperty("focusStateLayerOpacity", focusStateLayerOpacity))
       ..add(
-        DoubleProperty("pressedStateLayerOpacity", pressedStateLayerOpacity),
+        DoubleProperty("disabledStateLayerOpacity", disabledStateLayerOpacity),
       )
       ..add(
         DoubleProperty("draggedStateLayerOpacity", draggedStateLayerOpacity),
+      )
+      ..add(DoubleProperty("focusStateLayerOpacity", focusStateLayerOpacity))
+      ..add(DoubleProperty("hoverStateLayerOpacity", hoverStateLayerOpacity))
+      ..add(
+        DoubleProperty("pressedStateLayerOpacity", pressedStateLayerOpacity),
       );
   }
 
@@ -205,46 +238,53 @@ abstract class StateThemeData extends StateThemeDataPartial {
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is StateThemeData &&
-          hoverStateLayerOpacity == other.hoverStateLayerOpacity &&
+          disabledStateLayerOpacity == other.disabledStateLayerOpacity &&
+          draggedStateLayerOpacity == other.draggedStateLayerOpacity &&
           focusStateLayerOpacity == other.focusStateLayerOpacity &&
-          pressedStateLayerOpacity == other.pressedStateLayerOpacity &&
-          draggedStateLayerOpacity == other.draggedStateLayerOpacity;
+          hoverStateLayerOpacity == other.hoverStateLayerOpacity &&
+          pressedStateLayerOpacity == other.pressedStateLayerOpacity;
 
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    hoverStateLayerOpacity,
-    focusStateLayerOpacity,
-    pressedStateLayerOpacity,
+    disabledStateLayerOpacity,
     draggedStateLayerOpacity,
+    focusStateLayerOpacity,
+    hoverStateLayerOpacity,
+    pressedStateLayerOpacity,
   );
 }
 
 class _StateThemeData extends StateThemeData {
   const _StateThemeData({
-    required this.hoverStateLayerOpacity,
-    required this.focusStateLayerOpacity,
-    required this.pressedStateLayerOpacity,
+    required this.disabledStateLayerOpacity,
     required this.draggedStateLayerOpacity,
+    required this.focusStateLayerOpacity,
+    required this.hoverStateLayerOpacity,
+    required this.pressedStateLayerOpacity,
   });
 
   const _StateThemeData.fallback()
-    : hoverStateLayerOpacity = 0.08,
-      focusStateLayerOpacity = 0.10,
-      pressedStateLayerOpacity = 0.10,
-      draggedStateLayerOpacity = 0.16;
+    : disabledStateLayerOpacity = 0.38,
+      draggedStateLayerOpacity = 0.16,
+      focusStateLayerOpacity = 0.1,
+      hoverStateLayerOpacity = 0.08,
+      pressedStateLayerOpacity = 0.1;
 
   @override
-  final double hoverStateLayerOpacity;
+  final double disabledStateLayerOpacity;
+
+  @override
+  final double draggedStateLayerOpacity;
 
   @override
   final double focusStateLayerOpacity;
 
   @override
-  final double pressedStateLayerOpacity;
+  final double hoverStateLayerOpacity;
 
   @override
-  final double draggedStateLayerOpacity;
+  final double pressedStateLayerOpacity;
 }
 
 class StateTheme extends InheritedTheme {
