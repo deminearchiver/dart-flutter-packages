@@ -69,7 +69,7 @@ abstract class Spring extends SpringPartial {
   @override
   Spring copyWith({double? stiffness, double? damping}) =>
       stiffness != null || damping != null
-      ? Spring.from(
+      ? .from(
           stiffness: stiffness ?? this.stiffness,
           damping: damping ?? this.damping,
         )
@@ -80,11 +80,8 @@ abstract class Spring extends SpringPartial {
       ? copyWith(stiffness: other.stiffness, damping: other.damping)
       : this;
 
-  SpringDescription toSpringDescription() => SpringDescription.withDampingRatio(
-    mass: 1.0,
-    stiffness: stiffness,
-    ratio: damping,
-  );
+  SpringDescription toSpringDescription() =>
+      .withDampingRatio(mass: 1.0, stiffness: stiffness, ratio: damping);
 
   @override
   // ignore: must_call_super
@@ -154,7 +151,7 @@ abstract class SpringThemeDataPartial with Diagnosticable {
           defaultEffects != null ||
           slowSpatial != null ||
           slowEffects != null
-      ? SpringThemeDataPartial.from(
+      ? .from(
           fastSpatial: fastSpatial ?? this.fastSpatial,
           fastEffects: fastEffects ?? this.fastEffects,
           defaultSpatial: defaultSpatial ?? this.defaultSpatial,
@@ -178,7 +175,7 @@ abstract class SpringThemeDataPartial with Diagnosticable {
           defaultEffects != null ||
           slowSpatial != null ||
           slowEffects != null
-      ? SpringThemeDataPartial.from(
+      ? .from(
           fastSpatial: this.fastSpatial?.merge(fastSpatial) ?? fastSpatial,
           fastEffects: this.fastEffects?.merge(fastEffects) ?? fastEffects,
           defaultSpatial:
@@ -303,7 +300,7 @@ abstract class SpringThemeData extends SpringThemeDataPartial {
           defaultEffects != null ||
           slowSpatial != null ||
           slowEffects != null
-      ? SpringThemeData.from(
+      ? .from(
           fastSpatial: fastSpatial ?? this.fastSpatial,
           fastEffects: fastEffects ?? this.fastEffects,
           defaultSpatial: defaultSpatial ?? this.defaultSpatial,
@@ -328,7 +325,7 @@ abstract class SpringThemeData extends SpringThemeDataPartial {
           defaultEffects != null ||
           slowSpatial != null ||
           slowEffects != null
-      ? SpringThemeData.from(
+      ? .from(
           fastSpatial: this.fastSpatial.merge(fastSpatial),
           fastEffects: this.fastEffects.merge(fastEffects),
           defaultSpatial: this.defaultSpatial.merge(defaultSpatial),
@@ -385,20 +382,20 @@ class _SpringThemeData extends SpringThemeData {
   });
 
   const _SpringThemeData.standard()
-    : fastSpatial = const Spring.from(stiffness: 1400.0, damping: 0.9),
-      fastEffects = const Spring.from(stiffness: 3800.0, damping: 1.0),
-      defaultSpatial = const Spring.from(stiffness: 700.0, damping: 0.9),
-      defaultEffects = const Spring.from(stiffness: 1600.0, damping: 1.0),
-      slowSpatial = const Spring.from(stiffness: 300.0, damping: 0.9),
-      slowEffects = const Spring.from(stiffness: 800.0, damping: 1.0);
+    : fastSpatial = const .from(stiffness: 1400.0, damping: 0.9),
+      fastEffects = const .from(stiffness: 3800.0, damping: 1.0),
+      defaultSpatial = const .from(stiffness: 700.0, damping: 0.9),
+      defaultEffects = const .from(stiffness: 1600.0, damping: 1.0),
+      slowSpatial = const .from(stiffness: 300.0, damping: 0.9),
+      slowEffects = const .from(stiffness: 800.0, damping: 1.0);
 
   const _SpringThemeData.expressive()
-    : fastSpatial = const Spring.from(stiffness: 800.0, damping: 0.6),
-      fastEffects = const Spring.from(stiffness: 3800.0, damping: 1.0),
-      defaultSpatial = const Spring.from(stiffness: 380.0, damping: 0.8),
-      defaultEffects = const Spring.from(stiffness: 1600.0, damping: 1.0),
-      slowSpatial = const Spring.from(stiffness: 200.0, damping: 0.8),
-      slowEffects = const Spring.from(stiffness: 800.0, damping: 1.0);
+    : fastSpatial = const .from(stiffness: 800.0, damping: 0.6),
+      fastEffects = const .from(stiffness: 3800.0, damping: 1.0),
+      defaultSpatial = const .from(stiffness: 380.0, damping: 0.8),
+      defaultEffects = const .from(stiffness: 1600.0, damping: 1.0),
+      slowSpatial = const .from(stiffness: 200.0, damping: 0.8),
+      slowEffects = const .from(stiffness: 800.0, damping: 1.0);
 
   @override
   final Spring fastSpatial;
@@ -450,5 +447,5 @@ class SpringTheme extends InheritedTheme {
       context.dependOnInheritedWidgetOfExactType<SpringTheme>()?.data;
 
   static SpringThemeData of(BuildContext context) =>
-      maybeOf(context) ?? const SpringThemeData.standard();
+      maybeOf(context) ?? const .expressive();
 }
