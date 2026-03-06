@@ -1,16 +1,30 @@
+// ignore_for_file: use_to_and_as_if_applicable
+
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart' as flutter;
 import 'package:material/src/material/flutter.dart';
 
-abstract interface class StatesConstraint<S extends Object?> {
-  const factory StatesConstraint.any() = _AnyStates;
-
+mixin StatesConstraint<S extends Object?> {
+  /// Whether the provided [states] satisfy this object's criteria.
   bool isSatisfiedBy(S states);
+
+  /// Combines two [StatesConstraint] values using logical "and".
+  StatesConstraint<S> operator &(StatesConstraint<S> other) =>
+      _StateAnd<S>(this, other);
+
+  /// Combines two [StatesConstraint] values using logical "or".
+  StatesConstraint<S> operator |(StatesConstraint<S> other) =>
+      _StateOr<S>(this, other);
+
+  /// Takes a StatesConstraint] and applies the logical "not".
+  StatesConstraint<S> operator ~() => _StateNot<S>(this);
+
+  static StatesConstraint<S> any<S extends Object?>() => _AnyStates<S>();
 }
 
-sealed class _StateCombo<S extends Object?> implements StatesConstraint<S> {
+sealed class _StateCombo<S extends Object?> with StatesConstraint<S> {
   const _StateCombo(this.first, this.second);
 
   final StatesConstraint<S> first;
@@ -50,7 +64,7 @@ class _StateOr<S extends Object?> extends _StateCombo<S> {
   String toString() => "($first | $second)";
 }
 
-class _StateNot<S extends Object?> implements StatesConstraint<S> {
+class _StateNot<S extends Object?> with StatesConstraint<S> {
   const _StateNot(this.value);
 
   final StatesConstraint<S> value;
@@ -82,14 +96,22 @@ extension StatesConstraintExtension<S extends Object?> on StatesConstraint<S> {
   StatesConstraint<S> operator ~() => _StateNot<S>(this);
 }
 
-class _AnyStates<S extends Object?> implements StatesConstraint<S> {
+class _AnyStates<S extends Object?> with StatesConstraint<S> {
   const _AnyStates();
 
   @override
   bool isSatisfiedBy(S states) => true;
 
   @override
-  String toString() => "StatesConstraint<$S>.any()";
+  String toString() => "StatesConstraint.any<$S>()";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _AnyStates<S>;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 }
 
 typedef PropertyResolver<T extends Object?, S extends Object?> =
@@ -395,33 +417,6 @@ abstract class WidgetStateProperty<T extends Object?>
   /// at build time.
   @override
   T resolve(WidgetStates states);
-}
-
-// typedef WidgetStatesConstraint = StatesConstraint<WidgetStates>;
-abstract interface class WidgetStatesConstraint
-    implements StatesConstraint<WidgetStates>, flutter.WidgetStatesConstraint {
-  static const WidgetStatesConstraint any = _AnyWidgetStates();
-
-  /// Whether the provided [states] satisfy this object's criteria.
-  ///
-  /// If the constraint is a single [WidgetState] object,
-  /// it's satisfied by the set if the set contains the object.
-  ///
-  /// The constraint can also be created using one or more operators, for example:
-  ///
-  /// {@macro flutter.widgets.WidgetStatesConstraint.isSatisfiedBy}
-  @override
-  bool isSatisfiedBy(Set<WidgetState> states);
-}
-
-class _AnyWidgetStates implements WidgetStatesConstraint {
-  const _AnyWidgetStates();
-
-  @override
-  bool isSatisfiedBy(Set<WidgetState> states) => true;
-
-  @override
-  String toString() => "WidgetStatesConstraint.any";
 }
 
 typedef WidgetStateMap<T extends Object?> = StateMap<T, WidgetStates>;
