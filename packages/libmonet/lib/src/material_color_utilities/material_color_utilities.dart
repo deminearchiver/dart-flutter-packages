@@ -2,6 +2,7 @@ export 'blend.dart';
 export 'contrast.dart';
 export 'dislike.dart';
 export 'dynamiccolor.dart';
+export 'energy.dart';
 export 'hct.dart';
 export 'palettes.dart';
 export 'quantize.dart';
