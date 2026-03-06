@@ -10,11 +10,12 @@
   - Replaced `sourceColorHct` with `sourceColor` of type `TonalPaletteSourceColor`.
   - Renamed `DynamicScheme.fromPalettesOrKeyColors` to `DynamicScheme.withDefaults`.
   - All `DynamicScheme.withDefaults` and `Scheme*` constructor parameters are now optional (`isDark` defaults to `false` as per `md.sys.color` token defaults).
-- Added `year` property in order to make `SpecVersion` values comparable.
-- Other minor breaking changes.
-- Refactored internal file structure.
-- Fixed errors in test runners.
-- Removed unfinished tools.
+- Added `year` property to `SpecVersion` and implemented `Comparable<SpecVersion>` in order to make spec versions comparable.
+- Color generation algorithms from Android:
+  - Renamed `android_dynamic_colors` library to `android_system_ui`.
+  - Added `SchemeClock` and `SchemeClockVibrant` to the `android_system_ui` library.
+- Refactored internal file structure (breaks source code imports).
+- Other minor changes.
 
 ## 1.2.0
 
