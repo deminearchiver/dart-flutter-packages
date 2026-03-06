@@ -1,13 +1,11 @@
 // ignore_for_file: recursive_getters
 
-import 'dart:collection';
-
 import 'package:libmonet/material_color_utilities.dart';
 
 final class AndroidDynamicColors {
   AndroidDynamicColors();
 
-  final _mMdc = MaterialDynamicColors();
+  final _mdc = MaterialDynamicColors();
 
   // CLOCK COLORS
   DynamicColor get widgetBackground => DynamicColor(
@@ -108,7 +106,7 @@ final class AndroidDynamicColors {
       _ => 70.0,
     },
     isBackground: true,
-    background: (_) => _mMdc.surfaceContainerHigh,
+    background: (_) => _mdc.surfaceContainerHigh,
     contrastCurve: (_) => const ContrastCurve(1.8, 1.8, 3.0, 4.5),
   );
 
@@ -133,7 +131,7 @@ final class AndroidDynamicColors {
     name: "brand_a",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
-    background: (_) => _mMdc.surfaceContainerLow,
+    background: (_) => _mdc.surfaceContainerLow,
     contrastCurve: (scheme) => scheme.isDark
         ? const ContrastCurve(10.0, 10.0, 12.0, 13.0)
         : const ContrastCurve(6.0, 6.0, 9.0, 12.0),
@@ -143,7 +141,7 @@ final class AndroidDynamicColors {
     name: "brand_b",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) => scheme.isDark ? 98.0 : 70.0,
-    background: (_) => _mMdc.surfaceContainerLow,
+    background: (_) => _mdc.surfaceContainerLow,
     contrastCurve: (scheme) => scheme.isDark
         ? const ContrastCurve(16.0, 16.0, 16.5, 17.0)
         : const ContrastCurve(2.0, 2.0, 3.0, 4.5),
@@ -153,7 +151,7 @@ final class AndroidDynamicColors {
     name: "brand_c",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 60.0 : 50.0,
-    background: (_) => _mMdc.surfaceContainerLow,
+    background: (_) => _mdc.surfaceContainerLow,
     contrastCurve: (scheme) => scheme.isDark
         ? const ContrastCurve(6.0, 6.0, 9.0, 11.0)
         : const ContrastCurve(4.0, 4.0, 7.0, 8.0),
@@ -163,7 +161,7 @@ final class AndroidDynamicColors {
     name: "brand_d",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) => scheme.isDark ? 90.0 : 59.0,
-    background: (_) => _mMdc.surfaceContainerLow,
+    background: (_) => _mdc.surfaceContainerLow,
     contrastCurve: (scheme) => scheme.isDark
         ? const ContrastCurve(13.0, 13.0, 14.0, 15.0)
         : const ContrastCurve(3.0, 3.0, 4.5, 6.0),

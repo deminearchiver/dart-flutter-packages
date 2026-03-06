@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'color_spec_2026.dart';
 import 'dynamic_color.dart';
 import 'dynamic_scheme.dart';
