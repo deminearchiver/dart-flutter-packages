@@ -4,6 +4,7 @@
 - Ported upstream commits:
   - [`19ad665`](https://github.com/material-foundation/material-color-utilities/commit/19ad665aff08662e949f6759d34d65ba8acc1b83): *"Added CMF Scheme in 2026 spec."*
   - [`4578d0a`](https://github.com/material-foundation/material-color-utilities/commit/4578d0a1d40f1d17f1ca6f34cc9c484bea8f0a9d): *"Refactor DynamicScheme to accept a list of source colors."*
+  - [`91da30d`](https://github.com/material-foundation/material-color-utilities/commit/91da30d89e70c3dc9575ec71a1ebe8874d881f29): *"Updated background for on-fixed colors in ColorSpec2026."*
 - Massively refactored `DynamicScheme` (including deviations from upstream):
   - Removed custom palette key colors support from `DynamicScheme`.
   - Replaced `sourceColorHct` with `sourceColor` of type `TonalPaletteSourceColor`.
