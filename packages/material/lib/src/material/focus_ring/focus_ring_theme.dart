@@ -122,6 +122,7 @@ abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
     required ColorThemeData colorTheme,
     required DurationThemeData durationTheme,
     required ShapeThemeData shapeTheme,
+    required StateFocusIndicatorThemeData stateFocusIndicatorTheme,
   }) = _FocusRingThemeDataDefaults;
 
   @override
@@ -224,6 +225,7 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
     required ColorThemeData colorTheme,
     required DurationThemeData durationTheme,
     required ShapeThemeData shapeTheme,
+    required StateFocusIndicatorThemeData stateFocusIndicatorTheme,
     Duration? duration,
     FocusRingStateProperty<double?>? offset,
     FocusRingStateProperty<OutlinedBorder?>? shape,
@@ -231,6 +233,7 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
   }) : _colorTheme = colorTheme,
        _durationTheme = durationTheme,
        _shapeTheme = shapeTheme,
+       _stateFocusIndicatorTheme = stateFocusIndicatorTheme,
        _duration = duration,
        _offset = offset,
        _shape = shape,
@@ -239,6 +242,7 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
   final ColorThemeData _colorTheme;
   final DurationThemeData _durationTheme;
   final ShapeThemeData _shapeTheme;
+  final StateFocusIndicatorThemeData _stateFocusIndicatorTheme;
 
   final Duration? _duration;
   final FocusRingStateProperty<double?>? _offset;
@@ -253,8 +257,10 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
     (states) =>
         _offset?.resolve(states) ??
         switch (states) {
-          FocusRingStates(placement: .inward) => 0.0,
-          FocusRingStates(placement: .outward) => 2.0,
+          FocusRingStates(placement: .inward) =>
+            _stateFocusIndicatorTheme.innerOffset,
+          FocusRingStates(placement: .outward) =>
+            _stateFocusIndicatorTheme.outerOffset,
         },
   );
 
@@ -276,9 +282,10 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
         FocusRingStates(placement: .outward) => Outline.alignmentOutside,
       },
       width: switch (states) {
+        // TODO: REPLACE WITH SPRINGS to avoid manual overshooting!!!!!!
         FocusRingStates(isVisible: false) => 0.0,
         FocusRingStates(isActive: true) => 8.0,
-        FocusRingStates(isVisible: true) => 3.0,
+        FocusRingStates(isVisible: true) => _stateFocusIndicatorTheme.thickness,
       },
       color: _colorTheme.secondary,
     ).merge(_outline?.resolve(states)),
@@ -301,6 +308,7 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
           colorTheme: _colorTheme,
           durationTheme: _durationTheme,
           shapeTheme: _shapeTheme,
+          stateFocusIndicatorTheme: _stateFocusIndicatorTheme,
           duration: duration ?? _duration,
           offset: offset ?? _offset,
           shape: shape ?? _shape,
@@ -317,6 +325,7 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
     colorTheme: _colorTheme,
     durationTheme: _durationTheme,
     shapeTheme: _shapeTheme,
+    stateFocusIndicatorTheme: _stateFocusIndicatorTheme,
     duration: duration ?? _duration,
     offset: offset?.orElseMaybe(_offset?.resolve) ?? _offset,
     shape: shape?.orElseMaybe(_shape?.resolve) ?? _shape,
@@ -348,6 +357,7 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
           _colorTheme == other._colorTheme &&
           _durationTheme == other._durationTheme &&
           _shapeTheme == other._shapeTheme &&
+          _stateFocusIndicatorTheme == other._stateFocusIndicatorTheme &&
           _duration == other._duration &&
           _offset == other._offset &&
           _shape == other._shape &&
@@ -359,6 +369,7 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
     _colorTheme,
     _durationTheme,
     _shapeTheme,
+    _stateFocusIndicatorTheme,
     _duration,
     _offset,
     _shape,
@@ -402,5 +413,6 @@ class FocusRingTheme extends InheritedTheme {
         colorTheme: ColorTheme.of(context),
         durationTheme: DurationTheme.of(context),
         shapeTheme: ShapeTheme.of(context),
+        stateFocusIndicatorTheme: StateFocusIndicatorTheme.of(context),
       );
 }

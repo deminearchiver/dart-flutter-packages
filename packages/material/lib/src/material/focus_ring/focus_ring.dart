@@ -6,18 +6,20 @@ import 'package:flutter/scheduler.dart';
 enum FocusRingPlacement { inward, outward }
 
 class _FocusRingStates implements FocusRingStates {
-  _FocusRingStates({
+  const _FocusRingStates({
     required this.placement,
     this.isVisible = false,
     this.isActive = false,
   }) : assert(isVisible || !isActive);
 
-  _FocusRingStates.hidden({required this.placement})
+  const _FocusRingStates.hidden({required this.placement})
     : isVisible = false,
       isActive = false;
 
-  _FocusRingStates.visible({required this.placement, this.isActive = false})
-    : isVisible = true;
+  const _FocusRingStates.visible({
+    required this.placement,
+    this.isActive = false,
+  }) : isVisible = true;
 
   @override
   final FocusRingPlacement placement;
@@ -285,12 +287,11 @@ class _FocusRingState extends State<FocusRing>
   //   OverlayChildLayoutInfo info,
   //   Widget child,
   // ) {
-  //   final transform = info.childPaintTransform;
-  //   final translateX = transform.storage[12];
-  //   final translateY = transform.storage[13];
+  //   final translateX = info.translationX;
+  //   final translateY = info.translationY;
   //   final translationOffset = Offset(translateX, translateY);
-  //   final scaleX = transform.storage[0];
-  //   final scaleY = transform.storage[5];
+  //   final scaleX = info.scaleX;
+  //   final scaleY = info.scaleY;
   //   final childSize = info.childSize;
   //   final scaledChildSize = Size(
   //     childSize.width * scaleX,
@@ -310,7 +311,7 @@ class _FocusRingState extends State<FocusRing>
   //           child: Align.center(
   //             child: SizedBox.fromSize(
   //               size: scaledFocusIndicatorSize,
-  //               child: child,
+  //               child: widget.layoutBuilder(context, info, child),
   //             ),
   //           ),
   //         ),
@@ -343,14 +344,10 @@ class _FocusRingState extends State<FocusRing>
       animation: _animationController,
       builder: (context, _) {
         final resolvedOffset = _offsetAnimation.value;
-        final padding = switch (widget.placement) {
-          .inward => resolvedOffset,
-          .outward => -resolvedOffset,
-        };
         final resolvedShape = _shapeAnimation.value ?? shape;
         final resolvedOutline = _outlineAnimation.value ?? outline;
         return Padding(
-          padding: .all(padding),
+          padding: .all(resolvedOffset),
           child: DecoratedBox(
             position: .foreground,
             decoration: ShapeDecoration(
