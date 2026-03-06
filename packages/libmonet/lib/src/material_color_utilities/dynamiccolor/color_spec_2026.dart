@@ -237,8 +237,24 @@ class ColorSpec2026 extends ColorSpec2025 {
       isBackground: true,
       background: highestSurface,
       contrastCurve: (scheme) => _getContrastCurve(4.5),
+      toneDeltaPair: (scheme) => scheme.platform == .phone
+          ? ToneDeltaPair(
+              roleA: primaryContainer,
+              roleB: primary,
+              delta: 5.0,
+              polarity: .relativeLighter,
+              constraint: .farther,
+            )
+          : null,
     );
     return super.primary.extendSpecVersion(.spec2026, color2026);
+  }
+
+  @override
+  DynamicColor get primaryDim {
+    // Remapped to primary in 2026 spec.
+    final color2026 = primary.copyWith(name: "primary_dim");
+    return super.primaryDim.extendSpecVersion(.spec2026, color2026);
   }
 
   @override
@@ -264,13 +280,6 @@ class ColorSpec2026 extends ColorSpec2025 {
           : MathUtils.clampDouble(30.0, 49.0, scheme.sourceColorHct.tone),
       isBackground: true,
       background: highestSurface,
-      toneDeltaPair: (scheme) => ToneDeltaPair(
-        roleA: primaryContainer,
-        roleB: primary,
-        delta: 5.0,
-        polarity: .relativeLighter,
-        constraint: .farther,
-      ),
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
@@ -330,7 +339,8 @@ class ColorSpec2026 extends ColorSpec2025 {
     final color2026 = DynamicColor(
       name: "on_primary_fixed",
       palette: (scheme) => scheme.primaryPalette,
-      background: (scheme) => primaryFixedDim,
+      background: (scheme) =>
+          primaryFixed.getTone(scheme) > 57.0 ? primaryFixedDim : primaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(7.0),
     );
     return super.onPrimaryFixed.extendSpecVersion(.spec2026, color2026);
@@ -341,7 +351,8 @@ class ColorSpec2026 extends ColorSpec2025 {
     final color2026 = DynamicColor(
       name: "on_primary_fixed_variant",
       palette: (scheme) => scheme.primaryPalette,
-      background: (scheme) => primaryFixedDim,
+      background: (scheme) =>
+          primaryFixed.getTone(scheme) > 57.0 ? primaryFixedDim : primaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(4.5),
     );
     return super.onPrimaryFixedVariant.extendSpecVersion(.spec2026, color2026);
@@ -358,8 +369,24 @@ class ColorSpec2026 extends ColorSpec2025 {
       isBackground: true,
       background: highestSurface,
       contrastCurve: (scheme) => _getContrastCurve(4.5),
+      toneDeltaPair: (scheme) => scheme.platform == .phone
+          ? ToneDeltaPair(
+              roleA: secondaryContainer,
+              roleB: secondary,
+              delta: 5.0,
+              polarity: .relativeLighter,
+              constraint: .farther,
+            )
+          : null,
     );
     return super.secondary.extendSpecVersion(.spec2026, color2026);
+  }
+
+  @override
+  DynamicColor get secondaryDim {
+    // Remapped to secondary in 2026 spec.
+    final color2026 = secondary.copyWith(name: "secondary_dim");
+    return super.secondaryDim.extendSpecVersion(.spec2026, color2026);
   }
 
   @override
@@ -383,13 +410,6 @@ class ColorSpec2026 extends ColorSpec2025 {
           : _tMaxC(scheme.secondaryPalette, 61.0, 90.0),
       isBackground: true,
       background: highestSurface,
-      toneDeltaPair: (scheme) => ToneDeltaPair(
-        roleA: secondaryContainer,
-        roleB: secondary,
-        delta: 5.0,
-        polarity: .relativeLighter,
-        constraint: .farther,
-      ),
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
@@ -449,7 +469,9 @@ class ColorSpec2026 extends ColorSpec2025 {
     final color2026 = DynamicColor(
       name: "on_secondary_fixed",
       palette: (scheme) => scheme.secondaryPalette,
-      background: (scheme) => secondaryFixedDim,
+      background: (scheme) => secondaryFixed.getTone(scheme) > 57.0
+          ? secondaryFixedDim
+          : secondaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(7.0),
     );
     return super.onSecondaryFixed.extendSpecVersion(.spec2026, color2026);
@@ -460,7 +482,9 @@ class ColorSpec2026 extends ColorSpec2025 {
     final color2026 = DynamicColor(
       name: "on_secondary_fixed_variant",
       palette: (scheme) => scheme.secondaryPalette,
-      background: (scheme) => secondaryFixedDim,
+      background: (scheme) => secondaryFixed.getTone(scheme) > 57.0
+          ? secondaryFixedDim
+          : secondaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(4.5),
     );
     return super.onSecondaryFixedVariant.extendSpecVersion(
@@ -480,8 +504,24 @@ class ColorSpec2026 extends ColorSpec2025 {
       isBackground: true,
       background: highestSurface,
       contrastCurve: (scheme) => _getContrastCurve(4.5),
+      toneDeltaPair: (scheme) => scheme.platform == .phone
+          ? ToneDeltaPair(
+              roleA: tertiaryContainer,
+              roleB: tertiary,
+              delta: 5.0,
+              polarity: .relativeLighter,
+              constraint: .farther,
+            )
+          : null,
     );
     return super.tertiary.extendSpecVersion(.spec2026, color2026);
+  }
+
+  @override
+  DynamicColor get tertiaryDim {
+    // Remapped to tertiary in 2026 spec.
+    final color2026 = tertiary.copyWith(name: "tertiary_dim");
+    return super.tertiaryDim.extendSpecVersion(.spec2026, color2026);
   }
 
   @override
@@ -510,13 +550,6 @@ class ColorSpec2026 extends ColorSpec2025 {
       },
       isBackground: true,
       background: highestSurface,
-      toneDeltaPair: (scheme) => ToneDeltaPair(
-        roleA: tertiaryContainer,
-        roleB: tertiary,
-        delta: 5.0,
-        polarity: .relativeLighter,
-        constraint: .farther,
-      ),
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
@@ -577,7 +610,9 @@ class ColorSpec2026 extends ColorSpec2025 {
     final color2026 = DynamicColor(
       name: "on_tertiary_fixed",
       palette: (scheme) => scheme.tertiaryPalette,
-      background: (scheme) => tertiaryFixedDim,
+      background: (scheme) => tertiaryFixed.getTone(scheme) > 57.0
+          ? tertiaryFixedDim
+          : tertiaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(7.0),
     );
     return super.onTertiaryFixed.extendSpecVersion(.spec2026, color2026);
@@ -588,7 +623,9 @@ class ColorSpec2026 extends ColorSpec2025 {
     final color2026 = DynamicColor(
       name: "on_tertiary_fixed_variant",
       palette: (scheme) => scheme.tertiaryPalette,
-      background: (scheme) => tertiaryFixedDim,
+      background: (scheme) => tertiaryFixed.getTone(scheme) > 57.0
+          ? tertiaryFixedDim
+          : tertiaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(4.5),
     );
     return super.onTertiaryFixedVariant.extendSpecVersion(.spec2026, color2026);
@@ -603,8 +640,24 @@ class ColorSpec2026 extends ColorSpec2025 {
       isBackground: true,
       background: highestSurface,
       contrastCurve: (scheme) => _getContrastCurve(4.5),
+      toneDeltaPair: (scheme) => scheme.platform == .phone
+          ? ToneDeltaPair(
+              roleA: errorContainer,
+              roleB: error,
+              delta: 5.0,
+              polarity: .relativeLighter,
+              constraint: .farther,
+            )
+          : null,
     );
     return super.error.extendSpecVersion(.spec2026, color2026);
+  }
+
+  @override
+  DynamicColor get errorDim {
+    // Remapped to error in 2026 spec.
+    final color2026 = error.copyWith(name: "error_dim");
+    return super.errorDim.extendSpecVersion(.spec2026, color2026);
   }
 
   @override
@@ -628,13 +681,6 @@ class ColorSpec2026 extends ColorSpec2025 {
           : _tMaxC(scheme.errorPalette),
       isBackground: true,
       background: highestSurface,
-      toneDeltaPair: (scheme) => ToneDeltaPair(
-        roleA: errorContainer,
-        roleB: error,
-        delta: 5.0,
-        polarity: .relativeLighter,
-        constraint: .farther,
-      ),
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
@@ -770,7 +816,10 @@ class ColorSpec2026 extends ColorSpec2025 {
     Platform platform,
     SpecVersion specVersion,
   ) => switch (variant) {
-    .cmf => .fromHueAndChroma(23.0, math.max(sourceColor.asHct.chroma, 50.0)),
+    .cmf => .fromHueAndChroma(
+      _getErrorHue(sourceColor.asHct.hue, _tertiaryPalette(sourceColor).hue),
+      math.max(sourceColor.asHct.chroma, 50.0),
+    ),
     _ => super.getErrorPalette(
       sourceColor,
       variant,
@@ -843,9 +892,44 @@ class ColorSpec2026 extends ColorSpec2025 {
         _ => ContrastCurve(defaultContrast, defaultContrast, 7.0, 21.0),
       };
 
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
+  static double _getErrorHue(double primaryHue, double tertiaryHue) {
+    if (primaryHue <= 8.0) {
+      return tertiaryHue <= 24.0
+          ? 28.0
+          : tertiaryHue <= 32.0
+          ? 16.0
+          : 20.0;
+    } else if (primaryHue <= 16.0) {
+      return tertiaryHue <= 24.0
+          ? 32.0
+          : tertiaryHue <= 32.0
+          ? 20.0
+          : 24.0;
+    } else if (primaryHue <= 20.0) {
+      return tertiaryHue <= 28.0
+          ? 32.0
+          : tertiaryHue <= 32.0
+          ? 24.0
+          : 28.0;
+    } else if (primaryHue <= 28.0) {
+      return tertiaryHue <= 24.0 ? 32.0 : 16.0;
+    } else if (primaryHue <= 32.0) {
+      return tertiaryHue <= 20.0
+          ? 24.0
+          : tertiaryHue <= 28.0
+          ? 16.0
+          : 20.0;
+    } else if (primaryHue <= 40.0) {
+      return tertiaryHue > 20.0 && tertiaryHue <= 28.0 ? 16.0 : 24.0;
+    } else if (primaryHue <= 152.0) {
+      return tertiaryHue > 24.0 && tertiaryHue <= 36.0 ? 20.0 : 32.0;
+    } else if (primaryHue <= 272.0) {
+      return tertiaryHue > 20.0 && tertiaryHue <= 28.0 ? 16.0 : 24.0;
+    } else {
+      return tertiaryHue > 12.0 && tertiaryHue <= 28.0 ? 32.0 : 16.0;
+    }
+  }
+
   static TonalPalette _tertiaryPalette(TonalPaletteSourceColor sourceColor) {
     final sourceColorHctList = sourceColor.asHctList;
     final sourceColorHct = sourceColor.asHct;
