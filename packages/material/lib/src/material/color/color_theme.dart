@@ -3,19 +3,169 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart' as flutter;
+import 'package:libmonet/src/material_color_utilities/hct/hct.dart';
 import 'package:material_color_utilities/material_color_utilities.dart'
     as mcu_legacy
     show QuantizerCelebi, QuantizerResult, Score;
 import 'package:material/material_color_utilities.dart'
-    show DynamicScheme, Variant, Platform, SpecVersion;
+    show DynamicScheme, Variant, Platform, SpecVersion, TonalPaletteSourceColor;
 
 import 'package:material/src/material/flutter.dart';
 
+typedef DynamicSchemeSourceColor = TonalPaletteSourceColor;
 typedef DynamicSchemeVariant = Variant;
 typedef DynamicSchemePlatform = Platform;
 typedef DynamicSchemeSpecVersion = SpecVersion;
 typedef ColorSchemeLegacy = ColorScheme;
+
+// TODO: keep in sync with libmonet
+extension type const _SingletonList<E extends Object?>._(List<E> _)
+    implements List<E> {
+  _SingletonList(E element)
+    : this._(UnmodifiableListView(List.filled(1, element, growable: false)));
+}
+
+abstract class ColorThemeSourceColor extends TonalPaletteSourceColor {
+  const ColorThemeSourceColor();
+
+  factory ColorThemeSourceColor.fromColor(Color color) = _ColorThemeColorSource;
+
+  factory ColorThemeSourceColor.fromColorList(List<Color> colorList) =
+      _ColorThemeColorListSource;
+
+  Color get asColor;
+
+  List<Color> get asColorList;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is ColorThemeSourceColor &&
+          asArgb == other.asArgb &&
+          asHct == other.asHct &&
+          asColor == other.asColor &&
+          TonalPaletteSourceColor.argbListEquality.equals(
+            asArgbList,
+            other.asArgbList,
+          ) &&
+          TonalPaletteSourceColor.hctListEquality.equals(
+            asHctList,
+            other.asHctList,
+          ) &&
+          ColorThemeSourceColor.colorListEquality.equals(
+            asColorList,
+            other.asColorList,
+          );
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    asArgb,
+    asHct,
+    TonalPaletteSourceColor.argbListEquality.hash(asArgbList),
+    TonalPaletteSourceColor.hctListEquality.hash(asHctList),
+    ColorThemeSourceColor.colorListEquality.hash(asColorList),
+  );
+
+  static const colorListEquality = ListEquality<Color>();
+}
+
+class _ColorThemeColorSource extends ColorThemeSourceColor {
+  _ColorThemeColorSource(this._color);
+
+  final Color _color;
+
+  @override
+  Color get asColor => _color;
+
+  @override
+  late final int asArgb = _color.toARGB32();
+
+  @override
+  late final Hct asHct = .fromInt(asArgb);
+
+  @override
+  late final List<int> asArgbList = _SingletonList(asArgb);
+
+  @override
+  late final List<Hct> asHctList = _SingletonList(asHct);
+
+  @override
+  List<Color> get asColorList => _SingletonList(asColor);
+
+  @override
+  String toString() => "ColorThemeSourceColor.fromColor($asColor)";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _ColorThemeColorSource &&
+          _color == other._color;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _color);
+}
+
+class _ColorThemeColorListSource extends ColorThemeSourceColor {
+  _ColorThemeColorListSource(List<Color> colorList) {
+    if (colorList.isEmpty) {
+      throw ArgumentError("Must have at least one source color.");
+    }
+    _colorList = .unmodifiable(_colorList);
+  }
+
+  late final List<Color> _colorList;
+
+  @override
+  List<Color> get asColorList => _colorList;
+
+  @override
+  late final int asArgb = asColor.toARGB32();
+
+  @override
+  late final Hct asHct = Hct.fromInt(asArgb);
+
+  @override
+  late final Color asColor = asColorList.first;
+
+  @override
+  late final List<int> asArgbList = .unmodifiable([
+    for (final color in asColorList) color.toARGB32(),
+  ]);
+
+  @override
+  late final List<Hct> asHctList = .unmodifiable([
+    for (final argb in asArgbList) Hct.fromInt(argb),
+  ]);
+
+  @override
+  String toString() {
+    final value = asColorList.length > 1
+        ? "[${asColorList.join(", ")}]"
+        : "$asColor";
+    return "ColorThemeSourceColor.fromColorList($value)";
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _ColorThemeColorListSource &&
+          ColorThemeSourceColor.colorListEquality.equals(
+            _colorList,
+            other._colorList,
+          );
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    ColorThemeSourceColor.colorListEquality.hash(_colorList),
+  );
+}
 
 extension DynamicSchemeVariantExtension on DynamicSchemeVariant {
   flutter.DynamicSchemeVariant? get asLegacy => switch (this) {
@@ -2300,7 +2450,7 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
   );
 
   factory ColorThemeData.fromSeed({
-    Color sourceColor = const Color(0xFF6750A4),
+    DynamicSchemeSourceColor? sourceColor,
     DynamicSchemeVariant variant = .tonalSpot,
     required Brightness brightness,
     DynamicSchemePlatform platform = DynamicScheme.defaultPlatform,
@@ -2314,13 +2464,9 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     // Color? errorPaletteKeyColor,
   }) => .fromDynamicScheme(
     .withDefaults(
-      sourceColor: .fromArgb(sourceColor.toARGB32()),
+      sourceColor: sourceColor ?? .fromArgb(0xFF6750A4),
       variant: variant,
-      // Important: exhaustive check in case new enum members get added
-      isDark: switch (brightness) {
-        .light => false,
-        .dark => true,
-      },
+      isDark: brightness == .dark,
       platform: platform,
       contrastLevel: contrastLevel,
       specVersion: specVersion,
@@ -2332,6 +2478,15 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
       // errorPaletteKeyColor: errorPaletteKeyColor?._toHct(),
     ),
   );
+
+  factory ColorThemeData.fromPalette({
+    required BaselinePaletteThemeData palette,
+    required Brightness brightness,
+    // TODO: add contrast level
+  }) => switch (brightness) {
+    .light => _ColorThemeDataFromPaletteLightDefaultContrast(palette),
+    .dark => _ColorThemeDataFromPaletteLightDefaultContrast(palette),
+  };
 
   @override
   Brightness get brightness;
@@ -2986,20 +3141,6 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     ),
   );
 
-  static final _baselineLight2021 = ColorThemeData.fromSeed(
-    brightness: .light,
-    variant: .tonalSpot,
-    specVersion: .spec2021,
-    platform: .phone,
-  );
-
-  static final _baselineDark2021 = ColorThemeData.fromSeed(
-    brightness: .dark,
-    variant: .tonalSpot,
-    specVersion: .spec2021,
-    platform: .phone,
-  );
-
   static Future<ColorThemeData> fromImage({
     required ImageProvider image,
     DynamicSchemeVariant variant = .tonalSpot,
@@ -3008,7 +3149,7 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     double contrastLevel = 0.0,
     DynamicSchemeSpecVersion? specVersion = DynamicScheme.defaultSpecVersion,
   }) async => .fromSeed(
-    sourceColor: await _contentBasedSourceColor(image),
+    sourceColor: .fromArgb(await _contentBasedSourceColor(image)),
     variant: variant,
     brightness: brightness,
     platform: platform,
@@ -3260,6 +3401,485 @@ class _ColorThemeData extends ColorThemeData {
 
   @override
   final Color onErrorContainer;
+}
+
+sealed class _ColorThemeDataFromPalette extends ColorThemeData {
+  const _ColorThemeDataFromPalette(BaselinePaletteThemeData palette)
+    : _palette = palette;
+
+  final BaselinePaletteThemeData _palette;
+
+  // TODO: remove getters which are not overriden
+
+  @override
+  Brightness get brightness;
+
+  @override
+  Color get primaryPaletteKeyColor => primary;
+
+  @override
+  Color get secondaryPaletteKeyColor => secondary;
+
+  @override
+  Color get tertiaryPaletteKeyColor => tertiary;
+
+  @override
+  Color get neutralPaletteKeyColor => surface;
+
+  @override
+  Color get neutralVariantPaletteKeyColor => surfaceVariant;
+
+  @override
+  Color get errorPaletteKeyColor => error;
+
+  @override
+  Color get background => surface;
+
+  @override
+  Color get onBackground => onSurface;
+
+  @override
+  Color get surface;
+
+  @override
+  Color get surfaceDim;
+
+  @override
+  Color get surfaceBright;
+
+  @override
+  Color get surfaceContainerLowest;
+
+  @override
+  Color get surfaceContainerLow;
+
+  @override
+  Color get surfaceContainer;
+
+  @override
+  Color get surfaceContainerHigh;
+
+  @override
+  Color get surfaceContainerHighest;
+
+  @override
+  Color get onSurface;
+
+  @override
+  Color get surfaceVariant;
+
+  @override
+  Color get onSurfaceVariant;
+
+  @override
+  Color get outline;
+
+  @override
+  Color get outlineVariant;
+
+  @override
+  Color get inverseSurface;
+
+  @override
+  Color get inverseOnSurface;
+
+  @override
+  Color get shadow => _palette.neutral0;
+
+  @override
+  Color get scrim => _palette.neutral0;
+
+  @override
+  Color get surfaceTint => primary;
+
+  @override
+  Color get primary;
+
+  @override
+  Color get primaryDim => primary;
+
+  @override
+  Color get onPrimary;
+
+  @override
+  Color get primaryContainer;
+
+  @override
+  Color get onPrimaryContainer;
+
+  @override
+  Color get primaryFixed;
+
+  @override
+  Color get primaryFixedDim;
+
+  @override
+  Color get onPrimaryFixed;
+
+  @override
+  Color get onPrimaryFixedVariant;
+
+  @override
+  Color get inversePrimary;
+
+  @override
+  Color get secondary;
+
+  @override
+  Color get secondaryDim => secondary;
+
+  @override
+  Color get onSecondary;
+
+  @override
+  Color get secondaryContainer;
+
+  @override
+  Color get onSecondaryContainer;
+
+  @override
+  Color get secondaryFixed;
+
+  @override
+  Color get secondaryFixedDim;
+
+  @override
+  Color get onSecondaryFixed;
+
+  @override
+  Color get onSecondaryFixedVariant;
+
+  @override
+  Color get tertiary;
+
+  @override
+  Color get tertiaryDim => tertiary;
+
+  @override
+  Color get onTertiary;
+
+  @override
+  Color get tertiaryContainer;
+
+  @override
+  Color get onTertiaryContainer;
+
+  @override
+  Color get tertiaryFixed;
+
+  @override
+  Color get tertiaryFixedDim;
+
+  @override
+  Color get onTertiaryFixed;
+
+  @override
+  Color get onTertiaryFixedVariant;
+
+  @override
+  Color get error;
+
+  @override
+  Color get errorDim => error;
+
+  @override
+  Color get onError;
+
+  @override
+  Color get errorContainer;
+
+  @override
+  Color get onErrorContainer;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _ColorThemeDataFromPalette &&
+          _palette == other._palette;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _palette);
+}
+
+class _ColorThemeDataFromPaletteLightDefaultContrast
+    extends _ColorThemeDataFromPalette {
+  const _ColorThemeDataFromPaletteLightDefaultContrast(super.palette);
+
+  @override
+  Brightness get brightness => .light;
+
+  @override
+  Color get primary => _palette.primary40;
+
+  @override
+  Color get onPrimary => _palette.primary100;
+
+  @override
+  Color get primaryContainer => _palette.primary90;
+
+  @override
+  Color get onPrimaryContainer => _palette.primary30;
+
+  @override
+  Color get secondary => _palette.secondary40;
+
+  @override
+  Color get onSecondary => _palette.secondary100;
+
+  @override
+  Color get secondaryContainer => _palette.secondary90;
+
+  @override
+  Color get onSecondaryContainer => _palette.secondary30;
+
+  @override
+  Color get tertiary => _palette.tertiary40;
+
+  @override
+  Color get onTertiary => _palette.tertiary100;
+
+  @override
+  Color get tertiaryContainer => _palette.tertiary90;
+
+  @override
+  Color get onTertiaryContainer => _palette.tertiary30;
+
+  @override
+  Color get error => _palette.error40;
+
+  @override
+  Color get onError => _palette.error100;
+
+  @override
+  Color get errorContainer => _palette.error90;
+
+  @override
+  Color get onErrorContainer => _palette.error30;
+
+  @override
+  Color get surface => _palette.neutral98;
+
+  @override
+  Color get onSurface => _palette.neutral10;
+
+  @override
+  Color get surfaceVariant => _palette.neutralVariant90;
+
+  @override
+  Color get onSurfaceVariant => _palette.neutralVariant30;
+
+  @override
+  Color get surfaceContainerHighest => _palette.neutral90;
+
+  @override
+  Color get surfaceContainerHigh => _palette.neutral92;
+
+  @override
+  Color get surfaceContainer => _palette.neutral94;
+
+  @override
+  Color get surfaceContainerLow => _palette.neutral96;
+
+  @override
+  Color get surfaceContainerLowest => _palette.neutral100;
+
+  @override
+  Color get inverseSurface => _palette.neutral20;
+
+  @override
+  Color get inverseOnSurface => _palette.neutral95;
+
+  @override
+  Color get outline => _palette.neutralVariant50;
+
+  @override
+  Color get outlineVariant => _palette.neutralVariant80;
+
+  @override
+  Color get primaryFixed => _palette.primary90;
+
+  @override
+  Color get onPrimaryFixed => _palette.primary10;
+
+  @override
+  Color get primaryFixedDim => _palette.primary80;
+
+  @override
+  Color get onPrimaryFixedVariant => _palette.primary30;
+
+  @override
+  Color get inversePrimary => _palette.primary80;
+
+  @override
+  Color get secondaryFixed => _palette.secondary90;
+
+  @override
+  Color get onSecondaryFixed => _palette.secondary10;
+
+  @override
+  Color get secondaryFixedDim => _palette.secondary80;
+
+  @override
+  Color get onSecondaryFixedVariant => _palette.secondary30;
+
+  @override
+  Color get tertiaryFixed => _palette.tertiary90;
+
+  @override
+  Color get onTertiaryFixed => _palette.tertiary10;
+
+  @override
+  Color get tertiaryFixedDim => _palette.tertiary80;
+
+  @override
+  Color get onTertiaryFixedVariant => _palette.tertiary30;
+
+  @override
+  Color get surfaceBright => _palette.neutral98;
+
+  @override
+  Color get surfaceDim => _palette.neutral87;
+}
+
+class _ColorThemeDataFromPaletteDarkDefaultContrast
+    extends _ColorThemeDataFromPalette {
+  const _ColorThemeDataFromPaletteDarkDefaultContrast(super.palette);
+
+  @override
+  Brightness get brightness => .dark;
+
+  @override
+  Color get primary => _palette.primary80;
+
+  @override
+  Color get onPrimary => _palette.primary20;
+
+  @override
+  Color get primaryContainer => _palette.primary30;
+
+  @override
+  Color get onPrimaryContainer => _palette.primary90;
+
+  @override
+  Color get secondary => _palette.secondary80;
+
+  @override
+  Color get onSecondary => _palette.secondary20;
+
+  @override
+  Color get secondaryContainer => _palette.secondary30;
+
+  @override
+  Color get onSecondaryContainer => _palette.secondary90;
+
+  @override
+  Color get tertiary => _palette.tertiary80;
+
+  @override
+  Color get onTertiary => _palette.tertiary20;
+
+  @override
+  Color get tertiaryContainer => _palette.tertiary30;
+
+  @override
+  Color get onTertiaryContainer => _palette.tertiary90;
+
+  @override
+  Color get error => _palette.error80;
+
+  @override
+  Color get onError => _palette.error20;
+
+  @override
+  Color get errorContainer => _palette.error30;
+
+  @override
+  Color get onErrorContainer => _palette.error90;
+
+  @override
+  Color get surface => _palette.neutral6;
+
+  @override
+  Color get onSurface => _palette.neutral90;
+
+  @override
+  Color get surfaceVariant => _palette.neutralVariant30;
+
+  @override
+  Color get onSurfaceVariant => _palette.neutralVariant80;
+
+  @override
+  Color get surfaceContainerHighest => _palette.neutral22;
+
+  @override
+  Color get surfaceContainerHigh => _palette.neutral17;
+
+  @override
+  Color get surfaceContainer => _palette.neutral12;
+
+  @override
+  Color get surfaceContainerLow => _palette.neutral10;
+
+  @override
+  Color get surfaceContainerLowest => _palette.neutral4;
+
+  @override
+  Color get inverseSurface => _palette.neutral90;
+
+  @override
+  Color get inverseOnSurface => _palette.neutral20;
+
+  @override
+  Color get outline => _palette.neutralVariant60;
+
+  @override
+  Color get outlineVariant => _palette.neutralVariant30;
+
+  @override
+  Color get primaryFixed => _palette.primary90;
+
+  @override
+  Color get onPrimaryFixed => _palette.primary10;
+
+  @override
+  Color get primaryFixedDim => _palette.primary80;
+
+  @override
+  Color get onPrimaryFixedVariant => _palette.primary30;
+
+  @override
+  Color get inversePrimary => _palette.primary40;
+
+  @override
+  Color get secondaryFixed => _palette.secondary90;
+
+  @override
+  Color get onSecondaryFixed => _palette.secondary10;
+
+  @override
+  Color get secondaryFixedDim => _palette.secondary80;
+
+  @override
+  Color get onSecondaryFixedVariant => _palette.secondary30;
+
+  @override
+  Color get tertiaryFixed => _palette.tertiary90;
+
+  @override
+  Color get onTertiaryFixed => _palette.tertiary10;
+
+  @override
+  Color get tertiaryFixedDim => _palette.tertiary80;
+
+  @override
+  Color get onTertiaryFixedVariant => _palette.tertiary30;
+
+  @override
+  Color get surfaceBright => _palette.neutral24;
+
+  @override
+  Color get surfaceDim => _palette.neutral6;
 }
 
 class _LegacyFromColorThemeData
@@ -4169,7 +4789,7 @@ class _LegacyFromColorThemeData
   );
 }
 
-Future<Color> _contentBasedSourceColor(ImageProvider image) async {
+Future<int> _contentBasedSourceColor(ImageProvider image) async {
   // Extract dominant colors from image.
   final quantizerResult = await _extractColorsFromImageProvider(image);
   final colorToCount = quantizerResult.colorToCount.map(
@@ -4178,7 +4798,7 @@ Future<Color> _contentBasedSourceColor(ImageProvider image) async {
 
   // Score colors for color scheme suitability.
   final scoredResults = mcu_legacy.Score.score(colorToCount, desired: 1);
-  return Color(scoredResults.first);
+  return scoredResults.first;
 }
 
 /// Extracts bytes from an [ImageProvider] and returns a [mcu_legacy.QuantizerResult]
@@ -4307,16 +4927,13 @@ class ColorTheme extends InheritedTheme {
   static ColorThemeData? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<ColorTheme>()?.data;
 
-  static ColorThemeData of(BuildContext context) {
-    final result = maybeOf(context);
-    if (result != null) return result;
-    final brightness =
-        Theme.maybeBrightnessOf(context) ??
-        MediaQuery.maybePlatformBrightnessOf(context) ??
-        .light;
-    return switch (brightness) {
-      Brightness.light => ColorThemeData._baselineLight2021,
-      Brightness.dark => ColorThemeData._baselineDark2021,
-    };
-  }
+  static ColorThemeData of(BuildContext context) =>
+      maybeOf(context) ??
+      .fromPalette(
+        palette: BaselinePaletteTheme.of(context),
+        brightness:
+            Theme.maybeBrightnessOf(context) ??
+            MediaQuery.maybePlatformBrightnessOf(context) ??
+            .light,
+      );
 }
