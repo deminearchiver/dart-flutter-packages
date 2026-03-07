@@ -4,6 +4,7 @@ version: 2.0.0-dev.6
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/libmonet
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
+topics: [color, hct, material, android, utility]
 resolution: workspace
 
 environment:
