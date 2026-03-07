@@ -478,7 +478,7 @@ abstract class BaselinePaletteThemeDataPartial with Diagnosticable {
           error98 != null ||
           error99 != null ||
           error100 != null
-      ? BaselinePaletteThemeDataPartial.from(
+      ? .from(
           primary0: primary0 ?? this.primary0,
           primary10: primary10 ?? this.primary10,
           primary20: primary20 ?? this.primary20,
@@ -1975,7 +1975,7 @@ abstract class BaselinePaletteThemeData
           error98 != null ||
           error99 != null ||
           error100 != null
-      ? BaselinePaletteThemeData.from(
+      ? .from(
           primary0: primary0 ?? this.primary0,
           primary10: primary10 ?? this.primary10,
           primary20: primary20 ?? this.primary20,
@@ -3692,7 +3692,7 @@ abstract class StaticPaletteThemeDataPartial with Diagnosticable {
           pink95 != null ||
           pink98 != null ||
           pink100 != null
-      ? StaticPaletteThemeDataPartial.from(
+      ? .from(
           white: white ?? this.white,
           black: black ?? this.black,
           blue0: blue0 ?? this.blue0,
@@ -5926,7 +5926,7 @@ abstract class StaticPaletteThemeData extends StaticPaletteThemeDataPartial {
           pink95 != null ||
           pink98 != null ||
           pink100 != null
-      ? StaticPaletteThemeData.from(
+      ? .from(
           white: white ?? this.white,
           black: black ?? this.black,
           blue0: blue0 ?? this.blue0,
@@ -7464,11 +7464,8 @@ class BaselinePaletteTheme extends InheritedTheme {
   static BaselinePaletteThemeData? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<BaselinePaletteTheme>()?.data;
 
-  static BaselinePaletteThemeData of(BuildContext context) {
-    final result = maybeOf(context);
-    if (result != null) return result;
-    return const BaselinePaletteThemeData.fallback();
-  }
+  static BaselinePaletteThemeData of(BuildContext context) =>
+      maybeOf(context) ?? const .fallback();
 }
 
 class StaticPaletteTheme extends InheritedTheme {
@@ -7509,9 +7506,6 @@ class StaticPaletteTheme extends InheritedTheme {
   static StaticPaletteThemeData? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<StaticPaletteTheme>()?.data;
 
-  static StaticPaletteThemeData of(BuildContext context) {
-    final result = maybeOf(context);
-    if (result != null) return result;
-    return const StaticPaletteThemeData.fallback();
-  }
+  static StaticPaletteThemeData of(BuildContext context) =>
+      maybeOf(context) ?? const .fallback();
 }
