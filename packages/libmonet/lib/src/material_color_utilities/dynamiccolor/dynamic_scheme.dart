@@ -587,82 +587,97 @@ class DynamicScheme {
   }
 }
 
-sealed class TonalPaletteSourceColor {
+abstract class TonalPaletteSourceColor {
   const TonalPaletteSourceColor();
 
+  factory TonalPaletteSourceColor.fromArgb(int argb) = _TonalPaletteArgbSource;
+
+  factory TonalPaletteSourceColor.fromHct(Hct hct) = _TonalPaletteHctSource;
+
+  factory TonalPaletteSourceColor.fromArgbList(List<int> argbList) =
+      _TonalPaletteArgbListSource;
+
   factory TonalPaletteSourceColor.fromHctList(List<Hct> hctList) =
-      _TonalPaletteSourceColorFromHctList;
+      _TonalPaletteHctListSource;
 
-  factory TonalPaletteSourceColor.fromHct(Hct hct) =
-      _TonalPaletteSourceColorFromHct;
-
-  factory TonalPaletteSourceColor.fromArgb(int argb) =
-      _TonalPaletteSourceColorFromArgb;
-
-  /// The source color in HCT format.
-  List<Hct> get asHctList;
+  /// The source color in ARGB format.
+  int get asArgb;
 
   /// The source color in HCT format.
   Hct get asHct;
 
   /// The source color in ARGB format.
-  int get asArgb;
+  List<int> get asArgbList;
+
+  /// The source color in HCT format.
+  List<Hct> get asHctList;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TonalPaletteSourceColor &&
+      runtimeType == other.runtimeType &&
+          other is TonalPaletteSourceColor &&
           asArgb == other.asArgb &&
           asHct == other.asHct &&
-          _hctListEquality.equals(asHctList, other.asHctList);
+          TonalPaletteSourceColor.argbListEquality.equals(
+            asArgbList,
+            other.asArgbList,
+          ) &&
+          TonalPaletteSourceColor.hctListEquality.equals(
+            asHctList,
+            other.asHctList,
+          );
 
   @override
-  int get hashCode =>
-      Object.hash(asArgb, asHct, _hctListEquality.hash(asHctList));
+  int get hashCode => Object.hash(
+    runtimeType,
+    asArgb,
+    asHct,
+    TonalPaletteSourceColor.argbListEquality.hash(asArgbList),
+    TonalPaletteSourceColor.hctListEquality.hash(asHctList),
+  );
 
-  static const _hctListEquality = ListEquality<Hct>();
+  static const argbListEquality = ListEquality<int>();
+
+  static const hctListEquality = ListEquality<Hct>();
 }
 
-class _TonalPaletteSourceColorFromHctList extends TonalPaletteSourceColor {
-  _TonalPaletteSourceColorFromHctList(List<Hct> hctList) {
-    if (hctList.isEmpty) {
-      throw ArgumentError("Must have at least one source color.");
-    }
-    _hctList = UnmodifiableListView(hctList);
-  }
+class _TonalPaletteArgbSource extends TonalPaletteSourceColor {
+  _TonalPaletteArgbSource(this._argb);
 
-  late final List<Hct> _hctList;
-
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
-  @override
-  List<Hct> get asHctList => _hctList;
+  final int _argb;
 
   @override
-  late final Hct asHct = asHctList.first;
+  int get asArgb => _argb;
 
   @override
-  late final int asArgb = asHct.toInt();
+  late final Hct asHct = .fromInt(asArgb);
 
   @override
-  String toString() {
-    final value = asHctList.length > 1 ? "[${asHctList.join(", ")}]" : "$asHct";
-    return "TonalPaletteSourceColor($value)";
-  }
-}
-
-class _TonalPaletteSourceColorFromHct extends TonalPaletteSourceColor {
-  _TonalPaletteSourceColorFromHct(this._hct);
-
-  final Hct _hct;
+  late final List<int> asArgbList = _SingletonList(asArgb);
 
   @override
   late final List<Hct> asHctList = _SingletonList(asHct);
 
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
+  @override
+  String toString() => "TonalPaletteSourceColor.fromArgb($asArgb)";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _TonalPaletteArgbSource &&
+          _argb == other._argb;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _argb);
+}
+
+class _TonalPaletteHctSource extends TonalPaletteSourceColor {
+  _TonalPaletteHctSource(this._hct);
+
+  final Hct _hct;
+
   @override
   Hct get asHct => _hct;
 
@@ -670,28 +685,119 @@ class _TonalPaletteSourceColorFromHct extends TonalPaletteSourceColor {
   late final int asArgb = asHct.toInt();
 
   @override
-  String toString() => "TonalPaletteSourceColor($asHct)";
-}
-
-class _TonalPaletteSourceColorFromArgb extends TonalPaletteSourceColor {
-  _TonalPaletteSourceColorFromArgb(this._argb);
-
-  final int _argb;
+  late final List<int> asArgbList = _SingletonList(asArgb);
 
   @override
   late final List<Hct> asHctList = _SingletonList(asHct);
 
   @override
-  late final Hct asHct = .fromInt(asArgb);
-
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
-  @override
-  int get asArgb => _argb;
+  String toString() => "TonalPaletteSourceColor.fromHct($asHct)";
 
   @override
-  String toString() => "TonalPaletteSourceColor($asHct)";
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _TonalPaletteHctSource &&
+          _hct == other._hct;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _hct);
+}
+
+class _TonalPaletteArgbListSource extends TonalPaletteSourceColor {
+  _TonalPaletteArgbListSource(List<int> argbList) {
+    if (argbList.isEmpty) {
+      throw ArgumentError("Must have at least one source color.");
+    }
+    _argbList = .unmodifiable(argbList);
+  }
+
+  late final List<int> _argbList;
+
+  @override
+  List<int> get asArgbList => _argbList;
+
+  @override
+  late final int asArgb = asHct.toInt();
+
+  @override
+  late final Hct asHct = asHctList.first;
+
+  @override
+  late final List<Hct> asHctList = .unmodifiable([
+    for (final argb in asArgbList) Hct.fromInt(argb),
+  ]);
+
+  @override
+  String toString() {
+    final value = asArgbList.length > 1
+        ? "[${asArgbList.join(", ")}]"
+        : "$asArgb";
+    return "TonalPaletteSourceColor.fromArgbList($value)";
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _TonalPaletteArgbListSource &&
+          TonalPaletteSourceColor.argbListEquality.equals(
+            _argbList,
+            other._argbList,
+          );
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    TonalPaletteSourceColor.argbListEquality.hash(_argbList),
+  );
+}
+
+class _TonalPaletteHctListSource extends TonalPaletteSourceColor {
+  _TonalPaletteHctListSource(List<Hct> hctList) {
+    if (hctList.isEmpty) {
+      throw ArgumentError("Must have at least one source color.");
+    }
+    _hctList = .unmodifiable(hctList);
+  }
+
+  late final List<Hct> _hctList;
+
+  @override
+  List<Hct> get asHctList => _hctList;
+
+  @override
+  late final int asArgb = asHct.toInt();
+
+  @override
+  late final Hct asHct = asHctList.first;
+
+  @override
+  late final List<int> asArgbList = .unmodifiable([
+    for (final hct in asHctList) hct.toInt(),
+  ]);
+
+  @override
+  String toString() {
+    final value = asHctList.length > 1 ? "[${asHctList.join(", ")}]" : "$asHct";
+    return "TonalPaletteSourceColor.fromHctList($value)";
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _TonalPaletteHctListSource &&
+          TonalPaletteSourceColor.hctListEquality.equals(
+            _hctList,
+            other._hctList,
+          );
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    TonalPaletteSourceColor.hctListEquality.hash(_hctList),
+  );
 }
 
 // TODO: consider replacing with a custom list type.
