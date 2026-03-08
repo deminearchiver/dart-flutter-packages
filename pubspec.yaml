@@ -36,5 +36,5 @@ dev_dependencies:
     sdk: flutter
   deminearchiver_lints: ^2.1.2
 
-dependency_overrides:
-  material_color_utilities: ^0.13.0
+# dependency_overrides:
+#   material_color_utilities: ^0.13.0
