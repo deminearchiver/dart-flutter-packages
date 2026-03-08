@@ -4,6 +4,8 @@ import 'cam16.dart';
 import 'hct_solver.dart';
 import 'viewing_conditions.dart';
 
+// TODO: mutable properties break the immutability pattern
+
 /// HCT, hue, chroma, and tone. A color system that provides a perceptually
 /// accurate color measurement system that can also accurately render
 /// what colors will appear as in different lighting environments.

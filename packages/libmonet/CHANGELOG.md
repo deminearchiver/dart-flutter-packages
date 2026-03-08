@@ -11,6 +11,7 @@
   - Renamed `DynamicScheme.fromPalettesOrKeyColors` to `DynamicScheme.withDefaults`.
   - All `DynamicScheme.withDefaults` and `Scheme*` constructor parameters are now optional (`isDark` defaults to `false` as per `md.sys.color` token defaults).
 - Added `year` property to `SpecVersion` and implemented `Comparable<SpecVersion>` in order to make spec versions comparable.
+- Implemented `Cam16.getInt` (ported from Android source code).
 - Color generation algorithms from Android:
   - Renamed `android_dynamic_colors` library to `android_system_ui`.
   - Added `SchemeClock` and `SchemeClockVibrant` to the `android_system_ui` library.
