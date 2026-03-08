@@ -13,6 +13,7 @@ import 'dynamic_scheme.dart';
 import 'tone_delta_pair.dart';
 import 'variant.dart';
 
+/// [ColorSpec] implementation for the 2026 spec.
 class ColorSpec2026 extends ColorSpec2025 {
   const ColorSpec2026();
 

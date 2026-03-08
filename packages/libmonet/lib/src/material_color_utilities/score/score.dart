@@ -8,12 +8,12 @@ import '../utils/math_utils.dart';
 /// colors aren't muddied, while curating the high cluster count
 /// to a much smaller number of appropriate choices.
 abstract final class Score {
-  static const double _targetChroma = 48.0; // A1 Chroma
-  static const double _weightProportion = 0.7;
-  static const double _weightChromaAbove = 0.3;
-  static const double _weightChromaBelow = 0.1;
-  static const double _cutoffChroma = 5.0;
-  static const double _cutoffExcitedProportion = 0.01;
+  static const _targetChroma = 48.0; // A1 Chroma
+  static const _weightProportion = 0.7;
+  static const _weightChromaAbove = 0.3;
+  static const _weightChromaBelow = 0.1;
+  static const _cutoffChroma = 5.0;
+  static const _cutoffExcitedProportion = 0.01;
 
   static List<int> score(
     Map<int, int> colorsToPopulation, [
@@ -110,20 +110,10 @@ abstract final class Score {
   }
 }
 
-final class _ScoredHct {
-  const _ScoredHct(this.hct, this.score);
+extension type const _ScoredHct._(({Hct hct, double score}) _) {
+  const _ScoredHct(Hct hct, double score) : this._((hct: hct, score: score));
 
-  final Hct hct;
-  final double score;
+  Hct get hct => _.hct;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _ScoredHct &&
-          hct == other.hct &&
-          score == other.score;
-
-  @override
-  int get hashCode => Object.hash(hct, score);
+  double get score => _.score;
 }

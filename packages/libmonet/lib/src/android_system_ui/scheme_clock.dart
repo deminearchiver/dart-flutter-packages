@@ -4,26 +4,26 @@ import 'package:libmonet/material_color_utilities.dart';
 
 class SchemeClock extends DynamicScheme {
   SchemeClock({
-    required Hct sourceColorHct,
+    required TonalPaletteSourceColor sourceColor,
     required super.isDark,
     super.contrastLevel,
   }) : super.withDefaults(
-         sourceColor: .fromHct(sourceColorHct),
+         sourceColor: sourceColor,
          variant: .monochrome,
          primaryPalette: .fromHueAndChroma(
-           sourceColorHct.hue,
-           math.max(sourceColorHct.chroma, 20.0),
+           sourceColor.asHct.hue,
+           math.max(sourceColor.asHct.chroma, 20.0),
          ),
          secondaryPalette: .fromHueAndChroma(
-           sourceColorHct.hue + 10.0,
-           MathUtils.clampDouble(17.0, 40.0, sourceColorHct.chroma * 0.85),
+           sourceColor.asHct.hue + 10.0,
+           MathUtils.clampDouble(17.0, 40.0, sourceColor.asHct.chroma * 0.85),
          ),
          tertiaryPalette: .fromHueAndChroma(
-           sourceColorHct.hue + 20.0,
-           math.max(sourceColorHct.chroma + 20.0, 50.0),
+           sourceColor.asHct.hue + 20.0,
+           math.max(sourceColor.asHct.chroma + 20.0, 50.0),
          ),
          //not used
-         neutralPalette: .fromHueAndChroma(sourceColorHct.hue, 0.0),
-         neutralVariantPalette: .fromHueAndChroma(sourceColorHct.hue, 0.0),
+         neutralPalette: .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
+         neutralVariantPalette: .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
        );
 }

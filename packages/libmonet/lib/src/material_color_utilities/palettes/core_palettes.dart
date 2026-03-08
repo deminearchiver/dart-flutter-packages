@@ -4,8 +4,8 @@ import 'tonal_palette.dart';
 
 /// Comprises foundational palettes to build a color scheme.
 ///
-/// Generated from a source color, these palettes will then be part of a [DynamicScheme] together
-/// with appearance preferences.
+/// Generated from a source color, these palettes will then be part
+/// of a [DynamicScheme] together with appearance preferences.
 final class CorePalettes {
   const CorePalettes({
     required this.primary,
@@ -16,9 +16,13 @@ final class CorePalettes {
   });
 
   final TonalPalette primary;
+
   final TonalPalette secondary;
+
   final TonalPalette tertiary;
+
   final TonalPalette neutral;
+
   final TonalPalette neutralVariant;
 
   @override

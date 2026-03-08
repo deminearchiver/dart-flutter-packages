@@ -204,8 +204,12 @@ final class TemperatureCache {
   }
 
   Hct _getColdest() => _getHctsByTemp().first;
+
   Hct _getWarmest() => _getHctsByTemp().last;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static bool _isBetween(double angle, double a, double b) =>
       a < b ? a <= angle && angle <= b : a <= angle || angle <= b;
 }

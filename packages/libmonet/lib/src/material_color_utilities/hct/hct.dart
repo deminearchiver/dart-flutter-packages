@@ -4,14 +4,19 @@ import 'cam16.dart';
 import 'hct_solver.dart';
 import 'viewing_conditions.dart';
 
+/// HCT, hue, chroma, and tone. A color system that provides a perceptually
+/// accurate color measurement system that can also accurately render
+/// what colors will appear as in different lighting environments.
 final class Hct {
   Hct._(int argb) {
     _setInternalState(argb);
   }
 
+  /// Create an HCT color from hue, chroma, and tone.
   factory Hct.from(double hue, double chroma, double tone) =>
       ._(HctSolver.solveToInt(hue, chroma, tone));
 
+  /// Create an HCT color from a color.
   factory Hct.fromInt(int argb) => ._(argb);
 
   late int _argb;
@@ -20,16 +25,19 @@ final class Hct {
   late double _tone;
 
   double get hue => _hue;
+
   set hue(double newHue) {
     _setInternalState(HctSolver.solveToInt(newHue, chroma, tone));
   }
 
   double get chroma => _chroma;
+
   set chroma(double newChroma) {
     _setInternalState(HctSolver.solveToInt(hue, newChroma, tone));
   }
 
   double get tone => _tone;
+
   set tone(double newTone) {
     _setInternalState(HctSolver.solveToInt(hue, chroma, newTone));
   }
@@ -46,7 +54,7 @@ final class Hct {
       viewedInVc[0],
       viewedInVc[1],
       viewedInVc[2],
-      ViewingConditions.sRgb,
+      .srgb,
     );
 
     // 3. Create HCT from:
@@ -88,9 +96,18 @@ final class Hct {
   @override
   int get hashCode => Object.hash(_argb, _hue, _chroma, _tone);
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static bool isBlue(double hue) => hue >= 250.0 && hue < 270.0;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static bool isYellow(double hue) => hue >= 105.0 && hue < 125.0;
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static bool isCyan(double hue) => hue >= 170.0 && hue < 207.0;
 }

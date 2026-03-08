@@ -4,15 +4,13 @@ import 'quantizer_map.dart';
 import 'quantizer_result.dart';
 import 'quantizer.dart';
 
-const int _indexBits = 5;
-const int _indexCount = (1 << _indexBits) + 1;
-const int _totalSize = _indexCount * _indexCount * _indexCount;
-
-// const int _indexBits = 5;
-// const int _indexCount = 33; // ((1 << _indexBits) + 1)
-// const int _totalSize = 35937; // _indexCount * _indexCount * _indexCount
+const _indexBits = 5;
+const _indexCount = (1 << _indexBits) + 1; // 33
+const _totalSize = _indexCount * _indexCount * _indexCount; // 35937
 
 final class QuantizerWu implements Quantizer {
+  QuantizerWu();
+
   late List<int> _weights;
   late List<int> _momentsR;
   late List<int> _momentsG;
@@ -371,41 +369,25 @@ final class QuantizerWu implements Quantizer {
 
 enum _Direction { red, green, blue }
 
-final class _MaximizeResult {
-  const _MaximizeResult(int cut, double max) : cutLocation = cut, maximum = max;
+extension type const _MaximizeResult._(({int cutLocation, double maximum}) _) {
+  const _MaximizeResult(int cut, double max)
+    : this._((cutLocation: cut, maximum: max));
 
   // < 0 if cut impossible
-  final int cutLocation;
-  final double maximum;
+  int get cutLocation => _.cutLocation;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _MaximizeResult &&
-          cutLocation == other.cutLocation &&
-          maximum == other.maximum;
-
-  @override
-  int get hashCode => Object.hash(cutLocation, maximum);
+  double get maximum => _.maximum;
 }
 
-final class _CreateBoxesResult {
-  const _CreateBoxesResult(this.requestedCount, this.resultCount);
+extension type const _CreateBoxesResult._(
+  ({int requestedCount, int resultCount}) _
+) {
+  const _CreateBoxesResult(int requestedCount, int resultCount)
+    : this._((requestedCount: requestedCount, resultCount: resultCount));
 
-  final int requestedCount;
-  final int resultCount;
+  int get requestedCount => _.requestedCount;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _CreateBoxesResult &&
-          requestedCount == other.requestedCount &&
-          resultCount == other.resultCount;
-
-  @override
-  int get hashCode => Object.hash(requestedCount, resultCount);
+  int get resultCount => _.resultCount;
 }
 
 final class _Box {

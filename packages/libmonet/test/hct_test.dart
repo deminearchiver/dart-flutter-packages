@@ -107,7 +107,7 @@ void main() {
 
   group("viewing conditions", () {
     test("default", () {
-      final vc = ViewingConditions.standard;
+      final vc = ViewingConditions.srgb;
       expect(vc.n, closeToWithPrecision(0.184, 3));
       expect(vc.aw, closeToWithPrecision(29.981, 3));
       expect(vc.nbb, closeToWithPrecision(1.017, 3));

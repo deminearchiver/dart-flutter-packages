@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import '../utils/color_utils.dart';
 import '../utils/math_utils.dart';
 
+import 'hct_solver.dart';
 import 'viewing_conditions.dart';
 
 /// CAM16, a color appearance model. Colors are not just defined by their
@@ -146,7 +147,7 @@ final class Cam16 {
   }
 
   factory Cam16.fromInt(int argb) =>
-      .fromIntInViewingConditions(argb, ViewingConditions.sRgb);
+      .fromIntInViewingConditions(argb, ViewingConditions.srgb);
 
   @internal
   factory Cam16.fromJchInViewingConditions(
@@ -177,7 +178,7 @@ final class Cam16 {
 
   @internal
   factory Cam16.fromJch(double j, double c, double h) =>
-      .fromJchInViewingConditions(j, c, h, ViewingConditions.sRgb);
+      .fromJchInViewingConditions(j, c, h, ViewingConditions.srgb);
 
   factory Cam16.fromUcsInViewingConditions(
     double jstar,
@@ -197,7 +198,7 @@ final class Cam16 {
   }
 
   factory Cam16.fromUcs(double jstar, double astar, double bstar) =>
-      .fromUcsInViewingConditions(jstar, astar, bstar, ViewingConditions.sRgb);
+      .fromUcsInViewingConditions(jstar, astar, bstar, ViewingConditions.srgb);
 
   /// Hue in CAM16.
   final double hue;
@@ -318,10 +319,18 @@ final class Cam16 {
     return ColorUtils.argbFromXyz(xyz[0], xyz[1], xyz[2]);
   }
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  int viewedInSrgb() => viewed(.srgb);
+
   /// ARGB representation of the color. Assumes the color was viewed
   /// in default viewing conditions, which are near-identical
   /// to the default viewing conditions for sRGB.
-  int toInt() => viewed(ViewingConditions.sRgb);
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  int toInt() => viewedInSrgb();
 
   @override
   String toString() =>
@@ -355,6 +364,7 @@ final class Cam16 {
   @override
   int get hashCode => Object.hash(hue, chroma, j, q, m, s, jstar, astar, bstar);
 
+  /// Transforms XYZ color space coordinates to 'cone'/'RGB' responses in CAM16.
   @internal
   static const List<List<double>> xyzToCam16rgb = [
     [0.401288, 0.650173, -0.051461],
@@ -362,10 +372,196 @@ final class Cam16 {
     [-0.002079, 0.048952, 0.953127],
   ];
 
+  /// Transforms 'cone'/'RGB' responses in CAM16 to XYZ color space coordinates.
   @internal
   static const List<List<double>> cam16rgbToXyz = [
     [1.8620678, -1.0112547, 0.14918678],
     [0.38752654, 0.62144744, -0.00897398],
     [-0.01584150, -0.03412294, 1.0499644],
   ];
+
+  // NOTICE: Fork and dart transpilation of
+  // frameworks/base/core/java/com/android/internal/graphics/cam/Cam.java.
+
+  // The maximum difference between the requested L* and the L* returned.
+  static const _dlMax = 0.2;
+
+  // The maximum color distance, in CAM16-UCS, between a requested color and the color returned.
+  static const _deMax = 1.0;
+
+  // When the delta between the floor & ceiling of a binary search for chroma is less than this,
+  // the binary search terminates.
+  static const _chromaSearchEndpoint = 0.4;
+
+  // When the delta between the floor & ceiling of a binary search for J, lightness in CAM16,
+  // is less than this, the binary search terminates.
+  static const _lightnessSearchEndpoint = 0.01;
+
+  /// Find J, lightness in CAM16 color space,
+  /// that creates a color with L* in the L*a*b* color space.
+  ///
+  /// Returns null if no J could be found that generated a color with L*.
+  @internal
+  static Cam16? findCamByJ(double hue, double chroma, double lstar) {
+    var low = 0.0;
+    var high = 100.0;
+    var mid = 0.0;
+    var bestdL = 1000.0;
+    var bestdE = 1000.0;
+    Cam16? bestCam;
+    while ((low - high).abs() > _lightnessSearchEndpoint) {
+      mid = low + (high - low) / 2.0;
+      // Create the intended CAM color
+      final camBeforeClip = Cam16.fromJch(mid, chroma, hue);
+      // Convert the CAM color to RGB. If the color didn't fit in RGB, during the conversion,
+      // the initial RGB values will be outside 0 to 255. The final RGB values are clipped to
+      // 0 to 255, distorting the intended color.
+      final clipped = camBeforeClip.viewedInSrgb();
+      final clippedLstar = ColorUtils.lstarFromArgb(clipped);
+      final dL = (lstar - clippedLstar).abs();
+      // If the clipped color's L* is within error margin...
+      if (dL < _dlMax) {
+        // ...check if the CAM equivalent of the clipped color is far away from intended CAM
+        // color. For the intended color, use lightness and chroma from the clipped color,
+        // and the intended hue. Callers are wondering what the lightness is, they know
+        // chroma may be distorted, so the only concern here is if the hue slipped too far.
+        final camClipped = Cam16.fromInt(clipped);
+        final dE = camClipped.distance(
+          Cam16.fromJch(camClipped.j, camClipped.chroma, hue),
+        );
+        if (dE <= _deMax) {
+          bestdL = dL;
+          bestdE = dE;
+          bestCam = camClipped;
+        }
+      }
+      // If there's no error at all, there's no need to search more.
+      //
+      // Note: this happens much more frequently than expected, but this is a very delicate
+      // property which relies on extremely precise sRGB <=> XYZ calculations, as well as fine
+      // tuning of the constants that determine error margins and when the binary search can
+      // terminate.
+      if (bestdL == 0 && bestdE == 0) {
+        break;
+      }
+      if (clippedLstar < lstar) {
+        low = mid;
+      } else {
+        high = mid;
+      }
+    }
+    return bestCam;
+  }
+
+  /// Given a hue & chroma in CAM16, L* in L*a*b*,
+  /// and the frame in which the color will be viewed, return an ARGB integer.
+  ///
+  /// The chroma of the color returned may, and frequently will,
+  /// be lower than requested. This is a fundamental property of color
+  /// that cannot be worked around by engineering. For example, a red hue,
+  /// with high chroma, and high L* does not exist: red hues
+  /// have a maximum chroma below 10 in light shades, creating pink.
+  static int getInt(
+    double hue,
+    double chroma,
+    double lstar,
+    ViewingConditions frame,
+  ) {
+    // This is a crucial routine for building a color system, CAM16 itself is not sufficient.
+    //
+    // * Why these dimensions?
+    // Hue and chroma from CAM16 are used because they're the most accurate measures of those
+    // quantities. L* from L*a*b* is used because it correlates with luminance, luminance is
+    // used to measure contrast for a11y purposes, thus providing a key constraint on what
+    // colors
+    // can be used.
+    //
+    // * Why is this routine required to build a color system?
+    // In all perceptually accurate color spaces (i.e. L*a*b* and later), `chroma` may be
+    // impossible for a given `hue` and `lstar`.
+    // For example, a high chroma light red does not exist - chroma is limited to below 10 at
+    // light red shades, we call that pink. High chroma light green does exist, but not dark
+    // Also, when converting from another color space to RGB, the color may not be able to be
+    // represented in RGB. In those cases, the conversion process ends with RGB values
+    // outside 0-255
+    // The vast majority of color libraries surveyed simply round to 0 to 255. That is not an
+    // option for this library, as it distorts the expected luminance, and thus the expected
+    // contrast needed for a11y
+    //
+    // * What does this routine do?
+    // Dealing with colors in one color space not fitting inside RGB is, loosely referred to as
+    // gamut mapping or tone mapping. These algorithms are traditionally idiosyncratic, there is
+    // no universal answer. However, because the intent of this library is to build a system for
+    // digital design, and digital design uses luminance to measure contrast/a11y, we have one
+    // very important constraint that leads to an objective algorithm: the L* of the returned
+    // color _must_ match the requested L*.
+    //
+    // Intuitively, if the color must be distorted to fit into the RGB gamut, and the L*
+    // requested *must* be fulfilled, than the hue or chroma of the returned color will need
+    // to be different from the requested hue/chroma.
+    //
+    // After exploring both options, it was more intuitive that if the requested chroma could
+    // not be reached, it used the highest possible chroma. The alternative was finding the
+    // closest hue where the requested chroma could be reached, but that is not nearly as
+    // intuitive, as the requested hue is so fundamental to the color description.
+    // If the color doesn't have meaningful chroma, return a gray with the requested Lstar.
+    //
+    // Yellows are very chromatic at L = 100, and blues are very chromatic at L = 0. All the
+    // other hues are white at L = 100, and black at L = 0. To preserve consistency for users of
+    // this system, it is better to simply return white at L* > 99, and black and L* < 0.
+    if (frame == .srgb) {
+      // If the viewing conditions are the same as the default sRGB-like viewing conditions,
+      // skip to using HctSolver: it uses geometrical insights to find the closest in-gamut
+      // match to hue/chroma/lstar.
+      return HctSolver.solveToInt(hue, chroma, lstar);
+    }
+    if (chroma < 1.0 || lstar.round() <= 0 || lstar.round() >= 100) {
+      return ColorUtils.argbFromLstar(lstar);
+    }
+    hue = hue < 0.0 ? 0.0 : math.min(360.0, hue);
+    // The highest chroma possible. Updated as binary search proceeds.
+    var high = chroma;
+    // The guess for the current binary search iteration. Starts off at the highest chroma,
+    // thus, if a color is possible at the requested chroma, the search can stop after one try.
+    var mid = chroma;
+    var low = 0.0;
+    var isFirstLoop = true;
+    Cam16? answer;
+    while ((low - high).abs() >= _chromaSearchEndpoint) {
+      // Given the current chroma guess, mid, and the desired hue, find J, lightness in
+      // CAM16 color space, that creates a color with L* = `lstar` in the L*a*b* color space.
+      final possibleAnswer = findCamByJ(hue, mid, lstar);
+      if (isFirstLoop) {
+        if (possibleAnswer != null) {
+          return possibleAnswer.viewed(frame);
+        } else {
+          // If this binary search iteration was the first iteration, and this point
+          // has been reached, it means the requested chroma was not available at the
+          // requested hue and L*.
+          // Proceed to a traditional binary search that starts at the midpoint between
+          // the requested chroma and 0.
+          isFirstLoop = false;
+          mid = low + (high - low) / 2.0;
+          continue;
+        }
+      }
+      if (possibleAnswer == null) {
+        // There isn't a CAM16 J that creates a color with L* `lstar`. Try a lower chroma.
+        high = mid;
+      } else {
+        answer = possibleAnswer;
+        // It is possible to create a color. Try higher chroma.
+        low = mid;
+      }
+      mid = low + (high - low) / 2.0;
+    }
+    // There was no answer: meaning, for the desired hue, there was no chroma low enough to
+    // generate a color with the desired L*.
+    // All values of L* are possible when there is 0 chroma. Return a color with 0 chroma, i.e.
+    // a shade of gray, with the desired L*.
+    if (answer == null) {
+      return ColorUtils.argbFromLstar(lstar);
+    }
+    return answer.viewed(frame);
+  }
 }

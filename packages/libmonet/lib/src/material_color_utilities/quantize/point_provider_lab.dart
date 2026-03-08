@@ -16,9 +16,7 @@ final class PointProviderLab implements PointProvider {
 
   /// Convert a 3-element array to a color represented in ARGB.
   @override
-  int toInt(List<double> lab) {
-    return ColorUtils.argbFromLab(lab[0], lab[1], lab[2]);
-  }
+  int toInt(List<double> lab) => ColorUtils.argbFromLab(lab[0], lab[1], lab[2]);
 
   /// Standard CIE 1976 delta E formula also takes the square root, unneeded here.
   /// This method is used by quantization algorithms to compare distance,

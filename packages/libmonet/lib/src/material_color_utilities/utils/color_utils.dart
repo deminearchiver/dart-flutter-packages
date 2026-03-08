@@ -1,21 +1,25 @@
 import 'dart:math' as math;
 
+import 'package:meta/meta.dart';
+
 import 'math_utils.dart';
 
 abstract final class ColorUtils {
-  static const _srgbToXyz = <List<double>>[
+  @internal
+  static const srgbToXyz = <List<double>>[
     [0.41233895, 0.35762064, 0.18051042],
     [0.2126, 0.7152, 0.0722],
     [0.01932141, 0.11916382, 0.95034478],
   ];
 
-  static const _xyzToSrgb = <List<double>>[
+  @internal
+  static const xyzToSrgb = <List<double>>[
     [3.2413774792388685, -1.5376652402851851, -0.49885366846268053],
     [-0.9691452513005321, 1.8758853451067872, 0.04156585616912061],
     [0.05562093689691305, -0.20395524564742123, 1.0571799111220335],
   ];
 
-  static const _whitePointD65 = <double>[95.047, 100.0, 108.883];
+  static const whitePointD65 = <double>[95.047, 100.0, 108.883];
 
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
@@ -56,7 +60,7 @@ abstract final class ColorUtils {
   static bool isOpaque(int argb) => alphaFromArgb(argb) >= 255;
 
   static int argbFromXyz(double x, double y, double z) {
-    const matrix = _xyzToSrgb;
+    const matrix = xyzToSrgb;
     final linearR = matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z;
     final linearG = matrix[1][0] * x + matrix[1][1] * y + matrix[1][2] * z;
     final linearB = matrix[2][0] * x + matrix[2][1] * y + matrix[2][2] * z;
@@ -70,20 +74,19 @@ abstract final class ColorUtils {
     final r = linearized(redFromArgb(argb));
     final g = linearized(greenFromArgb(argb));
     final b = linearized(blueFromArgb(argb));
-    return MathUtils.matrixMultiply([r, g, b], _srgbToXyz);
+    return MathUtils.matrixMultiply([r, g, b], srgbToXyz);
   }
 
   static int argbFromLab(double l, double a, double b) {
-    const whitePoint = _whitePointD65;
     final fy = (l + 16.0) / 116.0;
     final fx = a / 500.0 + fy;
     final fz = fy - b / 200.0;
     final xNormalized = _labInvf(fx);
     final yNormalized = _labInvf(fy);
     final zNormalized = _labInvf(fz);
-    final x = xNormalized * whitePoint[0];
-    final y = yNormalized * whitePoint[1];
-    final z = zNormalized * whitePoint[2];
+    final x = xNormalized * whitePointD65[0];
+    final y = yNormalized * whitePointD65[1];
+    final z = zNormalized * whitePointD65[2];
     return argbFromXyz(x, y, z);
   }
 
@@ -91,7 +94,7 @@ abstract final class ColorUtils {
     final linearR = linearized(redFromArgb(argb));
     final linearG = linearized(greenFromArgb(argb));
     final linearB = linearized(blueFromArgb(argb));
-    const matrix = _srgbToXyz;
+    const matrix = srgbToXyz;
     final x =
         matrix[0][0] * linearR +
         matrix[0][1] * linearG +
@@ -104,10 +107,9 @@ abstract final class ColorUtils {
         matrix[2][0] * linearR +
         matrix[2][1] * linearG +
         matrix[2][2] * linearB;
-    const whitePoint = _whitePointD65;
-    final xNormalized = x / whitePoint[0];
-    final yNormalized = y / whitePoint[1];
-    final zNormalized = z / whitePoint[2];
+    final xNormalized = x / whitePointD65[0];
+    final yNormalized = y / whitePointD65[1];
+    final zNormalized = z / whitePointD65[2];
     final fx = _labF(xNormalized);
     final fy = _labF(yNormalized);
     final fz = _labF(zNormalized);
@@ -147,8 +149,6 @@ abstract final class ColorUtils {
         : 1.055 * math.pow(normalized, 1.0 / 2.4).toDouble() - 0.055;
     return MathUtils.clampInt(0, 255, (delinearized * 255.0).round());
   }
-
-  static List<double> whitePointD65() => _whitePointD65;
 
   static double _labF(double t) {
     const e = 216.0 / 24389.0;

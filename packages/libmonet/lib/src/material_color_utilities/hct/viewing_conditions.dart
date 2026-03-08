@@ -101,7 +101,7 @@ final class ViewingConditions {
   }
 
   factory ViewingConditions.defaultWithBackgroundLstar(double lstar) => .make(
-    ColorUtils.whitePointD65(),
+    ColorUtils.whitePointD65,
     200.0 / math.pi * ColorUtils.yFromLstar(50.0) / 100.0,
     lstar,
     2.0,
@@ -153,7 +153,5 @@ final class ViewingConditions {
   @override
   int get hashCode => Object.hash(n, aw, nbb, ncb, c, nc, rgbD, fl, flRoot, z);
 
-  static final ViewingConditions sRgb = .defaultWithBackgroundLstar(50.0);
-
-  static final ViewingConditions standard = sRgb;
+  static final srgb = ViewingConditions.defaultWithBackgroundLstar(50.0);
 }

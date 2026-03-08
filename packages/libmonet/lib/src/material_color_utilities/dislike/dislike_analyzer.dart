@@ -20,6 +20,9 @@ abstract final class DislikeAnalyzer {
   }
 
   /// If color is disliked, lighten it to make it likable.
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static Hct fixIfDisliked(Hct hct) =>
       isDisliked(hct) ? .from(hct.hue, hct.chroma, 70.0) : hct;
 }

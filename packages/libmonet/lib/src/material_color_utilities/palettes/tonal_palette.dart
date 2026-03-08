@@ -8,10 +8,13 @@ import '../hct/hct.dart';
 final class TonalPalette {
   TonalPalette._(this.hue, this.chroma, this.keyColor);
 
+  /// Create tones using the HCT hue and chroma from a color.
   TonalPalette.fromInt(int argb) : this.fromHct(Hct.fromInt(argb));
 
+  /// Create tones using a HCT color.
   TonalPalette.fromHct(Hct hct) : this._(hct.hue, hct.chroma, hct);
 
+  /// Create tones from a defined HCT hue and chroma.
   TonalPalette.fromHueAndChroma(double hue, double chroma)
     : this._(hue, chroma, _KeyColor(hue, chroma).create());
 
@@ -31,6 +34,9 @@ final class TonalPalette {
 
   /// Given a tone, use hue and chroma of palette to create a color,
   /// and return it as HCT.
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   Hct getHct(double tone) => Hct.from(hue, chroma, tone);
 
   static int _averageArgb(int argb1, int argb2) {

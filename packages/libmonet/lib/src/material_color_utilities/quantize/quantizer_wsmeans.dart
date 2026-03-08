@@ -4,8 +4,8 @@ import 'point_provider_lab.dart';
 import 'quantizer_result.dart';
 import 'quantizer.dart';
 
-const int _maxIterations = 10;
-const double _minMovementDistance = 3.0;
+const _maxIterations = 10;
+const _minMovementDistance = 3.0;
 
 final class QuantizerWsmeans implements Quantizer {
   const QuantizerWsmeans();

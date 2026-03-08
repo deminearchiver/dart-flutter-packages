@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+import 'package:meta/meta.dart';
+
 import '../utils/color_utils.dart';
 
 /// Color science for contrast utilities.
@@ -36,7 +38,8 @@ abstract final class Contrast {
   //
   // 0.04 selected because it ensures the resulting ratio rounds to the same
   // tenth.
-  static const _contrastRatioEpsilon = 0.04;
+  @internal
+  static const contrastRatioEpsilon = 0.04;
 
   // Color spaces that measure luminance, such as Y in XYZ, L* in L*a*b*,
   // or T in HCT, are known as perceptually accurate color spaces.
@@ -67,7 +70,8 @@ abstract final class Contrast {
   // provides a rough guarantee that as long as a perceptual color space gamut
   // maps lightness such that the resulting lightness rounds to the same
   //  as the requested, the desired contrast ratio will be reached.
-  static const _luminanceGamutMapTolerance = 0.4;
+  @internal
+  static const luminanceGamutMapTolerance = 0.4;
 
   /// Contrast ratio is a measure of legibility, its used to compare the
   /// lightness of two colors. This method is used commonly in industry due to
@@ -114,9 +118,9 @@ abstract final class Contrast {
     if (lightY < 0.0 || lightY > 100.0) return null;
     final realContrast = ratioOfYs(lightY, darkY);
     final delta = (realContrast - ratio).abs();
-    if (realContrast < ratio && delta > _contrastRatioEpsilon) return null;
+    if (realContrast < ratio && delta > contrastRatioEpsilon) return null;
     final returnValue =
-        ColorUtils.lstarFromY(lightY) + _luminanceGamutMapTolerance;
+        ColorUtils.lstarFromY(lightY) + luminanceGamutMapTolerance;
     // NOMUTANTS--important validation step; functions it is calling may change implementation.
     return returnValue < 0.0 || returnValue > 100.0 ? null : returnValue;
   }
@@ -126,6 +130,9 @@ abstract final class Contrast {
   ///
   /// This method is unsafe because the returned value is guaranteed to be in
   /// bounds, but, the in bounds return value may not reach the desired ratio.
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static double lighterUnsafe(double tone, double ratio) =>
       lighter(tone, ratio) ?? 100.0;
 
@@ -139,10 +146,10 @@ abstract final class Contrast {
     if (darkY < 0.0 || darkY > 100.0) return null;
     final realContrast = ratioOfYs(lightY, darkY);
     final delta = (realContrast - ratio).abs();
-    if (realContrast < ratio && delta > _contrastRatioEpsilon) return null;
+    if (realContrast < ratio && delta > contrastRatioEpsilon) return null;
     // For information on 0.4 constant, see comment in lighter(tone, ratio).
     final returnValue =
-        ColorUtils.lstarFromY(darkY) - _luminanceGamutMapTolerance;
+        ColorUtils.lstarFromY(darkY) - luminanceGamutMapTolerance;
     // NOMUTANTS--important validation step; functions it is calling may change implementation.
     return returnValue < 0.0 || returnValue > 100.0 ? null : returnValue;
   }
@@ -151,6 +158,9 @@ abstract final class Contrast {
   ///
   /// This method is unsafe because the returned value is guaranteed to be in
   /// bounds, but, the in bounds return value may not reach the desired ratio.
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   static double darkerUnsafe(double tone, double ratio) =>
       darker(tone, ratio) ?? 0.0;
 }
