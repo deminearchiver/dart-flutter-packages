@@ -1,0 +1,23 @@
+name: system_colors_android_example
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=3.41.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  system_colors_android:
+    path: ../
+
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  deminearchiver_lints: ^2.1.2
+
+flutter:
+  uses-material-design: true

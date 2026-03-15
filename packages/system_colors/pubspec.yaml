@@ -1,0 +1,30 @@
+name: system_colors
+description: A plugin for obtaining a system color scheme in Flutter.
+version: 0.1.0
+homepage: https://github.com/deminearchiver/dart-flutter-packages
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/system_colors
+issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
+resolution: workspace
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=3.41.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  meta: ^1.17.0
+  system_colors_android: ^0.1.0
+  system_colors_platform_interface: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  deminearchiver_lints: ^2.1.2
+  plugin_platform_interface: ^2.1.8
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: system_colors_android
