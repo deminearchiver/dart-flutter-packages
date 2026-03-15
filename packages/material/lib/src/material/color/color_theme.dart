@@ -2485,7 +2485,7 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     // TODO: add contrast level
   }) => switch (brightness) {
     .light => _ColorThemeDataFromPaletteLightDefaultContrast(palette),
-    .dark => _ColorThemeDataFromPaletteLightDefaultContrast(palette),
+    .dark => _ColorThemeDataFromPaletteDarkDefaultContrast(palette),
   };
 
   @override
