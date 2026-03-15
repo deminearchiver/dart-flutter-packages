@@ -81,8 +81,7 @@ final class ToneDeltaPair {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is ToneDeltaPair &&
+      other is ToneDeltaPair &&
           roleA == other.roleA &&
           roleB == other.roleB &&
           delta == other.delta &&

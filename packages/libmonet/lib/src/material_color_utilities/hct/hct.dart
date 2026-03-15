@@ -88,8 +88,7 @@ final class Hct {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is Hct &&
+      other is Hct &&
           _argb == other._argb &&
           _hue == other._hue &&
           _chroma == other._chroma &&

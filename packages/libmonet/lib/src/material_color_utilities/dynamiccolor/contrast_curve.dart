@@ -35,8 +35,7 @@ final class ContrastCurve {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is ContrastCurve &&
+      other is ContrastCurve &&
           low == other.low &&
           normal == other.normal &&
           medium == other.medium &&

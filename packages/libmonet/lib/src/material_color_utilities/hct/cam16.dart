@@ -349,8 +349,7 @@ final class Cam16 {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is Cam16 &&
+      other is Cam16 &&
           hue == other.hue &&
           chroma == other.chroma &&
           j == other.j &&
@@ -383,18 +382,19 @@ final class Cam16 {
   // NOTICE: Fork and dart transpilation of
   // frameworks/base/core/java/com/android/internal/graphics/cam/Cam.java.
 
-  // The maximum difference between the requested L* and the L* returned.
+  /// The maximum difference between the requested L* and the L* returned.
   static const _dlMax = 0.2;
 
-  // The maximum color distance, in CAM16-UCS, between a requested color and the color returned.
+  /// The maximum color distance, in CAM16-UCS, between a requested color
+  /// and the color returned.
   static const _deMax = 1.0;
 
-  // When the delta between the floor & ceiling of a binary search for chroma is less than this,
-  // the binary search terminates.
+  /// When the delta between the floor & ceiling of a binary search for chroma
+  /// is less than this, the binary search terminates.
   static const _chromaSearchEndpoint = 0.4;
 
-  // When the delta between the floor & ceiling of a binary search for J, lightness in CAM16,
-  // is less than this, the binary search terminates.
+  /// When the delta between the floor & ceiling of a binary search for J,
+  /// lightness in CAM16, is less than this, the binary search terminates.
   static const _lightnessSearchEndpoint = 0.01;
 
   /// Find J, lightness in CAM16 color space,
@@ -454,18 +454,20 @@ final class Cam16 {
   }
 
   /// Given a hue & chroma in CAM16, L* in L*a*b*,
-  /// and the frame in which the color will be viewed, return an ARGB integer.
+  /// and the viewing conditions in which the color will be viewed,
+  /// return an ARGB integer.
   ///
   /// The chroma of the color returned may, and frequently will,
   /// be lower than requested. This is a fundamental property of color
   /// that cannot be worked around by engineering. For example, a red hue,
   /// with high chroma, and high L* does not exist: red hues
   /// have a maximum chroma below 10 in light shades, creating pink.
-  static int getInt(
+  @internal
+  static int getIntInViewingConditions(
     double hue,
     double chroma,
     double lstar,
-    ViewingConditions frame,
+    ViewingConditions viewingConditions,
   ) {
     // This is a crucial routine for building a color system, CAM16 itself is not sufficient.
     //
@@ -509,10 +511,10 @@ final class Cam16 {
     // Yellows are very chromatic at L = 100, and blues are very chromatic at L = 0. All the
     // other hues are white at L = 100, and black at L = 0. To preserve consistency for users of
     // this system, it is better to simply return white at L* > 99, and black and L* < 0.
-    if (frame == .srgb) {
-      // If the viewing conditions are the same as the default sRGB-like viewing conditions,
-      // skip to using HctSolver: it uses geometrical insights to find the closest in-gamut
-      // match to hue/chroma/lstar.
+    if (viewingConditions == .srgb) {
+      // If the viewing conditions are the same as the default sRGB-like
+      // viewing conditions, skip to using HctSolver: it uses geometrical
+      // insights to find the closest in-gamut match to hue/chroma/lstar.
       return HctSolver.solveToInt(hue, chroma, lstar);
     }
     if (chroma < 1.0 || lstar.round() <= 0 || lstar.round() >= 100) {
@@ -521,32 +523,35 @@ final class Cam16 {
     hue = hue < 0.0 ? 0.0 : math.min(360.0, hue);
     // The highest chroma possible. Updated as binary search proceeds.
     var high = chroma;
-    // The guess for the current binary search iteration. Starts off at the highest chroma,
-    // thus, if a color is possible at the requested chroma, the search can stop after one try.
+    // The guess for the current binary search iteration. Starts off at the
+    // highest chroma, thus, if a color is possible at the requested chroma,
+    // the search can stop after one try.
     var mid = chroma;
     var low = 0.0;
     var isFirstLoop = true;
     Cam16? answer;
     while ((low - high).abs() >= _chromaSearchEndpoint) {
-      // Given the current chroma guess, mid, and the desired hue, find J, lightness in
-      // CAM16 color space, that creates a color with L* = `lstar` in the L*a*b* color space.
+      // Given the current chroma guess, mid, and the desired hue, find J,
+      // lightness in CAM16 color space, that creates a color with L* = `lstar`
+      // in the L*a*b* color space.
       final possibleAnswer = findCamByJ(hue, mid, lstar);
       if (isFirstLoop) {
         if (possibleAnswer != null) {
-          return possibleAnswer.viewed(frame);
+          return possibleAnswer.viewed(viewingConditions);
         } else {
-          // If this binary search iteration was the first iteration, and this point
-          // has been reached, it means the requested chroma was not available at the
-          // requested hue and L*.
-          // Proceed to a traditional binary search that starts at the midpoint between
-          // the requested chroma and 0.
+          // If this binary search iteration was the first iteration,
+          // and this point has been reached, it means the requested chroma
+          // was not available at the requested hue and L*.
+          // Proceed to a traditional binary search that starts at the midpoint
+          // between the requested chroma and 0.
           isFirstLoop = false;
           mid = low + (high - low) / 2.0;
           continue;
         }
       }
       if (possibleAnswer == null) {
-        // There isn't a CAM16 J that creates a color with L* `lstar`. Try a lower chroma.
+        // There isn't a CAM16 J that creates a color with L* `lstar`.
+        // Try a lower chroma.
         high = mid;
       } else {
         answer = possibleAnswer;
@@ -555,13 +560,22 @@ final class Cam16 {
       }
       mid = low + (high - low) / 2.0;
     }
-    // There was no answer: meaning, for the desired hue, there was no chroma low enough to
-    // generate a color with the desired L*.
-    // All values of L* are possible when there is 0 chroma. Return a color with 0 chroma, i.e.
-    // a shade of gray, with the desired L*.
-    if (answer == null) {
-      return ColorUtils.argbFromLstar(lstar);
-    }
-    return answer.viewed(frame);
+    return answer?.viewed(viewingConditions) ??
+        // There was no answer: meaning, for the desired hue, there was
+        // no chroma low enough to generate a color with the desired L*.
+        // All values of L* are possible when there is 0 chroma. Return a color
+        // with 0 chroma, i.e. a shade of gray, with the desired L*.
+        ColorUtils.argbFromLstar(lstar);
   }
+
+  /// Given a hue & chroma in CAM16, L* in L*a*b*,
+  /// return an ARGB integer.
+  ///
+  /// The chroma of the color returned may, and frequently will,
+  /// be lower than requested. This is a fundamental property of color
+  /// that cannot be worked around by engineering. For example, a red hue,
+  /// with high chroma, and high L* does not exist: red hues
+  /// have a maximum chroma below 10 in light shades, creating pink.
+  static int getInt(double hue, double chroma, double lstar) =>
+      getIntInViewingConditions(hue, chroma, lstar, .srgb);
 }

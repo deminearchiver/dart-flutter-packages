@@ -258,8 +258,7 @@ final class DynamicColor {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is DynamicColor &&
+      other is DynamicColor &&
           name == other.name &&
           palette == other.palette &&
           tone == other.tone &&

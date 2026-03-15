@@ -28,8 +28,7 @@ final class CorePalettes {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is CorePalettes &&
+      other is CorePalettes &&
           primary == other.primary &&
           secondary == other.secondary &&
           tertiary == other.tertiary &&

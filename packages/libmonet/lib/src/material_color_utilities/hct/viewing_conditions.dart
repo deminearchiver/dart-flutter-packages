@@ -137,8 +137,7 @@ final class ViewingConditions {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is ViewingConditions &&
+      other is ViewingConditions &&
           n == other.n &&
           aw == other.aw &&
           nbb == other.nbb &&
