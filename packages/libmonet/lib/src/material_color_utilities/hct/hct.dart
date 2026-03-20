@@ -4,52 +4,49 @@ import 'cam16.dart';
 import 'hct_solver.dart';
 import 'viewing_conditions.dart';
 
-// TODO: mutable properties break the immutability pattern
-
 /// HCT, hue, chroma, and tone. A color system that provides a perceptually
 /// accurate color measurement system that can also accurately render
 /// what colors will appear as in different lighting environments.
 final class Hct {
-  Hct._(int argb) {
-    _setInternalState(argb);
-  }
+  const Hct._({
+    required int argb,
+    required this.hue,
+    required this.chroma,
+    required this.tone,
+  }) : _argb = argb;
 
-  /// Create an HCT color from hue, chroma, and tone.
-  factory Hct.from(double hue, double chroma, double tone) =>
-      ._(HctSolver.solveToInt(hue, chroma, tone));
+  Hct._fromCam({required int argb, required Cam16 cam})
+    : this._(
+        argb: argb,
+        hue: cam.hue,
+        chroma: cam.chroma,
+        tone: ColorUtils.lstarFromArgb(argb),
+      );
 
   /// Create an HCT color from a color.
-  factory Hct.fromInt(int argb) => ._(argb);
+  Hct.fromInt(int argb) : this._fromCam(argb: argb, cam: .fromInt(argb));
 
-  late int _argb;
-  late double _hue;
-  late double _chroma;
-  late double _tone;
+  /// Create an HCT color from hue, chroma, and tone.
+  Hct.from(double hue, double chroma, double tone)
+    : this.fromInt(HctSolver.solveToInt(hue, chroma, tone));
 
-  double get hue => _hue;
+  final int _argb;
 
-  set hue(double newHue) {
-    _setInternalState(HctSolver.solveToInt(newHue, chroma, tone));
-  }
+  final double hue;
 
-  double get chroma => _chroma;
+  final double chroma;
 
-  set chroma(double newChroma) {
-    _setInternalState(HctSolver.solveToInt(hue, newChroma, tone));
-  }
-
-  double get tone => _tone;
-
-  set tone(double newTone) {
-    _setInternalState(HctSolver.solveToInt(hue, chroma, newTone));
-  }
+  final double tone;
 
   int toInt() => _argb;
 
-  Hct inViewingConditions(ViewingConditions vc) {
+  Hct copyWith({double? hue, double? chroma, double? tone}) =>
+      .from(hue ?? this.hue, chroma ?? this.chroma, tone ?? this.tone);
+
+  Hct inViewingConditions(ViewingConditions viewingConditions) {
     // 1. Use CAM16 to find XYZ coordinates of color in specified VC.
     final cam16 = Cam16.fromInt(toInt());
-    final viewedInVc = cam16.xyzInViewingConditions(vc);
+    final viewedInVc = cam16.xyzInViewingConditions(viewingConditions);
 
     // 2. Create CAM16 of those XYZ coordinates in default VC.
     final recastInVc = Cam16.fromXyzInViewingConditions(
@@ -69,33 +66,21 @@ final class Hct {
     );
   }
 
-  void _setInternalState(int argb) {
-    _argb = argb;
-    final cam = Cam16.fromInt(argb);
-    _hue = cam.hue;
-    _chroma = cam.chroma;
-    _tone = ColorUtils.lstarFromArgb(argb);
-  }
-
   @override
   String toString() =>
-      "HCT("
-      "${_hue.round()}, "
-      "${_chroma.round()}, "
-      "${_tone.round()}"
-      ")";
+      "HCT(${hue.round()}, ${chroma.round()}, ${tone.round()})";
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Hct &&
           _argb == other._argb &&
-          _hue == other._hue &&
-          _chroma == other._chroma &&
-          _tone == other._tone;
+          hue == other.hue &&
+          chroma == other.chroma &&
+          tone == other.tone;
 
   @override
-  int get hashCode => Object.hash(_argb, _hue, _chroma, _tone);
+  int get hashCode => Object.hash(_argb, hue, chroma, tone);
 
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
