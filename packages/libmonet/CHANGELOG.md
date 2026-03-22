@@ -16,8 +16,11 @@
 - Added `year` property to `SpecVersion` and implemented `Comparable<SpecVersion>` in order to make spec versions comparable.
 - Ported `Cam16.getInt` and `Cam16.getIntInViewingConditions` from Android source code.
 - Color generation algorithms from Android:
-  - Renamed `android_dynamic_colors` library to `android_system_ui`.
-  - Added `SchemeClock` and `SchemeClockVibrant` to the `android_system_ui` library.
+  - Renamed `android_dynamic_colors` library to `android_color_utilities`.
+  - Added `SchemeClock` and `SchemeClockVibrant` to the `android_color_utilities` library.
+  - Fixed an upstream issue of `AndroidDynamicColors.clockSecond` and `AndroidDynamicColors.weatherTemp` having a medium contrast of `70`, when it should've been `7`.
+- Renamed `TemperatureCache.getComplement` to `TemperatureCache.complement` and made it a getter.
+- Added a default `libmonet` library which exports all members from the other libraries.
 - Refactored internal file structure (breaks source code imports).
 - Other minor changes.
 

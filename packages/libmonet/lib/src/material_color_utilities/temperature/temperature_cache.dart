@@ -5,23 +5,33 @@ import '../hct/hct.dart';
 import '../utils/color_utils.dart';
 import '../utils/math_utils.dart';
 
+/// Design utilities using color temperature theory.
+///
+/// Analogous colors, complementary color, and cache to efficiently,
+/// lazily, generate data for calculations when needed.
 final class TemperatureCache {
   TemperatureCache(this.input);
 
   final Hct input;
+
   Hct? _precomputedComplement;
   List<Hct>? _precomputedHctsByTemp;
   List<Hct>? _precomputedHctsByHue;
   Map<Hct, double>? _precomputedTempsByHct;
 
-  Hct getComplement() {
+  /// A color that complements the input color aesthetically.
+  ///
+  /// In art, this is usually described as being across the color wheel.
+  /// History of this shows intent as a color that is just as cool-warm
+  /// as the input color is warm-cool.
+  Hct get complement {
     if (_precomputedComplement case final precomputedComplement?) {
       return precomputedComplement;
     }
-    final coldestHue = _getColdest().hue;
-    final coldestTemp = _getTempsByHct()[_getColdest()]!;
-    final warmestHue = _getWarmest().hue;
-    final warmestTemp = _getTempsByHct()[_getWarmest()]!;
+    final coldestHue = _coldest.hue;
+    final coldestTemp = _tempsByHct[_coldest]!;
+    final warmestHue = _warmest.hue;
+    final warmestTemp = _tempsByHct[_warmest]!;
     final range = warmestTemp - coldestTemp;
     final startHueIsColdestToWarmest = _isBetween(
       input.hue,
@@ -33,7 +43,7 @@ final class TemperatureCache {
     const directionOfRotation = 1.0;
 
     var smallestError = 1000.0;
-    var answer = _getHctsByHue()[input.hue.round()];
+    var answer = _hctsByHue[input.hue.round()];
 
     final complementRelativeTemp = 1.0 - getRelativeTemperature(input);
 
@@ -46,9 +56,8 @@ final class TemperatureCache {
       if (!_isBetween(hue, startHue, endHue)) {
         continue;
       }
-      final possibleAnswer = _getHctsByHue()[hue.round()];
-      final relativeTemp =
-          (_getTempsByHct()[possibleAnswer]! - coldestTemp) / range;
+      final possibleAnswer = _hctsByHue[hue.round()];
+      final relativeTemp = (_tempsByHct[possibleAnswer]! - coldestTemp) / range;
       final error = (complementRelativeTemp - relativeTemp).abs();
       if (error < smallestError) {
         smallestError = error;
@@ -58,10 +67,18 @@ final class TemperatureCache {
     return _precomputedComplement = answer;
   }
 
+  /// A set of colors with differing hues, equidistant in temperature.
+  ///
+  /// In art, this is usually described as a set of 5 colors on a color
+  /// wheel divided into 12 sections. This method allows provision
+  /// of either of those values.
+  ///
+  /// Behavior is undefined when [count] or [divisions] is `0`.
+  /// When [divisions] < [count], colors repeat.
   List<Hct> getAnalogousColors([int count = 5, int divisions = 12]) {
     // The starting hue is the hue of the input color.
     final startHue = input.hue.round();
-    final startHct = _getHctsByHue()[startHue];
+    final startHct = _hctsByHue[startHue];
     var lastTemp = getRelativeTemperature(startHct);
 
     final allColors = <Hct>[startHct];
@@ -69,7 +86,7 @@ final class TemperatureCache {
     var absoluteTotalTempDelta = 0.0;
     for (var i = 0; i < 360; i++) {
       final hue = MathUtils.sanitizeDegreesInt(startHue + i);
-      final hct = _getHctsByHue()[hue];
+      final hct = _hctsByHue[hue];
       final temp = getRelativeTemperature(hct);
       final tempDelta = (temp - lastTemp).abs();
       lastTemp = temp;
@@ -82,7 +99,7 @@ final class TemperatureCache {
     lastTemp = getRelativeTemperature(startHct);
     while (allColors.length < divisions) {
       final hue = MathUtils.sanitizeDegreesInt(startHue + hueAddend);
-      final hct = _getHctsByHue()[hue];
+      final hct = _hctsByHue[hue];
       final temp = getRelativeTemperature(hct);
       final tempDelta = (temp - lastTemp).abs();
       totalTempDelta += tempDelta;
@@ -145,16 +162,75 @@ final class TemperatureCache {
     return answers;
   }
 
+  /// Temperature relative to all colors with the same chroma and tone.
+  ///
+  /// Returns a value on a scale from 0 to 1.
   double getRelativeTemperature(Hct hct) {
-    final range =
-        _getTempsByHct()[_getWarmest()]! - _getTempsByHct()[_getColdest()]!;
-    final differenceFromColdest =
-        _getTempsByHct()[hct]! - _getTempsByHct()[_getColdest()]!;
+    final range = _tempsByHct[_warmest]! - _tempsByHct[_coldest]!;
+    final differenceFromColdest = _tempsByHct[hct]! - _tempsByHct[_coldest]!;
     // Handle when there's no difference in temperature between warmest and
     // coldest: for example, at T100, only one color is available, white.
     return range == 0.0 ? 0.5 : differenceFromColdest / range;
   }
 
+  /// Coldest color with same chroma and tone as input.
+  Hct get _coldest => _hctsByTemp.first;
+
+  List<Hct> get _hctsByHue {
+    if (_precomputedHctsByHue case final precomputedHctsByHue?) {
+      return precomputedHctsByHue;
+    }
+    final hcts = <Hct>[];
+    for (var hue = 0.0; hue <= 360.0; hue += 1.0) {
+      final colorAtHue = Hct.from(hue, input.chroma, input.tone);
+      hcts.add(colorAtHue);
+    }
+    return _precomputedHctsByHue = UnmodifiableListView(hcts);
+  }
+
+  List<Hct> get _hctsByTemp {
+    if (_precomputedHctsByTemp case final precomputedHctsByTemp?) {
+      return precomputedHctsByTemp;
+    }
+    final hcts = List.of(_hctsByHue)
+      ..add(input)
+      ..sort((a, b) => _tempsByHct[a]!.compareTo(_tempsByHct[b]!));
+    return _precomputedHctsByTemp = hcts;
+  }
+
+  Map<Hct, double> get _tempsByHct {
+    if (_precomputedTempsByHct case final precomputedTempsByHct?) {
+      return precomputedTempsByHct;
+    }
+    final allHcts = List.of(_hctsByHue)..add(input);
+    final temperaturesByHct = <Hct, double>{};
+    for (final hct in allHcts) {
+      temperaturesByHct[hct] = rawTemperature(hct);
+    }
+    return _precomputedTempsByHct = temperaturesByHct;
+  }
+
+  /// Warmest color with same chroma and tone as input.
+  Hct get _warmest => _hctsByTemp.last;
+
+  /// Value representing cool-warm factor of a color.
+  /// Values below 0 are considered cool, above, warm.
+  ///
+  /// Color science has researched emotion and harmony,
+  /// which art uses to select colors. Warm-cool is the foundation of analogous
+  /// and complementary colors.
+  ///
+  /// See:
+  /// - Li-Chen Ou's Chapter 19 in Handbook of Color Psychology (2015).
+  /// - Josef Albers' Interaction of Color chapters 19 and 21.
+  ///
+  /// Implementation of Ou, Woodcock and Wright's algorithm,
+  /// which uses Lab/LCH color space.
+  ///
+  /// Return value has these properties:
+  /// - Values below 0 are cool, above 0 are warm.
+  /// - Lower bound: -9.66. Chroma is infinite. Assuming max of Lab chroma 130.
+  /// - Upper bound: 8.61. Chroma is infinite. Assuming max of Lab chroma 130.
   static double rawTemperature(Hct color) {
     final lab = ColorUtils.labFromArgb(color.toInt());
     final hue = MathUtils.sanitizeDegreesDouble(
@@ -169,44 +245,7 @@ final class TemperatureCache {
             );
   }
 
-  List<Hct> _getHctsByHue() {
-    if (_precomputedHctsByHue case final precomputedHctsByHue?) {
-      return precomputedHctsByHue;
-    }
-    final hcts = <Hct>[];
-    for (var hue = 0.0; hue <= 360.0; hue += 1.0) {
-      final colorAtHue = Hct.from(hue, input.chroma, input.tone);
-      hcts.add(colorAtHue);
-    }
-    return _precomputedHctsByHue = UnmodifiableListView(hcts);
-  }
-
-  List<Hct> _getHctsByTemp() {
-    if (_precomputedHctsByTemp case final precomputedHctsByTemp?) {
-      return precomputedHctsByTemp;
-    }
-    final hcts = List.of(_getHctsByHue())
-      ..add(input)
-      ..sort((a, b) => _getTempsByHct()[a]!.compareTo(_getTempsByHct()[b]!));
-    return _precomputedHctsByTemp = hcts;
-  }
-
-  Map<Hct, double> _getTempsByHct() {
-    if (_precomputedTempsByHct case final precomputedTempsByHct?) {
-      return precomputedTempsByHct;
-    }
-    final allHcts = List.of(_getHctsByHue())..add(input);
-    final temperaturesByHct = <Hct, double>{};
-    for (final hct in allHcts) {
-      temperaturesByHct[hct] = rawTemperature(hct);
-    }
-    return _precomputedTempsByHct = temperaturesByHct;
-  }
-
-  Hct _getColdest() => _getHctsByTemp().first;
-
-  Hct _getWarmest() => _getHctsByTemp().last;
-
+  /// Determines if an angle is between two other angles, rotating clockwise.
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")

@@ -7,9 +7,25 @@ import 'quantizer.dart';
 const _maxIterations = 10;
 const _minMovementDistance = 3.0;
 
+/// An image quantizer that improves on the speed of a standard K-Means
+/// algorithm by implementing several optimizations, including deduping
+/// identical pixels and a triangle inequality rule that reduces the number
+/// of comparisons needed to identify which cluster a point should be moved to.
+///
+/// Wsmeans stands for Weighted Square Means.
+///
+/// This algorithm was designed by M. Emre Celebi,
+/// and was found in their 2011 paper,
+/// Improving the Performance of K-Means for Color Quantization.
+/// https://arxiv.org/abs/1101.0395
 final class QuantizerWsmeans implements Quantizer {
   const QuantizerWsmeans();
 
+  /// Reduce the number of colors needed to represented the input, minimizing
+  /// the difference between the original image and the recolored image.
+  ///
+  /// Returns a [Map] with keys of colors in ARGB format,
+  /// values of how many of the input pixels belong to the color.
   @override
   QuantizerResult quantize(
     List<int> inputPixels,

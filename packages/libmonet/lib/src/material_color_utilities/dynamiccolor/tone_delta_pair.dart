@@ -2,7 +2,8 @@ import 'dynamic_color.dart';
 
 /// Describes how to fulfill a tone delta pair constraint.
 ///
-/// Determines if the delta is a minimum, maximum, or exact tonal distance that must be maintained.
+/// Determines if the delta is a minimum, maximum, or exact tonal distance
+/// that must be maintained.
 enum DeltaConstraint {
   /// The tone of roleA must be an exact delta away from the tone of roleB.
   exact,
@@ -16,10 +17,12 @@ enum DeltaConstraint {
 
 /// Describes the relationship in lightness between two colors.
 ///
-/// 'relative_darker' and 'relative_lighter' describes the tone adjustment relative to the surface
-/// color trend (white in light mode; black in dark mode). For instance, ToneDeltaPair(A, B, 10,
-/// 'relative_lighter', 'farther') states that A should be at least 10 lighter than B in light
-/// mode, and at least 10 darker than B in dark mode.
+/// [relativeLighter] and [relativeDarker] describes the tone adjustment
+/// relative to the surface color trend
+/// (white in light mode; black in dark mode). For instance,
+/// ToneDeltaPair(A, B, 10, 'relative_lighter', 'farther') states that A
+/// should be at least 10 lighter than B in light mode, and at least 10 darker
+/// than B in dark mode.
 enum TonePolarity {
   /// The tone of roleA is always darker than the tone of roleB.
   darker,
@@ -27,12 +30,12 @@ enum TonePolarity {
   /// The tone of roleA is always lighter than the tone of roleB.
   lighter,
 
-  /// The tone of roleA is darker than the tone of roleB in light mode, and lighter than the tone
-  /// of roleB in dark mode.
+  /// The tone of roleA is darker than the tone of roleB in light mode,
+  /// and lighter than the tone of roleB in dark mode.
   relativeDarker,
 
-  /// The tone of roleA is lighter than the tone of roleB in light mode, and darker than the tone
-  /// of roleB in dark mode.
+  /// The tone of roleA is lighter than the tone of roleB in light mode,
+  /// and darker than the tone of roleB in dark mode.
   relativeLighter,
 }
 

@@ -62,27 +62,27 @@ void main() {
     test("complement", () {
       final blueComplement = TemperatureCache(
         Hct.fromInt(0xff0000ff),
-      ).getComplement().toInt();
+      ).complement.toInt();
       expect(blueComplement, 0xff9d0002);
 
       final redComplement = TemperatureCache(
         Hct.fromInt(0xffff0000),
-      ).getComplement().toInt();
+      ).complement.toInt();
       expect(redComplement, 0xff007bfc);
 
       final greenComplement = TemperatureCache(
         Hct.fromInt(0xff00ff00),
-      ).getComplement().toInt();
+      ).complement.toInt();
       expect(greenComplement, 0xffffd2c9);
 
       final whiteComplement = TemperatureCache(
         Hct.fromInt(0xffffffff),
-      ).getComplement().toInt();
+      ).complement.toInt();
       expect(whiteComplement, 0xffffffff);
 
       final blackComplement = TemperatureCache(
         Hct.fromInt(0xff000000),
-      ).getComplement().toInt();
+      ).complement.toInt();
       expect(blackComplement, 0xff000000);
     });
 

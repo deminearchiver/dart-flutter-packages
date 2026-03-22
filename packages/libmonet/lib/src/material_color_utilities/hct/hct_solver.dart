@@ -8,6 +8,7 @@ import '../utils/math_utils.dart';
 import 'cam16.dart';
 import 'viewing_conditions.dart';
 
+/// A class that solves the HCT equation.
 abstract final class HctSolver {
   /// Matrix used when converting from linear RGB to CAM16.
   @internal

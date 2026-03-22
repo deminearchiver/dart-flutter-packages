@@ -8,6 +8,8 @@ final class AndroidDynamicColors {
   final _mdc = MaterialDynamicColors();
 
   // CLOCK COLORS
+
+  /// Background color recommended for most Android widgets.
   DynamicColor get widgetBackground => DynamicColor(
     name: "widget_background",
     palette: (scheme) => scheme.secondaryPalette,
@@ -15,6 +17,7 @@ final class AndroidDynamicColors {
     isBackground: true,
   );
 
+  /// Clock hour color
   DynamicColor get clockHour => DynamicColor(
     name: "clock_hour",
     palette: (scheme) =>
@@ -32,6 +35,7 @@ final class AndroidDynamicColors {
     ),
   );
 
+  /// Clock minute color
   DynamicColor get clockMinute => DynamicColor(
     name: "clock_minute",
     palette: (scheme) => scheme.primaryPalette,
@@ -41,27 +45,29 @@ final class AndroidDynamicColors {
     contrastCurve: (_) => const ContrastCurve(6.5, 6.5, 10.0, 15.0),
   );
 
+  /// Clock second color
   DynamicColor get clockSecond => DynamicColor(
     name: "clock_second",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) => scheme.isDark ? 90.0 : 40.0,
     isBackground: false,
     background: (_) => widgetBackground,
-    // TODO(deminearchiver): investigate if 70 should be changed to 7 (maybe a typo?)
-    contrastCurve: (_) => const ContrastCurve(5.0, 5.0, 70.0, 11.0),
+    contrastCurve: (_) => const ContrastCurve(5.0, 5.0, 7.0, 11.0),
   );
 
+  /// Weather temperature color
   DynamicColor get weatherTemp => DynamicColor(
     name: "weather_temp",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
     isBackground: false,
     background: (_) => widgetBackground,
-    // TODO(deminearchiver): investigate if 70 should be changed to 7 (maybe a typo?)
-    contrastCurve: (_) => const ContrastCurve(5.0, 5.0, 70.0, 11.0),
+    contrastCurve: (_) => const ContrastCurve(5.0, 5.0, 7.0, 11.0),
   );
 
   // THEME APP ICONS
+
+  /// Background color of monochrome launcher icons containers.
   DynamicColor get themeApp => DynamicColor(
     name: "theme_app",
     palette: (scheme) =>
@@ -88,6 +94,7 @@ final class AndroidDynamicColors {
     isBackground: true,
   );
 
+  /// Tint color that gets applied to monochrome launcher icons.
   DynamicColor get onThemeApp => DynamicColor(
     name: "on_theme_app",
     palette: (scheme) => scheme.primaryPalette,
@@ -97,6 +104,7 @@ final class AndroidDynamicColors {
     contrastCurve: (_) => const ContrastCurve(7.0, 7.0, 11.0, 21.0),
   );
 
+  /// App suggestion ring color.
   DynamicColor get themeAppRing => DynamicColor(
     name: "theme_app_ring",
     palette: (scheme) => scheme.primaryPalette,
@@ -110,6 +118,7 @@ final class AndroidDynamicColors {
     contrastCurve: (_) => const ContrastCurve(1.8, 1.8, 3.0, 4.5),
   );
 
+  /// App notification badge color.
   DynamicColor get themeNotif => DynamicColor(
     name: "theme_notif",
     palette: (scheme) => scheme.tertiaryPalette,
@@ -127,6 +136,11 @@ final class AndroidDynamicColors {
   );
 
   // SUPER G COLORS
+
+  /// One of the colors used in the Super G logo.
+  /// Super G is the internal name of the multicolored Google "G" logomark.
+  ///
+  /// This color maps to the red part of the logo.
   DynamicColor get brandA => DynamicColor(
     name: "brand_a",
     palette: (scheme) => scheme.primaryPalette,
@@ -137,6 +151,10 @@ final class AndroidDynamicColors {
         : const ContrastCurve(6.0, 6.0, 9.0, 12.0),
   );
 
+  /// One of the colors used in the Super G logo.
+  /// Super G is the internal name of the multicolored Google "G" logomark.
+  ///
+  /// This color maps to the yellow part of the logo.
   DynamicColor get brandB => DynamicColor(
     name: "brand_b",
     palette: (scheme) => scheme.secondaryPalette,
@@ -147,6 +165,10 @@ final class AndroidDynamicColors {
         : const ContrastCurve(2.0, 2.0, 3.0, 4.5),
   );
 
+  /// One of the colors used in the Super G logo.
+  /// Super G is the internal name of the multicolored Google "G" logomark.
+  ///
+  /// This color maps to the green part of the logo.
   DynamicColor get brandC => DynamicColor(
     name: "brand_c",
     palette: (scheme) => scheme.primaryPalette,
@@ -157,6 +179,10 @@ final class AndroidDynamicColors {
         : const ContrastCurve(4.0, 4.0, 7.0, 8.0),
   );
 
+  /// One of the colors used in the Super G logo.
+  /// Super G is the internal name of the multicolored Google "G" logomark.
+  ///
+  /// This color maps to the blue part of the logo.
   DynamicColor get brandD => DynamicColor(
     name: "brand_d",
     palette: (scheme) => scheme.tertiaryPalette,
@@ -168,6 +194,7 @@ final class AndroidDynamicColors {
   );
 
   // QUICK SETTING TILES
+
   DynamicColor get underSurface => DynamicColor(
     name: "under_surface",
     palette: (scheme) => scheme.primaryPalette,
@@ -273,6 +300,10 @@ final class AndroidDynamicColors {
     isBackground: true,
   );
 
+  /// All dynamic colors in Android Design system.
+  ///
+  /// A list containing getters for all dynamic colors of this class.
+  /// Iteration order is stable.
   late final List<DynamicColor Function()> allDynamicColors = .unmodifiable([
     () => widgetBackground,
     () => clockHour,

@@ -5,7 +5,24 @@ import '../utils/math_utils.dart';
 
 import 'cam16.dart';
 
+/// In traditional color spaces, a color can be identified solely by the
+/// observer's measurement of the color. Color appearance models such as CAM16
+/// also use information about the environment where the color was observed,
+/// known as the viewing conditions.
+///
+/// For example, white under the traditional assumption of a midday sun
+/// white point is accurately measured as a slightly chromatic blue by CAM16.
+/// (roughly, hue 203, chroma 3, lightness 100)
+///
+/// This class caches intermediate values of the CAM16 conversion process
+/// that depend only on viewing conditions, enabling speed ups.
 final class ViewingConditions {
+  /// Parameters are intermediate values of the CAM16 conversion process.
+  /// Their names are shorthand for technical color science terminology,
+  /// this class would not benefit from documenting them individually.
+  /// A brief overview is available in the CAM16 specification,
+  /// and a complete overview requires a color science textbook,
+  /// such as Fairchild's Color Appearance Models.
   const ViewingConditions._(
     this.n,
     this.aw,
@@ -19,6 +36,7 @@ final class ViewingConditions {
     this.z,
   );
 
+  /// Create ViewingConditions from a simple, physically relevant, set of parameters.
   factory ViewingConditions.make(
     List<double> whitePoint,
     double adaptingLuminance,
@@ -100,6 +118,9 @@ final class ViewingConditions {
     );
   }
 
+  /// Create sRGB-like viewing conditions with a custom background lstar.
+  ///
+  /// Default viewing conditions have a lstar of 50, midgray.
   factory ViewingConditions.defaultWithBackgroundLstar(double lstar) => .make(
     ColorUtils.whitePointD65,
     200.0 / math.pi * ColorUtils.yFromLstar(50.0) / 100.0,
@@ -121,18 +142,8 @@ final class ViewingConditions {
 
   @override
   String toString() =>
-      "ViewingConditions("
-      "n: $n, "
-      "aw: $aw, "
-      "nbb: $nbb, "
-      "ncb: $ncb, "
-      "c: $c, "
-      "nc: $nc, "
-      "rgbD: $rgbD, "
-      "fl: $fl, "
-      "flRoot: $flRoot, "
-      "z: $z"
-      ")";
+      "ViewingConditions(n: $n, aw: $aw, nbb: $nbb, ncb: $ncb, c: $c, nc: $nc, "
+      "rgbD: $rgbD, fl: $fl, flRoot: $flRoot, z: $z)";
 
   @override
   bool operator ==(Object other) =>
@@ -152,5 +163,6 @@ final class ViewingConditions {
   @override
   int get hashCode => Object.hash(n, aw, nbb, ncb, c, nc, rgbD, fl, flRoot, z);
 
+  /// sRGB-like viewing conditions.
   static final srgb = ViewingConditions.defaultWithBackgroundLstar(50.0);
 }

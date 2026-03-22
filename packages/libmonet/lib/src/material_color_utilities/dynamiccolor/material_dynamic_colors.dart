@@ -2,10 +2,12 @@ import 'color_spec_2026.dart';
 import 'dynamic_color.dart';
 import 'dynamic_scheme.dart';
 
+/// Named colors, otherwise known as tokens, or roles,
+/// in the Material Design system.
 final class MaterialDynamicColors {
   MaterialDynamicColors();
 
-  final ColorSpec2026 _colorSpec = const ColorSpec2026();
+  final _colorSpec = const ColorSpec2026();
 
   DynamicColor highestSurface(DynamicScheme scheme) =>
       _colorSpec.highestSurface(scheme);
@@ -153,6 +155,9 @@ final class MaterialDynamicColors {
   DynamicColor get textHintInverse => _colorSpec.textHintInverse;
 
   /// All dynamic colors in Material Design system.
+  ///
+  /// A list containing getters for all dynamic colors of this class.
+  /// Iteration order is stable.
   late final List<DynamicColor Function()> allDynamicColors = .unmodifiable([
     () => primaryPaletteKeyColor,
     () => secondaryPaletteKeyColor,

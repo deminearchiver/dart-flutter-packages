@@ -129,6 +129,7 @@ final class Cam16 {
     return ._(hue, c, j, q, m, s, jstar, astar, bstar);
   }
 
+  /// Create a CAM16 color from a color in defined viewing conditions.
   @internal
   factory Cam16.fromIntInViewingConditions(
     int argb,
@@ -146,6 +147,8 @@ final class Cam16 {
     return .fromXyzInViewingConditions(x, y, z, viewingConditions);
   }
 
+  /// Create a CAM16 color from a color,
+  /// assuming the color was viewed in default viewing conditions.
   factory Cam16.fromInt(int argb) =>
       .fromIntInViewingConditions(argb, ViewingConditions.srgb);
 
@@ -180,6 +183,8 @@ final class Cam16 {
   factory Cam16.fromJch(double j, double c, double h) =>
       .fromJchInViewingConditions(j, c, h, ViewingConditions.srgb);
 
+  /// Create a CAM16 color from CAM16-UCS coordinates in defined
+  /// viewing conditions.
   factory Cam16.fromUcsInViewingConditions(
     double jstar,
     double astar,
@@ -197,6 +202,7 @@ final class Cam16 {
     return .fromJchInViewingConditions(j, c, h, viewingConditions);
   }
 
+  ///  Create a CAM16 color from CAM16-UCS coordinates.
   factory Cam16.fromUcs(double jstar, double astar, double bstar) =>
       .fromUcsInViewingConditions(jstar, astar, bstar, ViewingConditions.srgb);
 

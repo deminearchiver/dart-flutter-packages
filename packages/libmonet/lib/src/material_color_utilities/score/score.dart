@@ -15,6 +15,14 @@ abstract final class Score {
   static const _cutoffChroma = 5.0;
   static const _cutoffExcitedProportion = 0.01;
 
+  /// Given a map with keys of colors and values of how often the color appears, rank the colors
+  /// based on suitability for being used for a UI theme.
+  ///
+  /// Returns colors sorted by suitability for a UI theme. The most suitable
+  /// color is the first item, the least suitable is the last. There will
+  /// always be at least one color returned. If all the input colors were not
+  /// suitable for a theme, a default fallback color will be provided,
+  /// Google Blue.
   static List<int> score(
     Map<int, int> colorsToPopulation, [
     int desired = 4,
@@ -65,7 +73,7 @@ abstract final class Score {
     }
 
     // Sorted so that colors with higher scores come first.
-    scoredHcts.sort((a, b) => b.score.compareTo(a.score));
+    scoredHcts.sort(_scoredComparator);
 
     // Iterates through potential hue differences in degrees in order to select
     // the colors with the largest distribution of hues possible. Starting at
@@ -88,24 +96,17 @@ abstract final class Score {
             break;
           }
         }
-        if (!hasDuplicateHue) {
-          chosenColors.add(hct);
-        }
-        if (chosenColors.length >= desired) {
-          break;
-        }
+        if (!hasDuplicateHue) chosenColors.add(hct);
+        if (chosenColors.length >= desired) break;
       }
-      if (chosenColors.length >= desired) {
-        break;
-      }
+      if (chosenColors.length >= desired) break;
     }
-    final colors = <int>[];
-    if (chosenColors.isEmpty) {
-      colors.add(fallbackColorArgb);
-    }
-    for (final chosenHct in chosenColors) {
-      colors.add(chosenHct.toInt());
-    }
+
+    final colors = <int>[
+      if (chosenColors.isEmpty) fallbackColorArgb,
+      for (final chosenHct in chosenColors) chosenHct.toInt(),
+    ];
+
     return colors;
   }
 }
@@ -117,3 +118,6 @@ extension type const _ScoredHct._(({Hct hct, double score}) _) {
 
   double get score => _.score;
 }
+
+int _scoredComparator(_ScoredHct entry1, _ScoredHct entry2) =>
+    entry2.score.compareTo(entry1.score);

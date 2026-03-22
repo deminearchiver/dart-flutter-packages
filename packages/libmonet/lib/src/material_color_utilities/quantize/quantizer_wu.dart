@@ -8,6 +8,12 @@ const _indexBits = 5;
 const _indexCount = (1 << _indexBits) + 1; // 33
 const _totalSize = _indexCount * _indexCount * _indexCount; // 35937
 
+/// An image quantizer that divides the image's pixels into clusters
+/// by recursively cutting an RGB cube, based on the weight of pixels
+/// in each area of the cube.
+///
+/// The algorithm was described by Xiaolin Wu in Graphic Gems II,
+/// published in 1991.
 final class QuantizerWu implements Quantizer {
   QuantizerWu();
 

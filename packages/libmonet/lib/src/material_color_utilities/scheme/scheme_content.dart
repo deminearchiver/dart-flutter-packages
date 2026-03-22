@@ -10,9 +10,7 @@ import '../dynamiccolor/dynamic_scheme.dart';
 /// into 6, and the precise analog is the one found by increasing hue. This is a scientifically
 /// grounded equivalent to rotating hue clockwise by 60 degrees. It also maintains constant
 /// appearance.
-@Deprecated("Use DynamicScheme directly instead")
 class SchemeContent extends DynamicScheme {
-  @Deprecated("Use DynamicScheme.withDefaults(variant: .content) instead.")
   SchemeContent({
     super.sourceColor,
     super.isDark,

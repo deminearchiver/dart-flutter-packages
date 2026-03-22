@@ -103,8 +103,8 @@ final class _KeyColor {
           lowerTone = midTone;
         }
       } else {
-        // As there is no sufficient chroma in the midTone, follow the direction to the chroma
-        // peak.
+        // As there is no sufficient chroma in the midTone,
+        // follow the direction to the chroma peak.
         if (isAscending) {
           lowerTone = midTone + toneStepSize;
         } else {

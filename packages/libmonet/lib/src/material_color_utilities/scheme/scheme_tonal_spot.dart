@@ -6,9 +6,7 @@ import '../dynamiccolor/dynamic_scheme.dart';
 /// TonalPalette with a hue related to the source color.
 ///
 /// The default Material You theme on Android 12 and 13.
-@Deprecated("Use DynamicScheme directly instead")
 class SchemeTonalSpot extends DynamicScheme {
-  @Deprecated("Use DynamicScheme.withDefaults(variant: .tonalSpot) instead.")
   SchemeTonalSpot({
     super.sourceColor,
     super.isDark,

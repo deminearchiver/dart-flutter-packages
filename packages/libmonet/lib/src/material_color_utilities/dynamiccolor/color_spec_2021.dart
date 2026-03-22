@@ -1058,7 +1058,7 @@ class ColorSpec2021 implements ColorSpec {
     ),
     .fidelity => .fromHct(
       DislikeAnalyzer.fixIfDisliked(
-        TemperatureCache(sourceColor.asHct).getComplement(),
+        TemperatureCache(sourceColor.asHct).complement,
       ),
     ),
     .fruitSalad => .fromHueAndChroma(sourceColor.asHct.hue, 36.0),

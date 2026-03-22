@@ -1,6 +1,7 @@
 import 'quantizer_result.dart';
 import 'quantizer.dart';
 
+/// Creates a dictionary with keys of colors, and values of count of the color.
 final class QuantizerMap implements Quantizer {
   const QuantizerMap();
 
