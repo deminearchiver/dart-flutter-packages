@@ -69,6 +69,7 @@ export 'package:flutter/material.dart'
 // Third-party packages
 
 export 'package:meta/meta.dart';
+export 'package:motor/motor.dart';
 
 // Internal packages
 

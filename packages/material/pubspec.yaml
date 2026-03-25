@@ -25,6 +25,7 @@ dependencies:
   meta: ^1.17.0
   libmonet: ^2.0.0-dev.11
   material_color_utilities: ^0.13.0
+  motor: ^1.1.0
 
 dev_dependencies:
   flutter_test:
