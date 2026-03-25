@@ -12,7 +12,9 @@ typedef RadioThemeLegacy = flutter.RadioTheme;
 typedef RadioThemeDataLegacy = flutter.RadioThemeData;
 typedef RadioListTileLegacy<T extends Object?> = flutter.RadioListTile<T>;
 
-sealed class _RadioButtonStates implements RadioButtonStates {
+sealed class _RadioButtonStates
+    with Diagnosticable
+    implements RadioButtonStates {
   const _RadioButtonStates({required this.isSelected});
 
   const factory _RadioButtonStates.enabled({
@@ -56,6 +58,12 @@ sealed class _RadioButtonStates implements RadioButtonStates {
 
   @override
   final bool isSelected;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<bool>("isSelected", isSelected));
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -116,6 +124,15 @@ class _RadioButtonEnabledStates extends _RadioButtonStates
 
   @override
   final bool isPressed;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<bool>("isHovered", isHovered))
+      ..add(DiagnosticsProperty<bool>("isFocused", isFocused))
+      ..add(DiagnosticsProperty<bool>("isPressed", isPressed));
+  }
 }
 
 class RadioButton extends StatefulWidget {
@@ -161,6 +178,9 @@ class _RadioButtonState extends State<RadioButton>
   late SpringThemeData _springTheme;
   late RadioButtonThemeData _radioButtonTheme;
 
+  _RadioButtonStates? _lastStates;
+  late _RadioButtonStates _states;
+
   void _updateColorAnimations({
     required Color iconBackgroundColor,
     required Color iconOutlineColor,
@@ -183,6 +203,11 @@ class _RadioButtonState extends State<RadioButton>
     _iconDotColorTween.begin = _iconDotColorAnimation.value ?? iconDotColor;
     _iconDotColorTween.end = iconDotColor;
 
+    if (_states == _lastStates) {
+      _effectsController.value = 1.0;
+      return;
+    }
+
     if (_iconBackgroundColorTween.begin == _iconBackgroundColorTween.end &&
         _iconOutlineColorTween.begin == _iconOutlineColorTween.end &&
         _iconDotColorTween.begin == _iconDotColorTween.end) {
@@ -195,7 +220,7 @@ class _RadioButtonState extends State<RadioButton>
     unawaited(_effectsController.animateWith(simulation));
   }
 
-  _RadioButtonStates _resolveStates() {
+  void _resolveStates() {
     final states = _statesController.value as StrictSet<WidgetState>;
 
     final _RadioButtonStates result = widget.onTap == null
@@ -232,7 +257,7 @@ class _RadioButtonState extends State<RadioButton>
     } else {
       states.remove(.pressed);
     }
-    return result;
+    _states = result;
   }
 
   void _statesListener() {
@@ -292,14 +317,7 @@ class _RadioButtonState extends State<RadioButton>
     setState(() => _focused = value);
   }
 
-  void _onTapOutside(PointerDownEvent _) {
-    if (!mounted) return;
-    setState(() {
-      _focused = false;
-    });
-  }
-
-  void _onTapUpOutside(PointerUpEvent _) {
+  void _onTapOutside(PointerEvent _) {
     if (!mounted) return;
     setState(() {
       _focused = false;
@@ -377,25 +395,25 @@ class _RadioButtonState extends State<RadioButton>
 
   @override
   Widget build(BuildContext context) {
-    final states = _resolveStates();
+    _resolveStates();
 
     const minTapTargetSize = Size.square(48.0);
-    final stateLayerSize = _radioButtonTheme.stateLayerSize.resolve(states);
-    final stateLayerShape = _radioButtonTheme.stateLayerShape.resolve(states);
+    final stateLayerSize = _radioButtonTheme.stateLayerSize.resolve(_states);
+    final stateLayerShape = _radioButtonTheme.stateLayerShape.resolve(_states);
     final stateLayerColor = _radioButtonTheme.stateLayerColor;
     final stateLayerOpacity = _radioButtonTheme.stateLayerOpacity;
-    final iconSize = _radioButtonTheme.iconSize.resolve(states);
+    final iconSize = _radioButtonTheme.iconSize.resolve(_states);
     _resolvedIconBackgroundColor = _radioButtonTheme.iconBackgroundColor
-        .resolve(states);
+        .resolve(_states);
     _resolvedIconOutlineColor = _radioButtonTheme.iconOutlineColor.resolve(
-      states,
+      _states,
     );
-    _resolvedIconDotColor = _radioButtonTheme.iconDotColor.resolve(states);
+    _resolvedIconDotColor = _radioButtonTheme.iconDotColor.resolve(_states);
 
     final overlayColor = MixedWidgetStateLayerColor<RadioButtonStates>.from(
       (widgetStates) => _RadioButtonStates.fromWidgetStates(
         widgetStates,
-        isSelected: states.isSelected,
+        isSelected: _states.isSelected,
       ),
       color: stateLayerColor,
       opacity: stateLayerOpacity,
@@ -407,24 +425,26 @@ class _RadioButtonState extends State<RadioButton>
       iconDotColor: _resolvedIconDotColor,
     );
 
+    _lastStates = _states;
+
     final Widget child = SizedBox.fromSize(
       size: stateLayerSize,
       child: Listener(
         behavior: .deferToChild,
-        onPointerDown: !states.isDisabled ? _onPointerDown : null,
-        onPointerUp: !states.isDisabled ? _onPointerUp : null,
-        onPointerCancel: !states.isDisabled ? _onPointerCancel : null,
+        onPointerDown: !_states.isDisabled ? _onPointerDown : null,
+        onPointerUp: !_states.isDisabled ? _onPointerUp : null,
+        onPointerCancel: !_states.isDisabled ? _onPointerCancel : null,
         child: Material.raw(
           child: InkWell(
             statesController: _statesController,
             customBorder: stateLayerShape,
             overlayColor: overlayColor,
-            enableFeedback: !states.isDisabled,
-            onTap: !states.isDisabled ? () => widget.onTap?.call() : null,
-            onTapDown: !states.isDisabled ? _onTapDown : null,
-            onTapUp: !states.isDisabled ? _onTapUp : null,
-            onTapCancel: !states.isDisabled ? _onTapCancel : null,
-            onFocusChange: !states.isDisabled ? _onFocusChange : null,
+            enableFeedback: !_states.isDisabled,
+            onTap: !_states.isDisabled ? () => widget.onTap?.call() : null,
+            onTapDown: !_states.isDisabled ? _onTapDown : null,
+            onTapUp: !_states.isDisabled ? _onTapUp : null,
+            onTapCancel: !_states.isDisabled ? _onTapCancel : null,
+            onFocusChange: !_states.isDisabled ? _onFocusChange : null,
           ),
         ),
       ),
@@ -442,7 +462,7 @@ class _RadioButtonState extends State<RadioButton>
 
     return RepaintBoundary(
       child: Semantics(
-        enabled: !states.isDisabled,
+        enabled: !_states.isDisabled,
         label: null,
         checked: _isSelected,
         child: Align.center(
@@ -451,8 +471,8 @@ class _RadioButtonState extends State<RadioButton>
           child: TapRegion(
             behavior: .deferToChild,
             consumeOutsideTaps: false,
-            onTapOutside: !states.isDisabled ? _onTapOutside : null,
-            onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
+            onTapOutside: !_states.isDisabled ? _onTapOutside : null,
+            onTapUpOutside: !_states.isDisabled ? _onTapOutside : null,
             child: FocusRingTheme.merge(
               data: .from(
                 shape: .all(
@@ -460,7 +480,7 @@ class _RadioButtonState extends State<RadioButton>
                 ),
               ),
               child: FocusRing(
-                visible: states.isFocused,
+                visible: _states.isFocused,
                 placement: .outward,
                 layoutBuilder: (context, info, child) => Align.center(
                   child: SizedBox.fromSize(size: stateLayerSize, child: child),

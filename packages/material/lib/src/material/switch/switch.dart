@@ -8,7 +8,7 @@ typedef SwitchLegacy = flutter.Switch;
 typedef SwitchThemeLegacy = flutter.SwitchTheme;
 typedef SwitchThemeDataLegacy = flutter.SwitchThemeData;
 
-sealed class _SwitchStates implements SwitchStates {
+sealed class _SwitchStates with Diagnosticable implements SwitchStates {
   const _SwitchStates({required this.hasIcon, required this.isSelected});
 
   const factory _SwitchStates.enabled({
@@ -60,6 +60,14 @@ sealed class _SwitchStates implements SwitchStates {
 
   @override
   final bool isSelected;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<bool>("hasIcon", hasIcon))
+      ..add(DiagnosticsProperty<bool>("isSelected", isSelected));
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -126,6 +134,15 @@ class _SwitchEnabledStates extends _SwitchStates
 
   @override
   final bool isPressed;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<bool>("isHovered", isHovered))
+      ..add(DiagnosticsProperty<bool>("isFocused", isFocused))
+      ..add(DiagnosticsProperty<bool>("isPressed", isPressed));
+  }
 }
 
 class Switch extends StatefulWidget {
@@ -211,11 +228,13 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
   bool _pressed = false;
   bool _focused = false;
 
+  _SwitchStates? _lastStates;
+  late _SwitchStates _states;
+
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")
   SpringSimulation _createImplicitSpringSimulation(SpringDescription spring) =>
-      // TODO(deminearchiver): does snapToEnd degrade animation quality?
       SpringSimulation(spring, 0.0, 1.0, 0.0, snapToEnd: true);
 
   void _updateSpatialAnimations({
@@ -233,6 +252,11 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
 
     _handlePositionTween.begin = _handlePositionAnimation.value;
     _handlePositionTween.end = handlePosition;
+
+    if (_states == _lastStates) {
+      _spatialController.value = 1.0;
+      return;
+    }
 
     if (_selectionSpatialProgressTween.begin ==
             _selectionSpatialProgressTween.end &&
@@ -256,6 +280,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     required Outline handleOutline,
     required IconThemeData iconTheme,
   }) {
+    // 1. A transition is in progress, but the target values haven't changed.
     if (selectionProgress == _selectionEffectsProgressTween.end &&
         trackShape == _trackShapeTween.end &&
         trackColor == _trackColorTween.end &&
@@ -267,6 +292,8 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
         iconTheme == _iconThemeTween.end) {
       return;
     }
+
+    // 2. Begin at current (fallback to target) values and end at target values.
 
     _selectionEffectsProgressTween.begin =
         _selectionEffectsProgressAnimation.value;
@@ -296,6 +323,15 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _iconThemeTween.begin = _iconThemeAnimation.value ?? iconTheme;
     _iconThemeTween.end = iconTheme;
 
+    // 3. If states haven't changed (e.g. theme change), skip the transition.
+
+    if (_states == _lastStates) {
+      _effectsController.value = 1.0;
+      return;
+    }
+
+    // 4. If the transition wouldn't be noticeable, skip it.
+
     if (_selectionEffectsProgressTween.begin ==
             _selectionEffectsProgressTween.end &&
         _trackShapeTween.begin == _trackShapeTween.end &&
@@ -310,11 +346,13 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       return;
     }
 
+    // 5. Start the transition.
+
     final simulation = _createImplicitSpringSimulation(_effectsSpring);
     unawaited(_effectsController.animateWith(simulation));
   }
 
-  _SwitchStates _resolveStates() {
+  void _resolveStates() {
     final states = _statesController.value as StrictSet<WidgetState>;
 
     final _SwitchStates result = widget.onCheckedChanged == null
@@ -352,7 +390,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     } else {
       states.remove(.pressed);
     }
-    return result;
+    _states = result;
   }
 
   void _statesListener() {
@@ -412,14 +450,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     setState(() => _focused = value);
   }
 
-  void _onTapOutside(PointerDownEvent _) {
-    if (!mounted) return;
-    setState(() {
-      _focused = false;
-    });
-  }
-
-  void _onTapUpOutside(PointerUpEvent _) {
+  void _onTapOutside(PointerEvent _) {
     if (!mounted) return;
     setState(() {
       _focused = false;
@@ -512,36 +543,36 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final states = _resolveStates();
+    _resolveStates();
 
-    final minTapTargetSize = _switchTheme.minTapTargetSize.resolve(states);
-    final trackSize = _switchTheme.trackSize.resolve(states);
-    _trackShape = _switchTheme.trackShape.resolve(states);
-    _trackColor = _switchTheme.trackColor.resolve(states);
-    _trackOutline = _switchTheme.trackOutline.resolve(states);
-    final stateLayerSize = _switchTheme.stateLayerSize.resolve(states);
-    final stateLayerShape = _switchTheme.stateLayerShape.resolve(states);
+    final minTapTargetSize = _switchTheme.minTapTargetSize.resolve(_states);
+    final trackSize = _switchTheme.trackSize.resolve(_states);
+    _trackShape = _switchTheme.trackShape.resolve(_states);
+    _trackColor = _switchTheme.trackColor.resolve(_states);
+    _trackOutline = _switchTheme.trackOutline.resolve(_states);
+    final stateLayerSize = _switchTheme.stateLayerSize.resolve(_states);
+    final stateLayerShape = _switchTheme.stateLayerShape.resolve(_states);
     final stateLayerColor = _switchTheme.stateLayerColor;
     final stateLayerOpacity = _switchTheme.stateLayerOpacity;
-    _handleSize = _switchTheme.handleSize.resolve(states);
-    _handleShape = _switchTheme.handleShape.resolve(states);
-    _handleColor = _switchTheme.handleColor.resolve(states);
-    _handleOutline = _switchTheme.handleOutline.resolve(states);
+    _handleSize = _switchTheme.handleSize.resolve(_states);
+    _handleShape = _switchTheme.handleShape.resolve(_states);
+    _handleColor = _switchTheme.handleColor.resolve(_states);
+    _handleOutline = _switchTheme.handleOutline.resolve(_states);
     _resolvedIconTheme = _iconTheme.merge(
-      _switchTheme.iconTheme.resolve(states),
+      _switchTheme.iconTheme.resolve(_states),
     );
 
     final overlayColor = MixedWidgetStateLayerColor<SwitchStates>.from(
       (widgetStates) => _SwitchStates.fromWidgetStates(
         widgetStates,
-        hasIcon: states.hasIcon,
-        isSelected: states.isSelected,
+        hasIcon: _states.hasIcon,
+        isSelected: _states.isSelected,
       ),
       color: stateLayerColor,
       opacity: stateLayerOpacity,
     );
 
-    _selectionProgress = states.isSelected ? 1.0 : 0.0;
+    _selectionProgress = _states.isSelected ? 1.0 : 0.0;
     _handlePosition = _isSelected ? 1.0 : 0.0;
 
     _updateSpatialAnimations(
@@ -561,33 +592,35 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
       iconTheme: _resolvedIconTheme,
     );
 
+    _lastStates = _states;
+
     final Widget trackChild = SizedBox.fromSize(
       size: stateLayerSize,
       child: Listener(
         behavior: .deferToChild,
-        onPointerDown: !states.isDisabled ? _onPointerDown : null,
-        onPointerUp: !states.isDisabled ? _onPointerUp : null,
-        onPointerCancel: !states.isDisabled ? _onPointerCancel : null,
+        onPointerDown: !_states.isDisabled ? _onPointerDown : null,
+        onPointerUp: !_states.isDisabled ? _onPointerUp : null,
+        onPointerCancel: !_states.isDisabled ? _onPointerCancel : null,
         child: Material.raw(
           child: InkWell(
             statesController: _statesController,
             customBorder: stateLayerShape,
             overlayColor: overlayColor,
-            enableFeedback: !states.isDisabled,
-            onTap: !states.isDisabled
+            enableFeedback: !_states.isDisabled,
+            onTap: !_states.isDisabled
                 ? () => widget.onCheckedChanged?.call(!_isSelected)
                 : null,
-            onTapDown: !states.isDisabled ? _onTapDown : null,
-            onTapUp: !states.isDisabled ? _onTapUp : null,
-            onTapCancel: !states.isDisabled ? _onTapCancel : null,
-            onFocusChange: !states.isDisabled ? _onFocusChange : null,
+            onTapDown: !_states.isDisabled ? _onTapDown : null,
+            onTapUp: !_states.isDisabled ? _onTapUp : null,
+            onTapCancel: !_states.isDisabled ? _onTapCancel : null,
+            onFocusChange: !_states.isDisabled ? _onFocusChange : null,
           ),
         ),
       ),
     );
 
     const iconRotationDisplacement = math.pi / 3.0;
-    const iconOpacityInterval = Interval(1.0 / 3.0, 1.0);
+    const iconOpacityInterval = Interval(0.5, 1.0);
 
     final Widget unselectedIcon = Transform.rotate(
       angle: iconRotationDisplacement,
@@ -666,7 +699,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
 
     return RepaintBoundary(
       child: Semantics(
-        enabled: !states.isDisabled,
+        enabled: !_states.isDisabled,
         toggled: _isSelected,
         child: Align.center(
           widthFactor: 1.0,
@@ -674,8 +707,8 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
           child: TapRegion(
             behavior: .deferToChild,
             consumeOutsideTaps: false,
-            onTapOutside: !states.isDisabled ? _onTapOutside : null,
-            onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
+            onTapOutside: !_states.isDisabled ? _onTapOutside : null,
+            onTapUpOutside: !_states.isDisabled ? _onTapOutside : null,
             child: AnimatedBuilder(
               animation: _effectsController,
               builder: (context, child) => FocusRingTheme.merge(
@@ -686,7 +719,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
                 child: child!,
               ),
               child: FocusRing(
-                visible: states.isFocused,
+                visible: _states.isFocused,
                 placement: .outward,
                 layoutBuilder: (context, info, child) => Align.center(
                   child: SizedBox.fromSize(size: trackSize, child: child),

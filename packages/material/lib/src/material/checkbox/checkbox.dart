@@ -11,7 +11,7 @@ typedef CheckboxThemeDataLegacy = flutter.CheckboxThemeData;
 
 enum _CheckboxSelectionState { off, indeterminate, checked }
 
-sealed class _CheckboxStates implements CheckboxStates {
+sealed class _CheckboxStates with Diagnosticable implements CheckboxStates {
   const _CheckboxStates({required this.isSelected});
 
   const factory _CheckboxStates.enabled({
@@ -55,6 +55,12 @@ sealed class _CheckboxStates implements CheckboxStates {
 
   @override
   final bool isSelected;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<bool>("isSelected", isSelected));
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -115,6 +121,15 @@ class _CheckboxEnabledStates extends _CheckboxStates
 
   @override
   final bool isPressed;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<bool>("isHovered", isHovered))
+      ..add(DiagnosticsProperty<bool>("isFocused", isFocused))
+      ..add(DiagnosticsProperty<bool>("isPressed", isPressed));
+  }
 }
 
 sealed class Checkbox extends StatefulWidget {
@@ -219,6 +234,9 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
   late Animation<Color> _resolvedContainerColorAnimation;
   late Animation<Color> _resolvedIconColorAnimation;
 
+  _CheckboxStates? _lastStates;
+  late _CheckboxStates _states;
+
   void _updateColorAnimations({
     required OutlinedBorder containerShape,
     required Color containerColor,
@@ -247,6 +265,11 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
     _iconColorTween.begin = _iconColorAnimation.value ?? iconColor;
     _iconColorTween.end = iconColor;
 
+    if (_states == _lastStates) {
+      _effectsController.value = 1.0;
+      return;
+    }
+
     if (_containerShapeTween.begin == _containerShapeTween.end &&
         _containerColorTween.begin == _containerColorTween.end &&
         _containerOutlineTween.begin == _containerOutlineTween.end &&
@@ -262,7 +285,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
     unawaited(_effectsController.animateWith(simulation));
   }
 
-  _CheckboxStates _resolveStates() {
+  void _resolveStates() {
     final states = _statesController.value as StrictSet<WidgetState>;
 
     final _CheckboxStates result = widget._onTap == null
@@ -299,7 +322,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
     } else {
       states.remove(.pressed);
     }
-    return result;
+    _states = result;
   }
 
   void _statesListener() {
@@ -359,14 +382,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
     setState(() => _focused = value);
   }
 
-  void _onTapOutside(PointerDownEvent _) {
-    if (!mounted) return;
-    setState(() {
-      _focused = false;
-    });
-  }
-
-  void _onTapUpOutside(PointerUpEvent _) {
+  void _onTapOutside(PointerEvent _) {
     if (!mounted) return;
     setState(() {
       _focused = false;
@@ -527,24 +543,26 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final states = _resolveStates();
+    _resolveStates();
 
     const minTapTargetSize = Size.square(48.0);
-    final stateLayerSize = _checkboxTheme.stateLayerSize.resolve(states);
-    final stateLayerShape = _checkboxTheme.stateLayerShape.resolve(states);
+    final stateLayerSize = _checkboxTheme.stateLayerSize.resolve(_states);
+    final stateLayerShape = _checkboxTheme.stateLayerShape.resolve(_states);
     final stateLayerColor = _checkboxTheme.stateLayerColor;
     final stateLayerOpacity = _checkboxTheme.stateLayerOpacity;
-    final containerSize = _checkboxTheme.containerSize.resolve(states);
-    _resolvedContainerShape = _checkboxTheme.containerShape.resolve(states);
-    _resolvedContainerColor = _checkboxTheme.containerColor.resolve(states);
-    _resolvedContainerOutline = _checkboxTheme.containerOutline.resolve(states);
-    final iconSize = _checkboxTheme.iconSize.resolve(states);
-    _resolvedIconColor = _checkboxTheme.iconColor.resolve(states);
+    final containerSize = _checkboxTheme.containerSize.resolve(_states);
+    _resolvedContainerShape = _checkboxTheme.containerShape.resolve(_states);
+    _resolvedContainerColor = _checkboxTheme.containerColor.resolve(_states);
+    _resolvedContainerOutline = _checkboxTheme.containerOutline.resolve(
+      _states,
+    );
+    final iconSize = _checkboxTheme.iconSize.resolve(_states);
+    _resolvedIconColor = _checkboxTheme.iconColor.resolve(_states);
 
     final overlayColor = MixedWidgetStateLayerColor<CheckboxStates>.from(
       (widgetStates) => _CheckboxStates.fromWidgetStates(
         widgetStates,
-        isSelected: states.isSelected,
+        isSelected: _states.isSelected,
       ),
       color: stateLayerColor,
       opacity: stateLayerOpacity,
@@ -557,24 +575,26 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
       iconColor: _resolvedIconColor,
     );
 
+    _lastStates = _states;
+
     final Widget child = SizedBox.fromSize(
       size: stateLayerSize,
       child: Listener(
         behavior: .deferToChild,
-        onPointerDown: !states.isDisabled ? _onPointerDown : null,
-        onPointerUp: !states.isDisabled ? _onPointerUp : null,
-        onPointerCancel: !states.isDisabled ? _onPointerCancel : null,
+        onPointerDown: !_states.isDisabled ? _onPointerDown : null,
+        onPointerUp: !_states.isDisabled ? _onPointerUp : null,
+        onPointerCancel: !_states.isDisabled ? _onPointerCancel : null,
         child: Material.raw(
           child: InkWell(
             statesController: _statesController,
             customBorder: stateLayerShape,
             overlayColor: overlayColor,
-            enableFeedback: !states.isDisabled,
-            onTap: !states.isDisabled ? () => widget._onTap?.call() : null,
-            onTapDown: !states.isDisabled ? _onTapDown : null,
-            onTapUp: !states.isDisabled ? _onTapUp : null,
-            onTapCancel: !states.isDisabled ? _onTapCancel : null,
-            onFocusChange: !states.isDisabled ? _onFocusChange : null,
+            enableFeedback: !_states.isDisabled,
+            onTap: !_states.isDisabled ? () => widget._onTap?.call() : null,
+            onTapDown: !_states.isDisabled ? _onTapDown : null,
+            onTapUp: !_states.isDisabled ? _onTapUp : null,
+            onTapCancel: !_states.isDisabled ? _onTapCancel : null,
+            onFocusChange: !_states.isDisabled ? _onFocusChange : null,
           ),
         ),
       ),
@@ -598,7 +618,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
 
     return RepaintBoundary(
       child: Semantics(
-        enabled: !states.isDisabled,
+        enabled: !_states.isDisabled,
         label: null,
         checked: _isChecked,
         mixed: _isIndeterminate,
@@ -608,8 +628,8 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
           child: TapRegion(
             behavior: .deferToChild,
             consumeOutsideTaps: false,
-            onTapOutside: !states.isDisabled ? _onTapOutside : null,
-            onTapUpOutside: !states.isDisabled ? _onTapUpOutside : null,
+            onTapOutside: !_states.isDisabled ? _onTapOutside : null,
+            onTapUpOutside: !_states.isDisabled ? _onTapOutside : null,
             child: FocusRingTheme.merge(
               data: .from(
                 shape: .all(
@@ -617,7 +637,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
                 ),
               ),
               child: FocusRing(
-                visible: states.isFocused,
+                visible: _states.isFocused,
                 placement: .outward,
                 layoutBuilder: (context, info, child) => Align.center(
                   child: SizedBox.fromSize(size: stateLayerSize, child: child),
