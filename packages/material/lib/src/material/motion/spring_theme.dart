@@ -83,6 +83,9 @@ abstract class Spring extends SpringPartial {
   SpringDescription toSpringDescription() =>
       .withDampingRatio(mass: 1.0, stiffness: stiffness, ratio: damping);
 
+  SpringMotion toMotion({bool snapToEnd = false}) =>
+      .new(toSpringDescription(), snapToEnd: snapToEnd);
+
   @override
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
