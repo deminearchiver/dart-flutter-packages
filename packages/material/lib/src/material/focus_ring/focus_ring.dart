@@ -346,7 +346,6 @@ class _FocusRingState extends State<FocusRing>
         final resolvedOffset = _offsetAnimation.value;
         final resolvedShape = _shapeAnimation.value ?? shape;
         final resolvedOutline = _outlineAnimation.value ?? outline;
-        print("offset: ${resolvedOffset} thickness: ${resolvedOutline.width}");
         return Padding(
           padding: .all(switch (widget.placement) {
             .inward => resolvedOffset + outline.width,
