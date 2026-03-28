@@ -15,7 +15,12 @@ dependencies:
     sdk: flutter
   meta: ^1.17.0
   system_colors_android: ^0.2.0
+  system_colors_ios: ^0.1.0
+  system_colors_linux: ^0.1.0
+  system_colors_macos: ^0.1.0
   system_colors_platform_interface: ^0.1.0
+  system_colors_web: ^0.1.0
+  system_colors_windows: ^0.1.0
 
 dev_dependencies:
   flutter_test:
@@ -28,3 +33,13 @@ flutter:
     platforms:
       android:
         default_package: system_colors_android
+      ios:
+        default_package: system_colors_ios
+      linux:
+        default_package: system_colors_linux
+      macos:
+        default_package: system_colors_macos
+      web:
+        default_package: system_colors_web
+      windows:
+        default_package: system_colors_windows
