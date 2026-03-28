@@ -7,6 +7,12 @@ source_path:
 
 classes:
   - io.github.deminearchiver.system_colors_android.SystemColorsPlugin
+  - io.github.deminearchiver.system_colors_android.SystemColors
+  - io.github.deminearchiver.system_colors_android.SystemCorePalette
+  - io.github.deminearchiver.system_colors_android.SystemCorePalette31
+  - io.github.deminearchiver.system_colors_android.SystemCorePalette35
+  - io.github.deminearchiver.system_colors_android.SystemColorScheme
+  - io.github.deminearchiver.system_colors_android.SystemColorScheme34
 
 output:
   dart:

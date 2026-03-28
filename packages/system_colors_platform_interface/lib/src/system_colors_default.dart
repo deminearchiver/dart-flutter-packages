@@ -4,7 +4,7 @@ class SystemColorsDefault extends SystemColorsPlatform {
   SystemColorsDefault();
 
   @override
-  SystemColorScheme defaultColorScheme() {
+  SystemColorsData defaultColorScheme() {
     return super.defaultColorScheme();
   }
 }

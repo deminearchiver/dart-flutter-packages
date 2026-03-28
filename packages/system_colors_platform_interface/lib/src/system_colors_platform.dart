@@ -4,7 +4,7 @@ import 'package:system_colors_platform_interface/system_colors_platform_interfac
 abstract class SystemColorsPlatform extends PlatformInterface {
   SystemColorsPlatform() : super(token: _token);
 
-  SystemColorScheme defaultColorScheme() {
+  SystemColorsData defaultColorScheme() {
     throw UnimplementedError("defaultColorScheme() has not been implemented.");
   }
 

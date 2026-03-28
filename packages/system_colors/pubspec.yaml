@@ -14,7 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
   meta: ^1.17.0
-  system_colors_android: ^0.1.0
+  system_colors_android: ^0.2.0
   system_colors_platform_interface: ^0.1.0
 
 dev_dependencies:

@@ -1,5 +1,5 @@
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
+import 'package:system_colors_platform_interface/system_colors_platform_interface.dart';
+
+abstract final class SystemColors {
+  static SystemColorsPlatform get _platform => .instance;
 }
