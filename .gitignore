@@ -3,14 +3,11 @@
 .idea
 .packages
 .pub/
-.dart_tool/
 .vscode/
 *.iml
 
 # Gradle?
 .uuid
-
-pubspec.lock
 
 # iOS and macOS dependencies
 .build/
