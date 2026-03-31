@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'point_provider_lab.dart';
-import 'quantizer_result.dart';
 import 'quantizer.dart';
 
 const _maxIterations = 10;
