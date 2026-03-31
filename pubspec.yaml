@@ -14,8 +14,6 @@ workspace:
   - packages/device_info_ffi/example
   - packages/dynamic_color_ffi
   - packages/dynamic_color_ffi/example
-  - packages/embedded_photo_picker
-  - packages/embedded_photo_picker/example
   - packages/layout
   - packages/libmonet
   - packages/lz4_ffi
