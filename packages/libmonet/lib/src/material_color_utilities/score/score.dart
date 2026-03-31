@@ -24,11 +24,11 @@ abstract final class Score {
   /// suitable for a theme, a default fallback color will be provided,
   /// Google Blue.
   static List<int> score(
-    Map<int, int> colorsToPopulation, [
+    Map<int, int> colorsToPopulation, {
     int desired = 4,
     int fallbackColorArgb = 0xff4285f4,
     bool filter = true,
-  ]) {
+  }) {
     // Get the HCT color for each Argb value, while finding the per hue count and
     // total count.
     final colorsHct = <Hct>[];

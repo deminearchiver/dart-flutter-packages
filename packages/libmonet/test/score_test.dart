@@ -9,7 +9,7 @@ void main() {
       colorsToPopulation[0xffffffff] = 1;
       colorsToPopulation[0xff0000ff] = 1;
 
-      final ranked = Score.score(colorsToPopulation, 4);
+      final ranked = Score.score(colorsToPopulation, desired: 4);
 
       expect(ranked.length, 1);
       expect(ranked[0], 0xff0000ff);
@@ -21,7 +21,7 @@ void main() {
       colorsToPopulation[0xff00ff00] = 1;
       colorsToPopulation[0xff0000ff] = 1;
 
-      final ranked = Score.score(colorsToPopulation, 4);
+      final ranked = Score.score(colorsToPopulation, desired: 4);
 
       expect(ranked.length, 3);
       expect(ranked[0], 0xffff0000);
@@ -33,7 +33,7 @@ void main() {
       final colorsToPopulation = <int, int>{};
       colorsToPopulation[0xff000000] = 1;
 
-      final ranked = Score.score(colorsToPopulation, 4);
+      final ranked = Score.score(colorsToPopulation, desired: 4);
 
       expect(ranked.length, 1);
       expect(ranked[0], 0xff4285f4);
@@ -44,7 +44,7 @@ void main() {
       colorsToPopulation[0xff008772] = 1; // H 180 C 42 T 0
       colorsToPopulation[0xff318477] = 1; // H 184 C 35 T 0
 
-      final ranked = Score.score(colorsToPopulation, 4);
+      final ranked = Score.score(colorsToPopulation, desired: 4);
 
       expect(ranked.length, 1);
       expect(ranked[0], 0xff008772);
@@ -56,7 +56,7 @@ void main() {
       colorsToPopulation[0xff008587] = 1; // H 198 C 50 T 0
       colorsToPopulation[0xff007ebc] = 1; // H 245 C 50 T 0
 
-      final ranked = Score.score(colorsToPopulation, 2);
+      final ranked = Score.score(colorsToPopulation, desired: 2);
 
       expect(ranked.length, 2);
       expect(ranked[0], 0xff007ebc);
@@ -69,7 +69,12 @@ void main() {
       colorsToPopulation[0xffd8ccae] = 67;
       colorsToPopulation[0xff835c0d] = 49;
 
-      final ranked = Score.score(colorsToPopulation, 3, 0xff8d3819, false);
+      final ranked = Score.score(
+        colorsToPopulation,
+        desired: 3,
+        fallbackColorArgb: 0xff8d3819,
+        filter: false,
+      );
 
       expect(ranked.length, 3);
       expect(ranked[0], 0xff7ea16d);
@@ -84,7 +89,12 @@ void main() {
       colorsToPopulation[0xff0b48cf] = 36;
       colorsToPopulation[0xffa08f5d] = 81;
 
-      final ranked = Score.score(colorsToPopulation, 4, 0xff7d772b, true);
+      final ranked = Score.score(
+        colorsToPopulation,
+        desired: 4,
+        fallbackColorArgb: 0xff7d772b,
+        filter: true,
+      );
 
       expect(ranked.length, 3);
       expect(ranked[0], 0xff3205cc);
@@ -99,7 +109,12 @@ void main() {
       colorsToPopulation[0xff899f36] = 90;
       colorsToPopulation[0xff94c574] = 82;
 
-      final ranked = Score.score(colorsToPopulation, 3, 0xffaa79a4, true);
+      final ranked = Score.score(
+        colorsToPopulation,
+        desired: 3,
+        fallbackColorArgb: 0xffaa79a4,
+        filter: true,
+      );
 
       expect(ranked.length, 3);
       expect(ranked[0], 0xff94c574);
@@ -115,7 +130,12 @@ void main() {
       colorsToPopulation[0xff561c54] = 27;
       colorsToPopulation[0xff713090] = 88;
 
-      final ranked = Score.score(colorsToPopulation, 5, 0xff58c19c, false);
+      final ranked = Score.score(
+        colorsToPopulation,
+        desired: 5,
+        fallbackColorArgb: 0xff58c19c,
+        filter: false,
+      );
 
       expect(ranked.length, 2);
       expect(ranked[0], 0xffdf241c);
@@ -130,7 +150,12 @@ void main() {
       colorsToPopulation[0xffab8017] = 43;
       colorsToPopulation[0xffe89307] = 65;
 
-      final ranked = Score.score(colorsToPopulation, 3, 0xff916691, false);
+      final ranked = Score.score(
+        colorsToPopulation,
+        desired: 3,
+        fallbackColorArgb: 0xff916691,
+        filter: false,
+      );
 
       expect(ranked.length, 3);
       expect(ranked[0], 0xffab8017);
@@ -146,7 +171,12 @@ void main() {
       colorsToPopulation[0xfffa8a23] = 74;
       colorsToPopulation[0xff04ca1f] = 62;
 
-      final ranked = Score.score(colorsToPopulation, 2, 0xff4c377a, false);
+      final ranked = Score.score(
+        colorsToPopulation,
+        desired: 2,
+        fallbackColorArgb: 0xff4c377a,
+        filter: false,
+      );
 
       expect(ranked.length, 2);
       expect(ranked[0], 0xff18ea8f);
@@ -161,7 +191,12 @@ void main() {
       colorsToPopulation[0xff153379] = 66;
       colorsToPopulation[0xff68bcc3] = 81;
 
-      final ranked = Score.score(colorsToPopulation, 2, 0xfff588dc, true);
+      final ranked = Score.score(
+        colorsToPopulation,
+        desired: 2,
+        fallbackColorArgb: 0xfff588dc,
+        filter: true,
+      );
 
       expect(ranked.length, 2);
       expect(ranked[0], 0xff2e05ed);
@@ -175,7 +210,12 @@ void main() {
       colorsToPopulation[0xff3cae91] = 98;
       colorsToPopulation[0xff5b542f] = 25;
 
-      final ranked = Score.score(colorsToPopulation, 1, 0xff84b0fd, false);
+      final ranked = Score.score(
+        colorsToPopulation,
+        desired: 1,
+        fallbackColorArgb: 0xff84b0fd,
+        filter: false,
+      );
 
       expect(ranked.length, 1);
       expect(ranked[0], 0xff3cae91);
@@ -189,7 +229,12 @@ void main() {
       colorsToPopulation[0xff2b8ebf] = 3;
       colorsToPopulation[0xff277766] = 59;
 
-      final ranked = Score.score(colorsToPopulation, 3, 0xff02b415, true);
+      final ranked = Score.score(
+        colorsToPopulation,
+        desired: 3,
+        fallbackColorArgb: 0xff02b415,
+        filter: true,
+      );
 
       expect(ranked.length, 3);
       expect(ranked[0], 0xfff51401);
@@ -204,7 +249,12 @@ void main() {
       colorsToPopulation[0xff6f558d] = 2;
       colorsToPopulation[0xff77fdf2] = 78;
 
-      final ranked = Score.score(colorsToPopulation, 4, 0xff5e7a10, true);
+      final ranked = Score.score(
+        colorsToPopulation,
+        desired: 4,
+        fallbackColorArgb: 0xff5e7a10,
+        filter: true,
+      );
 
       expect(ranked.length, 3);
       expect(ranked[0], 0xff27effe);

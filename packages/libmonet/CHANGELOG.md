@@ -20,6 +20,7 @@
   - Added `SchemeClock` and `SchemeClockVibrant` to the `android_color_utilities` library.
   - Fixed an upstream issue of `AndroidDynamicColors.clockSecond` and `AndroidDynamicColors.weatherTemp` having a medium contrast of `70`, when it should've been `7`.
 - Renamed `TemperatureCache.getComplement` to `TemperatureCache.complement` and made it a getter.
+- Changed `Score.score` positional parameters to be named instead.
 - Added a default `libmonet` library which exports all members from the other libraries.
 - Refactored internal file structure (breaks source code imports).
 - Other minor changes.
