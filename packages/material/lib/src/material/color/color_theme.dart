@@ -5,12 +5,16 @@ import 'dart:ui' as ui;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart' as flutter;
-import 'package:libmonet/src/material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/material_color_utilities.dart'
-    as mcu_legacy
-    show QuantizerCelebi, QuantizerResult, Score;
+import 'package:material/material_quantize.dart';
 import 'package:material/material_color_utilities.dart'
-    show DynamicScheme, Variant, Platform, SpecVersion, TonalPaletteSourceColor;
+    show
+        Hct,
+        Score,
+        DynamicScheme,
+        Variant,
+        Platform,
+        SpecVersion,
+        TonalPaletteSourceColor;
 
 import 'package:material/src/material/flutter.dart';
 
@@ -3156,6 +3160,115 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     contrastLevel: contrastLevel,
     specVersion: specVersion,
   );
+
+  /// Extracts dominant colors from an image and scores them for color scheme
+  /// suitability, returning the most suitable color.
+  static Future<int> _contentBasedSourceColor(ImageProvider image) async {
+    final colorToCount = await _extractColorsFromImageProvider(image).then(
+      (result) => result.colorToCount.map(
+        (key, value) => MapEntry(_getArgbFromAbgr(key), value),
+      ),
+    );
+    return Score.score(colorToCount, desired: 1).first;
+  }
+
+  /// Extracts bytes from an [ImageProvider] and returns a [QuantizerResult]
+  /// containing the most dominant colors.
+  static Future<QuantizerResult> _extractColorsFromImageProvider(
+    ImageProvider imageProvider,
+  ) async {
+    final scaledImage = await _imageProviderToScaled(imageProvider);
+    final imageBytes = await scaledImage.toByteData();
+
+    final quantizerResult = const QuantizerCelebi().quantize(
+      imageBytes!.buffer.asUint32List(),
+      128,
+      returnInputPixelToClusterPixel: true,
+    );
+    return quantizerResult;
+  }
+
+  /// Scale image size down to reduce computation time of color extraction.
+  static Future<ui.Image> _imageProviderToScaled(
+    ImageProvider imageProvider,
+  ) async {
+    const maxDimension = 112.0;
+    final stream = imageProvider.resolve(
+      const .new(size: .square(maxDimension)),
+    );
+    final imageCompleter = Completer<ui.Image>();
+    late ImageStreamListener listener;
+    late ui.Image scaledImage;
+    Timer? loadFailureTimeout;
+
+    listener = ImageStreamListener(
+      (info, sync) async {
+        loadFailureTimeout?.cancel();
+        stream.removeListener(listener);
+        final image = info.image;
+        final width = image.width;
+        final height = image.height;
+        var paintWidth = width.toDouble();
+        var paintHeight = height.toDouble();
+        assert(width > 0 && height > 0);
+
+        final rescale = width > maxDimension || height > maxDimension;
+        if (rescale) {
+          paintWidth = (width > height)
+              ? maxDimension
+              : (maxDimension / height) * width;
+          paintHeight = (height > width)
+              ? maxDimension
+              : (maxDimension / width) * height;
+        }
+        final pictureRecorder = ui.PictureRecorder();
+        final canvas = Canvas(pictureRecorder);
+        paintImage(
+          canvas: canvas,
+          rect: .fromLTRB(0.0, 0.0, paintWidth, paintHeight),
+          image: image,
+          filterQuality: .none,
+        );
+
+        final picture = pictureRecorder.endRecording();
+        scaledImage = await picture.toImage(
+          paintWidth.toInt(),
+          paintHeight.toInt(),
+        );
+        imageCompleter.complete(info.image);
+      },
+      onError: (exception, stackTrace) {
+        loadFailureTimeout?.cancel();
+        stream.removeListener(listener);
+        imageCompleter.completeError(
+          Exception("Failed to render image: $exception"),
+          stackTrace,
+        );
+      },
+    );
+
+    loadFailureTimeout = Timer(const Duration(seconds: 5), () {
+      stream.removeListener(listener);
+      imageCompleter.completeError(
+        TimeoutException("Timeout occurred trying to load image"),
+      );
+    });
+
+    stream.addListener(listener);
+    await imageCompleter.future;
+    return scaledImage;
+  }
+
+  /// Converts AABBGGRR color int to AARRGGBB format.
+  static int _getArgbFromAbgr(int abgr) {
+    const exceptRMask = 0xFF00FFFF;
+    const onlyRMask = ~exceptRMask;
+    const exceptBMask = 0xFFFFFF00;
+    const onlyBMask = ~exceptBMask;
+    final r = (abgr & onlyRMask) >> 16;
+    final b = abgr & onlyBMask;
+    return (abgr & exceptRMask & exceptBMask) | (b << 16) | r;
+  }
 }
 
 class _ColorThemeData extends ColorThemeData {
@@ -4787,114 +4900,6 @@ class _LegacyFromColorThemeData
       ),
     ),
   );
-}
-
-Future<int> _contentBasedSourceColor(ImageProvider image) async {
-  // Extract dominant colors from image.
-  final quantizerResult = await _extractColorsFromImageProvider(image);
-  final colorToCount = quantizerResult.colorToCount.map(
-    (key, value) => MapEntry(_getArgbFromAbgr(key), value),
-  );
-
-  // Score colors for color scheme suitability.
-  final scoredResults = mcu_legacy.Score.score(colorToCount, desired: 1);
-  return scoredResults.first;
-}
-
-/// Extracts bytes from an [ImageProvider] and returns a [mcu_legacy.QuantizerResult]
-/// containing the most dominant colors.
-Future<mcu_legacy.QuantizerResult> _extractColorsFromImageProvider(
-  ImageProvider imageProvider,
-) async {
-  final scaledImage = await _imageProviderToScaled(imageProvider);
-  final imageBytes = await scaledImage.toByteData();
-
-  final quantizerResult = await mcu_legacy.QuantizerCelebi().quantize(
-    imageBytes!.buffer.asUint32List(),
-    128,
-    returnInputPixelToClusterPixel: true,
-  );
-  return quantizerResult;
-}
-
-// Scale image size down to reduce computation time of color extraction.
-Future<ui.Image> _imageProviderToScaled(ImageProvider imageProvider) async {
-  const maxDimension = 112.0;
-  final stream = imageProvider.resolve(
-    const ImageConfiguration(size: .square(maxDimension)),
-  );
-  final imageCompleter = Completer<ui.Image>();
-  late ImageStreamListener listener;
-  late ui.Image scaledImage;
-  Timer? loadFailureTimeout;
-
-  listener = ImageStreamListener(
-    (info, sync) async {
-      loadFailureTimeout?.cancel();
-      stream.removeListener(listener);
-      final image = info.image;
-      final width = image.width;
-      final height = image.height;
-      var paintWidth = width.toDouble();
-      var paintHeight = height.toDouble();
-      assert(width > 0.0 && height > 0.0);
-
-      final rescale = width > maxDimension || height > maxDimension;
-      if (rescale) {
-        paintWidth = (width > height)
-            ? maxDimension
-            : (maxDimension / height) * width;
-        paintHeight = (height > width)
-            ? maxDimension
-            : (maxDimension / width) * height;
-      }
-      final pictureRecorder = ui.PictureRecorder();
-      final canvas = Canvas(pictureRecorder);
-      paintImage(
-        canvas: canvas,
-        rect: .fromLTRB(0.0, 0.0, paintWidth, paintHeight),
-        image: image,
-        filterQuality: .none,
-      );
-
-      final picture = pictureRecorder.endRecording();
-      scaledImage = await picture.toImage(
-        paintWidth.toInt(),
-        paintHeight.toInt(),
-      );
-      imageCompleter.complete(info.image);
-    },
-    onError: (exception, stackTrace) {
-      loadFailureTimeout?.cancel();
-      stream.removeListener(listener);
-      imageCompleter.completeError(
-        Exception("Failed to render image: $exception"),
-        stackTrace,
-      );
-    },
-  );
-
-  loadFailureTimeout = Timer(const Duration(seconds: 5), () {
-    stream.removeListener(listener);
-    imageCompleter.completeError(
-      TimeoutException("Timeout occurred trying to load image"),
-    );
-  });
-
-  stream.addListener(listener);
-  await imageCompleter.future;
-  return scaledImage;
-}
-
-// Converts AABBGGRR color int to AARRGGBB format.
-int _getArgbFromAbgr(int abgr) {
-  const exceptRMask = 0xFF00FFFF;
-  const onlyRMask = ~exceptRMask;
-  const exceptBMask = 0xFFFFFF00;
-  const onlyBMask = ~exceptBMask;
-  final r = (abgr & onlyRMask) >> 16;
-  final b = abgr & onlyBMask;
-  return (abgr & exceptRMask & exceptBMask) | (b << 16) | r;
 }
 
 class ColorTheme extends InheritedTheme {
