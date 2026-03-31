@@ -17,14 +17,13 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  layout:
-    path: ../layout
   androidx_graphics_shapes: ^1.3.2
   collection: ^1.19.1
+  layout:
+    path: ../layout
+  libmonet: ^2.0.0-dev.12
   material_symbols_icons: ^4.2906.0
   meta: ^1.17.0
-  libmonet: ^2.0.0-dev.11
-  material_color_utilities: ^0.13.0
   motor: ^1.1.0
 
 dev_dependencies:

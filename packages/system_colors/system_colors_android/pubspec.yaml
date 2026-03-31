@@ -14,7 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
   jni: ^0.15.2
-  libmonet: ^2.0.0-dev.11
+  libmonet: ^2.0.0-dev.12
   meta: ^1.17.0
   system_colors_platform_interface: ^0.1.0
 
