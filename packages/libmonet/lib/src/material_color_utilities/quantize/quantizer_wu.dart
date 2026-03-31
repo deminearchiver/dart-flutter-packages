@@ -3,10 +3,6 @@ import '../utils/color_utils.dart';
 import 'quantizer_map.dart';
 import 'quantizer.dart';
 
-const _indexBits = 5;
-const _indexCount = (1 << _indexBits) + 1; // 33
-const _totalSize = _indexCount * _indexCount * _indexCount; // 35937
-
 /// An image quantizer that divides the image's pixels into clusters
 /// by recursively cutting an RGB cube, based on the weight of pixels
 /// in each area of the cube.
@@ -30,19 +26,16 @@ final class QuantizerWu implements Quantizer {
     _createMoments();
     final createBoxesResult = _createBoxes(maxColors);
     final colors = _createResult(createBoxesResult.resultCount);
-    final resultMap = <int, int>{};
-    for (final color in colors) {
-      resultMap[color] = 0;
-    }
+    final resultMap = <int, int>{for (final color in colors) color: 0};
     return QuantizerResult(colorToCount: resultMap);
   }
 
   void _constructHistogram(Map<int, int> pixels) {
-    _weights = List.filled(_totalSize, 0);
-    _momentsR = List.filled(_totalSize, 0);
-    _momentsG = List.filled(_totalSize, 0);
-    _momentsB = List.filled(_totalSize, 0);
-    _moments = List.filled(_totalSize, 0.0);
+    _weights = List.filled(_totalSize, 0, growable: false);
+    _momentsR = List.filled(_totalSize, 0, growable: false);
+    _momentsG = List.filled(_totalSize, 0, growable: false);
+    _momentsB = List.filled(_totalSize, 0, growable: false);
+    _moments = List.filled(_totalSize, 0.0, growable: false);
 
     for (final MapEntry(key: pixel, value: count) in pixels.entries) {
       final red = ColorUtils.redFromArgb(pixel);
@@ -64,11 +57,11 @@ final class QuantizerWu implements Quantizer {
 
   void _createMoments() {
     for (var r = 1; r < _indexCount; ++r) {
-      final area = List<int>.filled(_indexCount, 0);
-      final areaR = List<int>.filled(_indexCount, 0);
-      final areaG = List<int>.filled(_indexCount, 0);
-      final areaB = List<int>.filled(_indexCount, 0);
-      final area2 = List<double>.filled(_indexCount, 0.0);
+      final area = List<int>.filled(_indexCount, 0, growable: false);
+      final areaR = List<int>.filled(_indexCount, 0, growable: false);
+      final areaG = List<int>.filled(_indexCount, 0, growable: false);
+      final areaB = List<int>.filled(_indexCount, 0, growable: false);
+      final area2 = List<double>.filled(_indexCount, 0.0, growable: false);
 
       for (var g = 1; g < _indexCount; ++g) {
         var line = 0;
@@ -102,13 +95,17 @@ final class QuantizerWu implements Quantizer {
   }
 
   _CreateBoxesResult _createBoxes(int maxColorCount) {
-    _cubes = List.generate(maxColorCount, (_) => _Box());
-    final volumeVariance = List<double>.filled(maxColorCount, 0.0);
+    _cubes = List.generate(maxColorCount, (_) => _Box(), growable: false);
     _cubes.first
-      ..r1 = _indexCount - 1
-      ..g1 = _indexCount - 1
-      ..b1 = _indexCount - 1;
+      ..r1 = _maxIndex
+      ..g1 = _maxIndex
+      ..b1 = _maxIndex;
 
+    final volumeVariance = List<double>.filled(
+      maxColorCount,
+      0.0,
+      growable: false,
+    );
     var generatedColorCount = maxColorCount;
     var next = 0;
     for (var i = 1; i < maxColorCount; i++) {
@@ -136,7 +133,10 @@ final class QuantizerWu implements Quantizer {
         break;
       }
     }
-    return _CreateBoxesResult(maxColorCount, generatedColorCount);
+    return _CreateBoxesResult(
+      requestedCount: maxColorCount,
+      resultCount: generatedColorCount,
+    );
   }
 
   List<int> _createResult(int colorCount) {
@@ -148,8 +148,7 @@ final class QuantizerWu implements Quantizer {
         final r = _volume(cube, _momentsR) ~/ weight;
         final g = _volume(cube, _momentsG) ~/ weight;
         final b = _volume(cube, _momentsB) ~/ weight;
-        final color =
-            (255 << 24) | ((r & 255) << 16) | ((g & 255) << 8) | (b & 255);
+        final color = ColorUtils.argbFromRgb(r, g, b);
         colors.add(color);
       }
     }
@@ -171,7 +170,7 @@ final class QuantizerWu implements Quantizer {
         _moments[_getIndex(cube.r0, cube.g0, cube.b0)];
     final hypotenuse = dr * dr + dg * dg + db * db;
     final volume = _volume(cube, _weights);
-    return xx - hypotenuse / volume.toDouble();
+    return xx - hypotenuse / volume;
   }
 
   bool _cut(_Box one, _Box two) {
@@ -308,8 +307,13 @@ final class QuantizerWu implements Quantizer {
         cut = i;
       }
     }
-    return _MaximizeResult(cut, max);
+    return _MaximizeResult(cutLocation: cut, maximum: max);
   }
+
+  static const _indexBits = 5;
+  static const _indexCount = (1 << _indexBits) + 1; // 33
+  static const _maxIndex = _indexCount - 1;
+  static const _totalSize = _indexCount * _indexCount * _indexCount; // 35937
 
   static int _getIndex(int r, int g, int b) =>
       (r << (_indexBits * 2)) +
@@ -375,8 +379,8 @@ final class QuantizerWu implements Quantizer {
 enum _Direction { red, green, blue }
 
 extension type const _MaximizeResult._(({int cutLocation, double maximum}) _) {
-  const _MaximizeResult(int cut, double max)
-    : this._((cutLocation: cut, maximum: max));
+  const _MaximizeResult({required int cutLocation, required double maximum})
+    : this._((cutLocation: cutLocation, maximum: maximum));
 
   // < 0 if cut impossible
   int get cutLocation => _.cutLocation;
@@ -387,8 +391,10 @@ extension type const _MaximizeResult._(({int cutLocation, double maximum}) _) {
 extension type const _CreateBoxesResult._(
   ({int requestedCount, int resultCount}) _
 ) {
-  const _CreateBoxesResult(int requestedCount, int resultCount)
-    : this._((requestedCount: requestedCount, resultCount: resultCount));
+  const _CreateBoxesResult({
+    required int requestedCount,
+    required int resultCount,
+  }) : this._((requestedCount: requestedCount, resultCount: resultCount));
 
   int get requestedCount => _.requestedCount;
 
@@ -396,13 +402,21 @@ extension type const _CreateBoxesResult._(
 }
 
 final class _Box {
-  _Box();
+  _Box({
+    this.r0 = 0,
+    this.r1 = 0,
+    this.g0 = 0,
+    this.g1 = 0,
+    this.b0 = 0,
+    this.b1 = 0,
+    this.vol = 0,
+  });
 
-  int r0 = 0;
-  int r1 = 0;
-  int g0 = 0;
-  int g1 = 0;
-  int b0 = 0;
-  int b1 = 0;
-  int vol = 0;
+  int r0;
+  int r1;
+  int g0;
+  int g1;
+  int b0;
+  int b1;
+  int vol;
 }
