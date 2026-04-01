@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart' show Brightness, Color;
 import 'package:jni/jni.dart';
+import 'package:jni_flutter/jni_flutter.dart';
 import 'package:dynamic_color_ffi/dynamic_color_ffi_platform_interface.dart';
 
 import 'jni_bindings.dart' as jb;
@@ -10,21 +11,19 @@ class DynamicColorAndroid extends DynamicColorPlatform {
   DynamicColorAndroid();
 
   @override
-  bool isDynamicColorAvailable() {
-    if (!Platform.isAndroid) return false;
-    return jb.DynamicColorPlugin.isDynamicColorAvailable();
-  }
+  bool isDynamicColorAvailable() =>
+      Platform.isAndroid && jb.DynamicColorPlugin.isDynamicColorAvailable;
 
   @override
   DynamicColorScheme? dynamicLightColorScheme() => Platform.isAndroid
-      ? Jni.androidApplicationContext
+      ? androidApplicationContext
             .use(jb.DynamicColorPlugin.dynamicLightColorScheme)
             .use(_dynamicLightColorSchemeFromNative)
       : null;
 
   @override
   DynamicColorScheme? dynamicDarkColorScheme() => Platform.isAndroid
-      ? Jni.androidApplicationContext
+      ? androidApplicationContext
             .use(jb.DynamicColorPlugin.dynamicDarkColorScheme)
             .use(_dynamicDarkColorSchemeFromNative)
       : null;
@@ -35,155 +34,161 @@ class DynamicColorAndroid extends DynamicColorPlatform {
 
   static DynamicColorScheme _dynamicLightColorSchemeFromNative(
     jb.DynamicColorScheme object,
-  ) => _dynamicColorSchemeFromNative(object, brightness: .light);
+  ) => _dynamicColorSchemeFromNative(
+    object,
+    brightness: .light,
+    releaseOriginal: true,
+  );
 
   static DynamicColorScheme _dynamicDarkColorSchemeFromNative(
     jb.DynamicColorScheme object,
-  ) => _dynamicColorSchemeFromNative(object, brightness: .dark);
+  ) => _dynamicColorSchemeFromNative(
+    object,
+    brightness: .dark,
+    releaseOriginal: true,
+  );
 
   static DynamicColorScheme _dynamicColorSchemeFromNative(
     jb.DynamicColorScheme object, {
     required Brightness brightness,
-  }) => DynamicColorScheme.from(
-    brightness: brightness,
-    primaryPaletteKeyColor: object.getPrimaryPaletteKeyColor()?._colorValue(
-      releaseOriginal: true,
-    ),
-    secondaryPaletteKeyColor: object.getSecondaryPaletteKeyColor()?._colorValue(
-      releaseOriginal: true,
-    ),
-    tertiaryPaletteKeyColor: object.getTertiaryPaletteKeyColor()?._colorValue(
-      releaseOriginal: true,
-    ),
-    neutralPaletteKeyColor: object.getNeutralPaletteKeyColor()?._colorValue(
-      releaseOriginal: true,
-    ),
-    neutralVariantPaletteKeyColor: object
-        .getNeutralVariantPaletteKeyColor()
-        ?._colorValue(releaseOriginal: true),
-    errorPaletteKeyColor: object.getErrorPaletteKeyColor()?._colorValue(
-      releaseOriginal: true,
-    ),
-    background: object.getBackground()?._colorValue(releaseOriginal: true),
-    onBackground: object.getOnBackground()?._colorValue(releaseOriginal: true),
-    surface: object.getSurface()?._colorValue(releaseOriginal: true),
-    surfaceDim: object.getSurfaceDim()?._colorValue(releaseOriginal: true),
-    surfaceBright: object.getSurfaceBright()?._colorValue(
-      releaseOriginal: true,
-    ),
-    surfaceContainerLowest: object.getSurfaceContainerLowest()?._colorValue(
-      releaseOriginal: true,
-    ),
-    surfaceContainerLow: object.getSurfaceContainerLow()?._colorValue(
-      releaseOriginal: true,
-    ),
-    surfaceContainer: object.getSurfaceContainer()?._colorValue(
-      releaseOriginal: true,
-    ),
-    surfaceContainerHigh: object.getSurfaceContainerHigh()?._colorValue(
-      releaseOriginal: true,
-    ),
-    surfaceContainerHighest: object.getSurfaceContainerHighest()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onSurface: object.getOnSurface()?._colorValue(releaseOriginal: true),
-    surfaceVariant: object.getSurfaceVariant()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onSurfaceVariant: object.getOnSurfaceVariant()?._colorValue(
-      releaseOriginal: true,
-    ),
-    outline: object.getOutline()?._colorValue(releaseOriginal: true),
-    outlineVariant: object.getOutlineVariant()?._colorValue(
-      releaseOriginal: true,
-    ),
-    inverseSurface: object.getInverseSurface()?._colorValue(
-      releaseOriginal: true,
-    ),
-    inverseOnSurface: object.getInverseOnSurface()?._colorValue(
-      releaseOriginal: true,
-    ),
-    shadow: object.getShadow()?._colorValue(releaseOriginal: true),
-    scrim: object.getScrim()?._colorValue(releaseOriginal: true),
-    surfaceTint: object.getSurfaceTint()?._colorValue(releaseOriginal: true),
-    primary: object.getPrimary()?._colorValue(releaseOriginal: true),
-    primaryDim: object.getPrimaryDim()?._colorValue(releaseOriginal: true),
-    onPrimary: object.getOnPrimary()?._colorValue(releaseOriginal: true),
-    primaryContainer: object.getPrimaryContainer()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onPrimaryContainer: object.getOnPrimaryContainer()?._colorValue(
-      releaseOriginal: true,
-    ),
-    primaryFixed: object.getPrimaryFixed()?._colorValue(releaseOriginal: true),
-    primaryFixedDim: object.getPrimaryFixedDim()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onPrimaryFixed: object.getOnPrimaryFixed()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onPrimaryFixedVariant: object.getOnPrimaryFixedVariant()?._colorValue(
-      releaseOriginal: true,
-    ),
-    inversePrimary: object.getInversePrimary()?._colorValue(
-      releaseOriginal: true,
-    ),
-    secondary: object.getSecondary()?._colorValue(releaseOriginal: true),
-    secondaryDim: object.getSecondaryDim()?._colorValue(releaseOriginal: true),
-    onSecondary: object.getOnSecondary()?._colorValue(releaseOriginal: true),
-    secondaryContainer: object.getSecondaryContainer()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onSecondaryContainer: object.getOnSecondaryContainer()?._colorValue(
-      releaseOriginal: true,
-    ),
-    secondaryFixed: object.getSecondaryFixed()?._colorValue(
-      releaseOriginal: true,
-    ),
-    secondaryFixedDim: object.getSecondaryFixedDim()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onSecondaryFixed: object.getOnSecondaryFixed()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onSecondaryFixedVariant: object.getOnSecondaryFixedVariant()?._colorValue(
-      releaseOriginal: true,
-    ),
-    tertiary: object.getTertiary()?._colorValue(releaseOriginal: true),
-    tertiaryDim: object.getTertiaryDim()?._colorValue(releaseOriginal: true),
-    onTertiary: object.getOnTertiary()?._colorValue(releaseOriginal: true),
-    tertiaryContainer: object.getTertiaryContainer()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onTertiaryContainer: object.getOnTertiaryContainer()?._colorValue(
-      releaseOriginal: true,
-    ),
-    tertiaryFixed: object.getTertiaryFixed()?._colorValue(
-      releaseOriginal: true,
-    ),
-    tertiaryFixedDim: object.getTertiaryFixedDim()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onTertiaryFixed: object.getOnTertiaryFixed()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onTertiaryFixedVariant: object.getOnTertiaryFixedVariant()?._colorValue(
-      releaseOriginal: true,
-    ),
-    error: object.getError()?._colorValue(releaseOriginal: true),
-    errorDim: object.getErrorDim()?._colorValue(releaseOriginal: true),
-    onError: object.getOnError()?._colorValue(releaseOriginal: true),
-    errorContainer: object.getErrorContainer()?._colorValue(
-      releaseOriginal: true,
-    ),
-    onErrorContainer: object.getOnErrorContainer()?._colorValue(
-      releaseOriginal: true,
-    ),
-  );
+    bool releaseOriginal = false,
+  }) {
+    final result = DynamicColorScheme.from(
+      brightness: brightness,
+      primaryPaletteKeyColor: object.primaryPaletteKeyColor?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      secondaryPaletteKeyColor: object.secondaryPaletteKeyColor
+          ?._toFlutterColor(releaseOriginal: true),
+      tertiaryPaletteKeyColor: object.tertiaryPaletteKeyColor?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      neutralPaletteKeyColor: object.neutralPaletteKeyColor?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      neutralVariantPaletteKeyColor: object.neutralVariantPaletteKeyColor
+          ?._toFlutterColor(releaseOriginal: true),
+      errorPaletteKeyColor: object.errorPaletteKeyColor?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      background: object.background?._toFlutterColor(releaseOriginal: true),
+      onBackground: object.onBackground?._toFlutterColor(releaseOriginal: true),
+      surfaceDim: object.surfaceDim?._toFlutterColor(releaseOriginal: true),
+      surfaceBright: object.surfaceBright?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      surfaceContainerLowest: object.surfaceContainerLowest?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      surfaceContainerLow: object.surfaceContainerLow?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      surfaceContainer: object.surfaceContainer?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      surfaceContainerHigh: object.surfaceContainerHigh?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      surfaceContainerHighest: object.surfaceContainerHighest?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onSurface: object.onSurface?._toFlutterColor(releaseOriginal: true),
+      surfaceVariant: object.surfaceVariant?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onSurfaceVariant: object.onSurfaceVariant?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      outlineVariant: object.outlineVariant?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      inverseSurface: object.inverseSurface?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      inverseOnSurface: object.inverseOnSurface?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      surfaceTint: object.surfaceTint?._toFlutterColor(releaseOriginal: true),
+      primaryDim: object.primaryDim?._toFlutterColor(releaseOriginal: true),
+      onPrimary: object.onPrimary?._toFlutterColor(releaseOriginal: true),
+      primaryContainer: object.primaryContainer?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onPrimaryContainer: object.onPrimaryContainer?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      primaryFixed: object.primaryFixed?._toFlutterColor(releaseOriginal: true),
+      primaryFixedDim: object.primaryFixedDim?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onPrimaryFixed: object.onPrimaryFixed?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onPrimaryFixedVariant: object.onPrimaryFixedVariant?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      inversePrimary: object.inversePrimary?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      secondary: object.secondary?._toFlutterColor(releaseOriginal: true),
+      secondaryDim: object.secondaryDim?._toFlutterColor(releaseOriginal: true),
+      onSecondary: object.onSecondary?._toFlutterColor(releaseOriginal: true),
+      secondaryContainer: object.secondaryContainer?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onSecondaryContainer: object.onSecondaryContainer?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      secondaryFixed: object.secondaryFixed?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      secondaryFixedDim: object.secondaryFixedDim?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onSecondaryFixed: object.onSecondaryFixed?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onSecondaryFixedVariant: object.onSecondaryFixedVariant?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      tertiary: object.tertiary?._toFlutterColor(releaseOriginal: true),
+      tertiaryDim: object.tertiaryDim?._toFlutterColor(releaseOriginal: true),
+      onTertiary: object.onTertiary?._toFlutterColor(releaseOriginal: true),
+      tertiaryContainer: object.tertiaryContainer?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onTertiaryContainer: object.onTertiaryContainer?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      tertiaryFixed: object.tertiaryFixed?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      tertiaryFixedDim: object.tertiaryFixedDim?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onTertiaryFixed: object.onTertiaryFixed?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onTertiaryFixedVariant: object.onTertiaryFixedVariant?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      errorDim: object.errorDim?._toFlutterColor(releaseOriginal: true),
+      errorContainer: object.errorContainer?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+      onErrorContainer: object.onErrorContainer?._toFlutterColor(
+        releaseOriginal: true,
+      ),
+    );
+    if (releaseOriginal) {
+      object.release();
+    }
+    return result;
+  }
 }
 
 extension on JInteger {
   @pragma("vm:prefer-inline")
-  Color _colorValue({bool releaseOriginal = false}) =>
-      Color(intValue(releaseOriginal: releaseOriginal));
+  Color _toFlutterColor({bool releaseOriginal = false}) =>
+      Color(toDartInt(releaseOriginal: true));
 }
