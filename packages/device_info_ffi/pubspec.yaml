@@ -1,6 +1,6 @@
 name: device_info_ffi
 description: An FFI-based version of the device_info_plus plugin.
-version: 1.0.3
+version: 1.1.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/device_info_ffi
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
@@ -18,6 +18,7 @@ dependencies:
   ffi: ^2.2.0
   file: ^7.0.1
   jni: ^1.0.0
+  jni_flutter: ^1.0.0
   meta: ^1.17.0
   plugin_platform_interface: ^2.1.8
   web: ^1.1.1

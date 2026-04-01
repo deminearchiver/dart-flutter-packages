@@ -1,3 +1,10 @@
+## 1.1.0
+
+- Flutter JNI support is now stable:
+  - Upgrade `jni` to `1.0.0`
+  - Added `jni_flutter` dependency
+  - Upgraded `jnigen` to `0.16.0`
+
 ## 1.0.3
 
 - Relaxed SDK version constraints.
