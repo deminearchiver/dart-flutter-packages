@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Fixed JNI `DoubleReleaseError` when trying to obtain a dynamic color scheme.
+
 ## 1.1.0
 
 - Flutter JNI support is now stable:
