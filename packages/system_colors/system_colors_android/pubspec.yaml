@@ -13,7 +13,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  jni: ^0.15.2
+  jni: ^1.0.0
   libmonet: ^2.0.0-dev.12
   meta: ^1.17.0
   system_colors_platform_interface: ^0.1.0
@@ -22,7 +22,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   deminearchiver_lints: ^2.1.2
-  jnigen: ^0.15.0
+  jnigen: ^0.16.0
   plugin_platform_interface: ^2.1.8
 
 flutter:

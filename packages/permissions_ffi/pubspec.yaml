@@ -18,7 +18,7 @@ dependencies:
   web: ^1.1.1
   plugin_platform_interface: ^2.1.8
   ffi: ^2.2.0
-  jni: ^0.15.2
+  jni: ^1.0.0
   meta: ^1.17.0
   win32: ^5.15.0
   win32_registry: ^2.1.0
@@ -27,7 +27,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   deminearchiver_lints: ^2.1.2
-  jnigen: ^0.15.0
+  jnigen: ^0.16.0
 
 flutter:
   # plugin:

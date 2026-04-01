@@ -22,7 +22,7 @@ dependencies:
   layout:
     path: ../layout
   libmonet: ^2.0.0-dev.12
-  material_symbols_icons: ^4.2906.0
+  material_symbols_icons: ^4.2928.1
   meta: ^1.17.0
   motor: ^1.1.0
 
