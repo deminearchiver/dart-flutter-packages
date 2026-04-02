@@ -2,7 +2,7 @@ name: system_colors_platform_interface
 description: A common platform interface for the system_colors plugin.
 version: 0.1.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
-repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/system_colors_platform_interface
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/system_colors/system_colors_platform_interface
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
 resolution: workspace
 

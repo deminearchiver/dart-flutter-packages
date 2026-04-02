@@ -71,7 +71,6 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.material:material:1.14.0-alpha10")
-  testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.mockito:mockito-core:5.0.0")
 }

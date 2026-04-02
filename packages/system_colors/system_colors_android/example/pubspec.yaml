@@ -13,9 +13,9 @@ dependencies:
     path: ../
 
 dev_dependencies:
-  integration_test:
-    sdk: flutter
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
   deminearchiver_lints: ^2.1.2
 

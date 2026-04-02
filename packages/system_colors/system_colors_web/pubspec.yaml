@@ -2,7 +2,7 @@ name: system_colors_web
 description: Web implementation of the system_colors plugin
 version: 0.1.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
-repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/system_colors_web
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/system_colors/system_colors_web
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
 resolution: workspace
 
