@@ -1,6 +1,6 @@
 name: package_info_ffi
 description: An FFI-based version of the package_info_plus plugin.
-version: 1.1.0
+version: 1.1.1
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/package_info_ffi
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
@@ -20,7 +20,7 @@ dependencies:
   file: ^7.0.1
   http: ^1.6.0
   jni: ^1.0.0
-  jni_flutter: ^1.0.0
+  jni_flutter: ^1.0.1
   meta: ^1.17.0
   path: ^1.9.1
   plugin_platform_interface: ^2.1.8

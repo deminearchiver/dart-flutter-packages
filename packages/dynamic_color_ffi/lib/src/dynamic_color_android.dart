@@ -64,6 +64,7 @@ class DynamicColorAndroid extends DynamicColorPlatform {
     ),
     background: object.background?._toFlutterColor(releaseOriginal: true),
     onBackground: object.onBackground?._toFlutterColor(releaseOriginal: true),
+    surface: object.surface?._toFlutterColor(releaseOriginal: true),
     surfaceDim: object.surfaceDim?._toFlutterColor(releaseOriginal: true),
     surfaceBright: object.surfaceBright?._toFlutterColor(releaseOriginal: true),
     surfaceContainerLowest: object.surfaceContainerLowest?._toFlutterColor(
@@ -88,6 +89,7 @@ class DynamicColorAndroid extends DynamicColorPlatform {
     onSurfaceVariant: object.onSurfaceVariant?._toFlutterColor(
       releaseOriginal: true,
     ),
+    outline: object.outline?._toFlutterColor(releaseOriginal: true),
     outlineVariant: object.outlineVariant?._toFlutterColor(
       releaseOriginal: true,
     ),
@@ -97,7 +99,10 @@ class DynamicColorAndroid extends DynamicColorPlatform {
     inverseOnSurface: object.inverseOnSurface?._toFlutterColor(
       releaseOriginal: true,
     ),
+    shadow: object.shadow?._toFlutterColor(releaseOriginal: true),
+    scrim: object.scrim?._toFlutterColor(releaseOriginal: true),
     surfaceTint: object.surfaceTint?._toFlutterColor(releaseOriginal: true),
+    primary: object.primary?._toFlutterColor(releaseOriginal: true),
     primaryDim: object.primaryDim?._toFlutterColor(releaseOriginal: true),
     onPrimary: object.onPrimary?._toFlutterColor(releaseOriginal: true),
     primaryContainer: object.primaryContainer?._toFlutterColor(
@@ -159,7 +164,9 @@ class DynamicColorAndroid extends DynamicColorPlatform {
     onTertiaryFixedVariant: object.onTertiaryFixedVariant?._toFlutterColor(
       releaseOriginal: true,
     ),
+    error: object.error?._toFlutterColor(releaseOriginal: true),
     errorDim: object.errorDim?._toFlutterColor(releaseOriginal: true),
+    onError: object.onError?._toFlutterColor(releaseOriginal: true),
     errorContainer: object.errorContainer?._toFlutterColor(
       releaseOriginal: true,
     ),

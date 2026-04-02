@@ -1,3 +1,8 @@
+## 1.1.2
+
+- Fixed absent `jni_flutter` dynamic library in release mode by upgrading `jni_flutter` to `1.0.1`.
+- Fixed missing color roles: `surface`, `outline`, `shadow`, `scrim`, `primary`, `error` and `onError`.
+
 ## 1.1.1
 
 - Fixed JNI `DoubleReleaseError` when trying to obtain a dynamic color scheme.

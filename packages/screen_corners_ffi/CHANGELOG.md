@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Fixed absent `jni_flutter` dynamic library in release mode by upgrading `jni_flutter` to `1.0.1`.
+
 ## 1.1.0
 
 - Flutter JNI support is now stable:
