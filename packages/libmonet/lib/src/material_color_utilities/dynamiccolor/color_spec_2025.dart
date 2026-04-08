@@ -1330,19 +1330,25 @@ class ColorSpec2025 extends ColorSpec2021 {
 
   @override
   Hct getHct(DynamicScheme scheme, DynamicColor color) {
-    // This is crucial for aesthetics: we aren't simply the taking the standard color
-    // and changing its tone for contrast. Rather, we find the tone for contrast, then
-    // use the specified chroma from the palette to construct a new color.
+    // This is crucial for aesthetics: we aren't simply the taking the standard
+    // color and changing its tone for contrast. Rather, we find the tone for
+    // contrast, then use the specified chroma from the palette to construct
+    // a new color.
     //
-    // For example, this enables colors with standard tone of T90, which has limited chroma, to
-    // "recover" intended chroma as contrast increases.
+    // For example, this enables colors with standard tone of T90, which has
+    // limited chroma, to "recover" intended chroma as contrast increases.
     final palette = color.palette(scheme);
     final tone = getTone(scheme, color);
-    final hue = palette.hue;
     final chromaMultiplier = color.chromaMultiplier?.call(scheme) ?? 1.0;
-    final chroma = palette.chroma * chromaMultiplier;
+    if (chromaMultiplier == 1.0) {
+      return palette.getHct(tone);
+    }
 
-    return Hct.from(hue, chroma, tone);
+    final chroma = palette.chroma * chromaMultiplier;
+    if (tone == 99.0 && Hct.isYellow(palette.hue)) {
+      return TonalPalette.fromHueAndChroma(palette.hue, chroma).getHct(tone);
+    }
+    return .from(palette.hue, chroma, tone);
   }
 
   @override

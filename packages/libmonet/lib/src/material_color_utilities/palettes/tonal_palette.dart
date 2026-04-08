@@ -1,4 +1,5 @@
 import '../hct/hct.dart';
+import '../utils/color_utils.dart';
 
 /// A convenience class for retrieving colors that are
 /// in hue and chroma, but vary in tone.
@@ -37,7 +38,9 @@ final class TonalPalette {
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")
-  Hct getHct(double tone) => Hct.from(hue, chroma, tone);
+  Hct getHct(double tone) => tone == 99.0 && Hct.isYellow(hue)
+      ? .fromInt(this.tone(99))
+      : .from(hue, chroma, tone);
 
   static int _averageArgb(int argb1, int argb2) {
     final red1 = (argb1 >>> 16) & 0xff;
@@ -49,11 +52,7 @@ final class TonalPalette {
     final red = ((red1 + red2) / 2.0).round();
     final green = ((green1 + green2) / 2.0).round();
     final blue = ((blue1 + blue2) / 2.0).round();
-    return (255 << 24 |
-            (red & 255) << 16 |
-            (green & 255) << 8 |
-            (blue & 255)) >>>
-        0;
+    return ColorUtils.argbFromRgb(red, green, blue) >>> 0;
   }
 }
 

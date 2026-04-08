@@ -5,6 +5,7 @@
   - [`19ad665`](https://github.com/material-foundation/material-color-utilities/commit/19ad665aff08662e949f6759d34d65ba8acc1b83): *"Added CMF Scheme in 2026 spec."*
   - [`4578d0a`](https://github.com/material-foundation/material-color-utilities/commit/4578d0a1d40f1d17f1ca6f34cc9c484bea8f0a9d): *"Refactor DynamicScheme to accept a list of source colors."*
   - [`91da30d`](https://github.com/material-foundation/material-color-utilities/commit/91da30d89e70c3dc9575ec71a1ebe8874d881f29): *"Updated background for on-fixed colors in ColorSpec2026."*
+  - [`1a34bd2`](https://github.com/material-foundation/material-color-utilities/commit/1a34bd2d696a5dd669beca679546ad72209d0937): *"Adjust chroma calculation in ColorSpec2025 for yellow hues at tone 99."*
 - Made `Hct` immutable to avoid issues with value equality in collections:
   - Removed `hue`, `chroma` and `tone` setters.
   - Added a new `copyWith` method.
