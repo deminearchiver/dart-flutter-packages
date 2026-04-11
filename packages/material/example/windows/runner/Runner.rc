@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "dev.deminearchiver" "\0"
+            VALUE "CompanyName", "io.github.deminearchiver" "\0"
             VALUE "FileDescription", "material_example" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "material_example" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 dev.deminearchiver. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 io.github.deminearchiver. All rights reserved." "\0"
             VALUE "OriginalFilename", "material_example.exe" "\0"
             VALUE "ProductName", "material_example" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

@@ -8,7 +8,7 @@
 PRODUCT_NAME = material_example
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = dev.deminearchiver.materialExample
+PRODUCT_BUNDLE_IDENTIFIER = io.github.deminearchiver.materialExample
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 dev.deminearchiver. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 io.github.deminearchiver. All rights reserved.

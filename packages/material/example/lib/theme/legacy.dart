@@ -2,17 +2,55 @@ import 'dart:math' as math;
 
 import 'package:material_example/flutter.dart';
 
-enum LegacyButtonSize { extraSmall, small, medium, large, extraLarge }
+enum ButtonSize { extraSmall, small, medium, large, extraLarge }
 
-enum LegacyButtonShape { round, square }
+enum ButtonShape { round, square }
 
-enum LegacyButtonColor { elevated, filled, tonal, outlined, text }
+enum ButtonColor { elevated, filled, tonal, outlined, text }
+
+typedef ToggleButtonSize = ButtonSize;
+
+typedef ToggleButtonShape = ButtonShape;
+
+enum ToggleButtonColor {
+  elevated(.elevated),
+  filled(.filled),
+  tonal(.tonal),
+  outlined(.outlined);
+
+  const ToggleButtonColor(this._color);
+
+  final ButtonColor _color;
+}
+
+typedef IconButtonSize = ButtonSize;
+
+typedef IconButtonShape = ButtonShape;
+
+enum IconButtonColor { filled, tonal, outlined, standard }
+
+enum IconButtonWidth { narrow, normal, wide }
+
+typedef IconToggleButtonSize = IconButtonSize;
+
+typedef IconToggleButtonShape = IconButtonShape;
+
+typedef IconToggleButtonColor = IconButtonColor;
+
+typedef IconToggleButtonWidth = IconButtonWidth;
+
+enum FloatingActionButtonSize { small, medium, large }
+
+enum FloatingActionButtonColor {
+  primaryContainer,
+  secondaryContainer,
+  tertiaryContainer,
+  primary,
+  secondary,
+  tertiary,
+}
 
 enum LegacyMenuVariant { standard, vibrant }
-
-enum LegacyIconButtonWidth { narrow, normal, wide }
-
-enum LegacyIconButtonColor { filled, tonal, outlined, standard }
 
 enum LegacyTextFieldType { filled, outlined }
 
@@ -236,9 +274,9 @@ abstract final class LegacyThemeFactory {
     required ShapeThemeData shapeTheme,
     required StateThemeData stateTheme,
     required TypescaleThemeData typescaleTheme,
-    LegacyButtonSize size = .small,
-    LegacyButtonShape shape = .round,
-    LegacyButtonColor color = .filled,
+    ButtonSize size = .small,
+    ButtonShape shape = .round,
+    ButtonColor color = .filled,
     bool? isSelected,
     MaterialTapTargetSize tapTargetSize = .padded,
     TextStyle? textStyle,
@@ -442,14 +480,14 @@ abstract final class LegacyThemeFactory {
     required ElevationThemeData elevationTheme,
     required ShapeThemeData shapeTheme,
     required StateThemeData stateTheme,
-    LegacyButtonSize size = .small,
-    LegacyButtonShape shape = .round,
-    LegacyIconButtonWidth width = .normal,
-    LegacyIconButtonColor color = .filled,
+    ButtonSize size = .small,
+    ButtonShape shape = .round,
+    IconButtonWidth width = .normal,
+    IconButtonColor color = .filled,
     bool? isSelected,
     MaterialTapTargetSize tapTargetSize = .padded,
-    LegacyButtonShape? unselectedShape,
-    LegacyButtonShape? selectedShape,
+    ButtonShape? unselectedShape,
+    ButtonShape? selectedShape,
     Color? disabledContainerColor,
     Color? containerColor,
     Color? unselectedDisabledContainerColor,

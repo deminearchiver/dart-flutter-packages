@@ -1,32 +1,36 @@
 name: material_example
-description: Material Example
-version: 0.1.0+1
+description: Material example.
+version: 1.0.0
+homepage: https://github.com/deminearchiver/dart-flutter-packages
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/material/example
+issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
 publish_to: none
 resolution: workspace
 
 environment:
   sdk: ^3.11.0
+  flutter: ">=3.41.0"
 
 dependencies:
   # SDK dependencies
   flutter:
     sdk: flutter
 
-  # Workspace dependencies
+  # Path dependencies
   layout:
     path: ../../layout
   material:
     path: ../
 
   # Hosted dependencies
-  mesh: ^0.5.0
-  mesh_gradient: ^1.3.8
-  meta: ^1.17.0
-  share_plus: ^13.0.0
-  shared_preferences: ^2.5.5
-  skeletonizer: ^2.1.3
-  url_launcher: ^6.3.2
-  vector_math: ^2.2.0
+  flutter_markdown_plus: ^1.0.7
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.11.0
+  markdown: ^7.3.1
+  meta: ^1.18.0
+  motor: ^1.1.0
+  slang: ^4.14.0
+  slang_flutter: ^4.14.0
 
 dev_dependencies:
   # SDK dependencies
@@ -34,12 +38,14 @@ dev_dependencies:
     sdk: flutter
 
   # Hosted dependencies
+  build_runner: ^2.13.1
   deminearchiver_lints: ^2.1.2
+  freezed: ^3.2.5
+  json_serializable: ^6.13.1
+  slang_build_runner: ^4.14.0
 
 flutter:
   uses-material-design: true
-  generate: false
-
   assets:
     # Open Font Licenses
     - assets/fonts/firacode/OFL.txt
@@ -47,27 +53,29 @@ flutter:
     - assets/fonts/googlesanscode/OFL.txt
     - assets/fonts/googlesansflex/OFL.txt
     - assets/fonts/robotoflex/OFL.txt
-
-  fonts:
-    - family: Fira Code
-      fonts:
-        - asset: assets/fonts/firacode/FiraCode-VariableFont_wght.ttf
-          style: normal
-    - family: Google Sans
-      fonts:
-        - asset: assets/fonts/googlesans/GoogleSans-VariableFont_GRAD,opsz,wght.ttf
-          style: normal
-        - asset: assets/fonts/googlesans/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf
-          style: italic
-    - family: Google Sans Code
-      fonts:
-        - asset: assets/fonts/googlesanscode/GoogleSansCode-VariableFont_wght.ttf
-          style: normal
-        - asset: assets/fonts/googlesanscode/GoogleSansCode-Italic-VariableFont_wght.ttf
-          style: italic
-    - family: Google Sans Flex
-      fonts:
-        - asset: assets/fonts/googlesansflex/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf
-    - family: Roboto Flex
-      fonts:
-        - asset: assets/fonts/robotoflex/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf
+fonts:
+  - family: Fira Code
+    fonts:
+      - asset: assets/fonts/firacode/FiraCode-VariableFont_wght.ttf
+        style: normal
+  - family: Google Sans
+    fonts:
+      - asset: assets/fonts/googlesans/GoogleSans-VariableFont_GRAD,opsz,wght.ttf
+        style: normal
+      - asset: assets/fonts/googlesans/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf
+        style: italic
+  - family: Google Sans Code
+    fonts:
+      - asset: assets/fonts/googlesanscode/GoogleSansCode-VariableFont_wght.ttf
+        style: normal
+      - asset: assets/fonts/googlesanscode/GoogleSansCode-Italic-VariableFont_wght.ttf
+        style: italic
+  - family: Google Sans Flex
+    fonts:
+      - asset: assets/fonts/googlesansflex/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf
+  - family: Monaspace Argon
+    fonts:
+      - asset: assets/fonts/monaspace/MonaspaceArgon-VariableFont.ttf
+  - family: Roboto Flex
+    fonts:
+      - asset: assets/fonts/robotoflex/RobotoFlex-VariableFont_GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf
