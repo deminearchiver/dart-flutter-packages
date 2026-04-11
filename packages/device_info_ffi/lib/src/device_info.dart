@@ -14,6 +14,11 @@ abstract final class DeviceInfo {
     _ => null,
   };
 
+  static WebBrowserInfo? get webBrowserInfo => switch (deviceInfo) {
+    final WebBrowserInfo value => value,
+    _ => null,
+  };
+
   static WindowsDeviceInfo? get windowsInfo => switch (deviceInfo) {
     final WindowsDeviceInfo value => value,
     _ => null,

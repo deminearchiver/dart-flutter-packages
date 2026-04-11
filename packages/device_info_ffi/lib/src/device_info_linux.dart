@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart';
 /// - https://www.freedesktop.org/software/systemd/man/machine-id.html
 class LinuxDeviceInfo with Diagnosticable implements BaseDeviceInfo {
   /// Constructs a LinuxDeviceInfo.
-  LinuxDeviceInfo({
+  const LinuxDeviceInfo({
     required this.name,
     this.version,
     required this.id,

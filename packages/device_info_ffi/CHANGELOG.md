@@ -1,4 +1,9 @@
-# 1.1.1
+## 2.0.0
+
+- Bumped `win32` to `6.0.0`.
+- Added web implementation.
+
+## 1.1.1
 
 - Fixed absent `jni_flutter` dynamic library in release mode by upgrading `jni_flutter` to `1.0.1`.
 

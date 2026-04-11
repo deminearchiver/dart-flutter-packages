@@ -34,16 +34,16 @@ class FileVersionInfo {
 
   void dispose() => free(_data.lpBlock);
 
-  String get companyName => getValue('CompanyName');
-  String get companyShortName => getValue('CompanyShortName');
-  String get productName => getValue('ProductName');
-  String get productShortName => getValue('ProductShortName');
-  String get internalName => getValue('InternalName');
-  String get productVersion => getValue('ProductVersion');
-  String get specialBuild => getValue('SpecialBuild');
-  String get originalFilename => getValue('OriginalFilename');
-  String get fileDescription => getValue('FileDescription');
-  String get fileVersion => getValue('FileVersion');
+  String get companyName => getValue("CompanyName");
+  String get companyShortName => getValue("CompanyShortName");
+  String get productName => getValue("ProductName");
+  String get productShortName => getValue("ProductShortName");
+  String get internalName => getValue("InternalName");
+  String get productVersion => getValue("ProductVersion");
+  String get specialBuild => getValue("SpecialBuild");
+  String get originalFilename => getValue("OriginalFilename");
+  String get fileDescription => getValue("FileDescription");
+  String get fileVersion => getValue("FileVersion");
 
   String getValue(String name) {
     final langCodepages = [
@@ -59,13 +59,13 @@ class FileVersionInfo {
 
     final lplpBuffer = calloc<LPWSTR>();
     final puLen = calloc<UINT>();
-    String toHex4(int val) => val.toRadixString(16).padLeft(4, '0');
+    String toHex4(int val) => val.toRadixString(16).padLeft(4, "0");
 
     try {
       for (final langCodepage in langCodepages) {
         final lang = toHex4(langCodepage[0]);
         final codepage = toHex4(langCodepage[1]);
-        final lpSubBlock = TEXT('\\StringFileInfo\\$lang$codepage\\$name');
+        final lpSubBlock = "\\StringFileInfo\\$lang$codepage\\$name".toPcwstr();
         final res = VerQueryValue(
           _data.lpBlock,
           lpSubBlock,
@@ -74,7 +74,7 @@ class FileVersionInfo {
         );
         free(lpSubBlock);
 
-        if (res != 0 && lplpBuffer.address != 0 && puLen.value > 0) {
+        if (res && lplpBuffer.address != 0 && puLen.value > 0) {
           return lplpBuffer.value.toDartString();
         }
       }
@@ -88,23 +88,25 @@ class FileVersionInfo {
 
   static FileVersionInfoData getData(String filePath) {
     if (!File(filePath).existsSync()) {
-      throw ArgumentError.value(filePath, 'filePath', 'File not present');
+      throw ArgumentError.value(filePath, "filePath", "File not present");
     }
 
-    final lptstrFilename = TEXT(filePath);
-    final dwLen = GetFileVersionInfoSize(lptstrFilename, nullptr);
+    final lptstrFilename = filePath.toPcwstr();
+    final sizeResult = GetFileVersionInfoSize(lptstrFilename, null);
+    final dwLen = sizeResult.value;
 
     final lpData = calloc<BYTE>(dwLen); // freed by the dispose() method
-    final lpSubBlock = TEXT(r'\VarFileInfo\Translation');
+    final lpSubBlock = r"\VarFileInfo\Translation".toPcwstr();
     final lpTranslate = calloc<Pointer<LANGANDCODEPAGE>>();
     final puLen = calloc<UINT>();
     try {
-      if (GetFileVersionInfo(lptstrFilename, NULL, dwLen, lpData) == 0) {
-        throw WindowsException(HRESULT_FROM_WIN32(GetLastError()));
+      final infoResult = GetFileVersionInfo(lptstrFilename, dwLen, lpData);
+      if (!infoResult.value) {
+        throw WindowsException(infoResult.error.toHRESULT());
       }
 
-      if (VerQueryValue(lpData, lpSubBlock, lpTranslate.cast(), puLen) == 0) {
-        throw WindowsException(HRESULT_FROM_WIN32(GetLastError()));
+      if (!VerQueryValue(lpData, lpSubBlock, lpTranslate.cast(), puLen)) {
+        throw WindowsException(GetLastError().toHRESULT());
       }
       return FileVersionInfoData(lpBlock: lpData, lpLang: lpTranslate.value);
     } finally {

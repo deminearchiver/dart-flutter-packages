@@ -20,8 +20,8 @@ dependencies:
   ffi: ^2.2.0
   jni: ^1.0.0
   meta: ^1.17.0
-  win32: ^5.15.0
-  win32_registry: ^2.1.0
+  win32: ^6.0.0
+  win32_registry: ^3.0.2
 
 dev_dependencies:
   flutter_test:
