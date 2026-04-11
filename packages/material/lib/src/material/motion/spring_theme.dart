@@ -58,7 +58,7 @@ abstract class Spring extends SpringPartial {
   const factory Spring.from({
     required double stiffness,
     required double damping,
-  }) = _Spring.from;
+  }) = _Spring;
 
   @override
   double get stiffness;
@@ -107,7 +107,7 @@ abstract class Spring extends SpringPartial {
 }
 
 class _Spring extends Spring {
-  const _Spring.from({required this.stiffness, required this.damping});
+  const _Spring({required this.stiffness, required this.damping});
 
   @override
   final double stiffness;
@@ -126,7 +126,7 @@ abstract class SpringThemeDataPartial with Diagnosticable {
     SpringPartial? defaultEffects,
     SpringPartial? slowSpatial,
     SpringPartial? slowEffects,
-  }) = _SpringThemeDataPartial.from;
+  }) = _SpringThemeDataPartial;
 
   SpringPartial? get fastSpatial;
 
@@ -226,7 +226,7 @@ abstract class SpringThemeDataPartial with Diagnosticable {
 }
 
 class _SpringThemeDataPartial extends SpringThemeDataPartial {
-  const _SpringThemeDataPartial.from({
+  const _SpringThemeDataPartial({
     this.fastSpatial,
     this.fastEffects,
     this.defaultSpatial,
@@ -264,7 +264,7 @@ abstract class SpringThemeData extends SpringThemeDataPartial {
     required Spring defaultEffects,
     required Spring slowSpatial,
     required Spring slowEffects,
-  }) = _SpringThemeData.from;
+  }) = _SpringThemeData;
 
   const factory SpringThemeData.standard() = _SpringThemeData.standard;
 
@@ -375,7 +375,7 @@ abstract class SpringThemeData extends SpringThemeDataPartial {
 }
 
 class _SpringThemeData extends SpringThemeData {
-  const _SpringThemeData.from({
+  const _SpringThemeData({
     required this.fastSpatial,
     required this.fastEffects,
     required this.defaultSpatial,
