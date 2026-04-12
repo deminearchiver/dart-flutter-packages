@@ -13,20 +13,28 @@ environment:
   flutter: ">=3.41.0"
 
 dependencies:
+  # SDK dependencies
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  androidx_graphics_shapes: ^1.3.2
-  collection: ^1.19.1
+
+  # Path dependencies
   layout:
     path: ../layout
+
+  # Hosted dependencies
+  androidx_graphics_shapes: ^1.4.0+1
+  collection: ^1.19.1
   libmonet: ^2.0.0-dev.13
   material_symbols_icons: ^4.2928.1
   meta: ^1.17.0
   motor: ^1.1.0
 
 dev_dependencies:
+  # SDK dependencies
   flutter_test:
     sdk: flutter
+
+  # Hosted dependencies
   deminearchiver_lints: ^2.1.2
