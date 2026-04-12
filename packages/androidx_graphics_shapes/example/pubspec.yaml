@@ -1,0 +1,27 @@
+name: androidx_graphics_shapes_example
+description: Example for the androidx_graphics_shapes package.
+version: 0.1.0+1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=3.41.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  androidx_graphics_shapes:
+    path: ../
+  collection: ^1.19.1
+  libmonet: ^2.0.0-dev.13
+  material_symbols_icons: ^4.2928.1
+  meta: ^1.17.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  deminearchiver_lints: ^2.1.2
+
+flutter:
+  uses-material-design: true
