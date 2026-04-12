@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:material/src/material_shapes/material_shapes.dart';
+import 'package:material/material_shapes.dart';
 import 'package:material/src/material/flutter.dart';
 
 const _kContainerWidth = 48.0;
@@ -15,10 +15,11 @@ const _kSingleRotationAngle = math.pi * 3.0 / 4.0;
 const _kLinearRotationAngle = math.pi / 4.0;
 const _kMorphRotationAngle = _kSingleRotationAngle - _kLinearRotationAngle;
 
-const _kGlobalRotationDurationMs = 4666;
-const _kMorphIntervalMs = 650;
-const _kFullRotation = 2.0 * math.pi;
-const _kQuarterRotation = _kFullRotation / 4.0;
+// The following constants are used in the Compose implementation:
+// const _kGlobalRotationDurationMs = 4666;
+// const _kMorphIntervalMs = 650;
+// const _kFullRotation = 2.0 * math.pi;
+// const _kQuarterRotation = _kFullRotation / 4.0;
 
 final _indeterminateIndicatorPolygons = <RoundedPolygon>[
   MaterialShapes.softBurst,
@@ -31,15 +32,12 @@ final _indeterminateIndicatorPolygons = <RoundedPolygon>[
 ];
 
 final _determinateIndicatorPolygons = <RoundedPolygon>[
-  // ignore: invalid_use_of_internal_member
-  MaterialShapes.circle.transformedWithMatrix(.rotationZ(2.0 * math.pi / 20.0)),
+  // Rotate by 36 degrees to align vertices with softBurst.
+  MaterialShapes.circle.transformedWithMatrix2(.rotation(math.pi / 10.0)),
   MaterialShapes.softBurst,
 ];
 
-class LoadingIndicatorController {
-  // TODO: add vsync here
-  // TODO: this class manages LoadingIndicator animations and allows syncing multiple loading indicators together
-}
+typedef ForEachPolygon = RoundedPolygon Function(RoundedPolygon polygon);
 
 class DeterminateLoadingIndicator extends StatefulWidget {
   const DeterminateLoadingIndicator({
@@ -49,6 +47,7 @@ class DeterminateLoadingIndicator extends StatefulWidget {
     this.indicatorPolygons,
     this.containerColor,
     this.indicatorColor,
+    this.forEachPolygon = defaultForEachPolygon,
   }) : assert(progress >= 0.0 && progress <= 1.0),
        assert(
          indicatorPolygons == null || indicatorPolygons.length >= 2,
@@ -65,35 +64,41 @@ class DeterminateLoadingIndicator extends StatefulWidget {
 
   final Color? indicatorColor;
 
+  final ForEachPolygon forEachPolygon;
+
   List<RoundedPolygon> get _indicatorPolygons =>
       indicatorPolygons ?? _determinateIndicatorPolygons;
 
   @override
   State<DeterminateLoadingIndicator> createState() =>
       _DeterminateLoadingIndicatorState();
+
+  static RoundedPolygon defaultForEachPolygon(RoundedPolygon polygon) =>
+      polygon.normalized();
 }
 
 class _DeterminateLoadingIndicatorState
     extends State<DeterminateLoadingIndicator> {
   double get _progressValue => widget.progress;
 
+  final _matrix = Matrix4.zero();
+
   late List<Morph> _morphSequence;
   late double _morphScaleFactor;
 
-  final _scaleMatrix = Matrix4.zero();
-
   void _updateMorphScaleFactor(List<RoundedPolygon> indicatorPolygons) {
     _morphScaleFactor =
-        _calculateScaleFactor(widget._indicatorPolygons) *
+        LoadingIndicatorUtils.calculateScaleFactor(widget._indicatorPolygons) *
         _kActiveIndicatorScale;
   }
 
   @override
   void initState() {
     super.initState();
-    _morphSequence = _updateMorphSequence(
+    _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
       polygons: widget._indicatorPolygons,
       circularSequence: false,
+      forEachPolygon: widget.forEachPolygon,
     );
     _updateMorphScaleFactor(widget._indicatorPolygons);
   }
@@ -101,11 +106,13 @@ class _DeterminateLoadingIndicatorState
   @override
   void didUpdateWidget(covariant DeterminateLoadingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (!listEquals(widget._indicatorPolygons, oldWidget._indicatorPolygons)) {
-      _morphSequence = _updateMorphSequence(
+    if (!listEquals(widget._indicatorPolygons, oldWidget._indicatorPolygons) ||
+        widget.forEachPolygon != oldWidget.forEachPolygon) {
+      _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
         morphSequence: _morphSequence,
         polygons: widget._indicatorPolygons,
         circularSequence: false,
+        forEachPolygon: widget.forEachPolygon,
       );
       _updateMorphScaleFactor(widget._indicatorPolygons);
     }
@@ -114,10 +121,11 @@ class _DeterminateLoadingIndicatorState
   @override
   void reassemble() {
     super.reassemble();
-    _morphSequence = _updateMorphSequence(
+    _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
       morphSequence: _morphSequence,
       polygons: widget._indicatorPolygons,
       circularSequence: false,
+      forEachPolygon: widget.forEachPolygon,
     );
     _updateMorphScaleFactor(widget._indicatorPolygons);
   }
@@ -167,11 +175,13 @@ class _DeterminateLoadingIndicatorState
             minWidth: _kContainerWidth,
             minHeight: _kContainerHeight,
           ),
-          child: Material(
-            clipBehavior: .antiAlias,
-            shape: CornersBorder.rounded(
-              corners: Corners.all(shapeTheme.corner.full),
-            ),
+          child: Material.raw(
+            clipBehavior: widget.contained ? .antiAlias : .none,
+            shape: widget.contained
+                ? CornersBorder.rounded(
+                    corners: Corners.all(shapeTheme.corner.full),
+                  )
+                : const RoundedRectangleBorder(),
             color: widget.contained ? containerColor : Colors.transparent,
             elevation: widget.contained ? elevationTheme.level0 : 0.0,
             shadowColor: widget.contained
@@ -186,7 +196,7 @@ class _DeterminateLoadingIndicatorState
                 adjustedProgressValue: adjustedProgressValue,
                 rotation: rotation,
                 indicatorColor: indicatorColor,
-                scaleMatrix: _scaleMatrix,
+                matrix: _matrix,
               ),
             ),
           ),
@@ -203,7 +213,7 @@ class _DeterminateLoadingIndicatorPainter extends CustomPainter {
     required this.adjustedProgressValue,
     required this.rotation,
     required this.indicatorColor,
-    this.scaleMatrix,
+    this.matrix,
   });
 
   final Morph currentMorph;
@@ -211,50 +221,32 @@ class _DeterminateLoadingIndicatorPainter extends CustomPainter {
   final double adjustedProgressValue;
   final double rotation;
   final Color indicatorColor;
-  final Matrix4? scaleMatrix;
+  final Matrix4? matrix;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final center = size.center(.zero);
-
-    final morphPath = currentMorph.toPath(
-      progress: adjustedProgressValue,
-      startAngle: 0.0,
-    );
-
-    final processedPath = _processPath(
-      path: morphPath,
+    LoadingIndicatorUtils.paintPathWithTransform(
+      canvas: canvas,
       size: size,
-      scaleFactor: morphScaleFactor,
-      scaleMatrix: scaleMatrix,
+      path: currentMorph.toPath(
+        progress: adjustedProgressValue,
+        startAngle: 0.0,
+      ),
+      scale: morphScaleFactor,
+      rotation: rotation,
+      matrix: matrix,
+      paint: Paint()..color = indicatorColor,
     );
-
-    final paint = Paint()
-      ..style = .fill
-      ..color = indicatorColor;
-
-    canvas
-      // Save the canvas before applying the transform
-      ..save()
-      // Rotate the canvas around the size's center
-      ..translate(center.dx, center.dy)
-      ..rotate(rotation)
-      ..translate(-center.dx, -center.dy)
-      // Draw the processed path onto the canvas
-      ..drawPath(processedPath, paint)
-      // Restore the canvas after applying the transform
-      ..restore();
   }
 
   @override
   bool shouldRepaint(_DeterminateLoadingIndicatorPainter oldDelegate) =>
-      // TODO: measure the performance impact of these comparisons
       currentMorph != oldDelegate.currentMorph ||
       morphScaleFactor != oldDelegate.morphScaleFactor ||
       adjustedProgressValue != oldDelegate.adjustedProgressValue ||
       rotation != oldDelegate.rotation ||
       indicatorColor != oldDelegate.indicatorColor ||
-      scaleMatrix != oldDelegate.scaleMatrix;
+      matrix != oldDelegate.matrix;
 }
 
 class IndeterminateLoadingIndicator extends StatefulWidget {
@@ -265,6 +257,7 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
     this.indicatorColor,
     this.containerColor,
     this.semanticsLabel,
+    this.forEachPolygon = LoadingIndicatorUtils.defaultForEachPolygon,
   }) : assert(
          indicatorPolygons == null || indicatorPolygons.length >= 2,
          "indicatorPolygons should have, at least, two RoundedPolygons",
@@ -280,6 +273,8 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
 
   final String? semanticsLabel;
 
+  final ForEachPolygon forEachPolygon;
+
   List<RoundedPolygon> get _indicatorPolygons =>
       indicatorPolygons ?? _indeterminateIndicatorPolygons;
 
@@ -291,10 +286,9 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
 class _IndeterminateLoadingIndicatorState
     extends State<IndeterminateLoadingIndicator>
     with SingleTickerProviderStateMixin {
-  final _scaleMatrix = Matrix4.zero();
+  final _matrix = Matrix4.zero();
 
   final _globalAngle = ValueNotifier<double>(0.0);
-
   final _morphIndex = ValueNotifier<int>(0);
 
   late List<Morph> _morphSequence;
@@ -310,7 +304,7 @@ class _IndeterminateLoadingIndicatorState
 
   void _updateMorphScaleFactor(List<RoundedPolygon> indicatorPolygons) {
     _morphScaleFactor =
-        _calculateScaleFactor(widget._indicatorPolygons) *
+        LoadingIndicatorUtils.calculateScaleFactor(widget._indicatorPolygons) *
         _kActiveIndicatorScale;
   }
 
@@ -326,9 +320,10 @@ class _IndeterminateLoadingIndicatorState
   void initState() {
     super.initState();
 
-    _morphSequence = _updateMorphSequence(
+    _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
       polygons: widget._indicatorPolygons,
       circularSequence: true,
+      forEachPolygon: widget.forEachPolygon,
     );
     _updateMorphScaleFactor(widget._indicatorPolygons);
 
@@ -372,12 +367,14 @@ class _IndeterminateLoadingIndicatorState
   @override
   void didUpdateWidget(IndeterminateLoadingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (!listEquals(widget.indicatorPolygons, oldWidget.indicatorPolygons)) {
+    if (!listEquals(widget.indicatorPolygons, oldWidget.indicatorPolygons) ||
+        widget.forEachPolygon != oldWidget.forEachPolygon) {
       _morphIndex.value = 0;
-      _morphSequence = _updateMorphSequence(
+      _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
         morphSequence: _morphSequence,
         polygons: widget._indicatorPolygons,
         circularSequence: true,
+        forEachPolygon: widget.forEachPolygon,
       );
       _updateMorphScaleFactor(widget._indicatorPolygons);
     }
@@ -395,10 +392,11 @@ class _IndeterminateLoadingIndicatorState
   void reassemble() {
     super.reassemble();
     _morphIndex.value = 0;
-    _morphSequence = _updateMorphSequence(
+    _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
       morphSequence: _morphSequence,
       polygons: widget._indicatorPolygons,
       circularSequence: true,
+      forEachPolygon: widget.forEachPolygon,
     );
     _updateMorphScaleFactor(widget._indicatorPolygons);
   }
@@ -428,11 +426,13 @@ class _IndeterminateLoadingIndicatorState
             minWidth: _kContainerWidth,
             minHeight: _kContainerHeight,
           ),
-          child: Material(
-            clipBehavior: .antiAlias,
-            shape: CornersBorder.rounded(
-              corners: Corners.all(shapeTheme.corner.full),
-            ),
+          child: Material.raw(
+            clipBehavior: widget.contained ? .antiAlias : .none,
+            shape: widget.contained
+                ? CornersBorder.rounded(
+                    corners: Corners.all(shapeTheme.corner.full),
+                  )
+                : const RoundedRectangleBorder(),
             color: widget.contained ? containerColor : Colors.transparent,
             elevation: widget.contained ? elevationTheme.level0 : 0.0,
             shadowColor: widget.contained
@@ -450,7 +450,7 @@ class _IndeterminateLoadingIndicatorState
                 rotation: _rotation,
                 scale: _scale,
                 morphProgress: _morphProgress,
-                scaleMatrix: _scaleMatrix,
+                matrix: _matrix,
               ),
             ),
           ),
@@ -471,7 +471,7 @@ class _IndeterminateLoadingIndicatorPainter extends CustomPainter {
     required this.rotation,
     required this.scale,
     required this.morphProgress,
-    this.scaleMatrix,
+    this.matrix,
   });
 
   final Color indicatorColor;
@@ -490,133 +490,161 @@ class _IndeterminateLoadingIndicatorPainter extends CustomPainter {
 
   final ValueListenable<double> morphProgress;
 
-  final Matrix4? scaleMatrix;
+  final Matrix4? matrix;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final center = size.center(.zero);
-
-    final angle =
-        globalAngle.value +
-        _kLinearRotationAngle * rotation.value +
-        _kMorphRotationAngle * morphProgress.value;
-
-    final scaleFactor = morphScaleFactor * scale.value;
-
-    final currentMorph = morphs[morphIndex.value];
-    final morphPath = currentMorph.toPath(progress: morphProgress.value);
-
-    final processedPath = _processPath(
-      path: morphPath,
+    LoadingIndicatorUtils.paintPathWithTransform(
+      canvas: canvas,
       size: size,
-      scaleFactor: scaleFactor,
-      scaleMatrix: scaleMatrix,
+      path: morphs[morphIndex.value].toPath(progress: morphProgress.value),
+      scale: morphScaleFactor * scale.value,
+      rotation:
+          globalAngle.value +
+          _kLinearRotationAngle * rotation.value +
+          _kMorphRotationAngle * morphProgress.value,
+      matrix: matrix,
+      paint: Paint()..color = indicatorColor,
     );
-
-    final paint = Paint()
-      ..style = .fill
-      ..color = indicatorColor;
-
-    canvas
-      // Save the canvas before applying the transform
-      ..save()
-      // Rotate the canvas around the size's center
-      ..translate(center.dx, center.dy)
-      ..rotate(angle)
-      ..translate(-center.dx, -center.dy)
-      // Draw the processed path onto the canvas
-      ..drawPath(processedPath, paint)
-      // Restore the canvas after applying the transform
-      ..restore();
   }
 
   @override
   bool shouldRepaint(_IndeterminateLoadingIndicatorPainter oldDelegate) =>
       indicatorColor != oldDelegate.indicatorColor ||
       morphScaleFactor != oldDelegate.morphScaleFactor ||
-      morphs != oldDelegate.morphs ||
+      !listEquals(morphs, oldDelegate.morphs) ||
       morphIndex != oldDelegate.morphIndex ||
       globalAngle != oldDelegate.globalAngle ||
       rotation != oldDelegate.rotation ||
       scale != oldDelegate.scale ||
       morphProgress != oldDelegate.morphProgress ||
-      scaleMatrix != oldDelegate.scaleMatrix;
+      matrix != oldDelegate.matrix;
 }
 
-Iterable<Morph> _generateMorphSequence({
-  required List<RoundedPolygon> polygons,
-  required bool circularSequence,
-  RoundedPolygon Function(RoundedPolygon polygon)? forEachPolygon,
-}) sync* {
-  forEachPolygon ??= (polygon) => polygon.normalized();
-  for (var i = 0; i < polygons.length; i++) {
-    if (i + 1 < polygons.length) {
-      yield Morph(forEachPolygon(polygons[i]), forEachPolygon(polygons[i + 1]));
-    } else if (circularSequence) {
-      // Create a morph from the last shape to the first shape
-      yield Morph(forEachPolygon(polygons[i]), forEachPolygon(polygons[0]));
+abstract final class LoadingIndicatorUtils {
+  static RoundedPolygon defaultForEachPolygon(RoundedPolygon polygon) =>
+      polygon.normalized();
+
+  static Iterable<Morph> generateMorphSequence({
+    required List<RoundedPolygon> polygons,
+    required bool circularSequence,
+    ForEachPolygon forEachPolygon = defaultForEachPolygon,
+  }) sync* {
+    for (var i = 0; i < polygons.length; i++) {
+      if (i + 1 < polygons.length) {
+        yield Morph(
+          forEachPolygon(polygons[i]),
+          forEachPolygon(polygons[i + 1]),
+        );
+      } else if (circularSequence) {
+        // Create a morph from the last shape to the first shape.
+        yield Morph(forEachPolygon(polygons[i]), forEachPolygon(polygons[0]));
+      }
     }
   }
-}
 
-List<Morph> _updateMorphSequence({
-  List<Morph>? morphSequence,
-  required List<RoundedPolygon> polygons,
-  required bool circularSequence,
-  RoundedPolygon Function(RoundedPolygon polygon)? forEachPolygon,
-}) {
-  final iterable = _generateMorphSequence(
-    polygons: polygons,
-    circularSequence: circularSequence,
-    forEachPolygon: forEachPolygon,
-  );
-  morphSequence
-    ?..clear()
-    ..addAll(iterable);
-  return morphSequence ?? [...iterable];
-}
-
-double _calculateScaleFactor(
-  List<RoundedPolygon> indicatorPolygons, {
-  bool approximate = true,
-}) {
-  var scaleFactor = 1.0;
-  for (var i = 0; i < indicatorPolygons.length; i++) {
-    final polygon = indicatorPolygons[i];
-
-    final bounds = polygon.calculateBounds(approximate: approximate);
-    final maxBounds = polygon.calculateMaxBounds();
-
-    final scaleX = bounds.width / maxBounds.width;
-    final scaleY = bounds.height / maxBounds.height;
-
-    // We use max(scaleX, scaleY) to handle cases like a pill-shape that can throw off the
-    // entire calculation.
-    scaleFactor = math.min(scaleFactor, math.max(scaleX, scaleY));
-  }
-  return scaleFactor;
-}
-
-Path _processPath({
-  required Path path,
-  required Size size,
-  required double scaleFactor,
-  Matrix4? scaleMatrix,
-}) {
-  scaleMatrix ??= .zero();
-  scaleMatrix
-    ..setIdentity()
-    ..scaleByDouble(
-      size.width * scaleFactor,
-      size.height * scaleFactor,
-      1.0,
-      1.0,
+  static List<Morph> updateMorphSequence({
+    List<Morph>? morphSequence,
+    required List<RoundedPolygon> polygons,
+    required bool circularSequence,
+    ForEachPolygon forEachPolygon = defaultForEachPolygon,
+  }) {
+    final iterable = generateMorphSequence(
+      polygons: polygons,
+      circularSequence: circularSequence,
+      forEachPolygon: forEachPolygon,
     );
+    morphSequence
+      ?..clear()
+      ..addAll(iterable);
+    return morphSequence ?? [...iterable];
+  }
 
-  // Scale to the desired size.
-  path = path.transform(scaleMatrix.storage);
+  static double calculateScaleFactor(
+    List<RoundedPolygon> indicatorPolygons, {
+    bool approximate = true,
+  }) {
+    var scaleFactor = 1.0;
+    for (var i = 0; i < indicatorPolygons.length; i++) {
+      final polygon = indicatorPolygons[i];
 
-  // Translate the path to align its center with the available size center.
-  final transformedBounds = path.getBounds();
-  return path.shift(size.center(.zero) - transformedBounds.center);
+      final bounds = polygon.calculateBounds(approximate: approximate);
+      final maxBounds = polygon.calculateMaxBounds();
+
+      final scaleX = bounds.width / maxBounds.width;
+      final scaleY = bounds.height / maxBounds.height;
+
+      // We use max(scaleX, scaleY) to handle cases like a pill-shape that can
+      // throw off the entire calculation.
+      scaleFactor = math.min(scaleFactor, math.max(scaleX, scaleY));
+    }
+    return scaleFactor;
+  }
+
+  static Path transformPath({
+    required Size size,
+    required Path path,
+    double scale = 1.0,
+    double rotation = 0.0,
+    Matrix4? matrix,
+  }) {
+    final canvasCenter = size.center(.zero);
+    final pathCenter = path.getBounds().center;
+    (matrix ??= .zero())
+      ..setIdentity()
+      // Translate the path to align its center with the available size center.
+      ..translateByDouble(canvasCenter.dx, canvasCenter.dy, 0.0, 1.0)
+      // Apply rotation.
+      ..rotateZ(rotation)
+      // Scale to the desired size.
+      ..scaleByDouble(size.width * scale, size.height * scale, 1.0, 1.0)
+      // Translate the path to align its center with (0, 0).
+      ..translateByDouble(-pathCenter.dx, -pathCenter.dy, 0.0, 1.0);
+    return path.transform(matrix.storage);
+  }
+
+  static void paintPathWithTransform({
+    required Canvas canvas,
+    required Size size,
+    required Path path,
+    double scale = 1.0,
+    double rotation = 0.0,
+    Matrix4? matrix,
+    required Paint paint,
+  }) {
+    final processedPath = transformPath(
+      size: size,
+      path: path,
+      scale: scale,
+      rotation: rotation,
+      matrix: matrix,
+    );
+    canvas.drawPath(processedPath, paint);
+  }
+}
+
+// TODO: implement controlled loading indicators
+
+class LoadingIndicatorController {
+  // TODO: this class manages LoadingIndicator animations
+  //  and allows syncing multiple loading indicators together
+
+  // TODO: add vsync here
+}
+
+class LoadingIndicatorPaint extends StatefulWidget {
+  const LoadingIndicatorPaint({super.key, required this.controller});
+
+  final LoadingIndicatorController controller;
+
+  @override
+  State<LoadingIndicatorPaint> createState() => _LoadingIndicatorPaintState();
+}
+
+// The widget is theoretically stateless but we still need a state (probably).
+class _LoadingIndicatorPaintState extends State<LoadingIndicatorPaint> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
 }
