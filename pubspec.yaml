@@ -7,6 +7,7 @@ environment:
 
 workspace:
   - packages/androidx_graphics_shapes
+  - packages/androidx_graphics_shapes/example
   - packages/csscolorparser
   - packages/csscolorparser_flutter
   - packages/deminearchiver_lints
