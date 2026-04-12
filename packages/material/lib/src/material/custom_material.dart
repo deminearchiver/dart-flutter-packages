@@ -69,7 +69,7 @@ class Material extends StatelessWidget {
   /// The [elevation] must be non-negative.
   const Material({
     super.key,
-    this.clipBehavior = Clip.none,
+    this.clipBehavior = .none,
     this.borderOnForeground = true,
     this.shape,
     this.color,
@@ -85,12 +85,12 @@ class Material extends StatelessWidget {
   /// The [elevation] must be non-negative.
   const Material.raw({
     super.key,
-    this.clipBehavior = Clip.none,
+    this.clipBehavior = .none,
     this.borderOnForeground = true,
-    ShapeBorder this.shape = const RoundedRectangleBorder(),
-    Color this.color = Colors.transparent,
-    double this.elevation = 0.0,
-    Color this.shadowColor = Colors.black,
+    ShapeBorder this.shape = defaultRawShape,
+    Color this.color = defaultRawColor,
+    double this.elevation = defaultRawElevation,
+    Color this.shadowColor = defaultRawShadowColor,
     this.child,
   }) : assert(elevation >= 0.0);
 
@@ -132,7 +132,6 @@ class Material extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final capturedTextStyle = DefaultTextStyle.of(context);
-
     final colorTheme = ColorTheme.of(context);
     final elevationTheme = ElevationTheme.of(context);
     final shapeTheme = ShapeTheme.of(context);
@@ -156,11 +155,9 @@ class Material extends StatelessWidget {
           CornersBorder(corners: .none) => true,
           _ => false,
         };
-
     final flutter.MaterialType resolvedType = isTransparent
         ? .transparency
         : .canvas;
-
     return flutter.Material(
       animationDuration: .zero,
       animateColor: false,
@@ -202,6 +199,11 @@ class Material extends StatelessWidget {
       ..add(DoubleProperty("elevation", elevation, defaultValue: null))
       ..add(ColorProperty("shadowColor", shadowColor, defaultValue: null));
   }
+
+  static const defaultRawShape = RoundedRectangleBorder();
+  static const defaultRawColor = Colors.transparent;
+  static const defaultRawElevation = 0.0;
+  static const defaultRawShadowColor = Colors.black;
 
   /// The ink controller from the closest instance of this class that
   /// encloses the given context within the closest [LookupBoundary].
