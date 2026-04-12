@@ -1,5 +1,6 @@
-## 1.4.0
+## 1.4.0+1
 
+- Bumped minimum Dart SDK to 3.11 and Flutter to 3.41.
 - Marked internal extension methods on `RoundedPolygon` and `Morph` as deprecated.
 - Fixed `RoundedPolygonBorder.copyWith()` skipping `side` and `squash` properties.
 - Exposed `PathBorder` for public use.
