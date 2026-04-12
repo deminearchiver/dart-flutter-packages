@@ -1,4 +1,8 @@
+import 'dart:math' as math;
+
 import 'package:material_example/flutter.dart';
+
+import 'package:material/src/material_shapes/material_shapes.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -118,7 +122,7 @@ class _AppState extends State<App> {
     return _buildThemes(context, appBuilder);
   }
 
-  static const _variant = DynamicSchemeVariant.vibrant;
+  static const _variant = DynamicSchemeVariant.expressive;
   static const _platform = DynamicSchemePlatform.phone;
   static const _specVersion = DynamicSchemeSpecVersion.spec2026;
   static const _typography = TypographyDefaults.material3Expressive2026;
@@ -132,8 +136,93 @@ class ExampleView extends StatefulWidget {
 }
 
 class _ExampleViewState extends State<ExampleView> {
+  final _geminiPolygons = <RoundedPolygon>[
+    // MaterialShapes.gemini
+    MaterialShapes.clover4Leaf,
+    MaterialShapes.oval,
+    MaterialShapes.flower,
+    MaterialShapes.pentagon,
+    MaterialShapes.clover4Leaf,
+    MaterialShapes.oval,
+    // MaterialShapes.gemini
+    MaterialShapes.triangle,
+    MaterialShapes.flower,
+    MaterialShapes.pentagon,
+    MaterialShapes.oval,
+    // MaterialShapes.gemini
+    MaterialShapes.sunny,
+    MaterialShapes.oval,
+    MaterialShapes.clover4Leaf,
+    MaterialShapes.triangle,
+    // MaterialShapes.gemini
+  ];
+
+  var _progress = 0.0;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Align.center(child: Text("Hello, world!")));
+    final colorTheme = ColorTheme.of(context);
+    final elevationTheme = ElevationTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    final typescaleTheme = TypescaleTheme.of(context);
+    return Scaffold(
+      body: Padding(
+        padding: const .all(24.0),
+        child: Align.center(
+          child: Stack(
+            alignment: .center,
+            children: [
+              Positioned.fill(
+                child: FittedBox(
+                  fit: .cover,
+                  child: IndeterminateLoadingIndicator(
+                    contained: false,
+                    indicatorColor: colorTheme.surfaceContainerHighest,
+                    // indicatorPolygons: _geminiPolygons,
+                  ),
+                  // child: DeterminateLoadingIndicator(
+                  //   contained: false,
+                  //   indicatorColor: colorTheme.surfaceContainerHighest,
+                  //   // indicatorPolygons: [
+                  //   //   // ignore: invalid_use_of_internal_member
+                  //   //   MaterialShapes.triangle.transformedWithMatrix(
+                  //   //     Matrix4.identity()..translateByDouble(0.0, 0.0, 0.0, 0.5),
+                  //   //     usePerspectiveTransform: true,
+                  //   //   ),
+                  //   //   MaterialShapes.triangle,
+                  //   // ],
+                  //   // indicatorPolygons: _geminiPolygons,
+                  //   // forEachPolygon: (polygon) => polygon,
+                  //   progress: _progress,
+                  // ),
+                ),
+              ),
+              IntrinsicWidth(
+                child: Visibility.maintain(
+                  visible: true,
+                  child: Flex.vertical(
+                    mainAxisSize: .min,
+                    children: [
+                      Text(
+                        "Material 3 Expressive",
+                        textAlign: .center,
+                        style: typescaleTheme.displaySmallEmphasized
+                            .toTextStyle(color: colorTheme.onSurface),
+                      ),
+                      // const SizedBox(height: 24.0),
+                      // Slider(
+                      //   onChanged: (value) => setState(() => _progress = value),
+                      //   value: _progress,
+                      // ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

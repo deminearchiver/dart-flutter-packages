@@ -1,0 +1,3 @@
+class AnimationTimelineTrack {}
+
+class AnimationTimeline {}
