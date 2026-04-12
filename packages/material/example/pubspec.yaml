@@ -27,7 +27,7 @@ dependencies:
   freezed_annotation: ^3.1.0
   json_annotation: ^4.11.0
   markdown: ^7.3.1
-  meta: ^1.18.0
+  meta: ^1.17.0
   motor: ^1.1.0
   slang: ^4.14.0
   slang_flutter: ^4.14.0
