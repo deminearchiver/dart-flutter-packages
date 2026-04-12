@@ -3,5 +3,6 @@ export 'material_shapes/material_shapes.dart'
         RoundedPolygonExtension,
         MorphExtension,
         MaterialShapes,
+        PathBorder,
         RoundedPolygonBorder,
         MorphBorder;

@@ -1,3 +1,12 @@
+## 1.4.0
+
+- Marked internal extension methods on `RoundedPolygon` and `Morph` as deprecated.
+- Fixed `RoundedPolygonBorder.copyWith()` skipping `side` and `squash` properties.
+- Exposed `PathBorder` for public use.
+- Added `transformedWithMatrix2`, `transformedWithMatrix3` and `transformedWithMatrix4` methods to `RoundedPolygonExtension`.
+- Added more arguments to `RoundedPolygonExtension.toPath` and `MorphExtension.toPath` methods.
+- Optimized internal calculations and algorithms in the `material_shapes` library only.
+
 ## 1.3.2
 
 - Downgraded the dependency constraint of `meta` to `^1.17.0` to match the version pinned by the stable SDK.
