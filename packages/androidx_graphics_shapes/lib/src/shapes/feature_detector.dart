@@ -5,7 +5,7 @@ import 'features.dart';
 
 @internal
 List<Feature> detectFeatures(List<Cubic> cubics) {
-  final List<Feature> result = [];
+  final result = <Feature>[];
 
   if (cubics.isEmpty) return result;
 

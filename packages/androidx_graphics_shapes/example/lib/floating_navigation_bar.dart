@@ -1,5 +1,3 @@
-// P.S. - Thanks to [ButtonStyleButton] authors.
-
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -102,6 +100,8 @@ abstract final class _ChildLayoutHelper {
     (child.parentData! as BoxParentData).offset = position;
   }
 }
+
+// P.S. - Thanks to [ButtonStyleButton] authors.
 
 /// Redirect taps that occur in the padded area around the child to the center
 /// of the child. This increases the size of the button and the button's
@@ -507,7 +507,8 @@ class _RenderPadding extends RenderShiftedBox implements flutter.RenderPadding {
 
 extension type const FloatingNavigationBarDestination._(
   ({Widget icon, Widget label, String? tooltip}) _
-) implements Object {
+)
+    implements Object {
   const FloatingNavigationBarDestination({
     required Widget icon,
     required Widget label,

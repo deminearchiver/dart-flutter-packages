@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart' show listEquals;
+import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
 
 import 'corner_rounding.dart';
@@ -18,15 +18,10 @@ final class RoundedPolygon {
   RoundedPolygon(this.features, this.center)
     : cubics = _buildCubics(features, center) {
     var prevCubic = cubics[cubics.length - 1];
-    // debugLog("RoundedPolygon") { "Cubic-1 = $prevCubic" }
     for (var index = 0; index < cubics.length; index++) {
       final cubic = cubics[index];
-      // debugLog("RoundedPolygon") { "Cubic = $cubic" }
       if ((cubic.anchor0X - prevCubic.anchor1X).abs() > distanceEpsilon ||
           (cubic.anchor0Y - prevCubic.anchor1Y).abs() > distanceEpsilon) {
-        // debugLog("RoundedPolygon") {
-        //     "Ix: $index | (${cubic.anchor0X},${cubic.anchor0Y}) vs $prevCubic"
-        // }
         throw ArgumentError(
           "RoundedPolygon must be contiguous, with the anchor points of all curves "
           "matching the anchor points of the preceding and succeeding cubics.",
@@ -533,12 +528,13 @@ final class RoundedPolygon {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is RoundedPolygon &&
-          listEquals(features, other.features);
+      other is RoundedPolygon &&
+          _featuresEquality.equals(features, other.features);
 
   @override
-  int get hashCode => Object.hash(runtimeType, features);
+  int get hashCode => _featuresEquality.hash(features);
+
+  static const _featuresEquality = ListEquality<Feature>();
 
   static List<Cubic> _buildCubics(List<Feature> features, Point center) {
     final cubics = <Cubic>[];
@@ -553,8 +549,8 @@ final class RoundedPolygon {
     if (features.isNotEmpty && features[0].cubics.length == 3) {
       final centerCubic = features[0].cubics[1];
       final (start, end) = centerCubic.split(0.5);
-      firstFeatureSplitStart = [features[0].cubics[0], start];
-      firstFeatureSplitEnd = [end, features[0].cubics[2]];
+      firstFeatureSplitStart = <Cubic>[features[0].cubics[0], start];
+      firstFeatureSplitEnd = <Cubic>[end, features[0].cubics[2]];
     }
     // iterating one past the features list size allows us to insert the initial split
     // cubic if it exists

@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math' as math;
 import 'dart:ui';
 
@@ -83,30 +84,37 @@ abstract class Cubic {
   }
 
   double get anchor0X;
+
   double get anchor0Y;
+
   double get control0X;
+
   double get control0Y;
+
   double get control1X;
+
   double get control1Y;
+
   double get anchor1X;
+
   double get anchor1Y;
 
-  Point get anchor0 => Point(anchor0X, anchor0Y);
-  Point get control0 => Point(control0X, control0Y);
-  Point get control1 => Point(control1X, control1Y);
-  Point get anchor1 => Point(anchor1X, anchor1Y);
+  Point get anchor0 => .new(anchor0X, anchor0Y);
+
+  Point get control0 => .new(control0X, control0Y);
+
+  Point get control1 => .new(control1X, control1Y);
+
+  Point get anchor1 => .new(anchor1X, anchor1Y);
 
   @internal
   Point pointOnCurve(double t) {
     final u = 1.0 - t;
-
-    // Shared calculations
     final uCb = u * u * u;
     final tCb = t * t * t;
     final threeTUSq = 3.0 * t * u * u;
     final threeUTSq = 3.0 * t * t * u;
-
-    return Point(
+    return .new(
       anchor0X * uCb +
           control0X * threeTUSq +
           control1X * threeUTSq +
@@ -137,12 +145,10 @@ abstract class Cubic {
     if (zeroLength()) {
       return .fromLTRB(anchor0X, anchor0Y, anchor0X, anchor0Y);
     }
-
     var minX = math.min(anchor0X, anchor1X);
     var minY = math.min(anchor0Y, anchor1Y);
     var maxX = math.max(anchor0X, anchor1X);
     var maxY = math.max(anchor0Y, anchor1Y);
-
     if (approximate) {
       // Approximate bounds use the bounding box of all anchors and controls
       return .fromLTRB(
@@ -152,13 +158,11 @@ abstract class Cubic {
         math.max(maxY, math.max(control0Y, control1Y)),
       );
     }
-
     // Find the derivative, which is a quadratic Bezier. Then we can solve for t using
     // the quadratic formula
     final xa = -anchor0X + 3.0 * control0X - 3.0 * control1X + anchor1X;
     final xb = 2.0 * anchor0X - 4.0 * control0X + 2.0 * control1X;
     final xc = -anchor0X + control0X;
-
     if (_zeroIsh(xa)) {
       // Try Muller's method instead; it can find a single root when a is 0
       if (xb != 0.0) {
@@ -178,7 +182,6 @@ abstract class Cubic {
           if (x < minX) minX = x;
           if (x > maxX) maxX = x;
         }
-
         final t2 = (-xb - math.sqrt(xs)) / (2.0 * xa);
         if (t2 >= 0.0 && t2 <= 1.0) {
           final x = pointOnCurve(t2).x;
@@ -187,12 +190,10 @@ abstract class Cubic {
         }
       }
     }
-
     // Repeat the above for y coordinate
     final ya = -anchor0Y + 3.0 * control0Y - 3.0 * control1Y + anchor1Y;
     final yb = 2.0 * anchor0Y - 4.0 * control0Y + 2.0 * control1Y;
     final yc = -anchor0Y + control0Y;
-
     if (_zeroIsh(ya)) {
       if (yb != 0.0) {
         final t = 2.0 * yc / (-2.0 * yb);
@@ -211,7 +212,6 @@ abstract class Cubic {
           if (y < minY) minY = y;
           if (y > maxY) maxY = y;
         }
-
         final t2 = (-yb - math.sqrt(ys)) / (2.0 * ya);
         if (t2 >= 0.0 && t2 <= 1.0) {
           final y = pointOnCurve(t2).y;
@@ -220,7 +220,6 @@ abstract class Cubic {
         }
       }
     }
-
     return .fromLTRB(minX, minY, maxX, maxY);
   }
 
@@ -228,14 +227,11 @@ abstract class Cubic {
   /// original starting and ending anchor points.
   // TODO: cartesian optimization?
   (Cubic, Cubic) split(double t) {
-    final u = 1.0 - t;
     final pointOnCurve = this.pointOnCurve(t);
-
-    // Shared calculations
+    final u = 1.0 - t;
     final uSquared = u * u;
     final tSquared = t * t;
     final twoUt = 2.0 * u * t;
-
     return (
       .from(
         anchor0X,
@@ -281,8 +277,10 @@ abstract class Cubic {
   /// Convert to [Edge] if this cubic describes a straight line, otherwise to a
   /// [Corner]. Corner convexity is determined by [convex].
   @internal
-  Feature asFeature(Cubic next) =>
-      straightIsh() ? Edge([this]) : Corner([this], convexTo(next));
+  Feature asFeature(Cubic next) {
+    final list = UnmodifiableListView(List.filled(1, this, growable: false));
+    return straightIsh() ? Edge(list) : Corner(list, convexTo(next));
+  }
 
   /// Determine if the cubic is close to a straight line.
   /// Empty cubics don't count as straightIsh.
@@ -558,9 +556,11 @@ class _CubicFromPoints extends Cubic {
 /// as a scope to [PointTransformer].
 abstract interface class MutablePoint {
   double get x;
+
   set x(double value);
 
   double get y;
+
   set y(double value);
 }
 
@@ -597,26 +597,35 @@ abstract class MutableCubic extends Cubic {
   );
 
   set anchor0X(double value);
+
   set anchor0Y(double value);
+
   set control0X(double value);
+
   set control0Y(double value);
+
   set control1X(double value);
+
   set control1Y(double value);
+
   set anchor1X(double value);
+
   set anchor1Y(double value);
 
   void transform(PointTransformer f) {
     final anchor0 = f(anchor0X, anchor0Y);
-    final control0 = f(control0X, control0Y);
-    final control1 = f(control1X, control1Y);
-    final anchor1 = f(anchor1X, anchor1Y);
-
     anchor0X = anchor0.$1;
     anchor0Y = anchor0.$2;
+
+    final control0 = f(control0X, control0Y);
     control0X = control0.$1;
     control0Y = control0.$2;
+
+    final control1 = f(control1X, control1Y);
     control1X = control1.$1;
     control1Y = control1.$2;
+
+    final anchor1 = f(anchor1X, anchor1Y);
     anchor1X = anchor1.$1;
     anchor1Y = anchor1.$2;
   }

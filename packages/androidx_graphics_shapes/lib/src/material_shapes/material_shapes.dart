@@ -12,7 +12,7 @@ extension RoundedPolygonInternalExtension on RoundedPolygon {
   @Deprecated("Use RoundedPolygonExtension.transformedWithMatrix4 instead.")
   @internal
   RoundedPolygon transformedWithMatrix(Matrix4 matrix) =>
-      transformedWithMatrix4(matrix, usePerspectiveTransform: false);
+      transformedWithMatrix4(matrix);
 
   @Deprecated("Use RoundedPolygonExtension.toPath instead.")
   @internal
@@ -55,18 +55,6 @@ extension RoundedPolygonExtension on RoundedPolygon {
   RoundedPolygon _transformed4(Float64List matrix4) {
     final m00 = matrix4[0];
     final m01 = matrix4[1];
-    final m10 = matrix4[4];
-    final m11 = matrix4[5];
-    final m30 = matrix4[12];
-    final m31 = matrix4[13];
-    return transformed(
-      (x, y) => ((m00 * x) + (m10 * y) + m30, (m01 * x) + (m11 * y) + m31),
-    );
-  }
-
-  RoundedPolygon _perspectiveTransformed4(Float64List matrix4) {
-    final m00 = matrix4[0];
-    final m01 = matrix4[1];
     final m03 = matrix4[3];
     final m10 = matrix4[4];
     final m11 = matrix4[5];
@@ -75,10 +63,15 @@ extension RoundedPolygonExtension on RoundedPolygon {
     final m31 = matrix4[13];
     final m33 = matrix4[15];
     return transformed((x, y) {
-      final x_ = (m00 * x) + (m10 * y) + m30;
-      final y_ = (m01 * x) + (m11 * y) + m31;
-      final w_ = 1.0 / (m03 * x + m13 * y + m33);
-      return (x_ * w_, y_ * w_);
+      final rx = m00 * x + m10 * y + m30;
+      final ry = m01 * x + m11 * y + m31;
+      var rw = m03 * x + m13 * y + m33;
+      if (rw == 1.0) {
+        return (rx, ry);
+      } else {
+        rw = 1.0 / rw;
+        return (rx * rw, ry * rw);
+      }
     });
   }
 
@@ -88,12 +81,8 @@ extension RoundedPolygonExtension on RoundedPolygon {
   RoundedPolygon transformedWithMatrix3(Matrix3 matrix) =>
       _transformed3(matrix.storage);
 
-  RoundedPolygon transformedWithMatrix4(
-    Matrix4 matrix, {
-    bool usePerspectiveTransform = false,
-  }) => usePerspectiveTransform
-      ? _perspectiveTransformed4(matrix.storage)
-      : _transformed4(matrix.storage);
+  RoundedPolygon transformedWithMatrix4(Matrix4 matrix) =>
+      _transformed4(matrix.storage);
 
   Path toPath({
     Path? path,
@@ -730,10 +719,10 @@ abstract final class MaterialShapes {
   }
 }
 
-extension type const _RepeatDelta._(({double angle, double distance}) _)
+extension type const _RepeatDelta._((double angle, double distance) _)
     implements Object {
   const _RepeatDelta({required double angle, required double distance})
-    : this._((angle: angle, distance: distance));
+    : this._((angle, distance));
 
   _RepeatDelta.from(double dx, double dy)
     : this(angle: math.atan2(dy, dx), distance: math.sqrt(dx * dx + dy * dy));
@@ -741,9 +730,9 @@ extension type const _RepeatDelta._(({double angle, double distance}) _)
   _RepeatDelta.fromOffsetAndCenter(Offset offset, Offset center)
     : this.from(offset.dx - center.dx, offset.dy - center.dy);
 
-  double get angle => _.angle;
+  double get angle => _.$1;
 
-  double get distance => _.distance;
+  double get distance => _.$2;
 
   _RepeatDelta copyWith({double? angle, double? distance}) =>
       .new(angle: angle ?? this.angle, distance: distance ?? this.distance);
@@ -751,19 +740,20 @@ extension type const _RepeatDelta._(({double angle, double distance}) _)
 
 @internal
 extension type const OffsetAndRounding._(
-  ({Offset offset, CornerRounding rounding}) _
-) implements Object {
+  (Offset offset, CornerRounding rounding) _
+)
+    implements Object {
   const OffsetAndRounding(Offset offset, [CornerRounding rounding = .unrounded])
-    : this._((offset: offset, rounding: rounding));
+    : this._((offset, rounding));
 
   const OffsetAndRounding.from({
     required Offset offset,
     CornerRounding rounding = .unrounded,
   }) : this(offset, rounding);
 
-  Offset get offset => _.offset;
+  Offset get offset => _.$1;
 
-  CornerRounding get rounding => _.rounding;
+  CornerRounding get rounding => _.$2;
 
   OffsetAndRounding copyWith({Offset? offset, CornerRounding? rounding}) =>
       .new(offset ?? this.offset, rounding ?? this.rounding);

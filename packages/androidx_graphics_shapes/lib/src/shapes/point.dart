@@ -6,19 +6,29 @@ import 'cubic.dart';
 import 'utils.dart';
 
 @internal
-extension type const Point._((double x, double y) _) {
+extension type const Point._((double x, double y) _) implements Object {
   @internal
   const Point.fromRaw((double x, double y) value) : this._(value);
 
   const Point(double x, double y) : this.fromRaw((x, y));
 
+  const Point.from({required double x, required double y}) : this(x, y);
+
   (double x, double y) get asRaw => _;
 
   double get x => _.$1;
+
   double get y => _.$2;
 
   Point copyWith({double? x, double? y}) =>
       x != null || y != null ? Point(x ?? this.x, y ?? this.y) : this;
+
+  /// The square of the magnitude (which is the distance of this point
+  /// from (0, 0)) of the Point.
+  ///
+  /// This is cheaper than computing the [distance] itself.
+  @pragma("vm:prefer-inline")
+  double get distanceSquared => x * x + y * y;
 
   /// The magnitude of the Point, which is the distance of this point
   /// from (0, 0).
@@ -27,13 +37,6 @@ extension type const Point._((double x, double y) _) {
   /// consider using [distanceSquared] instead,
   /// since it is cheaper to compute.
   double get distance => math.sqrt(distanceSquared);
-
-  /// The square of the magnitude (which is the distance of this point
-  /// from (0, 0)) of the Point.
-  ///
-  /// This is cheaper than computing the [distance] itself.
-  @pragma("vm:prefer-inline")
-  double get distanceSquared => x * x + y * y;
 
   double dotProduct(Point other) => dotProductWith(other.x, other.y);
 
@@ -55,17 +58,17 @@ extension type const Point._((double x, double y) _) {
 
   Point transformed(PointTransformer f) => .fromRaw(f(x, y));
 
-  Point operator -() => Point(-x, -y);
+  Point operator -() => .new(-x, -y);
 
-  Point operator -(Point other) => Point(x - other.x, y - other.y);
+  Point operator -(Point other) => .new(x - other.x, y - other.y);
 
-  Point operator +(Point other) => Point(x + other.x, y + other.y);
+  Point operator +(Point other) => .new(x + other.x, y + other.y);
 
-  Point operator *(double operand) => Point(x * operand, y * operand);
+  Point operator *(double operand) => .new(x * operand, y * operand);
 
-  Point operator /(double operand) => Point(x / operand, y / operand);
+  Point operator /(double operand) => .new(x / operand, y / operand);
 
-  Point operator %(double operand) => Point(x % operand, y % operand);
+  Point operator %(double operand) => .new(x % operand, y % operand);
 
   static const zero = Point(0.0, 0.0);
 

@@ -52,6 +52,7 @@ final class DoubleMapper {
   }
 
   final List<double> _sourceValues;
+
   final List<double> _targetValues;
 
   double map(double x) => linearMap(_sourceValues, _targetValues, x);

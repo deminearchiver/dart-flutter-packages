@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:collection/collection.dart';
+import 'package:meta/meta.dart';
 
 import 'cubic.dart';
 import 'morph.dart';
@@ -98,16 +99,21 @@ abstract class Feature {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is Feature &&
-          listEquals(cubics, other.cubics) &&
+      other is Feature &&
           isIgnorableFeature == other.isIgnorableFeature &&
           isEdge == other.isEdge &&
           isConvexCorner == other.isConvexCorner &&
-          isConcaveCorner == other.isConcaveCorner;
+          isConcaveCorner == other.isConcaveCorner &&
+          _cubicsEquality.equals(cubics, other.cubics);
 
   @override
-  int get hashCode => Object.hash(runtimeType, Object.hashAll(cubics));
+  int get hashCode => Object.hash(
+    isIgnorableFeature,
+    isEdge,
+    isConvexCorner,
+    isConcaveCorner,
+    _cubicsEquality.hash(cubics),
+  );
 
   static Feature validated(Feature feature) {
     if (feature.cubics.isEmpty) {
@@ -134,6 +140,8 @@ abstract class Feature {
     }
     return true;
   }
+
+  static const _cubicsEquality = ListEquality<Cubic>();
 }
 
 /// Edges have only a list of the cubic curves which make up the edge.

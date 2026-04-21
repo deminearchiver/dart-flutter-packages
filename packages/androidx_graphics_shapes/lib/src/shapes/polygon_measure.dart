@@ -31,15 +31,6 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
     if (outlineProgress.last != 1.0) {
       throw ArgumentError("Last outline progress value is expected to be one");
     }
-
-    // if (DEBUG) {
-    //     debugLog(LOG_TAG) {
-    //         "CTOR: cubics = " +
-    //             cubics.joinToString() +
-    //             "\nCTOR: op = " +
-    //             outlineProgress.joinToString()
-    //     }
-    // }
     var startOutlineProgress = 0.0;
     for (var index = 0; index < cubics.length; index++) {
       // Filter out "empty" cubics
@@ -62,6 +53,7 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
   }
 
   final Measurer _measurer;
+
   final List<ProgressableFeature> features;
 
   MeasuredPolygon cutAndShift(double cuttingPoint) {
@@ -83,26 +75,16 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
     );
     final target = this[targetIndex];
 
-    // if (DEBUG) {
-    //     cubics.forEachIndexed { index, cubic ->
-    //         debugLog(LOG_TAG) { "cut&Shift | cubic #$index : $cubic " }
-    //     }
-    //     debugLog(LOG_TAG) {
-    //         "cut&Shift, cuttingPoint = $cuttingPoint, target = ($targetIndex) $target"
-    //     }
-    // }
-
     // Cut the target cubic.
     // b1, b2 are two resulting cubics after cut
     final (b1, b2) = target.cutAtProgress(cuttingPoint);
-    // debugLog(LOG_TAG) { "Split | $target -> $b1 & $b2" }
 
     // Construct the list of the cubics we need:
     // * The second part of the target cubic (after the cut)
     // * All cubics after the target, until the end + All cubics from the start, before the
     //   target cubic
     // * The first part of the target cubic (before the cut)
-    final retCubics = [b2.cubic];
+    final retCubics = <Cubic>[b2.cubic];
     for (var i = 1; i < length; i++) {
       retCubics.add(this[(i + targetIndex) % length].cubic);
     }
@@ -126,16 +108,14 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
         1.0,
       );
     });
-
     // Shift the feature's outline progress too.
-    final newFeatures = [
+    final newFeatures = <ProgressableFeature>[
       for (var i = 0; i < features.length; i++)
         ProgressableFeature(
           positiveModulo(features[i].progress - cuttingPoint, 1.0),
           features[i].feature,
         ),
     ];
-
     // Filter out all empty cubics (i.e. start and end anchor are (almost) the same point.)
     return ._(_measurer, newFeatures, retCubics, retOutlineProgress);
   }
@@ -184,12 +164,9 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
     final totalMeasure = measures.last;
 
     // Equivalent to `measures.map { it / totalMeasure }` but without Iterator allocation.
-    final outlineProgress = [
+    final outlineProgress = <double>[
       for (var i = 0; i < measures.length; i++) measures[i] / totalMeasure,
     ];
-
-    // debugLog(LOG_TAG) { "Total size: $totalMeasure" }
-
     final features = <ProgressableFeature>[
       for (var i = 0; i < featureToCubic.length; i++)
         ProgressableFeature(
@@ -259,12 +236,15 @@ final class MeasuredCubic {
   }
 
   final MeasuredPolygon _owner;
+
   final Cubic cubic;
 
   double _startOutlineProgress;
+
   double get startOutlineProgress => _startOutlineProgress;
 
   double _endOutlineProgress;
+
   double get endOutlineProgress => _endOutlineProgress;
 
   final double measuredSize;
@@ -297,7 +277,6 @@ final class MeasuredCubic {
     );
     final outlineProgressSize = endOutlineProgress - startOutlineProgress;
     final progressFromStart = boundedCutOutlineProgress - startOutlineProgress;
-
     // Note that in earlier parts of the computation, we have empty MeasuredCubics (cubics
     // with progressSize == 0f), but those cubics are filtered out before this method is
     // called.
@@ -306,17 +285,9 @@ final class MeasuredCubic {
       cubic,
       relativeProgress * measuredSize,
     );
-
     if (t < 0.0 || t > 1.0) {
       throw ArgumentError("Cubic cut point is expected to be between 0 and 1.");
     }
-
-    // debugLog(LOG_TAG) {
-    //     "cutAtProgress: progress = $boundedCutOutlineProgress / " +
-    //         "this = [$startOutlineProgress .. $endOutlineProgress] / " +
-    //         "ps = $progressFromStart / rp = $relativeProgress / t = $t"
-    // }
-
     // c1/c2 are the two new cubics, then we return MeasuredCubics created from them
     final (c1, c2) = cubic.split(t);
     return (
@@ -348,6 +319,24 @@ final class MeasuredCubic {
 final class LengthMeasurer implements Measurer {
   const LengthMeasurer();
 
+  (double, double) _closestProgressTo(Cubic cubic, double threshold) {
+    var total = 0.0;
+    var remainder = threshold;
+    var prev = Point(cubic.anchor0X, cubic.anchor0Y);
+    for (var i = 1; i <= _segments; i++) {
+      final progress = i / _segments;
+      final point = cubic.pointOnCurve(progress);
+      final segment = (point - prev).distance;
+      if (segment >= remainder) {
+        return (progress - (1.0 - remainder / segment) / _segments, threshold);
+      }
+      remainder -= segment;
+      total += segment;
+      prev = point;
+    }
+    return (1.0, total);
+  }
+
   @override
   double measureCubic(Cubic c) => _closestProgressTo(c, .infinity).$2;
 
@@ -357,26 +346,4 @@ final class LengthMeasurer implements Measurer {
   // The minimum number needed to achieve up to 98.5% accuracy from the true arc length
   // See PolygonMeasureTest.measureCircle
   static const _segments = 3;
-
-  (double, double) _closestProgressTo(Cubic cubic, double threshold) {
-    var total = 0.0;
-    var remainder = threshold;
-    var prev = Point(cubic.anchor0X, cubic.anchor0Y);
-
-    for (var i = 1; i <= _segments; i++) {
-      final progress = i / _segments;
-      final point = cubic.pointOnCurve(progress);
-      final segment = (point - prev).distance;
-
-      if (segment >= remainder) {
-        return (progress - (1.0 - remainder / segment) / _segments, threshold);
-      }
-
-      remainder -= segment;
-      total += segment;
-      prev = point;
-    }
-
-    return (1.0, total);
-  }
 }

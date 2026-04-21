@@ -9,29 +9,13 @@ import 'utils.dart';
 typedef MeasuredFeatures = List<ProgressableFeature>;
 
 @internal
-final class ProgressableFeature {
-  const ProgressableFeature(this.progress, this.feature);
+extension type const ProgressableFeature._((double progress, Feature feature) _)
+    implements Object {
+  const ProgressableFeature(double progress, Feature feature)
+    : this._((progress, feature));
 
-  final double progress;
-  final Feature feature;
-
-  @override
-  String toString() =>
-      "ProgressableFeature("
-      "progress: $progress, "
-      "feature: $feature"
-      ")";
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is ProgressableFeature &&
-          progress == other.progress &&
-          feature == other.feature;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, progress, feature);
+  double get progress => _.$1;
+  Feature get feature => _.$2;
 }
 
 @internal
@@ -39,61 +23,39 @@ DoubleMapper featureMapper(
   MeasuredFeatures features1,
   MeasuredFeatures features2,
 ) {
-  final filteredFeatures1 = [
+  final filteredFeatures1 = <ProgressableFeature>[
     // Performance: Builds the list by avoiding creating an unnecessary Iterator
     // to iterate through the features1 List.
     for (var i = 0; i < features1.length; i++)
       if (features1[i].feature is Corner) features1[i],
   ];
-
-  final filteredFeatures2 = [
+  final filteredFeatures2 = <ProgressableFeature>[
     // Performance: Builds the list by avoiding creating an unnecessary Iterator
     // to iterate through the features2 List.
     for (var i = 0; i < features2.length; i++)
       if (features2[i].feature is Corner) features2[i],
   ];
-
   final featureProgressMapping = doMapping(
     filteredFeatures1,
     filteredFeatures2,
   );
-
-  // debugLog(LOG_TAG) { featureProgressMapping.joinToString { "${it.first} -> ${it.second}" } }
-  final dm = DoubleMapper(featureProgressMapping);
-  // debugLog(LOG_TAG) {
-  //     val N = 10
-  //     "Map: " +
-  //         (0..N).joinToString { i -> (dm.map(i.toFloat() / N)).toStringWithLessPrecision() } +
-  //         "\nMb : " +
-  //         (0..N).joinToString { i ->
-  //             (dm.mapBack(i.toFloat() / N)).toStringWithLessPrecision()
-  //         }
-  // }
-  return dm;
+  return DoubleMapper(featureProgressMapping);
 }
 
 @internal
-final class DistanceVertex {
-  const DistanceVertex(this.distance, this.f1, this.f2);
+extension type const DistanceVertex._(
+  (double distance, ProgressableFeature f1, ProgressableFeature f2) _
+)
+    implements Object {
+  const DistanceVertex(
+    double distance,
+    ProgressableFeature f1,
+    ProgressableFeature f2,
+  ) : this._((distance, f1, f2));
 
-  final double distance;
-  final ProgressableFeature f1;
-  final ProgressableFeature f2;
-
-  @override
-  String toString() => "DistanceVertex(distance: $distance, f1: $f1, f2: $f2)";
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is DistanceVertex &&
-          distance == other.distance &&
-          f1 == other.f1 &&
-          f2 == other.f2;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, distance, f1, f2);
+  double get distance => _.$1;
+  ProgressableFeature get f1 => _.$2;
+  ProgressableFeature get f2 => _.$3;
 }
 
 @internal
@@ -101,11 +63,8 @@ List<(double, double)> doMapping(
   List<ProgressableFeature> features1,
   List<ProgressableFeature> features2,
 ) {
-  // debugLog(LOG_TAG) { "Shape1 progresses: " + features1.map { it.progress }.joinToString() }
-  // debugLog(LOG_TAG) { "Shape2 progresses: " + features2.map { it.progress }.joinToString() }
-
   // TODO: optimize this implementation without using iterators
-  final List<DistanceVertex> distanceVertexList =
+  final distanceVertexList =
       features1
           .expand(
             (f1) => features2.map((f2) {
@@ -133,7 +92,7 @@ List<(double, double)> doMapping(
   return mh.mapping;
 }
 
-const List<(double, double)> _identityMapping = [(0.0, 0.0), (0.5, 0.5)];
+const _identityMapping = <(double, double)>[(0.0, 0.0), (0.5, 0.5)];
 
 final class _MappingHelper {
   _MappingHelper();
@@ -200,7 +159,6 @@ double featureDistSquared(Feature f1, Feature f2) {
   if (f1 is Corner && f2 is Corner && f1.convex != f2.convex) {
     // Simple hack to force all features to map only to features of the same concavity, by
     // returning an infinitely large distance in that case
-    // debugLog(LOG_TAG) { "*** Feature distance ∞ for convex-vs-concave corners" }
     return .maxFinite;
   }
   return (featureRepresentativePoint(f1) - featureRepresentativePoint(f2))

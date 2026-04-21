@@ -1,4 +1,15 @@
+## 1.5.0
+
+- Changed `RoundedPolygonExtension.transformedWithMatrix4()` to always perform perspective transform. Removed the `usePerspectiveTransform` parameter.
+- Fixed `RoundedPolygon.hashCode` returning different hash codes for equal objects. The `features` list is now being properly hashed by values.
+- Replaced usages of `listEquals()` and `Object.hashAll()` with `ListEquality().equals()` and `ListEquality().hash()`.
+- Minor optimizations, as well as internal and code style changes.
+
 ## 1.4.0+1
+
+- Added missing 1.4.0 changelog entries.
+
+## 1.4.0
 
 - Bumped minimum Dart SDK to 3.11 and Flutter to 3.41.
 - Marked internal extension methods on `RoundedPolygon` and `Morph` as deprecated.

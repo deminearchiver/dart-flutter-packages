@@ -7,18 +7,18 @@ class CornerRounding {
     : this(radius, smoothing);
 
   final double radius;
+
   final double smoothing;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is CornerRounding &&
+      other is CornerRounding &&
           radius == other.radius &&
           smoothing == other.smoothing;
 
   @override
-  int get hashCode => Object.hash(runtimeType, radius, smoothing);
+  int get hashCode => Object.hash(radius, smoothing);
 
   static const unrounded = CornerRounding();
 }
