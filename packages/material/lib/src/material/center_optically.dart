@@ -6,7 +6,7 @@ class CenterOptically extends SingleChildRenderObjectWidget {
   const CenterOptically({
     super.key,
     this.enabled = true,
-    this.corners = .none,
+    this.corners = .zero,
     this.maxOffsets = .zero,
     this.textDirection,
     super.child,
@@ -64,7 +64,7 @@ class CenterOptically extends SingleChildRenderObjectWidget {
 class RenderCenterOptically extends RenderShiftedBox {
   RenderCenterOptically({
     bool enabled = true,
-    CornersGeometry corners = .none,
+    CornersGeometry corners = .zero,
     EdgeInsetsGeometry maxOffsets = .zero,
     TextDirection? textDirection,
     RenderBox? child,
@@ -203,7 +203,7 @@ class RenderCenterOptically extends RenderShiftedBox {
         DiagnosticsProperty<CornersGeometry>(
           "corners",
           corners,
-          defaultValue: Corners.none,
+          defaultValue: CornersGeometry.zero,
         ),
       )
       ..add(

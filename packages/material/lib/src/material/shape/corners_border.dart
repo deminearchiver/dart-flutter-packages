@@ -127,7 +127,7 @@ class _RoundedCornersBorderDelegate extends CornersBorderDelegate {
     required BorderSide side,
     required BorderRadius borderRadius,
   }) {
-    if (borderRadius == BorderRadius.zero) {
+    if (borderRadius == .zero) {
       canvas.drawRect(rect, paint);
     } else {
       canvas.drawRRect(borderRadius.toRRect(rect), paint);
@@ -207,9 +207,9 @@ class _CutCornersBorderDelegate extends CornersBorderDelegate {
   }) {
     if (rect.isEmpty) return;
     switch (side.style) {
-      case BorderStyle.none:
+      case .none:
         break;
-      case BorderStyle.solid:
+      case .solid:
         final borderRect = borderRadius.toRRect(rect);
         final adjustedRect = borderRect.inflate(side.strokeOutset);
         final path = _getPath(adjustedRect)
@@ -269,9 +269,9 @@ class _SuperellipseCornersBorderDelegate extends CornersBorderDelegate {
     required BorderRadius borderRadius,
   }) {
     switch (side.style) {
-      case BorderStyle.none:
+      case .none:
         break;
-      case BorderStyle.solid:
+      case .solid:
         if (side.width == 0.0) {
           canvas.drawRSuperellipse(
             borderRadius.toRSuperellipse(rect),
@@ -293,7 +293,7 @@ class _SuperellipseCornersBorderDelegate extends CornersBorderDelegate {
     required BorderSide side,
     required BorderRadius borderRadius,
   }) {
-    if (borderRadius == BorderRadius.zero) {
+    if (borderRadius == .zero) {
       canvas.drawRect(rect, paint);
     } else {
       canvas.drawRSuperellipse(borderRadius.toRSuperellipse(rect), paint);
@@ -322,17 +322,16 @@ class CornersBorder extends OutlinedBorder {
   const CornersBorder({
     super.side,
     required this.delegate,
-    this.corners = Corners.none,
+    this.corners = .zero,
   });
 
-  const CornersBorder.rounded({super.side, this.corners = Corners.none})
-    : delegate = CornersBorderDelegate.rounded;
+  const CornersBorder.rounded({super.side, this.corners = .zero})
+    : delegate = .rounded;
 
-  const CornersBorder.cut({super.side, this.corners = Corners.none})
-    : delegate = CornersBorderDelegate.cut;
+  const CornersBorder.cut({super.side, this.corners = .zero}) : delegate = .cut;
 
-  const CornersBorder.superellipse({super.side, this.corners = Corners.none})
-    : delegate = CornersBorderDelegate.superellipse;
+  const CornersBorder.superellipse({super.side, this.corners = .zero})
+    : delegate = .superellipse;
 
   final CornersBorderDelegate delegate;
   final CornersGeometry corners;

@@ -1,265 +1,458 @@
-import 'dart:math' as math;
-
 import 'package:material/src/material/flutter.dart';
 
-double? _clampCornerComponent(double? value, double? min, double? max) {
-  assert(
-    (min == null || max == null) || (min <= max && !max.isNaN && !min.isNaN),
-  );
-  if (value == null) return max;
-  if (min == null) return null;
-  if (max == null) return value < min ? min : value;
-  return value > max ? max : value;
+extension CornerArithmetic on Corner {
+  Corner operator +(Corner other) => add(other);
+
+  Corner operator -(Corner other) => subtract(other);
 }
 
-class Corner {
-  const Corner.circular(double? radius) : this.elliptical(radius, radius);
-  const Corner.elliptical(this.x, this.y);
+extension CornersGeometryArithmetic on CornersGeometry {
+  CornersGeometry operator +(CornersGeometry other) => add(other);
 
-  Corner.fromRadius(Radius radius) : this.elliptical(radius.x, radius.y);
+  CornersGeometry operator -(CornersGeometry other) => subtract(other);
+}
 
-  final double? x;
-  final double? y;
+abstract class Corner {
+  const Corner();
 
-  Corner clamp({Corner minimum = Corner.none, Corner maximum = Corner.full}) =>
-      Corner.elliptical(
-        _clampCornerComponent(x, minimum.x, maximum.x),
-        _clampCornerComponent(y, minimum.y, maximum.y),
-      );
+  const factory Corner._zero() = _ZeroCorner;
 
-  Corner clampValues({
-    // TODO: investigate if change from -infinity to 0 affects any behaviors
-    double? minimumX = 0.0,
-    double? minimumY = 0.0,
-    double? maximumX,
-    double? maximumY,
-  }) => Corner.elliptical(
-    _clampCornerComponent(x, minimumX, maximumX),
-    _clampCornerComponent(y, minimumY, maximumY),
+  const factory Corner.fixed(double radius) = FixedCorner.circular;
+
+  const factory Corner.fixedXY(double radiusX, double radiusY) =
+      FixedCorner.elliptical;
+
+  const factory Corner.fractional(double fraction) = FractionalCorner.circular;
+
+  const factory Corner.fractionalXY(double fractionX, double fractionY) =
+      FractionalCorner.elliptical;
+
+  const factory Corner.fromRadius(Radius radius) = FixedCorner.fromRadius;
+
+  double get _radiusX;
+
+  double get _radiusY;
+
+  double get _fractionX;
+
+  double get _fractionY;
+
+  /// Whether every dimension is non-negative.
+  bool get isNonNegative =>
+      _radiusX >= 0.0 &&
+      _radiusY >= 0.0 &&
+      _fractionX >= 0.0 &&
+      _fractionY >= 0.0;
+
+  /// A [Corner] with X and Y swapped.
+  Corner get flipped =>
+      _MixedCorner(_radiusY, _radiusX, _fractionY, _fractionX);
+
+  Corner clamp(Corner minimum, Corner maximum) => _MixedCorner(
+    clampDouble(_radiusX, minimum._radiusX, maximum._radiusX),
+    clampDouble(_radiusY, minimum._radiusY, maximum._radiusY),
+    clampDouble(_fractionX, minimum._fractionX, maximum._fractionX),
+    clampDouble(_fractionY, minimum._fractionY, maximum._fractionY),
   );
 
-  Radius toRadius({
-    required Size size,
-    required double? adjacentX,
-    required double? adjacentY,
-  }) {
-    final Size(:width, :height, :shortestSide) = size;
-    final resultX = switch ((x, adjacentX)) {
-      (null, null) => shortestSide / 2.0,
-      (null, final adjacentX?) => clampDouble(
-        width - adjacentX,
-        0.0,
-        shortestSide,
-      ),
-      (final x?, _) => x,
-    };
-    final resultY = switch ((y, adjacentY)) {
-      (null, null) => shortestSide / 2.0,
-      (null, final adjacentY?) => clampDouble(
-        height - adjacentY,
-        0.0,
-        shortestSide,
-      ),
-      (final y?, _) => y,
-    };
-    return x == null && y == null
-        ? Radius.circular(math.min(resultX, resultY))
-        : Radius.elliptical(resultX, resultY);
-  }
+  Radius toRadius(Size size);
 
-  Corner operator -() =>
-      Corner.elliptical(x != null ? -x! : null, y != null ? -y! : null);
-
-  Corner operator -(Corner other) => Corner.elliptical(
-    x != null && other.x != null ? x! - other.x! : null,
-    y != null && other.y != null ? y! - other.y! : null,
+  Corner add(Corner other) => _MixedCorner(
+    _radiusX + other._radiusX,
+    _radiusY + other._radiusY,
+    _fractionX + other._fractionX,
+    _fractionY + other._fractionY,
   );
 
-  Corner operator +(Corner other) => Corner.elliptical(
-    x != null && other.x != null ? x! + other.x! : null,
-    y != null && other.y != null ? y! + other.y! : null,
+  Corner subtract(Corner other) => _MixedCorner(
+    _radiusX - other._radiusX,
+    _radiusY - other._radiusY,
+    _fractionX - other._fractionX,
+    _fractionY - other._fractionY,
   );
 
-  Corner operator *(double operand) => Corner.elliptical(
-    x != null ? x! * operand : null,
-    y != null ? y! * operand : null,
-  );
+  Corner operator -();
 
-  Corner operator /(double operand) => Corner.elliptical(
-    x != null ? x! / operand : null,
-    y != null ? y! / operand : null,
-  );
+  Corner operator *(double operand);
 
-  Corner operator ~/(double operand) => Corner.elliptical(
-    x != null ? (x! ~/ operand).toDouble() : null,
-    y != null ? (y! ~/ operand).toDouble() : null,
-  );
+  Corner operator /(double operand);
 
-  Corner operator %(double operand) => Corner.elliptical(
-    x != null ? x! % operand : null,
-    y != null ? y! % operand : null,
-  );
+  Corner operator ~/(double operand);
 
-  static Corner? lerp(Corner? a, Corner? b, double t) {
-    if (b == null) {
-      if (a == null) {
-        return null;
-      } else {
-        final double k = 1.0 - t;
-        return Corner.elliptical(
-          a.x != null ? a.x! * k : null,
-          a.y != null ? a.y! * k : null,
-        );
-      }
-    } else {
-      if (a == null) {
-        return Corner.elliptical(
-          b.x != null ? b.x! * t : null,
-          b.y != null ? b.y! * t : null,
-        );
-      } else {
-        return Corner.elliptical(
-          lerpDoubleNullable(a.x, b.x, t),
-          lerpDoubleNullable(a.y, b.y, t),
-        );
-      }
-    }
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is Corner &&
-          x == other.x &&
-          y == other.y;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, x, y);
+  Corner operator %(double operand);
 
   @override
   String toString() {
-    final cachedRuntimeType = objectRuntimeType(this, "Corner");
-    return x == y
-        ? "$cachedRuntimeType.circular("
-              "${x?.toStringAsFixed(1) ?? "full"}"
-              ")"
-        : "$cachedRuntimeType.elliptical("
-              "${x?.toStringAsFixed(1) ?? "full"}, "
-              "${y?.toStringAsFixed(1) ?? "full"}"
-              ")";
+    final zeroFixed = _radiusX == 0.0 && _radiusY == 0.0;
+    final zeroFractional = _fractionX == 0.0 && _fractionY == 0.0;
+    if (zeroFixed && zeroFractional) return "Corner.zero";
+    late final fixed = _radiusX == _radiusY
+        ? "Corner.fixed(${_radiusX.toStringAsFixed(1)})"
+        : "Corner.fixedXY(${_radiusX.toStringAsFixed(1)}, "
+              "${_radiusY.toStringAsFixed(1)})";
+    late final fractional = _fractionX == _fractionY
+        ? "Corner.fractional(${_fractionX.toStringAsFixed(1)})"
+        : "Corner.fractionalXY(${_fractionX.toStringAsFixed(1)}, "
+              "${_fractionY.toStringAsFixed(1)})";
+    if (zeroFractional) return fixed;
+    if (zeroFixed) return fractional;
+    return "$fixed + $fractional";
   }
-
-  static const Corner none = Corner.circular(0.0);
-  static const Corner full = Corner.circular(null);
-}
-
-class _CornerLerp implements Corner {
-  const _CornerLerp(this.a, this.b, this.t);
-
-  final Corner a;
-  final Corner b;
-  final double t;
-
-  @override
-  double? get x => switch ((a.x, b.x)) {
-    (final aX?, final bX?) => lerpDouble(aX, bX, t),
-    _ => null,
-  };
-
-  @override
-  double? get y => switch ((a.y, b.y)) {
-    (final aY?, final bY?) => lerpDouble(aY, bY, t),
-    _ => null,
-  };
-
-  @override
-  Corner clamp({Corner minimum = Corner.none, Corner maximum = Corner.full}) =>
-      _CornerLerp(
-        a.clamp(minimum: minimum, maximum: maximum),
-        b.clamp(minimum: minimum, maximum: maximum),
-        t,
-      );
-
-  @override
-  Corner clampValues({
-    double? minimumX = 0.0,
-    double? minimumY = 0.0,
-    double? maximumX,
-    double? maximumY,
-  }) => _CornerLerp(
-    a.clampValues(
-      minimumX: minimumX,
-      minimumY: minimumY,
-      maximumX: maximumX,
-      maximumY: maximumY,
-    ),
-    b.clampValues(
-      minimumX: minimumX,
-      minimumY: minimumY,
-      maximumX: maximumX,
-      maximumY: maximumY,
-    ),
-    t,
-  );
-
-  @override
-  Radius toRadius({
-    required Size size,
-    required double? adjacentX,
-    required double? adjacentY,
-  }) => Radius.lerp(
-    a.toRadius(size: size, adjacentX: adjacentX, adjacentY: adjacentY),
-    b.toRadius(size: size, adjacentX: adjacentX, adjacentY: adjacentY),
-    t,
-  )!;
-
-  @override
-  Corner operator -() => _CornerLerp(-a, -b, t);
-
-  @override
-  Corner operator -(Corner other) => _CornerLerp(a - other, b - other, t);
-
-  @override
-  Corner operator +(Corner other) => _CornerLerp(a + other, b + other, t);
-
-  @override
-  Corner operator *(double operand) => _CornerLerp(a * operand, b * operand, t);
-
-  @override
-  Corner operator /(double operand) => _CornerLerp(a / operand, b / operand, t);
-
-  @override
-  Corner operator ~/(double operand) =>
-      _CornerLerp(a ~/ operand, b ~/ operand, t);
-
-  @override
-  Corner operator %(double operand) => _CornerLerp(a % operand, b % operand, t);
-
-  @override
-  String toString() =>
-      "${objectRuntimeType(this, "Corner.lerp")}"
-      "($a, $b, ${t.toStringAsFixed(1)})";
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _CornerLerp &&
-          a == other.a &&
-          b == other.b &&
-          t == other.t;
+      other is Corner &&
+          _radiusX == other._radiusX &&
+          _radiusY == other._radiusY &&
+          _fractionX == other._fractionX &&
+          _fractionY == other._fractionY;
 
   @override
-  int get hashCode => Object.hash(runtimeType, a, b, t);
+  int get hashCode => Object.hash(_radiusX, _radiusY, _fractionX, _fractionY);
+
+  static const zero = Corner._zero();
+
+  static const round = Corner.fractional(0.5);
+
+  static Corner? lerp(Corner? a, Corner? b, double t) {
+    if (identical(a, b)) return a;
+    if (a == null) return b! * t;
+    if (b == null) return a * (1.0 - t);
+    if (a is FixedCorner && b is FixedCorner) {
+      return FixedCorner.lerp(a, b, t);
+    }
+    if (a is FractionalCorner && b is FractionalCorner) {
+      return FractionalCorner.lerp(a, b, t);
+    }
+    return _MixedCorner(
+      lerpDouble(a._radiusX, b._radiusX, t),
+      lerpDouble(a._radiusY, b._radiusY, t),
+      lerpDouble(a._fractionX, b._fractionX, t),
+      lerpDouble(a._fractionY, b._fractionY, t),
+    );
+  }
+}
+
+// TODO: consider removing and replacing with FixedCorner.zero
+class _ZeroCorner extends Corner {
+  const _ZeroCorner();
+
+  @override
+  double get _radiusX => 0.0;
+
+  @override
+  double get _radiusY => 0.0;
+
+  @override
+  double get _fractionX => 0.0;
+
+  @override
+  double get _fractionY => 0.0;
+
+  @override
+  bool get isNonNegative => true;
+
+  @override
+  Corner get flipped => this;
+
+  @override
+  Radius toRadius(Size size) => .zero;
+
+  @override
+  Corner add(Corner other) => other is _ZeroCorner ? this : other;
+
+  @override
+  Corner subtract(Corner other) => other is _ZeroCorner ? this : -other;
+
+  @override
+  Corner operator -() => this;
+
+  @override
+  Corner operator *(double operand) => this;
+
+  @override
+  Corner operator /(double operand) => this;
+
+  @override
+  Corner operator ~/(double operand) => this;
+
+  @override
+  Corner operator %(double operand) => this;
+}
+
+abstract class FixedCorner extends Corner {
+  const FixedCorner();
+
+  const factory FixedCorner.elliptical(double radiusX, double radiusY) =
+      _FixedCorner.elliptical;
+
+  const factory FixedCorner.circular(double radius) = _FixedCorner.circular;
+
+  const factory FixedCorner.fromRadius(Radius radius) = _FixedCornerFromRadius;
+
+  double get radiusX;
+
+  double get radiusY;
+
+  @override
+  double get _radiusX => radiusX;
+
+  @override
+  double get _radiusY => radiusY;
+
+  @override
+  double get _fractionX => 0.0;
+
+  @override
+  double get _fractionY => 0.0;
+
+  /// Whether every dimension is non-negative.
+  @override
+  bool get isNonNegative => radiusX >= 0.0 && radiusY >= 0.0;
+
+  /// A [FixedCorner] with [radiusX] and [radiusY] swapped.
+  @override
+  FixedCorner get flipped => .elliptical(radiusY, radiusX);
+
+  @override
+  Radius toRadius(Size size) => .elliptical(radiusX, radiusY);
+
+  @override
+  Corner add(Corner other) =>
+      other is FixedCorner ? this + other : super.add(other);
+
+  @override
+  Corner subtract(Corner other) =>
+      other is FixedCorner ? this - other : super.subtract(other);
+
+  @override
+  FixedCorner operator -() => .elliptical(-radiusX, -radiusY);
+
+  FixedCorner operator -(FixedCorner other) =>
+      .elliptical(radiusX - other.radiusX, radiusY - other.radiusY);
+
+  FixedCorner operator +(FixedCorner other) =>
+      .elliptical(radiusX + other.radiusX, radiusY + other.radiusY);
+
+  @override
+  FixedCorner operator *(double operand) =>
+      .elliptical(radiusX * operand, radiusY * operand);
+
+  @override
+  FixedCorner operator /(double operand) =>
+      .elliptical(radiusX / operand, radiusY / operand);
+
+  @override
+  FixedCorner operator ~/(double operand) => .elliptical(
+    (radiusX ~/ operand).toDouble(),
+    (radiusY ~/ operand).toDouble(),
+  );
+
+  @override
+  FixedCorner operator %(double operand) =>
+      .elliptical(radiusX % operand, radiusY % operand);
+
+  static FixedCorner? lerp(FixedCorner? a, FixedCorner? b, double t) {
+    if (identical(a, b)) return a;
+    if (a == null) return b! * t;
+    if (b == null) return a * (1.0 - t);
+    return .elliptical(
+      lerpDouble(a.radiusX, b.radiusX, t),
+      lerpDouble(a.radiusY, b.radiusY, t),
+    );
+  }
+
+  static const zero = FixedCorner.circular(0.0);
+}
+
+class _FixedCorner extends FixedCorner {
+  const _FixedCorner.elliptical(this.radiusX, this.radiusY);
+
+  const _FixedCorner.circular(double radius) : this.elliptical(radius, radius);
+
+  @override
+  final double radiusX;
+
+  @override
+  final double radiusY;
+}
+
+class _FixedCornerFromRadius extends FixedCorner {
+  const _FixedCornerFromRadius(this._radius);
+
+  final Radius _radius;
+
+  @override
+  double get radiusX => _radius.x;
+
+  @override
+  double get radiusY => _radius.y;
+
+  @override
+  Radius toRadius(Size size) => _radius;
+}
+
+class FractionalCorner extends Corner {
+  const FractionalCorner.elliptical(this.fractionX, this.fractionY);
+
+  const FractionalCorner.circular(double fraction)
+    : this.elliptical(fraction, fraction);
+
+  final double fractionX;
+
+  final double fractionY;
+
+  @override
+  double get _radiusX => 0.0;
+
+  @override
+  double get _radiusY => 0.0;
+
+  @override
+  double get _fractionX => fractionX;
+
+  @override
+  double get _fractionY => fractionY;
+
+  /// Whether every dimension is non-negative.
+  @override
+  bool get isNonNegative => fractionY >= 0.0 && fractionY >= 0.0;
+
+  /// A [FractionalCorner] with [fractionX] and [fractionY] swapped.
+  @override
+  FractionalCorner get flipped => .elliptical(fractionY, fractionX);
+
+  @override
+  Radius toRadius(Size size) {
+    final shortestSide = size.shortestSide;
+    return .elliptical(shortestSide * fractionX, shortestSide * fractionY);
+  }
+
+  @override
+  Corner add(Corner other) =>
+      other is FractionalCorner ? this + other : super.add(other);
+
+  @override
+  Corner subtract(Corner other) =>
+      other is FractionalCorner ? this - other : super.subtract(other);
+
+  @override
+  FractionalCorner operator -() => .elliptical(-fractionX, -fractionY);
+
+  FractionalCorner operator -(FractionalCorner other) =>
+      .elliptical(fractionX - other.fractionX, fractionY - other.fractionY);
+
+  FractionalCorner operator +(FractionalCorner other) =>
+      .elliptical(fractionX + other.fractionX, fractionY + other.fractionY);
+
+  @override
+  FractionalCorner operator *(double operand) =>
+      .elliptical(fractionX * operand, fractionY * operand);
+
+  @override
+  FractionalCorner operator /(double operand) =>
+      .elliptical(fractionX / operand, fractionY / operand);
+
+  @override
+  FractionalCorner operator ~/(double operand) => .elliptical(
+    (fractionX ~/ operand).toDouble(),
+    (fractionY ~/ operand).toDouble(),
+  );
+
+  @override
+  FractionalCorner operator %(double operand) =>
+      .elliptical(fractionX % operand, fractionY % operand);
+
+  static const zero = FractionalCorner.circular(0.0);
+
+  static const round = FractionalCorner.circular(0.5);
+
+  static FractionalCorner? lerp(
+    FractionalCorner? a,
+    FractionalCorner? b,
+    double t,
+  ) {
+    if (identical(a, b)) return a;
+    if (a == null) return b! * t;
+    if (b == null) return a * (1.0 - t);
+    return .elliptical(
+      lerpDouble(a.fractionX, b.fractionX, t),
+      lerpDouble(a.fractionY, b.fractionY, t),
+    );
+  }
+}
+
+class _MixedCorner extends Corner {
+  const _MixedCorner(
+    this._radiusX,
+    this._radiusY,
+    this._fractionX,
+    this._fractionY,
+  );
+
+  @override
+  final double _radiusX;
+
+  @override
+  final double _radiusY;
+
+  @override
+  final double _fractionX;
+
+  @override
+  final double _fractionY;
+
+  @override
+  Radius toRadius(Size size) {
+    final shortestSide = size.shortestSide;
+    return .elliptical(
+      _radiusX + shortestSide * _fractionX,
+      _radiusY + shortestSide * _fractionY,
+    );
+  }
+
+  @override
+  _MixedCorner operator -() =>
+      _MixedCorner(-_radiusX, -_radiusY, -_fractionX, -_fractionY);
+
+  @override
+  _MixedCorner operator *(double operand) => _MixedCorner(
+    _radiusX * operand,
+    _radiusY * operand,
+    _fractionX * operand,
+    _fractionY * operand,
+  );
+
+  @override
+  _MixedCorner operator /(double operand) => _MixedCorner(
+    _radiusX / operand,
+    _radiusY / operand,
+    _fractionX / operand,
+    _fractionY / operand,
+  );
+
+  @override
+  _MixedCorner operator ~/(double operand) => _MixedCorner(
+    (_radiusX ~/ operand).toDouble(),
+    (_radiusY ~/ operand).toDouble(),
+    (_fractionX ~/ operand).toDouble(),
+    (_fractionY ~/ operand).toDouble(),
+  );
+
+  @override
+  _MixedCorner operator %(double operand) => _MixedCorner(
+    _radiusX % operand,
+    _radiusY % operand,
+    _fractionX % operand,
+    _fractionY % operand,
+  );
 }
 
 abstract class CornersGeometry {
   const CornersGeometry();
 
   const factory CornersGeometry.all(Corner corner) = Corners.all;
-
-  factory CornersGeometry.circular(double radius) = Corners.circular;
 
   const factory CornersGeometry.only({
     Corner topLeft,
@@ -298,75 +491,74 @@ abstract class CornersGeometry {
 
   Corner get _bottomEnd;
 
-  BorderRadiusGeometry toBorderRadius(Size size);
-
   Corners resolve(TextDirection? textDirection);
 
-  CornersGeometry add(CornersGeometry other) => _CornersMixed(
-    _topLeft + other._topLeft,
-    _topRight + other._topRight,
-    _bottomLeft + other._bottomLeft,
-    _bottomRight + other._bottomRight,
-    _topStart + other._topStart,
-    _topEnd + other._topEnd,
-    _bottomStart + other._bottomStart,
-    _bottomEnd + other._bottomEnd,
+  BorderRadiusGeometry toBorderRadius(Size size);
+
+  CornersGeometry add(CornersGeometry other) => _MixedCorners(
+    _topLeft.add(other._topLeft),
+    _topRight.add(other._topRight),
+    _bottomLeft.add(other._bottomLeft),
+    _bottomRight.add(other._bottomRight),
+    _topStart.add(other._topStart),
+    _topEnd.add(other._topEnd),
+    _bottomStart.add(other._bottomStart),
+    _bottomEnd.add(other._bottomEnd),
   );
 
-  CornersGeometry subtract(CornersGeometry other) => _CornersMixed(
-    _topLeft - other._topLeft,
-    _topRight - other._topRight,
-    _bottomLeft - other._bottomLeft,
-    _bottomRight - other._bottomRight,
-    _topStart - other._topStart,
-    _topEnd - other._topEnd,
-    _bottomStart - other._bottomStart,
-    _bottomEnd - other._bottomEnd,
+  CornersGeometry subtract(CornersGeometry other) => _MixedCorners(
+    _topLeft.subtract(other._topLeft),
+    _topRight.subtract(other._topRight),
+    _bottomLeft.subtract(other._bottomLeft),
+    _bottomRight.subtract(other._bottomRight),
+    _topStart.subtract(other._topStart),
+    _topEnd.subtract(other._topEnd),
+    _bottomStart.subtract(other._bottomStart),
+    _bottomEnd.subtract(other._bottomEnd),
   );
 
   CornersGeometry operator -();
+
   CornersGeometry operator *(double other);
+
   CornersGeometry operator /(double other);
+
   CornersGeometry operator ~/(double other);
+
   CornersGeometry operator %(double other);
 
   @override
   String toString() {
-    String? visual, logical;
+    String? visual;
+    String? logical;
     if (_topLeft == _topRight &&
         _topRight == _bottomLeft &&
         _bottomLeft == _bottomRight) {
-      if (_topLeft != Corner.none) {
-        if (_topLeft.x == _topLeft.y) {
-          visual =
-              "Corners.circular(${_topLeft.x?.toStringAsFixed(1) ?? "full"})";
-        } else {
-          visual = "Corners.all($_topLeft)";
-        }
+      if (_topLeft != .zero) {
+        visual = "Corners.all($_topLeft)";
       }
     } else {
-      // visuals aren't the same and at least one isn't none
-      final result = StringBuffer()..write("Corners.only(");
+      final result = StringBuffer("Corners.only(");
       var comma = false;
-      if (_topLeft != Corner.none) {
+      if (_topLeft != .zero) {
         result.write("topLeft: $_topLeft");
         comma = true;
       }
-      if (_topRight != Corner.none) {
+      if (_topRight != .zero) {
         if (comma) {
           result.write(", ");
         }
         result.write("topRight: $_topRight");
         comma = true;
       }
-      if (_bottomLeft != Corner.none) {
+      if (_bottomLeft != .zero) {
         if (comma) {
           result.write(", ");
         }
         result.write("bottomLeft: $_bottomLeft");
         comma = true;
       }
-      if (_bottomRight != Corner.none) {
+      if (_bottomRight != .zero) {
         if (comma) {
           result.write(", ");
         }
@@ -378,37 +570,31 @@ abstract class CornersGeometry {
     if (_topStart == _topEnd &&
         _topEnd == _bottomEnd &&
         _bottomEnd == _bottomStart) {
-      if (_topStart != Corner.none) {
-        if (_topStart.x == _topStart.y) {
-          logical =
-              "CornersDirectional.circular(${_topStart.x?.toStringAsFixed(1) ?? "full"})";
-        } else {
-          logical = "CornersDirectional.all($_topStart)";
-        }
+      if (_topStart != .zero) {
+        logical = "CornersDirectional.all($_topStart)";
       }
     } else {
-      // logicals aren't the same and at least one isn't none
-      final result = StringBuffer()..write("CornersDirectional.only(");
+      final result = StringBuffer("CornersDirectional.only(");
       var comma = false;
-      if (_topStart != Corner.none) {
+      if (_topStart != .zero) {
         result.write("topStart: $_topStart");
         comma = true;
       }
-      if (_topEnd != Corner.none) {
+      if (_topEnd != .zero) {
         if (comma) {
           result.write(", ");
         }
         result.write("topEnd: $_topEnd");
         comma = true;
       }
-      if (_bottomStart != Corner.none) {
+      if (_bottomStart != .zero) {
         if (comma) {
           result.write(", ");
         }
         result.write("bottomStart: $_bottomStart");
         comma = true;
       }
-      if (_bottomEnd != Corner.none) {
+      if (_bottomEnd != .zero) {
         if (comma) {
           result.write(", ");
         }
@@ -420,14 +606,13 @@ abstract class CornersGeometry {
     if (visual != null && logical != null) {
       return "$visual + $logical";
     }
-    return visual ?? logical ?? "Corners.none";
+    return visual ?? logical ?? "Corners.zero";
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is CornersGeometry &&
+      other is CornersGeometry &&
           _topLeft == other._topLeft &&
           _topRight == other._topRight &&
           _bottomLeft == other._bottomLeft &&
@@ -439,7 +624,6 @@ abstract class CornersGeometry {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
     _topLeft,
     _topRight,
     _bottomLeft,
@@ -450,8 +634,9 @@ abstract class CornersGeometry {
     _bottomEnd,
   );
 
-  static const CornersGeometry none = Corners.none;
-  static const CornersGeometry full = Corners.full;
+  static const CornersGeometry zero = Corners.zero;
+
+  static const CornersGeometry circle = Corners.circle;
 
   static CornersGeometry? lerp(
     CornersGeometry? a,
@@ -459,295 +644,24 @@ abstract class CornersGeometry {
     double t,
   ) {
     if (identical(a, b)) return a;
-    return _CornersGeometryLerp(a ?? Corners.none, b ?? Corners.none, t);
-  }
-}
-
-class _CornersGeometryLerp extends CornersGeometry {
-  const _CornersGeometryLerp(this.a, this.b, this.t);
-
-  final CornersGeometry a;
-  final CornersGeometry b;
-  final double t;
-
-  @override
-  Corner get _topLeft => Corner.none;
-
-  @override
-  Corner get _topRight => Corner.none;
-
-  @override
-  Corner get _bottomLeft => Corner.none;
-
-  @override
-  Corner get _bottomRight => Corner.none;
-
-  @override
-  Corner get _topStart => Corner.none;
-
-  @override
-  Corner get _topEnd => Corner.none;
-
-  @override
-  Corner get _bottomStart => Corner.none;
-
-  @override
-  Corner get _bottomEnd => Corner.none;
-
-  @override
-  BorderRadiusGeometry toBorderRadius(Size size) => BorderRadiusGeometry.lerp(
-    a.toBorderRadius(size),
-    b.toBorderRadius(size),
-    t,
-  )!;
-
-  @override
-  Corners resolve(TextDirection? textDirection) =>
-      _CornersLerp(a.resolve(textDirection), b.resolve(textDirection), t);
-
-  @override
-  CornersGeometry operator -() => _CornersGeometryLerp(-a, -b, t);
-
-  @override
-  CornersGeometry operator *(double other) =>
-      _CornersGeometryLerp(a * other, b * other, t);
-
-  @override
-  CornersGeometry operator /(double other) =>
-      _CornersGeometryLerp(a / other, b / other, t);
-
-  @override
-  CornersGeometry operator ~/(double other) =>
-      _CornersGeometryLerp(a ~/ other, b ~/ other, t);
-
-  @override
-  CornersGeometry operator %(double other) =>
-      _CornersGeometryLerp(a % other, b % other, t);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _CornersGeometryLerp &&
-          a == other.a &&
-          b == other.b &&
-          t == other.t;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, a, b, t);
-}
-
-class Corners extends CornersGeometry {
-  const Corners.all(Corner corner)
-    : this.only(
-        topLeft: corner,
-        topRight: corner,
-        bottomLeft: corner,
-        bottomRight: corner,
-      );
-
-  Corners.circular(double radius) : this.all(Corner.circular(radius));
-
-  const Corners.vertical({
-    Corner top = Corner.none,
-    Corner bottom = Corner.none,
-  }) : this.only(
-         topLeft: top,
-         topRight: top,
-         bottomLeft: bottom,
-         bottomRight: bottom,
-       );
-
-  const Corners.horizontal({
-    Corner left = Corner.none,
-    Corner right = Corner.none,
-  }) : this.only(
-         topLeft: left,
-         topRight: right,
-         bottomLeft: left,
-         bottomRight: right,
-       );
-
-  const Corners.only({
-    this.topLeft = Corner.none,
-    this.topRight = Corner.none,
-    this.bottomLeft = Corner.none,
-    this.bottomRight = Corner.none,
-  });
-
-  Corners.fromBorderRadius(BorderRadius borderRadius)
-    : topLeft = Corner.fromRadius(borderRadius.topLeft),
-      topRight = Corner.fromRadius(borderRadius.topRight),
-      bottomLeft = Corner.fromRadius(borderRadius.bottomLeft),
-      bottomRight = Corner.fromRadius(borderRadius.bottomRight);
-
-  Corners copyWith({
-    Corner? topLeft,
-    Corner? topRight,
-    Corner? bottomLeft,
-    Corner? bottomRight,
-  }) => Corners.only(
-    topLeft: topLeft ?? this.topLeft,
-    topRight: topRight ?? this.topRight,
-    bottomLeft: bottomLeft ?? this.bottomLeft,
-    bottomRight: bottomRight ?? this.bottomRight,
-  );
-
-  final Corner topLeft;
-
-  final Corner topRight;
-
-  final Corner bottomLeft;
-
-  final Corner bottomRight;
-
-  @override
-  Corner get _topLeft => topLeft;
-
-  @override
-  Corner get _topRight => topRight;
-
-  @override
-  Corner get _bottomLeft => bottomLeft;
-
-  @override
-  Corner get _bottomRight => bottomRight;
-
-  @override
-  Corner get _topStart => Corner.none;
-
-  @override
-  Corner get _topEnd => Corner.none;
-
-  @override
-  Corner get _bottomStart => Corner.none;
-
-  @override
-  Corner get _bottomEnd => Corner.none;
-
-  @override
-  BorderRadius toBorderRadius(Size size) {
-    final topLeft = this.topLeft.clamp();
-    final topRight = this.topRight.clamp();
-    final bottomLeft = this.bottomLeft.clamp();
-    final bottomRight = this.bottomRight.clamp();
-    return BorderRadius.only(
-      topLeft: topLeft.toRadius(
-        size: size,
-        adjacentX: topRight.x,
-        adjacentY: bottomLeft.y,
-      ),
-      topRight: topRight.toRadius(
-        size: size,
-        adjacentX: topLeft.x,
-        adjacentY: bottomRight.y,
-      ),
-      bottomLeft: bottomLeft.toRadius(
-        size: size,
-        adjacentX: bottomRight.x,
-        adjacentY: topLeft.y,
-      ),
-      bottomRight: bottomRight.toRadius(
-        size: size,
-        adjacentX: bottomLeft.x,
-        adjacentY: topRight.y,
-      ),
-    );
-  }
-
-  RRect toRRect(Rect rect) => toBorderRadius(rect.size).toRRect(rect);
-
-  RSuperellipse toRSuperellipse(Rect rect) =>
-      toBorderRadius(rect.size).toRSuperellipse(rect);
-
-  @override
-  Corners resolve(TextDirection? direction) => this;
-
-  @override
-  CornersGeometry add(CornersGeometry other) =>
-      other is Corners ? this + other : super.add(other);
-
-  @override
-  CornersGeometry subtract(CornersGeometry other) =>
-      other is Corners ? this - other : super.subtract(other);
-
-  Corners operator +(Corners other) => Corners.only(
-    topLeft: topLeft + other.topLeft,
-    topRight: topRight + other.topRight,
-    bottomLeft: bottomLeft + other.bottomLeft,
-    bottomRight: bottomRight + other.bottomRight,
-  );
-
-  Corners operator -(Corners other) => Corners.only(
-    topLeft: topLeft - other.topLeft,
-    topRight: topRight - other.topRight,
-    bottomLeft: bottomLeft - other.bottomLeft,
-    bottomRight: bottomRight - other.bottomRight,
-  );
-
-  @override
-  Corners operator -() => Corners.only(
-    topLeft: -topLeft,
-    topRight: -topRight,
-    bottomLeft: -bottomLeft,
-    bottomRight: -bottomRight,
-  );
-
-  @override
-  Corners operator *(double other) => Corners.only(
-    topLeft: topLeft * other,
-    topRight: topRight * other,
-    bottomLeft: bottomLeft * other,
-    bottomRight: bottomRight * other,
-  );
-
-  @override
-  Corners operator /(double other) => Corners.only(
-    topLeft: topLeft / other,
-    topRight: topRight / other,
-    bottomLeft: bottomLeft / other,
-    bottomRight: bottomRight / other,
-  );
-
-  @override
-  Corners operator ~/(double other) => Corners.only(
-    topLeft: topLeft ~/ other,
-    topRight: topRight ~/ other,
-    bottomLeft: bottomLeft ~/ other,
-    bottomRight: bottomRight ~/ other,
-  );
-
-  @override
-  Corners operator %(double other) => Corners.only(
-    topLeft: topLeft % other,
-    topRight: topRight % other,
-    bottomLeft: bottomLeft % other,
-    bottomRight: bottomRight % other,
-  );
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is Corners &&
-          topLeft == other.topLeft &&
-          topRight == other.topRight &&
-          bottomLeft == other.bottomLeft &&
-          bottomRight == other.bottomRight;
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, topLeft, topRight, bottomLeft, bottomRight);
-
-  static const Corners none = Corners.all(Corner.none);
-
-  static const Corners full = Corners.all(Corner.full);
-
-  static Corners? lerp(Corners? a, Corners? b, double t) {
-    if (identical(a, b)) return a;
     if (a == null) return b! * t;
     if (b == null) return a * (1.0 - t);
-    return _CornersLerp(a, b, t);
+    if (a is Corners && b is Corners) {
+      return Corners.lerp(a, b, t);
+    }
+    if (a is CornersDirectional && b is CornersDirectional) {
+      return CornersDirectional.lerp(a, b, t);
+    }
+    return _MixedCorners(
+      .lerp(a._topLeft, b._topLeft, t)!,
+      .lerp(a._topRight, b._topRight, t)!,
+      .lerp(a._bottomLeft, b._bottomLeft, t)!,
+      .lerp(a._bottomRight, b._bottomRight, t)!,
+      .lerp(a._topStart, b._topStart, t)!,
+      .lerp(a._topEnd, b._topEnd, t)!,
+      .lerp(a._bottomStart, b._bottomStart, t)!,
+      .lerp(a._bottomEnd, b._bottomEnd, t)!,
+    );
   }
 }
 
@@ -757,35 +671,35 @@ class _CornersGeometryFromBorderRadiusGeometry extends CornersGeometry {
   final BorderRadiusGeometry _borderRadius;
 
   @override
-  Corner get _topLeft => Corner.none;
+  Corner get _topLeft => .zero;
 
   @override
-  Corner get _topRight => Corner.none;
+  Corner get _topRight => .zero;
 
   @override
-  Corner get _bottomLeft => Corner.none;
+  Corner get _bottomLeft => .zero;
 
   @override
-  Corner get _bottomRight => Corner.none;
+  Corner get _bottomRight => .zero;
 
   @override
-  Corner get _topStart => Corner.none;
+  Corner get _topStart => .zero;
 
   @override
-  Corner get _topEnd => Corner.none;
+  Corner get _topEnd => .zero;
 
   @override
-  Corner get _bottomStart => Corner.none;
+  Corner get _bottomStart => .zero;
 
   @override
-  Corner get _bottomEnd => Corner.none;
+  Corner get _bottomEnd => .zero;
 
   @override
   BorderRadiusGeometry toBorderRadius(Size size) => _borderRadius;
 
   @override
   Corners resolve(TextDirection? textDirection) =>
-      Corners.fromBorderRadius(_borderRadius.resolve(textDirection));
+      .fromBorderRadius(_borderRadius.resolve(textDirection));
 
   @override
   CornersGeometry add(CornersGeometry other) =>
@@ -826,36 +740,188 @@ class _CornersGeometryFromBorderRadiusGeometry extends CornersGeometry {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _CornersGeometryFromBorderRadiusGeometry &&
+      other is _CornersGeometryFromBorderRadiusGeometry &&
           _borderRadius == other._borderRadius;
 
   @override
-  int get hashCode => Object.hash(runtimeType, _borderRadius);
+  int get hashCode => _borderRadius.hashCode;
 }
 
-class _CornersLerp extends Corners {
-  const _CornersLerp(this.a, this.b, this.t) : super.only();
+class Corners extends CornersGeometry {
+  const Corners.all(Corner corner)
+    : this.only(
+        topLeft: corner,
+        topRight: corner,
+        bottomLeft: corner,
+        bottomRight: corner,
+      );
 
-  final Corners a;
-  final Corners b;
-  final double t;
+  const Corners.vertical({Corner top = .zero, Corner bottom = .zero})
+    : this.only(
+        topLeft: top,
+        topRight: top,
+        bottomLeft: bottom,
+        bottomRight: bottom,
+      );
+
+  const Corners.horizontal({Corner left = .zero, Corner right = .zero})
+    : this.only(
+        topLeft: left,
+        topRight: right,
+        bottomLeft: left,
+        bottomRight: right,
+      );
+
+  const Corners.only({
+    this.topLeft = .zero,
+    this.topRight = .zero,
+    this.bottomLeft = .zero,
+    this.bottomRight = .zero,
+  });
+
+  Corners.fromBorderRadius(BorderRadius borderRadius)
+    : topLeft = .fromRadius(borderRadius.topLeft),
+      topRight = .fromRadius(borderRadius.topRight),
+      bottomLeft = .fromRadius(borderRadius.bottomLeft),
+      bottomRight = .fromRadius(borderRadius.bottomRight);
+
+  Corners copyWith({
+    Corner? topLeft,
+    Corner? topRight,
+    Corner? bottomLeft,
+    Corner? bottomRight,
+  }) => .only(
+    topLeft: topLeft ?? this.topLeft,
+    topRight: topRight ?? this.topRight,
+    bottomLeft: bottomLeft ?? this.bottomLeft,
+    bottomRight: bottomRight ?? this.bottomRight,
+  );
+
+  final Corner topLeft;
+
+  final Corner topRight;
+
+  final Corner bottomLeft;
+
+  final Corner bottomRight;
 
   @override
-  BorderRadius toBorderRadius(Size size) =>
-      BorderRadius.lerp(a.toBorderRadius(size), b.toBorderRadius(size), t)!;
+  Corner get _topLeft => topLeft;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _CornersLerp &&
-          a == other.a &&
-          b == other.b &&
-          t == other.t;
+  Corner get _topRight => topRight;
 
   @override
-  int get hashCode => Object.hash(runtimeType, a, b, t);
+  Corner get _bottomLeft => bottomLeft;
+
+  @override
+  Corner get _bottomRight => bottomRight;
+
+  @override
+  Corner get _topStart => .zero;
+
+  @override
+  Corner get _topEnd => .zero;
+
+  @override
+  Corner get _bottomStart => .zero;
+
+  @override
+  Corner get _bottomEnd => .zero;
+
+  @override
+  BorderRadius toBorderRadius(Size size) => .only(
+    topLeft: topLeft.toRadius(size),
+    topRight: topRight.toRadius(size),
+    bottomLeft: bottomLeft.toRadius(size),
+    bottomRight: bottomRight.toRadius(size),
+  );
+
+  RRect toRRect(Rect rect) => toBorderRadius(rect.size).toRRect(rect);
+
+  RSuperellipse toRSuperellipse(Rect rect) =>
+      toBorderRadius(rect.size).toRSuperellipse(rect);
+
+  @override
+  Corners resolve(TextDirection? direction) => this;
+
+  @override
+  CornersGeometry add(CornersGeometry other) =>
+      other is Corners ? this + other : super.add(other);
+
+  @override
+  CornersGeometry subtract(CornersGeometry other) =>
+      other is Corners ? this - other : super.subtract(other);
+
+  Corners operator +(Corners other) => .only(
+    topLeft: topLeft.add(other.topLeft),
+    topRight: topRight.add(other.topRight),
+    bottomLeft: bottomLeft.add(other.bottomLeft),
+    bottomRight: bottomRight.add(other.bottomRight),
+  );
+
+  Corners operator -(Corners other) => .only(
+    topLeft: topLeft.subtract(other.topLeft),
+    topRight: topRight.subtract(other.topRight),
+    bottomLeft: bottomLeft.subtract(other.bottomLeft),
+    bottomRight: bottomRight.subtract(other.bottomRight),
+  );
+
+  @override
+  Corners operator -() => .only(
+    topLeft: -topLeft,
+    topRight: -topRight,
+    bottomLeft: -bottomLeft,
+    bottomRight: -bottomRight,
+  );
+
+  @override
+  Corners operator *(double other) => .only(
+    topLeft: topLeft * other,
+    topRight: topRight * other,
+    bottomLeft: bottomLeft * other,
+    bottomRight: bottomRight * other,
+  );
+
+  @override
+  Corners operator /(double other) => .only(
+    topLeft: topLeft / other,
+    topRight: topRight / other,
+    bottomLeft: bottomLeft / other,
+    bottomRight: bottomRight / other,
+  );
+
+  @override
+  Corners operator ~/(double other) => .only(
+    topLeft: topLeft ~/ other,
+    topRight: topRight ~/ other,
+    bottomLeft: bottomLeft ~/ other,
+    bottomRight: bottomRight ~/ other,
+  );
+
+  @override
+  Corners operator %(double other) => .only(
+    topLeft: topLeft % other,
+    topRight: topRight % other,
+    bottomLeft: bottomLeft % other,
+    bottomRight: bottomRight % other,
+  );
+
+  static const zero = Corners.all(.zero);
+
+  static const circle = Corners.all(.round);
+
+  static Corners? lerp(Corners? a, Corners? b, double t) {
+    if (identical(a, b)) return a;
+    if (a == null) return b! * t;
+    if (b == null) return a * (1.0 - t);
+    return .only(
+      topLeft: .lerp(a.topLeft, b.topLeft, t)!,
+      topRight: .lerp(a.topRight, b.topRight, t)!,
+      bottomLeft: .lerp(a.bottomLeft, b.bottomLeft, t)!,
+      bottomRight: .lerp(a.bottomRight, b.bottomRight, t)!,
+    );
+  }
 }
 
 class CornersDirectional extends CornersGeometry {
@@ -867,22 +933,17 @@ class CornersDirectional extends CornersGeometry {
         bottomEnd: radius,
       );
 
-  CornersDirectional.circular(double radius)
-    : this.all(Corner.circular(radius));
-
-  const CornersDirectional.vertical({
-    Corner top = Corner.none,
-    Corner bottom = Corner.none,
-  }) : this.only(
-         topStart: top,
-         topEnd: top,
-         bottomStart: bottom,
-         bottomEnd: bottom,
-       );
+  const CornersDirectional.vertical({Corner top = .zero, Corner bottom = .zero})
+    : this.only(
+        topStart: top,
+        topEnd: top,
+        bottomStart: bottom,
+        bottomEnd: bottom,
+      );
 
   const CornersDirectional.horizontal({
-    Corner start = Corner.none,
-    Corner end = Corner.none,
+    Corner start = .zero,
+    Corner end = .zero,
   }) : this.only(
          topStart: start,
          topEnd: end,
@@ -891,17 +952,17 @@ class CornersDirectional extends CornersGeometry {
        );
 
   const CornersDirectional.only({
-    this.topStart = Corner.none,
-    this.topEnd = Corner.none,
-    this.bottomStart = Corner.none,
-    this.bottomEnd = Corner.none,
+    this.topStart = .zero,
+    this.topEnd = .zero,
+    this.bottomStart = .zero,
+    this.bottomEnd = .zero,
   });
 
   CornersDirectional.fromBorderRadius(BorderRadiusDirectional borderRadius)
-    : topStart = Corner.fromRadius(borderRadius.topStart),
-      topEnd = Corner.fromRadius(borderRadius.topEnd),
-      bottomStart = Corner.fromRadius(borderRadius.bottomStart),
-      bottomEnd = Corner.fromRadius(borderRadius.bottomEnd);
+    : topStart = .fromRadius(borderRadius.topStart),
+      topEnd = .fromRadius(borderRadius.topEnd),
+      bottomStart = .fromRadius(borderRadius.bottomStart),
+      bottomEnd = .fromRadius(borderRadius.bottomEnd);
 
   final Corner topStart;
   final Corner topEnd;
@@ -909,16 +970,16 @@ class CornersDirectional extends CornersGeometry {
   final Corner bottomEnd;
 
   @override
-  Corner get _topLeft => Corner.none;
+  Corner get _topLeft => .zero;
 
   @override
-  Corner get _topRight => Corner.none;
+  Corner get _topRight => .zero;
 
   @override
-  Corner get _bottomLeft => Corner.none;
+  Corner get _bottomLeft => .zero;
 
   @override
-  Corner get _bottomRight => Corner.none;
+  Corner get _bottomRight => .zero;
 
   @override
   Corner get _topStart => topStart;
@@ -933,46 +994,18 @@ class CornersDirectional extends CornersGeometry {
   Corner get _bottomEnd => bottomEnd;
 
   @override
-  BorderRadiusDirectional toBorderRadius(Size size) {
-    final topStart = this.topStart.clamp();
-    final topEnd = this.topEnd.clamp();
-    final bottomStart = this.bottomStart.clamp();
-    final bottomEnd = this.bottomEnd.clamp();
-    return BorderRadiusDirectional.only(
-      topStart: topStart.toRadius(
-        size: size,
-        adjacentX: topEnd.x,
-        adjacentY: bottomStart.y,
-      ),
-      topEnd: topEnd.toRadius(
-        size: size,
-        adjacentX: topStart.x,
-        adjacentY: bottomEnd.y,
-      ),
-      bottomStart: bottomStart.toRadius(
-        size: size,
-        adjacentX: bottomEnd.x,
-        adjacentY: topStart.y,
-      ),
-      bottomEnd: bottomEnd.toRadius(
-        size: size,
-        adjacentX: bottomStart.x,
-        adjacentY: topEnd.y,
-      ),
-    );
-  }
-
-  @override
   Corners resolve(TextDirection? textDirection) {
-    assert(textDirection != null);
+    assert(
+      debugCheckCanResolveTextDirection(textDirection, "$CornersDirectional"),
+    );
     return switch (textDirection!) {
-      .ltr => Corners.only(
+      .ltr => .only(
         topLeft: topStart,
         topRight: topEnd,
         bottomLeft: bottomStart,
         bottomRight: bottomEnd,
       ),
-      .rtl => Corners.only(
+      .rtl => .only(
         topLeft: topEnd,
         topRight: topStart,
         bottomLeft: bottomEnd,
@@ -982,6 +1015,14 @@ class CornersDirectional extends CornersGeometry {
   }
 
   @override
+  BorderRadiusDirectional toBorderRadius(Size size) => .only(
+    topStart: topStart.toRadius(size),
+    topEnd: topEnd.toRadius(size),
+    bottomStart: bottomStart.toRadius(size),
+    bottomEnd: bottomEnd.toRadius(size),
+  );
+
+  @override
   CornersGeometry add(CornersGeometry other) =>
       other is CornersDirectional ? this + other : super.add(other);
 
@@ -989,32 +1030,30 @@ class CornersDirectional extends CornersGeometry {
   CornersGeometry subtract(CornersGeometry other) =>
       other is CornersDirectional ? this - other : super.subtract(other);
 
-  CornersDirectional operator +(CornersDirectional other) =>
-      CornersDirectional.only(
-        topStart: topStart + other.topStart,
-        topEnd: topEnd + other.topEnd,
-        bottomStart: bottomStart + other.bottomStart,
-        bottomEnd: bottomEnd + other.bottomEnd,
-      );
-
-  CornersDirectional operator -(CornersDirectional other) =>
-      CornersDirectional.only(
-        topStart: topStart - other.topStart,
-        topEnd: topEnd - other.topEnd,
-        bottomStart: bottomStart - other.bottomStart,
-        bottomEnd: bottomEnd - other.bottomEnd,
-      );
-
   @override
-  CornersDirectional operator -() => CornersDirectional.only(
+  CornersDirectional operator -() => .only(
     topStart: -topStart,
     topEnd: -topEnd,
     bottomStart: -bottomStart,
     bottomEnd: -bottomEnd,
   );
 
+  CornersDirectional operator -(CornersDirectional other) => .only(
+    topStart: topStart.subtract(other.topStart),
+    topEnd: topEnd.subtract(other.topEnd),
+    bottomStart: bottomStart.subtract(other.bottomStart),
+    bottomEnd: bottomEnd.subtract(other.bottomEnd),
+  );
+
+  CornersDirectional operator +(CornersDirectional other) => .only(
+    topStart: topStart.add(other.topStart),
+    topEnd: topEnd.add(other.topEnd),
+    bottomStart: bottomStart.add(other.bottomStart),
+    bottomEnd: bottomEnd.add(other.bottomEnd),
+  );
+
   @override
-  CornersDirectional operator *(double other) => CornersDirectional.only(
+  CornersDirectional operator *(double other) => .only(
     topStart: topStart * other,
     topEnd: topEnd * other,
     bottomStart: bottomStart * other,
@@ -1022,7 +1061,7 @@ class CornersDirectional extends CornersGeometry {
   );
 
   @override
-  CornersDirectional operator /(double other) => CornersDirectional.only(
+  CornersDirectional operator /(double other) => .only(
     topStart: topStart / other,
     topEnd: topEnd / other,
     bottomStart: bottomStart / other,
@@ -1030,7 +1069,7 @@ class CornersDirectional extends CornersGeometry {
   );
 
   @override
-  CornersDirectional operator ~/(double other) => CornersDirectional.only(
+  CornersDirectional operator ~/(double other) => .only(
     topStart: topStart ~/ other,
     topEnd: topEnd ~/ other,
     bottomStart: bottomStart ~/ other,
@@ -1038,74 +1077,36 @@ class CornersDirectional extends CornersGeometry {
   );
 
   @override
-  CornersDirectional operator %(double other) => CornersDirectional.only(
+  CornersDirectional operator %(double other) => .only(
     topStart: topStart % other,
     topEnd: topEnd % other,
     bottomStart: bottomStart % other,
     bottomEnd: bottomEnd % other,
   );
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is CornersDirectional &&
-          topStart == other.topStart &&
-          topEnd == other.topEnd &&
-          bottomStart == other.bottomStart &&
-          bottomEnd == other.bottomEnd;
+  static const zero = CornersDirectional.all(.zero);
 
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, topStart, topEnd, bottomStart, bottomEnd);
-
-  static const CornersDirectional none = CornersDirectional.all(Corner.none);
-  static const CornersDirectional full = CornersDirectional.all(Corner.full);
+  static const circle = CornersDirectional.all(.round);
 
   static CornersDirectional? lerp(
     CornersDirectional? a,
     CornersDirectional? b,
     double t,
   ) {
-    if (identical(a, b)) {
-      return a;
-    }
-    if (a == null) {
-      return b! * t;
-    }
-    if (b == null) {
-      return a * (1.0 - t);
-    }
-    return _CornersDirectionalLerp(a, b, t);
+    if (identical(a, b)) return a;
+    if (a == null) return b! * t;
+    if (b == null) return a * (1.0 - t);
+    return .only(
+      topStart: .lerp(a.topStart, b.topStart, t)!,
+      topEnd: .lerp(a.topEnd, b.topEnd, t)!,
+      bottomStart: .lerp(a.bottomStart, b.bottomStart, t)!,
+      bottomEnd: .lerp(a.bottomEnd, b.bottomEnd, t)!,
+    );
   }
 }
 
-class _CornersDirectionalLerp extends CornersDirectional {
-  const _CornersDirectionalLerp(this.a, this.b, this.t) : super.only();
-
-  final CornersDirectional a;
-  final CornersDirectional b;
-  final double t;
-
-  @override
-  Corners resolve(TextDirection? textDirection) =>
-      _CornersLerp(a.resolve(textDirection), b.resolve(textDirection), t);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _CornersDirectionalLerp &&
-          a == other.a &&
-          b == other.b &&
-          t == other.t;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, a, b, t);
-}
-
-class _CornersMixed extends CornersGeometry {
-  const _CornersMixed(
+class _MixedCorners extends CornersGeometry {
+  const _MixedCorners(
     this._topLeft,
     this._topRight,
     this._bottomLeft,
@@ -1141,45 +1142,42 @@ class _CornersMixed extends CornersGeometry {
   final Corner _bottomEnd;
 
   @override
-  BorderRadiusGeometry toBorderRadius(Size size) {
-    final corners = Corners.only(
-      topLeft: _topLeft,
-      topRight: _topRight,
-      bottomLeft: _bottomLeft,
-      bottomRight: _bottomRight,
-    );
-    final cornersDirectional = CornersDirectional.only(
-      topStart: _topStart,
-      topEnd: _topEnd,
-      bottomStart: _bottomStart,
-      bottomEnd: _bottomEnd,
-    );
-    final borderRadius = corners.toBorderRadius(size);
-    final borderRadiusDirectional = cornersDirectional.toBorderRadius(size);
-    return borderRadius.add(borderRadiusDirectional);
-  }
-
-  @override
   Corners resolve(TextDirection? textDirection) {
-    assert(textDirection != null);
+    assert(debugCheckCanResolveTextDirection(textDirection, "$_MixedCorners"));
     return switch (textDirection!) {
-      .ltr => Corners.only(
-        topLeft: _topLeft + _topStart,
-        topRight: _topRight + _topEnd,
-        bottomLeft: _bottomLeft + _bottomStart,
-        bottomRight: _bottomRight + _bottomEnd,
+      .ltr => .only(
+        topLeft: _topLeft.add(_topStart),
+        topRight: _topRight.add(_topEnd),
+        bottomLeft: _bottomLeft.add(_bottomStart),
+        bottomRight: _bottomRight.add(_bottomEnd),
       ),
-      .rtl => Corners.only(
-        topLeft: _topLeft + _topEnd,
-        topRight: _topRight + _topStart,
-        bottomLeft: _bottomLeft + _bottomEnd,
-        bottomRight: _bottomRight + _bottomStart,
+      .rtl => .only(
+        topLeft: _topLeft.subtract(_topEnd),
+        topRight: _topRight.subtract(_topStart),
+        bottomLeft: _bottomLeft.subtract(_bottomEnd),
+        bottomRight: _bottomRight.subtract(_bottomStart),
       ),
     };
   }
 
   @override
-  _CornersMixed operator -() => _CornersMixed(
+  BorderRadiusGeometry toBorderRadius(Size size) =>
+      BorderRadius.only(
+        topLeft: _topLeft.toRadius(size),
+        topRight: _topRight.toRadius(size),
+        bottomLeft: _bottomLeft.toRadius(size),
+        bottomRight: _bottomRight.toRadius(size),
+      ).add(
+        BorderRadiusDirectional.only(
+          topStart: _topStart.toRadius(size),
+          topEnd: _topEnd.toRadius(size),
+          bottomStart: _bottomStart.toRadius(size),
+          bottomEnd: _bottomEnd.toRadius(size),
+        ),
+      );
+
+  @override
+  _MixedCorners operator -() => _MixedCorners(
     -_topLeft,
     -_topRight,
     -_bottomLeft,
@@ -1191,7 +1189,7 @@ class _CornersMixed extends CornersGeometry {
   );
 
   @override
-  _CornersMixed operator *(double other) => _CornersMixed(
+  _MixedCorners operator *(double other) => _MixedCorners(
     _topLeft * other,
     _topRight * other,
     _bottomLeft * other,
@@ -1203,7 +1201,7 @@ class _CornersMixed extends CornersGeometry {
   );
 
   @override
-  _CornersMixed operator /(double other) => _CornersMixed(
+  _MixedCorners operator /(double other) => _MixedCorners(
     _topLeft / other,
     _topRight / other,
     _bottomLeft / other,
@@ -1215,7 +1213,7 @@ class _CornersMixed extends CornersGeometry {
   );
 
   @override
-  _CornersMixed operator ~/(double other) => _CornersMixed(
+  _MixedCorners operator ~/(double other) => _MixedCorners(
     _topLeft ~/ other,
     _topRight ~/ other,
     _bottomLeft ~/ other,
@@ -1227,7 +1225,7 @@ class _CornersMixed extends CornersGeometry {
   );
 
   @override
-  _CornersMixed operator %(double other) => _CornersMixed(
+  _MixedCorners operator %(double other) => _MixedCorners(
     _topLeft % other,
     _topRight % other,
     _bottomLeft % other,

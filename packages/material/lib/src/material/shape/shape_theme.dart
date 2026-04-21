@@ -126,7 +126,82 @@ abstract class ShapeCornerThemeDataPartial with Diagnosticable {
   @override
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    // TODO: implement Diagnosticable for Corner, CornersGeometry, etc.
+    properties
+      ..add(DiagnosticsProperty<Corner>("none", none, defaultValue: null))
+      ..add(
+        DiagnosticsProperty<Corner>(
+          "extraSmall",
+          extraSmall,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<CornersGeometry>(
+          "extraSmallTop",
+          extraSmallTop,
+          defaultValue: null,
+        ),
+      )
+      ..add(DiagnosticsProperty<Corner>("small", small, defaultValue: null))
+      ..add(DiagnosticsProperty<Corner>("medium", medium, defaultValue: null))
+      ..add(DiagnosticsProperty<Corner>("large", large, defaultValue: null))
+      ..add(
+        DiagnosticsProperty<CornersGeometry>(
+          "largeStart",
+          largeStart,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<CornersGeometry>(
+          "largeEnd",
+          largeEnd,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<CornersGeometry>(
+          "largeTop",
+          largeTop,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<Corner>(
+          "largeIncreased",
+          largeIncreased,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<Corner>(
+          "extraLarge",
+          extraLarge,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<CornersGeometry>(
+          "extraLargeTop",
+          extraLargeTop,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<Corner>(
+          "extraLargeIncreased",
+          extraLargeIncreased,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<Corner>(
+          "extraExtraLarge",
+          extraExtraLarge,
+          defaultValue: null,
+        ),
+      )
+      ..add(DiagnosticsProperty<Corner>("full", full, defaultValue: null));
   }
 
   @override
@@ -382,7 +457,28 @@ abstract class ShapeCornerThemeData extends ShapeCornerThemeDataPartial {
   @override
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    // TODO: implement Diagnosticable for Corner, CornersGeometry, etc.
+    properties
+      ..add(DiagnosticsProperty<Corner>("none", none))
+      ..add(DiagnosticsProperty<Corner>("extraSmall", extraSmall))
+      ..add(
+        DiagnosticsProperty<CornersGeometry>("extraSmallTop", extraSmallTop),
+      )
+      ..add(DiagnosticsProperty<Corner>("small", small))
+      ..add(DiagnosticsProperty<Corner>("medium", medium))
+      ..add(DiagnosticsProperty<Corner>("large", large))
+      ..add(DiagnosticsProperty<CornersGeometry>("largeStart", largeStart))
+      ..add(DiagnosticsProperty<CornersGeometry>("largeEnd", largeEnd))
+      ..add(DiagnosticsProperty<CornersGeometry>("largeTop", largeTop))
+      ..add(DiagnosticsProperty<Corner>("largeIncreased", largeIncreased))
+      ..add(DiagnosticsProperty<Corner>("extraLarge", extraLarge))
+      ..add(
+        DiagnosticsProperty<CornersGeometry>("extraLargeTop", extraLargeTop),
+      )
+      ..add(
+        DiagnosticsProperty<Corner>("extraLargeIncreased", extraLargeIncreased),
+      )
+      ..add(DiagnosticsProperty<Corner>("extraExtraLarge", extraExtraLarge))
+      ..add(DiagnosticsProperty<Corner>("full", full));
   }
 
   @override
@@ -447,21 +543,21 @@ class _ShapeCornerThemeData extends ShapeCornerThemeData {
   });
 
   const _ShapeCornerThemeData.fallback()
-    : none = .none,
-      extraSmall = const .circular(4.0),
-      extraSmallTop = const .vertical(top: .circular(4.0)),
-      small = const .circular(8.0),
-      medium = const .circular(12.0),
-      large = const .circular(16.0),
-      largeStart = const CornersDirectional.horizontal(start: .circular(16.0)),
-      largeEnd = const CornersDirectional.horizontal(end: .circular(16.0)),
-      largeTop = const CornersDirectional.vertical(top: .circular(16.0)),
-      largeIncreased = const .circular(20.0),
-      extraLarge = const .circular(28.0),
-      extraLargeTop = const CornersDirectional.vertical(top: .circular(28.0)),
-      extraLargeIncreased = const .circular(32.0),
-      extraExtraLarge = const .circular(48.0),
-      full = .full;
+    : none = .zero,
+      extraSmall = const .fixed(4.0),
+      extraSmallTop = const .vertical(top: .fixed(4.0)),
+      small = const .fixed(8.0),
+      medium = const .fixed(12.0),
+      large = const .fixed(16.0),
+      largeStart = const CornersDirectional.horizontal(start: .fixed(16.0)),
+      largeEnd = const CornersDirectional.horizontal(end: .fixed(16.0)),
+      largeTop = const CornersDirectional.vertical(top: .fixed(16.0)),
+      largeIncreased = const .fixed(20.0),
+      extraLarge = const .fixed(28.0),
+      extraLargeTop = const CornersDirectional.vertical(top: .fixed(28.0)),
+      extraLargeIncreased = const .fixed(32.0),
+      extraExtraLarge = const .fixed(48.0),
+      full = .round;
 
   @override
   final Corner none;

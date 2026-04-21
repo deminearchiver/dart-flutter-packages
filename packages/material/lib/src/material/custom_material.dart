@@ -152,7 +152,7 @@ class Material extends StatelessWidget {
           RoundedSuperellipseBorder(borderRadius: .zero) ||
           BeveledRectangleBorder(borderRadius: .zero) ||
           ContinuousRectangleBorder(borderRadius: .zero) ||
-          CornersBorder(corners: .none) => true,
+          CornersBorder(corners: .zero) => true,
           _ => false,
         };
     final flutter.MaterialType resolvedType = isTransparent

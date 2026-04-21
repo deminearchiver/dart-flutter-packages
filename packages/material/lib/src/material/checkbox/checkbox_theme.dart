@@ -561,7 +561,7 @@ class _CheckboxThemeDataDefaults extends CheckboxThemeData {
   CheckboxStateProperty<OutlinedBorder> get containerShape => .resolveWith(
     (states) =>
         _containerShape?.resolve(states) ??
-        const CornersBorder.rounded(corners: .all(.circular(2.0))),
+        const CornersBorder.rounded(corners: .all(.fixed(2.0))),
   );
 
   @override

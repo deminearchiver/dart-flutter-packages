@@ -24,7 +24,7 @@ dependencies:
     path: ../layout
 
   # Hosted dependencies
-  androidx_graphics_shapes: ^1.4.0+1
+  androidx_graphics_shapes: ^1.5.0
   collection: ^1.19.1
   libmonet: ^2.0.0-dev.13
   material_symbols_icons: ^4.2928.1
