@@ -15,6 +15,13 @@ extension CornersGeometryArithmetic on CornersGeometry {
 abstract class Corner {
   const Corner();
 
+  const factory Corner._mixed(
+    double radiusX,
+    double radiusY,
+    double fractionX,
+    double fractionY,
+  ) = _MixedCorner;
+
   const factory Corner._zero() = _ZeroCorner;
 
   const factory Corner.fixed(double radius) = FixedCorner.circular;
@@ -45,10 +52,9 @@ abstract class Corner {
       _fractionY >= 0.0;
 
   /// A [Corner] with X and Y swapped.
-  Corner get flipped =>
-      _MixedCorner(_radiusY, _radiusX, _fractionY, _fractionX);
+  Corner get flipped => ._mixed(_radiusY, _radiusX, _fractionY, _fractionX);
 
-  Corner clamp(Corner minimum, Corner maximum) => _MixedCorner(
+  Corner clamp(Corner minimum, Corner maximum) => ._mixed(
     clampDouble(_radiusX, minimum._radiusX, maximum._radiusX),
     clampDouble(_radiusY, minimum._radiusY, maximum._radiusY),
     clampDouble(_fractionX, minimum._fractionX, maximum._fractionX),
@@ -57,14 +63,14 @@ abstract class Corner {
 
   Radius toRadius(Size size);
 
-  Corner add(Corner other) => _MixedCorner(
+  Corner add(Corner other) => ._mixed(
     _radiusX + other._radiusX,
     _radiusY + other._radiusY,
     _fractionX + other._fractionX,
     _fractionY + other._fractionY,
   );
 
-  Corner subtract(Corner other) => _MixedCorner(
+  Corner subtract(Corner other) => ._mixed(
     _radiusX - other._radiusX,
     _radiusY - other._radiusY,
     _fractionX - other._fractionX,
@@ -83,9 +89,11 @@ abstract class Corner {
 
   @override
   String toString() {
+    // Used to determine whether the corner is zero.
     final zeroFixed = _radiusX == 0.0 && _radiusY == 0.0;
     final zeroFractional = _fractionX == 0.0 && _fractionY == 0.0;
-    if (zeroFixed && zeroFractional) return "Corner.zero";
+
+    // Lazily initialize fixed and fractional parts.
     late final fixed = _radiusX == _radiusY
         ? "Corner.fixed(${_radiusX.toStringAsFixed(1)})"
         : "Corner.fixedXY(${_radiusX.toStringAsFixed(1)}, "
@@ -94,9 +102,13 @@ abstract class Corner {
         ? "Corner.fractional(${_fractionX.toStringAsFixed(1)})"
         : "Corner.fractionalXY(${_fractionX.toStringAsFixed(1)}, "
               "${_fractionY.toStringAsFixed(1)})";
-    if (zeroFractional) return fixed;
-    if (zeroFixed) return fractional;
-    return "$fixed + $fractional";
+
+    // Return "Corner.zero" if both radius and fraction are zero,
+    // otherwise returns a single non-zero part or a concatenation
+    // if both are non-zero.
+    return zeroFixed
+        ? (zeroFractional ? "Corner.zero" : fractional)
+        : (zeroFractional ? fixed : "$fixed + $fractional");
   }
 
   @override
@@ -125,7 +137,7 @@ abstract class Corner {
     if (a is FractionalCorner && b is FractionalCorner) {
       return FractionalCorner.lerp(a, b, t);
     }
-    return _MixedCorner(
+    return ._mixed(
       lerpDouble(a._radiusX, b._radiusX, t),
       lerpDouble(a._radiusY, b._radiusY, t),
       lerpDouble(a._fractionX, b._fractionX, t),
@@ -166,19 +178,19 @@ class _ZeroCorner extends Corner {
   Corner subtract(Corner other) => other is _ZeroCorner ? this : -other;
 
   @override
-  Corner operator -() => this;
+  _ZeroCorner operator -() => this;
 
   @override
-  Corner operator *(double operand) => this;
+  _ZeroCorner operator *(double operand) => this;
 
   @override
-  Corner operator /(double operand) => this;
+  _ZeroCorner operator /(double operand) => this;
 
   @override
-  Corner operator ~/(double operand) => this;
+  _ZeroCorner operator ~/(double operand) => this;
 
   @override
-  Corner operator %(double operand) => this;
+  _ZeroCorner operator %(double operand) => this;
 }
 
 abstract class FixedCorner extends Corner {
@@ -414,10 +426,10 @@ class _MixedCorner extends Corner {
 
   @override
   _MixedCorner operator -() =>
-      _MixedCorner(-_radiusX, -_radiusY, -_fractionX, -_fractionY);
+      .new(-_radiusX, -_radiusY, -_fractionX, -_fractionY);
 
   @override
-  _MixedCorner operator *(double operand) => _MixedCorner(
+  _MixedCorner operator *(double operand) => .new(
     _radiusX * operand,
     _radiusY * operand,
     _fractionX * operand,
@@ -425,7 +437,7 @@ class _MixedCorner extends Corner {
   );
 
   @override
-  _MixedCorner operator /(double operand) => _MixedCorner(
+  _MixedCorner operator /(double operand) => .new(
     _radiusX / operand,
     _radiusY / operand,
     _fractionX / operand,
@@ -433,7 +445,7 @@ class _MixedCorner extends Corner {
   );
 
   @override
-  _MixedCorner operator ~/(double operand) => _MixedCorner(
+  _MixedCorner operator ~/(double operand) => .new(
     (_radiusX ~/ operand).toDouble(),
     (_radiusY ~/ operand).toDouble(),
     (_fractionX ~/ operand).toDouble(),
@@ -441,7 +453,7 @@ class _MixedCorner extends Corner {
   );
 
   @override
-  _MixedCorner operator %(double operand) => _MixedCorner(
+  _MixedCorner operator %(double operand) => .new(
     _radiusX % operand,
     _radiusY % operand,
     _fractionX % operand,
@@ -451,6 +463,17 @@ class _MixedCorner extends Corner {
 
 abstract class CornersGeometry {
   const CornersGeometry();
+
+  const factory CornersGeometry._mixed(
+    Corner topLeft,
+    Corner topRight,
+    Corner bottomLeft,
+    Corner bottomRight,
+    Corner topStart,
+    Corner topEnd,
+    Corner bottomStart,
+    Corner bottomEnd,
+  ) = _MixedCorners;
 
   const factory CornersGeometry.all(Corner corner) = Corners.all;
 
@@ -495,7 +518,7 @@ abstract class CornersGeometry {
 
   BorderRadiusGeometry toBorderRadius(Size size);
 
-  CornersGeometry add(CornersGeometry other) => _MixedCorners(
+  CornersGeometry add(CornersGeometry other) => ._mixed(
     _topLeft.add(other._topLeft),
     _topRight.add(other._topRight),
     _bottomLeft.add(other._bottomLeft),
@@ -506,7 +529,7 @@ abstract class CornersGeometry {
     _bottomEnd.add(other._bottomEnd),
   );
 
-  CornersGeometry subtract(CornersGeometry other) => _MixedCorners(
+  CornersGeometry subtract(CornersGeometry other) => ._mixed(
     _topLeft.subtract(other._topLeft),
     _topRight.subtract(other._topRight),
     _bottomLeft.subtract(other._bottomLeft),
@@ -534,9 +557,7 @@ abstract class CornersGeometry {
     if (_topLeft == _topRight &&
         _topRight == _bottomLeft &&
         _bottomLeft == _bottomRight) {
-      if (_topLeft != .zero) {
-        visual = "Corners.all($_topLeft)";
-      }
+      if (_topLeft != .zero) visual = "Corners.all($_topLeft)";
     } else {
       final result = StringBuffer("Corners.only(");
       var comma = false;
@@ -545,23 +566,17 @@ abstract class CornersGeometry {
         comma = true;
       }
       if (_topRight != .zero) {
-        if (comma) {
-          result.write(", ");
-        }
+        if (comma) result.write(", ");
         result.write("topRight: $_topRight");
         comma = true;
       }
       if (_bottomLeft != .zero) {
-        if (comma) {
-          result.write(", ");
-        }
+        if (comma) result.write(", ");
         result.write("bottomLeft: $_bottomLeft");
         comma = true;
       }
       if (_bottomRight != .zero) {
-        if (comma) {
-          result.write(", ");
-        }
+        if (comma) result.write(", ");
         result.write("bottomRight: $_bottomRight");
       }
       result.write(")");
@@ -570,9 +585,7 @@ abstract class CornersGeometry {
     if (_topStart == _topEnd &&
         _topEnd == _bottomEnd &&
         _bottomEnd == _bottomStart) {
-      if (_topStart != .zero) {
-        logical = "CornersDirectional.all($_topStart)";
-      }
+      if (_topStart != .zero) logical = "CornersDirectional.all($_topStart)";
     } else {
       final result = StringBuffer("CornersDirectional.only(");
       var comma = false;
@@ -581,32 +594,25 @@ abstract class CornersGeometry {
         comma = true;
       }
       if (_topEnd != .zero) {
-        if (comma) {
-          result.write(", ");
-        }
+        if (comma) result.write(", ");
         result.write("topEnd: $_topEnd");
         comma = true;
       }
       if (_bottomStart != .zero) {
-        if (comma) {
-          result.write(", ");
-        }
+        if (comma) result.write(", ");
         result.write("bottomStart: $_bottomStart");
         comma = true;
       }
       if (_bottomEnd != .zero) {
-        if (comma) {
-          result.write(", ");
-        }
+        if (comma) result.write(", ");
         result.write("bottomEnd: $_bottomEnd");
       }
       result.write(")");
       logical = result.toString();
     }
-    if (visual != null && logical != null) {
-      return "$visual + $logical";
-    }
-    return visual ?? logical ?? "Corners.zero";
+    return visual != null && logical != null
+        ? "$visual + $logical"
+        : visual ?? logical ?? "Corners.zero";
   }
 
   @override
@@ -652,7 +658,7 @@ abstract class CornersGeometry {
     if (a is CornersDirectional && b is CornersDirectional) {
       return CornersDirectional.lerp(a, b, t);
     }
-    return _MixedCorners(
+    return ._mixed(
       .lerp(a._topLeft, b._topLeft, t)!,
       .lerp(a._topRight, b._topRight, t)!,
       .lerp(a._bottomLeft, b._bottomLeft, t)!,
@@ -1177,7 +1183,7 @@ class _MixedCorners extends CornersGeometry {
       );
 
   @override
-  _MixedCorners operator -() => _MixedCorners(
+  _MixedCorners operator -() => .new(
     -_topLeft,
     -_topRight,
     -_bottomLeft,
@@ -1189,7 +1195,7 @@ class _MixedCorners extends CornersGeometry {
   );
 
   @override
-  _MixedCorners operator *(double other) => _MixedCorners(
+  _MixedCorners operator *(double other) => .new(
     _topLeft * other,
     _topRight * other,
     _bottomLeft * other,
@@ -1201,7 +1207,7 @@ class _MixedCorners extends CornersGeometry {
   );
 
   @override
-  _MixedCorners operator /(double other) => _MixedCorners(
+  _MixedCorners operator /(double other) => .new(
     _topLeft / other,
     _topRight / other,
     _bottomLeft / other,
@@ -1213,7 +1219,7 @@ class _MixedCorners extends CornersGeometry {
   );
 
   @override
-  _MixedCorners operator ~/(double other) => _MixedCorners(
+  _MixedCorners operator ~/(double other) => .new(
     _topLeft ~/ other,
     _topRight ~/ other,
     _bottomLeft ~/ other,
@@ -1225,7 +1231,7 @@ class _MixedCorners extends CornersGeometry {
   );
 
   @override
-  _MixedCorners operator %(double other) => _MixedCorners(
+  _MixedCorners operator %(double other) => .new(
     _topLeft % other,
     _topRight % other,
     _bottomLeft % other,
