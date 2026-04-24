@@ -31,6 +31,8 @@ dependencies:
   motor: ^1.1.0
   slang: ^4.14.0
   slang_flutter: ^4.14.0
+  follow_the_leader: ^0.5.3
+  vector_math: ^2.2.0
 
 dev_dependencies:
   # SDK dependencies
