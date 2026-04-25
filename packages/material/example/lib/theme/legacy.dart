@@ -66,6 +66,7 @@ abstract final class LegacyThemeFactory {
     scaffoldBackgroundColor ??= colorTheme.surface;
     final modalBarrierColor = colorTheme.scrim.withValues(alpha: 0.32);
     return ThemeData(
+      platform: kDebugMode ? TargetPlatform.android : null,
       colorScheme: colorTheme.toLegacy(),
       visualDensity: .standard,
       splashFactory: InkSparkle.splashFactory,

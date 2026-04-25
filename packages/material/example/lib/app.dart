@@ -1,5 +1,8 @@
 import 'dart:math' as math;
 
+import 'package:flutter/gestures.dart';
+import 'package:material_example/experiment3.dart' show Experiment3View;
+import 'package:material_example/experiment4.dart' show Experiment4View;
 import 'package:material_example/flutter.dart';
 
 // ignore: implementation_imports
@@ -110,11 +113,16 @@ class _AppState extends State<App> {
     // localizationsDelegates: context.localizationDelegates,
     // supportedLocales: context.supportedLocales,
     // locale: context.locale,
+    scrollBehavior: kDebugMode
+        ? const MaterialScrollBehavior().copyWith(
+            dragDevices: PointerDeviceKind.values.toSet(),
+          )
+        : null,
 
     // Navigation
     // navigatorKey: globalNavigatorKey,
     builder: _buildNavigatorWrapper,
-    home: const Example2View(),
+    home: const Experiment4View(),
   );
 
   @override
