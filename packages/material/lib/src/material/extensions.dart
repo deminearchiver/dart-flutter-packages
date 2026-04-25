@@ -373,6 +373,10 @@ extension DefaultTextStyleWrapExtension on DefaultTextStyle {
 
 extension type const StrictSet<E extends Object?>._(Set<E> _)
     implements Set<E> {
+  StrictSet() : this._(<E>{});
+
+  StrictSet.identity() : this._(Set<E>.identity());
+
   @redeclare
   bool contains(E value) => _.contains(value);
 
