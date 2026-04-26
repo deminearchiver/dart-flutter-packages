@@ -1,3 +1,11 @@
+## 0.3.0
+
+- Fixed `RenderObject` mutation error when attempting to schedule layout run during `SchedulerPhase.persistentCallbacks`.
+- Optimized leader transforms and size checking.
+- Added more user-friendly error messages across the library.
+- Added registered leaders validation to `LayoutLink`.
+- Internal code cleanup and refactoring.
+
 ## 0.2.0
 
 - Fixed leader size not persisting across reattachments.

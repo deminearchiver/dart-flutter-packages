@@ -1,0 +1,93 @@
+import 'package:flutter/rendering.dart';
+import 'package:linked_layouts/linked_layouts.dart';
+
+class SingleLeaderLayoutLink<
+  LeaderClientType extends LayoutLeaderClient,
+  FollowerClientType extends LayoutFollowerClient
+>
+    extends LayoutLink<LeaderClientType, FollowerClientType> {
+  final _leaderList = <LeaderClientType>[];
+
+  LeaderClientType? get leader {
+    assert(_leaderList.length <= 1);
+    return _leaderList.isNotEmpty ? _leaderList[0] : null;
+  }
+
+  @override
+  Iterable<LeaderClientType> get leadersInternal {
+    assert(_leaderList.length <= 1);
+    return _leaderList;
+  }
+
+  @override
+  bool isLeaderRegistered(LeaderClientType leader) => leader == this.leader;
+
+  @override
+  void registerLeaderInternal(LeaderClientType leader) {
+    assert(_leaderList.isEmpty);
+    _leaderList.add(leader);
+  }
+
+  @override
+  void unregisterLeaderInternal(LeaderClientType leader) {
+    assert(_leaderList.length == 1);
+    _leaderList.removeAt(0);
+  }
+}
+
+class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
+    extends
+        LayoutLink<
+          SlottedLayoutLeaderClient<RenderBox, SlotType>,
+          LayoutFollowerClient
+        > {
+  final _slotToLeader =
+      <SlotType, SlottedLayoutLeaderClient<RenderBox, SlotType>>{};
+
+  SlottedLayoutLeaderClient<RenderBox, SlotType>? leaderForSlot(SlotType slot) {
+    final leader = _slotToLeader[slot];
+    // TODO: throw errors via FlutterError and improve error messages
+    assert(
+      leader == null || leader.slot == slot,
+      "Slotted leader changed slots.",
+    );
+    assert(
+      leader == null ||
+          !leaders.any(
+            (otherLeader) => otherLeader != leader && otherLeader.slot == slot,
+          ),
+      "Found multiple leaders with the same slot $slot.",
+    );
+    return leader;
+  }
+
+  @override
+  Iterable<SlottedLayoutLeaderClient<RenderBox, SlotType>>
+  get leadersInternal => _slotToLeader.values;
+
+  @override
+  bool isLeaderRegistered(
+    SlottedLayoutLeaderClient<RenderBox, SlotType> leader,
+  ) {
+    // TODO: expand this assertion further
+    assert(
+      !_slotToLeader.containsKey(leader.slot) ||
+          _slotToLeader[leader.slot] == leader,
+    );
+    return _slotToLeader.containsKey(leader.slot);
+  }
+
+  @override
+  void registerLeaderInternal(
+    SlottedLayoutLeaderClient<RenderBox, SlotType> leader,
+  ) {
+    _slotToLeader[leader.slot] = leader;
+  }
+
+  @override
+  void unregisterLeaderInternal(
+    SlottedLayoutLeaderClient<RenderBox, SlotType> leader,
+  ) {
+    _slotToLeader.remove(leader.slot);
+  }
+}

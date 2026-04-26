@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/scheduler.dart';
 import 'package:material_example/flutter.dart';
@@ -343,13 +344,9 @@ class _RenderSearchViewLayout extends RenderBox
     }
 
     doPaint(list);
-    doPaint(searchBarContainer);
     doPaint(appBarLeading);
     doPaint(appBarTrailing);
-    // doPaint(list);
-    // doPaint(appBarLeading);
-    // doPaint(appBarTrailing);
-    // doPaint(searchBarContainer);
+    doPaint(searchBarContainer);
   }
 
   @override
@@ -390,17 +387,30 @@ class _AppBarWithSearch extends StatefulWidget {
 }
 
 class _AppBarWithSearchState extends State<_AppBarWithSearch> {
-  final _link = SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>();
-  var _visible = true;
+  final _layoutLink = SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>();
+  _AppBarSearchViewRoute? _route;
 
   Future<void> _openView() async {
-    await Navigator.of(context).push(
-      _AppBarSearchViewRoute(
-        link: _link,
-        leading: widget.leading,
-        trailing: widget.trailing,
-      ),
+    if (_route != null) return;
+    final route = _AppBarSearchViewRoute(
+      state: this,
+      leading: widget.leading,
+      trailing: widget.trailing,
     );
+    setState(() => _route = route);
+    await Navigator.of(context).push(route);
+  }
+
+  void _markNeedsBuild() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    if (_route case final route?) {
+      Navigator.removeRoute(context, route);
+    }
+    super.dispose();
   }
 
   @override
@@ -412,10 +422,22 @@ class _AppBarWithSearchState extends State<_AppBarWithSearch> {
     final stateTheme = StateTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
     final height = widget.height ?? 64.0;
+
+    final route = _route;
+
+    final visible =
+        route == null ||
+        route.offstage ||
+        route.animation?.status == .dismissed;
+
+    // debugPrint(
+    //   "offstage: ${route?.offstage} / status: ${route?.animation?.status.name}",
+    // );
+
     return Material(
       color: colorTheme.surfaceContainer,
       child: Visibility(
-        visible: _visible,
+        visible: visible,
         maintainState: true,
         maintainAnimation: true,
         maintainSize: true,
@@ -425,7 +447,7 @@ class _AppBarWithSearchState extends State<_AppBarWithSearch> {
         child: Padding(
           padding: .fromLTRB(padding.left, padding.top, padding.right, 0.0),
           child: SlottedLayoutLeader<_SearchViewLeaderSlot>(
-            layoutLink: _link,
+            layoutLink: _layoutLink,
             slot: .appBar,
             child: SizedBox(
               width: .infinity,
@@ -435,7 +457,7 @@ class _AppBarWithSearchState extends State<_AppBarWithSearch> {
                 children: [
                   if (widget.leading case final leading?)
                     SlottedLayoutLeader<_SearchViewLeaderSlot>(
-                      layoutLink: _link,
+                      layoutLink: _layoutLink,
                       slot: .appBarLeading,
                       child: leading,
                     ),
@@ -443,7 +465,7 @@ class _AppBarWithSearchState extends State<_AppBarWithSearch> {
                     child: Align.center(
                       widthFactor: 1.0,
                       child: SlottedLayoutLeader<_SearchViewLeaderSlot>(
-                        layoutLink: _link,
+                        layoutLink: _layoutLink,
                         slot: .searchBar,
                         child: SizedBox(
                           height: 56.0,
@@ -484,7 +506,7 @@ class _AppBarWithSearchState extends State<_AppBarWithSearch> {
                   ),
                   if (widget.trailing case final trailing?)
                     SlottedLayoutLeader<_SearchViewLeaderSlot>(
-                      layoutLink: _link,
+                      layoutLink: _layoutLink,
                       slot: .appBarTrailing,
                       child: trailing,
                     ),
@@ -499,17 +521,11 @@ class _AppBarWithSearchState extends State<_AppBarWithSearch> {
 }
 
 class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
-  _AppBarSearchViewRoute({
-    required this.link,
-    this.leading,
-    this.trailing,
-    this.onAnchorVisibilityChanged,
-  });
+  _AppBarSearchViewRoute({required this.state, this.leading, this.trailing});
 
-  final SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot> link;
+  final _AppBarWithSearchState state;
   final Widget? leading;
   final Widget? trailing;
-  final ValueChanged<bool>? onAnchorVisibilityChanged;
 
   @override
   Color? get barrierColor => null;
@@ -528,7 +544,24 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
 
   void _setOffstageInternally() {
     super.offstage = _externalOffstage || _internalOffstage;
+    _markStateNeedsBuild();
     changedInternalState();
+  }
+
+  void _markStateNeedsBuild() {
+    if (SchedulerBinding.instance.schedulerPhase != .persistentCallbacks) {
+      state._markNeedsBuild();
+    } else {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        state._markNeedsBuild();
+      });
+    }
+  }
+
+  void _animationStatusListener(AnimationStatus status) {
+    if (status == .dismissed || status == .completed) {
+      _markStateNeedsBuild();
+    }
   }
 
   @override
@@ -549,14 +582,25 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
   }
 
   @override
-  AnimationController createAnimationController() {
-    return AnimationController.unbounded(
-      vsync: navigator!,
-      duration: transitionDuration,
-      reverseDuration: reverseTransitionDuration,
-      debugLabel: debugLabel,
-    );
+  void install() {
+    super.install();
+    animation?.addStatusListener(_animationStatusListener);
   }
+
+  @override
+  void dispose() {
+    state._route = null;
+    super.dispose();
+  }
+
+  @override
+  AnimationController createAnimationController() =>
+      AnimationController.unbounded(
+        vsync: navigator!,
+        duration: transitionDuration,
+        reverseDuration: reverseTransitionDuration,
+        debugLabel: debugLabel,
+      );
 
   @override
   Simulation? createSimulation({required bool forward}) {
@@ -606,7 +650,7 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
           ),
           Positioned.fill(
             child: _SearchViewLayout(
-              layoutLink: link,
+              layoutLink: state._layoutLink,
               animation: animation,
               padding: padding,
               appBarLeading: Opacity(
@@ -746,6 +790,12 @@ class Experiment3View extends StatefulWidget {
 
 class _Experiment3ViewState extends State<Experiment3View>
     with SingleTickerProviderStateMixin {
+  var _heightSlider = 64.0;
+  var _height = 64.0;
+
+  var _showNavigationIcon = true;
+  var _actionsCount = 1;
+
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.paddingOf(context);
@@ -754,8 +804,7 @@ class _Experiment3ViewState extends State<Experiment3View>
     final shapeTheme = ShapeTheme.of(context);
     final stateTheme = StateTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
-    const height = 64.0;
-    final extent = padding.top + height;
+    final extent = padding.top + _height;
     return Scaffold(
       backgroundColor: colorTheme.surfaceContainer,
       body: SafeArea(
@@ -770,48 +819,158 @@ class _Experiment3ViewState extends State<Experiment3View>
               maxExtent: extent,
               builder: (context, shrinkOffset, overlapsContent) =>
                   _AppBarWithSearch(
-                    height: height,
-                    leading: ColoredBox(
-                      // color: Colors.red,
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: .symmetric(horizontal: 4.0),
-                        child: Align.center(
-                          child: IconButton(
-                            style: LegacyThemeFactory.createIconButtonStyle(
-                              colorTheme: colorTheme,
-                              elevationTheme: elevationTheme,
-                              shapeTheme: shapeTheme,
-                              stateTheme: stateTheme,
-                              color: .standard,
+                    height: _height,
+                    leading: _showNavigationIcon
+                        ? Padding(
+                            padding: .symmetric(horizontal: 4.0),
+                            child: Align.center(
+                              child: IconButton(
+                                style: LegacyThemeFactory.createIconButtonStyle(
+                                  colorTheme: colorTheme,
+                                  elevationTheme: elevationTheme,
+                                  shapeTheme: shapeTheme,
+                                  stateTheme: stateTheme,
+                                  color: .standard,
+                                ),
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Symbols.home_rounded,
+                                  fill: 0.0,
+                                ),
+                              ),
                             ),
-                            onPressed: () {},
-                            icon: const Icon(Symbols.home_rounded, fill: 0.0),
-                          ),
-                        ),
-                      ),
-                    ),
+                          )
+                        : const SizedBox(width: 24.0),
                     trailing: ColoredBox(
                       // color: Colors.blue,
                       color: Colors.transparent,
                       child: Padding(
                         padding: .symmetric(horizontal: 4.0),
-                        child: Align.center(
-                          child: IconButton(
-                            style: LegacyThemeFactory.createIconButtonStyle(
-                              colorTheme: colorTheme,
-                              elevationTheme: elevationTheme,
-                              shapeTheme: shapeTheme,
-                              stateTheme: stateTheme,
-                              color: .standard,
+                        child: Flex.horizontal(
+                          children: [
+                            IconButton(
+                              style: LegacyThemeFactory.createIconButtonStyle(
+                                colorTheme: colorTheme,
+                                elevationTheme: elevationTheme,
+                                shapeTheme: shapeTheme,
+                                stateTheme: stateTheme,
+                                color: .standard,
+                              ),
+                              onPressed: () {},
+                              icon: const Icon(Symbols.cast_rounded, fill: 0.0),
                             ),
-                            onPressed: () {},
-                            icon: const Icon(Symbols.cast_rounded, fill: 0.0),
+                            IconButton(
+                              style: LegacyThemeFactory.createIconButtonStyle(
+                                colorTheme: colorTheme,
+                                elevationTheme: elevationTheme,
+                                shapeTheme: shapeTheme,
+                                stateTheme: stateTheme,
+                                color: .standard,
+                              ),
+                              onPressed: () {},
+                              icon: const Icon(
+                                Symbols.more_vert_rounded,
+                                fill: 0.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+            ),
+            SliverPadding(
+              padding: const .symmetric(horizontal: 8.0),
+              sliver: SliverList.list(
+                children: [
+                  SizedBox(
+                    height: math.max(16.0 - (_height - 56.0) / 2.0, 0.0),
+                  ),
+                  ListItemContainer(
+                    isFirst: true,
+                    child: Flex.vertical(
+                      children: [
+                        ListItemLayout(
+                          leading: const Icon(Symbols.height_rounded),
+                          headline: const Text("App bar height"),
+                          supportingText: const Text(
+                            "Height will change after dragging is stopped.",
+                          ),
+                          trailing: Text(
+                            "${_heightSlider.round()}dp",
+                            textAlign: .end,
+                            style: const TextStyle(
+                              fontFamily: "Monaspace Argon",
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4.0),
+                        Slider(
+                          padding: const .symmetric(horizontal: 16.0),
+                          divisions: ((136 - 64) / 8.0).toInt(),
+                          min: 64.0,
+                          max: 136.0,
+                          value: _heightSlider,
+                          onChanged: (value) =>
+                              setState(() => _heightSlider = value),
+                          onChangeEnd: (value) =>
+                              setState(() => _height = _heightSlider = value),
+                        ),
+                        const SizedBox(height: 14.0),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 2.0),
+                  ListItemContainer(
+                    child: ListItemInteraction(
+                      onTap: () => setState(
+                        () => _showNavigationIcon = !_showNavigationIcon,
+                      ),
+                      child: ListItemLayout(
+                        leading: const Icon(Symbols.menu_rounded),
+                        headline: const Text("Show navigation icon"),
+                        trailing: ExcludeFocus(
+                          child: Switch(
+                            checked: _showNavigationIcon,
+                            onCheckedChanged: (value) =>
+                                setState(() => _showNavigationIcon = value),
                           ),
                         ),
                       ),
                     ),
                   ),
+                  const SizedBox(height: 2.0),
+                  ListItemContainer(
+                    isLast: true,
+                    child: ListItemLayout(
+                      trailingPadding: const .symmetric(
+                        vertical: 10.0 - (48.0 - 40.0) / 2.0,
+                      ),
+                      leading: const Icon(Symbols.restart_alt_rounded),
+                      headline: const Text("Reset all properties"),
+                      supportingText: const Text(
+                        "Set all values to their respective defaults.",
+                      ),
+                      trailing: FilledButton(
+                        style: LegacyThemeFactory.createButtonStyle(
+                          colorTheme: colorTheme,
+                          elevationTheme: elevationTheme,
+                          shapeTheme: shapeTheme,
+                          stateTheme: stateTheme,
+                          typescaleTheme: typescaleTheme,
+                          color: .tonal,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _heightSlider = _height = 64.0;
+                          });
+                        },
+                        child: const Text("Reset"),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

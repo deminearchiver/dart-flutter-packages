@@ -96,8 +96,8 @@ mixin RenderLayoutLeaderMixin<
   @override
   void markNeedsLayout() {
     super.markNeedsLayout();
-    if (layoutLinkHandle case final layoutLinkHandle?) {
-      layoutLink.didLeaderDoLayout(layoutLinkHandle.client);
+    if (layoutLinkHandle != null) {
+      layoutLink.didLeaderDoLayout();
     }
   }
 
@@ -113,7 +113,9 @@ mixin RenderLayoutLeaderMixin<
   @override
   void paint(PaintingContext context, Offset offset) {
     super.paint(context, offset);
-    layoutLink.didLeaderDoPaint(layoutLinkHandle?.client);
+    if (layoutLinkHandle != null) {
+      layoutLink.didLeaderDoPaint();
+    }
   }
 }
 

@@ -7,10 +7,53 @@ abstract class LayoutLink<
   LeaderClientType extends LayoutLeaderClient,
   FollowerClientType extends LayoutFollowerClient
 > {
-  Iterable<LeaderClientType> get leaders;
+  final _leaders = <LeaderClientType>{};
 
   @protected
-  bool isLeaderRegistered(LeaderClientType leader) => leaders.contains(leader);
+  Iterable<LeaderClientType> get leadersInternal;
+
+  Iterable<LeaderClientType> get leaders {
+    final leaders = leadersInternal;
+    assert(debugAssertLeadersAreValid(leaders));
+    return leaders;
+  }
+
+  @internal
+  bool debugAssertLeadersAreValid(Iterable<LeaderClientType> leaders) {
+    assert(() {
+      final encounteredLeaders = <LeaderClientType>{};
+      for (final leader in leaders) {
+        if (encounteredLeaders.contains(leader)) {
+          throw FlutterError(
+            "$runtimeType contains duplicate leaders.\n"
+            "Leader $leader was encountered more than once.",
+          );
+        }
+        if (!_leaders.contains(leader)) {
+          throw FlutterError(
+            "$runtimeType contains foreign leaders.\n"
+            "Leader $leader was not properly registered.",
+          );
+        }
+        encounteredLeaders.add(leader);
+      }
+      if (encounteredLeaders.length != _leaders.length) {
+        final missingLeaders = _leaders.difference(encounteredLeaders);
+        throw FlutterError(
+          "$runtimeType is missing ${missingLeaders.length} registered leaders.\n"
+          "Leader ${missingLeaders.first} is registered, but not found in $runtimeType.",
+        );
+      }
+      return true;
+    }());
+    return true;
+  }
+
+  @protected
+  bool isLeaderRegistered(LeaderClientType leader) {
+    assert(debugAssertLeadersAreValid(leadersInternal));
+    return _leaders.contains(leader);
+  }
 
   @protected
   void registerLeaderInternal(LeaderClientType leader);
@@ -19,14 +62,58 @@ abstract class LayoutLink<
   void unregisterLeaderInternal(LeaderClientType leader);
 
   LayoutLinkHandle<LeaderClientType> registerLeader(LeaderClientType leader) {
-    assert(!isLeaderRegistered(leader));
+    // Leaders must be in a valid state.
+    assert(debugAssertLeadersAreValid(leadersInternal));
+
+    // User-friendly error message if the leader was already registered.
+    assert(() {
+      if (isLeaderRegistered(leader)) {
+        throw FlutterError(
+          "Attempted to register an already registered leader.\n"
+          "Leader $leader was registered previously.",
+        );
+      }
+      return true;
+    }());
+
+    // Register the leader.
     registerLeaderInternal(leader);
+    _leaders.add(leader);
+
+    // Leaders must be in a valid state.
+    assert(debugAssertLeadersAreValid(leadersInternal));
+
+    // Force layout update in all followers.
+    didLeaderDoLayout();
+
+    // Return a finalizer handle.
     return _LeaderLayoutLinkHandle(link: this, leader: leader);
   }
 
   void _unregisterLeader(LeaderClientType leader) {
-    assert(isLeaderRegistered(leader));
+    // Leaders must be in a valid state.
+    assert(debugAssertLeadersAreValid(leadersInternal));
+
+    // User-friendly error message if the leader was already registered.
+    assert(() {
+      if (!isLeaderRegistered(leader)) {
+        throw FlutterError(
+          "Attempted to unregister a leader which was not registered.\n"
+          "Leader $leader wasn't registered.",
+        );
+      }
+      return true;
+    }());
+
+    // Unregister the leader.
     unregisterLeaderInternal(leader);
+    _leaders.remove(leader);
+
+    // Leaders must be in a valid state.
+    assert(debugAssertLeadersAreValid(leadersInternal));
+
+    // Force layout update in all followers.
+    didLeaderDoLayout();
   }
 
   final _followers = <FollowerClientType>{};
@@ -34,80 +121,112 @@ abstract class LayoutLink<
   LayoutLinkHandle<FollowerClientType> registerFollower(
     FollowerClientType follower,
   ) {
-    assert(!_followers.contains(follower));
+    // User-friendly error message if the follower was already registered.
+    assert(() {
+      if (_followers.contains(follower)) {
+        throw FlutterError(
+          "Attempted to register an already registered follower.\n"
+          "Follower $follower was registered previously.",
+        );
+      }
+      return true;
+    }());
+
+    // Remember empty state.
     final wasEmpty = _followers.isEmpty;
+
+    // Register the follower.
     _followers.add(follower);
+
+    // Schedule a callback if this is the first follower.
     if (wasEmpty) _frameCallbackScheduler.schedule();
+
+    // TODO: should a layout update be forced here?
+
+    // Return a finalizer handle.
     return _FollowerLayoutLinkHandle(link: this, follower: follower);
   }
 
   void _unregisterFollower(FollowerClientType follower) {
-    assert(_followers.contains(follower));
+    // User-friendly error message if a leader was already registered.
+    assert(() {
+      if (!_followers.contains(follower)) {
+        throw FlutterError(
+          "Attempted to unregister a follower which was not registered.\n"
+          "Follower $follower wasn't registered.",
+        );
+      }
+      return true;
+    }());
+
+    // Unregister the follower.
     _followers.remove(follower);
+
+    // Cancel the callback if there are no more followers left.
     if (_followers.isEmpty) _frameCallbackScheduler.cancel();
+
+    // TODO: should a layout update be forced here?
   }
 
   late final _frameCallbackScheduler = FrameCallbackScheduler(_frameCallback);
-  var _lastLeaderTransforms = <LeaderClientType, Matrix4>{};
-  var _lastLeaderSizes = <LeaderClientType, Size>{};
+  final _lastLeaderTransforms = <LeaderClientType, Matrix4>{};
+  final _lastLeaderSizes = <LeaderClientType, Size>{};
   var _isSchedulingPostFrameLayout = false;
 
   void _frameCallback(Duration _) {
     if (_followers.isNotEmpty) {
-      if (_checkForLeaderChanges(includeSize: true)) {
-        for (final follower in _followers) {
-          if (follower.renderObject.attached) {
-            follower.renderObject.markNeedsLayout();
-          }
-        }
+      if (_checkForLeaderChanges(checkTransforms: true, checkSizes: true)) {
+        _scheduleFollowersLayout();
       }
       _frameCallbackScheduler.schedule();
     }
   }
 
-  bool _checkForLeaderChanges({required bool includeSize}) {
+  bool _checkForLeaderChanges({
+    required bool checkTransforms,
+    required bool checkSizes,
+  }) {
+    if (!checkTransforms && !checkSizes) return false;
+
     var changed = false;
-    final currentTransforms = <LeaderClientType, Matrix4>{};
-    final currentSizes = <LeaderClientType, Size>{};
-    for (final leader in leaders) {
-      if (leader.renderObject.attached) {
-        currentTransforms[leader] =
+
+    // Remove transforms of removed leaders.
+    if (checkTransforms) {
+      _lastLeaderTransforms.removeWhere(
+        (leader, _) => !_leaders.contains(leader) && (changed = true),
+      );
+    }
+    if (checkSizes) {
+      _lastLeaderSizes.removeWhere(
+        (leader, _) => !_leaders.contains(leader) && (changed = true),
+      );
+    }
+
+    // Check if transforms have changed and update last transforms.
+    for (final leader in _leaders) {
+      if (!leader.renderObject.attached) continue;
+      if (checkTransforms) {
+        final currentTransform =
             tryGetTransformTo(leader.renderObject) ?? .identity();
-        if (includeSize) {
-          currentSizes[leader] = leader.size ?? .zero;
-        }
-      }
-    }
-    if (_lastLeaderTransforms.length != currentTransforms.length ||
-        (includeSize && _lastLeaderSizes.length != currentSizes.length)) {
-      changed = true;
-    } else {
-      for (final leader in currentTransforms.keys) {
-        if (_lastLeaderTransforms[leader] != currentTransforms[leader]) {
+        final lastTransform = _lastLeaderTransforms[leader];
+        if (lastTransform == null || lastTransform != currentTransform) {
           changed = true;
-          break;
+          _lastLeaderTransforms[leader] = currentTransform;
         }
       }
-      if (!changed && includeSize) {
-        for (final leader in currentSizes.keys) {
-          if (_lastLeaderSizes[leader] != currentSizes[leader]) {
-            changed = true;
-            break;
-          }
+      if (checkSizes) {
+        final currentSize = leader.size ?? .zero;
+        final lastSize = _lastLeaderSizes[leader];
+        if (lastSize != currentSize) {
+          changed = true;
+          _lastLeaderSizes[leader] = currentSize;
         }
       }
-    }
-    _lastLeaderTransforms = currentTransforms;
-    if (includeSize) {
-      _lastLeaderSizes = currentSizes;
     }
     return changed;
   }
 
-  @internal
-  void didLeaderDoLayout(LeaderClientType? leader) {
-    // TODO: implement leader debug tracking
-    _checkForLeaderChanges(includeSize: true);
+  void _markFollowersNeedLayout() {
     for (final follower in _followers) {
       if (follower.renderObject.attached) {
         follower.renderObject.markNeedsLayout();
@@ -115,26 +234,41 @@ abstract class LayoutLink<
     }
   }
 
-  @internal
-  void didLeaderDoPaint(LeaderClientType? leader) {
-    // TODO: implement leader debug tracking
-    if (_checkForLeaderChanges(includeSize: false)) {
+  void _scheduleFollowersLayout() {
+    if (_followers.isEmpty) return;
+    final schedulerPhase = SchedulerBinding.instance.schedulerPhase;
+    if (schedulerPhase == .persistentCallbacks ||
+        schedulerPhase == .postFrameCallbacks) {
       if (!_isSchedulingPostFrameLayout) {
         _isSchedulingPostFrameLayout = true;
         SchedulerBinding.instance.addPostFrameCallback((_) {
           _isSchedulingPostFrameLayout = false;
-          for (final follower in _followers) {
-            if (follower.renderObject.attached) {
-              follower.renderObject.markNeedsLayout();
-            }
-          }
+          _markFollowersNeedLayout();
         });
       }
+    } else {
+      _markFollowersNeedLayout();
+    }
+  }
+
+  @internal
+  void didLeaderDoLayout() {
+    // TODO: implement leader debug tracking
+    _checkForLeaderChanges(checkTransforms: true, checkSizes: true);
+    _scheduleFollowersLayout();
+  }
+
+  @internal
+  void didLeaderDoPaint() {
+    // TODO: implement leader debug tracking
+    if (_checkForLeaderChanges(checkTransforms: true, checkSizes: false)) {
+      _scheduleFollowersLayout();
     }
   }
 
   @mustCallSuper
   bool debugAssertIsValid() {
+    assert(debugAssertLeadersAreValid(leadersInternal));
     return true;
   }
 
@@ -184,101 +318,6 @@ abstract class LayoutLink<
       }
     }
     return transform;
-  }
-}
-
-class SingleLeaderLayoutLink<
-  LeaderClientType extends LayoutLeaderClient,
-  FollowerClientType extends LayoutFollowerClient
->
-    extends LayoutLink<LeaderClientType, FollowerClientType> {
-  final _leaderList = <LeaderClientType>[];
-
-  LeaderClientType? get leader {
-    assert(_leaderList.length <= 1);
-    return _leaderList.isNotEmpty ? _leaderList[0] : null;
-  }
-
-  @override
-  Iterable<LeaderClientType> get leaders {
-    assert(_leaderList.length <= 1);
-    return _leaderList;
-  }
-
-  @override
-  bool isLeaderRegistered(LeaderClientType leader) => leader == this.leader;
-
-  @override
-  void registerLeaderInternal(LeaderClientType leader) {
-    assert(_leaderList.isEmpty);
-    _leaderList.add(leader);
-    didLeaderDoLayout(leader);
-  }
-
-  @override
-  void unregisterLeaderInternal(LeaderClientType leader) {
-    assert(_leaderList.length == 1);
-    _leaderList.removeAt(0);
-    didLeaderDoLayout(null);
-  }
-}
-
-class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
-    extends
-        LayoutLink<
-          SlottedLayoutLeaderClient<RenderBox, SlotType>,
-          LayoutFollowerClient
-        > {
-  final _slotToLeader =
-      <SlotType, SlottedLayoutLeaderClient<RenderBox, SlotType>>{};
-
-  SlottedLayoutLeaderClient<RenderBox, SlotType>? leaderForSlot(SlotType slot) {
-    final leader = _slotToLeader[slot];
-    // TODO: throw errors via FlutterError and improve error messages
-    assert(
-      leader == null || leader.slot == slot,
-      "Slotted leader changed slots.",
-    );
-    assert(
-      leader == null ||
-          !leaders.any(
-            (otherLeader) => otherLeader != leader && otherLeader.slot == slot,
-          ),
-      "Found multiple leaders with the same slot $slot.",
-    );
-    return leader;
-  }
-
-  @override
-  Iterable<SlottedLayoutLeaderClient<RenderBox, SlotType>> get leaders =>
-      _slotToLeader.values;
-
-  @override
-  bool isLeaderRegistered(
-    SlottedLayoutLeaderClient<RenderBox, SlotType> leader,
-  ) {
-    // TODO: expand this assertion further
-    assert(
-      !_slotToLeader.containsKey(leader.slot) ||
-          _slotToLeader[leader.slot] == leader,
-    );
-    return _slotToLeader.containsKey(leader.slot);
-  }
-
-  @override
-  void registerLeaderInternal(
-    SlottedLayoutLeaderClient<RenderBox, SlotType> leader,
-  ) {
-    _slotToLeader[leader.slot] = leader;
-    didLeaderDoLayout(leader);
-  }
-
-  @override
-  void unregisterLeaderInternal(
-    SlottedLayoutLeaderClient<RenderBox, SlotType> leader,
-  ) {
-    _slotToLeader.remove(leader.slot);
-    didLeaderDoLayout(null);
   }
 }
 
