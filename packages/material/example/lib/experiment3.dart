@@ -794,7 +794,8 @@ class _Experiment3ViewState extends State<Experiment3View>
   var _height = 64.0;
 
   var _showNavigationIcon = true;
-  var _actionsCount = 1;
+  var _showActionIcon1 = true;
+  var _showActionIcon2 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -834,49 +835,54 @@ class _Experiment3ViewState extends State<Experiment3View>
                                 ),
                                 onPressed: () {},
                                 icon: const Icon(
-                                  Symbols.home_rounded,
+                                  Symbols.menu_rounded,
                                   fill: 0.0,
                                 ),
                               ),
                             ),
                           )
                         : const SizedBox(width: 24.0),
-                    trailing: ColoredBox(
-                      // color: Colors.blue,
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: .symmetric(horizontal: 4.0),
-                        child: Flex.horizontal(
-                          children: [
-                            IconButton(
-                              style: LegacyThemeFactory.createIconButtonStyle(
-                                colorTheme: colorTheme,
-                                elevationTheme: elevationTheme,
-                                shapeTheme: shapeTheme,
-                                stateTheme: stateTheme,
-                                color: .standard,
-                              ),
-                              onPressed: () {},
-                              icon: const Icon(Symbols.cast_rounded, fill: 0.0),
+                    trailing: _showActionIcon1 || _showActionIcon2
+                        ? Padding(
+                            padding: .symmetric(horizontal: 4.0),
+                            child: Flex.horizontal(
+                              children: [
+                                if (_showActionIcon1)
+                                  IconButton(
+                                    style:
+                                        LegacyThemeFactory.createIconButtonStyle(
+                                          colorTheme: colorTheme,
+                                          elevationTheme: elevationTheme,
+                                          shapeTheme: shapeTheme,
+                                          stateTheme: stateTheme,
+                                          color: .standard,
+                                        ),
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Symbols.cast_rounded,
+                                      fill: 0.0,
+                                    ),
+                                  ),
+                                if (_showActionIcon2)
+                                  IconButton(
+                                    style:
+                                        LegacyThemeFactory.createIconButtonStyle(
+                                          colorTheme: colorTheme,
+                                          elevationTheme: elevationTheme,
+                                          shapeTheme: shapeTheme,
+                                          stateTheme: stateTheme,
+                                          color: .standard,
+                                        ),
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Symbols.more_vert_rounded,
+                                      fill: 0.0,
+                                    ),
+                                  ),
+                              ],
                             ),
-                            IconButton(
-                              style: LegacyThemeFactory.createIconButtonStyle(
-                                colorTheme: colorTheme,
-                                elevationTheme: elevationTheme,
-                                shapeTheme: shapeTheme,
-                                stateTheme: stateTheme,
-                                color: .standard,
-                              ),
-                              onPressed: () {},
-                              icon: const Icon(
-                                Symbols.more_vert_rounded,
-                                fill: 0.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                          )
+                        : const SizedBox(width: 24.0),
                   ),
             ),
             SliverPadding(
@@ -927,6 +933,10 @@ class _Experiment3ViewState extends State<Experiment3View>
                         () => _showNavigationIcon = !_showNavigationIcon,
                       ),
                       child: ListItemLayout(
+                        padding: const .fromSTEB(16.0, 0.0, 16.0 - 8.0, 0.0),
+                        trailingPadding: const .symmetric(
+                          vertical: 10.0 - (48.0 - 40.0) / 2.0,
+                        ),
                         leading: const Icon(Symbols.menu_rounded),
                         headline: const Text("Show navigation icon"),
                         trailing: ExcludeFocus(
@@ -934,6 +944,50 @@ class _Experiment3ViewState extends State<Experiment3View>
                             checked: _showNavigationIcon,
                             onCheckedChanged: (value) =>
                                 setState(() => _showNavigationIcon = value),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 2.0),
+                  ListItemContainer(
+                    child: ListItemInteraction(
+                      onTap: () =>
+                          setState(() => _showActionIcon1 = !_showActionIcon1),
+                      child: ListItemLayout(
+                        padding: const .fromSTEB(16.0, 0.0, 16.0 - 8.0, 0.0),
+                        trailingPadding: const .symmetric(
+                          vertical: 10.0 - (48.0 - 40.0) / 2.0,
+                        ),
+                        leading: const Icon(Symbols.star_rounded),
+                        headline: const Text("Show action icon 1"),
+                        trailing: ExcludeFocus(
+                          child: Switch(
+                            checked: _showActionIcon1,
+                            onCheckedChanged: (value) =>
+                                setState(() => _showActionIcon1 = value),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 2.0),
+                  ListItemContainer(
+                    child: ListItemInteraction(
+                      onTap: () =>
+                          setState(() => _showActionIcon2 = !_showActionIcon2),
+                      child: ListItemLayout(
+                        padding: const .fromSTEB(16.0, 0.0, 16.0 - 8.0, 0.0),
+                        trailingPadding: const .symmetric(
+                          vertical: 10.0 - (48.0 - 40.0) / 2.0,
+                        ),
+                        leading: const Icon(Symbols.more_horiz_rounded),
+                        headline: const Text("Show action icon 2"),
+                        trailing: ExcludeFocus(
+                          child: Switch(
+                            checked: _showActionIcon2,
+                            onCheckedChanged: (value) =>
+                                setState(() => _showActionIcon2 = value),
                           ),
                         ),
                       ),
@@ -963,6 +1017,9 @@ class _Experiment3ViewState extends State<Experiment3View>
                         onPressed: () {
                           setState(() {
                             _heightSlider = _height = 64.0;
+                            _showNavigationIcon = true;
+                            _showActionIcon1 = true;
+                            _showActionIcon2 = false;
                           });
                         },
                         child: const Text("Reset"),
