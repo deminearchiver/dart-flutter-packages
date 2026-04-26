@@ -1,3 +1,8 @@
+## 0.4.0+1
+
+- Added a proper package description to `pubspec.yaml`.
+- Added placeholder package example.
+
 ## 0.4.0
 
 - Extracted client registration logic from `RenderLayout*Mixin` into `RenderObjectWith*LinkMixin`s.
