@@ -17,7 +17,14 @@ mixin LayoutLeaderClient<RenderObjectType extends RenderBox>
 
   Size? get scale {
     if (!renderObject.attached) return null;
-    final transform = LayoutLink.tryGetTransformTo(renderObject);
+    var ancestor = renderObject.parent;
+    while (ancestor != null && ancestor is! RenderView) {
+      ancestor = ancestor.parent;
+    }
+    final transform = LayoutLink.tryGetTransformTo(
+      renderObject,
+      ancestor: ancestor,
+    );
     if (transform == null) return null;
     // TODO: perspective transform (inline calculations from Matrix4)
     final matrix = transform.storage;

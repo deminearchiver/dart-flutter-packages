@@ -5,7 +5,8 @@ import 'package:linked_layouts/linked_layouts.dart';
 mixin RenderObjectWithLayoutLinkMixin<
   LayoutClientType extends LayoutLinkClient,
   LayoutLinkType extends LayoutLink<LayoutLeaderClient, LayoutFollowerClient>
-> {
+>
+    on RenderObject {
   LayoutLinkType? _layoutLink;
 
   @protected
@@ -40,7 +41,11 @@ mixin RenderObjectWithLayoutLinkMixin<
   }
 
   @protected
-  LayoutClientType createLayoutClient();
+  LayoutClientType createLayoutClientInternal();
+
+  @mustCallSuper
+  @protected
+  LayoutClientType createLayoutClient() => createLayoutClientInternal();
 }
 
 mixin RenderLayoutLeaderMixin<
@@ -50,6 +55,8 @@ mixin RenderLayoutLeaderMixin<
     on
         RenderBox,
         RenderObjectWithLayoutLinkMixin<LeaderClientType, LayoutLinkType> {
+  Size? _lastKnownSize;
+
   @override
   set layoutLink(LayoutLinkType value) {
     if (layoutLinkOrNull == value) return;
@@ -63,7 +70,11 @@ mixin RenderLayoutLeaderMixin<
   }
 
   @override
-  LeaderClientType createLayoutClient();
+  LeaderClientType createLayoutClientInternal();
+
+  @override
+  LeaderClientType createLayoutClient() =>
+      super.createLayoutClient()..size = _lastKnownSize;
 
   @mustCallSuper
   @override
@@ -94,9 +105,8 @@ mixin RenderLayoutLeaderMixin<
   @override
   void performLayout() {
     super.performLayout();
-    if (layoutLinkHandle case final layoutLinkHandle?) {
-      layoutLinkHandle.client.size = size;
-    }
+    _lastKnownSize = size;
+    layoutLinkHandle?.client.size = _lastKnownSize;
   }
 
   @mustCallSuper
@@ -114,7 +124,7 @@ mixin RenderLayoutFollowerMixin<
 >
     on
         RenderObject,
-        RenderObjectWithLayoutLinkMixin<LayoutFollowerClient, LayoutLinkType> {
+        RenderObjectWithLayoutLinkMixin<FollowerClientType, LayoutLinkType> {
   @override
   set layoutLink(LayoutLinkType value) {
     if (layoutLinkOrNull == value) return;
@@ -128,7 +138,10 @@ mixin RenderLayoutFollowerMixin<
   }
 
   @override
-  FollowerClientType createLayoutClient();
+  FollowerClientType createLayoutClientInternal();
+
+  @override
+  FollowerClientType createLayoutClient() => super.createLayoutClient();
 
   @mustCallSuper
   @override

@@ -44,9 +44,7 @@ abstract class LayoutLink<
   void _unregisterFollower(FollowerClientType follower) {
     assert(_followers.contains(follower));
     _followers.remove(follower);
-    if (_followers.isEmpty) {
-      _frameCallbackScheduler.cancel();
-    }
+    if (_followers.isEmpty) _frameCallbackScheduler.cancel();
   }
 
   late final _frameCallbackScheduler = FrameCallbackScheduler(_frameCallback);
@@ -54,7 +52,18 @@ abstract class LayoutLink<
   var _lastLeaderSizes = <LeaderClientType, Size>{};
   var _isSchedulingPostFrameLayout = false;
 
-  void _frameCallback(Duration _) {}
+  void _frameCallback(Duration _) {
+    if (_followers.isNotEmpty) {
+      if (_checkForLeaderChanges(includeSize: true)) {
+        for (final follower in _followers) {
+          if (follower.renderObject.attached) {
+            follower.renderObject.markNeedsLayout();
+          }
+        }
+      }
+      _frameCallbackScheduler.schedule();
+    }
+  }
 
   bool _checkForLeaderChanges({required bool includeSize}) {
     var changed = false;
@@ -124,7 +133,15 @@ abstract class LayoutLink<
     }
   }
 
-  Offset? leaderOffsetIn(RenderObject leader, RenderObject coordinateSpace) {
+  @mustCallSuper
+  bool debugAssertIsValid() {
+    return true;
+  }
+
+  static Offset? getOffsetIn(
+    RenderObject leader,
+    RenderObject coordinateSpace,
+  ) {
     if (!leader.attached || !coordinateSpace.attached) return null;
     final leaderGlobal = tryGetTransformTo(leader);
     final transform = tryGetTransformTo(coordinateSpace);
@@ -134,26 +151,28 @@ abstract class LayoutLink<
     return MatrixUtils.transformPoint(transform..multiply(leaderGlobal), .zero);
   }
 
-  @mustCallSuper
-  bool debugAssertIsValid() {
-    return true;
-  }
-
   @internal
-  static Matrix4? tryGetTransformTo(RenderObject descendant) {
+  static Matrix4? tryGetTransformTo(
+    RenderObject descendant, {
+    RenderObject? ancestor,
+  }) {
     if (!descendant.attached) return null;
-    final ancestors = <RenderObject>[
+    RenderObject? object;
+    final objects = <RenderObject>[
       for (
-        RenderObject? ancestor = descendant;
-        ancestor != null;
-        ancestor = ancestor.parent
+        object = descendant;
+        object != null && object != ancestor;
+        object = object.parent
       )
-        ancestor,
+        object,
     ];
+
+    if (ancestor != null && object != ancestor) return null;
+
     final transform = Matrix4.identity();
-    for (var index = ancestors.length - 1; index > 0; index -= 1) {
-      final parent = ancestors[index];
-      final child = ancestors[index - 1];
+    for (var index = objects.length - 1; index > 0; index -= 1) {
+      final parent = objects[index];
+      final child = objects[index - 1];
       try {
         parent.applyPaintTransform(child, transform);
       } on Object {
@@ -322,7 +341,6 @@ class _LeaderLayoutLinkHandle<
 
   @override
   void dispose() {
-    assert(LayoutLinkHandle.debugAssertNotDisposed(this));
     _link._unregisterLeader(client);
     _linkOrNull = null;
     super.dispose();
@@ -350,7 +368,6 @@ class _FollowerLayoutLinkHandle<
 
   @override
   void dispose() {
-    assert(LayoutLinkHandle.debugAssertNotDisposed(this));
     _link._unregisterFollower(client);
     _linkOrNull = null;
     super.dispose();

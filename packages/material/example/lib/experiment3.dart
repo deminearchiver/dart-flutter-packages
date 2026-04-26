@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/scheduler.dart';
 import 'package:material_example/flutter.dart';
 
-enum _SearchViewLayoutSlot { appBarLeading, searchBarContainer, appBarTrailing }
+enum _SearchViewLeaderSlot { appBar, appBarLeading, appBarTrailing, searchBar }
+
+enum _SearchViewLayoutSlot { appBarLeading, searchBar, appBarTrailing, list }
 
 class _SearchViewLayout
     extends
@@ -11,22 +13,30 @@ class _SearchViewLayout
   const _SearchViewLayout({
     super.key,
     required this.layoutLink,
-    required this.animation,
+    this.animation = kAlwaysCompleteAnimation,
+    this.padding = .zero,
     this.appBarLeading,
     required this.searchBarContainer,
     this.appBarTrailing,
+    required this.list,
   });
 
-  final SingleLeaderLayoutLink layoutLink;
+  final SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot> layoutLink;
   final ValueListenable<double> animation;
+  final EdgeInsets padding;
 
   final Widget? appBarLeading;
   final Widget searchBarContainer;
   final Widget? appBarTrailing;
+  final Widget list;
 
   @override
   _RenderSearchViewLayout createRenderObject(BuildContext context) =>
-      _RenderSearchViewLayout(layoutLink: layoutLink, animation: animation);
+      _RenderSearchViewLayout(
+        layoutLink: layoutLink,
+        animation: animation,
+        padding: padding,
+      );
 
   @override
   void updateRenderObject(
@@ -35,7 +45,8 @@ class _SearchViewLayout
   ) {
     renderObject
       ..layoutLink = layoutLink
-      ..animation = animation;
+      ..animation = animation
+      ..padding = padding;
   }
 
   @override
@@ -44,8 +55,9 @@ class _SearchViewLayout
   @override
   Widget? childForSlot(_SearchViewLayoutSlot slot) => switch (slot) {
     .appBarLeading => appBarLeading,
-    .searchBarContainer => searchBarContainer,
+    .searchBar => searchBarContainer,
     .appBarTrailing => appBarTrailing,
+    .list => list,
   };
 }
 
@@ -54,17 +66,19 @@ class _RenderSearchViewLayout extends RenderBox
         SlottedContainerRenderObjectMixin<_SearchViewLayoutSlot, RenderBox>,
         RenderObjectWithLayoutLinkMixin<
           LayoutFollowerClient,
-          SingleLeaderLayoutLink
+          SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>
         >,
         RenderLayoutFollowerMixin<
           LayoutLeaderClient,
           LayoutFollowerClient,
-          SingleLeaderLayoutLink
+          SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>
         > {
   _RenderSearchViewLayout({
-    required SingleLeaderLayoutLink layoutLink,
+    required SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot> layoutLink,
     required ValueListenable<double> animation,
-  }) : _animation = animation {
+    required EdgeInsets padding,
+  }) : _animation = animation,
+       _padding = padding {
     this.layoutLink = layoutLink;
   }
 
@@ -84,12 +98,23 @@ class _RenderSearchViewLayout extends RenderBox
     markNeedsLayout();
   }
 
+  EdgeInsets _padding;
+
+  EdgeInsets get padding => _padding;
+
+  set padding(EdgeInsets value) {
+    if (_padding == value) return;
+    _padding = value;
+    markNeedsLayout();
+  }
+
   RenderBox? get appBarLeading => childForSlot(.appBarLeading);
-  RenderBox? get searchBarContainer => childForSlot(.searchBarContainer);
+  RenderBox? get searchBarContainer => childForSlot(.searchBar);
   RenderBox? get appBarTrailing => childForSlot(.appBarTrailing);
+  RenderBox? get list => childForSlot(.list);
 
   @override
-  LayoutFollowerClient<_RenderSearchViewLayout> createLayoutClient() =>
+  LayoutFollowerClient<_RenderSearchViewLayout> createLayoutClientInternal() =>
       DefaultLayoutFollowerClient(this);
 
   @override
@@ -97,6 +122,7 @@ class _RenderSearchViewLayout extends RenderBox
     ?appBarLeading,
     ?searchBarContainer,
     ?appBarTrailing,
+    ?list,
   ];
 
   @override
@@ -121,47 +147,190 @@ class _RenderSearchViewLayout extends RenderBox
 
   @override
   void performLayout() {
-    super.performLayout();
     final appBarLeading = this.appBarLeading;
     final searchBarContainer = this.searchBarContainer;
     final appBarTrailing = this.appBarTrailing;
 
-    final leader = layoutLink.leader;
+    final appBarLeader = layoutLink.leaderForSlot(.appBar);
+    final searchBarLeader = layoutLink.leaderForSlot(.searchBar);
 
-    const padding = EdgeInsets.symmetric(horizontal: 12.0);
+    const searchBarPadding = EdgeInsets.symmetric(
+      horizontal: 8.0,
+      vertical: 4.0,
+    );
 
-    if (leader != null) {
-      if (leader.size case final leaderSize?) {
-        final leaderScale = leader.scale ?? const Size(1.0, 1.0);
-        final scaledWidth = leaderSize.width * leaderScale.width;
-        final scaledHeight = leaderSize.height * leaderScale.height;
-        searchBarContainer?.layout(
-          BoxConstraints.tightFor(
-            width: lerpDouble(
-              scaledWidth,
-              constraints.constrainWidth() - padding.horizontal,
-              animation.value,
-            ),
-            height: lerpDouble(scaledHeight, 56.0, animation.value),
-          ),
-          parentUsesSize: false,
+    // The following algorithm demonstrates how fallback logic could be handled.
+    // The example below shows that end values could be modified based on
+    // begin values if those were provided (see endSize and endOffset).
+
+    // Size? beginSearchBarSize;
+    // var endSearchBarSize = Size(
+    //   constraints.constrainWidth() - searchBarPadding.horizontal,
+    //   56.0,
+    // );
+
+    // Offset? beginSearchBarOffset;
+    // var endSearchBarOffset = Offset(
+    //   searchBarPadding.left,
+    //   searchBarPadding.top,
+    // );
+
+    // if (leader != null) {
+    //   if (leader.size case final leaderSize?) {
+    //     final leaderScale = leader.scale ?? const Size(1.0, 1.0);
+    //     beginSearchBarSize = Size(
+    //       leaderSize.width * leaderScale.width,
+    //       leaderSize.height * leaderScale.height,
+    //     );
+    //     endSearchBarSize = Size(
+    //       endSearchBarSize.width,
+    //       beginSearchBarSize.height,
+    //     );
+    //   }
+    //   final leaderOffset = LayoutLink.getOffsetIn(leader.renderObject, this);
+    //   if (leaderOffset != null) {
+    //     beginSearchBarOffset = leaderOffset;
+    //     endSearchBarOffset = Offset(
+    //       endSearchBarOffset.dx,
+    //       beginSearchBarOffset.dy,
+    //     );
+    //   }
+    // }
+
+    Size? beginSearchBarSize;
+    final endSearchBarSize = Size(
+      constraints.constrainWidth() -
+          searchBarPadding.horizontal -
+          padding.horizontal,
+      56.0,
+    );
+
+    Offset? beginSearchBarOffset;
+    final endSearchBarOffset = Offset(
+      padding.left + searchBarPadding.left,
+      padding.top + searchBarPadding.top,
+    );
+
+    if (searchBarLeader != null) {
+      if (searchBarLeader.size case final searchBarSize?) {
+        final searchBarScale = searchBarLeader.scale ?? const Size(1.0, 1.0);
+        beginSearchBarSize = Size(
+          searchBarSize.width * searchBarScale.width,
+          searchBarSize.height * searchBarScale.height,
         );
       }
-      final leaderOffset = layoutLink.leaderOffsetIn(leader.renderObject, this);
-      if (leaderOffset != null) {
-        (searchBarContainer?.parentData as BoxParentData?)?.offset =
-            Offset.lerp(
-              leaderOffset,
-              Offset(padding.left, leaderOffset.dy),
-              animation.value,
-            )!;
-      }
-    } else {
-      searchBarContainer?.layout(
-        const BoxConstraints.tightFor(width: 0.0, height: 0.0),
-        parentUsesSize: false,
+      final leaderOffset = LayoutLink.getOffsetIn(
+        searchBarLeader.renderObject,
+        this,
       );
+      if (leaderOffset != null) {
+        beginSearchBarOffset = leaderOffset;
+      }
     }
+
+    final searchBarSize = beginSearchBarSize != null
+        ? Size.lerp(beginSearchBarSize, endSearchBarSize, animation.value)!
+        : endSearchBarSize;
+    beginSearchBarSize ??= searchBarSize;
+
+    final searchBarOffset = beginSearchBarOffset != null
+        ? Offset.lerp(
+            beginSearchBarOffset,
+            endSearchBarOffset,
+            animation.value,
+          )!
+        : endSearchBarOffset;
+    beginSearchBarOffset ??= searchBarOffset;
+
+    // APP BAR
+
+    Size? beginAppBarSize;
+    final endAppBarSize = Size(constraints.constrainWidth(), 64.0);
+
+    Offset? beginAppBarOffset;
+    final endAppBarOffset = Offset(padding.left, padding.top);
+
+    if (appBarLeader != null) {
+      if (appBarLeader.size case final appBarSize?) {
+        final appBarScale = appBarLeader.scale ?? const Size(1.0, 1.0);
+        beginAppBarSize = Size(
+          appBarSize.width * appBarScale.width,
+          appBarSize.height * appBarScale.height,
+        );
+      }
+      final appBarOffset = LayoutLink.getOffsetIn(
+        appBarLeader.renderObject,
+        this,
+      );
+      if (appBarOffset != null) {
+        beginAppBarOffset = appBarOffset;
+      }
+    }
+
+    final appBarSize = beginAppBarSize != null
+        ? Size.lerp(beginAppBarSize, endAppBarSize, animation.value)!
+        : endAppBarSize;
+    beginAppBarSize ??= appBarSize;
+
+    final appBarOffset = beginAppBarOffset != null
+        ? Offset.lerp(beginAppBarOffset, endAppBarOffset, animation.value)!
+        : endAppBarOffset;
+    beginAppBarOffset ??= appBarOffset;
+
+    final listSize = Size(
+      searchBarSize.width + searchBarPadding.horizontal + padding.horizontal,
+      constraints.constrainHeight() -
+          searchBarSize.height -
+          searchBarPadding.vertical -
+          padding.top,
+    );
+
+    final listOffset = Offset(
+      searchBarOffset.dx - searchBarPadding.left - padding.left,
+      searchBarOffset.dy + searchBarSize.height + searchBarPadding.bottom,
+    );
+
+    searchBarContainer?.layout(
+      BoxConstraints.tight(searchBarSize),
+      parentUsesSize: false,
+    );
+    (searchBarContainer?.parentData as BoxParentData?)?.offset =
+        searchBarOffset;
+
+    list?.layout(BoxConstraints.tight(listSize), parentUsesSize: false);
+    (list?.parentData as BoxParentData?)?.offset = listOffset;
+
+    final appBarLeadingSize = Size(
+      beginSearchBarOffset.dx - beginAppBarOffset.dx,
+      appBarSize.height,
+    );
+    final appBarLeadingOffset = Offset(
+      searchBarOffset.dx - appBarLeadingSize.width,
+      appBarOffset.dy,
+    );
+
+    appBarLeading?.layout(
+      BoxConstraints.tight(appBarLeadingSize),
+      parentUsesSize: false,
+    );
+    (appBarLeading?.parentData as BoxParentData?)?.offset = appBarLeadingOffset;
+
+    final appBarTrailingSize = Size(
+      (beginAppBarOffset.dx + beginAppBarSize.width) -
+          (beginSearchBarOffset.dx + beginSearchBarSize.width),
+      appBarSize.height,
+    );
+    final appBarTrailingOffset = Offset(
+      searchBarOffset.dx + searchBarSize.width,
+      appBarOffset.dy,
+    );
+
+    appBarTrailing?.layout(
+      BoxConstraints.tight(appBarTrailingSize),
+      parentUsesSize: false,
+    );
+    (appBarTrailing?.parentData as BoxParentData?)?.offset =
+        appBarTrailingOffset;
   }
 
   @override
@@ -173,16 +342,22 @@ class _RenderSearchViewLayout extends RenderBox
       }
     }
 
+    doPaint(list);
+    doPaint(searchBarContainer);
     doPaint(appBarLeading);
     doPaint(appBarTrailing);
-    doPaint(searchBarContainer);
+    // doPaint(list);
+    // doPaint(appBarLeading);
+    // doPaint(appBarTrailing);
+    // doPaint(searchBarContainer);
   }
 
   @override
   bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
-    for (final child in children) {
+    bool hitTestChild(RenderBox? child) {
+      if (child == null) return false;
       final childParentData = child.parentData! as BoxParentData;
-      final isHit = result.addWithPaintOffset(
+      return result.addWithPaintOffset(
         offset: childParentData.offset,
         position: position,
         hitTest: (result, transformed) {
@@ -190,102 +365,44 @@ class _RenderSearchViewLayout extends RenderBox
           return child.hitTest(result, position: transformed);
         },
       );
-      if (isHit) return true;
     }
+
+    if (hitTestChild(searchBarContainer)) return true;
+    if (hitTestChild(list)) return true;
     return false;
   }
 }
 
 class _AppBarWithSearch extends StatefulWidget {
-  const _AppBarWithSearch({super.key});
+  const _AppBarWithSearch({
+    super.key,
+    this.height,
+    this.leading,
+    this.trailing,
+  });
+
+  final double? height;
+  final Widget? leading;
+  final Widget? trailing;
 
   @override
   State<_AppBarWithSearch> createState() => _AppBarWithSearchState();
 }
 
 class _AppBarWithSearchState extends State<_AppBarWithSearch> {
-  final _link = SingleLeaderLayoutLink();
+  final _link = SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>();
   var _visible = true;
 
   Future<void> _openView() async {
-    await Navigator.of(context).push(_SearchViewRoute(link: _link));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final colorTheme = ColorTheme.of(context);
-    final elevationTheme = ElevationTheme.of(context);
-    final shapeTheme = ShapeTheme.of(context);
-    final stateTheme = StateTheme.of(context);
-    final typescaleTheme = TypescaleTheme.of(context);
-    const height = 64.0;
-    return SizedBox(
-      width: .infinity,
-      height: height,
-      child: Visibility(
-        visible: _visible,
-        maintainState: true,
-        maintainAnimation: true,
-        maintainSize: true,
-        maintainSemantics: true,
-        maintainInteractivity: false,
-        maintainFocusability: false,
-        child: Flex.horizontal(
-          children: [
-            Flexible.tight(
-              child: LayoutLeader(
-                layoutLink: _link,
-                child: SizedBox(
-                  height: 56.0,
-                  child: Material(
-                    clipBehavior: .antiAlias,
-                    shape: CornersBorder.rounded(
-                      corners: .all(shapeTheme.corner.full),
-                    ),
-                    color: colorTheme.surfaceContainerHighest,
-                    child: InkWell(
-                      overlayColor: WidgetStateLayerColor(
-                        color: .all(colorTheme.onSurfaceVariant),
-                        opacity: stateTheme.asWidgetStateLayerOpacity,
-                      ),
-                      onTap: _openView,
-                      child: Flex.horizontal(
-                        children: [
-                          Flexible.tight(
-                            child: Text(
-                              "Search",
-                              textAlign: .center,
-                              softWrap: false,
-                              maxLines: 1,
-                              overflow: .ellipsis,
-                              style: typescaleTheme.bodyLarge.toTextStyle(
-                                color: colorTheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+    await Navigator.of(context).push(
+      _AppBarSearchViewRoute(
+        link: _link,
+        leading: widget.leading,
+        trailing: widget.trailing,
       ),
     );
   }
-}
 
-class Experiment3View extends StatefulWidget {
-  const Experiment3View({super.key});
-
-  @override
-  State<Experiment3View> createState() => _Experiment3ViewState();
-}
-
-class _Experiment3ViewState extends State<Experiment3View>
-    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.paddingOf(context);
@@ -294,70 +411,105 @@ class _Experiment3ViewState extends State<Experiment3View>
     final shapeTheme = ShapeTheme.of(context);
     final stateTheme = StateTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
-    const extent = 96.0;
-    return Scaffold(
-      backgroundColor: colorTheme.surfaceContainer,
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverHeader(
-              minExtent: extent,
-              maxExtent: extent,
-              builder: (context, shrinkOffset, overlapsContent) => SizedBox(
-                height: extent,
-                child: Flex.horizontal(
-                  mainAxisAlignment: .center,
-                  children: [
-                    const SizedBox(width: 4.0),
-                    IconButton(
-                      style: LegacyThemeFactory.createIconButtonStyle(
-                        colorTheme: colorTheme,
-                        elevationTheme: elevationTheme,
-                        shapeTheme: shapeTheme,
-                        stateTheme: stateTheme,
-                        color: .standard,
-                      ),
-                      onPressed: () {},
-                      icon: const Icon(Symbols.home_rounded, fill: 0.0),
+    final height = widget.height ?? 64.0;
+    return Material(
+      color: colorTheme.surfaceContainer,
+      child: Visibility(
+        visible: _visible,
+        maintainState: true,
+        maintainAnimation: true,
+        maintainSize: true,
+        maintainSemantics: true,
+        maintainInteractivity: false,
+        maintainFocusability: false,
+        child: Padding(
+          padding: .fromLTRB(padding.left, padding.top, padding.right, 0.0),
+          child: SlottedLayoutLeader<_SearchViewLeaderSlot>(
+            layoutLink: _link,
+            slot: .appBar,
+            child: SizedBox(
+              width: .infinity,
+              height: height,
+              child: Flex.horizontal(
+                crossAxisAlignment: .stretch,
+                children: [
+                  if (widget.leading case final leading?)
+                    SlottedLayoutLeader<_SearchViewLeaderSlot>(
+                      layoutLink: _link,
+                      slot: .appBarLeading,
+                      child: leading,
                     ),
-                    const SizedBox(width: 4.0),
-                    Flexible.tight(child: _AppBarWithSearch()),
-                    const SizedBox(width: 4.0),
-                    IconButton(
-                      style: LegacyThemeFactory.createIconButtonStyle(
-                        colorTheme: colorTheme,
-                        elevationTheme: elevationTheme,
-                        shapeTheme: shapeTheme,
-                        stateTheme: stateTheme,
-                        color: .standard,
+                  Flexible.tight(
+                    child: Align.center(
+                      widthFactor: 1.0,
+                      child: SlottedLayoutLeader<_SearchViewLeaderSlot>(
+                        layoutLink: _link,
+                        slot: .searchBar,
+                        child: SizedBox(
+                          height: 56.0,
+                          child: Material(
+                            clipBehavior: .antiAlias,
+                            shape: CornersBorder.rounded(
+                              corners: .all(shapeTheme.corner.full),
+                            ),
+                            color: colorTheme.surfaceContainerHighest,
+                            child: InkWell(
+                              overlayColor: WidgetStateLayerColor(
+                                color: .all(colorTheme.onSurfaceVariant),
+                                opacity: stateTheme.asWidgetStateLayerOpacity,
+                              ),
+                              onTap: _openView,
+                              child: Flex.horizontal(
+                                children: [
+                                  Flexible.tight(
+                                    child: Text(
+                                      "Search",
+                                      textAlign: .center,
+                                      softWrap: false,
+                                      maxLines: 1,
+                                      overflow: .ellipsis,
+                                      style: typescaleTheme.bodyLarge
+                                          .toTextStyle(
+                                            color: colorTheme.onSurfaceVariant,
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      onPressed: () {},
-                      icon: const Icon(Symbols.cast_rounded, fill: 0.0),
                     ),
-                    const SizedBox(width: 4.0),
-                  ],
-                ),
+                  ),
+                  if (widget.trailing case final trailing?)
+                    SlottedLayoutLeader<_SearchViewLeaderSlot>(
+                      layoutLink: _link,
+                      slot: .appBarTrailing,
+                      child: trailing,
+                    ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
 
-class _SearchViewRoute<T extends Object?> extends PopupRoute<T> {
-  _SearchViewRoute({required this.link, this.leading, this.trailing});
+class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
+  _AppBarSearchViewRoute({
+    required this.link,
+    this.leading,
+    this.trailing,
+    this.onAnchorVisibilityChanged,
+  });
 
-  final SingleLeaderLayoutLink link;
-
+  final SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot> link;
   final Widget? leading;
   final Widget? trailing;
-
-  // var _curvedAnimation = CurvedAnimation(
-  //   parent: kAlwaysDismissedAnimation,
-  //   curve: Curves.linear,
-  // );
+  final ValueChanged<bool>? onAnchorVisibilityChanged;
 
   @override
   Color? get barrierColor => null;
@@ -369,7 +521,7 @@ class _SearchViewRoute<T extends Object?> extends PopupRoute<T> {
   String? get barrierLabel => null;
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 0);
+  Duration get transitionDuration => .zero;
 
   var _externalOffstage = false;
   var _internalOffstage = false;
@@ -424,12 +576,6 @@ class _SearchViewRoute<T extends Object?> extends PopupRoute<T> {
     );
   }
 
-  // @override
-  // void dispose() {
-  //   _curvedAnimation.dispose();
-  //   super.dispose();
-  // }
-
   @override
   Widget buildTransitions(
     BuildContext context,
@@ -437,13 +583,7 @@ class _SearchViewRoute<T extends Object?> extends PopupRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    // if (_curvedAnimation.parent != animation) {
-    //   _curvedAnimation = CurvedAnimation(
-    //     parent: animation,
-    //     curve: Curves.easeInOutCubicEmphasized,
-    //     reverseCurve: Curves.easeInOutCubicEmphasized.flipped,
-    //   );
-    // }
+    final padding = MediaQuery.paddingOf(context);
     final colorTheme = ColorTheme.of(context);
     final elevationTheme = ElevationTheme.of(context);
     final shapeTheme = ShapeTheme.of(context);
@@ -468,20 +608,20 @@ class _SearchViewRoute<T extends Object?> extends PopupRoute<T> {
             child: _SearchViewLayout(
               layoutLink: link,
               animation: animation,
+              padding: padding,
+              appBarLeading: Opacity(
+                opacity: clampDouble(1.0 - animation.value, 0.0, 1.0),
+                child: leading,
+              ),
+              appBarTrailing: Opacity(
+                opacity: clampDouble(1.0 - animation.value, 0.0, 1.0),
+                child: trailing,
+              ),
               searchBarContainer: Material(
                 clipBehavior: .antiAlias,
                 shape: CornersBorder.rounded(
                   corners: .all(shapeTheme.corner.full),
                 ),
-                // shape: CornersBorder.rounded(
-                //   corners: Corners.all(
-                //     Corner.lerp(
-                //       const .fixed(28.0),
-                //       .zero,
-                //       _curvedAnimation.value,
-                //     )!,
-                //   ),
-                // ),
                 color: Color.lerp(
                   colorTheme.surfaceContainerHighest,
                   colorTheme.surfaceContainerHigh,
@@ -490,31 +630,94 @@ class _SearchViewRoute<T extends Object?> extends PopupRoute<T> {
                 child: Flex.horizontal(
                   children: [
                     const SizedBox(width: 4.0),
-                    IconButton(
-                      style: LegacyThemeFactory.createIconButtonStyle(
-                        colorTheme: colorTheme,
-                        elevationTheme: elevationTheme,
-                        shapeTheme: shapeTheme,
-                        stateTheme: stateTheme,
-                        color: .standard,
+                    Opacity(
+                      opacity: clampDouble(animation.value, 0.0, 1.0),
+                      child: IconButton(
+                        style: LegacyThemeFactory.createIconButtonStyle(
+                          colorTheme: colorTheme,
+                          elevationTheme: elevationTheme,
+                          shapeTheme: shapeTheme,
+                          stateTheme: stateTheme,
+                          color: .standard,
+                        ),
+                        onPressed: () => navigator?.pop(),
+                        icon: const Icon(Symbols.chevron_backward_rounded),
                       ),
-                      onPressed: () => navigator?.pop(),
-                      icon: const Icon(Symbols.chevron_backward_rounded),
                     ),
-                    const Flexible.space(),
-                    IconButton(
-                      style: LegacyThemeFactory.createIconButtonStyle(
-                        colorTheme: colorTheme,
-                        elevationTheme: elevationTheme,
-                        shapeTheme: shapeTheme,
-                        stateTheme: stateTheme,
-                        color: .standard,
+                    const SizedBox(width: 4.0),
+                    Flexible.tight(
+                      child: TextField(
+                        key: GlobalObjectKey(this),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Search",
+                        ),
                       ),
-                      onPressed: () {},
-                      icon: const Icon(Symbols.clear_rounded),
+                    ),
+                    const SizedBox(width: 4.0),
+                    Opacity(
+                      opacity: clampDouble(animation.value, 0.0, 1.0),
+                      child: IconButton(
+                        style: LegacyThemeFactory.createIconButtonStyle(
+                          colorTheme: colorTheme,
+                          elevationTheme: elevationTheme,
+                          shapeTheme: shapeTheme,
+                          stateTheme: stateTheme,
+                          color: .standard,
+                        ),
+                        onPressed: () {},
+                        icon: const Icon(Symbols.clear_rounded),
+                      ),
                     ),
                     const SizedBox(width: 4.0),
                   ],
+                ),
+              ),
+              list: Opacity(
+                opacity: clampDouble(animation.value, 0.0, 1.0),
+                // opacity: 1.0,
+                child: Padding(
+                  padding: .fromLTRB(padding.left, 0.0, padding.right, 0.0),
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverPadding(
+                        padding: .symmetric(horizontal: 8.0),
+                        sliver: SliverList.separated(
+                          itemCount: 25,
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 2.0),
+                          itemBuilder: (context, index) => ListItemContainer(
+                            isFirst: index == 0,
+                            isLast: index == 25 - 1,
+                            containerColor: .all(Colors.transparent),
+                            child: ListItemInteraction(
+                              onTap: () => navigator?.pop(),
+                              child: ListItemLayout(
+                                leading: SizedBox.square(
+                                  dimension: 32.0,
+                                  child: Material(
+                                    color: colorTheme.surfaceContainerHigh,
+                                    shape: CornersBorder.rounded(
+                                      corners: .all(shapeTheme.corner.full),
+                                    ),
+                                    child: const Icon(
+                                      Symbols.search_rounded,
+                                      opticalSize: 20.0,
+                                      size: 20.0,
+                                    ),
+                                  ),
+                                ),
+                                headline: Text("Result ${index + 1}"),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: SizedBox(height: 8.0 + padding.bottom),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -531,5 +734,88 @@ class _SearchViewRoute<T extends Object?> extends PopupRoute<T> {
     Animation<double> secondaryAnimation,
   ) {
     return const SizedBox.shrink();
+  }
+}
+
+class Experiment3View extends StatefulWidget {
+  const Experiment3View({super.key});
+
+  @override
+  State<Experiment3View> createState() => _Experiment3ViewState();
+}
+
+class _Experiment3ViewState extends State<Experiment3View>
+    with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    final padding = MediaQuery.paddingOf(context);
+    final colorTheme = ColorTheme.of(context);
+    final elevationTheme = ElevationTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    final typescaleTheme = TypescaleTheme.of(context);
+    const height = 64.0;
+    final extent = padding.top + height;
+    return Scaffold(
+      backgroundColor: colorTheme.surfaceContainer,
+      body: SafeArea(
+        top: false,
+        bottom: false,
+        left: false,
+        right: false,
+        child: CustomScrollView(
+          slivers: [
+            SliverHeader(
+              minExtent: extent,
+              maxExtent: extent,
+              builder: (context, shrinkOffset, overlapsContent) =>
+                  _AppBarWithSearch(
+                    height: height,
+                    leading: ColoredBox(
+                      // color: Colors.red,
+                      color: Colors.transparent,
+                      child: Padding(
+                        padding: .symmetric(horizontal: 4.0),
+                        child: Align.center(
+                          child: IconButton(
+                            style: LegacyThemeFactory.createIconButtonStyle(
+                              colorTheme: colorTheme,
+                              elevationTheme: elevationTheme,
+                              shapeTheme: shapeTheme,
+                              stateTheme: stateTheme,
+                              color: .standard,
+                            ),
+                            onPressed: () {},
+                            icon: const Icon(Symbols.home_rounded, fill: 0.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    trailing: ColoredBox(
+                      // color: Colors.blue,
+                      color: Colors.transparent,
+                      child: Padding(
+                        padding: .symmetric(horizontal: 4.0),
+                        child: Align.center(
+                          child: IconButton(
+                            style: LegacyThemeFactory.createIconButtonStyle(
+                              colorTheme: colorTheme,
+                              elevationTheme: elevationTheme,
+                              shapeTheme: shapeTheme,
+                              stateTheme: stateTheme,
+                              color: .standard,
+                            ),
+                            onPressed: () {},
+                            icon: const Icon(Symbols.cast_rounded, fill: 0.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

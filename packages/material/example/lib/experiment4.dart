@@ -67,7 +67,7 @@ class _RenderSearchViewLayout extends RenderShiftedBox
   }
 
   @override
-  LayoutFollowerClient<_RenderSearchViewLayout> createLayoutClient() =>
+  LayoutFollowerClient<_RenderSearchViewLayout> createLayoutClientInternal() =>
       DefaultLayoutFollowerClient(this);
 
   @override
@@ -103,7 +103,7 @@ class _RenderSearchViewLayout extends RenderShiftedBox
         child?.layout(BoxConstraints.tight(size), parentUsesSize: false);
       }
 
-      final leaderOffset = layoutLink.leaderOffsetIn(leader.renderObject, this);
+      final leaderOffset = LayoutLink.getOffsetIn(leader.renderObject, this);
       if (leaderOffset != null) {
         (child?.parentData as BoxParentData?)?.offset = leaderOffset;
       }

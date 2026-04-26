@@ -2,46 +2,120 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:linked_layouts/linked_layouts.dart';
 
-class LayoutLeader<
-  LayoutLinkType extends LayoutLink<LayoutLeaderClient, LayoutFollowerClient>
+typedef AbstractLayoutLeaderClientFactory<
+  LeaderClientType extends LayoutLeaderClient,
+  LayoutLinkType extends LayoutLink<LeaderClientType, LayoutFollowerClient>
+> = LeaderClientType Function(RenderBox renderObject);
+
+abstract class AbstractLayoutLeader<
+  LeaderClientType extends LayoutLeaderClient,
+  LayoutLinkType extends LayoutLink<LeaderClientType, LayoutFollowerClient>
 >
     extends SingleChildRenderObjectWidget {
-  const LayoutLeader({super.key, required this.layoutLink, super.child});
+  const AbstractLayoutLeader({
+    super.key,
+    required this.layoutLink,
+    super.child,
+  });
 
   final LayoutLinkType layoutLink;
 
+  LeaderClientType createLayoutClient(RenderBox renderObject);
+
   @override
-  RenderLayoutLeader<LayoutLinkType> createRenderObject(BuildContext context) =>
-      RenderLayoutLeader(layoutLink: layoutLink);
+  RenderAbstractLayoutLeader<LeaderClientType, LayoutLinkType>
+  createRenderObject(BuildContext context) => RenderAbstractLayoutLeader(
+    layoutClientFactory: createLayoutClient,
+    layoutLink: layoutLink,
+  );
 
   @override
   void updateRenderObject(
     BuildContext context,
-    RenderLayoutLeader<LayoutLinkType> renderObject,
+    RenderAbstractLayoutLeader<LeaderClientType, LayoutLinkType> renderObject,
   ) {
-    renderObject.layoutLink = layoutLink;
+    renderObject
+      ..layoutClientFactory = createLayoutClient
+      ..layoutLink = layoutLink;
   }
 }
 
-class RenderLayoutLeader<
-  LayoutLinkType extends LayoutLink<LayoutLeaderClient, LayoutFollowerClient>
+class RenderAbstractLayoutLeader<
+  LeaderClientType extends LayoutLeaderClient,
+  LayoutLinkType extends LayoutLink<LeaderClientType, LayoutFollowerClient>
 >
     extends RenderProxyBox
     with
-        RenderObjectWithLayoutLinkMixin<LayoutLeaderClient, LayoutLinkType>,
-        RenderLayoutLeaderMixin<LayoutLeaderClient, LayoutLinkType> {
-  RenderLayoutLeader({required LayoutLinkType layoutLink, RenderBox? child})
-    : super(child) {
+        RenderObjectWithLayoutLinkMixin<LeaderClientType, LayoutLinkType>,
+        RenderLayoutLeaderMixin<LeaderClientType, LayoutLinkType> {
+  RenderAbstractLayoutLeader({
+    required AbstractLayoutLeaderClientFactory<LeaderClientType, LayoutLinkType>
+    layoutClientFactory,
+    required LayoutLinkType layoutLink,
+    RenderBox? child,
+  }) : _layoutClientFactory = layoutClientFactory,
+       super(child) {
     this.layoutLink = layoutLink;
   }
 
+  AbstractLayoutLeaderClientFactory<LeaderClientType, LayoutLinkType>
+  _layoutClientFactory;
+
+  AbstractLayoutLeaderClientFactory<LeaderClientType, LayoutLinkType>
+  get layoutClientFactory => _layoutClientFactory;
+
+  set layoutClientFactory(
+    AbstractLayoutLeaderClientFactory<LeaderClientType, LayoutLinkType> value,
+  ) {
+    if (_layoutClientFactory == value) return;
+    layoutLinkHandle?.dispose();
+    layoutLinkHandle = null;
+    if (attached) {
+      layoutLinkHandle = layoutLink.registerLeader(createLayoutClient());
+    }
+    _layoutClientFactory = value;
+    markNeedsLayout();
+  }
+
   @override
-  LayoutLeaderClient<RenderLayoutLeader<LayoutLinkType>> createLayoutClient() =>
-      DefaultLayoutLeaderClient(this);
+  LeaderClientType createLayoutClientInternal() => layoutClientFactory(this);
+}
+
+class CustomLayoutLeader<
+  LeaderClientType extends LayoutLeaderClient,
+  LayoutLinkType extends LayoutLink<LeaderClientType, LayoutFollowerClient>
+>
+    extends AbstractLayoutLeader<LeaderClientType, LayoutLinkType> {
+  const CustomLayoutLeader({
+    super.key,
+    required this.layoutClientFactory,
+    required super.layoutLink,
+    super.child,
+  });
+
+  final AbstractLayoutLeaderClientFactory<LeaderClientType, LayoutLinkType>
+  layoutClientFactory;
+
+  @override
+  LeaderClientType createLayoutClient(RenderBox renderObject) =>
+      layoutClientFactory(renderObject);
+}
+
+class SingleLayoutLeader
+    extends AbstractLayoutLeader<LayoutLeaderClient, SingleLeaderLayoutLink> {
+  const SingleLayoutLeader({super.key, required super.layoutLink, super.child});
+
+  @override
+  LayoutLeaderClient<RenderBox> createLayoutClient(RenderBox renderObject) =>
+      DefaultLayoutLeaderClient(renderObject);
 }
 
 class SlottedLayoutLeader<SlotType extends Object?>
-    extends LayoutLeader<SlottedMultiLeaderLayoutLink<SlotType>> {
+    extends
+        AbstractLayoutLeader<
+          SlottedLayoutLeaderClient<RenderBox, SlotType>,
+          SlottedMultiLeaderLayoutLink<SlotType>
+        > {
   const SlottedLayoutLeader({
     super.key,
     required super.layoutLink,
@@ -52,9 +126,18 @@ class SlottedLayoutLeader<SlotType extends Object?>
   final SlotType slot;
 
   @override
+  SlottedLayoutLeaderClient<RenderBox, SlotType> createLayoutClient(
+    RenderBox renderObject,
+  ) => DefaultSlottedLayoutLeaderClient(renderObject, slot);
+
+  @override
   RenderSlottedLayoutLeader<SlotType> createRenderObject(
     BuildContext context,
-  ) => RenderSlottedLayoutLeader(layoutLink: layoutLink, slot: slot);
+  ) => RenderSlottedLayoutLeader(
+    layoutClientFactory: createLayoutClient,
+    layoutLink: layoutLink,
+    slot: slot,
+  );
 
   @override
   void updateRenderObject(
@@ -62,14 +145,20 @@ class SlottedLayoutLeader<SlotType extends Object?>
     RenderSlottedLayoutLeader<SlotType> renderObject,
   ) {
     renderObject
+      ..layoutClientFactory = createLayoutClient
       ..layoutLink = layoutLink
       ..slot = slot;
   }
 }
 
 class RenderSlottedLayoutLeader<SlotType extends Object?>
-    extends RenderLayoutLeader<SlottedMultiLeaderLayoutLink<SlotType>> {
+    extends
+        RenderAbstractLayoutLeader<
+          SlottedLayoutLeaderClient<RenderBox, SlotType>,
+          SlottedMultiLeaderLayoutLink<SlotType>
+        > {
   RenderSlottedLayoutLeader({
+    required super.layoutClientFactory,
     required super.layoutLink,
     required SlotType slot,
     super.child,
@@ -89,8 +178,4 @@ class RenderSlottedLayoutLeader<SlotType extends Object?>
     _slot = value;
     markNeedsLayout();
   }
-
-  @override
-  SlottedLayoutLeaderClient<RenderSlottedLayoutLeader<SlotType>, SlotType>
-  createLayoutClient() => DefaultSlottedLayoutLeaderClient(this, slot);
 }
