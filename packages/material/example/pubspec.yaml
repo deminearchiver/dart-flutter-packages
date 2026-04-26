@@ -26,6 +26,7 @@ dependencies:
   flutter_markdown_plus: ^1.0.7
   freezed_annotation: ^3.1.0
   json_annotation: ^4.11.0
+  linked_layouts: ^0.1.0
   markdown: ^7.3.1
   meta: ^1.17.0
   motor: ^1.1.0

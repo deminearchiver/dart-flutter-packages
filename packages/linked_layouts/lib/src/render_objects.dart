@@ -1,7 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-import 'linked_layouts.dart';
+import 'package:linked_layouts/linked_layouts.dart';
 
 class LayoutLeader<
   LayoutLinkType extends LayoutLink<LayoutLeaderClient, LayoutFollowerClient>

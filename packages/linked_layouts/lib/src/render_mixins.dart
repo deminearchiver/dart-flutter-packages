@@ -1,7 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-import 'linked_layouts.dart';
+import 'package:linked_layouts/linked_layouts.dart';
 
 mixin RenderObjectWithLayoutLinkMixin<
   LayoutClientType extends LayoutLinkClient,
@@ -103,6 +102,7 @@ mixin RenderLayoutLeaderMixin<
   @mustCallSuper
   @override
   void paint(PaintingContext context, Offset offset) {
+    super.paint(context, offset);
     layoutLink.didLeaderDoPaint(layoutLinkHandle?.client);
   }
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-
-import 'linked_layouts.dart';
+import 'package:linked_layouts/linked_layouts.dart';
 
 abstract class LayoutLink<
   LeaderClientType extends LayoutLeaderClient,

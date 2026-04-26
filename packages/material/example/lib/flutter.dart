@@ -73,6 +73,7 @@ export 'package:material/material.dart';
 export 'package:material/material_symbols.dart';
 export 'package:meta/meta.dart';
 export 'package:motor/motor.dart';
+export 'package:linked_layouts/linked_layouts.dart';
 
 // Adjacent libraries
 

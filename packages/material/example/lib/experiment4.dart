@@ -3,8 +3,6 @@ import 'dart:math' as math;
 
 import 'package:material_example/flutter.dart';
 
-import 'src/linked_layouts/linked_layouts.dart';
-
 enum _SearchViewLeaderSlot { searchBar }
 
 class _SearchViewLayout extends SingleChildRenderObjectWidget {

@@ -1,6 +1,5 @@
 import 'package:flutter/rendering.dart';
-
-import 'linked_layouts.dart';
+import 'package:linked_layouts/linked_layouts.dart';
 
 mixin LayoutLinkClient<RenderObjectType extends RenderObject> {
   RenderObjectType get renderObject;

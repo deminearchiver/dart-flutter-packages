@@ -17,6 +17,7 @@ workspace:
   - packages/dynamic_color_ffi/example
   - packages/layout
   - packages/libmonet
+  - packages/linked_layouts
   - packages/lz4_ffi
   - packages/material/example
   - packages/material

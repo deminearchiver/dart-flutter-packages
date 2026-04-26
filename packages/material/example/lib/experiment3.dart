@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/scheduler.dart';
 import 'package:material_example/flutter.dart';
 
-import 'src/linked_layouts/linked_layouts.dart';
-
 enum _SearchViewLayoutSlot { appBarLeading, searchBarContainer, appBarTrailing }
 
 class _SearchViewLayout
