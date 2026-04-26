@@ -55,10 +55,14 @@ class _RenderSearchViewLayout extends RenderBox
     with
         SlottedContainerRenderObjectMixin<_SearchViewLayoutSlot, RenderBox>,
         RenderObjectWithLayoutLinkMixin<
-          SingleLeaderLayoutLink,
-          LayoutFollowerClient
+          LayoutFollowerClient,
+          SingleLeaderLayoutLink
         >,
-        RenderLayoutFollowerMixin {
+        RenderLayoutFollowerMixin<
+          LayoutLeaderClient,
+          LayoutFollowerClient,
+          SingleLeaderLayoutLink
+        > {
   _RenderSearchViewLayout({
     required SingleLeaderLayoutLink layoutLink,
     required ValueListenable<double> animation,

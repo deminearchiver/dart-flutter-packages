@@ -1,11 +1,12 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:material_example/flutter.dart';
+
+import 'linked_layouts.dart';
 
 abstract class LayoutLink<
   LeaderClientType extends LayoutLeaderClient,
-  FollowerClientType extends LayoutFollowerClient,
-  LayoutLinkType
-      extends LayoutLink<LeaderClientType, FollowerClientType, LayoutLinkType>
+  FollowerClientType extends LayoutFollowerClient
 > {
   Iterable<LeaderClientType> get leaders;
 
@@ -18,15 +19,10 @@ abstract class LayoutLink<
   @protected
   void unregisterLeaderInternal(LeaderClientType leader);
 
-  @protected
-  LayoutLinkType get self;
-
-  LayoutLinkHandle<LayoutLinkType, LeaderClientType> registerLeader(
-    LeaderClientType leader,
-  ) {
+  LayoutLinkHandle<LeaderClientType> registerLeader(LeaderClientType leader) {
     assert(!isLeaderRegistered(leader));
     registerLeaderInternal(leader);
-    return _LeaderLayoutLinkHandle(link: self, leader: leader);
+    return _LeaderLayoutLinkHandle(link: this, leader: leader);
   }
 
   void _unregisterLeader(LeaderClientType leader) {
@@ -34,16 +30,16 @@ abstract class LayoutLink<
     unregisterLeaderInternal(leader);
   }
 
-  final _followers = StrictSet<FollowerClientType>();
+  final _followers = <FollowerClientType>{};
 
-  LayoutLinkHandle<LayoutLinkType, FollowerClientType> registerFollower(
+  LayoutLinkHandle<FollowerClientType> registerFollower(
     FollowerClientType follower,
   ) {
     assert(!_followers.contains(follower));
     final wasEmpty = _followers.isEmpty;
     _followers.add(follower);
     if (wasEmpty) _frameCallbackScheduler.schedule();
-    return _FollowerLayoutLinkHandle(link: self, follower: follower);
+    return _FollowerLayoutLinkHandle(link: this, follower: follower);
   }
 
   void _unregisterFollower(FollowerClientType follower) {
@@ -68,7 +64,7 @@ abstract class LayoutLink<
     for (final leader in leaders) {
       if (leader.renderObject.attached) {
         currentTransforms[leader] =
-            _safeGlobalTransform(leader.renderObject) ?? .identity();
+            tryGetTransformTo(leader.renderObject) ?? .identity();
         if (includeSize) {
           currentSizes[leader] = leader.size ?? .zero;
         }
@@ -131,8 +127,8 @@ abstract class LayoutLink<
 
   Offset? leaderOffsetIn(RenderObject leader, RenderObject coordinateSpace) {
     if (!leader.attached || !coordinateSpace.attached) return null;
-    final leaderGlobal = _safeGlobalTransform(leader);
-    final transform = _safeGlobalTransform(coordinateSpace);
+    final leaderGlobal = tryGetTransformTo(leader);
+    final transform = tryGetTransformTo(coordinateSpace);
     if (leaderGlobal == null || transform == null) return null;
     final determinant = transform.invert();
     if (determinant == 0.0) return null;
@@ -144,20 +140,21 @@ abstract class LayoutLink<
     return true;
   }
 
-  static Matrix4? _safeGlobalTransform(RenderObject descendant) {
+  @internal
+  static Matrix4? tryGetTransformTo(RenderObject descendant) {
     if (!descendant.attached) return null;
-    final objects = <RenderObject>[
+    final ancestors = <RenderObject>[
       for (
-        RenderObject? object = descendant;
-        object != null;
-        object = object.parent
+        RenderObject? ancestor = descendant;
+        ancestor != null;
+        ancestor = ancestor.parent
       )
-        object,
+        ancestor,
     ];
     final transform = Matrix4.identity();
-    for (var index = objects.length - 1; index > 0; index -= 1) {
-      final parent = objects[index];
-      final child = objects[index - 1];
+    for (var index = ancestors.length - 1; index > 0; index -= 1) {
+      final parent = ancestors[index];
+      final child = ancestors[index - 1];
       try {
         parent.applyPaintTransform(child, transform);
       } on Object {
@@ -176,12 +173,7 @@ class SingleLeaderLayoutLink<
   LeaderClientType extends LayoutLeaderClient,
   FollowerClientType extends LayoutFollowerClient
 >
-    extends
-        LayoutLink<
-          LeaderClientType,
-          FollowerClientType,
-          SingleLeaderLayoutLink<LeaderClientType, FollowerClientType>
-        > {
+    extends LayoutLink<LeaderClientType, FollowerClientType> {
   final _leaderList = <LeaderClientType>[];
 
   LeaderClientType? get leader {
@@ -211,17 +203,13 @@ class SingleLeaderLayoutLink<
     _leaderList.removeAt(0);
     didLeaderDoLayout(null);
   }
-
-  @override
-  SingleLeaderLayoutLink<LeaderClientType, FollowerClientType> get self => this;
 }
 
 class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
     extends
         LayoutLink<
           SlottedLayoutLeaderClient<RenderBox, SlotType>,
-          LayoutFollowerClient,
-          SlottedMultiLeaderLayoutLink<SlotType>
+          LayoutFollowerClient
         > {
   final _slotToLeader =
       <SlotType, SlottedLayoutLeaderClient<RenderBox, SlotType>>{};
@@ -274,38 +262,17 @@ class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
     _slotToLeader.remove(leader.slot);
     didLeaderDoLayout(null);
   }
-
-  @override
-  SlottedMultiLeaderLayoutLink<SlotType> get self => this;
 }
 
-abstract class LayoutLinkHandle<
-  LayoutLinkType extends LayoutLink<
-    LayoutLeaderClient,
-    LayoutFollowerClient,
-    LayoutLinkType
-  >,
-  LayoutClientType extends LayoutLinkClient
-> {
-  LayoutLinkHandle._({
-    required LayoutLinkType link,
-    required LayoutClientType client,
-  }) : _link = link,
-       _client = client;
+abstract class LayoutLinkHandle<LayoutClientType extends LayoutLinkClient> {
+  LayoutLinkHandle._({required LayoutClientType client}) : _client = client;
 
-  LayoutLinkType? _link;
-
-  LayoutLinkType get link {
-    assert(debugAssertNotDisposed(this));
-    assert(_link != null);
-    return _link!;
-  }
-
-  final LayoutClientType _client;
+  LayoutClientType? _client;
 
   LayoutClientType get client {
     assert(debugAssertNotDisposed(this));
-    return _client;
+    assert(_client != null);
+    return _client!;
   }
 
   var _debugDisposed = false;
@@ -317,7 +284,7 @@ abstract class LayoutLinkHandle<
       _debugDisposed = true;
       return true;
     }());
-    _link = null;
+    _client = null;
   }
 
   static bool debugAssertNotDisposed(LayoutLinkHandle handle) {
@@ -337,110 +304,56 @@ abstract class LayoutLinkHandle<
 
 class _LeaderLayoutLinkHandle<
   LeaderClientType extends LayoutLeaderClient,
-  LayoutLinkType
-      extends LayoutLink<LeaderClientType, LayoutFollowerClient, LayoutLinkType>
+  FollowerClientType extends LayoutFollowerClient
 >
-    extends LayoutLinkHandle<LayoutLinkType, LeaderClientType> {
+    extends LayoutLinkHandle<LeaderClientType> {
   _LeaderLayoutLinkHandle({
-    required super.link,
+    required LayoutLink<LeaderClientType, FollowerClientType> link,
     required LeaderClientType leader,
-  }) : super._(client: leader);
+  }) : _linkOrNull = link,
+       super._(client: leader);
+
+  LayoutLink<LeaderClientType, FollowerClientType>? _linkOrNull;
+
+  LayoutLink<LeaderClientType, FollowerClientType> get _link {
+    assert(LayoutLinkHandle.debugAssertNotDisposed(this));
+    assert(_linkOrNull != null);
+    return _linkOrNull!;
+  }
 
   @override
   void dispose() {
     assert(LayoutLinkHandle.debugAssertNotDisposed(this));
-    link._unregisterLeader(client);
+    _link._unregisterLeader(client);
+    _linkOrNull = null;
     super.dispose();
   }
 }
 
 class _FollowerLayoutLinkHandle<
-  FollowerClientType extends LayoutFollowerClient,
-  LayoutLinkType
-      extends LayoutLink<LayoutLeaderClient, FollowerClientType, LayoutLinkType>
+  LeaderClientType extends LayoutLeaderClient,
+  FollowerClientType extends LayoutFollowerClient
 >
-    extends LayoutLinkHandle<LayoutLinkType, FollowerClientType> {
+    extends LayoutLinkHandle<FollowerClientType> {
   _FollowerLayoutLinkHandle({
-    required super.link,
+    required LayoutLink<LeaderClientType, FollowerClientType> link,
     required FollowerClientType follower,
-  }) : super._(client: follower);
+  }) : _linkOrNull = link,
+       super._(client: follower);
+
+  LayoutLink<LeaderClientType, FollowerClientType>? _linkOrNull;
+
+  LayoutLink<LeaderClientType, FollowerClientType> get _link {
+    assert(LayoutLinkHandle.debugAssertNotDisposed(this));
+    assert(_linkOrNull != null);
+    return _linkOrNull!;
+  }
 
   @override
   void dispose() {
     assert(LayoutLinkHandle.debugAssertNotDisposed(this));
-    link._unregisterFollower(client);
+    _link._unregisterFollower(client);
+    _linkOrNull = null;
     super.dispose();
   }
-}
-
-mixin LayoutLinkClient<RenderObjectType extends RenderObject> {
-  RenderObjectType get renderObject;
-}
-
-mixin LayoutLeaderClient<RenderObjectType extends RenderBox>
-    on LayoutLinkClient<RenderObjectType> {
-  Size? _size;
-
-  Size? get size => renderObject.attached ? _size : null;
-
-  set size(Size? value) {
-    if (renderObject.attached) _size = value;
-  }
-
-  Size? get scale {
-    if (!renderObject.attached) return null;
-    final transform = LayoutLink._safeGlobalTransform(renderObject);
-    if (transform == null) return null;
-    // TODO: replace with a perspective transform (inline logic)
-    final matrix = transform.storage;
-    return Size(matrix[0], matrix[5]);
-    // Initial calculation:
-    // return Size(
-    //   transform.transform3(.new(1, 0, 0)).x - transform.transform3(.zero()).x,
-    //   transform.transform3(.new(0, 1, 0)).y - transform.transform3(.zero()).y,
-    // );
-  }
-}
-
-mixin SlottedLayoutLeaderClient<
-  RenderObjectType extends RenderBox,
-  SlotType extends Object?
->
-    on LayoutLeaderClient<RenderObjectType> {
-  SlotType get slot;
-}
-
-mixin LayoutFollowerClient<RenderObjectType extends RenderObject>
-    on LayoutLinkClient<RenderObjectType> {}
-
-class DefaultLayoutLeaderClient<RenderObjectType extends RenderBox>
-    with
-        LayoutLinkClient<RenderObjectType>,
-        LayoutLeaderClient<RenderObjectType> {
-  DefaultLayoutLeaderClient(this.renderObject);
-
-  @override
-  final RenderObjectType renderObject;
-}
-
-class DefaultSlottedLayoutLeaderClient<
-  RenderObjectType extends RenderBox,
-  SlotType extends Object?
->
-    extends DefaultLayoutLeaderClient<RenderObjectType>
-    with SlottedLayoutLeaderClient<RenderObjectType, SlotType> {
-  DefaultSlottedLayoutLeaderClient(super.renderObject, this.slot);
-
-  @override
-  final SlotType slot;
-}
-
-class DefaultLayoutFollowerClient<RenderObjectType extends RenderObject>
-    with
-        LayoutLinkClient<RenderObjectType>,
-        LayoutFollowerClient<RenderObjectType> {
-  DefaultLayoutFollowerClient(this.renderObject);
-
-  @override
-  final RenderObjectType renderObject;
 }

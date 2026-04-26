@@ -91,6 +91,5 @@ export 'theme/typography.dart';
 export 'utils/combining_builder.dart';
 export 'utils/extensions.dart';
 export 'utils/inverse_center_optically.dart';
-export 'utils/scheduler.dart';
 export 'utils/sliver_dynamic_header_basic.dart';
 export 'widgets/list_item.dart';
