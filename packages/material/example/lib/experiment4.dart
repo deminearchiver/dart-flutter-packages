@@ -33,7 +33,7 @@ class _SearchViewLayout extends SingleChildRenderObjectWidget {
 
 class _RenderSearchViewLayout extends RenderShiftedBox
     with
-        RenderObjectWithLayoutLinkMixin<
+        RenderObjectWithRequiredLayoutLinkMixin<
           LayoutFollowerClient,
           SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>
         >,

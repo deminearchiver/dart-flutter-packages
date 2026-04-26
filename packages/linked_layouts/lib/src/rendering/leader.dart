@@ -2,6 +2,58 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:linked_layouts/linked_layouts.dart';
 
+mixin RenderLayoutLeaderMixin<
+  LeaderClientType extends LayoutLeaderClient,
+  LayoutLinkType extends LayoutLink<LeaderClientType, LayoutFollowerClient>
+>
+    on
+        RenderBox,
+        RenderObjectWithOptionalLayoutLinkMixin<
+          LeaderClientType,
+          LayoutLinkType
+        > {
+  Size? _lastKnownSize;
+
+  @override
+  LeaderClientType createLayoutClientInternal();
+
+  @override
+  LeaderClientType createLayoutClient() =>
+      super.createLayoutClient()..size = _lastKnownSize;
+
+  @override
+  LayoutLinkHandle<LeaderClientType> registerLayoutClient(
+    LayoutLinkType layoutLink,
+    LeaderClientType client,
+  ) => layoutLink.registerLeader(client);
+
+  @mustCallSuper
+  @override
+  void markNeedsLayout() {
+    super.markNeedsLayout();
+    if (layoutLinkHandle != null) {
+      layoutLink?.didLeaderDoLayout();
+    }
+  }
+
+  @mustCallSuper
+  @override
+  void performLayout() {
+    super.performLayout();
+    _lastKnownSize = size;
+    layoutLinkHandle?.client.size = _lastKnownSize;
+  }
+
+  @mustCallSuper
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    super.paint(context, offset);
+    if (layoutLinkHandle != null) {
+      layoutLink?.didLeaderDoPaint();
+    }
+  }
+}
+
 typedef AbstractLayoutLeaderClientFactory<
   LeaderClientType extends LayoutLeaderClient,
   LayoutLinkType extends LayoutLink<LeaderClientType, LayoutFollowerClient>
@@ -46,7 +98,10 @@ class RenderAbstractLayoutLeader<
 >
     extends RenderProxyBox
     with
-        RenderObjectWithLayoutLinkMixin<LeaderClientType, LayoutLinkType>,
+        RenderObjectWithRequiredLayoutLinkMixin<
+          LeaderClientType,
+          LayoutLinkType
+        >,
         RenderLayoutLeaderMixin<LeaderClientType, LayoutLinkType> {
   RenderAbstractLayoutLeader({
     required AbstractLayoutLeaderClientFactory<LeaderClientType, LayoutLinkType>

@@ -65,7 +65,7 @@ class _SearchViewLayout
 class _RenderSearchViewLayout extends RenderBox
     with
         SlottedContainerRenderObjectMixin<_SearchViewLayoutSlot, RenderBox>,
-        RenderObjectWithLayoutLinkMixin<
+        RenderObjectWithRequiredLayoutLinkMixin<
           LayoutFollowerClient,
           SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>
         >,
@@ -90,12 +90,10 @@ class _RenderSearchViewLayout extends RenderBox
   set animation(ValueListenable<double> value) {
     if (_animation == value) return;
     if (attached) {
-      animation.removeListener(markNeedsLayout);
+      _animation.removeListener(markNeedsLayout);
+      value.addListener(markNeedsLayout);
     }
     _animation = value;
-    if (attached) {
-      animation.addListener(markNeedsLayout);
-    }
     markNeedsLayout();
   }
 
@@ -109,22 +107,14 @@ class _RenderSearchViewLayout extends RenderBox
     markNeedsLayout();
   }
 
-  RenderBox? get appBarLeading => childForSlot(.appBarLeading);
-  RenderBox? get searchBarContainer => childForSlot(.searchBar);
-  RenderBox? get appBarTrailing => childForSlot(.appBarTrailing);
-  RenderBox? get list => childForSlot(.list);
+  RenderBox? get _appBarLeading => childForSlot(.appBarLeading);
+  RenderBox? get _searchBarContainer => childForSlot(.searchBar);
+  RenderBox? get _appBarTrailing => childForSlot(.appBarTrailing);
+  RenderBox? get _list => childForSlot(.list);
 
   @override
   LayoutFollowerClient<_RenderSearchViewLayout> createLayoutClientInternal() =>
       DefaultLayoutFollowerClient(this);
-
-  @override
-  Iterable<RenderBox> get children => <RenderBox>[
-    ?appBarLeading,
-    ?searchBarContainer,
-    ?appBarTrailing,
-    ?list,
-  ];
 
   @override
   void attach(PipelineOwner owner) {
@@ -148,9 +138,9 @@ class _RenderSearchViewLayout extends RenderBox
 
   @override
   void performLayout() {
-    final appBarLeading = this.appBarLeading;
-    final searchBarContainer = this.searchBarContainer;
-    final appBarTrailing = this.appBarTrailing;
+    final appBarLeading = this._appBarLeading;
+    final searchBarContainer = this._searchBarContainer;
+    final appBarTrailing = this._appBarTrailing;
 
     final appBarLeader = layoutLink.leaderForSlot(.appBar);
     final searchBarLeader = layoutLink.leaderForSlot(.searchBar);
@@ -298,8 +288,8 @@ class _RenderSearchViewLayout extends RenderBox
     (searchBarContainer?.parentData as BoxParentData?)?.offset =
         searchBarOffset;
 
-    list?.layout(BoxConstraints.tight(listSize), parentUsesSize: false);
-    (list?.parentData as BoxParentData?)?.offset = listOffset;
+    _list?.layout(BoxConstraints.tight(listSize), parentUsesSize: false);
+    (_list?.parentData as BoxParentData?)?.offset = listOffset;
 
     final appBarLeadingSize = Size(
       beginSearchBarOffset.dx - beginAppBarOffset.dx,
@@ -343,10 +333,10 @@ class _RenderSearchViewLayout extends RenderBox
       }
     }
 
-    doPaint(list);
-    doPaint(appBarLeading);
-    doPaint(appBarTrailing);
-    doPaint(searchBarContainer);
+    doPaint(_list);
+    doPaint(_appBarLeading);
+    doPaint(_appBarTrailing);
+    doPaint(_searchBarContainer);
   }
 
   @override
@@ -364,10 +354,112 @@ class _RenderSearchViewLayout extends RenderBox
       );
     }
 
-    if (hitTestChild(searchBarContainer)) return true;
-    if (hitTestChild(list)) return true;
+    if (hitTestChild(_searchBarContainer)) return true;
+    if (hitTestChild(_list)) return true;
     return false;
   }
+}
+
+enum _SearchBarLayoutSlot {
+  tapRegion,
+  supportingText,
+  textField,
+  leading,
+  trailing,
+}
+
+class _SearchBarLayout
+    extends
+        SlottedMultiChildRenderObjectWidget<_SearchBarLayoutSlot, RenderBox> {
+  const _SearchBarLayout({
+    super.key,
+    this.centerAlignmentFraction = kAlwaysDismissedAnimation,
+    this.tapRegion,
+    this.supportingText,
+    this.textField,
+    this.leading,
+    this.trailing,
+  });
+
+  final ValueListenable<double> centerAlignmentFraction;
+
+  final Widget? tapRegion;
+  final Widget? supportingText;
+  final Widget? textField;
+  final Widget? leading;
+  final Widget? trailing;
+
+  @override
+  Iterable<_SearchBarLayoutSlot> get slots => _SearchBarLayoutSlot.values;
+
+  @override
+  Widget? childForSlot(_SearchBarLayoutSlot slot) => switch (slot) {
+    .tapRegion => tapRegion,
+    .supportingText => supportingText,
+    .textField => textField,
+    .leading => leading,
+    .trailing => trailing,
+  };
+
+  @override
+  _RenderSearchBarLayout createRenderObject(BuildContext context) =>
+      _RenderSearchBarLayout(centerAlignmentFraction: centerAlignmentFraction);
+
+  @override
+  void updateRenderObject(
+    BuildContext context,
+    _RenderSearchBarLayout renderObject,
+  ) {
+    renderObject.centerAlignmentFraction = centerAlignmentFraction;
+  }
+}
+
+class _RenderSearchBarLayout extends RenderBox
+    with SlottedContainerRenderObjectMixin<_SearchBarLayoutSlot, RenderBox> {
+  _RenderSearchBarLayout({
+    required ValueListenable<double> centerAlignmentFraction,
+  }) : _centerAlignmentFraction = centerAlignmentFraction;
+
+  ValueListenable<double> _centerAlignmentFraction;
+
+  ValueListenable<double> get centerAlignmentFraction =>
+      _centerAlignmentFraction;
+
+  set centerAlignmentFraction(ValueListenable<double> value) {
+    if (_centerAlignmentFraction == value) return;
+    if (attached) {
+      _centerAlignmentFraction.removeListener(markNeedsLayout);
+      value.addListener(markNeedsLayout);
+    }
+    _centerAlignmentFraction = value;
+    markNeedsLayout();
+  }
+
+  RenderBox? get _tapRegion => childForSlot(.tapRegion);
+  RenderBox? get _supportingText => childForSlot(.supportingText);
+  RenderBox? get _textField => childForSlot(.textField);
+  RenderBox? get _leading => childForSlot(.leading);
+  RenderBox? get _trailing => childForSlot(.trailing);
+
+  @override
+  void attach(PipelineOwner owner) {
+    super.attach(owner);
+    centerAlignmentFraction.addListener(markNeedsLayout);
+  }
+
+  @override
+  void detach() {
+    super.detach();
+    centerAlignmentFraction.removeListener(markNeedsLayout);
+  }
+
+  @override
+  void performLayout() {}
+
+  @override
+  void paint(PaintingContext context, Offset offset) {}
+
+  // TODO: implement hit testing
 }
 
 class _AppBarWithSearch extends StatefulWidget {
@@ -710,6 +802,20 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
                           color: .standard,
                         ),
                         onPressed: () {},
+                        icon: const Icon(Symbols.mic_rounded),
+                      ),
+                    ),
+                    Opacity(
+                      opacity: clampDouble(animation.value, 0.0, 1.0),
+                      child: IconButton(
+                        style: LegacyThemeFactory.createIconButtonStyle(
+                          colorTheme: colorTheme,
+                          elevationTheme: elevationTheme,
+                          shapeTheme: shapeTheme,
+                          stateTheme: stateTheme,
+                          color: .standard,
+                        ),
+                        onPressed: () {},
                         icon: const Icon(Symbols.clear_rounded),
                       ),
                     ),
@@ -886,12 +992,15 @@ class _Experiment3ViewState extends State<Experiment3View>
                   ),
             ),
             SliverPadding(
-              padding: const .symmetric(horizontal: 8.0),
+              padding: .fromLTRB(
+                padding.left + 8.0,
+                // math.max(16.0 - (_height - 56.0) / 2.0, 0.0),
+                0.0,
+                padding.right + 8.0,
+                0.0,
+              ),
               sliver: SliverList.list(
                 children: [
-                  SizedBox(
-                    height: math.max(16.0 - (_height - 56.0) / 2.0, 0.0),
-                  ),
                   ListItemContainer(
                     isFirst: true,
                     child: Flex.vertical(

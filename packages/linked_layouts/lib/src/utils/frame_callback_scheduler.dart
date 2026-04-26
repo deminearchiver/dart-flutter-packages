@@ -1,8 +1,8 @@
 import 'package:flutter/scheduler.dart';
 
 class FrameCallbackScheduler {
-  FrameCallbackScheduler(this.callback)
-    : _scheduler = SchedulerBinding.instance;
+  FrameCallbackScheduler(this.callback, {SchedulerBinding? schedulerBinding})
+    : _scheduler = schedulerBinding ?? SchedulerBinding.instance;
 
   final void Function(Duration timestamp) callback;
 

@@ -1,3 +1,10 @@
+## 0.4.0
+
+- Extracted client registration logic from `RenderLayout*Mixin` into `RenderObjectWith*LinkMixin`s.
+- Added `RenderObjectWithOptionalLayoutLinkMixin` and renamed `RenderObjectWithLayoutLinkMixin` to `RenderObjectWithRequiredLayoutLinkMixin`.
+- Added optional named `schedulerBinding` parameter to `FrameCallbackScheduler` for mocking purposes.
+- Organized source file structure.
+
 ## 0.3.0
 
 - Fixed `RenderObject` mutation error when attempting to schedule layout run during `SchedulerPhase.persistentCallbacks`.
