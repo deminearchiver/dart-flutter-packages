@@ -360,6 +360,47 @@ class _RenderSearchViewLayout extends RenderBox
   }
 }
 
+class SearchBarContainer extends StatelessWidget {
+  const SearchBarContainer({
+    super.key,
+    this.height,
+    this.shape,
+    this.color,
+    this.elevation,
+    this.shadowColor,
+    required this.child,
+  });
+
+  final double? height;
+  final ShapeBorder? shape;
+  final Color? color;
+  final double? elevation;
+  final Color? shadowColor;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorTheme = ColorTheme.of(context);
+    final elevationTheme = ElevationTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+
+    return SizedBox(
+      width: .infinity,
+      height: height ?? 56.0,
+      child: Material(
+        clipBehavior: .antiAlias,
+        shape:
+            shape ??
+            CornersBorder.rounded(corners: .all(shapeTheme.corner.full)),
+        color: color ?? colorTheme.surfaceContainer,
+        elevation: elevation ?? elevationTheme.level0,
+        shadowColor: shadowColor ?? colorTheme.shadow,
+        child: child,
+      ),
+    );
+  }
+}
+
 class SearchBarPaint extends StatefulWidget {
   const SearchBarPaint({
     super.key,
@@ -410,16 +451,10 @@ class _SearchBarPaintState extends State<SearchBarPaint> {
   Widget build(BuildContext context) {
     final defaultTextStyle = DefaultTextStyle.of(context).style;
     final colorTheme = ColorTheme.of(context);
-    final elevationTheme = ElevationTheme.of(context);
-    final shapeTheme = ShapeTheme.of(context);
     final stateTheme = StateTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
 
     final containerHeight = widget.containerHeight ?? 56.0;
-    final containerShape =
-        widget.containerShape ??
-        CornersBorder.rounded(corners: .all(shapeTheme.corner.full));
-    final containerColor = widget.containerColor ?? colorTheme.surfaceContainer;
 
     final inputTextStyle = defaultTextStyle.merge(
       typescaleTheme.bodyLarge.toTextStyle(color: colorTheme.onSurface),
@@ -427,58 +462,52 @@ class _SearchBarPaintState extends State<SearchBarPaint> {
     final inputTextLineHeight =
         (inputTextStyle.fontSize ?? 0.0) * (inputTextStyle.height ?? 0.0);
 
-    return SizedBox(
-      width: .infinity,
+    return SearchBarContainer(
       height: containerHeight,
-      child: Material(
-        clipBehavior: .antiAlias,
-        shape: containerShape,
-        color: containerColor,
-        elevation: elevationTheme.level0,
-        shadowColor: colorTheme.shadow,
-        child: _SearchBarLayout(
-          centerAlignmentFraction: widget.centerAlignmentFraction,
-          tapRegion: Material.raw(
-            child: InkWell(
-              overlayColor: WidgetStateLayerColor(
-                // TODO: tokens say onSurface, but might it be onSurfaceVariant?
-                color: .all(colorTheme.onSurface),
-                opacity: stateTheme.asWidgetStateLayerOpacity,
-              ),
-              focusNode: _tapRegionFocusNode,
-              onTap: widget.onTap,
+      shape: widget.containerShape,
+      color: widget.containerColor,
+      child: _SearchBarLayout(
+        centerAlignmentFraction: widget.centerAlignmentFraction,
+        tapRegion: Material.raw(
+          child: InkWell(
+            overlayColor: WidgetStateLayerColor(
+              // TODO: tokens say onSurface, but might it be onSurfaceVariant?
+              color: .all(colorTheme.onSurface),
+              opacity: stateTheme.asWidgetStateLayerOpacity,
             ),
+            focusNode: _tapRegionFocusNode,
+            onTap: widget.onTap,
           ),
-          supportingText: DefaultTextStyle(
-            textAlign: .start,
-            softWrap: false,
-            maxLines: 1,
-            overflow: .ellipsis,
-            style: typescaleTheme.bodyLarge.toTextStyle(
-              color: colorTheme.onSurfaceVariant,
-            ),
-            child: widget.supportingText,
-          ),
-          textField: TextField(
-            focusNode: _textFieldFocusNode,
-            clipBehavior: .hardEdge,
-            maxLines: 1,
-            style: inputTextStyle,
-            textAlign: .start,
-            textAlignVertical: .center,
-            textInputAction: .search,
-            textCapitalization: .none,
-            keyboardType: .text,
-            decoration: InputDecoration(
-              border: .none,
-              contentPadding: .symmetric(
-                vertical: (containerHeight - inputTextLineHeight) / 2.0,
-              ),
-            ),
-          ),
-          leading: widget.leading,
-          trailing: widget.trailing,
         ),
+        supportingText: DefaultTextStyle(
+          textAlign: .start,
+          softWrap: false,
+          maxLines: 1,
+          overflow: .ellipsis,
+          style: typescaleTheme.bodyLarge.toTextStyle(
+            color: colorTheme.onSurfaceVariant,
+          ),
+          child: widget.supportingText,
+        ),
+        textField: TextField(
+          focusNode: _textFieldFocusNode,
+          clipBehavior: .hardEdge,
+          maxLines: 1,
+          style: inputTextStyle,
+          textAlign: .start,
+          textAlignVertical: .center,
+          textInputAction: .search,
+          textCapitalization: .none,
+          keyboardType: .text,
+          decoration: InputDecoration(
+            border: .none,
+            contentPadding: .symmetric(
+              vertical: (containerHeight - inputTextLineHeight) / 2.0,
+            ),
+          ),
+        ),
+        leading: widget.leading,
+        trailing: widget.trailing,
       ),
     );
   }
@@ -1059,18 +1088,23 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
                   child: Flex.horizontal(
                     mainAxisSize: .min,
                     children: [
+                      // TODO: replace all of this with smart layout calculations
+                      //  (it's like this for demo purposes only)
                       Opacity(
                         opacity: clampDouble(animation.value, 0.0, 1.0),
-                        child: IconButton(
-                          style: LegacyThemeFactory.createIconButtonStyle(
-                            colorTheme: colorTheme,
-                            elevationTheme: elevationTheme,
-                            shapeTheme: shapeTheme,
-                            stateTheme: stateTheme,
-                            color: .standard,
+                        child: Align.centerEnd(
+                          widthFactor: math.max(animation.value, 0.0),
+                          child: IconButton(
+                            style: LegacyThemeFactory.createIconButtonStyle(
+                              colorTheme: colorTheme,
+                              elevationTheme: elevationTheme,
+                              shapeTheme: shapeTheme,
+                              stateTheme: stateTheme,
+                              color: .standard,
+                            ),
+                            onPressed: () {},
+                            icon: const Icon(Symbols.clear_rounded),
                           ),
-                          onPressed: () {},
-                          icon: const Icon(Symbols.clear_rounded),
                         ),
                       ),
                       IconButton(
@@ -1087,7 +1121,10 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
                     ],
                   ),
                 ),
-                supportingText: const Text("Search"),
+                supportingText: ColoredBox(
+                  color: Colors.red,
+                  child: const Text("Search"),
+                ),
               ),
               // searchBarContainer: Material(
               //   clipBehavior: .antiAlias,
