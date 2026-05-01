@@ -8,6 +8,8 @@ import 'package:material_example/flutter.dart';
 // ignore: implementation_imports
 import 'package:material/src/material_shapes/material_shapes.dart' hide Corner;
 
+import 'experiment5.dart' show Experiment5View;
+
 class App extends StatefulWidget {
   const App({super.key});
 
@@ -122,7 +124,7 @@ class _AppState extends State<App> {
     // Navigation
     // navigatorKey: globalNavigatorKey,
     builder: _buildNavigatorWrapper,
-    home: const Experiment3View(),
+    home: const Experiment5View(),
   );
 
   @override
