@@ -87,20 +87,21 @@ class SimulationController extends Animation<double>
 
   late TickerFuture _lastTickerFuture;
 
-  double get velocity {
-    if (!isAnimating) return 0.0;
-    return _simulation!.dx(
-      lastElapsedDuration!.inMicroseconds / Duration.microsecondsPerSecond,
-    );
-  }
+  double get velocity => isAnimating
+      ? _simulation!.dx(
+          lastElapsedDuration!.inMicroseconds / Duration.microsecondsPerSecond,
+        )
+      : 0.0;
 
   void _internalSetValue(double newValue) {
-    _value = clampDouble(newValue, lowerBound, upperBound);
-    if (_value == lowerBound) {
+    if (newValue <= lowerBound) {
+      _value = lowerBound;
       _status = .dismissed;
-    } else if (_value == upperBound) {
+    } else if (newValue >= upperBound) {
+      _value = upperBound;
       _status = .completed;
     } else {
+      _value = newValue;
       _status = _direction.toStatus(true);
     }
   }
@@ -256,7 +257,7 @@ class _InterpolationSimulation extends Simulation {
     this.scale = 1.0,
   }) : assert(duration.inMicroseconds > 0),
        _durationInSeconds =
-           (duration.inMicroseconds * scale) / Duration.microsecondsPerSecond;
+           duration.inMicroseconds * scale / Duration.microsecondsPerSecond;
 
   final Duration duration;
 
@@ -272,12 +273,10 @@ class _InterpolationSimulation extends Simulation {
 
   @override
   double x(double timeInSeconds) {
-    final t = clampDouble(timeInSeconds / _durationInSeconds, 0.0, 1.0);
-    return switch (t) {
-      0.0 => begin,
-      1.0 => end,
-      _ => begin + (end - begin) * curve.transform(t),
-    };
+    final t = timeInSeconds / _durationInSeconds;
+    if (t <= 0.0) return begin;
+    if (t >= 1.0) return end;
+    return begin + (end - begin) * curve.transform(t);
   }
 
   @override
@@ -304,7 +303,7 @@ class _RepeatingSimulation extends Simulation {
     this.count,
   ) : assert(
         count == null || count > 0,
-        "Count shall be greater than zero if not null",
+        "Count must be greater than zero if not null.",
       ),
       _periodInSeconds = period.inMicroseconds / Duration.microsecondsPerSecond,
       _initialT = (max == min)
@@ -335,10 +334,10 @@ class _RepeatingSimulation extends Simulation {
     final isPlayingReverse = (totalTimeInSeconds ~/ _periodInSeconds).isOdd;
 
     if (reverse && isPlayingReverse) {
-      directionSetter(AnimationDirection.reverse);
+      directionSetter(.reverse);
       return lerpDouble(max, min, t);
     } else {
-      directionSetter(AnimationDirection.forward);
+      directionSetter(.forward);
       return lerpDouble(min, max, t);
     }
   }
