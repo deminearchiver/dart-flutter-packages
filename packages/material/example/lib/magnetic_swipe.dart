@@ -55,333 +55,328 @@ final _kAttachSpring = SpringDescription.withDampingRatio(
   ratio: _kAttachDampingRatio,
 );
 
-enum _State { idle, targetsSet, pulling, detached }
+const _kTranslationBufferSize = 10;
 
-class MagneticSwipeConfiguration {}
+// class MagneticSwipe extends StatefulWidget {
+//   const MagneticSwipe({super.key, required this.builder});
 
-class MagneticSwipeController {
-  MagneticSwipeController();
-}
+//   final WidgetBuilder builder;
 
-class MagneticSwipe extends StatefulWidget {
-  const MagneticSwipe({super.key, required this.builder});
+//   @override
+//   State<MagneticSwipe> createState() => _MagneticSwipeState();
+// }
 
-  final WidgetBuilder builder;
+// class _MagneticSwipeState extends State<MagneticSwipe>
+//     with SingleTickerProviderStateMixin {
+//   final _gestureDetectorKey = GlobalKey();
 
-  @override
-  State<MagneticSwipe> createState() => _MagneticSwipeState();
-}
+//   late _MagneticAnimation _controller1;
+//   var _physicalTranslation = 0.0;
 
-class _MagneticSwipeState extends State<MagneticSwipe>
-    with SingleTickerProviderStateMixin {
-  final _gestureDetectorKey = GlobalKey();
+//   final _velocityTracker = AxisVelocityTracker();
 
-  late _MagneticAnimation _controller1;
-  var _physicalTranslation = 0.0;
+//   var _currentState = _ExpressiveSwipeControllerState.idle;
 
-  final _velocityTracker = AxisVelocityTracker();
+//   final _detachDirectionEstimator = _DirectionEstimator(
+//     _kTranslationBufferSize,
+//   );
 
-  var _currentState = _State.idle;
+//   double get _width {
+//     final box =
+//         _gestureDetectorKey.currentContext?.findRenderObject() as RenderBox?;
+//     try {
+//       return box != null && box.hasSize ? box.size.width : 1.0;
+//     } on Object {
+//       return 1.0;
+//     }
+//   }
 
-  final _detachDirectionEstimator = _DirectionEstimator(10);
+//   bool _isDismissible(double endVelocity) {
+//     final isEndVelocityLargeEnough = endVelocity.abs() >= _kDismissVelocity;
+//     late final shouldSnapBack =
+//         isEndVelocityLargeEnough &&
+//         _detachDirectionEstimator.direction != endVelocity.sign;
+//     return switch (_currentState) {
+//       .idle || .pulling => isEndVelocityLargeEnough,
+//       .detached => !shouldSnapBack,
+//     };
+//   }
 
-  double get _width {
-    final box =
-        _gestureDetectorKey.currentContext?.findRenderObject() as RenderBox?;
-    try {
-      return box != null && box.hasSize ? box.size.width : 1.0;
-    } on Object {
-      return 1.0;
-    }
-  }
+//   void _attach(double translation) {
+//     final detachDirection = _detachDirectionEstimator.direction;
+//     final swipeVelocity = _velocityTracker.velocity;
+//     _controller1.animateExplicit(
+//       translation * _kMagneticTranslationMultiplier,
+//       _kAttachSpring,
+//       swipeVelocity.abs() * -detachDirection,
+//     );
+//     _detachDirectionEstimator.reset();
+//   }
 
-  bool _isDismissible(double endVelocity) {
-    final isEndVelocityLargeEnough = endVelocity.abs() >= _kDismissVelocity;
-    late final shouldSnapBack =
-        isEndVelocityLargeEnough &&
-        _detachDirectionEstimator.direction != endVelocity.sign;
-    return switch (_currentState) {
-      .idle || .targetsSet || .pulling => isEndVelocityLargeEnough,
-      .detached => !shouldSnapBack,
-    };
-  }
+//   void _detach(double toPosition) {
+//     final direction = _detachDirectionEstimator.direction;
+//     final velocity = _velocityTracker.velocity;
+//     _controller1.animateExplicit(
+//       toPosition,
+//       _kDetachSpring,
+//       velocity.abs() * direction,
+//     );
+//   }
 
-  void _attach(double translation) {
-    final detachDirection = _detachDirectionEstimator.direction;
-    final swipeVelocity = _velocityTracker.velocity;
-    _controller1.animateExplicit(
-      translation * _kMagneticTranslationMultiplier,
-      _kAttachSpring,
-      -detachDirection * swipeVelocity.abs(),
-    );
-    _detachDirectionEstimator.reset();
-  }
+//   void _pull(double translation, bool canSwipedBeDismissed) {
+//     _controller1.animateImplicit(
+//       canSwipedBeDismissed
+//           ? translation * _kMagneticTranslationMultiplier
+//           : translation * _kMagneticTranslationMultiplier * _kMagneticReduction,
+//     );
+//   }
 
-  void _detach(double toPosition) {
-    final direction = _detachDirectionEstimator.direction;
-    final velocity = _velocityTracker.velocity;
-    _controller1.animateExplicit(
-      toPosition,
-      _kDetachSpring,
-      direction * velocity.abs(),
-    );
-  }
+//   void _snapBack([double velocity = 0.0]) {
+//     _controller1.animateExplicit(
+//       0.0,
+//       _kSnapBackSpring,
+//       velocity * _kMagneticTranslationMultiplier,
+//     );
+//   }
 
-  void _pull(double translation, bool canSwipedBeDismissed) {
-    _controller1.animateImplicit(
-      canSwipedBeDismissed
-          ? translation * _kMagneticTranslationMultiplier
-          : translation * _kMagneticTranslationMultiplier * _kMagneticReduction,
-    );
-  }
+//   void _onDragDown(DragDownDetails details) {
+//     // print(
+//     //   "D: "
+//     //   "g ${details.globalPosition.dx} "
+//     //   "l ${details.localPosition.dx}",
+//     // );
+//     _physicalTranslation = 0.0;
+//   }
 
-  void _snapBack([double velocity = 0.0]) {
-    _controller1.animateExplicit(
-      0.0,
-      _kSnapBackSpring,
-      velocity * _kMagneticTranslationMultiplier,
-    );
-  }
+//   void _onDragStart(DragStartDetails details) {
+//     // print(
+//     //   "S: "
+//     //   "g ${details.globalPosition.dx} "
+//     //   "l ${details.localPosition.dx} ///",
+//     // );
+//     _physicalTranslation = 0.0;
+//   }
 
-  void _onDragDown(DragDownDetails details) {
-    // print(
-    //   "D: "
-    //   "g ${details.globalPosition.dx} "
-    //   "l ${details.localPosition.dx}",
-    // );
-    _physicalTranslation = 0.0;
-  }
+//   void _onDragUpdate(DragUpdateDetails details) {
+//     assert(details.primaryDelta != null);
+//     final delta = details.primaryDelta!;
+//     _physicalTranslation += delta;
+//     _velocityTracker.addPosition(
+//       details.sourceTimeStamp!,
+//       details.globalPosition.dx,
+//     );
 
-  void _onDragStart(DragStartDetails details) {
-    // print(
-    //   "S: "
-    //   "g ${details.globalPosition.dx} "
-    //   "l ${details.localPosition.dx} ///",
-    // );
-    _physicalTranslation = 0.0;
-  }
+//     switch (_currentState) {
+//       case .idle:
+//         _detachDirectionEstimator.add(_physicalTranslation);
+//         _pull(_physicalTranslation, true);
+//         _currentState = .pulling;
+//       case .pulling:
+//         _detachDirectionEstimator.add(_physicalTranslation);
 
-  void _onDragUpdate(DragUpdateDetails details) {
-    assert(details.primaryDelta != null);
-    final delta = details.primaryDelta!;
-    _physicalTranslation += delta;
-    _velocityTracker.addPosition(
-      details.sourceTimeStamp!,
-      details.globalPosition.dx,
-    );
+//         final crossedThreshold =
+//             _physicalTranslation.abs() >= _kMagneticDetachThreshold;
+//         if (crossedThreshold) {
+//           _detachDirectionEstimator.stop();
+//           _detach(_physicalTranslation);
+//           _currentState = .detached;
+//         } else {
+//           _pull(_physicalTranslation, true);
+//         }
 
-    switch (_currentState) {
-      case .idle:
-      case .targetsSet:
-        _detachDirectionEstimator.add(_physicalTranslation);
-        _pull(_physicalTranslation, true);
-        _currentState = .pulling;
-      case .pulling:
-        _detachDirectionEstimator.add(_physicalTranslation);
+//       case .detached:
+//         _detachDirectionEstimator.add(_physicalTranslation);
+//         final crossedThreshold =
+//             _physicalTranslation.abs() <= _kMagneticAttachThreshold;
+//         if (crossedThreshold) {
+//           _attach(_physicalTranslation);
+//           _currentState = .pulling;
+//         } else {
+//           _controller1.animateImplicit(_physicalTranslation);
+//         }
+//     }
 
-        final crossedThreshold =
-            _physicalTranslation.abs() >= _kMagneticDetachThreshold;
-        if (crossedThreshold) {
-          _detachDirectionEstimator.stop();
-          _detach(_physicalTranslation);
-          _currentState = .detached;
-        } else {
-          _pull(_physicalTranslation, true);
-        }
+//     // final crossedThreshold =
+//     //     _physicalTranslation.abs() >= _kMagneticDetachThreshold;
+//     // if (crossedThreshold) {
+//     //   _detachDirectionEstimator.stop();
+//     //   _detach(_physicalTranslation);
+//     //   _currentState = .detached;
+//     // } else {}
 
-      case .detached:
-        _detachDirectionEstimator.add(_physicalTranslation);
-        final crossedThreshold =
-            _physicalTranslation.abs() <= _kMagneticAttachThreshold;
-        if (crossedThreshold) {
-          _attach(_physicalTranslation);
-          _currentState = .pulling;
-        } else {
-          _controller1.animateImplicit(_physicalTranslation);
-        }
-    }
+//     // print(
+//     //   "U: "
+//     //   // "d ${delta.toStringAsFixed(1)} "
+//     //   "t ${(_physicalTranslation * 100).round()}% "
+//     //   "v ${_velocityTracker.velocity.toStringAsFixed(1)}",
+//     // );
+//   }
 
-    // final crossedThreshold =
-    //     _physicalTranslation.abs() >= _kMagneticDetachThreshold;
-    // if (crossedThreshold) {
-    //   _detachDirectionEstimator.stop();
-    //   _detach(_physicalTranslation);
-    //   _currentState = .detached;
-    // } else {}
+//   void _onDragEnd(DragEndDetails details) {
+//     // final velocity = details.velocity.pixelsPerSecond.dx;
+//     // print(
+//     //   "E: "
+//     //   "v ${velocity.round()}dp ${(velocity / _width * 100).round()}% "
+//     //   "///",
+//     // );
 
-    // print(
-    //   "U: "
-    //   // "d ${delta.toStringAsFixed(1)} "
-    //   "t ${(_physicalTranslation * 100).round()}% "
-    //   "v ${_velocityTracker.velocity.toStringAsFixed(1)}",
-    // );
-  }
+//     _detachDirectionEstimator.reset();
+//     _velocityTracker.reset();
 
-  void _onDragEnd(DragEndDetails details) {
-    // final velocity = details.velocity.pixelsPerSecond.dx;
-    // print(
-    //   "E: "
-    //   "v ${velocity.round()}dp ${(velocity / _width * 100).round()}% "
-    //   "///",
-    // );
+//     _physicalTranslation = 0.0;
 
-    _detachDirectionEstimator.reset();
-    _velocityTracker.reset();
+//     _snapBack(details.velocity.pixelsPerSecond.dx);
+//   }
 
-    _physicalTranslation = 0.0;
+//   void _onDragCancel() {
+//     // print(
+//     //   "C "
+//     //   "///",
+//     // );
+//     _physicalTranslation = 0.0;
+//     _velocityTracker.reset();
+//   }
 
-    _snapBack(details.velocity.pixelsPerSecond.dx);
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller1 = _MagneticAnimation(vsync: this);
+//   }
 
-  void _onDragCancel() {
-    // print(
-    //   "C "
-    //   "///",
-    // );
-    _physicalTranslation = 0.0;
-    _velocityTracker.reset();
-  }
+//   @override
+//   void didUpdateWidget(covariant MagneticSwipe oldWidget) {
+//     super.didUpdateWidget(oldWidget);
+//   }
 
-  @override
-  void initState() {
-    super.initState();
-    _controller1 = _MagneticAnimation(vsync: this);
-  }
+//   @override
+//   void dispose() {
+//     _controller1.dispose();
+//     super.dispose();
+//   }
 
-  @override
-  void didUpdateWidget(covariant MagneticSwipe oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       key: _gestureDetectorKey,
+//       behavior: .deferToChild,
+//       onHorizontalDragDown: _onDragDown,
+//       onHorizontalDragStart: _onDragStart,
+//       onHorizontalDragUpdate: _onDragUpdate,
+//       onHorizontalDragEnd: _onDragEnd,
+//       onHorizontalDragCancel: _onDragCancel,
+//       child: AnimatedBuilder(
+//         animation: _controller1,
+//         builder: (context, child) => Transform.translate(
+//           offset: Offset(_controller1.value, 0.0),
+//           transformHitTests: true,
+//           child: child,
+//         ),
+//         child: widget.builder(context),
+//       ),
+//     );
+//   }
+// }
 
-  @override
-  void dispose() {
-    _controller1.dispose();
-    super.dispose();
-  }
+// class _MagneticAnimation implements Animation<double> {
+//   _MagneticAnimation({required TickerProvider vsync, double value = 0.0})
+//     : _controller = SimulationController.unbounded(vsync: vsync, value: value);
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      key: _gestureDetectorKey,
-      behavior: .deferToChild,
-      onHorizontalDragDown: _onDragDown,
-      onHorizontalDragStart: _onDragStart,
-      onHorizontalDragUpdate: _onDragUpdate,
-      onHorizontalDragEnd: _onDragEnd,
-      onHorizontalDragCancel: _onDragCancel,
-      child: AnimatedBuilder(
-        animation: _controller1,
-        builder: (context, child) => Transform.translate(
-          offset: Offset(_controller1.value, 0.0),
-          transformHitTests: true,
-          child: child,
-        ),
-        child: widget.builder(context),
-      ),
-    );
-  }
-}
+//   final SimulationController _controller;
 
-class _MagneticAnimation implements Animation<double> {
-  _MagneticAnimation({required TickerProvider vsync, double value = 0.0})
-    : _controller = SimulationController.unbounded(vsync: vsync, value: value);
+//   late SpringDescription _spring;
+//   late double _startVelocity;
 
-  final SimulationController _controller;
+//   void resync(TickerProvider vsync) {
+//     _controller.resync(vsync);
+//   }
 
-  late SpringDescription _spring;
-  late double _startVelocity;
+//   void animateImplicit(double to) {
+//     if (_controller.isAnimating) {
+//       final simulation = SpringSimulation(
+//         _spring,
+//         _controller.value,
+//         to,
+//         _controller.velocity,
+//         snapToEnd: true,
+//       );
+//       unawaited(
+//         _controller.animateWith(simulation, .forward, resetTicker: false),
+//       );
+//     } else {
+//       _controller.value = to;
+//     }
+//   }
 
-  void resync(TickerProvider vsync) {
-    _controller.resync(vsync);
-  }
+//   void animateExplicit(
+//     double to,
+//     SpringDescription spring,
+//     double startVelocity,
+//   ) {
+//     _spring = spring;
+//     _startVelocity = startVelocity;
+//     final simulation = SpringSimulation(
+//       _spring,
+//       _controller.value,
+//       to,
+//       _startVelocity,
+//       snapToEnd: true,
+//     );
+//     unawaited(_controller.animateWith(simulation, .forward));
+//   }
 
-  void animateImplicit(double to) {
-    if (_controller.isAnimating) {
-      final simulation = SpringSimulation(
-        _spring,
-        _controller.value,
-        to,
-        _controller.velocity,
-        snapToEnd: true,
-      );
-      unawaited(
-        _controller.animateWith(simulation, .forward, resetTicker: false),
-      );
-    } else {
-      _controller.value = to;
-    }
-  }
+//   void stop() {
+//     _controller.stop(canceled: true);
+//   }
 
-  void animateExplicit(
-    double to,
-    SpringDescription spring,
-    double startVelocity,
-  ) {
-    _spring = spring;
-    _startVelocity = startVelocity;
-    final simulation = SpringSimulation(
-      _spring,
-      _controller.value,
-      to,
-      _startVelocity,
-      snapToEnd: true,
-    );
-    unawaited(_controller.animateWith(simulation, .forward));
-  }
+//   @mustCallSuper
+//   void dispose() {
+//     _controller.dispose();
+//   }
 
-  void stop() {
-    _controller.stop(canceled: true);
-  }
+//   @override
+//   void addListener(VoidCallback listener) {
+//     _controller.addListener(listener);
+//   }
 
-  @mustCallSuper
-  void dispose() {
-    _controller.dispose();
-  }
+//   @override
+//   void addStatusListener(AnimationStatusListener listener) {
+//     _controller.addStatusListener(listener);
+//   }
 
-  @override
-  void addListener(VoidCallback listener) {
-    _controller.addListener(listener);
-  }
+//   @override
+//   Animation<U> drive<U>(Animatable<U> child) => _controller.drive(child);
 
-  @override
-  void addStatusListener(AnimationStatusListener listener) {
-    _controller.addStatusListener(listener);
-  }
+//   @override
+//   bool get isAnimating => _controller.isAnimating;
 
-  @override
-  Animation<U> drive<U>(Animatable<U> child) => _controller.drive(child);
+//   @override
+//   bool get isCompleted => _controller.isCompleted;
 
-  @override
-  bool get isAnimating => _controller.isAnimating;
+//   @override
+//   bool get isDismissed => _controller.isDismissed;
 
-  @override
-  bool get isCompleted => _controller.isCompleted;
+//   @override
+//   bool get isForwardOrCompleted => _controller.isForwardOrCompleted;
 
-  @override
-  bool get isDismissed => _controller.isDismissed;
+//   @override
+//   void removeListener(VoidCallback listener) {
+//     _controller.removeListener(listener);
+//   }
 
-  @override
-  bool get isForwardOrCompleted => _controller.isForwardOrCompleted;
+//   @override
+//   void removeStatusListener(AnimationStatusListener listener) {
+//     _controller.removeStatusListener(listener);
+//   }
 
-  @override
-  void removeListener(VoidCallback listener) {
-    _controller.removeListener(listener);
-  }
+//   @override
+//   AnimationStatus get status => _controller.status;
 
-  @override
-  void removeStatusListener(AnimationStatusListener listener) {
-    _controller.removeStatusListener(listener);
-  }
+//   @override
+//   String toStringDetails() => _controller.toStringDetails();
 
-  @override
-  AnimationStatus get status => _controller.status;
-
-  @override
-  String toStringDetails() => _controller.toStringDetails();
-
-  @override
-  double get value => _controller.value;
-}
+//   @override
+//   double get value => _controller.value;
+// }
 
 /// A class to estimate the direction of a gesture translations
 /// with a moving average.
@@ -419,12 +414,12 @@ class _DirectionEstimator {
 
   var _acceptTranslations = true;
 
-  var _direction = 0.0;
+  var _direction = 0;
 
   /// The estimated direction of the translations. It will be estimated as
   /// the weighted average of the values in the translation buffer and set
   /// only once when the estimator is stopped.
-  double get direction => _direction;
+  int get direction => _direction;
 
   /// Add a new translation to the translation buffer if translations are still
   /// being accepted (see [stop]). If the buffer is full, the last value is
@@ -447,7 +442,7 @@ class _DirectionEstimator {
   }
 
   void reset() {
-    _direction = 0.0;
+    _direction = 0;
     _translationBuffer.fillRange(0, _bufferSize, 0.0);
     _acceptTranslations = true;
   }
@@ -463,5 +458,376 @@ class _DirectionEstimator {
     return weightedSum / _bufferSize;
   }
 
-  double _computeDirection() => _computeTranslationAverage().sign;
+  int _computeDirection() => _computeTranslationAverage().sign.toInt();
+}
+
+enum _ExpressiveSwipeControllerState { idle, pulling, detached }
+
+class ExpressiveSwipeController extends Animation<double> {
+  ExpressiveSwipeController({required TickerProvider vsync, this.debugLabel})
+    : _simulationController = SimulationController.unbounded(
+        vsync: vsync,
+        animationBehavior: .preserve,
+      );
+
+  final String? debugLabel;
+
+  // ////////////////////////////////////////////////////////////////
+  // Spring-based animation system //
+  // ////////////////////////////////////////////////////////////////
+
+  late SpringDescription _lastSpring;
+
+  late double _lastStartVelocity;
+
+  final SimulationController _simulationController;
+
+  double get animationVelocity => _simulationController.velocity;
+
+  void _setTranslation(double value) {
+    if (_simulationController.isAnimating) {
+      final simulation = SpringSimulation(
+        _lastSpring,
+        _simulationController.value,
+        value,
+        _simulationController.velocity,
+        snapToEnd: true,
+      );
+      unawaited(
+        _simulationController.animateWith(
+          simulation,
+          .forward,
+          resetTicker: false,
+        ),
+      );
+    } else {
+      _simulationController.value = value;
+    }
+  }
+
+  void _animateTranslation(
+    SpringDescription spring,
+    double to,
+    double startVelocity,
+  ) {
+    _lastSpring = spring;
+    _lastStartVelocity = startVelocity;
+    final simulation = SpringSimulation(
+      _lastSpring,
+      _simulationController.value,
+      to,
+      _lastStartVelocity,
+      snapToEnd: true,
+    );
+    _simulationController.stop(canceled: true);
+    unawaited(
+      _simulationController.animateWith(
+        simulation,
+        .forward,
+        resetTicker: true,
+      ),
+    );
+  }
+
+  void resync(TickerProvider vsync) {
+    _simulationController.resync(vsync);
+  }
+
+  @override
+  void addListener(VoidCallback listener) {
+    _simulationController.addListener(listener);
+  }
+
+  @override
+  void addStatusListener(AnimationStatusListener listener) {
+    _simulationController.addStatusListener(listener);
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    _simulationController.removeListener(listener);
+  }
+
+  @override
+  void removeStatusListener(AnimationStatusListener listener) {
+    _simulationController.removeStatusListener(listener);
+  }
+
+  @override
+  AnimationStatus get status => _simulationController.status;
+
+  @override
+  double get value => _simulationController.value;
+
+  // ////////////////////////////////////////////////////////////////
+  // Swipe velocity estimation system //
+  // ////////////////////////////////////////////////////////////////
+
+  final _velocityTracker = AxisVelocityTracker();
+
+  double get swipeVelocity => _velocityTracker.velocity;
+
+  // ////////////////////////////////////////////////////////////////
+  // Detach direction estimation system //
+  // ////////////////////////////////////////////////////////////////
+
+  final _directionEstimator = _DirectionEstimator(_kTranslationBufferSize);
+
+  int get detachDirection => _directionEstimator.direction;
+
+  // ////////////////////////////////////////////////////////////////
+  // State management system (actual logic) //
+  // ////////////////////////////////////////////////////////////////
+
+  _ExpressiveSwipeControllerState _currentState = .idle;
+
+  void _attach(double translation) {
+    _animateTranslation(
+      _kAttachSpring,
+      translation * _kMagneticTranslationMultiplier,
+      swipeVelocity.abs() * -detachDirection,
+    );
+    _directionEstimator.reset();
+  }
+
+  void _detach(double translation) {
+    _animateTranslation(
+      _kDetachSpring,
+      translation,
+      swipeVelocity.abs() * detachDirection,
+    );
+  }
+
+  void _snapBack(double velocity) {
+    _animateTranslation(
+      _kSnapBackSpring,
+      0.0,
+      velocity * _kMagneticTranslationMultiplier,
+    );
+  }
+
+  void _pull(double translation, bool canBeDismissed) {
+    translation *= _kMagneticTranslationMultiplier;
+    if (!canBeDismissed) translation *= _kMagneticReduction;
+    _setTranslation(translation);
+  }
+
+  void _pullDismissible(double translation) {
+    if (translation.abs() >= _kMagneticDetachThreshold) {
+      _directionEstimator.stop();
+      _detach(translation);
+      _currentState = .detached;
+    } else {
+      _pull(translation, true);
+    }
+  }
+
+  void _translateDetached(double translation) {
+    if (translation.abs() <= _kMagneticAttachThreshold) {
+      _attach(translation);
+      _currentState = .pulling;
+    } else {
+      _setTranslation(translation);
+    }
+  }
+
+  bool isDismissible(double velocity) {
+    final isEndVelocityLargeEnough = velocity.abs() >= _kDismissVelocity;
+    late final shouldSnapBack =
+        isEndVelocityLargeEnough &&
+        _directionEstimator.direction != velocity.sign;
+    return switch (_currentState) {
+      .idle || .pulling => isEndVelocityLargeEnough,
+      .detached => !shouldSnapBack,
+    };
+  }
+
+  void start() {
+    _velocityTracker.reset();
+    _directionEstimator.reset();
+  }
+
+  void update(double translation, {Duration? sourceTimestamp}) {
+    _velocityTracker.addPosition(sourceTimestamp ?? .zero, translation);
+    _directionEstimator.add(translation);
+
+    switch (_currentState) {
+      case .idle:
+        _pull(translation, true);
+        _currentState = .pulling;
+      case .pulling:
+        _pullDismissible(translation);
+      case .detached:
+        _translateDetached(translation);
+    }
+  }
+
+  void end({required bool dismissing, double? velocity}) {
+    _velocityTracker.reset();
+    _directionEstimator.reset();
+
+    switch (_currentState) {
+      case .idle:
+        break;
+      case .pulling:
+        _currentState = .idle;
+      case .detached:
+        _currentState = .idle;
+    }
+
+    _simulationController.stop(canceled: true);
+  }
+
+  void reset() {
+    _velocityTracker.reset();
+    _directionEstimator.reset();
+    _simulationController.stop(canceled: true);
+    _currentState = .idle;
+  }
+
+  // ////////////////////////////////////////////////////////////////
+  // Disposal system //
+  // ////////////////////////////////////////////////////////////////
+
+  var _disposed = false;
+
+  @mustCallSuper
+  void dispose() {
+    assert(debugAssertNotDisposed(this));
+
+    _simulationController.dispose();
+    _velocityTracker.reset();
+    _directionEstimator.reset();
+
+    _disposed = true;
+  }
+
+  @override
+  String toStringDetails() {
+    final state = switch (_currentState) {
+      .idle => "; idle",
+      .pulling => "; pulling",
+      .detached => "; detached",
+    };
+    final disposal = _disposed ? "; DISPOSED" : "";
+    var label = "";
+    assert(() {
+      if (debugLabel != null) label = "; for $debugLabel";
+      return true;
+    }());
+    final more = "${super.toStringDetails()} ${value.toStringAsFixed(1)}";
+    return "$more$state$disposal$label";
+  }
+
+  static bool debugAssertNotDisposed(ExpressiveSwipeController controller) {
+    assert(() {
+      if (controller._disposed) {
+        throw FlutterError(
+          "A ${controller.runtimeType} was used after being disposed.\n"
+          "Once you have called dispose() on ${controller.runtimeType}, "
+          "it can no longer be used",
+        );
+      }
+      return true;
+    }());
+    return true;
+  }
+}
+
+class MagneticSwipe extends StatefulWidget {
+  const MagneticSwipe({super.key, required this.builder});
+
+  final WidgetBuilder builder;
+
+  @override
+  State<MagneticSwipe> createState() => _MagneticSwipeState();
+}
+
+class _MagneticSwipeState extends State<MagneticSwipe>
+    with SingleTickerProviderStateMixin {
+  final _gestureDetectorKey = GlobalKey();
+
+  late ExpressiveSwipeController _controller;
+  var _physicalTranslation = 0.0;
+
+  // double get _width {
+  //   final box =
+  //       _gestureDetectorKey.currentContext?.findRenderObject() as RenderBox?;
+  //   try {
+  //     return box != null && box.hasSize ? box.size.width : 1.0;
+  //   } on Object {
+  //     return 1.0;
+  //   }
+  // }
+
+  void _onDragDown(DragDownDetails details) {
+    _physicalTranslation = 0.0;
+  }
+
+  void _onDragStart(DragStartDetails details) {
+    _physicalTranslation = 0.0;
+    _controller.start();
+  }
+
+  void _onDragUpdate(DragUpdateDetails details) {
+    assert(details.primaryDelta != null);
+    final delta = details.primaryDelta!;
+    _physicalTranslation += delta;
+    _controller.update(
+      _physicalTranslation,
+      sourceTimestamp: details.sourceTimeStamp,
+    );
+  }
+
+  void _onDragEnd(DragEndDetails details) {
+    final velocity = details.velocity.pixelsPerSecond.dx;
+    _physicalTranslation = 0.0;
+    _controller
+      ..end(dismissing: true, velocity: velocity)
+      .._snapBack(velocity);
+  }
+
+  void _onDragCancel() {
+    _physicalTranslation = 0.0;
+    _controller.end(dismissing: false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ExpressiveSwipeController(vsync: this);
+  }
+
+  @override
+  void didUpdateWidget(covariant MagneticSwipe oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      key: _gestureDetectorKey,
+      behavior: .deferToChild,
+      onHorizontalDragDown: _onDragDown,
+      onHorizontalDragStart: _onDragStart,
+      onHorizontalDragUpdate: _onDragUpdate,
+      onHorizontalDragEnd: _onDragEnd,
+      onHorizontalDragCancel: _onDragCancel,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) => Transform.translate(
+          offset: Offset(_controller.value, 0.0),
+          transformHitTests: true,
+          child: child,
+        ),
+        child: widget.builder(context),
+      ),
+    );
+  }
 }
