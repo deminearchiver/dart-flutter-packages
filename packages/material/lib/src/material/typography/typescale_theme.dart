@@ -371,9 +371,6 @@ abstract class TypescaleThemeDataPartial with Diagnosticable {
         )
       : this;
 
-  @Deprecated("Use toBaselineTextTheme instead.")
-  TextTheme toTextTheme() => toBaselineTextTheme();
-
   TextTheme toBaselineTextTheme() => TextTheme(
     displayLarge: displayLarge?.toTextStyle(),
     displayMedium: displayMedium?.toTextStyle(),
@@ -1543,29 +1540,6 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     : _typefaceTheme = typefaceTheme;
 
   final TypefaceThemeData _typefaceTheme;
-
-  TextGeometry _buildTypeStyle({
-    required List<String> font,
-    required double weight,
-    required double size,
-    required double lineHeight,
-    required double tracking,
-  }) => TextGeometry.from(
-    font: font,
-    weight: weight,
-    size: size,
-    lineHeight: lineHeight,
-    tracking: tracking,
-    wght: weight,
-    grad: 0.0,
-    wdth: 100.0,
-    rond: 0.0,
-    opsz: size,
-    crsv: 0.0,
-    slnt: 0.0,
-    fill: 0.0,
-    hexp: 0.0,
-  );
 
   @override
   TextGeometry get displayLarge => .from(
