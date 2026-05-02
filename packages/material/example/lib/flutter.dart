@@ -92,5 +92,7 @@ export 'theme/typography.dart';
 export 'utils/combining_builder.dart';
 export 'utils/extensions.dart';
 export 'utils/inverse_center_optically.dart';
+export 'utils/simulation_controller.dart';
 export 'utils/sliver_dynamic_header_basic.dart';
+export 'utils/velocity_tracker.dart';
 export 'widgets/list_item.dart';
