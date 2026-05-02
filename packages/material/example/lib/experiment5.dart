@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:material_example/flutter.dart';
 
 import 'magnetic_swipe.dart';
@@ -35,11 +37,164 @@ class _Experiment5ViewState extends State<Experiment5View> {
               ),
             ],
           ),
-          Flex.vertical(
-            mainAxisAlignment: .end,
-            children: [
-              MagneticSwipe(
-                builder: (context) => ListItemContainer(
+          const PlayerBottomSheet(),
+        ],
+      ),
+    );
+  }
+}
+
+class PlayerBottomSheet extends StatefulWidget {
+  const PlayerBottomSheet({super.key});
+
+  @override
+  State<PlayerBottomSheet> createState() => _PlayerBottomSheetState();
+}
+
+class _PlayerBottomSheetState extends State<PlayerBottomSheet>
+    with TickerProviderStateMixin {
+  Timer? _timer;
+
+  final _gestureDetectorKey = GlobalKey();
+
+  double get _width {
+    final box =
+        _gestureDetectorKey.currentContext?.findRenderObject() as RenderBox?;
+    try {
+      return box != null && box.hasSize ? box.size.width : 1.0;
+    } on Object {
+      return 1.0;
+    }
+  }
+
+  late ExpressiveSwipeController _swipeController;
+  late SimulationController _dismissController;
+
+  var _absoluteTranslation = 0.0;
+
+  void _onDragDown(DragDownDetails details) {
+    _absoluteTranslation = 0.0;
+  }
+
+  void _onDragStart(DragStartDetails details) {
+    _absoluteTranslation = 0.0;
+    _swipeController.start();
+  }
+
+  void _onDragUpdate(DragUpdateDetails details) {
+    assert(details.primaryDelta != null);
+    final delta = details.primaryDelta!;
+    _absoluteTranslation += delta;
+    _swipeController.update(
+      _absoluteTranslation,
+      sourceTimestamp: details.sourceTimeStamp,
+    );
+  }
+
+  void _onDragEnd(DragEndDetails details) {
+    final velocity = details.velocity.pixelsPerSecond.dx;
+
+    final direction = _swipeController.detachDirection.toDouble();
+    final dismissing = _swipeController.isDismissible(velocity);
+    final translation = _swipeController.value;
+    _swipeController.end(dismissing: dismissing, velocity: velocity);
+
+    if (dismissing) {
+      final width = _width;
+      final simulation = SpringSimulation(
+        SpringDescription.withDampingRatio(
+          mass: 1.0,
+          stiffness: 500.0,
+          ratio: 1.0,
+        ),
+        translation / width,
+        direction,
+        velocity / width,
+        snapToEnd: true,
+      );
+      unawaited(
+        _dismissController.animateWith(simulation, .forward, resetTicker: true),
+      );
+      _timer = Timer(const .new(milliseconds: 1000), () {
+        if (!mounted) return;
+        final simulation = SpringSimulation(
+          SpringDescription.withDampingRatio(
+            mass: 1.0,
+            stiffness: 550.0,
+            ratio: 0.6,
+          ),
+          _dismissController.value,
+          0.0,
+          0.0,
+          snapToEnd: true,
+        );
+        unawaited(
+          _dismissController.animateWith(
+            simulation,
+            .forward,
+            resetTicker: true,
+          ),
+        );
+      });
+    }
+
+    _absoluteTranslation = 0.0;
+  }
+
+  void _onDragCancel() {
+    _swipeController.end(dismissing: false);
+    _absoluteTranslation = 0.0;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _swipeController = ExpressiveSwipeController(vsync: this);
+    _dismissController = SimulationController.unbounded(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _swipeController.dispose();
+    _dismissController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colorTheme = ColorTheme.of(context);
+    final elevationTheme = ElevationTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    final typescaleTheme = TypescaleTheme.of(context);
+    return SizedBox.expand(
+      child: Flex.vertical(
+        mainAxisAlignment: .end,
+        children: [
+          GestureDetector(
+            key: _gestureDetectorKey,
+            behavior: .deferToChild,
+            onHorizontalDragDown: _onDragDown,
+            onHorizontalDragStart: _onDragStart,
+            onHorizontalDragUpdate: _onDragUpdate,
+            onHorizontalDragEnd: _onDragEnd,
+            onHorizontalDragCancel: _onDragCancel,
+            child: AnimatedBuilder(
+              animation: _dismissController,
+              builder: (context, child) => FractionalTranslation(
+                translation: Offset(_dismissController.value, 0.0),
+                transformHitTests: true,
+                child: child,
+              ),
+              child: AnimatedBuilder(
+                animation: _swipeController,
+                builder: (context, child) => Transform.translate(
+                  offset: Offset(_swipeController.value, 0.0),
+                  transformHitTests: true,
+                  child: child,
+                ),
+                child: ListItemContainer(
                   isFirst: true,
                   isLast: true,
                   containerColor: .all(colorTheme.surfaceContainerHighest),
@@ -49,47 +204,55 @@ class _Experiment5ViewState extends State<Experiment5View> {
                       minHeight: 64.0,
                       maxHeight: 64.0,
                       leading: const Icon(Symbols.frame_exclamation_rounded),
-                      headline: Text("Swipe me!"),
-                      supportingText: Text("Let's see what you're capable of!"),
+                      headline: Text(
+                        "Swipe me!",
+                        maxLines: 1,
+                        overflow: .ellipsis,
+                      ),
+                      supportingText: Text(
+                        "Let's see what you're capable of!",
+                        maxLines: 1,
+                        overflow: .ellipsis,
+                      ),
                       trailing: const Icon(Symbols.swipe_right_rounded),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 2.0),
-              SizedBox(
-                height: 64.0,
-                child: ListItemContainer(
-                  isFirst: true,
-                  containerColor: .all(colorTheme.surfaceContainerHighest),
-                  child: const Flex.horizontal(
-                    children: [
-                      Flexible.tight(
-                        child: _VerticalNavigationItem(
-                          isSelected: true,
-                          icon: Icon(Symbols.home),
-                          label: Text("Home"),
-                        ),
-                      ),
-                      Flexible.tight(
-                        child: _VerticalNavigationItem(
-                          isSelected: false,
-                          icon: Icon(Symbols.library_music_rounded),
-                          label: Text("Library"),
-                        ),
-                      ),
-                      Flexible.tight(
-                        child: _VerticalNavigationItem(
-                          isSelected: false,
-                          icon: Icon(Symbols.settings_rounded),
-                          label: Text("Settings"),
-                        ),
-                      ),
-                    ],
+            ),
+          ),
+          const SizedBox(height: 2.0),
+          SizedBox(
+            height: 64.0,
+            child: ListItemContainer(
+              isFirst: true,
+              containerColor: .all(colorTheme.surfaceContainerHighest),
+              child: const Flex.horizontal(
+                children: [
+                  Flexible.tight(
+                    child: _VerticalNavigationItem(
+                      isSelected: true,
+                      icon: Icon(Symbols.home),
+                      label: Text("Home"),
+                    ),
                   ),
-                ),
+                  Flexible.tight(
+                    child: _VerticalNavigationItem(
+                      isSelected: false,
+                      icon: Icon(Symbols.library_music_rounded),
+                      label: Text("Library"),
+                    ),
+                  ),
+                  Flexible.tight(
+                    child: _VerticalNavigationItem(
+                      isSelected: false,
+                      icon: Icon(Symbols.settings_rounded),
+                      label: Text("Settings"),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ],
       ),

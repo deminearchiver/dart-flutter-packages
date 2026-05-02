@@ -355,6 +355,12 @@ class ExpressiveSwipeController extends Animation<double> {
     }
 
     _simulationController.stop(canceled: true);
+
+    if (dismissing) {
+      _simulationController.value = 0.0;
+    } else {
+      _snapBack(velocity ?? 0.0);
+    }
   }
 
   void reset() {
@@ -410,103 +416,5 @@ class ExpressiveSwipeController extends Animation<double> {
       return true;
     }());
     return true;
-  }
-}
-
-class MagneticSwipe extends StatefulWidget {
-  const MagneticSwipe({super.key, required this.builder});
-
-  final WidgetBuilder builder;
-
-  @override
-  State<MagneticSwipe> createState() => _MagneticSwipeState();
-}
-
-class _MagneticSwipeState extends State<MagneticSwipe>
-    with SingleTickerProviderStateMixin {
-  final _gestureDetectorKey = GlobalKey();
-
-  late ExpressiveSwipeController _controller;
-  var _physicalTranslation = 0.0;
-
-  // double get _width {
-  //   final box =
-  //       _gestureDetectorKey.currentContext?.findRenderObject() as RenderBox?;
-  //   try {
-  //     return box != null && box.hasSize ? box.size.width : 1.0;
-  //   } on Object {
-  //     return 1.0;
-  //   }
-  // }
-
-  void _onDragDown(DragDownDetails details) {
-    _physicalTranslation = 0.0;
-  }
-
-  void _onDragStart(DragStartDetails details) {
-    _physicalTranslation = 0.0;
-    _controller.start();
-  }
-
-  void _onDragUpdate(DragUpdateDetails details) {
-    assert(details.primaryDelta != null);
-    final delta = details.primaryDelta!;
-    _physicalTranslation += delta;
-    _controller.update(
-      _physicalTranslation,
-      sourceTimestamp: details.sourceTimeStamp,
-    );
-  }
-
-  void _onDragEnd(DragEndDetails details) {
-    final velocity = details.velocity.pixelsPerSecond.dx;
-    _physicalTranslation = 0.0;
-    _controller
-      ..end(dismissing: true, velocity: velocity)
-      .._snapBack(velocity);
-  }
-
-  void _onDragCancel() {
-    _physicalTranslation = 0.0;
-    _controller.end(dismissing: false);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = ExpressiveSwipeController(vsync: this);
-  }
-
-  @override
-  void didUpdateWidget(covariant MagneticSwipe oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      key: _gestureDetectorKey,
-      behavior: .deferToChild,
-      onHorizontalDragDown: _onDragDown,
-      onHorizontalDragStart: _onDragStart,
-      onHorizontalDragUpdate: _onDragUpdate,
-      onHorizontalDragEnd: _onDragEnd,
-      onHorizontalDragCancel: _onDragCancel,
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) => Transform.translate(
-          offset: Offset(_controller.value, 0.0),
-          transformHitTests: true,
-          child: child,
-        ),
-        child: widget.builder(context),
-      ),
-    );
   }
 }
