@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:material_example/flutter.dart';
 
 /// Detaching threshold in dp

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:material_example/flutter.dart';
 
-import 'magnetic_swipe.dart';
+import 'expressive_swipe.dart';
 
 class Experiment5View extends StatefulWidget {
   const Experiment5View({super.key});
