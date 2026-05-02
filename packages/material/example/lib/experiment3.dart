@@ -70,7 +70,7 @@ class _RenderSearchViewLayout extends RenderBox
           SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>
         >,
         RenderLayoutFollowerMixin<
-          LayoutLeaderClient,
+          SlottedLayoutLeaderClient<RenderBox, _SearchViewLeaderSlot>,
           LayoutFollowerClient,
           SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>
         > {

@@ -1,3 +1,13 @@
+## 0.5.0
+
+- Fixed internal update order of `RenderObjectWithOptionalLayoutLinkMixin.layoutLink`, `RenderObjectWithRequiredLayoutLinkMixin.layoutLink`, `RenderSlottedLayoutLeader.slot`.
+- Exposed public API `LeaderLayoutLinkHandle` to enforce encapsulation of `didLeaderDoPaint` and `didLeaderDoLayout` of `LayoutLink`. Access to those methods is now provided via `LeaderLayoutLinkHandle` instance methods.
+- Exposed public API `FollowerLayoutLinkHandle` to encapsulate follower redepthing logic. Added a `tryRedepthClient` method.
+- Introduced a shared `RenderObjectWithLayoutLinkBaseMixin` interface to make `RenderObjectWithRequiredLayoutLinkMixin` independant of `RenderObjectWithOptionalLayoutLinkMixin`.
+- Declared `LayoutLinkHandle` `final`, and `LayoutLink` - `base` to prevent incorrect implementations.
+- Added more documentation comments.
+- Improved internal file structure.
+
 ## 0.4.0+1
 
 - Added a proper package description to `pubspec.yaml`.

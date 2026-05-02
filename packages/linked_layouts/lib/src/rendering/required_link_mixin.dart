@@ -1,5 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:linked_layouts/linked_layouts.dart';
 
 mixin RenderObjectWithRequiredLayoutLinkMixin<
@@ -8,10 +8,7 @@ mixin RenderObjectWithRequiredLayoutLinkMixin<
 >
     on RenderObject
     implements
-        RenderObjectWithOptionalLayoutLinkMixin<
-          LayoutClientType,
-          LayoutLinkType
-        > {
+        RenderObjectWithLayoutLinkBaseMixin<LayoutClientType, LayoutLinkType> {
   LayoutLinkType? _layoutLink;
 
   @protected
@@ -23,24 +20,17 @@ mixin RenderObjectWithRequiredLayoutLinkMixin<
     return _layoutLink!;
   }
 
-  // TODO: do something about covariant modifier
-  @override
-  set layoutLink(covariant LayoutLinkType value) {
+  set layoutLink(LayoutLinkType value) {
     if (_layoutLink == value) return;
     layoutLinkHandle?.dispose();
     layoutLinkHandle = null;
+    _layoutLink = value;
     if (attached) {
       final client = createLayoutClient();
-      // TODO: should this go before or after _layoutLink = value?
       layoutLinkHandle = registerLayoutClient(value, client);
     }
-    _layoutLink = value;
     markNeedsLayout();
   }
-
-  @protected
-  @override
-  LayoutLinkHandle<LayoutClientType>? layoutLinkHandle;
 
   @mustCallSuper
   @protected

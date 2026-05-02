@@ -124,7 +124,7 @@ class _AppState extends State<App> {
     // Navigation
     // navigatorKey: globalNavigatorKey,
     builder: _buildNavigatorWrapper,
-    home: const Experiment5View(),
+    home: const Experiment4View(),
   );
 
   @override

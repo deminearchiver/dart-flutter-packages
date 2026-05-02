@@ -1,7 +1,7 @@
 import 'package:flutter/rendering.dart';
 import 'package:linked_layouts/linked_layouts.dart';
 
-class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
+base class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
     extends
         LayoutLink<
           SlottedLayoutLeaderClient<RenderBox, SlotType>,

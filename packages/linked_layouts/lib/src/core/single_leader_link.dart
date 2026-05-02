@@ -1,6 +1,6 @@
 import 'package:linked_layouts/linked_layouts.dart';
 
-class SingleLeaderLayoutLink<
+base class SingleLeaderLayoutLink<
   LeaderClientType extends LayoutLeaderClient,
   FollowerClientType extends LayoutFollowerClient
 >

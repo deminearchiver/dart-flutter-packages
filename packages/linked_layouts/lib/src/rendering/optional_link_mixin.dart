@@ -6,38 +6,29 @@ mixin RenderObjectWithOptionalLayoutLinkMixin<
   LayoutClientType extends LayoutLinkClient,
   LayoutLinkType extends LayoutLink<LayoutLeaderClient, LayoutFollowerClient>
 >
-    on RenderObject {
+    on RenderObject
+    implements
+        RenderObjectWithLayoutLinkBaseMixin<LayoutClientType, LayoutLinkType> {
   LayoutLinkType? _layoutLink;
 
+  @override
   LayoutLinkType? get layoutLink => _layoutLink;
 
   set layoutLink(LayoutLinkType? value) {
     if (_layoutLink == value) return;
     layoutLinkHandle?.dispose();
     layoutLinkHandle = null;
+    _layoutLink = value;
     if (value != null && attached) {
       final client = createLayoutClient();
-      // TODO: should this go before or after _layoutLink = value?
       layoutLinkHandle = registerLayoutClient(value, client);
     }
-    _layoutLink = value;
     markNeedsLayout();
   }
 
-  @protected
-  LayoutLinkHandle<LayoutClientType>? layoutLinkHandle;
-
-  @protected
-  LayoutLinkHandle<LayoutClientType> registerLayoutClient(
-    LayoutLinkType layoutLink,
-    LayoutClientType client,
-  );
-
-  @protected
-  LayoutClientType createLayoutClientInternal();
-
   @mustCallSuper
   @protected
+  @override
   LayoutClientType createLayoutClient() => createLayoutClientInternal();
 
   @mustCallSuper
