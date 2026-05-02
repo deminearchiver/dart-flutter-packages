@@ -109,22 +109,22 @@ class _MagneticSwipeState extends State<MagneticSwipe>
   void _attach(double translation) {
     final detachDirection = _detachDirectionEstimator.direction;
     final swipeVelocity = _velocityTracker.velocity;
-    _controller1
-      ..stop()
-      ..animateExplicit(
-        translation * _kMagneticTranslationMultiplier,
-        _kAttachSpring,
-        -detachDirection * swipeVelocity.abs(),
-      );
+    _controller1.animateExplicit(
+      translation * _kMagneticTranslationMultiplier,
+      _kAttachSpring,
+      -detachDirection * swipeVelocity.abs(),
+    );
     _detachDirectionEstimator.reset();
   }
 
   void _detach(double toPosition) {
     final direction = _detachDirectionEstimator.direction;
     final velocity = _velocityTracker.velocity;
-    _controller1
-      ..stop()
-      ..animateExplicit(toPosition, _kDetachSpring, direction * velocity.abs());
+    _controller1.animateExplicit(
+      toPosition,
+      _kDetachSpring,
+      direction * velocity.abs(),
+    );
   }
 
   void _pull(double translation, bool canSwipedBeDismissed) {
@@ -443,7 +443,7 @@ class _DirectionEstimator {
   /// from the available data in the translation buffer.
   void stop() {
     _acceptTranslations = false;
-    _direction = _calculateAverageTranslation().sign;
+    _direction = _computeDirection();
   }
 
   void reset() {
@@ -452,7 +452,7 @@ class _DirectionEstimator {
     _acceptTranslations = true;
   }
 
-  double _calculateAverageTranslation() {
+  double _computeTranslationAverage() {
     var weightedSum = 0.0;
     for (var i = 0; i < _bufferSize; i++) {
       // Wrapping buffer index, starting at the most recent translation
@@ -462,4 +462,6 @@ class _DirectionEstimator {
     }
     return weightedSum / _bufferSize;
   }
+
+  double _computeDirection() => _computeTranslationAverage().sign;
 }
