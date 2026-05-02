@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:material/src/material/flutter.dart';
 
 FontWeight? _closestFontWeightToOrNull(double? weight) =>
@@ -80,22 +81,30 @@ FontWeight _closestFontWeightTo(double weight) {
 //   double? _variableFontAxis(String axis) => _variableFontAxesOrNull?[axis];
 // }
 
-abstract final class _VariableFontAxes {
-  static const wght = "wght";
-  static const grad = "GRAD";
-  static const wdth = "wdth";
-  static const rond = "ROND";
-  static const opsz = "opsz";
-  static const crsv = "CRSV";
-  static const slnt = "slnt";
-  static const fill = "FILL";
-  static const hexp = "HEXP";
+const _stringListEquality = ListEquality<String>();
+
+extension type const _VariableFontAxis._(String _) implements String {
+  const _VariableFontAxis(String tag)
+    : assert(tag.length == 4, "Axis tag must be exactly 4 characters long."),
+      _ = tag;
+
+  FontVariation toFontVariation(double value) => .new(_, value);
+
+  static const wght = _VariableFontAxis("wght");
+  static const grad = _VariableFontAxis("GRAD");
+  static const wdth = _VariableFontAxis("wdth");
+  static const rond = _VariableFontAxis("ROND");
+  static const opsz = _VariableFontAxis("opsz");
+  static const crsv = _VariableFontAxis("CRSV");
+  static const slnt = _VariableFontAxis("slnt");
+  static const fill = _VariableFontAxis("FILL");
+  static const hexp = _VariableFontAxis("HEXP");
 }
 
-abstract class TypeStylePartial with Diagnosticable {
-  const TypeStylePartial();
+abstract class TextGeometryPartial with Diagnosticable {
+  const TextGeometryPartial();
 
-  const factory TypeStylePartial.from({
+  const factory TextGeometryPartial.from({
     List<String>? font,
     double? weight,
     double? size,
@@ -110,7 +119,7 @@ abstract class TypeStylePartial with Diagnosticable {
     double? slnt,
     double? fill,
     double? hexp,
-  }) = _TypeStylePartial;
+  }) = _TextGeometryPartial;
 
   List<String>? get font;
 
@@ -140,7 +149,7 @@ abstract class TypeStylePartial with Diagnosticable {
 
   double? get hexp;
 
-  TypeStylePartial copyWith({
+  TextGeometryPartial copyWith({
     List<String>? font,
     double? weight,
     double? size,
@@ -170,7 +179,7 @@ abstract class TypeStylePartial with Diagnosticable {
           slnt != null ||
           fill != null ||
           hexp != null
-      ? TypeStylePartial.from(
+      ? .from(
           font: font ?? this.font,
           weight: weight ?? this.weight,
           size: size ?? this.size,
@@ -188,7 +197,7 @@ abstract class TypeStylePartial with Diagnosticable {
         )
       : this;
 
-  TypeStylePartial mergeWith({
+  TextGeometryPartial mergeWith({
     List<String>? font,
     double? weight,
     double? size,
@@ -218,7 +227,7 @@ abstract class TypeStylePartial with Diagnosticable {
           slnt != null ||
           fill != null ||
           hexp != null
-      ? TypeStylePartial.from(
+      ? .from(
           font: font != null ? [...font, ...?this.font] : this.font,
           weight: weight ?? this.weight,
           size: size ?? this.size,
@@ -236,7 +245,7 @@ abstract class TypeStylePartial with Diagnosticable {
         )
       : this;
 
-  TypeStylePartial merge(TypeStylePartial? other) => other != null
+  TextGeometryPartial merge(TextGeometryPartial? other) => other != null
       ? mergeWith(
           font: other.font,
           weight: other.weight,
@@ -256,27 +265,27 @@ abstract class TypeStylePartial with Diagnosticable {
       : this;
 
   Map<String, double> get variableFontAxes => {
-    _VariableFontAxes.wght: ?wght,
-    _VariableFontAxes.grad: ?grad,
-    _VariableFontAxes.wdth: ?wdth,
-    _VariableFontAxes.rond: ?rond,
-    _VariableFontAxes.opsz: ?opsz,
-    _VariableFontAxes.crsv: ?crsv,
-    _VariableFontAxes.slnt: ?slnt,
-    _VariableFontAxes.fill: ?fill,
-    _VariableFontAxes.hexp: ?hexp,
+    _VariableFontAxis.wght: ?wght,
+    _VariableFontAxis.grad: ?grad,
+    _VariableFontAxis.wdth: ?wdth,
+    _VariableFontAxis.rond: ?rond,
+    _VariableFontAxis.opsz: ?opsz,
+    _VariableFontAxis.crsv: ?crsv,
+    _VariableFontAxis.slnt: ?slnt,
+    _VariableFontAxis.fill: ?fill,
+    _VariableFontAxis.hexp: ?hexp,
   };
 
   List<FontVariation> get fontVariations => [
-    if (wght case final wght?) FontVariation(_VariableFontAxes.wght, wght),
-    if (grad case final grad?) FontVariation(_VariableFontAxes.grad, grad),
-    if (wdth case final wdth?) FontVariation(_VariableFontAxes.wdth, wdth),
-    if (rond case final rond?) FontVariation(_VariableFontAxes.rond, rond),
-    if (opsz case final opsz?) FontVariation(_VariableFontAxes.opsz, opsz),
-    if (crsv case final crsv?) FontVariation(_VariableFontAxes.crsv, crsv),
-    if (slnt case final slnt?) FontVariation(_VariableFontAxes.slnt, slnt),
-    if (fill case final fill?) FontVariation(_VariableFontAxes.fill, fill),
-    if (hexp case final hexp?) FontVariation(_VariableFontAxes.hexp, hexp),
+    if (wght case final wght?) _VariableFontAxis.wght.toFontVariation(wght),
+    if (grad case final grad?) _VariableFontAxis.grad.toFontVariation(grad),
+    if (wdth case final wdth?) _VariableFontAxis.wdth.toFontVariation(wdth),
+    if (rond case final rond?) _VariableFontAxis.rond.toFontVariation(rond),
+    if (opsz case final opsz?) _VariableFontAxis.opsz.toFontVariation(opsz),
+    if (crsv case final crsv?) _VariableFontAxis.crsv.toFontVariation(crsv),
+    if (slnt case final slnt?) _VariableFontAxis.slnt.toFontVariation(slnt),
+    if (fill case final fill?) _VariableFontAxis.fill.toFontVariation(fill),
+    if (hexp case final hexp?) _VariableFontAxis.hexp.toFontVariation(hexp),
   ];
 
   TextStyle toTextStyle({
@@ -361,8 +370,8 @@ abstract class TypeStylePartial with Diagnosticable {
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
-          other is TypeStylePartial &&
-          listEquals(font, other.font) &&
+          other is TextGeometryPartial &&
+          _stringListEquality.equals(font, other.font) &&
           weight == other.weight &&
           size == other.size &&
           tracking == other.tracking &&
@@ -380,7 +389,7 @@ abstract class TypeStylePartial with Diagnosticable {
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    font != null ? Object.hashAll(font!) : null,
+    _stringListEquality.hash(font),
     weight,
     size,
     tracking,
@@ -396,13 +405,13 @@ abstract class TypeStylePartial with Diagnosticable {
     hexp,
   );
 
-  static TypeStylePartial? lerp(
-    TypeStylePartial? a,
-    TypeStylePartial? b,
+  static TextGeometryPartial? lerp(
+    TextGeometryPartial? a,
+    TextGeometryPartial? b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return TypeStylePartial.from(
+    return .from(
       font: t < 0.5 ? a?.font : b?.font,
       weight: lerpDoubleNullable(a?.weight, b?.weight, t),
       size: lerpDoubleNullable(a?.size, b?.size, t),
@@ -421,8 +430,8 @@ abstract class TypeStylePartial with Diagnosticable {
   }
 }
 
-class _TypeStylePartial extends TypeStylePartial {
-  const _TypeStylePartial({
+class _TextGeometryPartial extends TextGeometryPartial {
+  const _TextGeometryPartial({
     this.font,
     this.weight,
     this.size,
@@ -482,10 +491,10 @@ class _TypeStylePartial extends TypeStylePartial {
   final double? hexp;
 }
 
-abstract class TypeStyle extends TypeStylePartial {
-  const TypeStyle();
+abstract class TextGeometry extends TextGeometryPartial {
+  const TextGeometry();
 
-  const factory TypeStyle.from({
+  const factory TextGeometry.from({
     required List<String> font,
     required double weight,
     required double size,
@@ -500,7 +509,7 @@ abstract class TypeStyle extends TypeStylePartial {
     required double slnt,
     required double fill,
     required double hexp,
-  }) = _TypeStyle;
+  }) = _TextGeometry;
 
   @override
   List<String> get font;
@@ -545,7 +554,7 @@ abstract class TypeStyle extends TypeStylePartial {
   double get hexp;
 
   @override
-  TypeStyle copyWith({
+  TextGeometry copyWith({
     List<String>? font,
     double? weight,
     double? size,
@@ -575,7 +584,7 @@ abstract class TypeStyle extends TypeStylePartial {
           slnt != null ||
           fill != null ||
           hexp != null
-      ? TypeStyle.from(
+      ? .from(
           font: font ?? this.font,
           weight: weight ?? this.weight,
           size: size ?? this.size,
@@ -594,7 +603,7 @@ abstract class TypeStyle extends TypeStylePartial {
       : this;
 
   @override
-  TypeStyle mergeWith({
+  TextGeometry mergeWith({
     List<String>? font,
     double? weight,
     double? size,
@@ -624,7 +633,7 @@ abstract class TypeStyle extends TypeStylePartial {
           slnt != null ||
           fill != null ||
           hexp != null
-      ? TypeStyle.from(
+      ? .from(
           font: font != null ? [...font, ...this.font] : this.font,
           weight: weight ?? this.weight,
           size: size ?? this.size,
@@ -643,7 +652,7 @@ abstract class TypeStyle extends TypeStylePartial {
       : this;
 
   @override
-  TypeStyle merge(TypeStylePartial? other) => other != null
+  TextGeometry merge(TextGeometryPartial? other) => other != null
       ? mergeWith(
           font: other.font,
           weight: other.weight,
@@ -664,28 +673,28 @@ abstract class TypeStyle extends TypeStylePartial {
 
   @override
   Map<String, double> get variableFontAxes => {
-    _VariableFontAxes.wght: wght,
-    _VariableFontAxes.grad: grad,
-    _VariableFontAxes.wdth: wdth,
-    _VariableFontAxes.rond: rond,
-    _VariableFontAxes.opsz: opsz,
-    _VariableFontAxes.crsv: crsv,
-    _VariableFontAxes.slnt: slnt,
-    _VariableFontAxes.fill: fill,
-    _VariableFontAxes.hexp: hexp,
+    _VariableFontAxis.wght: wght,
+    _VariableFontAxis.grad: grad,
+    _VariableFontAxis.wdth: wdth,
+    _VariableFontAxis.rond: rond,
+    _VariableFontAxis.opsz: opsz,
+    _VariableFontAxis.crsv: crsv,
+    _VariableFontAxis.slnt: slnt,
+    _VariableFontAxis.fill: fill,
+    _VariableFontAxis.hexp: hexp,
   };
 
   @override
   List<FontVariation> get fontVariations => [
-    FontVariation(_VariableFontAxes.wght, wght),
-    FontVariation(_VariableFontAxes.grad, grad),
-    FontVariation(_VariableFontAxes.wdth, wdth),
-    FontVariation(_VariableFontAxes.rond, rond),
-    FontVariation(_VariableFontAxes.opsz, opsz),
-    FontVariation(_VariableFontAxes.crsv, crsv),
-    FontVariation(_VariableFontAxes.slnt, slnt),
-    FontVariation(_VariableFontAxes.fill, fill),
-    FontVariation(_VariableFontAxes.hexp, hexp),
+    _VariableFontAxis.wght.toFontVariation(wght),
+    _VariableFontAxis.grad.toFontVariation(grad),
+    _VariableFontAxis.wdth.toFontVariation(wdth),
+    _VariableFontAxis.rond.toFontVariation(rond),
+    _VariableFontAxis.opsz.toFontVariation(opsz),
+    _VariableFontAxis.crsv.toFontVariation(crsv),
+    _VariableFontAxis.slnt.toFontVariation(slnt),
+    _VariableFontAxis.fill.toFontVariation(fill),
+    _VariableFontAxis.hexp.toFontVariation(hexp),
   ];
 
   @override
@@ -768,8 +777,8 @@ abstract class TypeStyle extends TypeStylePartial {
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
-          other is TypeStyle &&
-          listEquals(font, other.font) &&
+          other is TextGeometry &&
+          _stringListEquality.equals(font, other.font) &&
           weight == other.weight &&
           size == other.size &&
           tracking == other.tracking &&
@@ -787,7 +796,7 @@ abstract class TypeStyle extends TypeStylePartial {
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    Object.hashAll(font),
+    _stringListEquality.hash(font),
     weight,
     size,
     tracking,
@@ -803,9 +812,9 @@ abstract class TypeStyle extends TypeStylePartial {
     hexp,
   );
 
-  static TypeStyle lerp(TypeStyle a, TypeStyle b, double t) {
+  static TextGeometry lerp(TextGeometry a, TextGeometry b, double t) {
     if (identical(a, b)) return a;
-    return TypeStyle.from(
+    return .from(
       font: t < 0.5 ? a.font : b.font,
       weight: lerpDouble(a.weight, b.weight, t),
       size: lerpDouble(a.size, b.size, t),
@@ -824,8 +833,8 @@ abstract class TypeStyle extends TypeStylePartial {
   }
 }
 
-class _TypeStyle extends TypeStyle {
-  const _TypeStyle({
+class _TextGeometry extends TextGeometry {
+  const _TextGeometry({
     required this.font,
     required this.weight,
     required this.size,

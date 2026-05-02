@@ -4,129 +4,129 @@ abstract class TypescaleThemeDataPartial with Diagnosticable {
   const TypescaleThemeDataPartial();
 
   const factory TypescaleThemeDataPartial.from({
-    TypeStylePartial? displayLarge,
-    TypeStylePartial? displayMedium,
-    TypeStylePartial? displaySmall,
-    TypeStylePartial? headlineLarge,
-    TypeStylePartial? headlineMedium,
-    TypeStylePartial? headlineSmall,
-    TypeStylePartial? titleLarge,
-    TypeStylePartial? titleMedium,
-    TypeStylePartial? titleSmall,
-    TypeStylePartial? bodyLarge,
-    TypeStylePartial? bodyMedium,
-    TypeStylePartial? bodySmall,
-    TypeStylePartial? labelLarge,
-    TypeStylePartial? labelMedium,
-    TypeStylePartial? labelSmall,
-    TypeStylePartial? displayLargeEmphasized,
-    TypeStylePartial? displayMediumEmphasized,
-    TypeStylePartial? displaySmallEmphasized,
-    TypeStylePartial? headlineLargeEmphasized,
-    TypeStylePartial? headlineMediumEmphasized,
-    TypeStylePartial? headlineSmallEmphasized,
-    TypeStylePartial? titleLargeEmphasized,
-    TypeStylePartial? titleMediumEmphasized,
-    TypeStylePartial? titleSmallEmphasized,
-    TypeStylePartial? bodyLargeEmphasized,
-    TypeStylePartial? bodyMediumEmphasized,
-    TypeStylePartial? bodySmallEmphasized,
-    TypeStylePartial? labelLargeEmphasized,
-    TypeStylePartial? labelMediumEmphasized,
-    TypeStylePartial? labelSmallEmphasized,
+    TextGeometryPartial? displayLarge,
+    TextGeometryPartial? displayMedium,
+    TextGeometryPartial? displaySmall,
+    TextGeometryPartial? headlineLarge,
+    TextGeometryPartial? headlineMedium,
+    TextGeometryPartial? headlineSmall,
+    TextGeometryPartial? titleLarge,
+    TextGeometryPartial? titleMedium,
+    TextGeometryPartial? titleSmall,
+    TextGeometryPartial? bodyLarge,
+    TextGeometryPartial? bodyMedium,
+    TextGeometryPartial? bodySmall,
+    TextGeometryPartial? labelLarge,
+    TextGeometryPartial? labelMedium,
+    TextGeometryPartial? labelSmall,
+    TextGeometryPartial? displayLargeEmphasized,
+    TextGeometryPartial? displayMediumEmphasized,
+    TextGeometryPartial? displaySmallEmphasized,
+    TextGeometryPartial? headlineLargeEmphasized,
+    TextGeometryPartial? headlineMediumEmphasized,
+    TextGeometryPartial? headlineSmallEmphasized,
+    TextGeometryPartial? titleLargeEmphasized,
+    TextGeometryPartial? titleMediumEmphasized,
+    TextGeometryPartial? titleSmallEmphasized,
+    TextGeometryPartial? bodyLargeEmphasized,
+    TextGeometryPartial? bodyMediumEmphasized,
+    TextGeometryPartial? bodySmallEmphasized,
+    TextGeometryPartial? labelLargeEmphasized,
+    TextGeometryPartial? labelMediumEmphasized,
+    TextGeometryPartial? labelSmallEmphasized,
   }) = _TypescaleThemeDataPartial;
 
-  TypeStylePartial? get displayLarge;
+  TextGeometryPartial? get displayLarge;
 
-  TypeStylePartial? get displayMedium;
+  TextGeometryPartial? get displayMedium;
 
-  TypeStylePartial? get displaySmall;
+  TextGeometryPartial? get displaySmall;
 
-  TypeStylePartial? get headlineLarge;
+  TextGeometryPartial? get headlineLarge;
 
-  TypeStylePartial? get headlineMedium;
+  TextGeometryPartial? get headlineMedium;
 
-  TypeStylePartial? get headlineSmall;
+  TextGeometryPartial? get headlineSmall;
 
-  TypeStylePartial? get titleLarge;
+  TextGeometryPartial? get titleLarge;
 
-  TypeStylePartial? get titleMedium;
+  TextGeometryPartial? get titleMedium;
 
-  TypeStylePartial? get titleSmall;
+  TextGeometryPartial? get titleSmall;
 
-  TypeStylePartial? get bodyLarge;
+  TextGeometryPartial? get bodyLarge;
 
-  TypeStylePartial? get bodyMedium;
+  TextGeometryPartial? get bodyMedium;
 
-  TypeStylePartial? get bodySmall;
+  TextGeometryPartial? get bodySmall;
 
-  TypeStylePartial? get labelLarge;
+  TextGeometryPartial? get labelLarge;
 
-  TypeStylePartial? get labelMedium;
+  TextGeometryPartial? get labelMedium;
 
-  TypeStylePartial? get labelSmall;
+  TextGeometryPartial? get labelSmall;
 
-  TypeStylePartial? get displayLargeEmphasized;
+  TextGeometryPartial? get displayLargeEmphasized;
 
-  TypeStylePartial? get displayMediumEmphasized;
+  TextGeometryPartial? get displayMediumEmphasized;
 
-  TypeStylePartial? get displaySmallEmphasized;
+  TextGeometryPartial? get displaySmallEmphasized;
 
-  TypeStylePartial? get headlineLargeEmphasized;
+  TextGeometryPartial? get headlineLargeEmphasized;
 
-  TypeStylePartial? get headlineMediumEmphasized;
+  TextGeometryPartial? get headlineMediumEmphasized;
 
-  TypeStylePartial? get headlineSmallEmphasized;
+  TextGeometryPartial? get headlineSmallEmphasized;
 
-  TypeStylePartial? get titleLargeEmphasized;
+  TextGeometryPartial? get titleLargeEmphasized;
 
-  TypeStylePartial? get titleMediumEmphasized;
+  TextGeometryPartial? get titleMediumEmphasized;
 
-  TypeStylePartial? get titleSmallEmphasized;
+  TextGeometryPartial? get titleSmallEmphasized;
 
-  TypeStylePartial? get bodyLargeEmphasized;
+  TextGeometryPartial? get bodyLargeEmphasized;
 
-  TypeStylePartial? get bodyMediumEmphasized;
+  TextGeometryPartial? get bodyMediumEmphasized;
 
-  TypeStylePartial? get bodySmallEmphasized;
+  TextGeometryPartial? get bodySmallEmphasized;
 
-  TypeStylePartial? get labelLargeEmphasized;
+  TextGeometryPartial? get labelLargeEmphasized;
 
-  TypeStylePartial? get labelMediumEmphasized;
+  TextGeometryPartial? get labelMediumEmphasized;
 
-  TypeStylePartial? get labelSmallEmphasized;
+  TextGeometryPartial? get labelSmallEmphasized;
 
   TypescaleThemeDataPartial copyWith({
-    covariant TypeStylePartial? displayLarge,
-    covariant TypeStylePartial? displayMedium,
-    covariant TypeStylePartial? displaySmall,
-    covariant TypeStylePartial? headlineLarge,
-    covariant TypeStylePartial? headlineMedium,
-    covariant TypeStylePartial? headlineSmall,
-    covariant TypeStylePartial? titleLarge,
-    covariant TypeStylePartial? titleMedium,
-    covariant TypeStylePartial? titleSmall,
-    covariant TypeStylePartial? bodyLarge,
-    covariant TypeStylePartial? bodyMedium,
-    covariant TypeStylePartial? bodySmall,
-    covariant TypeStylePartial? labelLarge,
-    covariant TypeStylePartial? labelMedium,
-    covariant TypeStylePartial? labelSmall,
-    covariant TypeStylePartial? displayLargeEmphasized,
-    covariant TypeStylePartial? displayMediumEmphasized,
-    covariant TypeStylePartial? displaySmallEmphasized,
-    covariant TypeStylePartial? headlineLargeEmphasized,
-    covariant TypeStylePartial? headlineMediumEmphasized,
-    covariant TypeStylePartial? headlineSmallEmphasized,
-    covariant TypeStylePartial? titleLargeEmphasized,
-    covariant TypeStylePartial? titleMediumEmphasized,
-    covariant TypeStylePartial? titleSmallEmphasized,
-    covariant TypeStylePartial? bodyLargeEmphasized,
-    covariant TypeStylePartial? bodyMediumEmphasized,
-    covariant TypeStylePartial? bodySmallEmphasized,
-    covariant TypeStylePartial? labelLargeEmphasized,
-    covariant TypeStylePartial? labelMediumEmphasized,
-    covariant TypeStylePartial? labelSmallEmphasized,
+    covariant TextGeometryPartial? displayLarge,
+    covariant TextGeometryPartial? displayMedium,
+    covariant TextGeometryPartial? displaySmall,
+    covariant TextGeometryPartial? headlineLarge,
+    covariant TextGeometryPartial? headlineMedium,
+    covariant TextGeometryPartial? headlineSmall,
+    covariant TextGeometryPartial? titleLarge,
+    covariant TextGeometryPartial? titleMedium,
+    covariant TextGeometryPartial? titleSmall,
+    covariant TextGeometryPartial? bodyLarge,
+    covariant TextGeometryPartial? bodyMedium,
+    covariant TextGeometryPartial? bodySmall,
+    covariant TextGeometryPartial? labelLarge,
+    covariant TextGeometryPartial? labelMedium,
+    covariant TextGeometryPartial? labelSmall,
+    covariant TextGeometryPartial? displayLargeEmphasized,
+    covariant TextGeometryPartial? displayMediumEmphasized,
+    covariant TextGeometryPartial? displaySmallEmphasized,
+    covariant TextGeometryPartial? headlineLargeEmphasized,
+    covariant TextGeometryPartial? headlineMediumEmphasized,
+    covariant TextGeometryPartial? headlineSmallEmphasized,
+    covariant TextGeometryPartial? titleLargeEmphasized,
+    covariant TextGeometryPartial? titleMediumEmphasized,
+    covariant TextGeometryPartial? titleSmallEmphasized,
+    covariant TextGeometryPartial? bodyLargeEmphasized,
+    covariant TextGeometryPartial? bodyMediumEmphasized,
+    covariant TextGeometryPartial? bodySmallEmphasized,
+    covariant TextGeometryPartial? labelLargeEmphasized,
+    covariant TextGeometryPartial? labelMediumEmphasized,
+    covariant TextGeometryPartial? labelSmallEmphasized,
   }) =>
       displayLarge != null ||
           displayMedium != null ||
@@ -206,36 +206,36 @@ abstract class TypescaleThemeDataPartial with Diagnosticable {
       : this;
 
   TypescaleThemeDataPartial mergeWith({
-    TypeStylePartial? displayLarge,
-    TypeStylePartial? displayMedium,
-    TypeStylePartial? displaySmall,
-    TypeStylePartial? headlineLarge,
-    TypeStylePartial? headlineMedium,
-    TypeStylePartial? headlineSmall,
-    TypeStylePartial? titleLarge,
-    TypeStylePartial? titleMedium,
-    TypeStylePartial? titleSmall,
-    TypeStylePartial? bodyLarge,
-    TypeStylePartial? bodyMedium,
-    TypeStylePartial? bodySmall,
-    TypeStylePartial? labelLarge,
-    TypeStylePartial? labelMedium,
-    TypeStylePartial? labelSmall,
-    TypeStylePartial? displayLargeEmphasized,
-    TypeStylePartial? displayMediumEmphasized,
-    TypeStylePartial? displaySmallEmphasized,
-    TypeStylePartial? headlineLargeEmphasized,
-    TypeStylePartial? headlineMediumEmphasized,
-    TypeStylePartial? headlineSmallEmphasized,
-    TypeStylePartial? titleLargeEmphasized,
-    TypeStylePartial? titleMediumEmphasized,
-    TypeStylePartial? titleSmallEmphasized,
-    TypeStylePartial? bodyLargeEmphasized,
-    TypeStylePartial? bodyMediumEmphasized,
-    TypeStylePartial? bodySmallEmphasized,
-    TypeStylePartial? labelLargeEmphasized,
-    TypeStylePartial? labelMediumEmphasized,
-    TypeStylePartial? labelSmallEmphasized,
+    TextGeometryPartial? displayLarge,
+    TextGeometryPartial? displayMedium,
+    TextGeometryPartial? displaySmall,
+    TextGeometryPartial? headlineLarge,
+    TextGeometryPartial? headlineMedium,
+    TextGeometryPartial? headlineSmall,
+    TextGeometryPartial? titleLarge,
+    TextGeometryPartial? titleMedium,
+    TextGeometryPartial? titleSmall,
+    TextGeometryPartial? bodyLarge,
+    TextGeometryPartial? bodyMedium,
+    TextGeometryPartial? bodySmall,
+    TextGeometryPartial? labelLarge,
+    TextGeometryPartial? labelMedium,
+    TextGeometryPartial? labelSmall,
+    TextGeometryPartial? displayLargeEmphasized,
+    TextGeometryPartial? displayMediumEmphasized,
+    TextGeometryPartial? displaySmallEmphasized,
+    TextGeometryPartial? headlineLargeEmphasized,
+    TextGeometryPartial? headlineMediumEmphasized,
+    TextGeometryPartial? headlineSmallEmphasized,
+    TextGeometryPartial? titleLargeEmphasized,
+    TextGeometryPartial? titleMediumEmphasized,
+    TextGeometryPartial? titleSmallEmphasized,
+    TextGeometryPartial? bodyLargeEmphasized,
+    TextGeometryPartial? bodyMediumEmphasized,
+    TextGeometryPartial? bodySmallEmphasized,
+    TextGeometryPartial? labelLargeEmphasized,
+    TextGeometryPartial? labelMediumEmphasized,
+    TextGeometryPartial? labelSmallEmphasized,
   }) =>
       displayLarge != null ||
           displayMedium != null ||
@@ -415,210 +415,210 @@ abstract class TypescaleThemeDataPartial with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "displayLarge",
           displayLarge,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "displayMedium",
           displayMedium,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "displaySmall",
           displaySmall,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "headlineLarge",
           headlineLarge,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "headlineMedium",
           headlineMedium,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "headlineSmall",
           headlineSmall,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "titleLarge",
           titleLarge,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "titleMedium",
           titleMedium,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "titleSmall",
           titleSmall,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "bodyLarge",
           bodyLarge,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "bodyMedium",
           bodyMedium,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "bodySmall",
           bodySmall,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "labelLarge",
           labelLarge,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "labelMedium",
           labelMedium,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "labelSmall",
           labelSmall,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "displayLargeEmphasized",
           displayLargeEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "displayMediumEmphasized",
           displayMediumEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "displaySmallEmphasized",
           displaySmallEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "headlineLargeEmphasized",
           headlineLargeEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "headlineMediumEmphasized",
           headlineMediumEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "headlineSmallEmphasized",
           headlineSmallEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "titleLargeEmphasized",
           titleLargeEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "titleMediumEmphasized",
           titleMediumEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "titleSmallEmphasized",
           titleSmallEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "bodyLargeEmphasized",
           bodyLargeEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "bodyMediumEmphasized",
           bodyMediumEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "bodySmallEmphasized",
           bodySmallEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "labelLargeEmphasized",
           labelLargeEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "labelMediumEmphasized",
           labelMediumEmphasized,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStylePartial>(
+        DiagnosticsProperty<TextGeometryPartial>(
           "labelSmallEmphasized",
           labelSmallEmphasized,
           defaultValue: null,
@@ -735,130 +735,130 @@ class _TypescaleThemeDataPartial extends TypescaleThemeDataPartial {
   });
 
   @override
-  final TypeStylePartial? displayLarge;
+  final TextGeometryPartial? displayLarge;
 
   @override
-  final TypeStylePartial? displayMedium;
+  final TextGeometryPartial? displayMedium;
 
   @override
-  final TypeStylePartial? displaySmall;
+  final TextGeometryPartial? displaySmall;
 
   @override
-  final TypeStylePartial? headlineLarge;
+  final TextGeometryPartial? headlineLarge;
 
   @override
-  final TypeStylePartial? headlineMedium;
+  final TextGeometryPartial? headlineMedium;
 
   @override
-  final TypeStylePartial? headlineSmall;
+  final TextGeometryPartial? headlineSmall;
 
   @override
-  final TypeStylePartial? titleLarge;
+  final TextGeometryPartial? titleLarge;
 
   @override
-  final TypeStylePartial? titleMedium;
+  final TextGeometryPartial? titleMedium;
 
   @override
-  final TypeStylePartial? titleSmall;
+  final TextGeometryPartial? titleSmall;
 
   @override
-  final TypeStylePartial? bodyLarge;
+  final TextGeometryPartial? bodyLarge;
 
   @override
-  final TypeStylePartial? bodyMedium;
+  final TextGeometryPartial? bodyMedium;
 
   @override
-  final TypeStylePartial? bodySmall;
+  final TextGeometryPartial? bodySmall;
 
   @override
-  final TypeStylePartial? labelLarge;
+  final TextGeometryPartial? labelLarge;
 
   @override
-  final TypeStylePartial? labelMedium;
+  final TextGeometryPartial? labelMedium;
 
   @override
-  final TypeStylePartial? labelSmall;
+  final TextGeometryPartial? labelSmall;
 
   @override
-  final TypeStylePartial? displayLargeEmphasized;
+  final TextGeometryPartial? displayLargeEmphasized;
 
   @override
-  final TypeStylePartial? displayMediumEmphasized;
+  final TextGeometryPartial? displayMediumEmphasized;
 
   @override
-  final TypeStylePartial? displaySmallEmphasized;
+  final TextGeometryPartial? displaySmallEmphasized;
 
   @override
-  final TypeStylePartial? headlineLargeEmphasized;
+  final TextGeometryPartial? headlineLargeEmphasized;
 
   @override
-  final TypeStylePartial? headlineMediumEmphasized;
+  final TextGeometryPartial? headlineMediumEmphasized;
 
   @override
-  final TypeStylePartial? headlineSmallEmphasized;
+  final TextGeometryPartial? headlineSmallEmphasized;
 
   @override
-  final TypeStylePartial? titleLargeEmphasized;
+  final TextGeometryPartial? titleLargeEmphasized;
 
   @override
-  final TypeStylePartial? titleMediumEmphasized;
+  final TextGeometryPartial? titleMediumEmphasized;
 
   @override
-  final TypeStylePartial? titleSmallEmphasized;
+  final TextGeometryPartial? titleSmallEmphasized;
 
   @override
-  final TypeStylePartial? bodyLargeEmphasized;
+  final TextGeometryPartial? bodyLargeEmphasized;
 
   @override
-  final TypeStylePartial? bodyMediumEmphasized;
+  final TextGeometryPartial? bodyMediumEmphasized;
 
   @override
-  final TypeStylePartial? bodySmallEmphasized;
+  final TextGeometryPartial? bodySmallEmphasized;
 
   @override
-  final TypeStylePartial? labelLargeEmphasized;
+  final TextGeometryPartial? labelLargeEmphasized;
 
   @override
-  final TypeStylePartial? labelMediumEmphasized;
+  final TextGeometryPartial? labelMediumEmphasized;
 
   @override
-  final TypeStylePartial? labelSmallEmphasized;
+  final TextGeometryPartial? labelSmallEmphasized;
 }
 
 abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
   const TypescaleThemeData();
 
   const factory TypescaleThemeData.from({
-    required TypeStyle displayLarge,
-    required TypeStyle displayMedium,
-    required TypeStyle displaySmall,
-    required TypeStyle headlineLarge,
-    required TypeStyle headlineMedium,
-    required TypeStyle headlineSmall,
-    required TypeStyle titleLarge,
-    required TypeStyle titleMedium,
-    required TypeStyle titleSmall,
-    required TypeStyle bodyLarge,
-    required TypeStyle bodyMedium,
-    required TypeStyle bodySmall,
-    required TypeStyle labelLarge,
-    required TypeStyle labelMedium,
-    required TypeStyle labelSmall,
-    required TypeStyle displayLargeEmphasized,
-    required TypeStyle displayMediumEmphasized,
-    required TypeStyle displaySmallEmphasized,
-    required TypeStyle headlineLargeEmphasized,
-    required TypeStyle headlineMediumEmphasized,
-    required TypeStyle headlineSmallEmphasized,
-    required TypeStyle titleLargeEmphasized,
-    required TypeStyle titleMediumEmphasized,
-    required TypeStyle titleSmallEmphasized,
-    required TypeStyle bodyLargeEmphasized,
-    required TypeStyle bodyMediumEmphasized,
-    required TypeStyle bodySmallEmphasized,
-    required TypeStyle labelLargeEmphasized,
-    required TypeStyle labelMediumEmphasized,
-    required TypeStyle labelSmallEmphasized,
+    required TextGeometry displayLarge,
+    required TextGeometry displayMedium,
+    required TextGeometry displaySmall,
+    required TextGeometry headlineLarge,
+    required TextGeometry headlineMedium,
+    required TextGeometry headlineSmall,
+    required TextGeometry titleLarge,
+    required TextGeometry titleMedium,
+    required TextGeometry titleSmall,
+    required TextGeometry bodyLarge,
+    required TextGeometry bodyMedium,
+    required TextGeometry bodySmall,
+    required TextGeometry labelLarge,
+    required TextGeometry labelMedium,
+    required TextGeometry labelSmall,
+    required TextGeometry displayLargeEmphasized,
+    required TextGeometry displayMediumEmphasized,
+    required TextGeometry displaySmallEmphasized,
+    required TextGeometry headlineLargeEmphasized,
+    required TextGeometry headlineMediumEmphasized,
+    required TextGeometry headlineSmallEmphasized,
+    required TextGeometry titleLargeEmphasized,
+    required TextGeometry titleMediumEmphasized,
+    required TextGeometry titleSmallEmphasized,
+    required TextGeometry bodyLargeEmphasized,
+    required TextGeometry bodyMediumEmphasized,
+    required TextGeometry bodySmallEmphasized,
+    required TextGeometry labelLargeEmphasized,
+    required TextGeometry labelMediumEmphasized,
+    required TextGeometry labelSmallEmphasized,
   }) = _TypescaleThemeData;
 
   const factory TypescaleThemeData.fallback({
@@ -866,127 +866,127 @@ abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
   }) = _TypescaleThemeDataFallback;
 
   @override
-  TypeStyle get displayLarge;
+  TextGeometry get displayLarge;
 
   @override
-  TypeStyle get displayMedium;
+  TextGeometry get displayMedium;
 
   @override
-  TypeStyle get displaySmall;
+  TextGeometry get displaySmall;
 
   @override
-  TypeStyle get headlineLarge;
+  TextGeometry get headlineLarge;
 
   @override
-  TypeStyle get headlineMedium;
+  TextGeometry get headlineMedium;
 
   @override
-  TypeStyle get headlineSmall;
+  TextGeometry get headlineSmall;
 
   @override
-  TypeStyle get titleLarge;
+  TextGeometry get titleLarge;
 
   @override
-  TypeStyle get titleMedium;
+  TextGeometry get titleMedium;
 
   @override
-  TypeStyle get titleSmall;
+  TextGeometry get titleSmall;
 
   @override
-  TypeStyle get bodyLarge;
+  TextGeometry get bodyLarge;
 
   @override
-  TypeStyle get bodyMedium;
+  TextGeometry get bodyMedium;
 
   @override
-  TypeStyle get bodySmall;
+  TextGeometry get bodySmall;
 
   @override
-  TypeStyle get labelLarge;
+  TextGeometry get labelLarge;
 
   @override
-  TypeStyle get labelMedium;
+  TextGeometry get labelMedium;
 
   @override
-  TypeStyle get labelSmall;
+  TextGeometry get labelSmall;
 
   @override
-  TypeStyle get displayLargeEmphasized;
+  TextGeometry get displayLargeEmphasized;
 
   @override
-  TypeStyle get displayMediumEmphasized;
+  TextGeometry get displayMediumEmphasized;
 
   @override
-  TypeStyle get displaySmallEmphasized;
+  TextGeometry get displaySmallEmphasized;
 
   @override
-  TypeStyle get headlineLargeEmphasized;
+  TextGeometry get headlineLargeEmphasized;
 
   @override
-  TypeStyle get headlineMediumEmphasized;
+  TextGeometry get headlineMediumEmphasized;
 
   @override
-  TypeStyle get headlineSmallEmphasized;
+  TextGeometry get headlineSmallEmphasized;
 
   @override
-  TypeStyle get titleLargeEmphasized;
+  TextGeometry get titleLargeEmphasized;
 
   @override
-  TypeStyle get titleMediumEmphasized;
+  TextGeometry get titleMediumEmphasized;
 
   @override
-  TypeStyle get titleSmallEmphasized;
+  TextGeometry get titleSmallEmphasized;
 
   @override
-  TypeStyle get bodyLargeEmphasized;
+  TextGeometry get bodyLargeEmphasized;
 
   @override
-  TypeStyle get bodyMediumEmphasized;
+  TextGeometry get bodyMediumEmphasized;
 
   @override
-  TypeStyle get bodySmallEmphasized;
+  TextGeometry get bodySmallEmphasized;
 
   @override
-  TypeStyle get labelLargeEmphasized;
+  TextGeometry get labelLargeEmphasized;
 
   @override
-  TypeStyle get labelMediumEmphasized;
+  TextGeometry get labelMediumEmphasized;
 
   @override
-  TypeStyle get labelSmallEmphasized;
+  TextGeometry get labelSmallEmphasized;
 
   @override
   TypescaleThemeData copyWith({
-    covariant TypeStyle? displayLarge,
-    covariant TypeStyle? displayMedium,
-    covariant TypeStyle? displaySmall,
-    covariant TypeStyle? headlineLarge,
-    covariant TypeStyle? headlineMedium,
-    covariant TypeStyle? headlineSmall,
-    covariant TypeStyle? titleLarge,
-    covariant TypeStyle? titleMedium,
-    covariant TypeStyle? titleSmall,
-    covariant TypeStyle? bodyLarge,
-    covariant TypeStyle? bodyMedium,
-    covariant TypeStyle? bodySmall,
-    covariant TypeStyle? labelLarge,
-    covariant TypeStyle? labelMedium,
-    covariant TypeStyle? labelSmall,
-    covariant TypeStyle? displayLargeEmphasized,
-    covariant TypeStyle? displayMediumEmphasized,
-    covariant TypeStyle? displaySmallEmphasized,
-    covariant TypeStyle? headlineLargeEmphasized,
-    covariant TypeStyle? headlineMediumEmphasized,
-    covariant TypeStyle? headlineSmallEmphasized,
-    covariant TypeStyle? titleLargeEmphasized,
-    covariant TypeStyle? titleMediumEmphasized,
-    covariant TypeStyle? titleSmallEmphasized,
-    covariant TypeStyle? bodyLargeEmphasized,
-    covariant TypeStyle? bodyMediumEmphasized,
-    covariant TypeStyle? bodySmallEmphasized,
-    covariant TypeStyle? labelLargeEmphasized,
-    covariant TypeStyle? labelMediumEmphasized,
-    covariant TypeStyle? labelSmallEmphasized,
+    covariant TextGeometry? displayLarge,
+    covariant TextGeometry? displayMedium,
+    covariant TextGeometry? displaySmall,
+    covariant TextGeometry? headlineLarge,
+    covariant TextGeometry? headlineMedium,
+    covariant TextGeometry? headlineSmall,
+    covariant TextGeometry? titleLarge,
+    covariant TextGeometry? titleMedium,
+    covariant TextGeometry? titleSmall,
+    covariant TextGeometry? bodyLarge,
+    covariant TextGeometry? bodyMedium,
+    covariant TextGeometry? bodySmall,
+    covariant TextGeometry? labelLarge,
+    covariant TextGeometry? labelMedium,
+    covariant TextGeometry? labelSmall,
+    covariant TextGeometry? displayLargeEmphasized,
+    covariant TextGeometry? displayMediumEmphasized,
+    covariant TextGeometry? displaySmallEmphasized,
+    covariant TextGeometry? headlineLargeEmphasized,
+    covariant TextGeometry? headlineMediumEmphasized,
+    covariant TextGeometry? headlineSmallEmphasized,
+    covariant TextGeometry? titleLargeEmphasized,
+    covariant TextGeometry? titleMediumEmphasized,
+    covariant TextGeometry? titleSmallEmphasized,
+    covariant TextGeometry? bodyLargeEmphasized,
+    covariant TextGeometry? bodyMediumEmphasized,
+    covariant TextGeometry? bodySmallEmphasized,
+    covariant TextGeometry? labelLargeEmphasized,
+    covariant TextGeometry? labelMediumEmphasized,
+    covariant TextGeometry? labelSmallEmphasized,
   }) =>
       displayLarge != null ||
           displayMedium != null ||
@@ -1067,36 +1067,36 @@ abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
 
   @override
   TypescaleThemeData mergeWith({
-    TypeStylePartial? displayLarge,
-    TypeStylePartial? displayMedium,
-    TypeStylePartial? displaySmall,
-    TypeStylePartial? headlineLarge,
-    TypeStylePartial? headlineMedium,
-    TypeStylePartial? headlineSmall,
-    TypeStylePartial? titleLarge,
-    TypeStylePartial? titleMedium,
-    TypeStylePartial? titleSmall,
-    TypeStylePartial? bodyLarge,
-    TypeStylePartial? bodyMedium,
-    TypeStylePartial? bodySmall,
-    TypeStylePartial? labelLarge,
-    TypeStylePartial? labelMedium,
-    TypeStylePartial? labelSmall,
-    TypeStylePartial? displayLargeEmphasized,
-    TypeStylePartial? displayMediumEmphasized,
-    TypeStylePartial? displaySmallEmphasized,
-    TypeStylePartial? headlineLargeEmphasized,
-    TypeStylePartial? headlineMediumEmphasized,
-    TypeStylePartial? headlineSmallEmphasized,
-    TypeStylePartial? titleLargeEmphasized,
-    TypeStylePartial? titleMediumEmphasized,
-    TypeStylePartial? titleSmallEmphasized,
-    TypeStylePartial? bodyLargeEmphasized,
-    TypeStylePartial? bodyMediumEmphasized,
-    TypeStylePartial? bodySmallEmphasized,
-    TypeStylePartial? labelLargeEmphasized,
-    TypeStylePartial? labelMediumEmphasized,
-    TypeStylePartial? labelSmallEmphasized,
+    TextGeometryPartial? displayLarge,
+    TextGeometryPartial? displayMedium,
+    TextGeometryPartial? displaySmall,
+    TextGeometryPartial? headlineLarge,
+    TextGeometryPartial? headlineMedium,
+    TextGeometryPartial? headlineSmall,
+    TextGeometryPartial? titleLarge,
+    TextGeometryPartial? titleMedium,
+    TextGeometryPartial? titleSmall,
+    TextGeometryPartial? bodyLarge,
+    TextGeometryPartial? bodyMedium,
+    TextGeometryPartial? bodySmall,
+    TextGeometryPartial? labelLarge,
+    TextGeometryPartial? labelMedium,
+    TextGeometryPartial? labelSmall,
+    TextGeometryPartial? displayLargeEmphasized,
+    TextGeometryPartial? displayMediumEmphasized,
+    TextGeometryPartial? displaySmallEmphasized,
+    TextGeometryPartial? headlineLargeEmphasized,
+    TextGeometryPartial? headlineMediumEmphasized,
+    TextGeometryPartial? headlineSmallEmphasized,
+    TextGeometryPartial? titleLargeEmphasized,
+    TextGeometryPartial? titleMediumEmphasized,
+    TextGeometryPartial? titleSmallEmphasized,
+    TextGeometryPartial? bodyLargeEmphasized,
+    TextGeometryPartial? bodyMediumEmphasized,
+    TextGeometryPartial? bodySmallEmphasized,
+    TextGeometryPartial? labelLargeEmphasized,
+    TextGeometryPartial? labelMediumEmphasized,
+    TextGeometryPartial? labelSmallEmphasized,
   }) =>
       displayLarge != null ||
           displayMedium != null ||
@@ -1232,107 +1232,107 @@ abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
-      ..add(DiagnosticsProperty<TypeStyle>("displayLarge", displayLarge))
-      ..add(DiagnosticsProperty<TypeStyle>("displayMedium", displayMedium))
-      ..add(DiagnosticsProperty<TypeStyle>("displaySmall", displaySmall))
-      ..add(DiagnosticsProperty<TypeStyle>("headlineLarge", headlineLarge))
-      ..add(DiagnosticsProperty<TypeStyle>("headlineMedium", headlineMedium))
-      ..add(DiagnosticsProperty<TypeStyle>("headlineSmall", headlineSmall))
-      ..add(DiagnosticsProperty<TypeStyle>("titleLarge", titleLarge))
-      ..add(DiagnosticsProperty<TypeStyle>("titleMedium", titleMedium))
-      ..add(DiagnosticsProperty<TypeStyle>("titleSmall", titleSmall))
-      ..add(DiagnosticsProperty<TypeStyle>("bodyLarge", bodyLarge))
-      ..add(DiagnosticsProperty<TypeStyle>("bodyMedium", bodyMedium))
-      ..add(DiagnosticsProperty<TypeStyle>("bodySmall", bodySmall))
-      ..add(DiagnosticsProperty<TypeStyle>("labelLarge", labelLarge))
-      ..add(DiagnosticsProperty<TypeStyle>("labelMedium", labelMedium))
-      ..add(DiagnosticsProperty<TypeStyle>("labelSmall", labelSmall))
+      ..add(DiagnosticsProperty<TextGeometry>("displayLarge", displayLarge))
+      ..add(DiagnosticsProperty<TextGeometry>("displayMedium", displayMedium))
+      ..add(DiagnosticsProperty<TextGeometry>("displaySmall", displaySmall))
+      ..add(DiagnosticsProperty<TextGeometry>("headlineLarge", headlineLarge))
+      ..add(DiagnosticsProperty<TextGeometry>("headlineMedium", headlineMedium))
+      ..add(DiagnosticsProperty<TextGeometry>("headlineSmall", headlineSmall))
+      ..add(DiagnosticsProperty<TextGeometry>("titleLarge", titleLarge))
+      ..add(DiagnosticsProperty<TextGeometry>("titleMedium", titleMedium))
+      ..add(DiagnosticsProperty<TextGeometry>("titleSmall", titleSmall))
+      ..add(DiagnosticsProperty<TextGeometry>("bodyLarge", bodyLarge))
+      ..add(DiagnosticsProperty<TextGeometry>("bodyMedium", bodyMedium))
+      ..add(DiagnosticsProperty<TextGeometry>("bodySmall", bodySmall))
+      ..add(DiagnosticsProperty<TextGeometry>("labelLarge", labelLarge))
+      ..add(DiagnosticsProperty<TextGeometry>("labelMedium", labelMedium))
+      ..add(DiagnosticsProperty<TextGeometry>("labelSmall", labelSmall))
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "displayLargeEmphasized",
           displayLargeEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "displayMediumEmphasized",
           displayMediumEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "displaySmallEmphasized",
           displaySmallEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "headlineLargeEmphasized",
           headlineLargeEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "headlineMediumEmphasized",
           headlineMediumEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "headlineSmallEmphasized",
           headlineSmallEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "titleLargeEmphasized",
           titleLargeEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "titleMediumEmphasized",
           titleMediumEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "titleSmallEmphasized",
           titleSmallEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "bodyLargeEmphasized",
           bodyLargeEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "bodyMediumEmphasized",
           bodyMediumEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "bodySmallEmphasized",
           bodySmallEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "labelLargeEmphasized",
           labelLargeEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "labelMediumEmphasized",
           labelMediumEmphasized,
         ),
       )
       ..add(
-        DiagnosticsProperty<TypeStyle>(
+        DiagnosticsProperty<TextGeometry>(
           "labelSmallEmphasized",
           labelSmallEmphasized,
         ),
@@ -1448,94 +1448,94 @@ class _TypescaleThemeData extends TypescaleThemeData {
   });
 
   @override
-  final TypeStyle displayLarge;
+  final TextGeometry displayLarge;
 
   @override
-  final TypeStyle displayMedium;
+  final TextGeometry displayMedium;
 
   @override
-  final TypeStyle displaySmall;
+  final TextGeometry displaySmall;
 
   @override
-  final TypeStyle headlineLarge;
+  final TextGeometry headlineLarge;
 
   @override
-  final TypeStyle headlineMedium;
+  final TextGeometry headlineMedium;
 
   @override
-  final TypeStyle headlineSmall;
+  final TextGeometry headlineSmall;
 
   @override
-  final TypeStyle titleLarge;
+  final TextGeometry titleLarge;
 
   @override
-  final TypeStyle titleMedium;
+  final TextGeometry titleMedium;
 
   @override
-  final TypeStyle titleSmall;
+  final TextGeometry titleSmall;
 
   @override
-  final TypeStyle bodyLarge;
+  final TextGeometry bodyLarge;
 
   @override
-  final TypeStyle bodyMedium;
+  final TextGeometry bodyMedium;
 
   @override
-  final TypeStyle bodySmall;
+  final TextGeometry bodySmall;
 
   @override
-  final TypeStyle labelLarge;
+  final TextGeometry labelLarge;
 
   @override
-  final TypeStyle labelMedium;
+  final TextGeometry labelMedium;
 
   @override
-  final TypeStyle labelSmall;
+  final TextGeometry labelSmall;
 
   @override
-  final TypeStyle displayLargeEmphasized;
+  final TextGeometry displayLargeEmphasized;
 
   @override
-  final TypeStyle displayMediumEmphasized;
+  final TextGeometry displayMediumEmphasized;
 
   @override
-  final TypeStyle displaySmallEmphasized;
+  final TextGeometry displaySmallEmphasized;
 
   @override
-  final TypeStyle headlineLargeEmphasized;
+  final TextGeometry headlineLargeEmphasized;
 
   @override
-  final TypeStyle headlineMediumEmphasized;
+  final TextGeometry headlineMediumEmphasized;
 
   @override
-  final TypeStyle headlineSmallEmphasized;
+  final TextGeometry headlineSmallEmphasized;
 
   @override
-  final TypeStyle titleLargeEmphasized;
+  final TextGeometry titleLargeEmphasized;
 
   @override
-  final TypeStyle titleMediumEmphasized;
+  final TextGeometry titleMediumEmphasized;
 
   @override
-  final TypeStyle titleSmallEmphasized;
+  final TextGeometry titleSmallEmphasized;
 
   @override
-  final TypeStyle bodyLargeEmphasized;
+  final TextGeometry bodyLargeEmphasized;
 
   @override
-  final TypeStyle bodyMediumEmphasized;
+  final TextGeometry bodyMediumEmphasized;
 
   @override
-  final TypeStyle bodySmallEmphasized;
+  final TextGeometry bodySmallEmphasized;
 
   @override
-  final TypeStyle labelLargeEmphasized;
+  final TextGeometry labelLargeEmphasized;
 
   @override
-  final TypeStyle labelMediumEmphasized;
+  final TextGeometry labelMediumEmphasized;
 
   @override
-  final TypeStyle labelSmallEmphasized;
+  final TextGeometry labelSmallEmphasized;
 }
 
 class _TypescaleThemeDataFallback extends TypescaleThemeData {
@@ -1544,13 +1544,13 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
 
   final TypefaceThemeData _typefaceTheme;
 
-  TypeStyle _buildTypeStyle({
+  TextGeometry _buildTypeStyle({
     required List<String> font,
     required double weight,
     required double size,
     required double lineHeight,
     required double tracking,
-  }) => TypeStyle.from(
+  }) => TextGeometry.from(
     font: font,
     weight: weight,
     size: size,
@@ -1568,199 +1568,544 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
   );
 
   @override
-  TypeStyle get displayLarge => _buildTypeStyle(
+  TextGeometry get displayLarge => .from(
     font: _typefaceTheme.brand,
     weight: _typefaceTheme.weightRegular,
     size: 57.0,
-    lineHeight: 64.0,
     tracking: -0.25,
+    lineHeight: 64.0,
+    wght: _typefaceTheme.weightRegular,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 57.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get displayMedium => _buildTypeStyle(
+  TextGeometry get displayMedium => .from(
     font: _typefaceTheme.brand,
     weight: _typefaceTheme.weightRegular,
     size: 45.0,
-    lineHeight: 52.0,
     tracking: 0.0,
+    lineHeight: 52.0,
+    wght: _typefaceTheme.weightRegular,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 45.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get displaySmall => _buildTypeStyle(
+  TextGeometry get displaySmall => .from(
     font: _typefaceTheme.brand,
     weight: _typefaceTheme.weightRegular,
     size: 36.0,
-    lineHeight: 44.0,
     tracking: 0.0,
+    lineHeight: 44.0,
+    wght: _typefaceTheme.weightRegular,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 36.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get headlineLarge => _buildTypeStyle(
+  TextGeometry get headlineLarge => .from(
     font: _typefaceTheme.brand,
     weight: _typefaceTheme.weightRegular,
     size: 32.0,
-    lineHeight: 40.0,
     tracking: 0.0,
+    lineHeight: 40.0,
+    wght: _typefaceTheme.weightRegular,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 32.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get headlineMedium => _buildTypeStyle(
+  TextGeometry get headlineMedium => .from(
     font: _typefaceTheme.brand,
     weight: _typefaceTheme.weightRegular,
     size: 28.0,
-    lineHeight: 36.0,
     tracking: 0.0,
+    lineHeight: 36.0,
+    wght: _typefaceTheme.weightRegular,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 28.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get headlineSmall => _buildTypeStyle(
+  TextGeometry get headlineSmall => .from(
     font: _typefaceTheme.brand,
     weight: _typefaceTheme.weightRegular,
     size: 24.0,
-    lineHeight: 32.0,
     tracking: 0.0,
+    lineHeight: 32.0,
+    wght: _typefaceTheme.weightRegular,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 24.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get titleLarge => _buildTypeStyle(
+  TextGeometry get titleLarge => .from(
     font: _typefaceTheme.brand,
     weight: _typefaceTheme.weightRegular,
     size: 22.0,
-    lineHeight: 28.0,
     tracking: 0.0,
+    lineHeight: 28.0,
+    wght: _typefaceTheme.weightRegular,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 22.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get titleMedium => _buildTypeStyle(
+  TextGeometry get titleMedium => .from(
     font: _typefaceTheme.plain,
     weight: _typefaceTheme.weightMedium,
     size: 16.0,
-    lineHeight: 24.0,
     tracking: 0.15,
+    lineHeight: 24.0,
+    wght: _typefaceTheme.weightMedium,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 16.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get titleSmall => _buildTypeStyle(
+  TextGeometry get titleSmall => .from(
     font: _typefaceTheme.plain,
     weight: _typefaceTheme.weightMedium,
     size: 14.0,
-    lineHeight: 20.0,
     tracking: 0.1,
+    lineHeight: 20.0,
+    wght: _typefaceTheme.weightMedium,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 14.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get bodyLarge => _buildTypeStyle(
+  TextGeometry get bodyLarge => .from(
     font: _typefaceTheme.plain,
     weight: _typefaceTheme.weightRegular,
     size: 16.0,
+    tracking: 0.5,
     lineHeight: 24.0,
-    tracking: 0.5,
+    wght: _typefaceTheme.weightRegular,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 16.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get bodyMedium => _buildTypeStyle(
+  TextGeometry get bodyMedium => .from(
     font: _typefaceTheme.plain,
     weight: _typefaceTheme.weightRegular,
     size: 14.0,
-    lineHeight: 20.0,
     tracking: 0.25,
+    lineHeight: 20.0,
+    wght: _typefaceTheme.weightRegular,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 14.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get bodySmall => _buildTypeStyle(
+  TextGeometry get bodySmall => .from(
     font: _typefaceTheme.plain,
     weight: _typefaceTheme.weightRegular,
     size: 12.0,
-    lineHeight: 16.0,
     tracking: 0.4,
+    lineHeight: 16.0,
+    wght: _typefaceTheme.weightRegular,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 12.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get labelLarge => _buildTypeStyle(
+  TextGeometry get labelLarge => .from(
     font: _typefaceTheme.plain,
     weight: _typefaceTheme.weightMedium,
     size: 14.0,
-    lineHeight: 20.0,
     tracking: 0.1,
+    lineHeight: 20.0,
+    wght: _typefaceTheme.weightMedium,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 14.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get labelMedium => _buildTypeStyle(
+  TextGeometry get labelMedium => .from(
     font: _typefaceTheme.plain,
     weight: _typefaceTheme.weightMedium,
     size: 12.0,
-    lineHeight: 16.0,
     tracking: 0.5,
+    lineHeight: 16.0,
+    wght: _typefaceTheme.weightMedium,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 12.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get labelSmall => _buildTypeStyle(
+  TextGeometry get labelSmall => .from(
     font: _typefaceTheme.plain,
     weight: _typefaceTheme.weightMedium,
     size: 11.0,
-    lineHeight: 16.0,
     tracking: 0.5,
+    lineHeight: 16.0,
+    wght: _typefaceTheme.weightMedium,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 11.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
   );
 
   @override
-  TypeStyle get displayLargeEmphasized =>
-      displayLarge.copyWith(weight: _typefaceTheme.weightMedium, wght: 500.0);
+  TextGeometry get displayLargeEmphasized => .from(
+    font: _typefaceTheme.brand,
+    weight: _typefaceTheme.weightMedium,
+    size: 57.0,
+    tracking: -0.25,
+    lineHeight: 64.0,
+    wght: 500.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 57.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get displayMediumEmphasized =>
-      displayMedium.copyWith(weight: _typefaceTheme.weightMedium, wght: 500.0);
+  TextGeometry get displayMediumEmphasized => .from(
+    font: _typefaceTheme.brand,
+    weight: _typefaceTheme.weightMedium,
+    size: 45.0,
+    tracking: 0.0,
+    lineHeight: 52.0,
+    wght: 500.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 45.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get displaySmallEmphasized =>
-      displaySmall.copyWith(weight: _typefaceTheme.weightMedium, wght: 500.0);
+  TextGeometry get displaySmallEmphasized => .from(
+    font: _typefaceTheme.brand,
+    weight: _typefaceTheme.weightMedium,
+    size: 36.0,
+    tracking: 0.0,
+    lineHeight: 44.0,
+    wght: 500.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 36.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get headlineLargeEmphasized =>
-      headlineLarge.copyWith(weight: _typefaceTheme.weightMedium, wght: 500.0);
+  TextGeometry get headlineLargeEmphasized => .from(
+    font: _typefaceTheme.brand,
+    weight: _typefaceTheme.weightMedium,
+    size: 32.0,
+    tracking: 0.0,
+    lineHeight: 40.0,
+    wght: 500.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 32.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get headlineMediumEmphasized =>
-      headlineMedium.copyWith(weight: _typefaceTheme.weightMedium, wght: 500.0);
+  TextGeometry get headlineMediumEmphasized => .from(
+    font: _typefaceTheme.brand,
+    weight: _typefaceTheme.weightRegular,
+    size: 28.0,
+    tracking: 0.0,
+    lineHeight: 36.0,
+    wght: 500.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 28.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get headlineSmallEmphasized =>
-      headlineSmall.copyWith(weight: _typefaceTheme.weightMedium, wght: 500.0);
+  TextGeometry get headlineSmallEmphasized => .from(
+    font: _typefaceTheme.brand,
+    weight: _typefaceTheme.weightMedium,
+    size: 24.0,
+    tracking: 0.0,
+    lineHeight: 32.0,
+    wght: 500.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 24.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get titleLargeEmphasized =>
-      titleLarge.copyWith(weight: _typefaceTheme.weightMedium, wght: 500.0);
+  TextGeometry get titleLargeEmphasized => .from(
+    font: _typefaceTheme.brand,
+    weight: _typefaceTheme.weightMedium,
+    size: 22.0,
+    tracking: 0.0,
+    lineHeight: 28.0,
+    wght: 500.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 22.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get titleMediumEmphasized =>
-      titleMedium.copyWith(weight: _typefaceTheme.weightBold, wght: 600.0);
+  TextGeometry get titleMediumEmphasized => .from(
+    font: _typefaceTheme.plain,
+    weight: _typefaceTheme.weightBold,
+    size: 16.0,
+    tracking: 0.15,
+    lineHeight: 24.0,
+    wght: 600.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 16.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get titleSmallEmphasized =>
-      titleSmall.copyWith(weight: _typefaceTheme.weightBold, wght: 600.0);
+  TextGeometry get titleSmallEmphasized => .from(
+    font: _typefaceTheme.plain,
+    weight: _typefaceTheme.weightBold,
+    size: 14.0,
+    tracking: 0.1,
+    lineHeight: 20.0,
+    wght: 600.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 14.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get bodyLargeEmphasized =>
-      bodyLarge.copyWith(weight: _typefaceTheme.weightMedium, wght: 500.0);
+  TextGeometry get bodyLargeEmphasized => .from(
+    font: _typefaceTheme.plain,
+    weight: _typefaceTheme.weightMedium,
+    size: 16.0,
+    tracking: 0.5,
+    lineHeight: 24.0,
+    wght: 500.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 16.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get bodyMediumEmphasized =>
-      bodyMedium.copyWith(weight: _typefaceTheme.weightMedium, wght: 500.0);
+  TextGeometry get bodyMediumEmphasized => .from(
+    font: _typefaceTheme.plain,
+    weight: _typefaceTheme.weightMedium,
+    size: 14.0,
+    tracking: 0.25,
+    lineHeight: 20.0,
+    wght: 500.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 14.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get bodySmallEmphasized =>
-      bodySmall.copyWith(weight: _typefaceTheme.weightMedium, wght: 500.0);
+  TextGeometry get bodySmallEmphasized => .from(
+    font: _typefaceTheme.plain,
+    weight: _typefaceTheme.weightMedium,
+    size: 12.0,
+    tracking: 0.4,
+    lineHeight: 16.0,
+    wght: 500.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 12.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get labelLargeEmphasized =>
-      labelLarge.copyWith(weight: _typefaceTheme.weightBold, wght: 600.0);
+  TextGeometry get labelLargeEmphasized => .from(
+    font: _typefaceTheme.plain,
+    weight: _typefaceTheme.weightBold,
+    size: 14.0,
+    tracking: 0.1,
+    lineHeight: 20.0,
+    wght: 700.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 14.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get labelMediumEmphasized =>
-      labelMedium.copyWith(weight: _typefaceTheme.weightBold, wght: 600.0);
+  TextGeometry get labelMediumEmphasized => .from(
+    font: _typefaceTheme.plain,
+    weight: _typefaceTheme.weightBold,
+    size: 12.0,
+    tracking: 0.5,
+    lineHeight: 16.0,
+    wght: 600.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 12.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 
   @override
-  TypeStyle get labelSmallEmphasized =>
-      labelSmall.copyWith(weight: _typefaceTheme.weightBold, wght: 600.0);
+  TextGeometry get labelSmallEmphasized => .from(
+    font: _typefaceTheme.plain,
+    weight: _typefaceTheme.weightBold,
+    size: 11.0,
+    tracking: 0.5,
+    lineHeight: 16.0,
+    wght: 600.0,
+    grad: 0.0,
+    wdth: 100.0,
+    rond: 0.0,
+    opsz: 11.0,
+    crsv: 0.0,
+    slnt: 0.0,
+    fill: 0.0,
+    hexp: 0.0,
+  );
 }
 
 class TypescaleTheme extends InheritedTheme {
