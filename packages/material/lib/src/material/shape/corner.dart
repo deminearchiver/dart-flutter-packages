@@ -2,12 +2,6 @@
 
 import 'package:material/src/material/flutter.dart';
 
-extension CornerArithmetic on Corner {
-  Corner operator +(Corner other) => add(other);
-
-  Corner operator -(Corner other) => subtract(other);
-}
-
 // ////////////////////////////////////////////////////////////////
 // Compound corner (flexible API and high customizability) //
 // ////////////////////////////////////////////////////////////////

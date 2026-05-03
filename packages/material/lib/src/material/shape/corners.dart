@@ -2,12 +2,6 @@
 
 import 'package:material/src/material/flutter.dart';
 
-extension CornersGeometryArithmetic on CornersGeometry {
-  CornersGeometry operator +(CornersGeometry other) => add(other);
-
-  CornersGeometry operator -(CornersGeometry other) => subtract(other);
-}
-
 // ////////////////////////////////////////////////////////////////
 // Compound corners (flexible API and high customizability) //
 // ////////////////////////////////////////////////////////////////
@@ -39,10 +33,6 @@ abstract class CornersGeometry {
   ) = _CornersGeometryFromBorderRadiusGeometry;
 
   Corners resolve(TextDirection? textDirection);
-
-  // This should probably be removed to not break the chain
-  // TODO: is it feasible to remove this? (investigate in 1P)
-  BorderRadiusGeometry toBorderRadius(Size size);
 
   CornersGeometry add(CornersGeometry other) => _CornersAdd(this, other);
 
@@ -92,8 +82,7 @@ abstract class CornersGeometry {
         .lerp(a._bottomEnd, b._bottomEnd, t)!,
       );
     }
-    // TODO: implement CornersGeometry.lerp
-    throw UnimplementedError("CornersGeometry.lerp has not been implemented.");
+    return _CornersLerp(a, b, t);
   }
 }
 
@@ -101,9 +90,6 @@ final class _CornersGeometryFromBorderRadiusGeometry extends CornersGeometry {
   const _CornersGeometryFromBorderRadiusGeometry(this._borderRadius);
 
   final BorderRadiusGeometry _borderRadius;
-
-  @override
-  BorderRadiusGeometry toBorderRadius(Size size) => _borderRadius;
 
   @override
   Corners resolve(TextDirection? textDirection) =>
@@ -165,10 +151,6 @@ final class _CornersUnaryNegation extends CornersGeometry {
       -_value.resolve(textDirection);
 
   @override
-  BorderRadiusGeometry toBorderRadius(Size size) =>
-      -_value.toBorderRadius(size);
-
-  @override
   CornersGeometry operator -() => _value;
 
   @override
@@ -213,10 +195,6 @@ final class _CornersMultiply extends _CornersWithDoubleOperation {
       _value.resolve(textDirection) * _operand;
 
   @override
-  BorderRadiusGeometry toBorderRadius(Size size) =>
-      _value.toBorderRadius(size) * _operand;
-
-  @override
   String toString() => "$_value * ${_operand.toStringAsFixed(1)}";
 }
 
@@ -226,10 +204,6 @@ final class _CornersDivideDouble extends _CornersWithDoubleOperation {
   @override
   Corners resolve(TextDirection? textDirection) =>
       _value.resolve(textDirection) / _operand;
-
-  @override
-  BorderRadiusGeometry toBorderRadius(Size size) =>
-      _value.toBorderRadius(size) / _operand;
 
   @override
   String toString() => "$_value / ${_operand.toStringAsFixed(1)}";
@@ -243,10 +217,6 @@ final class _CornersDivideInt extends _CornersWithDoubleOperation {
       _value.resolve(textDirection) ~/ _operand;
 
   @override
-  BorderRadiusGeometry toBorderRadius(Size size) =>
-      _value.toBorderRadius(size) ~/ _operand;
-
-  @override
   String toString() => "$_value ~/ ${_operand.toStringAsFixed(1)}";
 }
 
@@ -256,10 +226,6 @@ final class _CornersModulo extends _CornersWithDoubleOperation {
   @override
   Corners resolve(TextDirection? textDirection) =>
       _value.resolve(textDirection) % _operand;
-
-  @override
-  BorderRadiusGeometry toBorderRadius(Size size) =>
-      _value.toBorderRadius(size) % _operand;
 
   @override
   String toString() => "$_value % ${_operand.toStringAsFixed(1)}";
@@ -295,10 +261,6 @@ final class _CornersAdd extends _CornersWithCornersOperation {
       _a.resolve(textDirection) + _b.resolve(textDirection);
 
   @override
-  BorderRadiusGeometry toBorderRadius(Size size) =>
-      _a.toBorderRadius(size).add(_b.toBorderRadius(size));
-
-  @override
   String toString() => "$_a + $_b";
 }
 
@@ -308,10 +270,6 @@ final class _CornersSubtract extends _CornersWithCornersOperation {
   @override
   Corners resolve(TextDirection? textDirection) =>
       _a.resolve(textDirection) - _b.resolve(textDirection);
-
-  @override
-  BorderRadiusGeometry toBorderRadius(Size size) =>
-      _a.toBorderRadius(size).subtract(_b.toBorderRadius(size));
 
   @override
   String toString() => "$_a - $_b";
@@ -330,30 +288,6 @@ final class _CornersLerp extends CornersGeometry {
   @override
   Corners resolve(TextDirection? textDirection) =>
       .lerp(_a.resolve(textDirection), _b.resolve(textDirection), _t)!;
-
-  @override
-  BorderRadiusGeometry toBorderRadius(Size size) {
-    if (identical(_a, _b)) return _a.toBorderRadius(size);
-    final a = _a.toBorderRadius(size);
-    final b = _b.toBorderRadius(size);
-    if (a is BorderRadius && b is BorderRadius) {
-      return BorderRadius.only(
-        topLeft: Radius.lerp(a.topLeft, b.topLeft, _t)!,
-        topRight: Radius.lerp(a.topRight, b.topRight, _t)!,
-        bottomLeft: Radius.lerp(a.bottomLeft, b.bottomLeft, _t)!,
-        bottomRight: Radius.lerp(a.bottomRight, b.bottomRight, _t)!,
-      );
-    }
-    if (a is BorderRadiusDirectional && b is BorderRadiusDirectional) {
-      return BorderRadiusDirectional.only(
-        topStart: Radius.lerp(a.topStart, b.topStart, _t)!,
-        topEnd: Radius.lerp(a.topEnd, b.topEnd, _t)!,
-        bottomStart: Radius.lerp(a.bottomStart, b.bottomStart, _t)!,
-        bottomEnd: Radius.lerp(a.bottomEnd, b.bottomEnd, _t)!,
-      );
-    }
-    return a.add((b.subtract(a)) * _t);
-  }
 
   @override
   String toString() =>
@@ -412,22 +346,6 @@ abstract class _CornersGeometry extends CornersGeometry {
       ),
     };
   }
-
-  @override
-  BorderRadiusGeometry toBorderRadius(Size size) =>
-      BorderRadius.only(
-        topLeft: _topLeft.toRadius(size),
-        topRight: _topRight.toRadius(size),
-        bottomLeft: _bottomLeft.toRadius(size),
-        bottomRight: _bottomRight.toRadius(size),
-      ).add(
-        BorderRadiusDirectional.only(
-          topStart: _topStart.toRadius(size),
-          topEnd: _topEnd.toRadius(size),
-          bottomStart: _bottomStart.toRadius(size),
-          bottomEnd: _bottomEnd.toRadius(size),
-        ),
-      );
 
   @override
   CornersGeometry add(CornersGeometry other) => other is _CornersGeometry
@@ -676,9 +594,6 @@ final class _ZeroCorners extends _CornersGeometry {
   Corners resolve(TextDirection? textDirection) => .zero;
 
   @override
-  BorderRadius toBorderRadius(Size size) => .zero;
-
-  @override
   CornersGeometry add(CornersGeometry other) =>
       other is _ZeroCorners ? this : other;
 
@@ -768,7 +683,6 @@ abstract class Corners extends _CornersGeometry {
     bottomRight: bottomRight ?? this.bottomRight,
   );
 
-  @override
   BorderRadius toBorderRadius(Size size) => .only(
     topLeft: topLeft.toRadius(size),
     topRight: topRight.toRadius(size),
@@ -1003,7 +917,6 @@ abstract class CornersDirectional extends _CornersGeometry {
     };
   }
 
-  @override
   BorderRadiusDirectional toBorderRadius(Size size) => .only(
     topStart: topStart.toRadius(size),
     topEnd: topEnd.toRadius(size),
