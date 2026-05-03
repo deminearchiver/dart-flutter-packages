@@ -19,7 +19,7 @@ abstract class ShapeCornerThemeDataPartial with Diagnosticable {
     Corner? extraLargeIncreased,
     Corner? extraExtraLarge,
     Corner? full,
-  }) = _ShapeCornerThemeDataPartial.from;
+  }) = _ShapeCornerThemeDataPartial;
 
   Corner? get none;
 
@@ -83,7 +83,7 @@ abstract class ShapeCornerThemeDataPartial with Diagnosticable {
           extraLargeIncreased != null ||
           extraExtraLarge != null ||
           full != null
-      ? ShapeCornerThemeDataPartial.from(
+      ? .from(
           none: none ?? this.none,
           extraSmall: extraSmall ?? this.extraSmall,
           extraSmallTop: extraSmallTop ?? this.extraSmallTop,
@@ -247,7 +247,7 @@ abstract class ShapeCornerThemeDataPartial with Diagnosticable {
 }
 
 class _ShapeCornerThemeDataPartial extends ShapeCornerThemeDataPartial {
-  const _ShapeCornerThemeDataPartial.from({
+  const _ShapeCornerThemeDataPartial({
     this.none,
     this.extraSmall,
     this.extraSmallTop,
@@ -330,7 +330,7 @@ abstract class ShapeCornerThemeData extends ShapeCornerThemeDataPartial {
     required Corner extraLargeIncreased,
     required Corner extraExtraLarge,
     required Corner full,
-  }) = _ShapeCornerThemeData.from;
+  }) = _ShapeCornerThemeData;
 
   const factory ShapeCornerThemeData.fallback() =
       _ShapeCornerThemeData.fallback;
@@ -413,7 +413,7 @@ abstract class ShapeCornerThemeData extends ShapeCornerThemeDataPartial {
           extraLargeIncreased != null ||
           extraExtraLarge != null ||
           full != null
-      ? ShapeCornerThemeData.from(
+      ? .from(
           none: none ?? this.none,
           extraSmall: extraSmall ?? this.extraSmall,
           extraSmallTop: extraSmallTop ?? this.extraSmallTop,
@@ -524,7 +524,7 @@ abstract class ShapeCornerThemeData extends ShapeCornerThemeDataPartial {
 }
 
 class _ShapeCornerThemeData extends ShapeCornerThemeData {
-  const _ShapeCornerThemeData.from({
+  const _ShapeCornerThemeData({
     required this.none,
     required this.extraSmall,
     required this.extraSmallTop,
@@ -618,7 +618,7 @@ abstract class ShapeCornerValueThemeDataPartial with Diagnosticable {
     double? extraLarge,
     double? extraLargeIncreased,
     double? extraExtraLarge,
-  }) = _ShapeCornerValueThemeDataPartial.from;
+  }) = _ShapeCornerValueThemeDataPartial;
 
   double? get none;
   double? get extraSmall;
@@ -650,7 +650,7 @@ abstract class ShapeCornerValueThemeDataPartial with Diagnosticable {
           extraLarge != null ||
           extraLargeIncreased != null ||
           extraExtraLarge != null
-      ? ShapeCornerValueThemeDataPartial.from(
+      ? .from(
           none: none ?? this.none,
           extraSmall: extraSmall ?? this.extraSmall,
           small: small ?? this.small,
@@ -737,7 +737,7 @@ abstract class ShapeCornerValueThemeDataPartial with Diagnosticable {
 
 class _ShapeCornerValueThemeDataPartial
     extends ShapeCornerValueThemeDataPartial {
-  const _ShapeCornerValueThemeDataPartial.from({
+  const _ShapeCornerValueThemeDataPartial({
     this.none,
     this.extraSmall,
     this.small,
@@ -791,7 +791,7 @@ abstract class ShapeCornerValueThemeData
     required double extraLarge,
     required double extraLargeIncreased,
     required double extraExtraLarge,
-  }) = _ShapeCornerValueThemeData.from;
+  }) = _ShapeCornerValueThemeData;
 
   const factory ShapeCornerValueThemeData.fallback() =
       _ShapeCornerValueThemeData.fallback;
@@ -844,7 +844,7 @@ abstract class ShapeCornerValueThemeData
           extraLarge != null ||
           extraLargeIncreased != null ||
           extraExtraLarge != null
-      ? ShapeCornerValueThemeData.from(
+      ? .from(
           none: none ?? this.none,
           extraSmall: extraSmall ?? this.extraSmall,
           small: small ?? this.small,
@@ -919,7 +919,7 @@ abstract class ShapeCornerValueThemeData
 }
 
 class _ShapeCornerValueThemeData extends ShapeCornerValueThemeData {
-  const _ShapeCornerValueThemeData.from({
+  const _ShapeCornerValueThemeData({
     required this.none,
     required this.extraSmall,
     required this.small,
@@ -976,7 +976,7 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
   const factory ShapeThemeDataPartial.from({
     ShapeCornerThemeDataPartial? corner,
     ShapeCornerValueThemeDataPartial? cornerValue,
-  }) = _ShapeThemeDataPartial.from;
+  }) = _ShapeThemeDataPartial;
 
   ShapeCornerThemeDataPartial? get corner;
 
@@ -986,7 +986,7 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
     covariant ShapeCornerThemeDataPartial? corner,
     covariant ShapeCornerValueThemeDataPartial? cornerValue,
   }) => corner != null || cornerValue != null
-      ? ShapeThemeDataPartial.from(
+      ? .from(
           corner: corner ?? this.corner,
           cornerValue: cornerValue ?? this.cornerValue,
         )
@@ -996,7 +996,7 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
     ShapeCornerThemeDataPartial? corner,
     ShapeCornerValueThemeDataPartial? cornerValue,
   }) => corner != null || cornerValue != null
-      ? ShapeThemeDataPartial.from(
+      ? .from(
           corner: this.corner?.merge(corner) ?? corner,
           cornerValue: this.cornerValue?.merge(cornerValue) ?? cornerValue,
         )
@@ -1039,7 +1039,7 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
 }
 
 class _ShapeThemeDataPartial extends ShapeThemeDataPartial {
-  const _ShapeThemeDataPartial.from({this.corner, this.cornerValue});
+  const _ShapeThemeDataPartial({this.corner, this.cornerValue});
 
   @override
   final ShapeCornerThemeDataPartial? corner;
@@ -1054,7 +1054,7 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
   const factory ShapeThemeData.from({
     required ShapeCornerThemeData corner,
     required ShapeCornerValueThemeData cornerValue,
-  }) = _ShapeThemeData.from;
+  }) = _ShapeThemeData;
 
   const factory ShapeThemeData.fallback() = _ShapeThemeData.fallback;
 
@@ -1069,7 +1069,7 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
     covariant ShapeCornerThemeData? corner,
     covariant ShapeCornerValueThemeData? cornerValue,
   }) => corner != null || cornerValue != null
-      ? ShapeThemeData.from(
+      ? .from(
           corner: corner ?? this.corner,
           cornerValue: cornerValue ?? this.cornerValue,
         )
@@ -1080,7 +1080,7 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
     ShapeCornerThemeDataPartial? corner,
     ShapeCornerValueThemeDataPartial? cornerValue,
   }) => corner != null || cornerValue != null
-      ? ShapeThemeData.from(
+      ? .from(
           corner: this.corner.merge(corner),
           cornerValue: this.cornerValue.merge(cornerValue),
         )
@@ -1117,7 +1117,7 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
 }
 
 class _ShapeThemeData extends ShapeThemeData {
-  const _ShapeThemeData.from({required this.corner, required this.cornerValue});
+  const _ShapeThemeData({required this.corner, required this.cornerValue});
 
   const _ShapeThemeData.fallback()
     : corner = const ShapeCornerThemeData.fallback(),
