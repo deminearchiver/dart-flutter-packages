@@ -343,22 +343,21 @@ class _Example2ViewState extends State<Example2View> {
                                   borderOnForeground: true,
                                   shape: CornersBorder.rounded(
                                     corners: .only(
-                                      topLeft:
-                                          Corner.fixed(_fixedTopLeft * 48.0) +
-                                          .fractional(_fractionalTopLeft),
-                                      topRight:
-                                          Corner.fixed(_fixedTopRight * 48.0) +
-                                          .fractional(_fractionalTopRight),
-                                      bottomLeft:
-                                          Corner.fixed(
-                                            _fixedBottomLeft * 48.0,
-                                          ) +
-                                          .fractional(_fractionalBottomLeft),
+                                      topLeft: Corner.fixed(
+                                        _fixedTopLeft * 48.0,
+                                      ).add(.fractional(_fractionalTopLeft)),
+                                      topRight: Corner.fixed(
+                                        _fixedTopRight * 48.0,
+                                      ).add(.fractional(_fractionalTopRight)),
+                                      bottomLeft: Corner.fixed(
+                                        _fixedBottomLeft * 48.0,
+                                      ).add(.fractional(_fractionalBottomLeft)),
                                       bottomRight:
                                           Corner.fixed(
                                             _fixedBottomRight * 48.0,
-                                          ) +
-                                          .fractional(_fractionalBottomRight),
+                                          ).add(
+                                            .fractional(_fractionalBottomRight),
+                                          ),
                                     ),
                                     side: .new(
                                       width: thickness,
