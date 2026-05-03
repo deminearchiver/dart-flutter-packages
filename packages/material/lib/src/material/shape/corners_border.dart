@@ -2,14 +2,223 @@ import 'dart:math' as math;
 
 import 'package:material/src/material/flutter.dart';
 
+// In this file, switch statements for BorderSide.style are not used
+// because we assume it will remain the same in future releases of the
+// framework. We need to keep track of new enum members being added.
+
+abstract class _OffsetCornersGeometry extends CornersGeometry {
+  const _OffsetCornersGeometry(CornersGeometry corners, double delta)
+    : _corners = corners,
+      _delta = delta;
+
+  final CornersGeometry _corners;
+  final double _delta;
+
+  @override
+  _OffsetCorners resolve(TextDirection? textDirection);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _OffsetCornersGeometry &&
+          _corners == other._corners &&
+          _delta == other._delta;
+
+  @override
+  int get hashCode => Object.hash(_corners, _delta);
+}
+
+abstract class _OffsetCorners extends Corners {
+  const _OffsetCorners(Corners corners, double delta)
+    : _corners = corners,
+      _delta = delta;
+
+  final Corners _corners;
+  final double _delta;
+
+  @override
+  _OffsetCorner get bottomLeft;
+
+  @override
+  _OffsetCorner get bottomRight;
+
+  @override
+  _OffsetCorner get topLeft;
+
+  @override
+  _OffsetCorner get topRight;
+
+  @override
+  _OffsetCorners resolve(TextDirection? textDirection) => this;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _OffsetCorners &&
+          _corners == other._corners &&
+          _delta == other._delta;
+
+  @override
+  int get hashCode => Object.hash(_corners, _delta);
+}
+
+abstract class _OffsetCorner extends Corner {
+  const _OffsetCorner(Corner corner, double delta)
+    : _corner = corner,
+      _delta = delta;
+
+  final Corner _corner;
+  final double _delta;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _CutCorner &&
+          _corner == other._corner &&
+          _delta == other._delta;
+
+  @override
+  int get hashCode => Object.hash(_corner, _delta);
+}
+
+class _RoundedCornersGeometry extends _OffsetCornersGeometry {
+  const _RoundedCornersGeometry(super.corners, super.delta);
+
+  @override
+  _RoundedCorners resolve(TextDirection? textDirection) =>
+      .new(_corners.resolve(textDirection), _delta);
+}
+
+class _RoundedCorners extends _OffsetCorners {
+  const _RoundedCorners(super.corners, super.delta);
+
+  @override
+  _RoundedCorner get bottomLeft => .new(_corners.bottomLeft, _delta);
+
+  @override
+  _RoundedCorner get bottomRight => .new(_corners.bottomRight, _delta);
+
+  @override
+  _RoundedCorner get topLeft => .new(_corners.topLeft, _delta);
+
+  @override
+  _RoundedCorner get topRight => .new(_corners.topRight, _delta);
+}
+
+class _RoundedCorner extends _OffsetCorner {
+  const _RoundedCorner(super.corner, super.delta);
+
+  @override
+  Corner get flipped => _RoundedCorner(_corner.flipped, _delta);
+
+  @override
+  Radius toRadius(Size size) {
+    // Skip calculations if nothing is being offset.
+    if (_delta == 0.0) return _corner.toRadius(size);
+
+    // We use an inversely-inflated size and resolve the corner in it.
+    // This gives us a suitable radius for further transformations.
+    final dimensionDelta = 2.0 * _delta;
+    final deflatedSize = Size(
+      size.width - dimensionDelta,
+      size.height - dimensionDelta,
+    );
+    final Radius(:x, :y) = _corner.toRadius(deflatedSize);
+
+    // Apply constant offset to corners.
+    return .elliptical(x + _delta, y + _delta);
+  }
+}
+
+class _CutCornersGeometry extends _OffsetCornersGeometry {
+  const _CutCornersGeometry(super.corners, super.delta);
+
+  @override
+  _CutCorners resolve(TextDirection? textDirection) =>
+      .new(_corners.resolve(textDirection), _delta);
+}
+
+class _CutCorners extends _OffsetCorners {
+  const _CutCorners(super.corners, super.delta);
+
+  @override
+  _CutCorner get bottomLeft => .new(_corners.bottomLeft, _delta);
+
+  @override
+  _CutCorner get bottomRight => .new(_corners.bottomRight, _delta);
+
+  @override
+  _CutCorner get topLeft => .new(_corners.topLeft, _delta);
+
+  @override
+  _CutCorner get topRight => .new(_corners.topRight, _delta);
+}
+
+class _CutCorner extends _OffsetCorner {
+  const _CutCorner(super.corner, super.delta);
+
+  @override
+  Corner get flipped => _CutCorner(_corner.flipped, _delta);
+
+  @override
+  Radius toRadius(Size size) {
+    // Skip calculations if nothing is being offset.
+    if (_delta == 0.0) return _corner.toRadius(size);
+
+    // We use an inversely-inflated size and resolve the corner in it.
+    // This gives us a suitable radius for further transformations.
+    final dimensionDelta = 2.0 * _delta;
+    final deflatedSize = Size(
+      size.width - dimensionDelta,
+      size.height - dimensionDelta,
+    );
+    final Radius(:x, :y) = _corner.toRadius(deflatedSize);
+
+    // Apply non-linear offset to corners as if they were bevels of a rectangle.
+    final hypotenuse = math.sqrt(x * x + y * y);
+    return Radius.elliptical(
+      y != 0.0 ? math.max(0.0, x + _delta * ((hypotenuse - x) / y)) : 0.0,
+      x != 0.0 ? math.max(0.0, y + _delta * ((hypotenuse - y) / x)) : 0.0,
+    );
+  }
+}
+
 abstract class CornersBorderDelegate {
   const CornersBorderDelegate();
 
-  Path getInnerPath({
-    required Rect rect,
-    required BorderSide side,
-    required BorderRadius borderRadius,
-  });
+  // Calculations
+
+  CornersGeometry inflateCorners(CornersGeometry corners, double delta);
+
+  CornersGeometry deflateCorners(CornersGeometry corners, double delta) =>
+      inflateCorners(corners, -delta);
+
+  BorderRadius inflateBorderRadius(BorderRadius borderRadius, double delta);
+
+  BorderRadius deflateBorderRadius(BorderRadius borderRadius, double delta) =>
+      inflateBorderRadius(borderRadius, -delta);
+
+  Rect inflateRect(Rect rect, double delta);
+
+  Rect deflateRect(Rect rect, double delta) => inflateRect(rect, -delta);
+
+  RRect inflateRRect(RRect rRect, double delta);
+
+  RRect deflateRRect(RRect rRect, double delta) => inflateRRect(rRect, -delta);
+
+  RSuperellipse inflateRSuperellipse(RSuperellipse rSuperellipse, double delta);
+
+  RSuperellipse deflateRSuperellipse(
+    RSuperellipse rSuperellipse,
+    double delta,
+  ) => inflateRSuperellipse(rSuperellipse, -delta);
+
+  // Painting
+
+  CornersBorderDelegate scale(double t);
 
   Path getOuterPath({
     required Rect rect,
@@ -17,14 +226,13 @@ abstract class CornersBorderDelegate {
     required BorderRadius borderRadius,
   });
 
-  bool get preferPaintInterior => false;
-
-  void paint({
-    required Canvas canvas,
+  Path getInnerPath({
     required Rect rect,
     required BorderSide side,
     required BorderRadius borderRadius,
   });
+
+  bool get preferPaintInterior => false;
 
   void paintInterior({
     required Canvas canvas,
@@ -35,13 +243,24 @@ abstract class CornersBorderDelegate {
   }) {
     assert(
       !preferPaintInterior,
-      "$runtimeType.preferPaintInterior returns true but $runtimeType.paintInterior is not implemented.",
+      "$runtimeType.preferPaintInterior returns true "
+      "but $runtimeType.paintInterior is not implemented.",
     );
     assert(
       false,
-      "$runtimeType.preferPaintInterior returns false, so it is an error to call its paintInterior method.",
+      "$runtimeType.preferPaintInterior returns false, "
+      "so it is an error to call its paintInterior method.",
     );
   }
+
+  void paint({
+    required Canvas canvas,
+    required Rect rect,
+    required BorderSide side,
+    required BorderRadius borderRadius,
+  });
+
+  // Lerping
 
   CornersBorderDelegate? lerpFrom(CornersBorderDelegate? a, double t) =>
       a == null ? scale(t) : null;
@@ -49,7 +268,14 @@ abstract class CornersBorderDelegate {
   CornersBorderDelegate? lerpTo(CornersBorderDelegate? b, double t) =>
       b == null ? scale(1.0 - t) : null;
 
-  CornersBorderDelegate scale(double t);
+  // Static members
+
+  static const CornersBorderDelegate rounded = _RoundedCornersBorderDelegate();
+
+  static const CornersBorderDelegate superellipse =
+      _SuperellipseCornersBorderDelegate();
+
+  static const CornersBorderDelegate cut = _CutCornersBorderDelegate();
 
   static CornersBorderDelegate? lerp(
     CornersBorderDelegate? a,
@@ -59,65 +285,81 @@ abstract class CornersBorderDelegate {
     if (identical(a, b)) return a;
     return b?.lerpFrom(a, t) ?? a?.lerpTo(b, t) ?? (t < 0.5 ? a : b);
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType && other is CornersBorderDelegate;
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  static const CornersBorderDelegate rounded = _RoundedCornersBorderDelegate();
-
-  static const CornersBorderDelegate cut = _CutCornersBorderDelegate();
-
-  static const CornersBorderDelegate superellipse =
-      _SuperellipseCornersBorderDelegate();
 }
 
-class _RoundedCornersBorderDelegate extends CornersBorderDelegate {
+mixin _RoundedCornerCalculations implements CornersBorderDelegate {
+  @override
+  CornersGeometry inflateCorners(CornersGeometry corners, double delta) {
+    if (delta == 0.0) return corners;
+    return _RoundedCornersGeometry(corners, delta);
+  }
+
+  @override
+  BorderRadius inflateBorderRadius(BorderRadius borderRadius, double delta) {
+    if (delta == 0.0) return borderRadius;
+    final BorderRadius(
+      topLeft: Radius(x: tlX, y: tlY),
+      topRight: Radius(x: trX, y: trY),
+      bottomLeft: Radius(x: blX, y: blY),
+      bottomRight: Radius(x: brX, y: brY),
+    ) = borderRadius;
+    return .only(
+      topLeft: .elliptical(tlX + delta, tlY + delta),
+      topRight: .elliptical(trX + delta, trY + delta),
+      bottomLeft: .elliptical(blX + delta, blY + delta),
+      bottomRight: .elliptical(brX + delta, brY + delta),
+    );
+  }
+
+  @override
+  Rect inflateRect(Rect rect, double delta) {
+    if (delta == 0.0) return rect;
+    return rect.inflate(delta);
+  }
+
+  @override
+  RRect inflateRRect(RRect rRect, double delta) {
+    if (delta == 0.0) return rRect;
+    return rRect.inflate(delta);
+  }
+
+  @override
+  RSuperellipse inflateRSuperellipse(
+    RSuperellipse rSuperellipse,
+    double delta,
+  ) {
+    if (delta == 0.0) return rSuperellipse;
+    return rSuperellipse.inflate(delta);
+  }
+}
+
+class _RoundedCornersBorderDelegate extends CornersBorderDelegate
+    with _RoundedCornerCalculations {
   const _RoundedCornersBorderDelegate();
 
   @override
-  Path getInnerPath({
-    required Rect rect,
-    required BorderSide side,
-    required BorderRadius borderRadius,
-  }) => Path()..addRRect(borderRadius.toRRect(rect).deflate(side.strokeInset));
+  _RoundedCornersBorderDelegate scale(double t) => this;
 
   @override
   Path getOuterPath({
     required Rect rect,
     required BorderSide side,
     required BorderRadius borderRadius,
-  }) => Path()..addRRect(borderRadius.toRRect(rect));
+  }) =>
+      Path()
+        ..addRRect(inflateRRect(borderRadius.toRRect(rect), side.strokeOutset));
 
   @override
-  bool get preferPaintInterior => true;
-
-  @override
-  void paint({
-    required Canvas canvas,
+  Path getInnerPath({
     required Rect rect,
     required BorderSide side,
     required BorderRadius borderRadius,
-  }) {
-    switch (side.style) {
-      case BorderStyle.none:
-        break;
-      case BorderStyle.solid:
-        if (side.width == 0.0) {
-          canvas.drawRRect(borderRadius.toRRect(rect), side.toPaint());
-        } else {
-          final paint = Paint()..color = side.color;
-          final borderRect = borderRadius.toRRect(rect);
-          final inner = borderRect.deflate(side.strokeInset);
-          final outer = borderRect.inflate(side.strokeOutset);
-          canvas.drawDRRect(outer, inner, paint);
-        }
-    }
-  }
+  }) =>
+      Path()
+        ..addRRect(deflateRRect(borderRadius.toRRect(rect), side.strokeInset));
+
+  @override
+  bool get preferPaintInterior => true;
 
   @override
   void paintInterior({
@@ -128,75 +370,14 @@ class _RoundedCornersBorderDelegate extends CornersBorderDelegate {
     required BorderRadius borderRadius,
   }) {
     if (borderRadius == .zero) {
-      canvas.drawRect(rect, paint);
+      canvas.drawRect(inflateRect(rect, side.strokeOutset), paint);
     } else {
-      canvas.drawRRect(borderRadius.toRRect(rect), paint);
+      canvas.drawRRect(
+        inflateRRect(borderRadius.toRRect(rect), side.strokeOutset),
+        paint,
+      );
     }
   }
-
-  @override
-  _RoundedCornersBorderDelegate scale(double t) => this;
-
-  // TODO: implement lerpFrom and lerpTo
-
-  @override
-  String toString() => "CornersBorderDelegate.rounded";
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _RoundedCornersBorderDelegate;
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-}
-
-class _CutCornersBorderDelegate extends CornersBorderDelegate {
-  const _CutCornersBorderDelegate();
-
-  Path _getPath(RRect rrect) {
-    final centerLeft = Offset(rrect.left, rrect.center.dy);
-    final centerRight = Offset(rrect.right, rrect.center.dy);
-    final centerTop = Offset(rrect.center.dx, rrect.top);
-    final centerBottom = Offset(rrect.center.dx, rrect.bottom);
-
-    final tlRadiusX = math.max(0.0, rrect.tlRadiusX);
-    final tlRadiusY = math.max(0.0, rrect.tlRadiusY);
-    final trRadiusX = math.max(0.0, rrect.trRadiusX);
-    final trRadiusY = math.max(0.0, rrect.trRadiusY);
-    final blRadiusX = math.max(0.0, rrect.blRadiusX);
-    final blRadiusY = math.max(0.0, rrect.blRadiusY);
-    final brRadiusX = math.max(0.0, rrect.brRadiusX);
-    final brRadiusY = math.max(0.0, rrect.brRadiusY);
-
-    final vertices = <Offset>[
-      Offset(rrect.left, math.min(centerLeft.dy, rrect.top + tlRadiusY)),
-      Offset(math.min(centerTop.dx, rrect.left + tlRadiusX), rrect.top),
-      Offset(math.max(centerTop.dx, rrect.right - trRadiusX), rrect.top),
-      Offset(rrect.right, math.min(centerRight.dy, rrect.top + trRadiusY)),
-      Offset(rrect.right, math.max(centerRight.dy, rrect.bottom - brRadiusY)),
-      Offset(math.max(centerBottom.dx, rrect.right - brRadiusX), rrect.bottom),
-      Offset(math.min(centerBottom.dx, rrect.left + blRadiusX), rrect.bottom),
-      Offset(rrect.left, math.max(centerLeft.dy, rrect.bottom - blRadiusY)),
-    ];
-
-    return Path()..addPolygon(vertices, true);
-  }
-
-  @override
-  Path getInnerPath({
-    required Rect rect,
-    required BorderSide side,
-    required BorderRadius borderRadius,
-  }) => _getPath(borderRadius.toRRect(rect).deflate(side.strokeInset));
-
-  @override
-  Path getOuterPath({
-    required Rect rect,
-    required BorderSide side,
-    required BorderRadius borderRadius,
-  }) => _getPath(borderRadius.toRRect(rect));
 
   @override
   void paint({
@@ -205,41 +386,45 @@ class _CutCornersBorderDelegate extends CornersBorderDelegate {
     required BorderSide side,
     required BorderRadius borderRadius,
   }) {
+    if (side.style == .none) return;
     if (rect.isEmpty) return;
-    switch (side.style) {
-      case .none:
-        break;
-      case .solid:
-        final borderRect = borderRadius.toRRect(rect);
-        final adjustedRect = borderRect.inflate(side.strokeOutset);
-        final path = _getPath(adjustedRect)
-          ..addPath(
-            getInnerPath(rect: rect, side: side, borderRadius: borderRadius),
-            .zero,
-          );
-        canvas.drawPath(path, side.toPaint());
+
+    if (side.width == 0.0) {
+      canvas.drawRRect(borderRadius.toRRect(rect), side.toPaint());
+    } else {
+      final paint = Paint()..color = side.color;
+      final borderRect = borderRadius.toRRect(rect);
+      final outer = inflateRRect(borderRect, side.strokeOutset);
+      final inner = deflateRRect(borderRect, side.strokeInset);
+      canvas.drawDRRect(outer, inner, paint);
     }
   }
-
-  @override
-  _CutCornersBorderDelegate scale(double t) => this;
 
   // TODO: implement lerpFrom and lerpTo
 
   @override
-  String toString() => "CornersBorderDelegate.cut";
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType && other is _CutCornersBorderDelegate;
-
-  @override
-  int get hashCode => runtimeType.hashCode;
+  String toString() => "CornersBorderDelegate.rounded";
 }
 
-class _SuperellipseCornersBorderDelegate extends CornersBorderDelegate {
+class _SuperellipseCornersBorderDelegate extends CornersBorderDelegate
+    with _RoundedCornerCalculations {
   const _SuperellipseCornersBorderDelegate();
+
+  @override
+  _SuperellipseCornersBorderDelegate scale(double t) => this;
+
+  @override
+  Path getOuterPath({
+    required Rect rect,
+    required BorderSide side,
+    required BorderRadius borderRadius,
+  }) => Path()
+    ..addRSuperellipse(
+      inflateRSuperellipse(
+        borderRadius.toRSuperellipse(rect),
+        side.strokeOutset,
+      ),
+    );
 
   @override
   Path getInnerPath({
@@ -248,42 +433,14 @@ class _SuperellipseCornersBorderDelegate extends CornersBorderDelegate {
     required BorderRadius borderRadius,
   }) => Path()
     ..addRSuperellipse(
-      borderRadius.toRSuperellipse(rect).deflate(side.strokeInset),
+      deflateRSuperellipse(
+        borderRadius.toRSuperellipse(rect),
+        side.strokeInset,
+      ),
     );
 
   @override
-  Path getOuterPath({
-    required Rect rect,
-    required BorderSide side,
-    required BorderRadius borderRadius,
-  }) => Path()..addRSuperellipse(borderRadius.toRSuperellipse(rect));
-
-  @override
   bool get preferPaintInterior => true;
-
-  @override
-  void paint({
-    required Canvas canvas,
-    required Rect rect,
-    required BorderSide side,
-    required BorderRadius borderRadius,
-  }) {
-    switch (side.style) {
-      case .none:
-        break;
-      case .solid:
-        if (side.width == 0.0) {
-          canvas.drawRSuperellipse(
-            borderRadius.toRSuperellipse(rect),
-            side.toPaint(),
-          );
-        } else {
-          final strokeOffset = (side.strokeOutset - side.strokeInset) / 2.0;
-          final base = borderRadius.toRSuperellipse(rect).inflate(strokeOffset);
-          canvas.drawRSuperellipse(base, side.toPaint());
-        }
-    }
-  }
 
   @override
   void paintInterior({
@@ -294,28 +451,289 @@ class _SuperellipseCornersBorderDelegate extends CornersBorderDelegate {
     required BorderRadius borderRadius,
   }) {
     if (borderRadius == .zero) {
-      canvas.drawRect(rect, paint);
+      canvas.drawRect(inflateRect(rect, side.strokeOutset), paint);
     } else {
-      canvas.drawRSuperellipse(borderRadius.toRSuperellipse(rect), paint);
+      canvas.drawRSuperellipse(
+        inflateRSuperellipse(
+          borderRadius.toRSuperellipse(rect),
+          side.strokeOutset,
+        ),
+        paint,
+      );
     }
   }
 
   @override
-  _SuperellipseCornersBorderDelegate scale(double t) => this;
+  void paint({
+    required Canvas canvas,
+    required Rect rect,
+    required BorderSide side,
+    required BorderRadius borderRadius,
+  }) {
+    if (side.style == .none) return;
+    if (rect.isEmpty) return;
+
+    final strokeOffset = (side.strokeOutset - side.strokeInset) / 2.0;
+    if (borderRadius == .zero) {
+      canvas.drawRect(inflateRect(rect, strokeOffset), side.toPaint());
+    } else {
+      canvas.drawRSuperellipse(
+        inflateRSuperellipse(borderRadius.toRSuperellipse(rect), strokeOffset),
+        side.toPaint(),
+      );
+    }
+  }
 
   // TODO: implement lerpFrom and lerpTo
 
   @override
   String toString() => "CornersBorderDelegate.superellipse";
+}
+
+mixin _CutCornerCalculations implements CornersBorderDelegate {
+  @override
+  CornersGeometry inflateCorners(CornersGeometry corners, double delta) {
+    if (delta == 0.0) return corners;
+    return _CutCornersGeometry(corners, delta);
+  }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _SuperellipseCornersBorderDelegate;
+  BorderRadius inflateBorderRadius(BorderRadius borderRadius, double delta) {
+    if (delta == 0.0) return borderRadius;
+    final BorderRadius(
+      topLeft: Radius(x: tlX, y: tlY),
+      topRight: Radius(x: trX, y: trY),
+      bottomLeft: Radius(x: blX, y: blY),
+      bottomRight: Radius(x: brX, y: brY),
+    ) = borderRadius;
+    final tlH = math.sqrt(tlX * tlX + tlY * tlY);
+    final trH = math.sqrt(trX * trX + trY * trY);
+    final blH = math.sqrt(blX * blX + blY * blY);
+    final brH = math.sqrt(brX * brX + brY * brY);
+    return .only(
+      topLeft: .elliptical(
+        tlY != 0.0 ? math.max(0.0, tlX + delta * ((tlH - tlX) / tlY)) : 0.0,
+        tlX != 0.0 ? math.max(0.0, tlY + delta * ((tlH - tlY) / tlX)) : 0.0,
+      ),
+      topRight: .elliptical(
+        trY != 0.0 ? math.max(0.0, trX + delta * ((trH - trX) / trY)) : 0.0,
+        trX != 0.0 ? math.max(0.0, trY + delta * ((trH - trY) / trX)) : 0.0,
+      ),
+      bottomLeft: .elliptical(
+        blY != 0.0 ? math.max(0.0, blX + delta * ((blH - blX) / blY)) : 0.0,
+        blX != 0.0 ? math.max(0.0, blY + delta * ((blH - blY) / blX)) : 0.0,
+      ),
+      bottomRight: .elliptical(
+        brY != 0.0 ? math.max(0.0, brX + delta * ((brH - brX) / brY)) : 0.0,
+        brX != 0.0 ? math.max(0.0, brY + delta * ((brH - brY) / brX)) : 0.0,
+      ),
+    );
+  }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  Rect inflateRect(Rect rect, double delta) {
+    if (delta == 0.0) return rect;
+    return rect.inflate(delta);
+  }
+
+  @override
+  RRect inflateRRect(RRect rRect, double delta) {
+    if (delta == 0.0) return rRect;
+    final RRect(
+      :left,
+      :top,
+      :right,
+      :bottom,
+      tlRadiusX: tlX,
+      tlRadiusY: tlY,
+      trRadiusX: trX,
+      trRadiusY: trY,
+      blRadiusX: blX,
+      blRadiusY: blY,
+      brRadiusX: brX,
+      brRadiusY: brY,
+    ) = rRect;
+    final tlH = math.sqrt(tlX * tlX + tlY * tlY);
+    final trH = math.sqrt(trX * trX + trY * trY);
+    final blH = math.sqrt(blX * blX + blY * blY);
+    final brH = math.sqrt(brX * brX + brY * brY);
+    return .fromLTRBAndCorners(
+      left - delta,
+      top - delta,
+      right + delta,
+      bottom + delta,
+      topLeft: .elliptical(
+        tlY != 0.0 ? math.max(0.0, tlX + delta * ((tlH - tlX) / tlY)) : 0.0,
+        tlX != 0.0 ? math.max(0.0, tlY + delta * ((tlH - tlY) / tlX)) : 0.0,
+      ),
+      topRight: .elliptical(
+        trY != 0.0 ? math.max(0.0, trX + delta * ((trH - trX) / trY)) : 0.0,
+        trX != 0.0 ? math.max(0.0, trY + delta * ((trH - trY) / trX)) : 0.0,
+      ),
+      bottomLeft: .elliptical(
+        blY != 0.0 ? math.max(0.0, blX + delta * ((blH - blX) / blY)) : 0.0,
+        blX != 0.0 ? math.max(0.0, blY + delta * ((blH - blY) / blX)) : 0.0,
+      ),
+      bottomRight: .elliptical(
+        brY != 0.0 ? math.max(0.0, brX + delta * ((brH - brX) / brY)) : 0.0,
+        brX != 0.0 ? math.max(0.0, brY + delta * ((brH - brY) / brX)) : 0.0,
+      ),
+    );
+  }
+
+  @override
+  RSuperellipse inflateRSuperellipse(
+    RSuperellipse rSuperellipse,
+    double delta,
+  ) {
+    if (delta == 0.0) return rSuperellipse;
+    final RSuperellipse(
+      :left,
+      :top,
+      :right,
+      :bottom,
+      tlRadiusX: tlX,
+      tlRadiusY: tlY,
+      trRadiusX: trX,
+      trRadiusY: trY,
+      blRadiusX: blX,
+      blRadiusY: blY,
+      brRadiusX: brX,
+      brRadiusY: brY,
+    ) = rSuperellipse;
+    final tlH = math.sqrt(tlX * tlX + tlY * tlY);
+    final trH = math.sqrt(trX * trX + trY * trY);
+    final blH = math.sqrt(blX * blX + blY * blY);
+    final brH = math.sqrt(brX * brX + brY * brY);
+    return .fromLTRBAndCorners(
+      left - delta,
+      top - delta,
+      right + delta,
+      bottom + delta,
+      topLeft: .elliptical(
+        tlY != 0.0 ? math.max(0.0, tlX + delta * ((tlH - tlX) / tlY)) : 0.0,
+        tlX != 0.0 ? math.max(0.0, tlY + delta * ((tlH - tlY) / tlX)) : 0.0,
+      ),
+      topRight: .elliptical(
+        trY != 0.0 ? math.max(0.0, trX + delta * ((trH - trX) / trY)) : 0.0,
+        trX != 0.0 ? math.max(0.0, trY + delta * ((trH - trY) / trX)) : 0.0,
+      ),
+      bottomLeft: .elliptical(
+        blY != 0.0 ? math.max(0.0, blX + delta * ((blH - blX) / blY)) : 0.0,
+        blX != 0.0 ? math.max(0.0, blY + delta * ((blH - blY) / blX)) : 0.0,
+      ),
+      bottomRight: .elliptical(
+        brY != 0.0 ? math.max(0.0, brX + delta * ((brH - brX) / brY)) : 0.0,
+        brX != 0.0 ? math.max(0.0, brY + delta * ((brH - brY) / brX)) : 0.0,
+      ),
+    );
+  }
+}
+
+class _CutCornersBorderDelegate extends CornersBorderDelegate
+    with _CutCornerCalculations {
+  const _CutCornersBorderDelegate();
+
+  @override
+  _CutCornersBorderDelegate scale(double t) => this;
+
+  @override
+  Path getOuterPath({
+    required Rect rect,
+    required BorderSide side,
+    required BorderRadius borderRadius,
+  }) =>
+      _createPath(inflateRRect(borderRadius.toRRect(rect), side.strokeOutset));
+
+  @override
+  Path getInnerPath({
+    required Rect rect,
+    required BorderSide side,
+    required BorderRadius borderRadius,
+  }) => _createPath(deflateRRect(borderRadius.toRRect(rect), side.strokeInset));
+
+  @override
+  bool get preferPaintInterior => true;
+
+  @override
+  void paintInterior({
+    required Canvas canvas,
+    required Rect rect,
+    required Paint paint,
+    required BorderSide side,
+    required BorderRadius borderRadius,
+  }) {
+    if (borderRadius == .zero) {
+      canvas.drawRect(inflateRect(rect, side.strokeOutset), paint);
+    } else {
+      canvas.drawPath(
+        _createPath(
+          inflateRRect(borderRadius.toRRect(rect), side.strokeOutset),
+        ),
+        paint,
+      );
+    }
+  }
+
+  @override
+  void paint({
+    required Canvas canvas,
+    required Rect rect,
+    required BorderSide side,
+    required BorderRadius borderRadius,
+  }) {
+    if (side.style == .none) return;
+    if (rect.isEmpty) return;
+
+    if (side.width == 0.0) {
+      canvas.drawPath(_createPath(borderRadius.toRRect(rect)), side.toPaint());
+    } else {
+      final paint = Paint()..color = side.color;
+      final borderRect = borderRadius.toRRect(rect);
+      final inner = deflateRRect(borderRect, side.strokeInset);
+      final outer = inflateRRect(borderRect, side.strokeOutset);
+      final path = Path()
+        ..fillType = .evenOdd
+        ..addPath(_createPath(inner), .zero)
+        ..addPath(_createPath(outer), .zero);
+      canvas.drawPath(path, paint);
+    }
+  }
+
+  // TODO: implement lerpFrom and lerpTo
+
+  @override
+  String toString() => "CornersBorderDelegate.cut";
+
+  static Path _createPath(RRect rrect) {
+    if (rrect.isRect) return Path()..addRect(rrect.outerRect);
+    final RRect(
+      :left,
+      :top,
+      :right,
+      :bottom,
+      :tlRadiusX,
+      :tlRadiusY,
+      :trRadiusX,
+      :trRadiusY,
+      :blRadiusX,
+      :blRadiusY,
+      :brRadiusX,
+      :brRadiusY,
+    ) = rrect
+        .scaleRadii();
+    final vertices = <Offset>[
+      .new(left + tlRadiusX, top),
+      .new(right - trRadiusX, top),
+      .new(right, top + trRadiusY),
+      .new(right, bottom - brRadiusY),
+      .new(right - brRadiusX, bottom),
+      .new(left + blRadiusX, bottom),
+      .new(left, bottom - blRadiusY),
+      .new(left, top + tlRadiusY),
+    ];
+    return Path()..addPolygon(vertices, true);
+  }
 }
 
 class CornersBorder extends OutlinedBorder {
@@ -328,21 +746,32 @@ class CornersBorder extends OutlinedBorder {
   const CornersBorder.rounded({super.side, this.corners = .zero})
     : delegate = .rounded;
 
-  const CornersBorder.cut({super.side, this.corners = .zero}) : delegate = .cut;
-
   const CornersBorder.superellipse({super.side, this.corners = .zero})
     : delegate = .superellipse;
 
+  const CornersBorder.cut({super.side, this.corners = .zero}) : delegate = .cut;
+
   final CornersBorderDelegate delegate;
+
   final CornersGeometry corners;
 
   @override
-  Path getInnerPath(Rect rect, {TextDirection? textDirection}) =>
-      delegate.getInnerPath(
-        rect: rect,
-        side: side,
-        borderRadius: corners.resolve(textDirection).toBorderRadius(rect.size),
-      );
+  CornersBorder copyWith({
+    BorderSide? side,
+    CornersBorderDelegate? delegate,
+    CornersGeometry? corners,
+  }) => .new(
+    side: side ?? this.side,
+    delegate: delegate ?? this.delegate,
+    corners: corners ?? this.corners,
+  );
+
+  @override
+  CornersBorder scale(double t) => .new(
+    side: side.scale(t),
+    delegate: delegate.scale(t),
+    corners: corners * t,
+  );
 
   @override
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) =>
@@ -353,17 +782,15 @@ class CornersBorder extends OutlinedBorder {
       );
 
   @override
-  bool get preferPaintInterior => delegate.preferPaintInterior;
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) =>
+      delegate.getInnerPath(
+        rect: rect,
+        side: side,
+        borderRadius: corners.resolve(textDirection).toBorderRadius(rect.size),
+      );
 
   @override
-  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
-    delegate.paint(
-      canvas: canvas,
-      rect: rect,
-      side: side,
-      borderRadius: corners.resolve(textDirection).toBorderRadius(rect.size),
-    );
-  }
+  bool get preferPaintInterior => delegate.preferPaintInterior;
 
   @override
   void paintInterior(
@@ -382,7 +809,18 @@ class CornersBorder extends OutlinedBorder {
   }
 
   @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
+    delegate.paint(
+      canvas: canvas,
+      rect: rect,
+      side: side,
+      borderRadius: corners.resolve(textDirection).toBorderRadius(rect.size),
+    );
+  }
+
+  @override
   ShapeBorder? lerpFrom(ShapeBorder? a, double t) {
+    if (a == null) return scale(t);
     if (a is CornersBorder) {
       return CornersBorder(
         side: BorderSide.lerp(a.side, side, t),
@@ -399,15 +837,6 @@ class CornersBorder extends OutlinedBorder {
         corners: CornersGeometry.lerp(aCorners, corners, t)!,
       );
     }
-    if (a is BeveledRectangleBorder) {
-      const aDelegate = CornersBorderDelegate.cut;
-      final aCorners = CornersGeometry.fromBorderRadius(a.borderRadius);
-      return CornersBorder(
-        side: BorderSide.lerp(a.side, side, t),
-        delegate: CornersBorderDelegate.lerp(aDelegate, delegate, t)!,
-        corners: CornersGeometry.lerp(aCorners, corners, t)!,
-      );
-    }
     if (a is RoundedSuperellipseBorder) {
       const aDelegate = CornersBorderDelegate.superellipse;
       final aCorners = CornersGeometry.fromBorderRadius(a.borderRadius);
@@ -417,11 +846,21 @@ class CornersBorder extends OutlinedBorder {
         corners: CornersGeometry.lerp(aCorners, corners, t)!,
       );
     }
-    return super.lerpFrom(a, t);
+    if (a is BeveledRectangleBorder) {
+      const aDelegate = CornersBorderDelegate.cut;
+      final aCorners = CornersGeometry.fromBorderRadius(a.borderRadius);
+      return CornersBorder(
+        side: BorderSide.lerp(a.side, side, t),
+        delegate: CornersBorderDelegate.lerp(aDelegate, delegate, t)!,
+        corners: CornersGeometry.lerp(aCorners, corners, t)!,
+      );
+    }
+    return null;
   }
 
   @override
   ShapeBorder? lerpTo(ShapeBorder? b, double t) {
+    if (b == null) return scale(1.0 - t);
     if (b is CornersBorder) {
       return CornersBorder(
         side: BorderSide.lerp(side, b.side, t),
@@ -438,15 +877,6 @@ class CornersBorder extends OutlinedBorder {
         corners: CornersGeometry.lerp(corners, bCorners, t)!,
       );
     }
-    if (b is BeveledRectangleBorder) {
-      const bDelegate = CornersBorderDelegate.cut;
-      final bCorners = CornersGeometry.fromBorderRadius(b.borderRadius);
-      return CornersBorder(
-        side: BorderSide.lerp(side, b.side, t),
-        delegate: CornersBorderDelegate.lerp(delegate, bDelegate, t)!,
-        corners: CornersGeometry.lerp(corners, bCorners, t)!,
-      );
-    }
     if (b is RoundedSuperellipseBorder) {
       const bDelegate = CornersBorderDelegate.superellipse;
       final bCorners = CornersGeometry.fromBorderRadius(b.borderRadius);
@@ -456,26 +886,17 @@ class CornersBorder extends OutlinedBorder {
         corners: CornersGeometry.lerp(corners, bCorners, t)!,
       );
     }
-    return super.lerpTo(b, t);
+    if (b is BeveledRectangleBorder) {
+      const bDelegate = CornersBorderDelegate.cut;
+      final bCorners = CornersGeometry.fromBorderRadius(b.borderRadius);
+      return CornersBorder(
+        side: BorderSide.lerp(side, b.side, t),
+        delegate: CornersBorderDelegate.lerp(delegate, bDelegate, t)!,
+        corners: CornersGeometry.lerp(corners, bCorners, t)!,
+      );
+    }
+    return null;
   }
-
-  @override
-  CornersBorder scale(double t) => CornersBorder(
-    side: side.scale(t),
-    delegate: delegate.scale(t),
-    corners: corners * t,
-  );
-
-  @override
-  CornersBorder copyWith({
-    BorderSide? side,
-    CornersBorderDelegate? delegate,
-    CornersGeometry? corners,
-  }) => CornersBorder(
-    side: side ?? this.side,
-    delegate: delegate ?? this.delegate,
-    corners: corners ?? this.corners,
-  );
 
   @override
   String toString() =>
@@ -492,5 +913,5 @@ class CornersBorder extends OutlinedBorder {
           corners == other.corners;
 
   @override
-  int get hashCode => Object.hash(runtimeType, side, delegate, corners);
+  int get hashCode => Object.hash(side, delegate, corners);
 }
