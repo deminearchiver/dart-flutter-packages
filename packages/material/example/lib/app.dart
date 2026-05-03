@@ -121,7 +121,7 @@ class _AppState extends State<App> {
     // Navigation
     // navigatorKey: globalNavigatorKey,
     builder: _buildNavigatorWrapper,
-    home: const Experiment6View(),
+    home: const NavigationView(),
   );
 
   @override
@@ -134,4 +134,77 @@ class _AppState extends State<App> {
   static const _platform = DynamicSchemePlatform.phone;
   static const _specVersion = DynamicSchemeSpecVersion.spec2026;
   static const _typography = TypographyDefaults.material3Expressive2026;
+}
+
+class NavigationView extends StatefulWidget {
+  const NavigationView({super.key});
+
+  @override
+  State<NavigationView> createState() => _NavigationViewState();
+}
+
+class _NavigationViewState extends State<NavigationView> {
+  var _selectedIndex = 1;
+
+  void _setSelectedIndex(int value) {
+    _selectedIndex =
+        (value - _firstIndex) % (_lastIndex - _firstIndex + 1) + _firstIndex;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colorTheme = ColorTheme.of(context);
+    final elevationTheme = ElevationTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    final typescaleTheme = TypescaleTheme.of(context);
+    return Stack(
+      fit: .expand,
+      children: [
+        Positioned.fill(
+          child: KeyedSubtree(
+            key: ValueKey(_selectedIndex),
+            child: switch (_selectedIndex) {
+              1 => const Experiment1View(),
+              2 => const Experiment2View(),
+              3 => const Experiment3View(),
+              4 => const Experiment4View(),
+              5 => const Experiment5View(),
+              6 => const Experiment6View(),
+              _ => Scaffold(
+                backgroundColor: colorTheme.surfaceContainer,
+                body: const Placeholder(),
+              ),
+            },
+          ),
+        ),
+        Positioned(
+          left: 16.0,
+          bottom: 16.0,
+          child: IconButton(
+            style: LegacyThemeFactory.createIconButtonStyle(
+              colorTheme: colorTheme,
+              elevationTheme: elevationTheme,
+              shapeTheme: shapeTheme,
+              stateTheme: stateTheme,
+              color: .tonal,
+              size: .medium,
+              shape: .square,
+              containerColor: colorTheme.tertiaryContainer,
+              iconColor: colorTheme.onTertiaryContainer,
+              containerElevation: elevationTheme.level3,
+            ),
+            onPressed: () {
+              setState(() => _setSelectedIndex(_selectedIndex + 1));
+            },
+            icon: const Icon(Symbols.swap_horiz_rounded),
+            tooltip: "Show next experiment",
+          ),
+        ),
+      ],
+    );
+  }
+
+  static const _firstIndex = 1;
+  static const _lastIndex = 6;
 }

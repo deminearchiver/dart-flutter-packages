@@ -38,10 +38,10 @@ class _Layer1 extends StatelessWidget implements ProxyWidget {
         final colorTheme = ColorTheme.of(context);
         return .from(
           outerStrokeInset: 0.0,
-          outerStrokeWidth: 30.0,
+          outerStrokeWidth: 10.0,
           outerStrokeColor: colorTheme.tertiary,
-          innerStrokeInset: 30.0,
-          innerStrokeWidth: 30.0,
+          innerStrokeInset: 10.0,
+          innerStrokeWidth: 10.0,
           innerStrokeColor: colorTheme.onTertiary,
         );
       }),
@@ -70,111 +70,114 @@ class _Layer2State extends State<_Layer2> {
     final corners = Corners.all(.fractional(0.5));
 
     return SizedBox(
-      width: 500.0,
-      height: 200.0,
-      child: Material(
-        shape: CornersBorder(delegate: delegate, corners: corners),
-        color: colorTheme.onPrimary,
-        child: Stack(
-          fit: .expand,
-          children: [
-            Positioned(
-              left: focusInsetRingTheme.outerStrokeInset,
-              top: focusInsetRingTheme.outerStrokeInset,
-              right: focusInsetRingTheme.outerStrokeInset,
-              bottom: focusInsetRingTheme.outerStrokeInset,
-              child: DecoratedBox(
-                decoration: ShapeDecoration(
-                  shape: CornersBorder(
-                    delegate: delegate,
-                    corners: delegate.deflateCorners(
-                      corners,
-                      focusInsetRingTheme.outerStrokeInset,
-                    ),
-                    side: BorderSide(
-                      strokeAlign: BorderSide.strokeAlignInside,
-                      width: focusInsetRingTheme.outerStrokeWidth,
-                      color: focusInsetRingTheme.outerStrokeColor,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: focusInsetRingTheme.innerStrokeInset,
-              top: focusInsetRingTheme.innerStrokeInset,
-              right: focusInsetRingTheme.innerStrokeInset,
-              bottom: focusInsetRingTheme.innerStrokeInset,
-              child: DecoratedBox(
-                decoration: ShapeDecoration(
-                  shape: CornersBorder(
-                    delegate: delegate,
-                    // corners: corners,
-                    corners: delegate.deflateCorners(
-                      corners,
-                      focusInsetRingTheme.innerStrokeInset,
-                    ),
-                    side: BorderSide(
-                      strokeAlign: BorderSide.strokeAlignInside,
-                      width: focusInsetRingTheme.innerStrokeWidth,
-                      color: _showDebugVisuals
-                          ? focusInsetRingTheme.innerStrokeColor.withValues(
-                              alpha: 0.75,
-                            )
-                          : focusInsetRingTheme.innerStrokeColor,
+      width: .infinity,
+      height: 136.0,
+      child: Padding(
+        padding: .symmetric(horizontal: 24.0),
+        child: Material(
+          shape: CornersBorder(delegate: delegate, corners: corners),
+          color: colorTheme.onPrimary,
+          child: Stack(
+            fit: .expand,
+            children: [
+              Positioned(
+                left: focusInsetRingTheme.outerStrokeInset,
+                top: focusInsetRingTheme.outerStrokeInset,
+                right: focusInsetRingTheme.outerStrokeInset,
+                bottom: focusInsetRingTheme.outerStrokeInset,
+                child: DecoratedBox(
+                  decoration: ShapeDecoration(
+                    shape: CornersBorder(
+                      delegate: delegate,
+                      corners: delegate.deflateCorners(
+                        corners,
+                        focusInsetRingTheme.outerStrokeInset,
+                      ),
+                      side: BorderSide(
+                        strokeAlign: BorderSide.strokeAlignInside,
+                        width: focusInsetRingTheme.outerStrokeWidth,
+                        color: focusInsetRingTheme.outerStrokeColor,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              child: Visibility(
-                visible: _showDebugVisuals,
-                child: Padding(
-                  padding: .all(focusInsetRingTheme.outerStrokeInset),
-                  child: DecoratedBox(
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: focusInsetRingTheme.outerStrokeWidth,
-                          color: focusInsetRingTheme.innerStrokeColor
-                              .withValues(alpha: 0.1),
+              Positioned(
+                left: focusInsetRingTheme.innerStrokeInset,
+                top: focusInsetRingTheme.innerStrokeInset,
+                right: focusInsetRingTheme.innerStrokeInset,
+                bottom: focusInsetRingTheme.innerStrokeInset,
+                child: DecoratedBox(
+                  decoration: ShapeDecoration(
+                    shape: CornersBorder(
+                      delegate: delegate,
+                      // corners: corners,
+                      corners: delegate.deflateCorners(
+                        corners,
+                        focusInsetRingTheme.innerStrokeInset,
+                      ),
+                      side: BorderSide(
+                        strokeAlign: BorderSide.strokeAlignInside,
+                        width: focusInsetRingTheme.innerStrokeWidth,
+                        color: _showDebugVisuals
+                            ? focusInsetRingTheme.innerStrokeColor.withValues(
+                                alpha: 0.75,
+                              )
+                            : focusInsetRingTheme.innerStrokeColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                child: Visibility(
+                  visible: _showDebugVisuals,
+                  child: Padding(
+                    padding: .all(focusInsetRingTheme.outerStrokeInset),
+                    child: DecoratedBox(
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            width: focusInsetRingTheme.outerStrokeWidth,
+                            color: focusInsetRingTheme.innerStrokeColor
+                                .withValues(alpha: 0.1),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              child: Visibility(
-                visible: _showDebugVisuals,
-                child: Padding(
-                  padding: .all(focusInsetRingTheme.innerStrokeInset),
-                  child: DecoratedBox(
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: focusInsetRingTheme.innerStrokeInset,
-                          color: focusInsetRingTheme.outerStrokeColor
-                              .withValues(alpha: 0.1),
+              Positioned(
+                child: Visibility(
+                  visible: _showDebugVisuals,
+                  child: Padding(
+                    padding: .all(focusInsetRingTheme.innerStrokeInset),
+                    child: DecoratedBox(
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            width: focusInsetRingTheme.innerStrokeInset,
+                            color: focusInsetRingTheme.outerStrokeColor
+                                .withValues(alpha: 0.1),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Positioned.fill(
-              child: Align.center(
-                child: Switch(
-                  checked: _showDebugVisuals,
-                  onCheckedChanged: (value) =>
-                      setState(() => _showDebugVisuals = value),
+              Positioned.fill(
+                child: Align.center(
+                  child: Switch(
+                    checked: _showDebugVisuals,
+                    onCheckedChanged: (value) =>
+                        setState(() => _showDebugVisuals = value),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
