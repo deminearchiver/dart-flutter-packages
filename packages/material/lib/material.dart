@@ -13,8 +13,9 @@ export 'src/material/motion/duration_theme.dart';
 export 'src/material/motion/easing_theme.dart';
 export 'src/material/motion/spring_theme.dart';
 
-export 'src/material/shape/corners_border.dart';
+export 'src/material/shape/corner.dart';
 export 'src/material/shape/corners.dart';
+export 'src/material/shape/corners_border.dart';
 export 'src/material/shape/shape_theme.dart';
 
 export 'src/material/state/state_focus_indicator_theme.dart';
