@@ -54,6 +54,8 @@ export 'src/material/loading_indicator/loading_indicator_theme.dart';
 
 export 'src/material/raw_material_app.dart';
 
+export 'src/material/experimental/focus_inset_ring_theme.dart';
+
 import 'package:material/src/material/flutter.dart';
 
 /// Same as [num.clamp] but optimized for a non-null [int].

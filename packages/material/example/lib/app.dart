@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
 import 'package:material_example/experiment3.dart' show Experiment3View;
 import 'package:material_example/experiment4.dart' show Experiment4View;
+import 'package:material_example/experiment6.dart' show Experiment6View;
 import 'package:material_example/flutter.dart';
 
 // ignore: implementation_imports
@@ -124,7 +125,7 @@ class _AppState extends State<App> {
     // Navigation
     // navigatorKey: globalNavigatorKey,
     builder: _buildNavigatorWrapper,
-    home: const Experiment5View(),
+    home: const Experiment6View(),
   );
 
   @override
