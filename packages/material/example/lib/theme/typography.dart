@@ -242,13 +242,13 @@ class TypographyTheme extends StatelessWidget implements ProxyWidget {
         TypographyTheme(key: key, data: of(context).merge(data), child: child),
   );
 
-  static TypographyThemeData? maybeOf(BuildContext context) {
-    final typefaceTheme = TypefaceTheme.maybeOf(context);
-    final typescaleTheme = TypescaleTheme.maybeOf(context);
-    return typefaceTheme != null && typescaleTheme != null
-        ? .from(typeface: typefaceTheme, typescale: typescaleTheme)
-        : null;
-  }
+  // static TypographyThemeData? maybeOf(BuildContext context) {
+  //   final typefaceTheme = TypefaceTheme.maybeOf(context);
+  //   final typescaleTheme = TypescaleTheme.maybeOf(context);
+  //   return typefaceTheme != null && typescaleTheme != null
+  //       ? .from(typeface: typefaceTheme, typescale: typescaleTheme)
+  //       : null;
+  // }
 
   static TypographyThemeData of(BuildContext context) => .from(
     typeface: TypefaceTheme.of(context),
