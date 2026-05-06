@@ -41,10 +41,10 @@ dev_dependencies:
     sdk: flutter
 
   # Hosted dependencies
-  build_runner: ^2.13.1
+  build_runner: ^2.15.0
   deminearchiver_lints: ^2.1.2
   freezed: ^3.2.5
-  json_serializable: ^6.13.1
+  json_serializable: ^6.13.2
   slang_build_runner: ^4.14.0
 
 flutter:
