@@ -96,6 +96,8 @@ abstract final class ChildLayoutHelper {
 abstract class BoxChildLayoutStrategy {
   const BoxChildLayoutStrategy();
 
+  bool get affectsLayoutState;
+
   /// Returns the [Size] that the [RenderBox] would have if it were to
   /// be laid out with the given [BoxConstraints].
   ///
@@ -189,6 +191,9 @@ class _BoxChildDryLayoutStrategy extends BoxChildLayoutStrategy {
   const _BoxChildDryLayoutStrategy();
 
   @override
+  bool get affectsLayoutState => false;
+
+  @override
   void layoutChild(RenderBox child, BoxConstraints constraints) {
     // No-op.
   }
@@ -215,6 +220,9 @@ class _BoxChildDryLayoutStrategy extends BoxChildLayoutStrategy {
 
 class _BoxChildWetLayoutStrategy extends BoxChildLayoutStrategy {
   const _BoxChildWetLayoutStrategy();
+
+  @override
+  bool get affectsLayoutState => true;
 
   @override
   void layoutChild(RenderBox child, BoxConstraints constraints) {
