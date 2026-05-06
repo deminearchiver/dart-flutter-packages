@@ -163,35 +163,26 @@ class RenderCenterOptically extends RenderShiftedBox {
     getVerticalPaddingCorrection(borderRadius),
   );
 
-  Size _layout({
-    required BoxConstraints constraints,
-    required ChildLayouter layoutChild,
-    required ChildPositioner positionChild,
-  }) {
+  Size _layout(BoxChildLayoutStrategy strategy, BoxConstraints constraints) {
     final child = this.child;
     if (child == null) return constraints.smallest;
-    final size = constraints.constrain(layoutChild(child, constraints));
+    final size = constraints.constrain(
+      strategy.layoutChildForSize(child, constraints),
+    );
     final paddingCorrection = enabled
         ? _getPaddingCorrection(_resolvedCorners.toBorderRadius(size))
         : Offset.zero;
-    positionChild(child, paddingCorrection);
+    strategy.positionChild(child, paddingCorrection);
     return size;
   }
 
   @override
-  Size computeDryLayout(BoxConstraints constraints) => _layout(
-    constraints: constraints,
-    layoutChild: ChildLayoutHelper.dryLayoutChild,
-    positionChild: ChildLayoutHelper.dryPositionChild,
-  );
+  Size computeDryLayout(BoxConstraints constraints) =>
+      _layout(.dry, constraints);
 
   @override
   void performLayout() {
-    size = _layout(
-      constraints: constraints,
-      layoutChild: ChildLayoutHelper.layoutChild,
-      positionChild: ChildLayoutHelper.positionChild,
-    );
+    size = _layout(.wet, constraints);
   }
 
   @override

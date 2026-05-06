@@ -622,11 +622,7 @@ class _RenderSearchBarLayout extends RenderBox
     centerAlignmentFraction.removeListener(markNeedsLayout);
   }
 
-  Size _layout({
-    required BoxConstraints constraints,
-    required ChildLayouter layoutChild,
-    required ChildPositioner positionChild,
-  }) {
+  Size _layout(BoxChildLayoutStrategy strategy, BoxConstraints constraints) {
     assert(constraints.isTight);
     final size = constraints.biggest;
     final looseConstraints = constraints.loosen();
@@ -638,28 +634,29 @@ class _RenderSearchBarLayout extends RenderBox
     final trailing = _trailing;
 
     if (tapRegion != null) {
-      layoutChild(tapRegion, constraints);
-      positionChild(tapRegion, .zero);
+      strategy
+        ..layoutChild(tapRegion, constraints)
+        ..positionChild(tapRegion, .zero);
     }
 
     Size leadingSize = .zero;
     if (leading != null) {
-      leadingSize = layoutChild(leading, looseConstraints);
+      leadingSize = strategy.layoutChildForSize(leading, looseConstraints);
       final leadingOffset = Offset(
         0.0,
         (size.height - leadingSize.height) / 2.0,
       );
-      positionChild(leading, leadingOffset);
+      strategy.positionChild(leading, leadingOffset);
     }
 
     Size trailingSize = .zero;
     if (trailing != null) {
-      trailingSize = layoutChild(trailing, looseConstraints);
+      trailingSize = strategy.layoutChildForSize(trailing, looseConstraints);
       final trailingOffset = Offset(
         size.width - trailingSize.width,
         (size.height - trailingSize.height) / 2.0,
       );
-      positionChild(trailing, trailingOffset);
+      strategy.positionChild(trailing, trailingOffset);
     }
 
     final horizontalSpace = math.max(leadingSize.width, trailingSize.width);
@@ -674,7 +671,7 @@ class _RenderSearchBarLayout extends RenderBox
         minHeight: 0.0,
         maxHeight: size.height,
       );
-      supportingTextSize = layoutChild(
+      supportingTextSize = strategy.layoutChildForSize(
         supportingText,
         supportingTextConstraints,
       );
@@ -686,7 +683,7 @@ class _RenderSearchBarLayout extends RenderBox
         ),
         (size.height - supportingTextSize.height) / 2.0,
       );
-      positionChild(supportingText, supportingTextOffset);
+      strategy.positionChild(supportingText, supportingTextOffset);
     }
 
     if (textField != null) {
@@ -694,20 +691,17 @@ class _RenderSearchBarLayout extends RenderBox
         math.max(size.width - horizontalSpace - supportingTextOffset.dx, 0.0),
         size.height,
       );
-      layoutChild(textField, BoxConstraints.tight(textFieldSize));
+      strategy.layoutChild(textField, BoxConstraints.tight(textFieldSize));
       final textFieldOffset = Offset(supportingTextOffset.dx, 0.0);
-      positionChild(textField, textFieldOffset);
+      strategy.positionChild(textField, textFieldOffset);
     }
 
     return size;
   }
 
   @override
-  Size computeDryLayout(BoxConstraints constraints) => _layout(
-    constraints: constraints,
-    layoutChild: ChildLayoutHelper.dryLayoutChild,
-    positionChild: ChildLayoutHelper.dryPositionChild,
-  );
+  Size computeDryLayout(BoxConstraints constraints) =>
+      _layout(.dry, constraints);
 
   @override
   bool get sizedByParent => true;
@@ -719,11 +713,7 @@ class _RenderSearchBarLayout extends RenderBox
 
   @override
   void performLayout() {
-    _layout(
-      constraints: constraints,
-      layoutChild: ChildLayoutHelper.layoutChild,
-      positionChild: ChildLayoutHelper.positionChild,
-    );
+    _layout(.wet, constraints);
   }
 
   @override

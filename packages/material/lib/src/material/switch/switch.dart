@@ -1054,17 +1054,13 @@ class _RenderSwitchPaint extends RenderBox
     return _computeOuterSize().height;
   }
 
-  Size _layout({
-    required BoxConstraints constraints,
-    required ChildLayouter layoutChild,
-    required ChildPositioner positionChild,
-  }) {
+  Size _layout(BoxChildLayoutStrategy strategy, BoxConstraints constraints) {
     final outerSize = _computeOuterSize();
     final innerRect = _computeInnerRect(outerSize);
 
     final outerCenter = _computeHandleOuterCenter(innerRect);
     if (_trackChild case final trackChild?) {
-      layoutChild(
+      final trackChildSize = strategy.layoutChildForSize(
         trackChild,
         BoxConstraints(
           minWidth: 0.0,
@@ -1073,8 +1069,7 @@ class _RenderSwitchPaint extends RenderBox
           maxHeight: minTapTargetSize.height,
         ),
       );
-      final trackChildSize = trackChild.size;
-      positionChild(
+      strategy.positionChild(
         trackChild,
         Offset(
           outerCenter.dx - trackChildSize.width / 2.0,
@@ -1084,7 +1079,7 @@ class _RenderSwitchPaint extends RenderBox
     }
     if (_handleChild case final handleChild?) {
       final handleSize = this.handleSize.value;
-      layoutChild(
+      final handleChildSize = strategy.layoutChildForSize(
         handleChild,
         BoxConstraints(
           minWidth: 0.0,
@@ -1093,8 +1088,7 @@ class _RenderSwitchPaint extends RenderBox
           maxHeight: handleSize.height,
         ),
       );
-      final handleChildSize = handleChild.size;
-      positionChild(
+      strategy.positionChild(
         handleChild,
         Offset(
           outerCenter.dx - handleChildSize.width / 2.0,
@@ -1106,19 +1100,12 @@ class _RenderSwitchPaint extends RenderBox
   }
 
   @override
-  Size computeDryLayout(BoxConstraints constraints) => _layout(
-    constraints: constraints,
-    layoutChild: ChildLayoutHelper.dryLayoutChild,
-    positionChild: ChildLayoutHelper.dryPositionChild,
-  );
+  Size computeDryLayout(BoxConstraints constraints) =>
+      _layout(.dry, constraints);
 
   @override
   void performLayout() {
-    size = _layout(
-      constraints: constraints,
-      layoutChild: ChildLayoutHelper.layoutChild,
-      positionChild: ChildLayoutHelper.positionChild,
-    );
+    size = _layout(.wet, constraints);
   }
 
   @override

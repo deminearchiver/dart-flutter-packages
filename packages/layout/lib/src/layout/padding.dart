@@ -173,18 +173,14 @@ class RenderPadding extends RenderShiftedBox implements flutter.RenderPadding {
     return math.max(0.0, result);
   }
 
-  Size _layout({
-    required BoxConstraints constraints,
-    required ChildLayouter layoutChild,
-    required ChildPositioner positionChild,
-  }) {
+  Size _layout(BoxChildLayoutStrategy strategy, BoxConstraints constraints) {
     final padding = _resolvedPadding;
     var width = padding.horizontal;
     var height = padding.vertical;
     if (child case final child?) {
       final innerConstraints = constraints.deflate(padding);
-      final childSize = layoutChild(child, innerConstraints);
-      positionChild(child, Offset(padding.left, padding.top));
+      final childSize = strategy.layoutChildForSize(child, innerConstraints);
+      strategy.positionChild(child, Offset(padding.left, padding.top));
       width += childSize.width;
       height += childSize.height;
     }
@@ -195,19 +191,12 @@ class RenderPadding extends RenderShiftedBox implements flutter.RenderPadding {
 
   @override
   @protected
-  Size computeDryLayout(covariant BoxConstraints constraints) => _layout(
-    constraints: constraints,
-    layoutChild: ChildLayoutHelper.dryLayoutChild,
-    positionChild: ChildLayoutHelper.dryPositionChild,
-  );
+  Size computeDryLayout(covariant BoxConstraints constraints) =>
+      _layout(.dry, constraints);
 
   @override
   void performLayout() {
-    size = _layout(
-      constraints: constraints,
-      layoutChild: ChildLayoutHelper.layoutChild,
-      positionChild: ChildLayoutHelper.positionChild,
-    );
+    size = _layout(.wet, constraints);
   }
 
   @override

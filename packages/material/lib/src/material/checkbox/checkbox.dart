@@ -943,15 +943,11 @@ class _RenderCheckboxPaint extends RenderBox
     return _computeOuterSize().height;
   }
 
-  Size _layout({
-    required BoxConstraints constraints,
-    required ChildLayouter layoutChild,
-    required ChildPositioner positionChild,
-  }) {
+  Size _layout(BoxChildLayoutStrategy strategy, BoxConstraints constraints) {
     final outerSize = _computeOuterSize();
     final outerCenter = _computeOuterCenter(outerSize);
     if (child case final child?) {
-      layoutChild(
+      final childSize = strategy.layoutChildForSize(
         child,
         BoxConstraints(
           minWidth: 0.0,
@@ -960,8 +956,7 @@ class _RenderCheckboxPaint extends RenderBox
           maxHeight: outerSize.height,
         ),
       );
-      final childSize = child.size;
-      positionChild(
+      strategy.positionChild(
         child,
         Offset(
           outerCenter.dx - childSize.width / 2.0,
@@ -973,19 +968,12 @@ class _RenderCheckboxPaint extends RenderBox
   }
 
   @override
-  Size computeDryLayout(BoxConstraints constraints) => _layout(
-    constraints: constraints,
-    layoutChild: ChildLayoutHelper.dryLayoutChild,
-    positionChild: ChildLayoutHelper.dryPositionChild,
-  );
+  Size computeDryLayout(BoxConstraints constraints) =>
+      _layout(.dry, constraints);
 
   @override
   void performLayout() {
-    size = _layout(
-      constraints: constraints,
-      layoutChild: ChildLayoutHelper.layoutChild,
-      positionChild: ChildLayoutHelper.positionChild,
-    );
+    size = _layout(.wet, constraints);
   }
 
   @override
