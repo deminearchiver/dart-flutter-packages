@@ -9,8 +9,6 @@ import 'package:material/src/material/flutter.dart';
 abstract class CornersGeometry {
   const CornersGeometry();
 
-  const factory CornersGeometry.all(Corner corner) = Corners.all;
-
   const factory CornersGeometry.only({
     Corner topLeft,
     Corner topRight,
@@ -25,8 +23,15 @@ abstract class CornersGeometry {
     Corner bottomEnd,
   }) = CornersDirectional.only;
 
+  const factory CornersGeometry.all(Corner corner) = Corners.all;
+
   const factory CornersGeometry.vertical({Corner top, Corner bottom}) =
       Corners.vertical;
+
+  const factory CornersGeometry.horizontal({Corner left, Corner right}) =
+      Corners.horizontal;
+
+  // TODO: add .directionalHorizontal or .horizontalDirectional (decide on name)
 
   const factory CornersGeometry.fromBorderRadius(
     BorderRadiusGeometry borderRadius,
@@ -620,6 +625,13 @@ final class _ZeroCorners extends _CornersGeometry {
 abstract class Corners extends _CornersGeometry {
   const Corners();
 
+  const factory Corners.only({
+    Corner topLeft,
+    Corner topRight,
+    Corner bottomLeft,
+    Corner bottomRight,
+  }) = _Corners.only;
+
   const factory Corners.all(Corner corner) = _Corners.all;
 
   const factory Corners.vertical({Corner top, Corner bottom}) =
@@ -628,16 +640,8 @@ abstract class Corners extends _CornersGeometry {
   const factory Corners.horizontal({Corner left, Corner right}) =
       _Corners.horizontal;
 
-  const factory Corners.only({
-    Corner topLeft,
-    Corner topRight,
-    Corner bottomLeft,
-    Corner bottomRight,
-  }) = _Corners.only;
-
-  // TODO: decide if we want const here but getters call Corner.fromRadius
-  factory Corners.fromBorderRadius(BorderRadius borderRadius) =
-      _Corners.fromBorderRadius;
+  const factory Corners.fromBorderRadius(BorderRadius borderRadius) =
+      _CornersFromBorderRadius;
 
   Corner get topLeft;
 
@@ -779,6 +783,13 @@ abstract class Corners extends _CornersGeometry {
 }
 
 final class _Corners extends Corners {
+  const _Corners.only({
+    this.topLeft = .zero,
+    this.topRight = .zero,
+    this.bottomLeft = .zero,
+    this.bottomRight = .zero,
+  });
+
   const _Corners.all(Corner corner)
     : this.only(
         topLeft: corner,
@@ -803,19 +814,6 @@ final class _Corners extends Corners {
         bottomRight: right,
       );
 
-  const _Corners.only({
-    this.topLeft = .zero,
-    this.topRight = .zero,
-    this.bottomLeft = .zero,
-    this.bottomRight = .zero,
-  });
-
-  _Corners.fromBorderRadius(BorderRadius borderRadius)
-    : topLeft = .fromRadius(borderRadius.topLeft),
-      topRight = .fromRadius(borderRadius.topRight),
-      bottomLeft = .fromRadius(borderRadius.bottomLeft),
-      bottomRight = .fromRadius(borderRadius.bottomRight);
-
   @override
   final Corner topLeft;
 
@@ -829,8 +827,37 @@ final class _Corners extends Corners {
   final Corner bottomRight;
 }
 
+final class _CornersFromBorderRadius extends Corners {
+  const _CornersFromBorderRadius(BorderRadius borderRadius)
+    : _borderRadius = borderRadius;
+
+  final BorderRadius _borderRadius;
+
+  @override
+  Corner get topLeft => .fromRadius(_borderRadius.topLeft);
+
+  @override
+  Corner get topRight => .fromRadius(_borderRadius.topRight);
+
+  @override
+  Corner get bottomLeft => .fromRadius(_borderRadius.bottomLeft);
+
+  @override
+  Corner get bottomRight => .fromRadius(_borderRadius.bottomRight);
+
+  @override
+  BorderRadius toBorderRadius(Size size) => _borderRadius;
+}
+
 abstract class CornersDirectional extends _CornersGeometry {
   const CornersDirectional();
+
+  const factory CornersDirectional.only({
+    Corner topStart,
+    Corner topEnd,
+    Corner bottomStart,
+    Corner bottomEnd,
+  }) = _CornersDirectional.only;
 
   const factory CornersDirectional.all(Corner radius) = _CornersDirectional.all;
 
@@ -840,17 +867,9 @@ abstract class CornersDirectional extends _CornersGeometry {
   const factory CornersDirectional.horizontal({Corner start, Corner end}) =
       _CornersDirectional.horizontal;
 
-  const factory CornersDirectional.only({
-    Corner topStart,
-    Corner topEnd,
-    Corner bottomStart,
-    Corner bottomEnd,
-  }) = _CornersDirectional.only;
-
-  // TODO: decide if we want const here but getters call Corner.fromRadius
-  factory CornersDirectional.fromBorderRadius(
+  const factory CornersDirectional.fromBorderRadius(
     BorderRadiusDirectional borderRadius,
-  ) = _CornersDirectional.fromBorderRadius;
+  ) = _CornersDirectionalFromBorderRadius;
 
   Corner get topStart;
 
@@ -1044,12 +1063,6 @@ final class _CornersDirectional extends CornersDirectional {
     this.bottomEnd = .zero,
   });
 
-  _CornersDirectional.fromBorderRadius(BorderRadiusDirectional borderRadius)
-    : topStart = .fromRadius(borderRadius.topStart),
-      topEnd = .fromRadius(borderRadius.topEnd),
-      bottomStart = .fromRadius(borderRadius.bottomStart),
-      bottomEnd = .fromRadius(borderRadius.bottomEnd);
-
   @override
   final Corner topStart;
 
@@ -1061,4 +1074,27 @@ final class _CornersDirectional extends CornersDirectional {
 
   @override
   final Corner bottomEnd;
+}
+
+final class _CornersDirectionalFromBorderRadius extends CornersDirectional {
+  const _CornersDirectionalFromBorderRadius(
+    BorderRadiusDirectional borderRadius,
+  ) : _borderRadius = borderRadius;
+
+  final BorderRadiusDirectional _borderRadius;
+
+  @override
+  Corner get topStart => .fromRadius(_borderRadius.topStart);
+
+  @override
+  Corner get topEnd => .fromRadius(_borderRadius.topEnd);
+
+  @override
+  Corner get bottomStart => .fromRadius(_borderRadius.bottomStart);
+
+  @override
+  Corner get bottomEnd => .fromRadius(_borderRadius.bottomEnd);
+
+  @override
+  BorderRadiusDirectional toBorderRadius(Size size) => _borderRadius;
 }
