@@ -81,10 +81,11 @@ class RenderPadding extends RenderShiftedBox implements flutter.RenderPadding {
        super(child);
 
   EdgeInsets? _resolvedPaddingCache;
+
   EdgeInsets get _resolvedPadding =>
       _resolvedPaddingCache ??= padding.resolve(textDirection);
 
-  void _markNeedResolution() {
+  void _markNeedsResolution() {
     _resolvedPaddingCache = null;
     markNeedsLayout();
   }
@@ -102,7 +103,7 @@ class RenderPadding extends RenderShiftedBox implements flutter.RenderPadding {
   set padding(EdgeInsetsGeometry value) {
     if (_padding == value) return;
     _padding = value;
-    _markNeedResolution();
+    _markNeedsResolution();
   }
 
   TextDirection? _textDirection;
@@ -118,7 +119,7 @@ class RenderPadding extends RenderShiftedBox implements flutter.RenderPadding {
   set textDirection(TextDirection? value) {
     if (_textDirection == value) return;
     _textDirection = value;
-    _markNeedResolution();
+    _markNeedsResolution();
   }
 
   @override
@@ -190,7 +191,6 @@ class RenderPadding extends RenderShiftedBox implements flutter.RenderPadding {
   }
 
   @override
-  @protected
   Size computeDryLayout(covariant BoxConstraints constraints) =>
       _layout(.dry, constraints);
 
@@ -204,14 +204,13 @@ class RenderPadding extends RenderShiftedBox implements flutter.RenderPadding {
     covariant BoxConstraints constraints,
     TextBaseline baseline,
   ) {
-    if (child case final child?) {
-      final padding = _resolvedPadding;
-      final innerConstraints = constraints.deflate(padding);
-      final childBaseline = child.getDryBaseline(innerConstraints, baseline);
-      return (BaselineOffset(childBaseline) + padding.top).offset;
-    } else {
-      return null;
-    }
+    final child = this.child;
+    if (child == null) return null;
+    final padding = _resolvedPadding;
+    final innerConstraints = constraints.deflate(padding);
+    final childBaseline = child.getDryBaseline(innerConstraints, baseline);
+    if (childBaseline == null) return null;
+    return childBaseline + padding.top;
   }
 
   @override
