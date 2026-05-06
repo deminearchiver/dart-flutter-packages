@@ -2,7 +2,7 @@ library;
 
 export 'src/material/extensions.dart';
 export 'src/material/window_size_class.dart';
-export 'src/material/outline.dart';
+export 'src/material/shape/outline.dart';
 export 'src/material/center_optically.dart';
 export 'src/material/custom_material.dart';
 
