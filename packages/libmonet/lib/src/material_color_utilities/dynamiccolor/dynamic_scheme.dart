@@ -24,7 +24,7 @@ enum Platform { phone, watch }
 /// 3. Whether or not its dark mode.
 /// 4. Contrast level. (-1 to 1, currently contrast ratio 3.0 and 7.0)
 class DynamicScheme {
-  DynamicScheme._raw({
+  const DynamicScheme._({
     required this.sourceColor,
     required this.variant,
     required this.isDark,
@@ -39,6 +39,31 @@ class DynamicScheme {
     required this.errorPalette,
   });
 
+  DynamicScheme._fromSettings({
+    required _DynamicSchemeSettings settings,
+    required TonalPaletteSourceColor sourceColor,
+    double contrastLevel = 0.0,
+    required TonalPalette primaryPalette,
+    required TonalPalette secondaryPalette,
+    required TonalPalette tertiaryPalette,
+    required TonalPalette neutralPalette,
+    required TonalPalette neutralVariantPalette,
+    required TonalPalette errorPalette,
+  }) : this._(
+         sourceColor: sourceColor,
+         variant: settings.variant,
+         isDark: settings.isDark,
+         contrastLevel: contrastLevel,
+         platform: settings.platform,
+         specVersion: settings.specVersion,
+         primaryPalette: primaryPalette,
+         secondaryPalette: secondaryPalette,
+         tertiaryPalette: tertiaryPalette,
+         neutralPalette: neutralPalette,
+         neutralVariantPalette: neutralVariantPalette,
+         errorPalette: errorPalette,
+       );
+
   DynamicScheme({
     required TonalPaletteSourceColor sourceColor,
     required Variant variant,
@@ -52,13 +77,15 @@ class DynamicScheme {
     required TonalPalette neutralPalette,
     required TonalPalette neutralVariantPalette,
     required TonalPalette errorPalette,
-  }) : this._raw(
+  }) : this._fromSettings(
+         settings: .normalize(
+           variant: variant,
+           isDark: isDark,
+           platform: platform,
+           specVersion: specVersion,
+         ),
          sourceColor: sourceColor,
-         variant: variant,
-         isDark: isDark,
          contrastLevel: contrastLevel,
-         platform: platform,
-         specVersion: _maybeFallbackSpecVersion(specVersion, variant),
          primaryPalette: primaryPalette,
          secondaryPalette: secondaryPalette,
          tertiaryPalette: tertiaryPalette,
@@ -67,7 +94,7 @@ class DynamicScheme {
          errorPalette: errorPalette,
        );
 
-  DynamicScheme._withSpecDefaults({
+  DynamicScheme._fromSpec({
     required TonalPaletteSourceColor sourceColor,
     required Variant variant,
     required bool isDark,
@@ -80,8 +107,8 @@ class DynamicScheme {
     TonalPalette? neutralPalette,
     TonalPalette? neutralVariantPalette,
     TonalPalette? errorPalette,
-    required ColorSpec spec,
-  }) : this._raw(
+    required ColorSpec colorSpec,
+  }) : this._(
          sourceColor: sourceColor,
          variant: variant,
          isDark: isDark,
@@ -90,7 +117,7 @@ class DynamicScheme {
          specVersion: specVersion,
          primaryPalette:
              primaryPalette ??
-             spec.getPrimaryPalette(
+             colorSpec.getPrimaryPalette(
                sourceColor,
                variant,
                isDark,
@@ -100,7 +127,7 @@ class DynamicScheme {
              ),
          secondaryPalette:
              secondaryPalette ??
-             spec.getSecondaryPalette(
+             colorSpec.getSecondaryPalette(
                sourceColor,
                variant,
                isDark,
@@ -110,7 +137,7 @@ class DynamicScheme {
              ),
          tertiaryPalette:
              tertiaryPalette ??
-             spec.getTertiaryPalette(
+             colorSpec.getTertiaryPalette(
                sourceColor,
                variant,
                isDark,
@@ -120,7 +147,7 @@ class DynamicScheme {
              ),
          neutralPalette:
              neutralPalette ??
-             spec.getNeutralPalette(
+             colorSpec.getNeutralPalette(
                sourceColor,
                variant,
                isDark,
@@ -130,7 +157,7 @@ class DynamicScheme {
              ),
          neutralVariantPalette:
              neutralVariantPalette ??
-             spec.getNeutralVariantPalette(
+             colorSpec.getNeutralVariantPalette(
                sourceColor,
                variant,
                isDark,
@@ -140,7 +167,7 @@ class DynamicScheme {
              ),
          errorPalette:
              errorPalette ??
-             spec.getErrorPalette(
+             colorSpec.getErrorPalette(
                sourceColor,
                variant,
                isDark,
@@ -150,64 +177,30 @@ class DynamicScheme {
              ),
        );
 
-  DynamicScheme._withPaletteDefaults({
+  DynamicScheme._fromSettingsWithDefaults({
+    required _DynamicSchemeSettings settings,
     required TonalPaletteSourceColor sourceColor,
-    required Variant variant,
-    required bool isDark,
     required double contrastLevel,
-    required Platform platform,
-    required SpecVersion specVersion,
     TonalPalette? primaryPalette,
     TonalPalette? secondaryPalette,
     TonalPalette? tertiaryPalette,
     TonalPalette? neutralPalette,
     TonalPalette? neutralVariantPalette,
     TonalPalette? errorPalette,
-  }) : this._withSpecDefaults(
+  }) : this._fromSpec(
          sourceColor: sourceColor,
-         variant: variant,
-         isDark: isDark,
+         variant: settings.variant,
+         isDark: settings.isDark,
          contrastLevel: contrastLevel,
-         platform: platform,
-         specVersion: specVersion,
+         platform: settings.platform,
+         specVersion: settings.specVersion,
          primaryPalette: primaryPalette,
          secondaryPalette: secondaryPalette,
          tertiaryPalette: tertiaryPalette,
          neutralPalette: neutralPalette,
          neutralVariantPalette: neutralVariantPalette,
          errorPalette: errorPalette,
-         spec: ColorSpecs.get(specVersion),
-       );
-
-  DynamicScheme._withDefaults({
-    TonalPaletteSourceColor? sourceColor,
-    required Variant variant,
-    bool? isDark,
-    double? contrastLevel,
-    Platform? platform,
-    SpecVersion? specVersion,
-    TonalPalette? primaryPalette,
-    TonalPalette? secondaryPalette,
-    TonalPalette? tertiaryPalette,
-    TonalPalette? neutralPalette,
-    TonalPalette? neutralVariantPalette,
-    TonalPalette? errorPalette,
-  }) : this._withPaletteDefaults(
-         sourceColor: sourceColor ?? .fromArgb(0xFF6750A4),
-         variant: variant,
-         isDark: isDark ?? false,
-         contrastLevel: contrastLevel ?? 0.0,
-         platform: platform ?? defaultPlatform,
-         specVersion: _maybeFallbackSpecVersion(
-           specVersion ?? defaultSpecVersion,
-           variant,
-         ),
-         primaryPalette: primaryPalette,
-         secondaryPalette: secondaryPalette,
-         tertiaryPalette: tertiaryPalette,
-         neutralPalette: neutralPalette,
-         neutralVariantPalette: neutralVariantPalette,
-         errorPalette: errorPalette,
+         colorSpec: ColorSpecs.get(settings.specVersion),
        );
 
   DynamicScheme.withDefaults({
@@ -223,13 +216,15 @@ class DynamicScheme {
     TonalPalette? neutralPalette,
     TonalPalette? neutralVariantPalette,
     TonalPalette? errorPalette,
-  }) : this._withDefaults(
-         sourceColor: sourceColor,
-         variant: variant ?? .tonalSpot,
-         isDark: isDark,
-         contrastLevel: contrastLevel,
-         platform: platform,
-         specVersion: specVersion,
+  }) : this._fromSettingsWithDefaults(
+         settings: .normalize(
+           variant: variant ?? .tonalSpot,
+           isDark: isDark ?? false,
+           platform: platform ?? defaultPlatform,
+           specVersion: specVersion ?? defaultSpecVersion,
+         ),
+         sourceColor: sourceColor ?? .fromArgb(0xFF6750A4),
+         contrastLevel: contrastLevel ?? 0.0,
          primaryPalette: primaryPalette,
          secondaryPalette: secondaryPalette,
          tertiaryPalette: tertiaryPalette,
@@ -340,8 +335,6 @@ class DynamicScheme {
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")
   int getArgb(DynamicColor dynamicColor) => dynamicColor.getArgb(this);
-
-  final _dynamicColors = MaterialDynamicColors();
 
   int get primaryPaletteKeyColor =>
       getArgb(_dynamicColors.primaryPaletteKeyColor);
@@ -508,8 +501,7 @@ class DynamicScheme {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is DynamicScheme &&
+      other is DynamicScheme &&
           sourceColor == other.sourceColor &&
           variant == other.variant &&
           isDark == other.isDark &&
@@ -539,23 +531,11 @@ class DynamicScheme {
     errorPalette,
   );
 
-  static const SpecVersion defaultSpecVersion = .spec2021;
-  static const Platform defaultPlatform = .phone;
+  static const defaultSpecVersion = SpecVersion.spec2021;
 
-  /// Returns the spec version to use for the given variant.
-  /// If the variant is not supported by the given spec version,
-  /// the fallback spec version is returned.
-  static SpecVersion _maybeFallbackSpecVersion(
-    SpecVersion specVersion,
-    Variant variant,
-  ) => switch (variant) {
-    .cmf => specVersion,
-    .expressive ||
-    .vibrant ||
-    .tonalSpot ||
-    .neutral => specVersion == .spec2026 ? .spec2025 : specVersion,
-    _ => .spec2021,
-  };
+  static const defaultPlatform = Platform.phone;
+
+  static final _dynamicColors = MaterialDynamicColors();
 
   static double getPiecewiseValue(
     Hct sourceColorHct,
@@ -587,6 +567,64 @@ class DynamicScheme {
   }
 }
 
+extension type const _DynamicSchemeSettings._(
+  (Variant variant, bool isDark, Platform platform, SpecVersion specVersion) _
+)
+    implements Object {
+  const _DynamicSchemeSettings({
+    required Variant variant,
+    required bool isDark,
+    required Platform platform,
+    required SpecVersion specVersion,
+  }) : this._((variant, isDark, platform, specVersion));
+
+  factory _DynamicSchemeSettings.normalize({
+    required Variant variant,
+    required bool isDark,
+    required Platform platform,
+    required SpecVersion specVersion,
+  }) {
+    final bool isDarkResult;
+    final Platform platformResult;
+    final SpecVersion specVersionResult;
+    switch (variant) {
+      case .cmf:
+        isDarkResult = isDark;
+        platformResult = .phone;
+        specVersionResult = .spec2026;
+      case .expressive || .vibrant || .tonalSpot || .neutral:
+        switch (specVersion) {
+          case .spec2026 || .spec2025:
+            isDarkResult = platform == .watch || isDark;
+            platformResult = platform;
+            specVersionResult = .spec2025;
+          case .spec2021:
+            isDarkResult = isDark;
+            platformResult = .phone;
+            specVersionResult = .spec2021;
+        }
+      case .monochrome || .fidelity || .content || .rainbow || .fruitSalad:
+        isDarkResult = isDark;
+        platformResult = .phone;
+        specVersionResult = .spec2021;
+    }
+    return _DynamicSchemeSettings(
+      variant: variant,
+      isDark: isDarkResult,
+      platform: platformResult,
+      specVersion: specVersionResult,
+    );
+  }
+
+  Variant get variant => _.$1;
+
+  bool get isDark => _.$2;
+
+  Platform get platform => _.$3;
+
+  SpecVersion get specVersion => _.$4;
+}
+
 abstract class TonalPaletteSourceColor {
   const TonalPaletteSourceColor();
 
@@ -611,35 +649,6 @@ abstract class TonalPaletteSourceColor {
 
   /// The source color in HCT format.
   List<Hct> get asHctList;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is TonalPaletteSourceColor &&
-          asArgb == other.asArgb &&
-          asHct == other.asHct &&
-          TonalPaletteSourceColor.argbListEquality.equals(
-            asArgbList,
-            other.asArgbList,
-          ) &&
-          TonalPaletteSourceColor.hctListEquality.equals(
-            asHctList,
-            other.asHctList,
-          );
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    asArgb,
-    asHct,
-    TonalPaletteSourceColor.argbListEquality.hash(asArgbList),
-    TonalPaletteSourceColor.hctListEquality.hash(asHctList),
-  );
-
-  static const argbListEquality = ListEquality<int>();
-
-  static const hctListEquality = ListEquality<Hct>();
 }
 
 class _TonalPaletteArgbSource extends TonalPaletteSourceColor {
@@ -665,12 +674,10 @@ class _TonalPaletteArgbSource extends TonalPaletteSourceColor {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _TonalPaletteArgbSource &&
-          _argb == other._argb;
+      other is _TonalPaletteArgbSource && _argb == other._argb;
 
   @override
-  int get hashCode => Object.hash(runtimeType, _argb);
+  int get hashCode => _argb.hashCode;
 }
 
 class _TonalPaletteHctSource extends TonalPaletteSourceColor {
@@ -696,12 +703,10 @@ class _TonalPaletteHctSource extends TonalPaletteSourceColor {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _TonalPaletteHctSource &&
-          _hct == other._hct;
+      other is _TonalPaletteHctSource && _hct == other._hct;
 
   @override
-  int get hashCode => Object.hash(runtimeType, _hct);
+  int get hashCode => _hct.hashCode;
 }
 
 class _TonalPaletteArgbListSource extends TonalPaletteSourceColor {
@@ -709,7 +714,7 @@ class _TonalPaletteArgbListSource extends TonalPaletteSourceColor {
     if (argbList.isEmpty) {
       throw ArgumentError("Must have at least one source color.");
     }
-    _argbList = .unmodifiable(argbList);
+    _argbList = UnmodifiableListView(argbList);
   }
 
   late final List<int> _argbList;
@@ -724,9 +729,9 @@ class _TonalPaletteArgbListSource extends TonalPaletteSourceColor {
   late final Hct asHct = asHctList.first;
 
   @override
-  late final List<Hct> asHctList = .unmodifiable([
-    for (final argb in asArgbList) Hct.fromInt(argb),
-  ]);
+  late final List<Hct> asHctList = UnmodifiableListView(
+    asArgbList.map(Hct.fromInt).toList(growable: false),
+  );
 
   @override
   String toString() {
@@ -739,18 +744,11 @@ class _TonalPaletteArgbListSource extends TonalPaletteSourceColor {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _TonalPaletteArgbListSource &&
-          TonalPaletteSourceColor.argbListEquality.equals(
-            _argbList,
-            other._argbList,
-          );
+      other is _TonalPaletteArgbListSource &&
+          const ListEquality<int>().equals(_argbList, other._argbList);
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    TonalPaletteSourceColor.argbListEquality.hash(_argbList),
-  );
+  int get hashCode => const ListEquality<int>().hash(_argbList);
 }
 
 class _TonalPaletteHctListSource extends TonalPaletteSourceColor {
@@ -758,7 +756,7 @@ class _TonalPaletteHctListSource extends TonalPaletteSourceColor {
     if (hctList.isEmpty) {
       throw ArgumentError("Must have at least one source color.");
     }
-    _hctList = .unmodifiable(hctList);
+    _hctList = UnmodifiableListView(hctList);
   }
 
   late final List<Hct> _hctList;
@@ -773,9 +771,9 @@ class _TonalPaletteHctListSource extends TonalPaletteSourceColor {
   late final Hct asHct = asHctList.first;
 
   @override
-  late final List<int> asArgbList = .unmodifiable([
-    for (final hct in asHctList) hct.toInt(),
-  ]);
+  late final List<int> asArgbList = UnmodifiableListView(
+    asHctList.map((hct) => hct.toInt()).toList(growable: false),
+  );
 
   @override
   String toString() {
@@ -786,18 +784,11 @@ class _TonalPaletteHctListSource extends TonalPaletteSourceColor {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _TonalPaletteHctListSource &&
-          TonalPaletteSourceColor.hctListEquality.equals(
-            _hctList,
-            other._hctList,
-          );
+      other is _TonalPaletteHctListSource &&
+          const ListEquality<Hct>().equals(_hctList, other._hctList);
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    TonalPaletteSourceColor.hctListEquality.hash(_hctList),
-  );
+  int get hashCode => const ListEquality<Hct>().hash(_hctList);
 }
 
 // TODO: consider replacing with a custom list type.

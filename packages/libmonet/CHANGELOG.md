@@ -14,7 +14,8 @@
   - Replaced `sourceColorHct` with `sourceColor` of type `TonalPaletteSourceColor`.
   - Renamed `DynamicScheme.fromPalettesOrKeyColors` to `DynamicScheme.withDefaults`.
   - All `DynamicScheme.withDefaults` and `Scheme*` constructor parameters are now optional (`isDark` defaults to `false` as per `md.sys.color` token defaults).
-- Added `year` property to `SpecVersion` and implemented `Comparable<SpecVersion>` in order to make spec versions comparable.
+  - Implemented complex fallback logic for `isDark`, `platform` and `specVersion`.
+- Added `year` property to `SpecVersion` and implemented `Comparable<SpecVersion>` in order to make spec versions orderable.
 - Ported `Cam16.getInt` and `Cam16.getIntInViewingConditions` from Android source code.
 - Color generation algorithms from Android:
   - Renamed `android_dynamic_colors` library to `android_color_utilities`.

@@ -20,8 +20,11 @@ final class TonalPalette {
     : this._(hue, chroma, _KeyColor(hue, chroma).create());
 
   final Map<int, int> _cache = <int, int>{};
+
   final double hue;
+
   final double chroma;
+
   final Hct keyColor;
 
   /// Create an ARGB color with HCT hue and chroma of this Tones instance,
@@ -41,6 +44,17 @@ final class TonalPalette {
   Hct getHct(double tone) => tone == 99.0 && Hct.isYellow(hue)
       ? .fromInt(this.tone(99))
       : .from(hue, chroma, tone);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TonalPalette &&
+          hue == other.hue &&
+          chroma == other.chroma &&
+          keyColor == other.keyColor;
+
+  @override
+  int get hashCode => Object.hash(hue, chroma, keyColor);
 
   static int _averageArgb(int argb1, int argb2) {
     final red1 = (argb1 >>> 16) & 0xff;
@@ -120,6 +134,16 @@ final class _KeyColor {
     tone,
     () => Hct.from(hue, _maxChromaValue, tone.toDouble()).chroma,
   );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _KeyColor &&
+          hue == other.hue &&
+          requestedChroma == other.requestedChroma;
+
+  @override
+  int get hashCode => Object.hash(hue, requestedChroma);
 
   static const _maxChromaValue = 200.0;
 }

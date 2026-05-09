@@ -15,6 +15,6 @@ abstract final class ColorSpecs {
   ]) => switch (specVersion) {
     .spec2025 => _spec2025,
     .spec2026 => _spec2026,
-    _ => _spec2021,
+    .spec2021 => _spec2021,
   };
 }
