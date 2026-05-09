@@ -99,11 +99,11 @@ class _FocusRingState extends State<FocusRing>
   late AnimationController _animationController;
 
   final _growCurveTween = CurveTween(
-    curve: const EasingThemeData.fallback().linear,
+    curve: const EasingThemeData.defaults().linear,
   );
 
   final _shrinkCurveTween = CurveTween(
-    curve: const EasingThemeData.fallback().linear,
+    curve: const EasingThemeData.defaults().linear,
   );
 
   final Tween<double> _offsetGrowTween = Tween<double>();

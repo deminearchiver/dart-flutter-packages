@@ -391,7 +391,7 @@ class SearchBarContainer extends StatelessWidget {
         clipBehavior: .antiAlias,
         shape:
             shape ??
-            CornersBorder.rounded(corners: .all(shapeTheme.corner.full)),
+            CornersBorder.rounded(corners: .all(shapeTheme.cornerFull)),
         color: color ?? colorTheme.surfaceContainer,
         elevation: elevation ?? elevationTheme.level0,
         shadowColor: shadowColor ?? colorTheme.shadow,
@@ -993,12 +993,13 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
     final value = controller?.value;
     final velocity = controller?.velocity ?? 0.0;
     return SpringSimulation(
-      // const SpringThemeData.expressive().fastSpatial.toSpringDescription(),
-      SpringDescription.withDampingRatio(
-        mass: 1.0,
-        stiffness: 800.0,
-        ratio: 0.5,
-      ),
+      const SpringThemeData.defaultsExpressive().fastSpatial
+          .toSpringDescription(),
+      // SpringDescription.withDampingRatio(
+      //   mass: 1.0,
+      //   stiffness: 800.0,
+      //   ratio: 0.5,
+      // ),
       value ?? (forward ? 0.0 : 1.0),
       forward ? 1.0 : 0.0,
       velocity,
@@ -1183,7 +1184,7 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
                                   child: Material(
                                     color: colorTheme.surfaceContainerHigh,
                                     shape: CornersBorder.rounded(
-                                      corners: .all(shapeTheme.corner.full),
+                                      corners: .all(shapeTheme.cornerFull),
                                     ),
                                     child: const Icon(
                                       Symbols.search_rounded,

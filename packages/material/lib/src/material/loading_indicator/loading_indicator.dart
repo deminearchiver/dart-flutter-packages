@@ -179,7 +179,7 @@ class _DeterminateLoadingIndicatorState
             clipBehavior: widget.contained ? .antiAlias : .none,
             shape: widget.contained
                 ? CornersBorder.rounded(
-                    corners: Corners.all(shapeTheme.corner.full),
+                    corners: Corners.all(shapeTheme.cornerFull),
                   )
                 : const RoundedRectangleBorder(),
             color: widget.contained ? containerColor : Colors.transparent,
@@ -430,7 +430,7 @@ class _IndeterminateLoadingIndicatorState
             clipBehavior: widget.contained ? .antiAlias : .none,
             shape: widget.contained
                 ? CornersBorder.rounded(
-                    corners: Corners.all(shapeTheme.corner.full),
+                    corners: Corners.all(shapeTheme.cornerFull),
                   )
                 : const RoundedRectangleBorder(),
             color: widget.contained ? containerColor : Colors.transparent,

@@ -270,7 +270,7 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
         _shape?.resolve(states) ??
         CornersBorder.rounded(
           // TODO: change to something like md.sys.shape.corner.medium
-          corners: .all(_shapeTheme.corner.full),
+          corners: .all(_shapeTheme.cornerFull),
         ),
   );
 

@@ -376,7 +376,8 @@ void main(List<String> arguments) async {
     final properties = value.entries
         .map((entry) => "${entry.key}: ${entry.value}")
         .join(", ");
-    final line = "@override TextGeometry get $key => .from($properties);";
+    final line =
+        "@override TextGeometry get $key => .from($properties).merge(_$key);";
     lines.add(line);
   }
 

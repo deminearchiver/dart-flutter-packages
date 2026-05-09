@@ -137,7 +137,7 @@ class Material extends StatelessWidget {
     final shapeTheme = ShapeTheme.of(context);
 
     final resolvedShape =
-        shape ?? CornersBorder.rounded(corners: .all(shapeTheme.corner.none));
+        shape ?? CornersBorder.rounded(corners: .all(shapeTheme.cornerNone));
     final resolvedColor = color ?? Colors.transparent;
     final resolvedElevation = elevation ?? elevationTheme.level0;
     final resolvedShadowColor = shadowColor ?? colorTheme.shadow;

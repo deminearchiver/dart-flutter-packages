@@ -212,10 +212,24 @@ abstract class RadioButtonThemeData extends RadioButtonThemeDataPartial {
     required RadioButtonStateProperty<Color> iconDotColor,
   }) = _RadioButtonThemeData;
 
-  const factory RadioButtonThemeData.fallback({
+  const factory RadioButtonThemeData.defaults({
     required ColorThemeData colorTheme,
     required ShapeThemeData shapeTheme,
     required StateThemeData stateTheme,
+  }) = _RadioButtonThemeDataDefaults;
+
+  const factory RadioButtonThemeData._defaults({
+    required ColorThemeData colorTheme,
+    required ShapeThemeData shapeTheme,
+    required StateThemeData stateTheme,
+    RadioButtonStateProperty<Size?>? stateLayerSize,
+    RadioButtonStateProperty<ShapeBorder?>? stateLayerShape,
+    RadioButtonStateProperty<Color?>? stateLayerColor,
+    RadioButtonStateProperty<double?>? stateLayerOpacity,
+    RadioButtonStateProperty<double?>? iconSize,
+    RadioButtonStateProperty<Color?>? iconBackgroundColor,
+    RadioButtonStateProperty<Color?>? iconOutlineColor,
+    RadioButtonStateProperty<Color?>? iconDotColor,
   }) = _RadioButtonThemeDataDefaults;
 
   @override
@@ -445,7 +459,7 @@ class _RadioButtonThemeDataDefaults extends RadioButtonThemeData {
   RadioButtonStateProperty<ShapeBorder> get stateLayerShape => .resolveWith(
     (states) =>
         _stateLayerShape?.resolve(states) ??
-        CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
+        CornersBorder.rounded(corners: .all(_shapeTheme.cornerFull)),
   );
 
   @override
@@ -647,43 +661,169 @@ class _RadioButtonThemeDataDefaults extends RadioButtonThemeData {
   );
 }
 
-class RadioButtonTheme extends InheritedTheme {
-  const RadioButtonTheme({super.key, required this.data, required super.child});
+typedef RadioButtonThemeResolver = ThemeResolver<RadioButtonThemeDataPartial>;
 
-  final RadioButtonThemeData data;
+typedef RadioButtonThemeResolverCallback =
+    ThemeResolverCallback<RadioButtonThemeDataPartial>;
+
+class _RadioButtonThemeResolver
+    extends CombiningThemeResolver<RadioButtonThemeDataPartial> {
+  const _RadioButtonThemeResolver(super.a, super.b);
 
   @override
-  bool updateShouldNotify(RadioButtonTheme oldWidget) => data != oldWidget.data;
+  RadioButtonThemeDataPartial combine(
+    RadioButtonThemeDataPartial a,
+    RadioButtonThemeDataPartial b,
+  ) => a.merge(b);
+}
+
+abstract class RadioButtonTheme extends StatelessWidget implements ProxyWidget {
+  const RadioButtonTheme._({super.key, required this.child});
+
+  const factory RadioButtonTheme.withResolver({
+    Key? key,
+    required RadioButtonThemeResolver resolver,
+    required Widget child,
+  }) = _RadioButtonThemeWithResolver;
+
+  const factory RadioButtonTheme.withCallback({
+    Key? key,
+    required RadioButtonThemeResolverCallback callback,
+    required Widget child,
+  }) = _RadioButtonThemeWithCallback;
+
+  const factory RadioButtonTheme.withData({
+    Key? key,
+    required RadioButtonThemeDataPartial data,
+    required Widget child,
+  }) = _RadioButtonThemeWithData;
+
+  RadioButtonThemeResolver get resolver;
 
   @override
-  Widget wrap(BuildContext context, Widget child) =>
-      RadioButtonTheme(data: data, child: child);
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final inherited = _RadioButtonTheme.maybeResolverOf(context);
+    return _RadioButtonTheme(
+      resolver: inherited != null
+          ? _RadioButtonThemeResolver(inherited, resolver)
+          : resolver,
+      child: child,
+    );
+  }
+
+  static RadioButtonThemeData of(BuildContext context) {
+    final resolver = _RadioButtonTheme.maybeResolverOf(context);
+    final colorTheme = ColorTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    if (resolver != null) {
+      final data = resolver.resolve(context);
+      return ._defaults(
+        colorTheme: colorTheme,
+        shapeTheme: shapeTheme,
+        stateTheme: stateTheme,
+        stateLayerSize: data.stateLayerSize,
+        stateLayerShape: data.stateLayerShape,
+        stateLayerColor: data.stateLayerColor,
+        stateLayerOpacity: data.stateLayerOpacity,
+        iconSize: data.iconSize,
+        iconBackgroundColor: data.iconBackgroundColor,
+        iconOutlineColor: data.iconOutlineColor,
+        iconDotColor: data.iconDotColor,
+      );
+    }
+    return .defaults(
+      colorTheme: colorTheme,
+      shapeTheme: shapeTheme,
+      stateTheme: stateTheme,
+    );
+  }
+}
+
+class _RadioButtonThemeWithResolver extends RadioButtonTheme {
+  const _RadioButtonThemeWithResolver({
+    super.key,
+    required this.resolver,
+    required super.child,
+  }) : super._();
+
+  @override
+  final RadioButtonThemeResolver resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<RadioButtonThemeData>("data", data));
-  }
-
-  static Widget merge({
-    Key? key,
-    required RadioButtonThemeDataPartial data,
-    required Widget child,
-  }) => Builder(
-    builder: (context) =>
-        RadioButtonTheme(key: key, data: of(context).merge(data), child: child),
-  );
-
-  static RadioButtonThemeData? maybeOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<RadioButtonTheme>()?.data;
-
-  static RadioButtonThemeData of(BuildContext context) {
-    final result = maybeOf(context);
-    if (result != null) return result;
-    return .fallback(
-      colorTheme: ColorTheme.of(context),
-      shapeTheme: ShapeTheme.of(context),
-      stateTheme: StateTheme.of(context),
+    properties.add(
+      DiagnosticsProperty<RadioButtonThemeResolver>("resolver", resolver),
     );
   }
+}
+
+class _RadioButtonThemeWithCallback extends RadioButtonTheme {
+  const _RadioButtonThemeWithCallback({
+    super.key,
+    required this.callback,
+    required super.child,
+  }) : super._();
+
+  final RadioButtonThemeResolverCallback callback;
+
+  @override
+  RadioButtonThemeResolver get resolver => .callback(callback);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<RadioButtonThemeResolverCallback>(
+        "callback",
+        callback,
+      ),
+    );
+  }
+}
+
+class _RadioButtonThemeWithData extends RadioButtonTheme {
+  const _RadioButtonThemeWithData({
+    super.key,
+    required this.data,
+    required super.child,
+  }) : super._();
+
+  final RadioButtonThemeDataPartial data;
+
+  @override
+  RadioButtonThemeResolver get resolver => .value(data);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<RadioButtonThemeDataPartial>("data", data),
+    );
+  }
+}
+
+class _RadioButtonTheme extends InheritedTheme {
+  const _RadioButtonTheme({
+    super.key,
+    required this.resolver,
+    required super.child,
+  });
+
+  final RadioButtonThemeResolver resolver;
+
+  @override
+  bool updateShouldNotify(_RadioButtonTheme oldWidget) =>
+      resolver != oldWidget.resolver;
+
+  @override
+  Widget wrap(BuildContext context, Widget child) =>
+      _RadioButtonTheme(resolver: resolver, child: child);
+
+  static RadioButtonThemeResolver? maybeResolverOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_RadioButtonTheme>()?.resolver;
 }

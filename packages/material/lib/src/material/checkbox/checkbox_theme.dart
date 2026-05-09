@@ -253,10 +253,26 @@ abstract class CheckboxThemeData extends CheckboxThemeDataPartial {
     required CheckboxStateProperty<Color> iconColor,
   }) = _CheckboxThemeData;
 
-  const factory CheckboxThemeData.fallback({
+  const factory CheckboxThemeData.defaults({
     required ColorThemeData colorTheme,
     required ShapeThemeData shapeTheme,
     required StateThemeData stateTheme,
+  }) = _CheckboxThemeDataDefaults;
+
+  const factory CheckboxThemeData._defaults({
+    required ColorThemeData colorTheme,
+    required ShapeThemeData shapeTheme,
+    required StateThemeData stateTheme,
+    CheckboxStateProperty<Size?>? stateLayerSize,
+    CheckboxStateProperty<ShapeBorder?>? stateLayerShape,
+    CheckboxStateProperty<Color?>? stateLayerColor,
+    CheckboxStateProperty<double?>? stateLayerOpacity,
+    CheckboxStateProperty<double?>? containerSize,
+    CheckboxStateProperty<OutlinedBorder?>? containerShape,
+    CheckboxStateProperty<Color?>? containerColor,
+    CheckboxStateProperty<OutlinePartial?>? containerOutline,
+    CheckboxStateProperty<double?>? iconSize,
+    CheckboxStateProperty<Color?>? iconColor,
   }) = _CheckboxThemeDataDefaults;
 
   @override
@@ -529,7 +545,7 @@ class _CheckboxThemeDataDefaults extends CheckboxThemeData {
   CheckboxStateProperty<ShapeBorder> get stateLayerShape => .resolveWith(
     (states) =>
         _stateLayerShape?.resolve(states) ??
-        CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
+        CornersBorder.rounded(corners: .all(_shapeTheme.cornerFull)),
   );
 
   @override
@@ -775,43 +791,166 @@ class _CheckboxThemeDataDefaults extends CheckboxThemeData {
   );
 }
 
-class CheckboxTheme extends InheritedTheme {
-  const CheckboxTheme({super.key, required this.data, required super.child});
+typedef CheckboxThemeResolver = ThemeResolver<CheckboxThemeDataPartial>;
 
-  final CheckboxThemeData data;
+typedef CheckboxThemeResolverCallback =
+    ThemeResolverCallback<CheckboxThemeDataPartial>;
+
+class _CheckboxThemeResolver
+    extends CombiningThemeResolver<CheckboxThemeDataPartial> {
+  const _CheckboxThemeResolver(super.a, super.b);
 
   @override
-  bool updateShouldNotify(CheckboxTheme oldWidget) => data != oldWidget.data;
+  CheckboxThemeDataPartial combine(
+    CheckboxThemeDataPartial a,
+    CheckboxThemeDataPartial b,
+  ) => a.merge(b);
+}
+
+abstract class CheckboxTheme extends StatelessWidget implements ProxyWidget {
+  const CheckboxTheme._({super.key, required this.child});
+
+  const factory CheckboxTheme.withResolver({
+    Key? key,
+    required CheckboxThemeResolver resolver,
+    required Widget child,
+  }) = _CheckboxThemeWithResolver;
+
+  const factory CheckboxTheme.withCallback({
+    Key? key,
+    required CheckboxThemeResolverCallback callback,
+    required Widget child,
+  }) = _CheckboxThemeWithCallback;
+
+  const factory CheckboxTheme.withData({
+    Key? key,
+    required CheckboxThemeDataPartial data,
+    required Widget child,
+  }) = _CheckboxThemeWithData;
+
+  CheckboxThemeResolver get resolver;
 
   @override
-  Widget wrap(BuildContext context, Widget child) =>
-      CheckboxTheme(data: data, child: child);
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final inherited = _CheckboxTheme.maybeResolverOf(context);
+    return _CheckboxTheme(
+      resolver: inherited != null
+          ? _CheckboxThemeResolver(inherited, resolver)
+          : resolver,
+      child: child,
+    );
+  }
+
+  static CheckboxThemeData of(BuildContext context) {
+    final resolver = _CheckboxTheme.maybeResolverOf(context);
+    final colorTheme = ColorTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    if (resolver != null) {
+      final data = resolver.resolve(context);
+      return ._defaults(
+        colorTheme: colorTheme,
+        shapeTheme: shapeTheme,
+        stateTheme: stateTheme,
+        stateLayerSize: data.stateLayerSize,
+        stateLayerShape: data.stateLayerShape,
+        stateLayerColor: data.stateLayerColor,
+        stateLayerOpacity: data.stateLayerOpacity,
+        containerSize: data.containerSize,
+        containerShape: data.containerShape,
+        containerColor: data.containerColor,
+        containerOutline: data.containerOutline,
+        iconSize: data.iconSize,
+        iconColor: data.iconColor,
+      );
+    }
+    return .defaults(
+      colorTheme: colorTheme,
+      shapeTheme: shapeTheme,
+      stateTheme: stateTheme,
+    );
+  }
+}
+
+class _CheckboxThemeWithResolver extends CheckboxTheme {
+  const _CheckboxThemeWithResolver({
+    super.key,
+    required this.resolver,
+    required super.child,
+  }) : super._();
+
+  @override
+  final CheckboxThemeResolver resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<CheckboxThemeData>("data", data));
-  }
-
-  static Widget merge({
-    Key? key,
-    required CheckboxThemeDataPartial data,
-    required Widget child,
-  }) => Builder(
-    builder: (context) =>
-        CheckboxTheme(key: key, data: of(context).merge(data), child: child),
-  );
-
-  static CheckboxThemeData? maybeOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<CheckboxTheme>()?.data;
-
-  static CheckboxThemeData of(BuildContext context) {
-    final result = maybeOf(context);
-    if (result != null) return result;
-    return .fallback(
-      colorTheme: ColorTheme.of(context),
-      shapeTheme: ShapeTheme.of(context),
-      stateTheme: StateTheme.of(context),
+    properties.add(
+      DiagnosticsProperty<CheckboxThemeResolver>("resolver", resolver),
     );
   }
+}
+
+class _CheckboxThemeWithCallback extends CheckboxTheme {
+  const _CheckboxThemeWithCallback({
+    super.key,
+    required this.callback,
+    required super.child,
+  }) : super._();
+
+  final CheckboxThemeResolverCallback callback;
+
+  @override
+  CheckboxThemeResolver get resolver => .callback(callback);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<CheckboxThemeResolverCallback>("callback", callback),
+    );
+  }
+}
+
+class _CheckboxThemeWithData extends CheckboxTheme {
+  const _CheckboxThemeWithData({
+    super.key,
+    required this.data,
+    required super.child,
+  }) : super._();
+
+  final CheckboxThemeDataPartial data;
+
+  @override
+  CheckboxThemeResolver get resolver => .value(data);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<CheckboxThemeDataPartial>("data", data));
+  }
+}
+
+class _CheckboxTheme extends InheritedTheme {
+  const _CheckboxTheme({
+    super.key,
+    required this.resolver,
+    required super.child,
+  });
+
+  final CheckboxThemeResolver resolver;
+
+  @override
+  bool updateShouldNotify(_CheckboxTheme oldWidget) =>
+      resolver != oldWidget.resolver;
+
+  @override
+  Widget wrap(BuildContext context, Widget child) =>
+      _CheckboxTheme(resolver: resolver, child: child);
+
+  static CheckboxThemeResolver? maybeResolverOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_CheckboxTheme>()?.resolver;
 }

@@ -1,53 +1,5 @@
 import 'package:material/src/material/flutter.dart';
 
-typedef ThemeResolverCallback<T extends Object?> =
-    T Function(BuildContext context);
-
-abstract class ThemeResolver<T extends Object?> {
-  const ThemeResolver();
-
-  const factory ThemeResolver.callback(ThemeResolverCallback<T> callback) =
-      _CallbackThemeResolver;
-
-  const factory ThemeResolver.value(T value) = _ValueThemeResolver;
-
-  T resolve(BuildContext context);
-}
-
-class _CallbackThemeResolver<T extends Object?> extends ThemeResolver<T> {
-  const _CallbackThemeResolver(this._callback);
-
-  final ThemeResolverCallback<T> _callback;
-
-  @override
-  T resolve(BuildContext context) => _callback(context);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _CallbackThemeResolver<T> && _callback == other._callback;
-
-  @override
-  int get hashCode => _callback.hashCode;
-}
-
-class _ValueThemeResolver<T extends Object?> extends ThemeResolver<T> {
-  const _ValueThemeResolver(this._value);
-
-  final T _value;
-
-  @override
-  T resolve(BuildContext context) => _value;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _ValueThemeResolver<T> && _value == other._value;
-
-  @override
-  int get hashCode => _value.hashCode;
-}
-
 abstract class FocusInsetRingThemeDataPartial with Diagnosticable {
   const FocusInsetRingThemeDataPartial();
 
@@ -452,38 +404,34 @@ typedef FocusInsetRingThemeResolver =
 typedef FocusInsetRingThemeResolverCallback =
     ThemeResolverCallback<FocusInsetRingThemeDataPartial>;
 
-class _FocusInsetRingThemeResolver extends FocusInsetRingThemeResolver {
-  const _FocusInsetRingThemeResolver(this._inherited, this._local);
-
-  final FocusInsetRingThemeResolver _inherited;
-  final FocusInsetRingThemeResolver _local;
+class _FocusInsetRingThemeResolver
+    extends CombiningThemeResolver<FocusInsetRingThemeDataPartial> {
+  const _FocusInsetRingThemeResolver(super.a, super.b);
 
   @override
-  FocusInsetRingThemeDataPartial resolve(BuildContext context) =>
-      _inherited.resolve(context).merge(_local.resolve(context));
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _FocusInsetRingThemeResolver &&
-          _inherited == other._inherited &&
-          _local == other._local;
-
-  @override
-  int get hashCode => Object.hash(_inherited, _local);
+  FocusInsetRingThemeDataPartial combine(
+    FocusInsetRingThemeDataPartial a,
+    FocusInsetRingThemeDataPartial b,
+  ) => a.merge(b);
 }
 
-sealed class FocusInsetRingTheme extends StatelessWidget
+abstract class FocusInsetRingTheme extends StatelessWidget
     implements ProxyWidget {
   const FocusInsetRingTheme._({super.key, required this.child});
 
-  const factory FocusInsetRingTheme.resolved({
+  const factory FocusInsetRingTheme.withResolver({
     Key? key,
     required FocusInsetRingThemeResolver resolver,
     required Widget child,
   }) = _FocusInsetRingThemeWithResolver;
 
-  const factory FocusInsetRingTheme.value({
+  const factory FocusInsetRingTheme.withCallback({
+    Key? key,
+    required FocusInsetRingThemeResolverCallback callback,
+    required Widget child,
+  }) = _FocusInsetRingThemeWithCallback;
+
+  const factory FocusInsetRingTheme.withData({
     Key? key,
     required FocusInsetRingThemeDataPartial data,
     required Widget child,
@@ -542,7 +490,7 @@ class _FocusInsetRingThemeWithResolver extends FocusInsetRingTheme {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      ObjectFlagProperty<FocusInsetRingThemeResolver>("resolver", resolver),
+      DiagnosticsProperty<FocusInsetRingThemeResolver>("resolver", resolver),
     );
   }
 }
@@ -563,7 +511,7 @@ class _FocusInsetRingThemeWithCallback extends FocusInsetRingTheme {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      ObjectFlagProperty<FocusInsetRingThemeResolverCallback>(
+      DiagnosticsProperty<FocusInsetRingThemeResolverCallback>(
         "callback",
         callback,
       ),

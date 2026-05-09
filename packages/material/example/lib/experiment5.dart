@@ -305,7 +305,7 @@ class _VerticalNavigationItemState extends State<_VerticalNavigationItem> {
               child: Material(
                 clipBehavior: .antiAlias,
                 shape: CornersBorder.rounded(
-                  corners: .all(shapeTheme.corner.full),
+                  corners: .all(shapeTheme.cornerFull),
                 ),
                 color: isSelected
                     ? colorTheme.secondaryContainer
@@ -320,7 +320,7 @@ class _VerticalNavigationItemState extends State<_VerticalNavigationItem> {
                     opacity: stateTheme.asWidgetStateLayerOpacity,
                   ),
                   onTap: () {},
-                  child: IconTheme.merge(
+                  child: IconTheme.withData(
                     data: .from(
                       fill: isSelected ? 1.0 : 0.0,
                       opticalSize: 24.0,

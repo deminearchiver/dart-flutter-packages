@@ -8,6 +8,8 @@ class Experiment6View extends StatefulWidget {
 }
 
 class _Experiment6ViewState extends State<Experiment6View> {
+  final _selected = <int>{};
+
   @override
   Widget build(BuildContext context) {
     final colorTheme = ColorTheme.of(context);
@@ -20,7 +22,64 @@ class _Experiment6ViewState extends State<Experiment6View> {
 
     return Scaffold(
       backgroundColor: colorTheme.surfaceContainer,
-      body: Align.center(child: _Layer1(child: _Layer2())),
+      // body: Align.center(child: _Layer1(child: _Layer2())),
+      body: SafeArea(
+        top: false,
+        bottom: false,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const .symmetric(horizontal: 8.0, vertical: 64.0),
+                child: Flex.vertical(
+                  spacing: 2.0,
+                  children: List.generate(
+                    100,
+                    (index) => ListItemContainer(
+                      isFirst: index == 0,
+                      isLast: index == 100 - 1,
+                      child: ListItemInteraction(
+                        onTap: () {
+                          if (_selected.contains(index)) {
+                            setState(() {
+                              _selected.remove(index);
+                            });
+                          } else {
+                            setState(() {
+                              _selected.add(index);
+                            });
+                          }
+                        },
+                        child: ListItemLayout(
+                          padding: .fromSTEB(16.0 - 4.0, 0.0, 16.0, 0.0),
+                          leadingPadding: const .symmetric(
+                            vertical: 10.0 - (48.0 - 40.0) / 2.0,
+                          ),
+                          leading: Checkbox.bistate(
+                            onCheckedChanged: (value) {
+                              if (value) {
+                                setState(() {
+                                  _selected.add(index);
+                                });
+                              } else {
+                                setState(() {
+                                  _selected.remove(index);
+                                });
+                              }
+                            },
+                            checked: _selected.contains(index),
+                          ),
+                          headline: Text("Item ${index + 1}"),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -33,8 +92,8 @@ class _Layer1 extends StatelessWidget implements ProxyWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FocusInsetRingTheme.resolved(
-      resolver: .callback((context) {
+    return FocusInsetRingTheme.withCallback(
+      callback: (context) {
         final colorTheme = ColorTheme.of(context);
         return .from(
           outerStrokeInset: 0.0,
@@ -44,7 +103,7 @@ class _Layer1 extends StatelessWidget implements ProxyWidget {
           innerStrokeWidth: 10.0,
           innerStrokeColor: colorTheme.onTertiary,
         );
-      }),
+      },
       child: child,
     );
   }

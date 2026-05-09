@@ -4,34 +4,8 @@ import 'package:material/src/material/flutter.dart';
 FontWeight? _closestFontWeightToOrNull(double? weight) =>
     weight != null ? _closestFontWeightToOrNull(weight) : null;
 
-FontWeight _closestFontWeightTo(double weight) {
-  assert(weight >= 0.0, "Font weight cannot be negative.");
-  const values = FontWeight.values;
-  var closest = values[0];
-  for (var i = 1; i < values.length; i++) {
-    final element = values[i];
-    if ((weight - element.value.toDouble()).abs() <=
-        (weight - closest.value.toDouble()).abs()) {
-      closest = element;
-    }
-  }
-  return closest;
-}
-
-// (FontWeight? fontWeight, double? wght) _resolveFontWeights(
-//   double? weight,
-//   double? wght,
-// ) {
-//   if (wght != null) {
-//     final fontWeight = _closestFontWeightTo(wght);
-//     return (fontWeight, wght);
-//   } else if (weight != null && wght == null) {
-//     final fontWeight = _closestFontWeightTo(weight);
-//     return (fontWeight, weight);
-//   } else {
-//     return (null, null);
-//   }
-// }
+FontWeight _closestFontWeightTo(double weight) =>
+    FontWeight(clampInt(weight.round(), 1, 1000));
 
 // bool _debugTextStyleHasFont(TextStyle? style) {
 //   if (style == null) return false;
@@ -310,7 +284,7 @@ abstract class TextGeometryPartial with Diagnosticable {
     TextOverflow? overflow,
   }) {
     final fontFamily = font?.firstOrNull;
-    final fontFamilyFallback = font?.skip(1).toList();
+    final fontFamilyFallback = font?.skip(1).toList(growable: false);
     return TextStyle(
       inherit: inherit,
       color: color,
@@ -720,7 +694,7 @@ abstract class TextGeometry extends TextGeometryPartial {
     TextOverflow? overflow,
   }) {
     final fontFamily = font.first;
-    final fontFamilyFallback = font.skip(1).toList();
+    final fontFamilyFallback = font.skip(1).toList(growable: false);
     return TextStyle(
       inherit: inherit,
       color: color,

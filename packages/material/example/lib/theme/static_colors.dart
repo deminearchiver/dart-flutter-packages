@@ -22,7 +22,7 @@ abstract class StaticColorsData with Diagnosticable {
     double contrastLevel = 0.0,
     DynamicSchemeSpecVersion? specVersion = DynamicScheme.defaultSpecVersion,
   }) {
-    const palette = StaticPaletteThemeData.fallback();
+    const palette = StaticPaletteThemeData.defaults();
     return .from(
       blue: .fromSeed(
         sourceColor: palette.blue50,
@@ -252,10 +252,10 @@ class StaticColors extends InheritedTheme {
     final result = maybeOf(context);
     if (result != null) return result;
     final colorTheme = ColorTheme.of(context);
-    final highContarst = MediaQuery.highContrastOf(context);
+    final highContrast = MediaQuery.highContrastOf(context);
     return .fallback(
       brightness: colorTheme.brightness,
-      contrastLevel: highContarst ? 1.0 : 0.0,
+      contrastLevel: highContrast ? 1.0 : 0.0,
       platform: .phone,
       variant: .tonalSpot,
       specVersion: .spec2026,

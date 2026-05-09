@@ -123,7 +123,7 @@ typedef StateMap<T extends Object?, S extends Object?> =
     Map<StatesConstraint<S>, T>;
 
 abstract class StateProperty<T extends Object?, S extends Object?> {
-  StateProperty();
+  const StateProperty();
 
   const factory StateProperty.fromMap(StateMap<T, S> map) = StateMapper;
 

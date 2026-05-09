@@ -7,12 +7,33 @@ class _Linear extends Curve {
   double transformInternal(double t) => t;
 
   @override
+  String toString() => "Curves.linear";
+
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType && other is _Linear;
 
   @override
   int get hashCode => runtimeType.hashCode;
+}
+
+class _ThreePointCubic extends ThreePointCubic {
+  const _ThreePointCubic(
+    super.a1,
+    super.b1,
+    super.midpoint,
+    super.a2,
+    super.b2,
+  );
+
+  @override
+  String toString() =>
+      "ThreePointCubic("
+      "a1: $a1, b1: $b1, "
+      "midpoint: $midpoint, "
+      "a2: $a2, b2: $b2"
+      ")";
 }
 
 abstract class EasingThemeDataPartial with Diagnosticable {
@@ -29,7 +50,7 @@ abstract class EasingThemeDataPartial with Diagnosticable {
     Curve? legacyAccelerate,
     Curve? legacyDecelerate,
     Curve? linear,
-  }) = _EasingThemeDataPartial.from;
+  }) = _EasingThemeDataPartial;
 
   Curve? get emphasized;
   Curve? get emphasizedAccelerate;
@@ -64,7 +85,7 @@ abstract class EasingThemeDataPartial with Diagnosticable {
           legacyAccelerate != null ||
           legacyDecelerate != null ||
           linear != null
-      ? EasingThemeDataPartial.from(
+      ? .from(
           emphasized: emphasized ?? this.emphasized,
           emphasizedAccelerate:
               emphasizedAccelerate ?? this.emphasizedAccelerate,
@@ -188,7 +209,7 @@ abstract class EasingThemeDataPartial with Diagnosticable {
 }
 
 class _EasingThemeDataPartial extends EasingThemeDataPartial {
-  const _EasingThemeDataPartial.from({
+  const _EasingThemeDataPartial({
     this.emphasized,
     this.emphasizedAccelerate,
     this.emphasizedDecelerate,
@@ -246,9 +267,22 @@ abstract class EasingThemeData extends EasingThemeDataPartial {
     required Curve legacyAccelerate,
     required Curve legacyDecelerate,
     required Curve linear,
-  }) = _EasingThemeData.from;
+  }) = _EasingThemeData;
 
-  const factory EasingThemeData.fallback() = _EasingThemeData.fallback;
+  const factory EasingThemeData.defaults() = _EasingThemeDataDefaults;
+
+  const factory EasingThemeData._defaults({
+    Curve? emphasized,
+    Curve? emphasizedAccelerate,
+    Curve? emphasizedDecelerate,
+    Curve? standard,
+    Curve? standardAccelerate,
+    Curve? standardDecelerate,
+    Curve? legacy,
+    Curve? legacyAccelerate,
+    Curve? legacyDecelerate,
+    Curve? linear,
+  }) = _EasingThemeDataDefaults;
 
   @override
   Curve get emphasized;
@@ -303,7 +337,7 @@ abstract class EasingThemeData extends EasingThemeDataPartial {
           legacyAccelerate != null ||
           legacyDecelerate != null ||
           linear != null
-      ? EasingThemeData.from(
+      ? .from(
           emphasized: emphasized ?? this.emphasized,
           emphasizedAccelerate:
               emphasizedAccelerate ?? this.emphasizedAccelerate,
@@ -398,7 +432,7 @@ abstract class EasingThemeData extends EasingThemeDataPartial {
 }
 
 class _EasingThemeData extends EasingThemeData {
-  const _EasingThemeData.from({
+  const _EasingThemeData({
     required this.emphasized,
     required this.emphasizedAccelerate,
     required this.emphasizedDecelerate,
@@ -410,24 +444,6 @@ class _EasingThemeData extends EasingThemeData {
     required this.legacyDecelerate,
     required this.linear,
   });
-
-  const _EasingThemeData.fallback()
-    : emphasized = const ThreePointCubic(
-        Offset(0.05, 0),
-        Offset(0.133333, 0.06),
-        Offset(0.166666, 0.4),
-        Offset(0.208333, 0.82),
-        Offset(0.25, 1),
-      ),
-      emphasizedAccelerate = const Cubic(0.3, 0.0, 0.8, 0.15),
-      emphasizedDecelerate = const Cubic(0.05, 0.7, 0.1, 1.0),
-      standard = const Cubic(0.2, 0.0, 0.0, 1.0),
-      standardAccelerate = const Cubic(0.3, 0.0, 1.0, 1.0),
-      standardDecelerate = const Cubic(0.0, 0.0, 0.0, 1.0),
-      legacy = const Cubic(0.4, 0.0, 0.2, 1.0),
-      legacyAccelerate = const Cubic(0.4, 0.0, 1.0, 1.0),
-      legacyDecelerate = const Cubic(0.0, 0.0, 0.2, 1.0),
-      linear = const _Linear();
 
   @override
   final Curve emphasized;
@@ -460,36 +476,310 @@ class _EasingThemeData extends EasingThemeData {
   final Curve linear;
 }
 
-class EasingTheme extends InheritedTheme {
-  const EasingTheme({super.key, required this.data, required super.child});
+class _EasingThemeDataDefaults extends EasingThemeData {
+  const _EasingThemeDataDefaults({
+    Curve? emphasized,
+    Curve? emphasizedAccelerate,
+    Curve? emphasizedDecelerate,
+    Curve? standard,
+    Curve? standardAccelerate,
+    Curve? standardDecelerate,
+    Curve? legacy,
+    Curve? legacyAccelerate,
+    Curve? legacyDecelerate,
+    Curve? linear,
+  }) : _emphasized = emphasized,
+       _emphasizedAccelerate = emphasizedAccelerate,
+       _emphasizedDecelerate = emphasizedDecelerate,
+       _standard = standard,
+       _standardAccelerate = standardAccelerate,
+       _standardDecelerate = standardDecelerate,
+       _legacy = legacy,
+       _legacyAccelerate = legacyAccelerate,
+       _legacyDecelerate = legacyDecelerate,
+       _linear = linear;
 
-  final EasingThemeData data;
+  final Curve? _emphasized;
+  final Curve? _emphasizedAccelerate;
+  final Curve? _emphasizedDecelerate;
+  final Curve? _standard;
+  final Curve? _standardAccelerate;
+  final Curve? _standardDecelerate;
+  final Curve? _legacy;
+  final Curve? _legacyAccelerate;
+  final Curve? _legacyDecelerate;
+  final Curve? _linear;
 
   @override
-  bool updateShouldNotify(EasingTheme oldWidget) => data != oldWidget.data;
+  Curve get emphasized =>
+      _emphasized ??
+      const _ThreePointCubic(
+        Offset(0.05, 0),
+        Offset(0.133333, 0.06),
+        Offset(0.166666, 0.4),
+        Offset(0.208333, 0.82),
+        Offset(0.25, 1),
+      );
 
   @override
-  Widget wrap(BuildContext context, Widget child) =>
-      EasingTheme(data: data, child: child);
+  Curve get emphasizedAccelerate =>
+      _emphasizedAccelerate ?? const Cubic(0.3, 0.0, 0.8, 0.15);
+
+  @override
+  Curve get emphasizedDecelerate =>
+      _emphasizedDecelerate ?? const Cubic(0.05, 0.7, 0.1, 1.0);
+
+  @override
+  Curve get standard => _standard ?? const Cubic(0.2, 0.0, 0.0, 1.0);
+
+  @override
+  Curve get standardAccelerate =>
+      _standardAccelerate ?? const Cubic(0.3, 0.0, 1.0, 1.0);
+
+  @override
+  Curve get standardDecelerate =>
+      _standardDecelerate ?? const Cubic(0.0, 0.0, 0.0, 1.0);
+
+  @override
+  Curve get legacy => _legacy ?? const Cubic(0.4, 0.0, 0.2, 1.0);
+
+  @override
+  Curve get legacyAccelerate =>
+      _legacyAccelerate ?? const Cubic(0.4, 0.0, 1.0, 1.0);
+
+  @override
+  Curve get legacyDecelerate =>
+      _legacyDecelerate ?? const Cubic(0.0, 0.0, 0.2, 1.0);
+
+  @override
+  Curve get linear => _linear ?? const _Linear();
+
+  @override
+  EasingThemeData copyWith({
+    Curve? emphasized,
+    Curve? emphasizedAccelerate,
+    Curve? emphasizedDecelerate,
+    Curve? standard,
+    Curve? standardAccelerate,
+    Curve? standardDecelerate,
+    Curve? legacy,
+    Curve? legacyAccelerate,
+    Curve? legacyDecelerate,
+    Curve? linear,
+  }) =>
+      emphasized != null &&
+          emphasizedAccelerate != null &&
+          emphasizedDecelerate != null &&
+          standard != null &&
+          standardAccelerate != null &&
+          standardDecelerate != null &&
+          legacy != null &&
+          legacyAccelerate != null &&
+          legacyDecelerate != null &&
+          linear != null
+      ? .from(
+          emphasized: emphasized,
+          emphasizedAccelerate: emphasizedAccelerate,
+          emphasizedDecelerate: emphasizedDecelerate,
+          standard: standard,
+          standardAccelerate: standardAccelerate,
+          standardDecelerate: standardDecelerate,
+          legacy: legacy,
+          legacyAccelerate: legacyAccelerate,
+          legacyDecelerate: legacyDecelerate,
+          linear: linear,
+        )
+      : _EasingThemeDataDefaults(
+          emphasized: emphasized ?? _emphasized,
+          emphasizedAccelerate: emphasizedAccelerate ?? _emphasizedAccelerate,
+          emphasizedDecelerate: emphasizedDecelerate ?? _emphasizedDecelerate,
+          standard: standard ?? _standard,
+          standardAccelerate: standardAccelerate ?? _standardAccelerate,
+          standardDecelerate: standardDecelerate ?? _standardDecelerate,
+          legacy: legacy ?? _legacy,
+          legacyAccelerate: legacyAccelerate ?? _legacyAccelerate,
+          legacyDecelerate: legacyDecelerate ?? _legacyDecelerate,
+          linear: linear ?? _linear,
+        );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _EasingThemeDataDefaults &&
+          _emphasized == other._emphasized &&
+          _emphasizedAccelerate == other._emphasizedAccelerate &&
+          _emphasizedDecelerate == other._emphasizedDecelerate &&
+          _standard == other._standard &&
+          _standardAccelerate == other._standardAccelerate &&
+          _standardDecelerate == other._standardDecelerate &&
+          _legacy == other._legacy &&
+          _legacyAccelerate == other._legacyAccelerate &&
+          _legacyDecelerate == other._legacyDecelerate &&
+          _linear == other._linear;
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    _emphasized,
+    _emphasizedAccelerate,
+    _emphasizedDecelerate,
+    _standard,
+    _standardAccelerate,
+    _standardDecelerate,
+    _legacy,
+    _legacyAccelerate,
+    _legacyDecelerate,
+    _linear,
+  );
+}
+
+abstract class EasingTheme extends StatelessWidget implements ProxyWidget {
+  const EasingTheme._({super.key, required this.child});
+
+  const factory EasingTheme.withResolver({
+    Key? key,
+    required EasingThemeResolver resolver,
+    required Widget child,
+  }) = _EasingThemeWithResolver;
+
+  const factory EasingTheme.withCallback({
+    Key? key,
+    required EasingThemeResolverCallback callback,
+    required Widget child,
+  }) = _EasingThemeWithCallback;
+
+  const factory EasingTheme.withData({
+    Key? key,
+    required EasingThemeDataPartial data,
+    required Widget child,
+  }) = _EasingThemeWithData;
+
+  EasingThemeResolver get resolver;
+
+  @override
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final inherited = _EasingTheme.maybeResolverOf(context);
+    return _EasingTheme(
+      resolver: inherited != null
+          ? _EasingThemeResolver(inherited, resolver)
+          : resolver,
+      child: child,
+    );
+  }
+
+  static EasingThemeData of(BuildContext context) {
+    final resolver = _EasingTheme.maybeResolverOf(context);
+    if (resolver != null) {
+      final data = resolver.resolve(context);
+      return ._defaults(
+        emphasized: data.emphasized,
+        emphasizedAccelerate: data.emphasizedAccelerate,
+        emphasizedDecelerate: data.emphasizedDecelerate,
+        standard: data.standard,
+        standardAccelerate: data.standardAccelerate,
+        standardDecelerate: data.standardDecelerate,
+        legacy: data.legacy,
+        legacyAccelerate: data.legacyAccelerate,
+        legacyDecelerate: data.legacyDecelerate,
+        linear: data.linear,
+      );
+    }
+    return const .defaults();
+  }
+}
+
+typedef EasingThemeResolver = ThemeResolver<EasingThemeDataPartial>;
+
+typedef EasingThemeResolverCallback =
+    ThemeResolverCallback<EasingThemeDataPartial>;
+
+class _EasingThemeResolver
+    extends CombiningThemeResolver<EasingThemeDataPartial> {
+  const _EasingThemeResolver(super.a, super.b);
+
+  @override
+  EasingThemeDataPartial combine(
+    EasingThemeDataPartial a,
+    EasingThemeDataPartial b,
+  ) => a.merge(b);
+}
+
+class _EasingThemeWithResolver extends EasingTheme {
+  const _EasingThemeWithResolver({
+    super.key,
+    required this.resolver,
+    required super.child,
+  }) : super._();
+
+  @override
+  final EasingThemeResolver resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<EasingThemeData>("data", data));
+    properties.add(
+      DiagnosticsProperty<EasingThemeResolver>("resolver", resolver),
+    );
   }
+}
 
-  static Widget merge({
-    Key? key,
-    required EasingThemeDataPartial data,
-    required Widget child,
-  }) => Builder(
-    builder: (context) =>
-        EasingTheme(key: key, data: of(context).merge(data), child: child),
-  );
+class _EasingThemeWithCallback extends EasingTheme {
+  const _EasingThemeWithCallback({
+    super.key,
+    required this.callback,
+    required super.child,
+  }) : super._();
 
-  static EasingThemeData? maybeOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<EasingTheme>()?.data;
+  final EasingThemeResolverCallback callback;
 
-  static EasingThemeData of(BuildContext context) =>
-      maybeOf(context) ?? const EasingThemeData.fallback();
+  @override
+  EasingThemeResolver get resolver => .callback(callback);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<EasingThemeResolverCallback>("callback", callback),
+    );
+  }
+}
+
+class _EasingThemeWithData extends EasingTheme {
+  const _EasingThemeWithData({
+    super.key,
+    required this.data,
+    required super.child,
+  }) : super._();
+
+  final EasingThemeDataPartial data;
+
+  @override
+  EasingThemeResolver get resolver => .value(data);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<EasingThemeDataPartial>("data", data));
+  }
+}
+
+class _EasingTheme extends InheritedTheme {
+  const _EasingTheme({super.key, required this.resolver, required super.child});
+
+  final EasingThemeResolver resolver;
+
+  @override
+  bool updateShouldNotify(_EasingTheme oldWidget) =>
+      resolver != oldWidget.resolver;
+
+  @override
+  Widget wrap(BuildContext context, Widget child) =>
+      _EasingTheme(resolver: resolver, child: child);
+
+  static EasingThemeResolver? maybeResolverOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_EasingTheme>()?.resolver;
 }

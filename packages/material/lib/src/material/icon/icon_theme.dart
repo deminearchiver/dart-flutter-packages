@@ -247,19 +247,32 @@ abstract class IconThemeData extends IconThemeDataPartial {
   const IconThemeData();
 
   const factory IconThemeData.from({
-    double fill,
-    double weight,
-    double grade,
-    double opticalSize,
-    double size,
+    required double fill,
+    required double weight,
+    required double grade,
+    required double opticalSize,
+    required double size,
     required Color color,
-    double opacity,
-    List<Shadow> shadows,
-    bool applyTextScaling,
+    required double opacity,
+    required List<Shadow> shadows,
+    required bool applyTextScaling,
   }) = _IconThemeData;
 
-  const factory IconThemeData.fallback({required ColorThemeData colorTheme}) =
+  const factory IconThemeData.defaults({required ColorThemeData colorTheme}) =
       _IconThemeDataDefaults;
+
+  const factory IconThemeData._defaults({
+    required ColorThemeData colorTheme,
+    double? fill,
+    double? weight,
+    double? grade,
+    double? opticalSize,
+    double? size,
+    Color? color,
+    double? opacity,
+    List<Shadow>? shadows,
+    bool? applyTextScaling,
+  }) = _IconThemeDataDefaults;
 
   @override
   double get fill;
@@ -445,15 +458,15 @@ abstract class IconThemeData extends IconThemeDataPartial {
 
 class _IconThemeData extends IconThemeData {
   const _IconThemeData({
-    this.fill = 0.0,
-    this.weight = 400.0,
-    this.grade = 0.0,
-    this.opticalSize = 24.0,
-    this.size = 24.0,
+    required this.fill,
+    required this.weight,
+    required this.grade,
+    required this.opticalSize,
+    required this.size,
     required this.color,
-    this.opacity = 1.0,
-    this.shadows = const [],
-    this.applyTextScaling = false,
+    required this.opacity,
+    required this.shadows,
+    required this.applyTextScaling,
   }) : assert(opacity >= 0.0 && opacity <= 1.0);
 
   @override
@@ -691,61 +704,95 @@ class IconThemeDataTween extends Tween<IconThemeData?> {
   }
 }
 
-class IconTheme extends InheritedTheme {
-  const IconTheme({super.key, required this.data, required super.child});
+typedef IconThemeResolver = ThemeResolver<IconThemeDataPartial>;
 
-  final IconThemeData data;
+typedef IconThemeResolverCallback = ThemeResolverCallback<IconThemeDataPartial>;
 
-  @override
-  bool updateShouldNotify(IconTheme oldWidget) => data != oldWidget.data;
-
-  @override
-  Widget wrap(BuildContext context, Widget child) =>
-      IconTheme(data: data, child: child);
+class _IconThemeResolver extends CombiningThemeResolver<IconThemeDataPartial> {
+  const _IconThemeResolver(super.a, super.b);
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<IconThemeData>("data", data));
-  }
+  IconThemeDataPartial combine(
+    IconThemeDataPartial a,
+    IconThemeDataPartial b,
+  ) => a.merge(b);
+}
 
-  static Widget merge({
+abstract class IconTheme extends StatelessWidget implements ProxyWidget {
+  const IconTheme._({super.key, required this.child});
+
+  const factory IconTheme.withResolver({
+    Key? key,
+    required IconThemeResolver resolver,
+    required Widget child,
+  }) = _IconThemeWithResolver;
+
+  const factory IconTheme.withCallback({
+    Key? key,
+    required IconThemeResolverCallback callback,
+    required Widget child,
+  }) = _IconThemeWithCallback;
+
+  const factory IconTheme.withData({
     Key? key,
     required IconThemeDataPartial data,
     required Widget child,
-  }) => Builder(
-    builder: (context) =>
-        IconTheme(key: key, data: of(context).merge(data), child: child),
-  );
+  }) = _IconThemeWithData;
+
+  IconThemeResolver get resolver;
+
+  @override
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final inherited = _IconTheme.maybeResolverOf(context);
+    return _IconTheme(
+      resolver: inherited != null
+          ? _IconThemeResolver(inherited, resolver)
+          : resolver,
+      child: child,
+    );
+  }
 
   static IconThemeData _fallbackOf(BuildContext context) =>
-      .fallback(colorTheme: ColorTheme.of(context));
+      .defaults(colorTheme: ColorTheme.of(context));
 
   static _InheritedDataUnion<IconThemeData>? _modernDataOf(
     BuildContext context,
-  ) => switch ((
-    context.getElementForInheritedWidgetOfExactType<IconTheme>(),
-    context.dependOnInheritedWidgetOfExactType<IconTheme>()?.data,
-  )) {
-    (final element?, final theme?) => _InheritedDataUnion(
-      element: element,
-      theme: theme,
-    ),
-    _ => null,
-  };
+  ) {
+    final element = context
+        .getElementForInheritedWidgetOfExactType<_IconTheme>();
+    final widget = context.dependOnInheritedWidgetOfExactType<_IconTheme>();
+    if (element == null || widget == null) return null;
+    final data = widget.resolver.resolve(context);
+    return _InheritedDataUnion(
+      value: ._defaults(
+        colorTheme: ColorTheme.of(context),
+        fill: data.fill,
+        weight: data.weight,
+        grade: data.grade,
+        opticalSize: data.opticalSize,
+        size: data.size,
+        color: data.color,
+        opacity: data.opacity,
+        shadows: data.shadows,
+        applyTextScaling: data.applyTextScaling,
+      ),
+      depth: element.depth,
+    );
+  }
 
   static _InheritedDataUnion<IconThemeDataLegacy>? _legacyDataOf(
     BuildContext context,
-  ) => switch ((
-    context.getElementForInheritedWidgetOfExactType<IconThemeLegacy>(),
-    context.dependOnInheritedWidgetOfExactType<IconThemeLegacy>()?.data,
-  )) {
-    (final element?, final theme?) => _InheritedDataUnion(
-      element: element,
-      theme: theme,
-    ),
-    _ => null,
-  };
+  ) {
+    final element = context
+        .getElementForInheritedWidgetOfExactType<IconThemeLegacy>();
+    final widget = context
+        .dependOnInheritedWidgetOfExactType<IconThemeLegacy>();
+    if (element == null || widget == null) return null;
+    return _InheritedDataUnion(value: widget.data, depth: element.depth);
+  }
 
   static IconThemeData? _maybeOfWithFallback(
     BuildContext context,
@@ -755,21 +802,18 @@ class IconTheme extends InheritedTheme {
     final modernData = _modernDataOf(context);
     final legacyData = _legacyDataOf(context);
 
-    if (!allowLegacy) {
-      // If only modern theme is allowed, return it if exists, or null.
-      return modernData?.theme;
-    }
+    // If only modern theme is allowed, return it if exists, or null.
+    if (!allowLegacy) return modernData?.value;
 
     if (modernData != null &&
-        (legacyData == null ||
-            modernData.element.depth >= legacyData.element.depth)) {
+        (legacyData == null || modernData.depth >= legacyData.depth)) {
       // If modern theme exists and it is closer than legacy, return it.
-      return modernData.theme;
+      return modernData.value;
     }
 
     // If legacy theme exists, merge it with fallback, and return the result.
     return legacyData != null
-        ? fallbackTheme.merge(.fromLegacy(legacyData.theme.resolve(context)))
+        ? fallbackTheme.merge(.fromLegacy(legacyData.value.resolve(context)))
         : null;
   }
 
@@ -785,15 +829,90 @@ class IconTheme extends InheritedTheme {
   }
 }
 
+class _IconThemeWithResolver extends IconTheme {
+  const _IconThemeWithResolver({
+    super.key,
+    required this.resolver,
+    required super.child,
+  }) : super._();
+
+  @override
+  final IconThemeResolver resolver;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<IconThemeResolver>("resolver", resolver),
+    );
+  }
+}
+
+class _IconThemeWithCallback extends IconTheme {
+  const _IconThemeWithCallback({
+    super.key,
+    required this.callback,
+    required super.child,
+  }) : super._();
+
+  final IconThemeResolverCallback callback;
+
+  @override
+  IconThemeResolver get resolver => .callback(callback);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<IconThemeResolverCallback>("callback", callback),
+    );
+  }
+}
+
+class _IconThemeWithData extends IconTheme {
+  const _IconThemeWithData({
+    super.key,
+    required this.data,
+    required super.child,
+  }) : super._();
+
+  final IconThemeDataPartial data;
+
+  @override
+  IconThemeResolver get resolver => .value(data);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<IconThemeDataPartial>("data", data));
+  }
+}
+
+class _IconTheme extends InheritedTheme {
+  const _IconTheme({super.key, required this.resolver, required super.child});
+
+  final IconThemeResolver resolver;
+
+  @override
+  bool updateShouldNotify(_IconTheme oldWidget) =>
+      resolver != oldWidget.resolver;
+
+  @override
+  Widget wrap(BuildContext context, Widget child) =>
+      _IconTheme(resolver: resolver, child: child);
+
+  static IconThemeResolver? maybeResolverOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_IconTheme>()?.resolver;
+}
+
 extension type const _InheritedDataUnion<T extends Object?>._(
-  ({InheritedElement element, T theme}) _
-) {
-  const _InheritedDataUnion({
-    required InheritedElement element,
-    required T theme,
-  }) : this._((element: element, theme: theme));
+  (T value, int depth) _
+)
+    implements Object {
+  const _InheritedDataUnion({required T value, required int depth})
+    : this._((value, depth));
 
-  InheritedElement get element => _.element;
+  T get value => _.$1;
 
-  T get theme => _.theme;
+  int get depth => _.$2;
 }

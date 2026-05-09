@@ -436,7 +436,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
           ? 0.0
           : _checkFractionController.value;
       final newCheckFraction = _checkedFraction;
-      const springTheme = SpringThemeData.expressive();
+      const springTheme = SpringThemeData.defaultsExpressive();
       final spring = springTheme.defaultSpatial.toSpringDescription();
       final checkFractionSimulation = SpringSimulation(
         spring,
@@ -633,7 +633,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
             child: FocusRingTheme.merge(
               data: .from(
                 shape: .all(
-                  CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
+                  CornersBorder.rounded(corners: .all(_shapeTheme.cornerFull)),
                 ),
               ),
               child: FocusRing(

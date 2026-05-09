@@ -546,7 +546,7 @@ class _ListItemInteractionState extends State<ListItemInteraction> {
       child: FocusRingTheme.merge(
         data: FocusRingThemeDataPartial.from(
           shape: .all(
-            CornersBorder.rounded(corners: .all(_shapeTheme.corner.large)),
+            CornersBorder.rounded(corners: .all(_shapeTheme.cornerLarge)),
           ),
         ),
         child: FocusRing(
@@ -672,7 +672,7 @@ class ListItemLayout extends StatelessWidget {
                 child: DefaultTextStyle.merge(
                   textAlign: .start,
                   style: listItemTheme.leadingTextStyle.resolve(states),
-                  child: IconTheme.merge(
+                  child: IconTheme.withData(
                     data: listItemTheme.leadingIconTheme.resolve(states),
                     child: leading,
                   ),
@@ -716,7 +716,7 @@ class ListItemLayout extends StatelessWidget {
                 child: DefaultTextStyle.merge(
                   textAlign: .end,
                   style: listItemTheme.trailingTextStyle.resolve(states),
-                  child: IconTheme.merge(
+                  child: IconTheme.withData(
                     data: listItemTheme.trailingIconTheme.resolve(states),
                     child: trailing,
                   ),

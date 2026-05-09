@@ -341,10 +341,30 @@ abstract class SwitchThemeData extends SwitchThemeDataPartial {
     required SwitchStateProperty<IconThemeDataPartial> iconTheme,
   }) = _SwitchThemeData;
 
-  const factory SwitchThemeData.fallback({
+  const factory SwitchThemeData.defaults({
     required ColorThemeData colorTheme,
     required ShapeThemeData shapeTheme,
     required StateThemeData stateTheme,
+  }) = _SwitchThemeDataDefaults;
+
+  const factory SwitchThemeData._defaults({
+    required ColorThemeData colorTheme,
+    required ShapeThemeData shapeTheme,
+    required StateThemeData stateTheme,
+    SwitchStateProperty<Size?>? minTapTargetSize,
+    SwitchStateProperty<Size?>? trackSize,
+    SwitchStateProperty<OutlinedBorder?>? trackShape,
+    SwitchStateProperty<Color?>? trackColor,
+    SwitchStateProperty<OutlinePartial?>? trackOutline,
+    SwitchStateProperty<Size?>? stateLayerSize,
+    SwitchStateProperty<ShapeBorder?>? stateLayerShape,
+    SwitchStateProperty<Color?>? stateLayerColor,
+    SwitchStateProperty<double?>? stateLayerOpacity,
+    SwitchStateProperty<Size?>? handleSize,
+    SwitchStateProperty<OutlinedBorder?>? handleShape,
+    SwitchStateProperty<Color?>? handleColor,
+    SwitchStateProperty<OutlinePartial?>? handleOutline,
+    SwitchStateProperty<IconThemeDataPartial?>? iconTheme,
   }) = _SwitchThemeDataDefaults;
 
   @override
@@ -714,7 +734,7 @@ class _SwitchThemeDataDefaults extends SwitchThemeData {
   SwitchStateProperty<OutlinedBorder> get trackShape => .resolveWith(
     (states) =>
         _trackShape?.resolve(states) ??
-        CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
+        CornersBorder.rounded(corners: .all(_shapeTheme.cornerFull)),
   );
 
   @override
@@ -759,7 +779,7 @@ class _SwitchThemeDataDefaults extends SwitchThemeData {
   SwitchStateProperty<ShapeBorder> get stateLayerShape => .resolveWith(
     (states) =>
         _stateLayerShape?.resolve(states) ??
-        CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
+        CornersBorder.rounded(corners: .all(_shapeTheme.cornerFull)),
   );
 
   @override
@@ -799,7 +819,7 @@ class _SwitchThemeDataDefaults extends SwitchThemeData {
   SwitchStateProperty<OutlinedBorder> get handleShape => .resolveWith(
     (states) =>
         _handleShape?.resolve(states) ??
-        CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
+        CornersBorder.rounded(corners: .all(_shapeTheme.cornerFull)),
   );
 
   @override
@@ -1049,41 +1069,166 @@ class _SwitchThemeDataDefaults extends SwitchThemeData {
   );
 }
 
-class SwitchTheme extends InheritedTheme {
-  const SwitchTheme({super.key, required this.data, required super.child});
+typedef SwitchThemeResolver = ThemeResolver<SwitchThemeDataPartial>;
 
-  final SwitchThemeData data;
+typedef SwitchThemeResolverCallback =
+    ThemeResolverCallback<SwitchThemeDataPartial>;
+
+class _SwitchThemeResolver
+    extends CombiningThemeResolver<SwitchThemeDataPartial> {
+  const _SwitchThemeResolver(super.a, super.b);
 
   @override
-  bool updateShouldNotify(SwitchTheme oldWidget) => data != oldWidget.data;
+  SwitchThemeDataPartial combine(
+    SwitchThemeDataPartial a,
+    SwitchThemeDataPartial b,
+  ) => a.merge(b);
+}
+
+abstract class SwitchTheme extends StatelessWidget implements ProxyWidget {
+  const SwitchTheme._({super.key, required this.child});
+
+  const factory SwitchTheme.withResolver({
+    Key? key,
+    required SwitchThemeResolver resolver,
+    required Widget child,
+  }) = _SwitchThemeWithResolver;
+
+  const factory SwitchTheme.withCallback({
+    Key? key,
+    required SwitchThemeResolverCallback callback,
+    required Widget child,
+  }) = _SwitchThemeWithCallback;
+
+  const factory SwitchTheme.withData({
+    Key? key,
+    required SwitchThemeDataPartial data,
+    required Widget child,
+  }) = _SwitchThemeWithData;
+
+  SwitchThemeResolver get resolver;
 
   @override
-  Widget wrap(BuildContext context, Widget child) =>
-      SwitchTheme(data: data, child: child);
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final inherited = _SwitchTheme.maybeResolverOf(context);
+    return _SwitchTheme(
+      resolver: inherited != null
+          ? _SwitchThemeResolver(inherited, resolver)
+          : resolver,
+      child: child,
+    );
+  }
+
+  static SwitchThemeData of(BuildContext context) {
+    final resolver = _SwitchTheme.maybeResolverOf(context);
+    final colorTheme = ColorTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    if (resolver != null) {
+      final data = resolver.resolve(context);
+      return ._defaults(
+        colorTheme: colorTheme,
+        shapeTheme: shapeTheme,
+        stateTheme: stateTheme,
+        minTapTargetSize: data.minTapTargetSize,
+        trackSize: data.trackSize,
+        trackShape: data.trackShape,
+        trackColor: data.trackColor,
+        trackOutline: data.trackOutline,
+        stateLayerSize: data.stateLayerSize,
+        stateLayerShape: data.stateLayerShape,
+        stateLayerColor: data.stateLayerColor,
+        stateLayerOpacity: data.stateLayerOpacity,
+        handleSize: data.handleSize,
+        handleShape: data.handleShape,
+        handleColor: data.handleColor,
+        handleOutline: data.handleOutline,
+        iconTheme: data.iconTheme,
+      );
+    }
+    return .defaults(
+      colorTheme: colorTheme,
+      shapeTheme: shapeTheme,
+      stateTheme: stateTheme,
+    );
+  }
+}
+
+class _SwitchThemeWithResolver extends SwitchTheme {
+  const _SwitchThemeWithResolver({
+    super.key,
+    required this.resolver,
+    required super.child,
+  }) : super._();
+
+  @override
+  final SwitchThemeResolver resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<SwitchThemeData>("data", data));
+    properties.add(
+      DiagnosticsProperty<SwitchThemeResolver>("resolver", resolver),
+    );
   }
+}
 
-  static Widget merge({
-    Key? key,
-    required SwitchThemeDataPartial data,
-    required Widget child,
-  }) => Builder(
-    builder: (context) =>
-        SwitchTheme(key: key, data: of(context).merge(data), child: child),
-  );
+class _SwitchThemeWithCallback extends SwitchTheme {
+  const _SwitchThemeWithCallback({
+    super.key,
+    required this.callback,
+    required super.child,
+  }) : super._();
 
-  static SwitchThemeData? maybeOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<SwitchTheme>()?.data;
+  final SwitchThemeResolverCallback callback;
 
-  static SwitchThemeData of(BuildContext context) =>
-      maybeOf(context) ??
-      .fallback(
-        colorTheme: ColorTheme.of(context),
-        shapeTheme: ShapeTheme.of(context),
-        stateTheme: StateTheme.of(context),
-      );
+  @override
+  SwitchThemeResolver get resolver => .callback(callback);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<SwitchThemeResolverCallback>("callback", callback),
+    );
+  }
+}
+
+class _SwitchThemeWithData extends SwitchTheme {
+  const _SwitchThemeWithData({
+    super.key,
+    required this.data,
+    required super.child,
+  }) : super._();
+
+  final SwitchThemeDataPartial data;
+
+  @override
+  SwitchThemeResolver get resolver => .value(data);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<SwitchThemeDataPartial>("data", data));
+  }
+}
+
+class _SwitchTheme extends InheritedTheme {
+  const _SwitchTheme({super.key, required this.resolver, required super.child});
+
+  final SwitchThemeResolver resolver;
+
+  @override
+  bool updateShouldNotify(_SwitchTheme oldWidget) =>
+      resolver != oldWidget.resolver;
+
+  @override
+  Widget wrap(BuildContext context, Widget child) =>
+      _SwitchTheme(resolver: resolver, child: child);
+
+  static SwitchThemeResolver? maybeResolverOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_SwitchTheme>()?.resolver;
 }

@@ -662,14 +662,14 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
             alignment: .center,
             children: [
               if (unselectedIconOpacity > 0.0)
-                IconTheme(
+                IconTheme.withData(
                   data: animatedIconTheme.copyWith(
                     opacity: animatedIconTheme.opacity * unselectedIconOpacity,
                   ),
                   child: unselectedIcon,
                 ),
               if (selectedIconOpacity > 0.0)
-                IconTheme(
+                IconTheme.withData(
                   data: animatedIconTheme.copyWith(
                     opacity: animatedIconTheme.opacity * selectedIconOpacity,
                   ),

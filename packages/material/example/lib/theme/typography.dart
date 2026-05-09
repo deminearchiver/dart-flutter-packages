@@ -222,9 +222,9 @@ class TypographyTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => TypefaceTheme(
+  Widget build(BuildContext context) => TypefaceTheme.withData(
     data: data.typeface,
-    child: TypescaleTheme(data: data.typescale, child: child),
+    child: TypescaleTheme.withData(data: data.typescale, child: child),
   );
 
   @override

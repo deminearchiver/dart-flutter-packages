@@ -16,7 +16,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   Widget _buildTypefaceTheme(BuildContext context, Widget child) =>
-      TypefaceTheme.merge(data: _typography.typeface, child: child);
+      TypefaceTheme.withData(data: _typography.typeface, child: child);
 
   Widget _buildReferenceThemes(BuildContext context, Widget child) =>
       CombiningBuilder(
@@ -43,17 +43,20 @@ class _AppState extends State<App> {
       platform: _platform,
       specVersion: _specVersion,
     );
-    return ColorTheme(
+    return ColorTheme.withData(
       data: colorTheme,
       child: StaticColors(data: staticColors, child: child),
     );
   }
 
   Widget _buildSpringTheme(BuildContext context, Widget child) =>
-      SpringTheme(data: const .expressive(), child: child);
+      SpringTheme.withData(
+        data: const SpringThemeData.defaultsExpressive(),
+        child: child,
+      );
 
   Widget _buildTypescaleTheme(BuildContext context, Widget child) =>
-      TypescaleTheme.merge(data: _typography.typescale, child: child);
+      TypescaleTheme.withData(data: _typography.typescale, child: child);
 
   Widget _buildSystemThemes(BuildContext context, Widget child) =>
       CombiningBuilder(
@@ -207,4 +210,23 @@ class _NavigationViewState extends State<NavigationView> {
 
   static const _firstIndex = 1;
   static const _lastIndex = 6;
+}
+
+class Navigation2View extends StatefulWidget {
+  const Navigation2View({super.key});
+
+  @override
+  State<Navigation2View> createState() => _Navigation2ViewState();
+}
+
+class _Navigation2ViewState extends State<Navigation2View> {
+  @override
+  Widget build(BuildContext context) {
+    final colorTheme = ColorTheme.of(context);
+    final elevationTheme = ElevationTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    final typescaleTheme = TypescaleTheme.of(context);
+    return Scaffold(backgroundColor: colorTheme.surfaceContainer);
+  }
 }

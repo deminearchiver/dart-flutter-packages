@@ -23,8 +23,13 @@ class _Experiment2ViewState extends State<Experiment2View> {
   var _fractionalBottomLeft = 0.0;
   var _fractionalBottomRight = 0.0;
 
-  String _fractionToPercentage(double value, bool fill) {
+  String _formatPercentage(double value, bool fill) {
     final unpadded = "${(value * 100).round()}%";
+    return fill ? unpadded.padLeft(4, " ") : unpadded;
+  }
+
+  String _formatValue(double value, bool fill, String suffix) {
+    final unpadded = "${value.round()}$suffix";
     return fill ? unpadded.padLeft(4, " ") : unpadded;
   }
 
@@ -39,21 +44,29 @@ class _Experiment2ViewState extends State<Experiment2View> {
     // Candidates: 128, 192, 256, 312, 360
     const maxWidth = 192.0;
     const maxHeight = 192.0;
+    const maxArea = maxWidth * maxHeight;
 
-    final innerCorner = shapeTheme.corner.extraSmall;
-    final outerCorner = shapeTheme.corner.large;
+    final innerCorner = shapeTheme.cornerExtraSmall;
+    final outerCorner = shapeTheme.cornerLarge;
 
     final width = _width * maxWidth;
     final height = _height * maxHeight;
-    final aspectRatio = width == 0.0 && height == 0.0
-        ? 0.0
-        : math.min(width, height) / math.max(width, height);
 
-    final thickness = lerpDouble(
-      1.0,
-      lerpDouble(1.0, 3.0, math.min(_width, _height)),
-      aspectRatio,
-    );
+    final area = width * height;
+
+    final progress = area / maxArea;
+
+    // final aspectRatio = width == 0.0 && height == 0.0
+    //     ? 0.0
+    //     : math.min(width, height) / math.max(width, height);
+
+    // final thickness = lerpDouble(
+    //   1.0,
+    //   lerpDouble(1.0, 3.0, math.min(_width, _height)),
+    //   aspectRatio,
+    // );
+
+    final thickness = lerpDouble(1.0, 3.0, progress);
 
     return Scaffold(
       backgroundColor: colorTheme.surfaceContainer,
@@ -95,7 +108,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                           child: Material(
                             borderOnForeground: false,
                             shape: CornersBorder.rounded(
-                              corners: .all(shapeTheme.corner.large),
+                              corners: .all(shapeTheme.cornerLarge),
                             ),
                             color: colorTheme.surfaceContainerLowest,
                             child: Align.center(
@@ -107,21 +120,36 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                   borderOnForeground: true,
                                   shape: CornersBorder.rounded(
                                     corners: .only(
-                                      topLeft: Corner.fixed(
-                                        _fixedTopLeft * 48.0,
-                                      ).add(.fractional(_fractionalTopLeft)),
-                                      topRight: Corner.fixed(
-                                        _fixedTopRight * 48.0,
-                                      ).add(.fractional(_fractionalTopRight)),
-                                      bottomLeft: Corner.fixed(
-                                        _fixedBottomLeft * 48.0,
-                                      ).add(.fractional(_fractionalBottomLeft)),
+                                      topLeft:
+                                          (shapeTheme.cornerExtraExtraLarge *
+                                                  _fixedTopLeft)
+                                              .add(
+                                                .fractional(_fractionalTopLeft),
+                                              ),
+                                      topRight:
+                                          (shapeTheme.cornerExtraExtraLarge *
+                                                  _fixedTopRight)
+                                              .add(
+                                                .fractional(
+                                                  _fractionalTopRight,
+                                                ),
+                                              ),
+                                      bottomLeft:
+                                          (shapeTheme.cornerExtraExtraLarge *
+                                                  _fixedBottomLeft)
+                                              .add(
+                                                .fractional(
+                                                  _fractionalBottomLeft,
+                                                ),
+                                              ),
                                       bottomRight:
-                                          Corner.fixed(
-                                            _fixedBottomRight * 48.0,
-                                          ).add(
-                                            .fractional(_fractionalBottomRight),
-                                          ),
+                                          (shapeTheme.cornerExtraExtraLarge *
+                                                  _fixedBottomRight)
+                                              .add(
+                                                .fractional(
+                                                  _fractionalBottomRight,
+                                                ),
+                                              ),
                                     ),
                                     side: .new(
                                       width: thickness,
@@ -150,7 +178,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                             contained: false,
                                             indicatorColor:
                                                 colorTheme.onSecondaryContainer,
-                                            progress: aspectRatio,
+                                            progress: progress,
                                           ),
                                         ),
                                       ),
@@ -185,7 +213,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                     leading: const Icon(Symbols.width_rounded),
                                     headline: Text("Width"),
                                     trailing: Text(
-                                      _fractionToPercentage(_width, false),
+                                      _formatPercentage(_width, false),
                                     ),
                                   ),
                                   Slider(
@@ -217,7 +245,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                     leading: const Icon(Symbols.width_rounded),
                                     headline: Text("Height"),
                                     trailing: Text(
-                                      _fractionToPercentage(_height, false),
+                                      _formatPercentage(_height, false),
                                     ),
                                   ),
                                   Slider(
@@ -244,10 +272,10 @@ class _Experiment2ViewState extends State<Experiment2View> {
                             leading: const Icon(Symbols.width_rounded),
                             headline: Text("Fixed"),
                             trailing: Text(
-                              "${_fractionToPercentage(_fixedTopLeft, true)} "
-                              "${_fractionToPercentage(_fixedTopRight, true)}\n"
-                              "${_fractionToPercentage(_fixedBottomLeft, true)} "
-                              "${_fractionToPercentage(_fixedBottomRight, true)}",
+                              "${_formatValue(shapeTheme.cornerValueExtraExtraLarge * _fixedTopLeft, true, "dp")} "
+                              "${_formatValue(shapeTheme.cornerValueExtraExtraLarge * _fixedTopRight, true, "dp")}\n"
+                              "${_formatValue(shapeTheme.cornerValueExtraExtraLarge * _fixedBottomLeft, true, "dp")} "
+                              "${_formatValue(shapeTheme.cornerValueExtraExtraLarge * _fixedBottomRight, true, "dp")}",
                               textAlign: .end,
                               style: const TextStyle(
                                 fontFamily: "Monaspace Argon",
@@ -322,10 +350,10 @@ class _Experiment2ViewState extends State<Experiment2View> {
                             leading: const Icon(Symbols.width_rounded),
                             headline: Text("Fractional"),
                             trailing: Text(
-                              "${_fractionToPercentage(_fractionalTopLeft, true)} "
-                              "${_fractionToPercentage(_fractionalTopRight, true)}\n"
-                              "${_fractionToPercentage(_fractionalBottomLeft, true)} "
-                              "${_fractionToPercentage(_fractionalBottomRight, true)}",
+                              "${_formatPercentage(_fractionalTopLeft, true)} "
+                              "${_formatPercentage(_fractionalTopRight, true)}\n"
+                              "${_formatPercentage(_fractionalBottomLeft, true)} "
+                              "${_formatPercentage(_fractionalBottomRight, true)}",
                               textAlign: .end,
                               style: const TextStyle(
                                 fontFamily: "Monaspace Argon",

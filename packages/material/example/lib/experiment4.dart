@@ -186,7 +186,7 @@ class _Experiment4ViewState extends State<Experiment4View>
                     child: Material(
                       clipBehavior: .antiAlias,
                       shape: CornersBorder.rounded(
-                        corners: .all(shapeTheme.corner.extraLarge),
+                        corners: .all(shapeTheme.cornerExtraLarge),
                       ),
                       color: colorTheme.surfaceContainerLowest,
                       child: Align.center(

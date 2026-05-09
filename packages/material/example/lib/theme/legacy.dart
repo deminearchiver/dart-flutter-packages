@@ -67,7 +67,7 @@ abstract final class LegacyThemeFactory {
     final modalBarrierColor = colorTheme.scrim.withValues(alpha: 0.32);
     return ThemeData(
       platform: kDebugMode ? TargetPlatform.android : null,
-      colorScheme: colorTheme.toLegacy(),
+      colorScheme: colorTheme.asLegacy,
       visualDensity: .standard,
       splashFactory: InkSparkle.splashFactory,
       textTheme: typescaleTheme.toBaselineTextTheme(),
@@ -86,7 +86,7 @@ abstract final class LegacyThemeFactory {
           return colorTheme.outline;
         }),
       ),
-      iconTheme: IconThemeData.fallback(colorTheme: colorTheme).toLegacy(),
+      iconTheme: IconThemeData.defaults(colorTheme: colorTheme).toLegacy(),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: colorTheme.surfaceContainer,
         elevation: elevationTheme.level0,
@@ -127,7 +127,7 @@ abstract final class LegacyThemeFactory {
         padding: const .symmetric(horizontal: 8.0),
         decoration: ShapeDecoration(
           shape: CornersBorder.rounded(
-            corners: .all(shapeTheme.corner.extraSmall),
+            corners: .all(shapeTheme.cornerExtraSmall),
           ),
           color: colorTheme.inverseSurface,
         ),
@@ -143,7 +143,7 @@ abstract final class LegacyThemeFactory {
         surfaceTintColor: Colors.transparent,
         shadowColor: Colors.transparent,
         shape: CornersBorder.rounded(
-          corners: .all(shapeTheme.corner.extraLarge),
+          corners: .all(shapeTheme.cornerExtraLarge),
         ),
         titleTextStyle: typescaleTheme.headlineSmall.toTextStyle(
           color: colorTheme.onSurface,
@@ -155,7 +155,7 @@ abstract final class LegacyThemeFactory {
       bottomSheetTheme: BottomSheetThemeData(
         showDragHandle: true,
         clipBehavior: .antiAlias,
-        shape: CornersBorder.rounded(corners: shapeTheme.corner.extraLargeTop),
+        shape: CornersBorder.rounded(corners: shapeTheme.cornerExtraLargeTop),
         surfaceTintColor: Colors.transparent,
         shadowColor: colorTheme.shadow,
         backgroundColor: colorTheme.surfaceContainerLow,
@@ -187,7 +187,7 @@ abstract final class LegacyThemeFactory {
       snackBarTheme: SnackBarThemeData(
         behavior: .floating,
         shape: CornersBorder.rounded(
-          corners: .all(shapeTheme.corner.extraSmall),
+          corners: .all(shapeTheme.cornerExtraSmall),
         ),
       ),
       menuTheme: MenuThemeData(
@@ -319,13 +319,13 @@ abstract final class LegacyThemeFactory {
           .extraLarge => const .symmetric(horizontal: 64.0, vertical: 48.0),
         };
 
-    final cornerRound = shapeTheme.corner.full;
+    final cornerRound = shapeTheme.cornerFull;
     final cornerSquare = switch (size) {
-      .extraSmall => shapeTheme.corner.medium,
-      .small => shapeTheme.corner.medium,
-      .medium => shapeTheme.corner.large,
-      .large => shapeTheme.corner.extraLarge,
-      .extraLarge => shapeTheme.corner.extraLarge,
+      .extraSmall => shapeTheme.cornerMedium,
+      .small => shapeTheme.cornerMedium,
+      .medium => shapeTheme.cornerLarge,
+      .large => shapeTheme.cornerExtraLarge,
+      .extraLarge => shapeTheme.cornerExtraLarge,
     };
     final corner = isSelectedNotDefault
         ? switch (shape) {
@@ -546,13 +546,13 @@ abstract final class LegacyThemeFactory {
       vertical: (resolvedHeight - resolvedIconSize) / 2.0,
     );
 
-    final cornerRound = shapeTheme.corner.full;
+    final cornerRound = shapeTheme.cornerFull;
     final cornerSquare = switch (size) {
-      .extraSmall => shapeTheme.corner.medium,
-      .small => shapeTheme.corner.medium,
-      .medium => shapeTheme.corner.large,
-      .large => shapeTheme.corner.extraLarge,
-      .extraLarge => shapeTheme.corner.extraLarge,
+      .extraSmall => shapeTheme.cornerMedium,
+      .small => shapeTheme.cornerMedium,
+      .medium => shapeTheme.cornerLarge,
+      .large => shapeTheme.cornerExtraLarge,
+      .extraLarge => shapeTheme.cornerExtraLarge,
     };
 
     final corner = isSelectedNotDefault
@@ -719,7 +719,7 @@ abstract final class LegacyThemeFactory {
       visualDensity: VisualDensity.standard,
       padding: const WidgetStatePropertyAll(.fromLTRB(4.0, 2.0, 4.0, 2.0)),
       shape: WidgetStatePropertyAll(
-        CornersBorder.rounded(corners: .all(shapeTheme.corner.large)),
+        CornersBorder.rounded(corners: .all(shapeTheme.cornerLarge)),
       ),
       backgroundColor: WidgetStatePropertyAll(switch (variant) {
         LegacyMenuVariant.standard => colorTheme.surfaceContainerLow,
@@ -742,8 +742,8 @@ abstract final class LegacyThemeFactory {
     bool isLast = true,
     bool isSelected = false,
   }) {
-    final outerCorner = shapeTheme.corner.medium;
-    final innerCorner = shapeTheme.corner.extraSmall;
+    final outerCorner = shapeTheme.cornerMedium;
+    final innerCorner = shapeTheme.cornerExtraSmall;
 
     final resolvedContainerShape = CornersBorder.rounded(
       corners: isSelected

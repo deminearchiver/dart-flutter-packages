@@ -360,7 +360,7 @@ class _RadioButtonState extends State<RadioButton>
     final oldSelected = oldWidget.selected;
     final newSelected = widget.selected;
     if (newSelected != oldSelected) {
-      const springTheme = SpringThemeData.expressive();
+      const springTheme = SpringThemeData.defaultsExpressive();
       final spring = springTheme.fastSpatial;
       final oldValue = _animationController.value;
       final newValue = newSelected ? 1.0 : 0.0;
@@ -476,7 +476,7 @@ class _RadioButtonState extends State<RadioButton>
             child: FocusRingTheme.merge(
               data: .from(
                 shape: .all(
-                  CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
+                  CornersBorder.rounded(corners: .all(_shapeTheme.cornerFull)),
                 ),
               ),
               child: FocusRing(

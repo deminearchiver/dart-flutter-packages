@@ -6,8 +6,9 @@ export 'src/material/shape/outline.dart';
 export 'src/material/center_optically.dart';
 export 'src/material/custom_material.dart';
 
+export 'src/material/color/static_palette_theme.dart';
+export 'src/material/color/baseline_palette_theme.dart';
 export 'src/material/color/color_theme.dart';
-export 'src/material/color/palette_theme.dart';
 
 export 'src/material/motion/duration_theme.dart';
 export 'src/material/motion/easing_theme.dart';
@@ -55,6 +56,7 @@ export 'src/material/loading_indicator/loading_indicator_theme.dart';
 export 'src/material/raw_material_app.dart';
 
 export 'src/material/experimental/focus_inset_ring_theme.dart';
+export 'src/material/experimental/theme_resolver.dart';
 
 import 'package:material/src/material/flutter.dart';
 

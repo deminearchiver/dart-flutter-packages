@@ -74,7 +74,7 @@ class _ButtonState extends State<Button> with TickerProviderStateMixin {
       return;
     }
 
-    final spring = const SpringThemeData.expressive().fastSpatial
+    final spring = const SpringThemeData.defaultsExpressive().fastSpatial
         .toSpringDescription();
     final simulation = SpringSimulation(spring, 0.0, 1.0, 0.0, snapToEnd: true);
     unawaited(_shapeController.animateWith(simulation));
@@ -214,7 +214,7 @@ class _ButtonState extends State<Button> with TickerProviderStateMixin {
                 child: DefaultTextStyle.merge(
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  child: IconTheme.merge(
+                  child: IconTheme.withData(
                     data: const IconThemeDataPartial.from(),
                     child: Flex.horizontal(
                       mainAxisSize: MainAxisSize.min,
