@@ -18,39 +18,6 @@ abstract class ColorThemeSourceColor extends TonalPaletteSourceColor {
   Color get asColor;
 
   List<Color> get asColorList;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is ColorThemeSourceColor &&
-          asArgb == other.asArgb &&
-          asHct == other.asHct &&
-          asColor == other.asColor &&
-          TonalPaletteSourceColor.argbListEquality.equals(
-            asArgbList,
-            other.asArgbList,
-          ) &&
-          TonalPaletteSourceColor.hctListEquality.equals(
-            asHctList,
-            other.asHctList,
-          ) &&
-          ColorThemeSourceColor.colorListEquality.equals(
-            asColorList,
-            other.asColorList,
-          );
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    asArgb,
-    asHct,
-    TonalPaletteSourceColor.argbListEquality.hash(asArgbList),
-    TonalPaletteSourceColor.hctListEquality.hash(asHctList),
-    ColorThemeSourceColor.colorListEquality.hash(asColorList),
-  );
-
-  static const colorListEquality = ListEquality<Color>();
 }
 
 class _ColorThemeColorSource extends ColorThemeSourceColor {
@@ -82,12 +49,10 @@ class _ColorThemeColorSource extends ColorThemeSourceColor {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _ColorThemeColorSource &&
-          _color == other._color;
+      other is _ColorThemeColorSource && _color == other._color;
 
   @override
-  int get hashCode => Object.hash(runtimeType, _color);
+  int get hashCode => _color.hashCode;
 }
 
 class _ColorThemeColorListSource extends ColorThemeSourceColor {
@@ -95,7 +60,7 @@ class _ColorThemeColorListSource extends ColorThemeSourceColor {
     if (colorList.isEmpty) {
       throw ArgumentError("Must have at least one source color.");
     }
-    _colorList = .unmodifiable(_colorList);
+    _colorList = UnmodifiableListView(_colorList);
   }
 
   late final List<Color> _colorList;
@@ -113,14 +78,14 @@ class _ColorThemeColorListSource extends ColorThemeSourceColor {
   late final Color asColor = asColorList.first;
 
   @override
-  late final List<int> asArgbList = .unmodifiable([
-    for (final color in asColorList) color.toARGB32(),
-  ]);
+  late final List<int> asArgbList = UnmodifiableListView(
+    asColorList.map((color) => color.toARGB32()),
+  );
 
   @override
-  late final List<Hct> asHctList = .unmodifiable([
-    for (final argb in asArgbList) Hct.fromInt(argb),
-  ]);
+  late final List<Hct> asHctList = UnmodifiableListView(
+    asArgbList.map(Hct.fromInt).toList(growable: false),
+  );
 
   @override
   String toString() {
@@ -133,16 +98,9 @@ class _ColorThemeColorListSource extends ColorThemeSourceColor {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _ColorThemeColorListSource &&
-          ColorThemeSourceColor.colorListEquality.equals(
-            _colorList,
-            other._colorList,
-          );
+      other is _ColorThemeColorListSource &&
+          const ListEquality<Color>().equals(_colorList, other._colorList);
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    ColorThemeSourceColor.colorListEquality.hash(_colorList),
-  );
+  int get hashCode => const ListEquality<Color>().hash(_colorList);
 }

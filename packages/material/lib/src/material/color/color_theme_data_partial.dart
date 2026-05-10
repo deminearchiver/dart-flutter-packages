@@ -192,7 +192,9 @@ abstract class ColorThemeDataPartial with Diagnosticable {
 
   Color? get onErrorContainer;
 
-  ColorThemeDataPartial copy({
+  ColorThemeDataPartial copy() => copyWith();
+
+  ColorThemeDataPartial copyWith({
     Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
@@ -325,7 +327,7 @@ abstract class ColorThemeDataPartial with Diagnosticable {
     onErrorContainer: onErrorContainer ?? this.onErrorContainer,
   );
 
-  ColorThemeDataPartial copyWith({
+  ColorThemeDataPartial maybeCopyWith({
     Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
@@ -447,7 +449,7 @@ abstract class ColorThemeDataPartial with Diagnosticable {
           onError != null ||
           errorContainer != null ||
           onErrorContainer != null
-      ? copy(
+      ? copyWith(
           brightness: brightness,
           primaryPaletteKeyColor: primaryPaletteKeyColor,
           secondaryPaletteKeyColor: secondaryPaletteKeyColor,
@@ -513,6 +515,72 @@ abstract class ColorThemeDataPartial with Diagnosticable {
 
   ColorThemeDataPartial merge(ColorThemeDataPartial? other) => other != null
       ? copyWith(
+          brightness: other.brightness,
+          primaryPaletteKeyColor: other.primaryPaletteKeyColor,
+          secondaryPaletteKeyColor: other.secondaryPaletteKeyColor,
+          tertiaryPaletteKeyColor: other.tertiaryPaletteKeyColor,
+          neutralPaletteKeyColor: other.neutralPaletteKeyColor,
+          neutralVariantPaletteKeyColor: other.neutralVariantPaletteKeyColor,
+          errorPaletteKeyColor: other.errorPaletteKeyColor,
+          background: other.background,
+          onBackground: other.onBackground,
+          surface: other.surface,
+          surfaceDim: other.surfaceDim,
+          surfaceBright: other.surfaceBright,
+          surfaceContainerLowest: other.surfaceContainerLowest,
+          surfaceContainerLow: other.surfaceContainerLow,
+          surfaceContainer: other.surfaceContainer,
+          surfaceContainerHigh: other.surfaceContainerHigh,
+          surfaceContainerHighest: other.surfaceContainerHighest,
+          onSurface: other.onSurface,
+          surfaceVariant: other.surfaceVariant,
+          onSurfaceVariant: other.onSurfaceVariant,
+          outline: other.outline,
+          outlineVariant: other.outlineVariant,
+          inverseSurface: other.inverseSurface,
+          inverseOnSurface: other.inverseOnSurface,
+          shadow: other.shadow,
+          scrim: other.scrim,
+          surfaceTint: other.surfaceTint,
+          primary: other.primary,
+          primaryDim: other.primaryDim,
+          onPrimary: other.onPrimary,
+          primaryContainer: other.primaryContainer,
+          onPrimaryContainer: other.onPrimaryContainer,
+          primaryFixed: other.primaryFixed,
+          primaryFixedDim: other.primaryFixedDim,
+          onPrimaryFixed: other.onPrimaryFixed,
+          onPrimaryFixedVariant: other.onPrimaryFixedVariant,
+          inversePrimary: other.inversePrimary,
+          secondary: other.secondary,
+          secondaryDim: other.secondaryDim,
+          onSecondary: other.onSecondary,
+          secondaryContainer: other.secondaryContainer,
+          onSecondaryContainer: other.onSecondaryContainer,
+          secondaryFixed: other.secondaryFixed,
+          secondaryFixedDim: other.secondaryFixedDim,
+          onSecondaryFixed: other.onSecondaryFixed,
+          onSecondaryFixedVariant: other.onSecondaryFixedVariant,
+          tertiary: other.tertiary,
+          tertiaryDim: other.tertiaryDim,
+          onTertiary: other.onTertiary,
+          tertiaryContainer: other.tertiaryContainer,
+          onTertiaryContainer: other.onTertiaryContainer,
+          tertiaryFixed: other.tertiaryFixed,
+          tertiaryFixedDim: other.tertiaryFixedDim,
+          onTertiaryFixed: other.onTertiaryFixed,
+          onTertiaryFixedVariant: other.onTertiaryFixedVariant,
+          error: other.error,
+          errorDim: other.errorDim,
+          onError: other.onError,
+          errorContainer: other.errorContainer,
+          onErrorContainer: other.onErrorContainer,
+        )
+      : copy();
+
+  ColorThemeDataPartial maybeMerge(ColorThemeDataPartial? other) =>
+      other != null
+      ? maybeCopyWith(
           brightness: other.brightness,
           primaryPaletteKeyColor: other.primaryPaletteKeyColor,
           secondaryPaletteKeyColor: other.secondaryPaletteKeyColor,
@@ -906,7 +974,7 @@ abstract class ColorThemeDataPartial with Diagnosticable {
   }
 }
 
-class _ColorThemeDataPartial extends ColorThemeDataPartial {
+final class _ColorThemeDataPartial extends ColorThemeDataPartial {
   const _ColorThemeDataPartial({
     this.brightness,
     this.primaryPaletteKeyColor,
@@ -1283,7 +1351,7 @@ class _ColorThemeDataPartial extends ColorThemeDataPartial {
   );
 }
 
-class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
+final class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
   const _ColorThemeDataPartialFromLegacy(
     ColorSchemeLegacy colorScheme, {
     Brightness? brightness,
@@ -1674,7 +1742,7 @@ class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
       _onErrorContainer ?? _colorScheme.onErrorContainer;
 
   @override
-  ColorThemeDataPartial copyWith({
+  ColorThemeDataPartial maybeCopyWith({
     Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
@@ -2234,8 +2302,7 @@ class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _ColorThemeDataPartialFromLegacy &&
+      other is _ColorThemeDataPartialFromLegacy &&
           _colorScheme == other._colorScheme &&
           _brightness == other._brightness &&
           _primaryPaletteKeyColor == other._primaryPaletteKeyColor &&
@@ -2301,7 +2368,6 @@ class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
     _colorScheme,
     _brightness,
     _primaryPaletteKeyColor,
@@ -2320,8 +2386,8 @@ class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
     _surfaceContainer,
     _surfaceContainerHigh,
     _surfaceContainerHighest,
+    _onSurface,
     Object.hash(
-      _onSurface,
       _surfaceVariant,
       _onSurfaceVariant,
       _outline,
@@ -2340,8 +2406,8 @@ class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
       _primaryFixedDim,
       _onPrimaryFixed,
       _onPrimaryFixedVariant,
+      _inversePrimary,
       Object.hash(
-        _inversePrimary,
         _secondary,
         _secondaryDim,
         _onSecondary,
@@ -2360,19 +2426,14 @@ class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
         _tertiaryFixedDim,
         _onTertiaryFixed,
         _onTertiaryFixedVariant,
-        Object.hash(
-          _error,
-          _errorDim,
-          _onError,
-          _errorContainer,
-          _onErrorContainer,
-        ),
+        _error,
+        Object.hash(_errorDim, _onError, _errorContainer, _onErrorContainer),
       ),
     ),
   );
 }
 
-class _ColorThemeDataPartialAsConcrete extends ColorThemeData {
+final class _ColorThemeDataPartialAsConcrete extends ColorThemeData {
   _ColorThemeDataPartialAsConcrete(this._value) : assert(_value.isConcrete);
 
   final ColorThemeDataPartial _value;
@@ -2620,262 +2681,379 @@ class _ColorThemeDataPartialAsConcrete extends ColorThemeData {
     Color? onError,
     Color? errorContainer,
     Color? onErrorContainer,
-  }) {
-    final all =
-        brightness != null &&
-        primaryPaletteKeyColor != null &&
-        secondaryPaletteKeyColor != null &&
-        tertiaryPaletteKeyColor != null &&
-        neutralPaletteKeyColor != null &&
-        neutralVariantPaletteKeyColor != null &&
-        errorPaletteKeyColor != null &&
-        background != null &&
-        onBackground != null &&
-        surface != null &&
-        surfaceDim != null &&
-        surfaceBright != null &&
-        surfaceContainerLowest != null &&
-        surfaceContainerLow != null &&
-        surfaceContainer != null &&
-        surfaceContainerHigh != null &&
-        surfaceContainerHighest != null &&
-        onSurface != null &&
-        surfaceVariant != null &&
-        onSurfaceVariant != null &&
-        outline != null &&
-        outlineVariant != null &&
-        inverseSurface != null &&
-        inverseOnSurface != null &&
-        shadow != null &&
-        scrim != null &&
-        surfaceTint != null &&
-        primary != null &&
-        primaryDim != null &&
-        onPrimary != null &&
-        primaryContainer != null &&
-        onPrimaryContainer != null &&
-        primaryFixed != null &&
-        primaryFixedDim != null &&
-        onPrimaryFixed != null &&
-        onPrimaryFixedVariant != null &&
-        inversePrimary != null &&
-        secondary != null &&
-        secondaryDim != null &&
-        onSecondary != null &&
-        secondaryContainer != null &&
-        onSecondaryContainer != null &&
-        secondaryFixed != null &&
-        secondaryFixedDim != null &&
-        onSecondaryFixed != null &&
-        onSecondaryFixedVariant != null &&
-        tertiary != null &&
-        tertiaryDim != null &&
-        onTertiary != null &&
-        tertiaryContainer != null &&
-        onTertiaryContainer != null &&
-        tertiaryFixed != null &&
-        tertiaryFixedDim != null &&
-        onTertiaryFixed != null &&
-        onTertiaryFixedVariant != null &&
-        error != null &&
-        errorDim != null &&
-        onError != null &&
-        errorContainer != null &&
-        onErrorContainer != null;
+  }) => _ColorThemeDataPartialAsConcrete(
+    _value.copyWith(
+      brightness: brightness,
+      primaryPaletteKeyColor: primaryPaletteKeyColor,
+      secondaryPaletteKeyColor: secondaryPaletteKeyColor,
+      tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
+      neutralPaletteKeyColor: neutralPaletteKeyColor,
+      neutralVariantPaletteKeyColor: neutralVariantPaletteKeyColor,
+      errorPaletteKeyColor: errorPaletteKeyColor,
+      background: background,
+      onBackground: onBackground,
+      surface: surface,
+      surfaceDim: surfaceDim,
+      surfaceBright: surfaceBright,
+      surfaceContainerLowest: surfaceContainerLowest,
+      surfaceContainerLow: surfaceContainerLow,
+      surfaceContainer: surfaceContainer,
+      surfaceContainerHigh: surfaceContainerHigh,
+      surfaceContainerHighest: surfaceContainerHighest,
+      onSurface: onSurface,
+      surfaceVariant: surfaceVariant,
+      onSurfaceVariant: onSurfaceVariant,
+      outline: outline,
+      outlineVariant: outlineVariant,
+      inverseSurface: inverseSurface,
+      inverseOnSurface: inverseOnSurface,
+      shadow: shadow,
+      scrim: scrim,
+      surfaceTint: surfaceTint,
+      primary: primary,
+      primaryDim: primaryDim,
+      onPrimary: onPrimary,
+      primaryContainer: primaryContainer,
+      onPrimaryContainer: onPrimaryContainer,
+      primaryFixed: primaryFixed,
+      primaryFixedDim: primaryFixedDim,
+      onPrimaryFixed: onPrimaryFixed,
+      onPrimaryFixedVariant: onPrimaryFixedVariant,
+      inversePrimary: inversePrimary,
+      secondary: secondary,
+      secondaryDim: secondaryDim,
+      onSecondary: onSecondary,
+      secondaryContainer: secondaryContainer,
+      onSecondaryContainer: onSecondaryContainer,
+      secondaryFixed: secondaryFixed,
+      secondaryFixedDim: secondaryFixedDim,
+      onSecondaryFixed: onSecondaryFixed,
+      onSecondaryFixedVariant: onSecondaryFixedVariant,
+      tertiary: tertiary,
+      tertiaryDim: tertiaryDim,
+      onTertiary: onTertiary,
+      tertiaryContainer: tertiaryContainer,
+      onTertiaryContainer: onTertiaryContainer,
+      tertiaryFixed: tertiaryFixed,
+      tertiaryFixedDim: tertiaryFixedDim,
+      onTertiaryFixed: onTertiaryFixed,
+      onTertiaryFixedVariant: onTertiaryFixedVariant,
+      error: error,
+      errorDim: errorDim,
+      onError: onError,
+      errorContainer: errorContainer,
+      onErrorContainer: onErrorContainer,
+    ),
+  );
 
-    if (all) {
-      return .from(
-        brightness: brightness,
-        primaryPaletteKeyColor: primaryPaletteKeyColor,
-        secondaryPaletteKeyColor: secondaryPaletteKeyColor,
-        tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
-        neutralPaletteKeyColor: neutralPaletteKeyColor,
-        neutralVariantPaletteKeyColor: neutralVariantPaletteKeyColor,
-        errorPaletteKeyColor: errorPaletteKeyColor,
-        background: background,
-        onBackground: onBackground,
-        surface: surface,
-        surfaceDim: surfaceDim,
-        surfaceBright: surfaceBright,
-        surfaceContainerLowest: surfaceContainerLowest,
-        surfaceContainerLow: surfaceContainerLow,
-        surfaceContainer: surfaceContainer,
-        surfaceContainerHigh: surfaceContainerHigh,
-        surfaceContainerHighest: surfaceContainerHighest,
-        onSurface: onSurface,
-        surfaceVariant: surfaceVariant,
-        onSurfaceVariant: onSurfaceVariant,
-        outline: outline,
-        outlineVariant: outlineVariant,
-        inverseSurface: inverseSurface,
-        inverseOnSurface: inverseOnSurface,
-        shadow: shadow,
-        scrim: scrim,
-        surfaceTint: surfaceTint,
-        primary: primary,
-        primaryDim: primaryDim,
-        onPrimary: onPrimary,
-        primaryContainer: primaryContainer,
-        onPrimaryContainer: onPrimaryContainer,
-        primaryFixed: primaryFixed,
-        primaryFixedDim: primaryFixedDim,
-        onPrimaryFixed: onPrimaryFixed,
-        onPrimaryFixedVariant: onPrimaryFixedVariant,
-        inversePrimary: inversePrimary,
-        secondary: secondary,
-        secondaryDim: secondaryDim,
-        onSecondary: onSecondary,
-        secondaryContainer: secondaryContainer,
-        onSecondaryContainer: onSecondaryContainer,
-        secondaryFixed: secondaryFixed,
-        secondaryFixedDim: secondaryFixedDim,
-        onSecondaryFixed: onSecondaryFixed,
-        onSecondaryFixedVariant: onSecondaryFixedVariant,
-        tertiary: tertiary,
-        tertiaryDim: tertiaryDim,
-        onTertiary: onTertiary,
-        tertiaryContainer: tertiaryContainer,
-        onTertiaryContainer: onTertiaryContainer,
-        tertiaryFixed: tertiaryFixed,
-        tertiaryFixedDim: tertiaryFixedDim,
-        onTertiaryFixed: onTertiaryFixed,
-        onTertiaryFixedVariant: onTertiaryFixedVariant,
-        error: error,
-        errorDim: errorDim,
-        onError: onError,
-        errorContainer: errorContainer,
-        onErrorContainer: onErrorContainer,
-      );
-    }
-
-    final some =
-        brightness != null ||
-        primaryPaletteKeyColor != null ||
-        secondaryPaletteKeyColor != null ||
-        tertiaryPaletteKeyColor != null ||
-        neutralPaletteKeyColor != null ||
-        neutralVariantPaletteKeyColor != null ||
-        errorPaletteKeyColor != null ||
-        background != null ||
-        onBackground != null ||
-        surface != null ||
-        surfaceDim != null ||
-        surfaceBright != null ||
-        surfaceContainerLowest != null ||
-        surfaceContainerLow != null ||
-        surfaceContainer != null ||
-        surfaceContainerHigh != null ||
-        surfaceContainerHighest != null ||
-        onSurface != null ||
-        surfaceVariant != null ||
-        onSurfaceVariant != null ||
-        outline != null ||
-        outlineVariant != null ||
-        inverseSurface != null ||
-        inverseOnSurface != null ||
-        shadow != null ||
-        scrim != null ||
-        surfaceTint != null ||
-        primary != null ||
-        primaryDim != null ||
-        onPrimary != null ||
-        primaryContainer != null ||
-        onPrimaryContainer != null ||
-        primaryFixed != null ||
-        primaryFixedDim != null ||
-        onPrimaryFixed != null ||
-        onPrimaryFixedVariant != null ||
-        inversePrimary != null ||
-        secondary != null ||
-        secondaryDim != null ||
-        onSecondary != null ||
-        secondaryContainer != null ||
-        onSecondaryContainer != null ||
-        secondaryFixed != null ||
-        secondaryFixedDim != null ||
-        onSecondaryFixed != null ||
-        onSecondaryFixedVariant != null ||
-        tertiary != null ||
-        tertiaryDim != null ||
-        onTertiary != null ||
-        tertiaryContainer != null ||
-        onTertiaryContainer != null ||
-        tertiaryFixed != null ||
-        tertiaryFixedDim != null ||
-        onTertiaryFixed != null ||
-        onTertiaryFixedVariant != null ||
-        error != null ||
-        errorDim != null ||
-        onError != null ||
-        errorContainer != null ||
-        onErrorContainer != null;
-    return some
-        ? _ColorThemeDataPartialAsConcrete(
-            _value.copy(
-              brightness: brightness,
-              primaryPaletteKeyColor: primaryPaletteKeyColor,
-              secondaryPaletteKeyColor: secondaryPaletteKeyColor,
-              tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
-              neutralPaletteKeyColor: neutralPaletteKeyColor,
-              neutralVariantPaletteKeyColor: neutralVariantPaletteKeyColor,
-              errorPaletteKeyColor: errorPaletteKeyColor,
-              background: background,
-              onBackground: onBackground,
-              surface: surface,
-              surfaceDim: surfaceDim,
-              surfaceBright: surfaceBright,
-              surfaceContainerLowest: surfaceContainerLowest,
-              surfaceContainerLow: surfaceContainerLow,
-              surfaceContainer: surfaceContainer,
-              surfaceContainerHigh: surfaceContainerHigh,
-              surfaceContainerHighest: surfaceContainerHighest,
-              onSurface: onSurface,
-              surfaceVariant: surfaceVariant,
-              onSurfaceVariant: onSurfaceVariant,
-              outline: outline,
-              outlineVariant: outlineVariant,
-              inverseSurface: inverseSurface,
-              inverseOnSurface: inverseOnSurface,
-              shadow: shadow,
-              scrim: scrim,
-              surfaceTint: surfaceTint,
-              primary: primary,
-              primaryDim: primaryDim,
-              onPrimary: onPrimary,
-              primaryContainer: primaryContainer,
-              onPrimaryContainer: onPrimaryContainer,
-              primaryFixed: primaryFixed,
-              primaryFixedDim: primaryFixedDim,
-              onPrimaryFixed: onPrimaryFixed,
-              onPrimaryFixedVariant: onPrimaryFixedVariant,
-              inversePrimary: inversePrimary,
-              secondary: secondary,
-              secondaryDim: secondaryDim,
-              onSecondary: onSecondary,
-              secondaryContainer: secondaryContainer,
-              onSecondaryContainer: onSecondaryContainer,
-              secondaryFixed: secondaryFixed,
-              secondaryFixedDim: secondaryFixedDim,
-              onSecondaryFixed: onSecondaryFixed,
-              onSecondaryFixedVariant: onSecondaryFixedVariant,
-              tertiary: tertiary,
-              tertiaryDim: tertiaryDim,
-              onTertiary: onTertiary,
-              tertiaryContainer: tertiaryContainer,
-              onTertiaryContainer: onTertiaryContainer,
-              tertiaryFixed: tertiaryFixed,
-              tertiaryFixedDim: tertiaryFixedDim,
-              onTertiaryFixed: onTertiaryFixed,
-              onTertiaryFixedVariant: onTertiaryFixedVariant,
-              error: error,
-              errorDim: errorDim,
-              onError: onError,
-              errorContainer: errorContainer,
-              onErrorContainer: onErrorContainer,
-            ),
-          )
-        : this;
-  }
+  @override
+  ColorThemeData maybeCopyWith({
+    Brightness? brightness,
+    Color? primaryPaletteKeyColor,
+    Color? secondaryPaletteKeyColor,
+    Color? tertiaryPaletteKeyColor,
+    Color? neutralPaletteKeyColor,
+    Color? neutralVariantPaletteKeyColor,
+    Color? errorPaletteKeyColor,
+    Color? background,
+    Color? onBackground,
+    Color? surface,
+    Color? surfaceDim,
+    Color? surfaceBright,
+    Color? surfaceContainerLowest,
+    Color? surfaceContainerLow,
+    Color? surfaceContainer,
+    Color? surfaceContainerHigh,
+    Color? surfaceContainerHighest,
+    Color? onSurface,
+    Color? surfaceVariant,
+    Color? onSurfaceVariant,
+    Color? outline,
+    Color? outlineVariant,
+    Color? inverseSurface,
+    Color? inverseOnSurface,
+    Color? shadow,
+    Color? scrim,
+    Color? surfaceTint,
+    Color? primary,
+    Color? primaryDim,
+    Color? onPrimary,
+    Color? primaryContainer,
+    Color? onPrimaryContainer,
+    Color? primaryFixed,
+    Color? primaryFixedDim,
+    Color? onPrimaryFixed,
+    Color? onPrimaryFixedVariant,
+    Color? inversePrimary,
+    Color? secondary,
+    Color? secondaryDim,
+    Color? onSecondary,
+    Color? secondaryContainer,
+    Color? onSecondaryContainer,
+    Color? secondaryFixed,
+    Color? secondaryFixedDim,
+    Color? onSecondaryFixed,
+    Color? onSecondaryFixedVariant,
+    Color? tertiary,
+    Color? tertiaryDim,
+    Color? onTertiary,
+    Color? tertiaryContainer,
+    Color? onTertiaryContainer,
+    Color? tertiaryFixed,
+    Color? tertiaryFixedDim,
+    Color? onTertiaryFixed,
+    Color? onTertiaryFixedVariant,
+    Color? error,
+    Color? errorDim,
+    Color? onError,
+    Color? errorContainer,
+    Color? onErrorContainer,
+  }) =>
+      brightness != null &&
+          primaryPaletteKeyColor != null &&
+          secondaryPaletteKeyColor != null &&
+          tertiaryPaletteKeyColor != null &&
+          neutralPaletteKeyColor != null &&
+          neutralVariantPaletteKeyColor != null &&
+          errorPaletteKeyColor != null &&
+          background != null &&
+          onBackground != null &&
+          surface != null &&
+          surfaceDim != null &&
+          surfaceBright != null &&
+          surfaceContainerLowest != null &&
+          surfaceContainerLow != null &&
+          surfaceContainer != null &&
+          surfaceContainerHigh != null &&
+          surfaceContainerHighest != null &&
+          onSurface != null &&
+          surfaceVariant != null &&
+          onSurfaceVariant != null &&
+          outline != null &&
+          outlineVariant != null &&
+          inverseSurface != null &&
+          inverseOnSurface != null &&
+          shadow != null &&
+          scrim != null &&
+          surfaceTint != null &&
+          primary != null &&
+          primaryDim != null &&
+          onPrimary != null &&
+          primaryContainer != null &&
+          onPrimaryContainer != null &&
+          primaryFixed != null &&
+          primaryFixedDim != null &&
+          onPrimaryFixed != null &&
+          onPrimaryFixedVariant != null &&
+          inversePrimary != null &&
+          secondary != null &&
+          secondaryDim != null &&
+          onSecondary != null &&
+          secondaryContainer != null &&
+          onSecondaryContainer != null &&
+          secondaryFixed != null &&
+          secondaryFixedDim != null &&
+          onSecondaryFixed != null &&
+          onSecondaryFixedVariant != null &&
+          tertiary != null &&
+          tertiaryDim != null &&
+          onTertiary != null &&
+          tertiaryContainer != null &&
+          onTertiaryContainer != null &&
+          tertiaryFixed != null &&
+          tertiaryFixedDim != null &&
+          onTertiaryFixed != null &&
+          onTertiaryFixedVariant != null &&
+          error != null &&
+          errorDim != null &&
+          onError != null &&
+          errorContainer != null &&
+          onErrorContainer != null
+      ? .from(
+          brightness: brightness,
+          primaryPaletteKeyColor: primaryPaletteKeyColor,
+          secondaryPaletteKeyColor: secondaryPaletteKeyColor,
+          tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
+          neutralPaletteKeyColor: neutralPaletteKeyColor,
+          neutralVariantPaletteKeyColor: neutralVariantPaletteKeyColor,
+          errorPaletteKeyColor: errorPaletteKeyColor,
+          background: background,
+          onBackground: onBackground,
+          surface: surface,
+          surfaceDim: surfaceDim,
+          surfaceBright: surfaceBright,
+          surfaceContainerLowest: surfaceContainerLowest,
+          surfaceContainerLow: surfaceContainerLow,
+          surfaceContainer: surfaceContainer,
+          surfaceContainerHigh: surfaceContainerHigh,
+          surfaceContainerHighest: surfaceContainerHighest,
+          onSurface: onSurface,
+          surfaceVariant: surfaceVariant,
+          onSurfaceVariant: onSurfaceVariant,
+          outline: outline,
+          outlineVariant: outlineVariant,
+          inverseSurface: inverseSurface,
+          inverseOnSurface: inverseOnSurface,
+          shadow: shadow,
+          scrim: scrim,
+          surfaceTint: surfaceTint,
+          primary: primary,
+          primaryDim: primaryDim,
+          onPrimary: onPrimary,
+          primaryContainer: primaryContainer,
+          onPrimaryContainer: onPrimaryContainer,
+          primaryFixed: primaryFixed,
+          primaryFixedDim: primaryFixedDim,
+          onPrimaryFixed: onPrimaryFixed,
+          onPrimaryFixedVariant: onPrimaryFixedVariant,
+          inversePrimary: inversePrimary,
+          secondary: secondary,
+          secondaryDim: secondaryDim,
+          onSecondary: onSecondary,
+          secondaryContainer: secondaryContainer,
+          onSecondaryContainer: onSecondaryContainer,
+          secondaryFixed: secondaryFixed,
+          secondaryFixedDim: secondaryFixedDim,
+          onSecondaryFixed: onSecondaryFixed,
+          onSecondaryFixedVariant: onSecondaryFixedVariant,
+          tertiary: tertiary,
+          tertiaryDim: tertiaryDim,
+          onTertiary: onTertiary,
+          tertiaryContainer: tertiaryContainer,
+          onTertiaryContainer: onTertiaryContainer,
+          tertiaryFixed: tertiaryFixed,
+          tertiaryFixedDim: tertiaryFixedDim,
+          onTertiaryFixed: onTertiaryFixed,
+          onTertiaryFixedVariant: onTertiaryFixedVariant,
+          error: error,
+          errorDim: errorDim,
+          onError: onError,
+          errorContainer: errorContainer,
+          onErrorContainer: onErrorContainer,
+        )
+      : brightness != null ||
+            primaryPaletteKeyColor != null ||
+            secondaryPaletteKeyColor != null ||
+            tertiaryPaletteKeyColor != null ||
+            neutralPaletteKeyColor != null ||
+            neutralVariantPaletteKeyColor != null ||
+            errorPaletteKeyColor != null ||
+            background != null ||
+            onBackground != null ||
+            surface != null ||
+            surfaceDim != null ||
+            surfaceBright != null ||
+            surfaceContainerLowest != null ||
+            surfaceContainerLow != null ||
+            surfaceContainer != null ||
+            surfaceContainerHigh != null ||
+            surfaceContainerHighest != null ||
+            onSurface != null ||
+            surfaceVariant != null ||
+            onSurfaceVariant != null ||
+            outline != null ||
+            outlineVariant != null ||
+            inverseSurface != null ||
+            inverseOnSurface != null ||
+            shadow != null ||
+            scrim != null ||
+            surfaceTint != null ||
+            primary != null ||
+            primaryDim != null ||
+            onPrimary != null ||
+            primaryContainer != null ||
+            onPrimaryContainer != null ||
+            primaryFixed != null ||
+            primaryFixedDim != null ||
+            onPrimaryFixed != null ||
+            onPrimaryFixedVariant != null ||
+            inversePrimary != null ||
+            secondary != null ||
+            secondaryDim != null ||
+            onSecondary != null ||
+            secondaryContainer != null ||
+            onSecondaryContainer != null ||
+            secondaryFixed != null ||
+            secondaryFixedDim != null ||
+            onSecondaryFixed != null ||
+            onSecondaryFixedVariant != null ||
+            tertiary != null ||
+            tertiaryDim != null ||
+            onTertiary != null ||
+            tertiaryContainer != null ||
+            onTertiaryContainer != null ||
+            tertiaryFixed != null ||
+            tertiaryFixedDim != null ||
+            onTertiaryFixed != null ||
+            onTertiaryFixedVariant != null ||
+            error != null ||
+            errorDim != null ||
+            onError != null ||
+            errorContainer != null ||
+            onErrorContainer != null
+      ? copyWith(
+          brightness: brightness,
+          primaryPaletteKeyColor: primaryPaletteKeyColor,
+          secondaryPaletteKeyColor: secondaryPaletteKeyColor,
+          tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
+          neutralPaletteKeyColor: neutralPaletteKeyColor,
+          neutralVariantPaletteKeyColor: neutralVariantPaletteKeyColor,
+          errorPaletteKeyColor: errorPaletteKeyColor,
+          background: background,
+          onBackground: onBackground,
+          surface: surface,
+          surfaceDim: surfaceDim,
+          surfaceBright: surfaceBright,
+          surfaceContainerLowest: surfaceContainerLowest,
+          surfaceContainerLow: surfaceContainerLow,
+          surfaceContainer: surfaceContainer,
+          surfaceContainerHigh: surfaceContainerHigh,
+          surfaceContainerHighest: surfaceContainerHighest,
+          onSurface: onSurface,
+          surfaceVariant: surfaceVariant,
+          onSurfaceVariant: onSurfaceVariant,
+          outline: outline,
+          outlineVariant: outlineVariant,
+          inverseSurface: inverseSurface,
+          inverseOnSurface: inverseOnSurface,
+          shadow: shadow,
+          scrim: scrim,
+          surfaceTint: surfaceTint,
+          primary: primary,
+          primaryDim: primaryDim,
+          onPrimary: onPrimary,
+          primaryContainer: primaryContainer,
+          onPrimaryContainer: onPrimaryContainer,
+          primaryFixed: primaryFixed,
+          primaryFixedDim: primaryFixedDim,
+          onPrimaryFixed: onPrimaryFixed,
+          onPrimaryFixedVariant: onPrimaryFixedVariant,
+          inversePrimary: inversePrimary,
+          secondary: secondary,
+          secondaryDim: secondaryDim,
+          onSecondary: onSecondary,
+          secondaryContainer: secondaryContainer,
+          onSecondaryContainer: onSecondaryContainer,
+          secondaryFixed: secondaryFixed,
+          secondaryFixedDim: secondaryFixedDim,
+          onSecondaryFixed: onSecondaryFixed,
+          onSecondaryFixedVariant: onSecondaryFixedVariant,
+          tertiary: tertiary,
+          tertiaryDim: tertiaryDim,
+          onTertiary: onTertiary,
+          tertiaryContainer: tertiaryContainer,
+          onTertiaryContainer: onTertiaryContainer,
+          tertiaryFixed: tertiaryFixed,
+          tertiaryFixedDim: tertiaryFixedDim,
+          onTertiaryFixed: onTertiaryFixed,
+          onTertiaryFixedVariant: onTertiaryFixedVariant,
+          error: error,
+          errorDim: errorDim,
+          onError: onError,
+          errorContainer: errorContainer,
+          onErrorContainer: onErrorContainer,
+        )
+      : this;
 
   @override
   bool operator ==(Object other) =>

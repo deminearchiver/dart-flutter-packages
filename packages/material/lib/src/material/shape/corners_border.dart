@@ -760,11 +760,13 @@ class CornersBorder extends OutlinedBorder {
     BorderSide? side,
     CornersBorderDelegate? delegate,
     CornersGeometry? corners,
-  }) => .new(
-    side: side ?? this.side,
-    delegate: delegate ?? this.delegate,
-    corners: corners ?? this.corners,
-  );
+  }) => side != null || delegate != null || corners != null
+      ? .new(
+          side: side ?? this.side,
+          delegate: delegate ?? this.delegate,
+          corners: corners ?? this.corners,
+        )
+      : this;
 
   @override
   CornersBorder scale(double t) => .new(

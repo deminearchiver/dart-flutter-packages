@@ -302,11 +302,9 @@ class _VerticalNavigationItemState extends State<_VerticalNavigationItem> {
             SizedBox(
               width: 56.0,
               height: label != null ? 32.0 : 56.0,
-              child: Material(
+              child: Surface(
                 clipBehavior: .antiAlias,
-                shape: CornersBorder.rounded(
-                  corners: .all(shapeTheme.cornerFull),
-                ),
+                shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
                 color: isSelected
                     ? colorTheme.secondaryContainer
                     : colorTheme.secondaryContainer.withValues(alpha: 0.0),
@@ -320,7 +318,7 @@ class _VerticalNavigationItemState extends State<_VerticalNavigationItem> {
                     opacity: stateTheme.asWidgetStateLayerOpacity,
                   ),
                   onTap: () {},
-                  child: IconTheme.withData(
+                  child: IconTheme.mergeWithData(
                     data: .from(
                       fill: isSelected ? 1.0 : 0.0,
                       opticalSize: 24.0,

@@ -1,7 +1,8 @@
 import 'package:material_example/flutter.dart';
 
-// Replace `Template` with the desired theme name in PascalCase.
-
+// ////////////////////////////////////////////////////////////////
+// Theme data models. //
+// ////////////////////////////////////////////////////////////////
 abstract class TemplateThemeDataPartial with Diagnosticable {
   const TemplateThemeDataPartial();
 
@@ -17,31 +18,69 @@ abstract class TemplateThemeDataPartial with Diagnosticable {
   String? get s;
   Color? get c;
 
+  TemplateThemeDataPartial copy() => copyWith();
+
   TemplateThemeDataPartial copyWith({int? i, double? d, String? s, Color? c}) =>
-      i != null || d != null || s != null || c != null
-      ? .from(i: i ?? this.i, d: d ?? this.d, s: s ?? this.s, c: c ?? this.c)
+      .from(i: i ?? this.i, d: d ?? this.d, s: s ?? this.s, c: c ?? this.c);
+
+  TemplateThemeDataPartial maybeCopyWith({
+    int? i,
+    double? d,
+    String? s,
+    Color? c,
+  }) => i != null && d != null && s != null && c != null
+      ? TemplateThemeData.from(i: i, d: d, s: s, c: c)
+      : i != null || d != null || s != null || c != null
+      ? copyWith(i: i, d: d, s: s, c: c)
+      : this;
+
+  TemplateThemeDataPartial mergeWith({
+    int? i,
+    double? d,
+    String? s,
+    Color? c,
+  }) => .from(i: i ?? this.i, d: d ?? this.d, s: s ?? this.s, c: c ?? this.c);
+
+  TemplateThemeDataPartial maybeMergeWith({
+    int? i,
+    double? d,
+    String? s,
+    Color? c,
+  }) => i != null || d != null || s != null || c != null
+      ? mergeWith(i: i, d: d, s: s, c: c)
       : this;
 
   TemplateThemeDataPartial merge(TemplateThemeDataPartial? other) =>
       other != null
-      ? copyWith(i: other.i, d: other.d, s: other.s, c: other.c)
+      ? mergeWith(i: other.i, d: other.d, s: other.s, c: other.c)
+      : copy();
+
+  TemplateThemeDataPartial maybeMerge(TemplateThemeDataPartial? other) =>
+      other != null
+      ? maybeMergeWith(i: other.i, d: other.d, s: other.s, c: other.c)
       : this;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is TemplateThemeDataPartial &&
-          i == other.i &&
-          d == other.d &&
-          s == other.s &&
-          c == other.c;
+  bool get isEmpty => i == null && d == null && s == null && c == null;
+
+  bool get isNotEmpty => !isEmpty;
+
+  bool get isConcrete => i != null && d != null && s != null && c != null;
+
+  TemplateThemeData? get asConcrete =>
+      isConcrete ? _TemplateThemeDataPartialAsConcrete(this) : null;
 
   @override
-  int get hashCode => Object.hash(runtimeType, i, d, s, c);
+  // ignore: must_call_super
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    properties
+      ..add(IntProperty("i", i, defaultValue: null))
+      ..add(DoubleProperty("d", d, defaultValue: null))
+      ..add(StringProperty("s", s, defaultValue: null))
+      ..add(ColorProperty("c", c, defaultValue: null));
+  }
 }
 
-class _TemplateThemeDataPartial extends TemplateThemeDataPartial {
+final class _TemplateThemeDataPartial extends TemplateThemeDataPartial {
   const _TemplateThemeDataPartial({this.i, this.d, this.s, this.c});
 
   @override
@@ -55,6 +94,72 @@ class _TemplateThemeDataPartial extends TemplateThemeDataPartial {
 
   @override
   final Color? c;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _TemplateThemeDataPartial &&
+          i == other.i &&
+          d == other.d &&
+          s == other.s &&
+          c == other.c;
+
+  @override
+  int get hashCode => Object.hash(i, d, s, c);
+}
+
+final class _TemplateThemeDataPartialAsConcrete extends TemplateThemeData {
+  _TemplateThemeDataPartialAsConcrete(TemplateThemeDataPartial value)
+    : assert(value.isConcrete),
+      _value = value;
+
+  final TemplateThemeDataPartial _value;
+
+  @override
+  int get i => _value.i!;
+
+  @override
+  double get d => _value.d!;
+
+  @override
+  String get s => _value.s!;
+
+  @override
+  Color get c => _value.c!;
+
+  @override
+  TemplateThemeData copyWith({int? i, double? d, String? s, Color? c}) =>
+      _TemplateThemeDataPartialAsConcrete(
+        _value.copyWith(i: i, d: d, s: s, c: c),
+      );
+
+  @override
+  TemplateThemeData maybeCopyWith({int? i, double? d, String? s, Color? c}) =>
+      i != null && d != null && s != null && c != null
+      ? .from(i: i, d: d, s: s, c: c)
+      : i != null || d != null || s != null || c != null
+      ? copyWith(i: i, d: d, s: s, c: c)
+      : this;
+
+  @override
+  TemplateThemeData mergeWith({int? i, double? d, String? s, Color? c}) =>
+      _TemplateThemeDataPartialAsConcrete(
+        _value.mergeWith(i: i, d: d, s: s, c: c),
+      );
+
+  @override
+  TemplateThemeData maybeMergeWith({int? i, double? d, String? s, Color? c}) =>
+      i != null || d != null || s != null || c != null
+      ? mergeWith(i: i, d: d, s: s, c: c)
+      : this;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _TemplateThemeDataPartialAsConcrete && _value == other._value;
+
+  @override
+  int get hashCode => _value.hashCode;
 }
 
 abstract class TemplateThemeData extends TemplateThemeDataPartial {
@@ -67,13 +172,8 @@ abstract class TemplateThemeData extends TemplateThemeDataPartial {
     required Color c,
   }) = _TemplateThemeData;
 
-  const factory TemplateThemeData.defaults() = _TemplateThemeDataDefaults;
-
-  const factory TemplateThemeData._defaults({
-    int? i,
-    double? d,
-    String? s,
-    Color? c,
+  const factory TemplateThemeData.defaults({
+    TemplateThemeDataPartial? overrides,
   }) = _TemplateThemeDataDefaults;
 
   @override
@@ -89,31 +189,62 @@ abstract class TemplateThemeData extends TemplateThemeDataPartial {
   Color get c;
 
   @override
+  TemplateThemeData copy() => copyWith();
+
+  @override
   TemplateThemeData copyWith({int? i, double? d, String? s, Color? c}) =>
+      .from(i: i ?? this.i, d: d ?? this.d, s: s ?? this.s, c: c ?? this.c);
+
+  @override
+  TemplateThemeData maybeCopyWith({int? i, double? d, String? s, Color? c}) =>
       i != null || d != null || s != null || c != null
-      ? .from(i: i ?? this.i, d: d ?? this.d, s: s ?? this.s, c: c ?? this.c)
+      ? copyWith(i: i, d: d, s: s, c: c)
       : this;
+
+  @override
+  TemplateThemeData mergeWith({int? i, double? d, String? s, Color? c}) =>
+      .from(i: i ?? this.i, d: d ?? this.d, s: s ?? this.s, c: c ?? this.c);
 
   @override
   TemplateThemeData merge(TemplateThemeDataPartial? other) => other != null
-      ? copyWith(i: other.i, d: other.d, s: other.s, c: other.c)
+      ? mergeWith(i: other.i, d: other.d, s: other.s, c: other.c)
+      : copy();
+
+  @override
+  TemplateThemeData maybeMergeWith({int? i, double? d, String? s, Color? c}) =>
+      i != null || d != null || s != null || c != null
+      ? mergeWith(i: i, d: d, s: s, c: c)
       : this;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is TemplateThemeData &&
-          i == other.i &&
-          d == other.d &&
-          s == other.s &&
-          c == other.c;
+  TemplateThemeData maybeMerge(TemplateThemeDataPartial? other) => other != null
+      ? maybeMergeWith(i: other.i, d: other.d, s: other.s, c: other.c)
+      : this;
 
   @override
-  int get hashCode => Object.hash(runtimeType, i, d, s, c);
+  bool get isEmpty => false;
+
+  @override
+  bool get isNotEmpty => true;
+
+  @override
+  bool get isConcrete => true;
+
+  @override
+  TemplateThemeData get asConcrete => this;
+
+  @override
+  // ignore: must_call_super
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    properties
+      ..add(IntProperty("i", i))
+      ..add(DoubleProperty("d", d))
+      ..add(StringProperty("s", s))
+      ..add(ColorProperty("c", c));
+  }
 }
 
-class _TemplateThemeData extends TemplateThemeData {
+final class _TemplateThemeData extends TemplateThemeData {
   const _TemplateThemeData({
     required this.i,
     required this.d,
@@ -132,97 +263,105 @@ class _TemplateThemeData extends TemplateThemeData {
 
   @override
   final Color c;
-}
-
-// Represents a snapshot of the theme data at a specific rebuild of the widget
-// tree. Values are computed on every access and not cached.
-class _TemplateThemeDataDefaults extends TemplateThemeData {
-  const _TemplateThemeDataDefaults({int? i, double? d, String? s, Color? c})
-    : _i = i,
-      _d = d,
-      _s = s,
-      _c = c;
-
-  final int? _i;
-  final double? _d;
-  final String? _s;
-  final Color? _c;
-
-  @override
-  int get i => _i ?? 0;
-
-  @override
-  double get d => _d ?? 1.0;
-
-  @override
-  String get s => _s ?? "a";
-
-  @override
-  Color get c => _c ?? const Color(0xFFFF0000);
-
-  // If all properties are provided, return a new instance. Otherwise,
-  // add optional overrides to these defaults.
-  @override
-  TemplateThemeData copyWith({int? i, double? d, String? s, Color? c}) =>
-      i != null && d != null && s != null && c != null
-      ? .from(i: i, d: d, s: s, c: c)
-      : _TemplateThemeDataDefaults(
-          i: i ?? _i,
-          d: d ?? _d,
-          s: s ?? _s,
-          c: c ?? _c,
-        );
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _TemplateThemeDataDefaults &&
-          _i == other._i &&
-          _d == other._d &&
-          _s == other._s &&
-          _c == other._c;
+      other is _TemplateThemeData &&
+          i == other.i &&
+          d == other.d &&
+          s == other.s &&
+          c == other.c;
 
   @override
-  int get hashCode => Object.hash(runtimeType, _i, _d, _s, _c);
+  int get hashCode => Object.hash(i, d, s, c);
 }
 
-// Copy paste what's below to add a widget to an already existing
-// theme data.
+final class _TemplateThemeDataDefaults extends TemplateThemeData {
+  const _TemplateThemeDataDefaults({TemplateThemeDataPartial? overrides})
+    : _overrides = overrides ?? const .from();
 
-typedef TemplateThemeResolver = ThemeResolver<TemplateThemeDataPartial>;
+  final TemplateThemeDataPartial _overrides;
 
-typedef TemplateThemeResolverCallback =
-    ThemeResolverCallback<TemplateThemeDataPartial>;
+  @override
+  int get i => _overrides.i ?? 0;
+
+  @override
+  double get d => _overrides.d ?? 1.0;
+
+  @override
+  String get s => _overrides.s ?? "a";
+
+  @override
+  Color get c => _overrides.c ?? const Color(0xFFFF0000);
+
+  @override
+  TemplateThemeData copyWith({int? i, double? d, String? s, Color? c}) =>
+      _TemplateThemeDataDefaults(
+        overrides: _overrides.copyWith(i: i, d: d, s: s, c: c),
+      );
+
+  @override
+  TemplateThemeData maybeCopyWith({int? i, double? d, String? s, Color? c}) =>
+      i != null && d != null && s != null && c != null
+      ? .from(i: i, d: d, s: s, c: c)
+      : i != null || d != null || s != null || c != null
+      ? copyWith(i: i, d: d, s: s, c: c)
+      : this;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _TemplateThemeDataDefaults && _overrides == other._overrides;
+
+  @override
+  int get hashCode => _overrides.hashCode;
+}
+
+// ////////////////////////////////////////////////////////////////
+// Theme inherited widgets. //
+// ////////////////////////////////////////////////////////////////
 
 abstract class TemplateTheme extends StatelessWidget implements ProxyWidget {
   const TemplateTheme._({super.key, required this.child});
 
-  const factory TemplateTheme.resolver({
+  const factory TemplateTheme.mergeWithResolver({
     Key? key,
-    required TemplateThemeResolver resolver,
+    required ThemeResolver<TemplateThemeDataPartial> resolver,
     required Widget child,
-  }) = _TemplateThemeWithResolver;
+  }) = _TemplateThemeWithResolver<TemplateThemeDataPartial>;
 
-  const factory TemplateTheme.callback({
+  const factory TemplateTheme.mergeWithCallback({
     Key? key,
-    required TemplateThemeResolverCallback callback,
+    required ThemeResolverCallback<TemplateThemeDataPartial> callback,
     required Widget child,
-  }) = _TemplateThemeWithCallback;
+  }) = _TemplateThemeWithCallback<TemplateThemeDataPartial>;
 
-  const factory TemplateTheme.partial({
+  const factory TemplateTheme.mergeWithData({
     Key? key,
     required TemplateThemeDataPartial data,
     required Widget child,
   }) = _TemplateThemeWithData<TemplateThemeDataPartial>;
 
-  const factory TemplateTheme.concrete({
+  const factory TemplateTheme.replaceWithResolver({
+    Key? key,
+    required ThemeResolver<TemplateThemeData> resolver,
+    required Widget child,
+  }) = _TemplateThemeWithResolver<TemplateThemeData>;
+
+  const factory TemplateTheme.replaceWithCallback({
+    Key? key,
+    required ThemeResolverCallback<TemplateThemeData> callback,
+    required Widget child,
+  }) = _TemplateThemeWithCallback<TemplateThemeData>;
+
+  const factory TemplateTheme.replaceWithData({
     Key? key,
     required TemplateThemeData data,
     required Widget child,
   }) = _TemplateThemeWithData<TemplateThemeData>;
 
-  TemplateThemeResolver get resolver;
+  ThemeResolver<TemplateThemeDataPartial> get resolver;
 
   @override
   final Widget child;
@@ -232,28 +371,25 @@ abstract class TemplateTheme extends StatelessWidget implements ProxyWidget {
     final inherited = _TemplateTheme.maybeResolverOf(context);
     return _TemplateTheme(
       resolver: inherited != null
-          ? .combine(inherited, resolver, _combine)
+          ? .combine(inherited, resolver, _merge)
           : resolver,
       child: child,
     );
   }
 
-  static TemplateThemeDataPartial _combine(
+  static TemplateThemeDataPartial _merge(
     TemplateThemeDataPartial a,
     TemplateThemeDataPartial b,
-  ) => a.merge(b);
+  ) => a.maybeMerge(b);
 
   static TemplateThemeData of(BuildContext context) {
     final resolver = _TemplateTheme.maybeResolverOf(context);
-    if (resolver != null) {
-      final data = resolver.resolve(context);
-      return ._defaults(i: data.i, d: data.d, s: data.s, c: data.c);
-    }
-    return const .defaults();
+    return .defaults(overrides: resolver?.resolve(context));
   }
 }
 
-class _TemplateThemeWithResolver extends TemplateTheme {
+class _TemplateThemeWithResolver<T extends TemplateThemeDataPartial>
+    extends TemplateTheme {
   const _TemplateThemeWithResolver({
     super.key,
     required this.resolver,
@@ -261,34 +397,33 @@ class _TemplateThemeWithResolver extends TemplateTheme {
   }) : super._();
 
   @override
-  final TemplateThemeResolver resolver;
+  final ThemeResolver<T> resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<TemplateThemeResolver>("resolver", resolver),
-    );
+    properties.add(DiagnosticsProperty<ThemeResolver<T>>("resolver", resolver));
   }
 }
 
-class _TemplateThemeWithCallback extends TemplateTheme {
+class _TemplateThemeWithCallback<T extends TemplateThemeDataPartial>
+    extends TemplateTheme {
   const _TemplateThemeWithCallback({
     super.key,
     required this.callback,
     required super.child,
   }) : super._();
 
-  final TemplateThemeResolverCallback callback;
+  final ThemeResolverCallback<T> callback;
 
   @override
-  TemplateThemeResolver get resolver => .callback(callback);
+  ThemeResolver<T> get resolver => .callback(callback);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      DiagnosticsProperty<TemplateThemeResolverCallback>("callback", callback),
+      DiagnosticsProperty<ThemeResolverCallback<T>>("callback", callback),
     );
   }
 }
@@ -304,7 +439,7 @@ class _TemplateThemeWithData<T extends TemplateThemeDataPartial>
   final T data;
 
   @override
-  TemplateThemeResolver get resolver => .value(data);
+  ThemeResolver<T> get resolver => .value(data);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -320,7 +455,7 @@ class _TemplateTheme extends InheritedTheme {
     required super.child,
   });
 
-  final TemplateThemeResolver resolver;
+  final ThemeResolver<TemplateThemeDataPartial> resolver;
 
   @override
   bool updateShouldNotify(_TemplateTheme oldWidget) =>
@@ -330,6 +465,7 @@ class _TemplateTheme extends InheritedTheme {
   Widget wrap(BuildContext context, Widget child) =>
       _TemplateTheme(resolver: resolver, child: child);
 
-  static TemplateThemeResolver? maybeResolverOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_TemplateTheme>()?.resolver;
+  static ThemeResolver<TemplateThemeDataPartial>? maybeResolverOf(
+    BuildContext context,
+  ) => context.dependOnInheritedWidgetOfExactType<_TemplateTheme>()?.resolver;
 }

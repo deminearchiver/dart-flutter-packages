@@ -33,13 +33,10 @@ sealed class _StateCombo<S extends Object?> with StatesConstraint<S> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _StateCombo<S> &&
-          first == other.first &&
-          second == other.second;
+      other is _StateCombo<S> && first == other.first && second == other.second;
 
   @override
-  int get hashCode => Object.hash(runtimeType, first, second);
+  int get hashCode => Object.hash(first, second);
 }
 
 class _StateAnd<S extends Object?> extends _StateCombo<S> {
@@ -77,13 +74,10 @@ class _StateNot<S extends Object?> with StatesConstraint<S> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _StateNot &&
-          value == other.value;
+      identical(this, other) || other is _StateNot<S> && value == other.value;
 
   @override
-  int get hashCode => Object.hash(runtimeType, value);
+  int get hashCode => value.hashCode;
 }
 
 extension StatesConstraintExtension<S extends Object?> on StatesConstraint<S> {
@@ -229,10 +223,7 @@ class StateMapper<T extends Object?, S extends Object?>
           mapEquals(_map, other._map);
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    MapEquality<StatesConstraint<S>, T>().hash(_map),
-  );
+  int get hashCode => MapEquality<StatesConstraint<S>, T>().hash(_map);
 }
 
 class _StatePropertyWith<T extends Object?, S extends Object?>
@@ -257,16 +248,6 @@ class _StatePropertyOnce<T extends Object?, S extends Object?>
 
   @override
   String toString() => "CustomStateProperty.resolveOnce<$T, $S>()";
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _StatePropertyOnce<T, S> &&
-          _resolve == other._resolve;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, _resolve);
 }
 
 class _StatePropertyAll<T extends Object?, S extends Object?>
@@ -284,12 +265,10 @@ class _StatePropertyAll<T extends Object?, S extends Object?>
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _StatePropertyAll<T, S> &&
-          value == other.value;
+      other is _StatePropertyAll<T, S> && value == other.value;
 
   @override
-  int get hashCode => Object.hash(runtimeType, value);
+  int get hashCode => value.hashCode;
 }
 
 extension StatePropertyExtension1<T extends Object?, S extends Object?>

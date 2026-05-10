@@ -13,6 +13,7 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
     double? cornerValueExtraLarge,
     double? cornerValueExtraLargeIncreased,
     double? cornerValueExtraExtraLarge,
+    CornersBorderDelegate? cornerFamily,
     Corner? cornerNone,
     Corner? cornerExtraSmall,
     CornersGeometry? cornerExtraSmallTop,
@@ -31,29 +32,56 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
   }) = _ShapeThemeDataPartial;
 
   double? get cornerValueNone;
+
   double? get cornerValueExtraSmall;
+
   double? get cornerValueSmall;
+
   double? get cornerValueMedium;
+
   double? get cornerValueLarge;
+
   double? get cornerValueLargeIncreased;
+
   double? get cornerValueExtraLarge;
+
   double? get cornerValueExtraLargeIncreased;
+
   double? get cornerValueExtraExtraLarge;
+
+  CornersBorderDelegate? get cornerFamily;
+
   Corner? get cornerNone;
+
   Corner? get cornerExtraSmall;
+
   CornersGeometry? get cornerExtraSmallTop;
+
   Corner? get cornerSmall;
+
   Corner? get cornerMedium;
+
   Corner? get cornerLarge;
+
   CornersGeometry? get cornerLargeStart;
+
   CornersGeometry? get cornerLargeEnd;
+
   CornersGeometry? get cornerLargeTop;
+
   Corner? get cornerLargeIncreased;
+
   Corner? get cornerExtraLarge;
+
   CornersGeometry? get cornerExtraLargeTop;
+
   Corner? get cornerExtraLargeIncreased;
+
   Corner? get cornerExtraExtraLarge;
+
   Corner? get cornerFull;
+
+  ShapeThemeDataPartial copy() => copyWith();
 
   ShapeThemeDataPartial copyWith({
     double? cornerValueNone,
@@ -65,6 +93,7 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
     double? cornerValueExtraLarge,
     double? cornerValueExtraLargeIncreased,
     double? cornerValueExtraExtraLarge,
+    CornersBorderDelegate? cornerFamily,
     Corner? cornerNone,
     Corner? cornerExtraSmall,
     CornersGeometry? cornerExtraSmallTop,
@@ -90,6 +119,7 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
           cornerValueExtraLarge != null ||
           cornerValueExtraLargeIncreased != null ||
           cornerValueExtraExtraLarge != null ||
+          cornerFamily != null ||
           cornerNone != null ||
           cornerExtraSmall != null ||
           cornerExtraSmallTop != null ||
@@ -121,6 +151,7 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
               this.cornerValueExtraLargeIncreased,
           cornerValueExtraExtraLarge:
               cornerValueExtraExtraLarge ?? this.cornerValueExtraExtraLarge,
+          cornerFamily: cornerFamily ?? this.cornerFamily,
           cornerNone: cornerNone ?? this.cornerNone,
           cornerExtraSmall: cornerExtraSmall ?? this.cornerExtraSmall,
           cornerExtraSmallTop: cornerExtraSmallTop ?? this.cornerExtraSmallTop,
@@ -142,7 +173,7 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
         )
       : this;
 
-  ShapeThemeDataPartial mergeWith({
+  ShapeThemeDataPartial maybeCopyWith({
     double? cornerValueNone,
     double? cornerValueExtraSmall,
     double? cornerValueSmall,
@@ -152,6 +183,7 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
     double? cornerValueExtraLarge,
     double? cornerValueExtraLargeIncreased,
     double? cornerValueExtraExtraLarge,
+    CornersBorderDelegate? cornerFamily,
     Corner? cornerNone,
     Corner? cornerExtraSmall,
     CornersGeometry? cornerExtraSmallTop,
@@ -167,35 +199,63 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
     Corner? cornerExtraLargeIncreased,
     Corner? cornerExtraExtraLarge,
     Corner? cornerFull,
-  }) => copyWith(
-    cornerValueNone: cornerValueNone,
-    cornerValueExtraSmall: cornerValueExtraSmall,
-    cornerValueSmall: cornerValueSmall,
-    cornerValueMedium: cornerValueMedium,
-    cornerValueLarge: cornerValueLarge,
-    cornerValueLargeIncreased: cornerValueLargeIncreased,
-    cornerValueExtraLarge: cornerValueExtraLarge,
-    cornerValueExtraLargeIncreased: cornerValueExtraLargeIncreased,
-    cornerValueExtraExtraLarge: cornerValueExtraExtraLarge,
-    cornerNone: cornerNone,
-    cornerExtraSmall: cornerExtraSmall,
-    cornerExtraSmallTop: cornerExtraSmallTop,
-    cornerSmall: cornerSmall,
-    cornerMedium: cornerMedium,
-    cornerLarge: cornerLarge,
-    cornerLargeStart: cornerLargeStart,
-    cornerLargeEnd: cornerLargeEnd,
-    cornerLargeTop: cornerLargeTop,
-    cornerLargeIncreased: cornerLargeIncreased,
-    cornerExtraLarge: cornerExtraLarge,
-    cornerExtraLargeTop: cornerExtraLargeTop,
-    cornerExtraLargeIncreased: cornerExtraLargeIncreased,
-    cornerExtraExtraLarge: cornerExtraExtraLarge,
-    cornerFull: cornerFull,
-  );
+  }) =>
+      cornerValueNone != null ||
+          cornerValueExtraSmall != null ||
+          cornerValueSmall != null ||
+          cornerValueMedium != null ||
+          cornerValueLarge != null ||
+          cornerValueLargeIncreased != null ||
+          cornerValueExtraLarge != null ||
+          cornerValueExtraLargeIncreased != null ||
+          cornerValueExtraExtraLarge != null ||
+          cornerFamily != null ||
+          cornerNone != null ||
+          cornerExtraSmall != null ||
+          cornerExtraSmallTop != null ||
+          cornerSmall != null ||
+          cornerMedium != null ||
+          cornerLarge != null ||
+          cornerLargeStart != null ||
+          cornerLargeEnd != null ||
+          cornerLargeTop != null ||
+          cornerLargeIncreased != null ||
+          cornerExtraLarge != null ||
+          cornerExtraLargeTop != null ||
+          cornerExtraLargeIncreased != null ||
+          cornerExtraExtraLarge != null ||
+          cornerFull != null
+      ? copyWith(
+          cornerValueNone: cornerValueNone,
+          cornerValueExtraSmall: cornerValueExtraSmall,
+          cornerValueSmall: cornerValueSmall,
+          cornerValueMedium: cornerValueMedium,
+          cornerValueLarge: cornerValueLarge,
+          cornerValueLargeIncreased: cornerValueLargeIncreased,
+          cornerValueExtraLarge: cornerValueExtraLarge,
+          cornerValueExtraLargeIncreased: cornerValueExtraLargeIncreased,
+          cornerValueExtraExtraLarge: cornerValueExtraExtraLarge,
+          cornerFamily: cornerFamily,
+          cornerNone: cornerNone,
+          cornerExtraSmall: cornerExtraSmall,
+          cornerExtraSmallTop: cornerExtraSmallTop,
+          cornerSmall: cornerSmall,
+          cornerMedium: cornerMedium,
+          cornerLarge: cornerLarge,
+          cornerLargeStart: cornerLargeStart,
+          cornerLargeEnd: cornerLargeEnd,
+          cornerLargeTop: cornerLargeTop,
+          cornerLargeIncreased: cornerLargeIncreased,
+          cornerExtraLarge: cornerExtraLarge,
+          cornerExtraLargeTop: cornerExtraLargeTop,
+          cornerExtraLargeIncreased: cornerExtraLargeIncreased,
+          cornerExtraExtraLarge: cornerExtraExtraLarge,
+          cornerFull: cornerFull,
+        )
+      : this;
 
   ShapeThemeDataPartial merge(ShapeThemeDataPartial? other) => other != null
-      ? mergeWith(
+      ? copyWith(
           cornerValueNone: other.cornerValueNone,
           cornerValueExtraSmall: other.cornerValueExtraSmall,
           cornerValueSmall: other.cornerValueSmall,
@@ -205,6 +265,38 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
           cornerValueExtraLarge: other.cornerValueExtraLarge,
           cornerValueExtraLargeIncreased: other.cornerValueExtraLargeIncreased,
           cornerValueExtraExtraLarge: other.cornerValueExtraExtraLarge,
+          cornerFamily: other.cornerFamily,
+          cornerNone: other.cornerNone,
+          cornerExtraSmall: other.cornerExtraSmall,
+          cornerExtraSmallTop: other.cornerExtraSmallTop,
+          cornerSmall: other.cornerSmall,
+          cornerMedium: other.cornerMedium,
+          cornerLarge: other.cornerLarge,
+          cornerLargeStart: other.cornerLargeStart,
+          cornerLargeEnd: other.cornerLargeEnd,
+          cornerLargeTop: other.cornerLargeTop,
+          cornerLargeIncreased: other.cornerLargeIncreased,
+          cornerExtraLarge: other.cornerExtraLarge,
+          cornerExtraLargeTop: other.cornerExtraLargeTop,
+          cornerExtraLargeIncreased: other.cornerExtraLargeIncreased,
+          cornerExtraExtraLarge: other.cornerExtraExtraLarge,
+          cornerFull: other.cornerFull,
+        )
+      : copy();
+
+  ShapeThemeDataPartial maybeMerge(ShapeThemeDataPartial? other) =>
+      other != null
+      ? maybeCopyWith(
+          cornerValueNone: other.cornerValueNone,
+          cornerValueExtraSmall: other.cornerValueExtraSmall,
+          cornerValueSmall: other.cornerValueSmall,
+          cornerValueMedium: other.cornerValueMedium,
+          cornerValueLarge: other.cornerValueLarge,
+          cornerValueLargeIncreased: other.cornerValueLargeIncreased,
+          cornerValueExtraLarge: other.cornerValueExtraLarge,
+          cornerValueExtraLargeIncreased: other.cornerValueExtraLargeIncreased,
+          cornerValueExtraExtraLarge: other.cornerValueExtraExtraLarge,
+          cornerFamily: other.cornerFamily,
           cornerNone: other.cornerNone,
           cornerExtraSmall: other.cornerExtraSmall,
           cornerExtraSmallTop: other.cornerExtraSmallTop,
@@ -222,6 +314,29 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
           cornerFull: other.cornerFull,
         )
       : this;
+
+  CornersBorder? applyCornerValue({
+    BorderSide side = .none,
+    double cornerValue = 0.0,
+  }) => applyCorner(side: side, corner: .fixed(cornerValue));
+
+  CornersBorder? applyCorner({
+    BorderSide side = .none,
+    Corner corner = .zero,
+  }) => applyCorners(side: side, corners: .all(corner));
+
+  CornersBorder? applyCorners({
+    BorderSide side = .none,
+    CornersGeometry corners = .zero,
+  }) {
+    final delegate = cornerFamily;
+    return delegate != null
+        ? CornersBorder(side: side, delegate: delegate, corners: corners)
+        : null;
+  }
+
+  CornersBorder apply(CornersBorder shape) =>
+      shape.copyWith(delegate: cornerFamily);
 
   @override
   // ignore: must_call_super
@@ -283,6 +398,13 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
         DoubleProperty(
           "cornerValueExtraExtraLarge",
           cornerValueExtraExtraLarge,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<CornersBorderDelegate>(
+          "cornerFamily",
+          cornerFamily,
           defaultValue: null,
         ),
       )
@@ -392,71 +514,9 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
         ),
       );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is ShapeThemeDataPartial &&
-          cornerValueNone == other.cornerValueNone &&
-          cornerValueExtraSmall == other.cornerValueExtraSmall &&
-          cornerValueSmall == other.cornerValueSmall &&
-          cornerValueMedium == other.cornerValueMedium &&
-          cornerValueLarge == other.cornerValueLarge &&
-          cornerValueLargeIncreased == other.cornerValueLargeIncreased &&
-          cornerValueExtraLarge == other.cornerValueExtraLarge &&
-          cornerValueExtraLargeIncreased ==
-              other.cornerValueExtraLargeIncreased &&
-          cornerValueExtraExtraLarge == other.cornerValueExtraExtraLarge &&
-          cornerNone == other.cornerNone &&
-          cornerExtraSmall == other.cornerExtraSmall &&
-          cornerExtraSmallTop == other.cornerExtraSmallTop &&
-          cornerSmall == other.cornerSmall &&
-          cornerMedium == other.cornerMedium &&
-          cornerLarge == other.cornerLarge &&
-          cornerLargeStart == other.cornerLargeStart &&
-          cornerLargeEnd == other.cornerLargeEnd &&
-          cornerLargeTop == other.cornerLargeTop &&
-          cornerLargeIncreased == other.cornerLargeIncreased &&
-          cornerExtraLarge == other.cornerExtraLarge &&
-          cornerExtraLargeTop == other.cornerExtraLargeTop &&
-          cornerExtraLargeIncreased == other.cornerExtraLargeIncreased &&
-          cornerExtraExtraLarge == other.cornerExtraExtraLarge &&
-          cornerFull == other.cornerFull;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    cornerValueNone,
-    cornerValueExtraSmall,
-    cornerValueSmall,
-    cornerValueMedium,
-    cornerValueLarge,
-    cornerValueLargeIncreased,
-    cornerValueExtraLarge,
-    cornerValueExtraLargeIncreased,
-    cornerValueExtraExtraLarge,
-    cornerNone,
-    cornerExtraSmall,
-    cornerExtraSmallTop,
-    cornerSmall,
-    cornerMedium,
-    cornerLarge,
-    cornerLargeStart,
-    cornerLargeEnd,
-    cornerLargeTop,
-    Object.hash(
-      cornerLargeIncreased,
-      cornerExtraLarge,
-      cornerExtraLargeTop,
-      cornerExtraLargeIncreased,
-      cornerExtraExtraLarge,
-      cornerFull,
-    ),
-  );
 }
 
-class _ShapeThemeDataPartial extends ShapeThemeDataPartial {
+final class _ShapeThemeDataPartial extends ShapeThemeDataPartial {
   const _ShapeThemeDataPartial({
     this.cornerValueNone,
     this.cornerValueExtraSmall,
@@ -467,6 +527,7 @@ class _ShapeThemeDataPartial extends ShapeThemeDataPartial {
     this.cornerValueExtraLarge,
     this.cornerValueExtraLargeIncreased,
     this.cornerValueExtraExtraLarge,
+    this.cornerFamily,
     this.cornerNone,
     this.cornerExtraSmall,
     this.cornerExtraSmallTop,
@@ -512,6 +573,9 @@ class _ShapeThemeDataPartial extends ShapeThemeDataPartial {
   final double? cornerValueExtraExtraLarge;
 
   @override
+  final CornersBorderDelegate? cornerFamily;
+
+  @override
   final Corner? cornerNone;
 
   @override
@@ -555,6 +619,68 @@ class _ShapeThemeDataPartial extends ShapeThemeDataPartial {
 
   @override
   final Corner? cornerFull;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _ShapeThemeDataPartial &&
+          cornerValueNone == other.cornerValueNone &&
+          cornerValueExtraSmall == other.cornerValueExtraSmall &&
+          cornerValueSmall == other.cornerValueSmall &&
+          cornerValueMedium == other.cornerValueMedium &&
+          cornerValueLarge == other.cornerValueLarge &&
+          cornerValueLargeIncreased == other.cornerValueLargeIncreased &&
+          cornerValueExtraLarge == other.cornerValueExtraLarge &&
+          cornerValueExtraLargeIncreased ==
+              other.cornerValueExtraLargeIncreased &&
+          cornerValueExtraExtraLarge == other.cornerValueExtraExtraLarge &&
+          cornerFamily == other.cornerFamily &&
+          cornerNone == other.cornerNone &&
+          cornerExtraSmall == other.cornerExtraSmall &&
+          cornerExtraSmallTop == other.cornerExtraSmallTop &&
+          cornerSmall == other.cornerSmall &&
+          cornerMedium == other.cornerMedium &&
+          cornerLarge == other.cornerLarge &&
+          cornerLargeStart == other.cornerLargeStart &&
+          cornerLargeEnd == other.cornerLargeEnd &&
+          cornerLargeTop == other.cornerLargeTop &&
+          cornerLargeIncreased == other.cornerLargeIncreased &&
+          cornerExtraLarge == other.cornerExtraLarge &&
+          cornerExtraLargeTop == other.cornerExtraLargeTop &&
+          cornerExtraLargeIncreased == other.cornerExtraLargeIncreased &&
+          cornerExtraExtraLarge == other.cornerExtraExtraLarge &&
+          cornerFull == other.cornerFull;
+
+  @override
+  int get hashCode => Object.hash(
+    cornerValueNone,
+    cornerValueExtraSmall,
+    cornerValueSmall,
+    cornerValueMedium,
+    cornerValueLarge,
+    cornerValueLargeIncreased,
+    cornerValueExtraLarge,
+    cornerValueExtraLargeIncreased,
+    cornerValueExtraExtraLarge,
+    cornerFamily,
+    cornerNone,
+    cornerExtraSmall,
+    cornerExtraSmallTop,
+    cornerSmall,
+    cornerMedium,
+    cornerLarge,
+    cornerLargeStart,
+    cornerLargeEnd,
+    cornerLargeTop,
+    Object.hash(
+      cornerLargeIncreased,
+      cornerExtraLarge,
+      cornerExtraLargeTop,
+      cornerExtraLargeIncreased,
+      cornerExtraExtraLarge,
+      cornerFull,
+    ),
+  );
 }
 
 abstract class ShapeThemeData extends ShapeThemeDataPartial {
@@ -570,6 +696,7 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
     required double cornerValueExtraLarge,
     required double cornerValueExtraLargeIncreased,
     required double cornerValueExtraExtraLarge,
+    required CornersBorderDelegate cornerFamily,
     required Corner cornerNone,
     required Corner cornerExtraSmall,
     required CornersGeometry cornerExtraSmallTop,
@@ -587,34 +714,8 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
     required Corner cornerFull,
   }) = _ShapeThemeData;
 
-  const factory ShapeThemeData.defaults() = _ShapeThemeDataDefaults;
-
-  const factory ShapeThemeData._defaults({
-    double? cornerValueNone,
-    double? cornerValueExtraSmall,
-    double? cornerValueSmall,
-    double? cornerValueMedium,
-    double? cornerValueLarge,
-    double? cornerValueLargeIncreased,
-    double? cornerValueExtraLarge,
-    double? cornerValueExtraLargeIncreased,
-    double? cornerValueExtraExtraLarge,
-    Corner? cornerNone,
-    Corner? cornerExtraSmall,
-    CornersGeometry? cornerExtraSmallTop,
-    Corner? cornerSmall,
-    Corner? cornerMedium,
-    Corner? cornerLarge,
-    CornersGeometry? cornerLargeStart,
-    CornersGeometry? cornerLargeEnd,
-    CornersGeometry? cornerLargeTop,
-    Corner? cornerLargeIncreased,
-    Corner? cornerExtraLarge,
-    CornersGeometry? cornerExtraLargeTop,
-    Corner? cornerExtraLargeIncreased,
-    Corner? cornerExtraExtraLarge,
-    Corner? cornerFull,
-  }) = _ShapeThemeDataDefaults;
+  const factory ShapeThemeData.defaults({ShapeThemeDataPartial? overrides}) =
+      _ShapeThemeDataDefaults;
 
   @override
   double get cornerValueNone;
@@ -642,6 +743,9 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
 
   @override
   double get cornerValueExtraExtraLarge;
+
+  @override
+  CornersBorderDelegate get cornerFamily;
 
   @override
   Corner get cornerNone;
@@ -689,6 +793,9 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
   Corner get cornerFull;
 
   @override
+  ShapeThemeData copy() => copyWith();
+
+  @override
   ShapeThemeData copyWith({
     double? cornerValueNone,
     double? cornerValueExtraSmall,
@@ -699,6 +806,7 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
     double? cornerValueExtraLarge,
     double? cornerValueExtraLargeIncreased,
     double? cornerValueExtraExtraLarge,
+    CornersBorderDelegate? cornerFamily,
     Corner? cornerNone,
     Corner? cornerExtraSmall,
     CornersGeometry? cornerExtraSmallTop,
@@ -724,6 +832,7 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
           cornerValueExtraLarge != null ||
           cornerValueExtraLargeIncreased != null ||
           cornerValueExtraExtraLarge != null ||
+          cornerFamily != null ||
           cornerNone != null ||
           cornerExtraSmall != null ||
           cornerExtraSmallTop != null ||
@@ -755,6 +864,7 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
               this.cornerValueExtraLargeIncreased,
           cornerValueExtraExtraLarge:
               cornerValueExtraExtraLarge ?? this.cornerValueExtraExtraLarge,
+          cornerFamily: cornerFamily ?? this.cornerFamily,
           cornerNone: cornerNone ?? this.cornerNone,
           cornerExtraSmall: cornerExtraSmall ?? this.cornerExtraSmall,
           cornerExtraSmallTop: cornerExtraSmallTop ?? this.cornerExtraSmallTop,
@@ -777,7 +887,7 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
       : this;
 
   @override
-  ShapeThemeData mergeWith({
+  ShapeThemeData maybeCopyWith({
     double? cornerValueNone,
     double? cornerValueExtraSmall,
     double? cornerValueSmall,
@@ -787,6 +897,7 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
     double? cornerValueExtraLarge,
     double? cornerValueExtraLargeIncreased,
     double? cornerValueExtraExtraLarge,
+    CornersBorderDelegate? cornerFamily,
     Corner? cornerNone,
     Corner? cornerExtraSmall,
     CornersGeometry? cornerExtraSmallTop,
@@ -802,36 +913,64 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
     Corner? cornerExtraLargeIncreased,
     Corner? cornerExtraExtraLarge,
     Corner? cornerFull,
-  }) => copyWith(
-    cornerValueNone: cornerValueNone,
-    cornerValueExtraSmall: cornerValueExtraSmall,
-    cornerValueSmall: cornerValueSmall,
-    cornerValueMedium: cornerValueMedium,
-    cornerValueLarge: cornerValueLarge,
-    cornerValueLargeIncreased: cornerValueLargeIncreased,
-    cornerValueExtraLarge: cornerValueExtraLarge,
-    cornerValueExtraLargeIncreased: cornerValueExtraLargeIncreased,
-    cornerValueExtraExtraLarge: cornerValueExtraExtraLarge,
-    cornerNone: cornerNone,
-    cornerExtraSmall: cornerExtraSmall,
-    cornerExtraSmallTop: cornerExtraSmallTop,
-    cornerSmall: cornerSmall,
-    cornerMedium: cornerMedium,
-    cornerLarge: cornerLarge,
-    cornerLargeStart: cornerLargeStart,
-    cornerLargeEnd: cornerLargeEnd,
-    cornerLargeTop: cornerLargeTop,
-    cornerLargeIncreased: cornerLargeIncreased,
-    cornerExtraLarge: cornerExtraLarge,
-    cornerExtraLargeTop: cornerExtraLargeTop,
-    cornerExtraLargeIncreased: cornerExtraLargeIncreased,
-    cornerExtraExtraLarge: cornerExtraExtraLarge,
-    cornerFull: cornerFull,
-  );
+  }) =>
+      cornerValueNone != null ||
+          cornerValueExtraSmall != null ||
+          cornerValueSmall != null ||
+          cornerValueMedium != null ||
+          cornerValueLarge != null ||
+          cornerValueLargeIncreased != null ||
+          cornerValueExtraLarge != null ||
+          cornerValueExtraLargeIncreased != null ||
+          cornerValueExtraExtraLarge != null ||
+          cornerFamily != null ||
+          cornerNone != null ||
+          cornerExtraSmall != null ||
+          cornerExtraSmallTop != null ||
+          cornerSmall != null ||
+          cornerMedium != null ||
+          cornerLarge != null ||
+          cornerLargeStart != null ||
+          cornerLargeEnd != null ||
+          cornerLargeTop != null ||
+          cornerLargeIncreased != null ||
+          cornerExtraLarge != null ||
+          cornerExtraLargeTop != null ||
+          cornerExtraLargeIncreased != null ||
+          cornerExtraExtraLarge != null ||
+          cornerFull != null
+      ? copyWith(
+          cornerValueNone: cornerValueNone,
+          cornerValueExtraSmall: cornerValueExtraSmall,
+          cornerValueSmall: cornerValueSmall,
+          cornerValueMedium: cornerValueMedium,
+          cornerValueLarge: cornerValueLarge,
+          cornerValueLargeIncreased: cornerValueLargeIncreased,
+          cornerValueExtraLarge: cornerValueExtraLarge,
+          cornerValueExtraLargeIncreased: cornerValueExtraLargeIncreased,
+          cornerValueExtraExtraLarge: cornerValueExtraExtraLarge,
+          cornerFamily: cornerFamily,
+          cornerNone: cornerNone,
+          cornerExtraSmall: cornerExtraSmall,
+          cornerExtraSmallTop: cornerExtraSmallTop,
+          cornerSmall: cornerSmall,
+          cornerMedium: cornerMedium,
+          cornerLarge: cornerLarge,
+          cornerLargeStart: cornerLargeStart,
+          cornerLargeEnd: cornerLargeEnd,
+          cornerLargeTop: cornerLargeTop,
+          cornerLargeIncreased: cornerLargeIncreased,
+          cornerExtraLarge: cornerExtraLarge,
+          cornerExtraLargeTop: cornerExtraLargeTop,
+          cornerExtraLargeIncreased: cornerExtraLargeIncreased,
+          cornerExtraExtraLarge: cornerExtraExtraLarge,
+          cornerFull: cornerFull,
+        )
+      : this;
 
   @override
   ShapeThemeData merge(ShapeThemeDataPartial? other) => other != null
-      ? mergeWith(
+      ? copyWith(
           cornerValueNone: other.cornerValueNone,
           cornerValueExtraSmall: other.cornerValueExtraSmall,
           cornerValueSmall: other.cornerValueSmall,
@@ -841,6 +980,38 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
           cornerValueExtraLarge: other.cornerValueExtraLarge,
           cornerValueExtraLargeIncreased: other.cornerValueExtraLargeIncreased,
           cornerValueExtraExtraLarge: other.cornerValueExtraExtraLarge,
+          cornerFamily: other.cornerFamily,
+          cornerNone: other.cornerNone,
+          cornerExtraSmall: other.cornerExtraSmall,
+          cornerExtraSmallTop: other.cornerExtraSmallTop,
+          cornerSmall: other.cornerSmall,
+          cornerMedium: other.cornerMedium,
+          cornerLarge: other.cornerLarge,
+          cornerLargeStart: other.cornerLargeStart,
+          cornerLargeEnd: other.cornerLargeEnd,
+          cornerLargeTop: other.cornerLargeTop,
+          cornerLargeIncreased: other.cornerLargeIncreased,
+          cornerExtraLarge: other.cornerExtraLarge,
+          cornerExtraLargeTop: other.cornerExtraLargeTop,
+          cornerExtraLargeIncreased: other.cornerExtraLargeIncreased,
+          cornerExtraExtraLarge: other.cornerExtraExtraLarge,
+          cornerFull: other.cornerFull,
+        )
+      : copy();
+
+  @override
+  ShapeThemeData maybeMerge(ShapeThemeDataPartial? other) => other != null
+      ? maybeCopyWith(
+          cornerValueNone: other.cornerValueNone,
+          cornerValueExtraSmall: other.cornerValueExtraSmall,
+          cornerValueSmall: other.cornerValueSmall,
+          cornerValueMedium: other.cornerValueMedium,
+          cornerValueLarge: other.cornerValueLarge,
+          cornerValueLargeIncreased: other.cornerValueLargeIncreased,
+          cornerValueExtraLarge: other.cornerValueExtraLarge,
+          cornerValueExtraLargeIncreased: other.cornerValueExtraLargeIncreased,
+          cornerValueExtraExtraLarge: other.cornerValueExtraExtraLarge,
+          cornerFamily: other.cornerFamily,
           cornerNone: other.cornerNone,
           cornerExtraSmall: other.cornerExtraSmall,
           cornerExtraSmallTop: other.cornerExtraSmallTop,
@@ -858,6 +1029,24 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
           cornerFull: other.cornerFull,
         )
       : this;
+
+  // TODO: modify when the shape / outline API is ready
+
+  @override
+  CornersBorder applyCornerValue({
+    BorderSide side = .none,
+    double cornerValue = 0.0,
+  }) => applyCorner(side: side, corner: .fixed(cornerValue));
+
+  @override
+  CornersBorder applyCorner({BorderSide side = .none, Corner corner = .zero}) =>
+      applyCorners(side: side, corners: .all(corner));
+
+  @override
+  CornersBorder applyCorners({
+    BorderSide side = .none,
+    CornersGeometry corners = .zero,
+  }) => CornersBorder(side: side, delegate: cornerFamily, corners: corners);
 
   @override
   // ignore: must_call_super
@@ -882,6 +1071,12 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
         DoubleProperty(
           "cornerValueExtraExtraLarge",
           cornerValueExtraExtraLarge,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<CornersBorderDelegate>(
+          "cornerFamily",
+          cornerFamily,
         ),
       )
       ..add(DiagnosticsProperty<Corner>("cornerNone", cornerNone))
@@ -934,71 +1129,9 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
       )
       ..add(DiagnosticsProperty<Corner>("cornerFull", cornerFull));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is ShapeThemeData &&
-          cornerValueNone == other.cornerValueNone &&
-          cornerValueExtraSmall == other.cornerValueExtraSmall &&
-          cornerValueSmall == other.cornerValueSmall &&
-          cornerValueMedium == other.cornerValueMedium &&
-          cornerValueLarge == other.cornerValueLarge &&
-          cornerValueLargeIncreased == other.cornerValueLargeIncreased &&
-          cornerValueExtraLarge == other.cornerValueExtraLarge &&
-          cornerValueExtraLargeIncreased ==
-              other.cornerValueExtraLargeIncreased &&
-          cornerValueExtraExtraLarge == other.cornerValueExtraExtraLarge &&
-          cornerNone == other.cornerNone &&
-          cornerExtraSmall == other.cornerExtraSmall &&
-          cornerExtraSmallTop == other.cornerExtraSmallTop &&
-          cornerSmall == other.cornerSmall &&
-          cornerMedium == other.cornerMedium &&
-          cornerLarge == other.cornerLarge &&
-          cornerLargeStart == other.cornerLargeStart &&
-          cornerLargeEnd == other.cornerLargeEnd &&
-          cornerLargeTop == other.cornerLargeTop &&
-          cornerLargeIncreased == other.cornerLargeIncreased &&
-          cornerExtraLarge == other.cornerExtraLarge &&
-          cornerExtraLargeTop == other.cornerExtraLargeTop &&
-          cornerExtraLargeIncreased == other.cornerExtraLargeIncreased &&
-          cornerExtraExtraLarge == other.cornerExtraExtraLarge &&
-          cornerFull == other.cornerFull;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    cornerValueNone,
-    cornerValueExtraSmall,
-    cornerValueSmall,
-    cornerValueMedium,
-    cornerValueLarge,
-    cornerValueLargeIncreased,
-    cornerValueExtraLarge,
-    cornerValueExtraLargeIncreased,
-    cornerValueExtraExtraLarge,
-    cornerNone,
-    cornerExtraSmall,
-    cornerExtraSmallTop,
-    cornerSmall,
-    cornerMedium,
-    cornerLarge,
-    cornerLargeStart,
-    cornerLargeEnd,
-    cornerLargeTop,
-    Object.hash(
-      cornerLargeIncreased,
-      cornerExtraLarge,
-      cornerExtraLargeTop,
-      cornerExtraLargeIncreased,
-      cornerExtraExtraLarge,
-      cornerFull,
-    ),
-  );
 }
 
-class _ShapeThemeData extends ShapeThemeData {
+final class _ShapeThemeData extends ShapeThemeData {
   const _ShapeThemeData({
     required this.cornerValueNone,
     required this.cornerValueExtraSmall,
@@ -1009,6 +1142,7 @@ class _ShapeThemeData extends ShapeThemeData {
     required this.cornerValueExtraLarge,
     required this.cornerValueExtraLargeIncreased,
     required this.cornerValueExtraExtraLarge,
+    required this.cornerFamily,
     required this.cornerNone,
     required this.cornerExtraSmall,
     required this.cornerExtraSmallTop,
@@ -1054,6 +1188,9 @@ class _ShapeThemeData extends ShapeThemeData {
   final double cornerValueExtraExtraLarge;
 
   @override
+  final CornersBorderDelegate cornerFamily;
+
+  @override
   final Corner cornerNone;
 
   @override
@@ -1097,10 +1234,170 @@ class _ShapeThemeData extends ShapeThemeData {
 
   @override
   final Corner cornerFull;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _ShapeThemeData &&
+          cornerValueNone == other.cornerValueNone &&
+          cornerValueExtraSmall == other.cornerValueExtraSmall &&
+          cornerValueSmall == other.cornerValueSmall &&
+          cornerValueMedium == other.cornerValueMedium &&
+          cornerValueLarge == other.cornerValueLarge &&
+          cornerValueLargeIncreased == other.cornerValueLargeIncreased &&
+          cornerValueExtraLarge == other.cornerValueExtraLarge &&
+          cornerValueExtraLargeIncreased ==
+              other.cornerValueExtraLargeIncreased &&
+          cornerValueExtraExtraLarge == other.cornerValueExtraExtraLarge &&
+          cornerFamily == other.cornerFamily &&
+          cornerNone == other.cornerNone &&
+          cornerExtraSmall == other.cornerExtraSmall &&
+          cornerExtraSmallTop == other.cornerExtraSmallTop &&
+          cornerSmall == other.cornerSmall &&
+          cornerMedium == other.cornerMedium &&
+          cornerLarge == other.cornerLarge &&
+          cornerLargeStart == other.cornerLargeStart &&
+          cornerLargeEnd == other.cornerLargeEnd &&
+          cornerLargeTop == other.cornerLargeTop &&
+          cornerLargeIncreased == other.cornerLargeIncreased &&
+          cornerExtraLarge == other.cornerExtraLarge &&
+          cornerExtraLargeTop == other.cornerExtraLargeTop &&
+          cornerExtraLargeIncreased == other.cornerExtraLargeIncreased &&
+          cornerExtraExtraLarge == other.cornerExtraExtraLarge &&
+          cornerFull == other.cornerFull;
+
+  @override
+  int get hashCode => Object.hash(
+    cornerValueNone,
+    cornerValueExtraSmall,
+    cornerValueSmall,
+    cornerValueMedium,
+    cornerValueLarge,
+    cornerValueLargeIncreased,
+    cornerValueExtraLarge,
+    cornerValueExtraLargeIncreased,
+    cornerValueExtraExtraLarge,
+    cornerFamily,
+    cornerNone,
+    cornerExtraSmall,
+    cornerExtraSmallTop,
+    cornerSmall,
+    cornerMedium,
+    cornerLarge,
+    cornerLargeStart,
+    cornerLargeEnd,
+    cornerLargeTop,
+    Object.hash(
+      cornerLargeIncreased,
+      cornerExtraLarge,
+      cornerExtraLargeTop,
+      cornerExtraLargeIncreased,
+      cornerExtraExtraLarge,
+      cornerFull,
+    ),
+  );
 }
 
-class _ShapeThemeDataDefaults extends ShapeThemeData {
-  const _ShapeThemeDataDefaults({
+final class _ShapeThemeDataDefaults extends ShapeThemeData {
+  const _ShapeThemeDataDefaults({ShapeThemeDataPartial? overrides})
+    : _overrides = overrides ?? const .from();
+
+  final ShapeThemeDataPartial _overrides;
+
+  @override
+  double get cornerValueNone => _overrides.cornerValueNone ?? 0.0;
+
+  @override
+  double get cornerValueExtraSmall => _overrides.cornerValueExtraSmall ?? 4.0;
+
+  @override
+  double get cornerValueSmall => _overrides.cornerValueSmall ?? 8.0;
+
+  @override
+  double get cornerValueMedium => _overrides.cornerValueMedium ?? 12.0;
+
+  @override
+  double get cornerValueLarge => _overrides.cornerValueLarge ?? 16.0;
+
+  @override
+  double get cornerValueLargeIncreased =>
+      _overrides.cornerValueLargeIncreased ?? 20.0;
+
+  @override
+  double get cornerValueExtraLarge => _overrides.cornerValueExtraLarge ?? 28.0;
+
+  @override
+  double get cornerValueExtraLargeIncreased =>
+      _overrides.cornerValueExtraLargeIncreased ?? 32.0;
+
+  @override
+  double get cornerValueExtraExtraLarge =>
+      _overrides.cornerValueExtraExtraLarge ?? 48.0;
+
+  @override
+  CornersBorderDelegate get cornerFamily => _overrides.cornerFamily ?? .rounded;
+
+  @override
+  Corner get cornerNone => _overrides.cornerNone ?? .fixed(cornerValueNone);
+
+  @override
+  Corner get cornerExtraSmall =>
+      _overrides.cornerExtraSmall ?? .fixed(cornerValueExtraSmall);
+
+  @override
+  CornersGeometry get cornerExtraSmallTop =>
+      _overrides.cornerExtraSmallTop ?? .vertical(top: cornerExtraSmall);
+
+  @override
+  Corner get cornerSmall => _overrides.cornerSmall ?? .fixed(cornerValueSmall);
+
+  @override
+  Corner get cornerMedium =>
+      _overrides.cornerMedium ?? .fixed(cornerValueMedium);
+
+  @override
+  Corner get cornerLarge => _overrides.cornerLarge ?? .fixed(cornerValueLarge);
+
+  @override
+  CornersGeometry get cornerLargeStart =>
+      _overrides.cornerLargeStart ??
+      CornersDirectional.horizontal(start: cornerLarge);
+
+  @override
+  CornersGeometry get cornerLargeEnd =>
+      _overrides.cornerLargeEnd ??
+      CornersDirectional.horizontal(end: cornerLarge);
+
+  @override
+  CornersGeometry get cornerLargeTop =>
+      _overrides.cornerLargeTop ?? .vertical(top: cornerLarge);
+
+  @override
+  Corner get cornerLargeIncreased =>
+      _overrides.cornerLargeIncreased ?? .fixed(cornerValueLargeIncreased);
+
+  @override
+  Corner get cornerExtraLarge =>
+      _overrides.cornerExtraLarge ?? .fixed(cornerValueExtraLarge);
+
+  @override
+  CornersGeometry get cornerExtraLargeTop =>
+      _overrides.cornerExtraLargeTop ?? .vertical(top: cornerExtraLarge);
+
+  @override
+  Corner get cornerExtraLargeIncreased =>
+      _overrides.cornerExtraLargeIncreased ??
+      .fixed(cornerValueExtraLargeIncreased);
+
+  @override
+  Corner get cornerExtraExtraLarge =>
+      _overrides.cornerExtraExtraLarge ?? .fixed(cornerValueExtraExtraLarge);
+
+  @override
+  Corner get cornerFull => _overrides.cornerFull ?? .round;
+
+  @override
+  ShapeThemeData copyWith({
     double? cornerValueNone,
     double? cornerValueExtraSmall,
     double? cornerValueSmall,
@@ -1110,6 +1407,7 @@ class _ShapeThemeDataDefaults extends ShapeThemeData {
     double? cornerValueExtraLarge,
     double? cornerValueExtraLargeIncreased,
     double? cornerValueExtraExtraLarge,
+    CornersBorderDelegate? cornerFamily,
     Corner? cornerNone,
     Corner? cornerExtraSmall,
     CornersGeometry? cornerExtraSmallTop,
@@ -1125,141 +1423,38 @@ class _ShapeThemeDataDefaults extends ShapeThemeData {
     Corner? cornerExtraLargeIncreased,
     Corner? cornerExtraExtraLarge,
     Corner? cornerFull,
-  }) : _cornerValueNone = cornerValueNone,
-       _cornerValueExtraSmall = cornerValueExtraSmall,
-       _cornerValueSmall = cornerValueSmall,
-       _cornerValueMedium = cornerValueMedium,
-       _cornerValueLarge = cornerValueLarge,
-       _cornerValueLargeIncreased = cornerValueLargeIncreased,
-       _cornerValueExtraLarge = cornerValueExtraLarge,
-       _cornerValueExtraLargeIncreased = cornerValueExtraLargeIncreased,
-       _cornerValueExtraExtraLarge = cornerValueExtraExtraLarge,
-       _cornerNone = cornerNone,
-       _cornerExtraSmall = cornerExtraSmall,
-       _cornerExtraSmallTop = cornerExtraSmallTop,
-       _cornerSmall = cornerSmall,
-       _cornerMedium = cornerMedium,
-       _cornerLarge = cornerLarge,
-       _cornerLargeStart = cornerLargeStart,
-       _cornerLargeEnd = cornerLargeEnd,
-       _cornerLargeTop = cornerLargeTop,
-       _cornerLargeIncreased = cornerLargeIncreased,
-       _cornerExtraLarge = cornerExtraLarge,
-       _cornerExtraLargeTop = cornerExtraLargeTop,
-       _cornerExtraLargeIncreased = cornerExtraLargeIncreased,
-       _cornerExtraExtraLarge = cornerExtraExtraLarge,
-       _cornerFull = cornerFull;
-
-  final double? _cornerValueNone;
-  final double? _cornerValueExtraSmall;
-  final double? _cornerValueSmall;
-  final double? _cornerValueMedium;
-  final double? _cornerValueLarge;
-  final double? _cornerValueLargeIncreased;
-  final double? _cornerValueExtraLarge;
-  final double? _cornerValueExtraLargeIncreased;
-  final double? _cornerValueExtraExtraLarge;
-  final Corner? _cornerNone;
-  final Corner? _cornerExtraSmall;
-  final CornersGeometry? _cornerExtraSmallTop;
-  final Corner? _cornerSmall;
-  final Corner? _cornerMedium;
-  final Corner? _cornerLarge;
-  final CornersGeometry? _cornerLargeStart;
-  final CornersGeometry? _cornerLargeEnd;
-  final CornersGeometry? _cornerLargeTop;
-  final Corner? _cornerLargeIncreased;
-  final Corner? _cornerExtraLarge;
-  final CornersGeometry? _cornerExtraLargeTop;
-  final Corner? _cornerExtraLargeIncreased;
-  final Corner? _cornerExtraExtraLarge;
-  final Corner? _cornerFull;
+  }) => _ShapeThemeDataDefaults(
+    overrides: _overrides.copyWith(
+      cornerValueNone: cornerValueNone,
+      cornerValueExtraSmall: cornerValueExtraSmall,
+      cornerValueSmall: cornerValueSmall,
+      cornerValueMedium: cornerValueMedium,
+      cornerValueLarge: cornerValueLarge,
+      cornerValueLargeIncreased: cornerValueLargeIncreased,
+      cornerValueExtraLarge: cornerValueExtraLarge,
+      cornerValueExtraLargeIncreased: cornerValueExtraLargeIncreased,
+      cornerValueExtraExtraLarge: cornerValueExtraExtraLarge,
+      cornerFamily: cornerFamily,
+      cornerNone: cornerNone,
+      cornerExtraSmall: cornerExtraSmall,
+      cornerExtraSmallTop: cornerExtraSmallTop,
+      cornerSmall: cornerSmall,
+      cornerMedium: cornerMedium,
+      cornerLarge: cornerLarge,
+      cornerLargeStart: cornerLargeStart,
+      cornerLargeEnd: cornerLargeEnd,
+      cornerLargeTop: cornerLargeTop,
+      cornerLargeIncreased: cornerLargeIncreased,
+      cornerExtraLarge: cornerExtraLarge,
+      cornerExtraLargeTop: cornerExtraLargeTop,
+      cornerExtraLargeIncreased: cornerExtraLargeIncreased,
+      cornerExtraExtraLarge: cornerExtraExtraLarge,
+      cornerFull: cornerFull,
+    ),
+  );
 
   @override
-  double get cornerValueNone => _cornerValueNone ?? 0.0;
-
-  @override
-  double get cornerValueExtraSmall => _cornerValueExtraSmall ?? 4.0;
-
-  @override
-  double get cornerValueSmall => _cornerValueSmall ?? 8.0;
-
-  @override
-  double get cornerValueMedium => _cornerValueMedium ?? 12.0;
-
-  @override
-  double get cornerValueLarge => _cornerValueLarge ?? 16.0;
-
-  @override
-  double get cornerValueLargeIncreased => _cornerValueLargeIncreased ?? 20.0;
-
-  @override
-  double get cornerValueExtraLarge => _cornerValueExtraLarge ?? 28.0;
-
-  @override
-  double get cornerValueExtraLargeIncreased =>
-      _cornerValueExtraLargeIncreased ?? 32.0;
-
-  @override
-  double get cornerValueExtraExtraLarge => _cornerValueExtraExtraLarge ?? 48.0;
-
-  @override
-  Corner get cornerNone => _cornerNone ?? .fixed(cornerValueNone);
-
-  @override
-  Corner get cornerExtraSmall =>
-      _cornerExtraSmall ?? .fixed(cornerValueExtraSmall);
-
-  @override
-  CornersGeometry get cornerExtraSmallTop =>
-      _cornerExtraSmallTop ?? .vertical(top: cornerExtraSmall);
-
-  @override
-  Corner get cornerSmall => _cornerSmall ?? .fixed(cornerValueSmall);
-
-  @override
-  Corner get cornerMedium => _cornerMedium ?? .fixed(cornerValueMedium);
-
-  @override
-  Corner get cornerLarge => _cornerLarge ?? .fixed(cornerValueLarge);
-
-  @override
-  CornersGeometry get cornerLargeStart =>
-      _cornerLargeStart ?? CornersDirectional.horizontal(start: cornerLarge);
-
-  @override
-  CornersGeometry get cornerLargeEnd =>
-      _cornerLargeEnd ?? CornersDirectional.horizontal(end: cornerLarge);
-
-  @override
-  CornersGeometry get cornerLargeTop =>
-      _cornerLargeTop ?? .vertical(top: cornerLarge);
-
-  @override
-  Corner get cornerLargeIncreased =>
-      _cornerLargeIncreased ?? .fixed(cornerValueLargeIncreased);
-
-  @override
-  Corner get cornerExtraLarge =>
-      _cornerExtraLarge ?? .fixed(cornerValueExtraLarge);
-
-  @override
-  CornersGeometry get cornerExtraLargeTop =>
-      _cornerExtraLargeTop ?? .vertical(top: cornerExtraLarge);
-
-  @override
-  Corner get cornerExtraLargeIncreased =>
-      _cornerExtraLargeIncreased ?? .fixed(cornerValueExtraLargeIncreased);
-
-  @override
-  Corner get cornerExtraExtraLarge =>
-      _cornerExtraExtraLarge ?? .fixed(cornerValueExtraExtraLarge);
-
-  @override
-  Corner get cornerFull => _cornerFull ?? .round;
-
-  @override
-  ShapeThemeData copyWith({
+  ShapeThemeData maybeCopyWith({
     double? cornerValueNone,
     double? cornerValueExtraSmall,
     double? cornerValueSmall,
@@ -1269,6 +1464,7 @@ class _ShapeThemeDataDefaults extends ShapeThemeData {
     double? cornerValueExtraLarge,
     double? cornerValueExtraLargeIncreased,
     double? cornerValueExtraExtraLarge,
+    CornersBorderDelegate? cornerFamily,
     Corner? cornerNone,
     Corner? cornerExtraSmall,
     CornersGeometry? cornerExtraSmallTop,
@@ -1294,6 +1490,7 @@ class _ShapeThemeDataDefaults extends ShapeThemeData {
           cornerValueExtraLarge != null &&
           cornerValueExtraLargeIncreased != null &&
           cornerValueExtraExtraLarge != null &&
+          cornerFamily != null &&
           cornerNone != null &&
           cornerExtraSmall != null &&
           cornerExtraSmallTop != null &&
@@ -1319,6 +1516,7 @@ class _ShapeThemeDataDefaults extends ShapeThemeData {
           cornerValueExtraLarge: cornerValueExtraLarge,
           cornerValueExtraLargeIncreased: cornerValueExtraLargeIncreased,
           cornerValueExtraExtraLarge: cornerValueExtraExtraLarge,
+          cornerFamily: cornerFamily,
           cornerNone: cornerNone,
           cornerExtraSmall: cornerExtraSmall,
           cornerExtraSmallTop: cornerExtraSmallTop,
@@ -1335,194 +1533,109 @@ class _ShapeThemeDataDefaults extends ShapeThemeData {
           cornerExtraExtraLarge: cornerExtraExtraLarge,
           cornerFull: cornerFull,
         )
-      : _ShapeThemeDataDefaults(
-          cornerValueNone: cornerValueNone ?? _cornerValueNone,
-          cornerValueExtraSmall:
-              cornerValueExtraSmall ?? _cornerValueExtraSmall,
-          cornerValueSmall: cornerValueSmall ?? _cornerValueSmall,
-          cornerValueMedium: cornerValueMedium ?? _cornerValueMedium,
-          cornerValueLarge: cornerValueLarge ?? _cornerValueLarge,
-          cornerValueLargeIncreased:
-              cornerValueLargeIncreased ?? _cornerValueLargeIncreased,
-          cornerValueExtraLarge:
-              cornerValueExtraLarge ?? _cornerValueExtraLarge,
-          cornerValueExtraLargeIncreased:
-              cornerValueExtraLargeIncreased ?? _cornerValueExtraLargeIncreased,
-          cornerValueExtraExtraLarge:
-              cornerValueExtraExtraLarge ?? _cornerValueExtraExtraLarge,
-          cornerNone: cornerNone ?? _cornerNone,
-          cornerExtraSmall: cornerExtraSmall ?? _cornerExtraSmall,
-          cornerExtraSmallTop: cornerExtraSmallTop ?? _cornerExtraSmallTop,
-          cornerSmall: cornerSmall ?? _cornerSmall,
-          cornerMedium: cornerMedium ?? _cornerMedium,
-          cornerLarge: cornerLarge ?? _cornerLarge,
-          cornerLargeStart: cornerLargeStart ?? _cornerLargeStart,
-          cornerLargeEnd: cornerLargeEnd ?? _cornerLargeEnd,
-          cornerLargeTop: cornerLargeTop ?? _cornerLargeTop,
-          cornerLargeIncreased: cornerLargeIncreased ?? _cornerLargeIncreased,
-          cornerExtraLarge: cornerExtraLarge ?? _cornerExtraLarge,
-          cornerExtraLargeTop: cornerExtraLargeTop ?? _cornerExtraLargeTop,
-          cornerExtraLargeIncreased:
-              cornerExtraLargeIncreased ?? _cornerExtraLargeIncreased,
-          cornerExtraExtraLarge:
-              cornerExtraExtraLarge ?? _cornerExtraExtraLarge,
-          cornerFull: cornerFull ?? _cornerFull,
-        );
-
-  @override
-  ShapeThemeData mergeWith({
-    double? cornerValueNone,
-    double? cornerValueExtraSmall,
-    double? cornerValueSmall,
-    double? cornerValueMedium,
-    double? cornerValueLarge,
-    double? cornerValueLargeIncreased,
-    double? cornerValueExtraLarge,
-    double? cornerValueExtraLargeIncreased,
-    double? cornerValueExtraExtraLarge,
-    Corner? cornerNone,
-    Corner? cornerExtraSmall,
-    CornersGeometry? cornerExtraSmallTop,
-    Corner? cornerSmall,
-    Corner? cornerMedium,
-    Corner? cornerLarge,
-    CornersGeometry? cornerLargeStart,
-    CornersGeometry? cornerLargeEnd,
-    CornersGeometry? cornerLargeTop,
-    Corner? cornerLargeIncreased,
-    Corner? cornerExtraLarge,
-    CornersGeometry? cornerExtraLargeTop,
-    Corner? cornerExtraLargeIncreased,
-    Corner? cornerExtraExtraLarge,
-    Corner? cornerFull,
-  }) => copyWith(
-    cornerValueNone: cornerValueNone,
-    cornerValueExtraSmall: cornerValueExtraSmall,
-    cornerValueSmall: cornerValueSmall,
-    cornerValueMedium: cornerValueMedium,
-    cornerValueLarge: cornerValueLarge,
-    cornerValueLargeIncreased: cornerValueLargeIncreased,
-    cornerValueExtraLarge: cornerValueExtraLarge,
-    cornerValueExtraLargeIncreased: cornerValueExtraLargeIncreased,
-    cornerValueExtraExtraLarge: cornerValueExtraExtraLarge,
-    cornerNone: cornerNone,
-    cornerExtraSmall: cornerExtraSmall,
-    cornerExtraSmallTop: cornerExtraSmallTop,
-    cornerSmall: cornerSmall,
-    cornerMedium: cornerMedium,
-    cornerLarge: cornerLarge,
-    cornerLargeStart: cornerLargeStart,
-    cornerLargeEnd: cornerLargeEnd,
-    cornerLargeTop: cornerLargeTop,
-    cornerLargeIncreased: cornerLargeIncreased,
-    cornerExtraLarge: cornerExtraLarge,
-    cornerExtraLargeTop: cornerExtraLargeTop,
-    cornerExtraLargeIncreased: cornerExtraLargeIncreased,
-    cornerExtraExtraLarge: cornerExtraExtraLarge,
-    cornerFull: cornerFull,
-  );
+      : cornerValueNone != null ||
+            cornerValueExtraSmall != null ||
+            cornerValueSmall != null ||
+            cornerValueMedium != null ||
+            cornerValueLarge != null ||
+            cornerValueLargeIncreased != null ||
+            cornerValueExtraLarge != null ||
+            cornerValueExtraLargeIncreased != null ||
+            cornerValueExtraExtraLarge != null ||
+            cornerFamily != null ||
+            cornerNone != null ||
+            cornerExtraSmall != null ||
+            cornerExtraSmallTop != null ||
+            cornerSmall != null ||
+            cornerMedium != null ||
+            cornerLarge != null ||
+            cornerLargeStart != null ||
+            cornerLargeEnd != null ||
+            cornerLargeTop != null ||
+            cornerLargeIncreased != null ||
+            cornerExtraLarge != null ||
+            cornerExtraLargeTop != null ||
+            cornerExtraLargeIncreased != null ||
+            cornerExtraExtraLarge != null ||
+            cornerFull != null
+      ? copyWith(
+          cornerValueNone: cornerValueNone,
+          cornerValueExtraSmall: cornerValueExtraSmall,
+          cornerValueSmall: cornerValueSmall,
+          cornerValueMedium: cornerValueMedium,
+          cornerValueLarge: cornerValueLarge,
+          cornerValueLargeIncreased: cornerValueLargeIncreased,
+          cornerValueExtraLarge: cornerValueExtraLarge,
+          cornerValueExtraLargeIncreased: cornerValueExtraLargeIncreased,
+          cornerValueExtraExtraLarge: cornerValueExtraExtraLarge,
+          cornerFamily: cornerFamily,
+          cornerNone: cornerNone,
+          cornerExtraSmall: cornerExtraSmall,
+          cornerExtraSmallTop: cornerExtraSmallTop,
+          cornerSmall: cornerSmall,
+          cornerMedium: cornerMedium,
+          cornerLarge: cornerLarge,
+          cornerLargeStart: cornerLargeStart,
+          cornerLargeEnd: cornerLargeEnd,
+          cornerLargeTop: cornerLargeTop,
+          cornerLargeIncreased: cornerLargeIncreased,
+          cornerExtraLarge: cornerExtraLarge,
+          cornerExtraLargeTop: cornerExtraLargeTop,
+          cornerExtraLargeIncreased: cornerExtraLargeIncreased,
+          cornerExtraExtraLarge: cornerExtraExtraLarge,
+          cornerFull: cornerFull,
+        )
+      : this;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _ShapeThemeDataDefaults &&
-          _cornerValueNone == other._cornerValueNone &&
-          _cornerValueExtraSmall == other._cornerValueExtraSmall &&
-          _cornerValueSmall == other._cornerValueSmall &&
-          _cornerValueMedium == other._cornerValueMedium &&
-          _cornerValueLarge == other._cornerValueLarge &&
-          _cornerValueLargeIncreased == other._cornerValueLargeIncreased &&
-          _cornerValueExtraLarge == other._cornerValueExtraLarge &&
-          _cornerValueExtraLargeIncreased ==
-              other._cornerValueExtraLargeIncreased &&
-          _cornerValueExtraExtraLarge == other._cornerValueExtraExtraLarge &&
-          _cornerNone == other._cornerNone &&
-          _cornerExtraSmall == other._cornerExtraSmall &&
-          _cornerExtraSmallTop == other._cornerExtraSmallTop &&
-          _cornerSmall == other._cornerSmall &&
-          _cornerMedium == other._cornerMedium &&
-          _cornerLarge == other._cornerLarge &&
-          _cornerLargeStart == other._cornerLargeStart &&
-          _cornerLargeEnd == other._cornerLargeEnd &&
-          _cornerLargeTop == other._cornerLargeTop &&
-          _cornerLargeIncreased == other._cornerLargeIncreased &&
-          _cornerExtraLarge == other._cornerExtraLarge &&
-          _cornerExtraLargeTop == other._cornerExtraLargeTop &&
-          _cornerExtraLargeIncreased == other._cornerExtraLargeIncreased &&
-          _cornerExtraExtraLarge == other._cornerExtraExtraLarge &&
-          _cornerFull == other._cornerFull;
+      other is _ShapeThemeDataDefaults && _overrides == other._overrides;
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    _cornerValueNone,
-    _cornerValueExtraSmall,
-    _cornerValueSmall,
-    _cornerValueMedium,
-    _cornerValueLarge,
-    _cornerValueLargeIncreased,
-    _cornerValueExtraLarge,
-    _cornerValueExtraLargeIncreased,
-    _cornerValueExtraExtraLarge,
-    _cornerNone,
-    _cornerExtraSmall,
-    _cornerExtraSmallTop,
-    _cornerSmall,
-    _cornerMedium,
-    _cornerLarge,
-    _cornerLargeStart,
-    _cornerLargeEnd,
-    _cornerLargeTop,
-    Object.hash(
-      _cornerLargeIncreased,
-      _cornerExtraLarge,
-      _cornerExtraLargeTop,
-      _cornerExtraLargeIncreased,
-      _cornerExtraExtraLarge,
-      _cornerFull,
-    ),
-  );
-}
-
-typedef ShapeThemeResolver = ThemeResolver<ShapeThemeDataPartial>;
-
-typedef ShapeThemeResolverCallback =
-    ThemeResolverCallback<ShapeThemeDataPartial>;
-
-class _ShapeThemeResolver
-    extends CombiningThemeResolver<ShapeThemeDataPartial> {
-  const _ShapeThemeResolver(super.a, super.b);
-
-  @override
-  ShapeThemeDataPartial combine(
-    ShapeThemeDataPartial a,
-    ShapeThemeDataPartial b,
-  ) => a.merge(b);
+  int get hashCode => _overrides.hashCode;
 }
 
 abstract class ShapeTheme extends StatelessWidget implements ProxyWidget {
   const ShapeTheme._({super.key, required this.child});
 
-  const factory ShapeTheme.withResolver({
+  const factory ShapeTheme.mergeWithResolver({
     Key? key,
-    required ShapeThemeResolver resolver,
+    required ThemeResolver<ShapeThemeDataPartial> resolver,
     required Widget child,
-  }) = _ShapeThemeWithResolver;
+  }) = _ShapeThemeWithResolver<ShapeThemeDataPartial>;
 
-  const factory ShapeTheme.withCallback({
+  const factory ShapeTheme.mergeWithCallback({
     Key? key,
-    required ShapeThemeResolverCallback callback,
+    required ThemeResolverCallback<ShapeThemeDataPartial> callback,
     required Widget child,
-  }) = _ShapeThemeWithCallback;
+  }) = _ShapeThemeWithCallback<ShapeThemeDataPartial>;
 
-  const factory ShapeTheme.withData({
+  const factory ShapeTheme.mergeWithData({
     Key? key,
     required ShapeThemeDataPartial data,
     required Widget child,
-  }) = _ShapeThemeWithData;
+  }) = _ShapeThemeWithData<ShapeThemeDataPartial>;
 
-  ShapeThemeResolver get resolver;
+  const factory ShapeTheme.replaceWithResolver({
+    Key? key,
+    required ThemeResolver<ShapeThemeData> resolver,
+    required Widget child,
+  }) = _ShapeThemeWithResolver<ShapeThemeData>;
+
+  const factory ShapeTheme.replaceWithCallback({
+    Key? key,
+    required ThemeResolverCallback<ShapeThemeData> callback,
+    required Widget child,
+  }) = _ShapeThemeWithCallback<ShapeThemeData>;
+
+  const factory ShapeTheme.replaceWithData({
+    Key? key,
+    required ShapeThemeData data,
+    required Widget child,
+  }) = _ShapeThemeWithData<ShapeThemeData>;
+
+  ThemeResolver<ShapeThemeDataPartial> get resolver;
 
   @override
   final Widget child;
@@ -1532,48 +1645,25 @@ abstract class ShapeTheme extends StatelessWidget implements ProxyWidget {
     final inherited = _ShapeTheme.maybeResolverOf(context);
     return _ShapeTheme(
       resolver: inherited != null
-          ? _ShapeThemeResolver(inherited, resolver)
+          ? .combine(inherited, resolver, _merge)
           : resolver,
       child: child,
     );
   }
 
+  static ShapeThemeDataPartial _merge(
+    ShapeThemeDataPartial a,
+    ShapeThemeDataPartial b,
+  ) => a.maybeMerge(b);
+
   static ShapeThemeData of(BuildContext context) {
     final resolver = _ShapeTheme.maybeResolverOf(context);
-    if (resolver != null) {
-      final data = resolver.resolve(context);
-      return ._defaults(
-        cornerValueNone: data.cornerValueNone,
-        cornerValueExtraSmall: data.cornerValueExtraSmall,
-        cornerValueSmall: data.cornerValueSmall,
-        cornerValueMedium: data.cornerValueMedium,
-        cornerValueLarge: data.cornerValueLarge,
-        cornerValueLargeIncreased: data.cornerValueLargeIncreased,
-        cornerValueExtraLarge: data.cornerValueExtraLarge,
-        cornerValueExtraLargeIncreased: data.cornerValueExtraLargeIncreased,
-        cornerValueExtraExtraLarge: data.cornerValueExtraExtraLarge,
-        cornerNone: data.cornerNone,
-        cornerExtraSmall: data.cornerExtraSmall,
-        cornerExtraSmallTop: data.cornerExtraSmallTop,
-        cornerSmall: data.cornerSmall,
-        cornerMedium: data.cornerMedium,
-        cornerLarge: data.cornerLarge,
-        cornerLargeStart: data.cornerLargeStart,
-        cornerLargeEnd: data.cornerLargeEnd,
-        cornerLargeTop: data.cornerLargeTop,
-        cornerLargeIncreased: data.cornerLargeIncreased,
-        cornerExtraLarge: data.cornerExtraLarge,
-        cornerExtraLargeTop: data.cornerExtraLargeTop,
-        cornerExtraLargeIncreased: data.cornerExtraLargeIncreased,
-        cornerExtraExtraLarge: data.cornerExtraExtraLarge,
-        cornerFull: data.cornerFull,
-      );
-    }
-    return const .defaults();
+    return .defaults(overrides: resolver?.resolve(context));
   }
 }
 
-class _ShapeThemeWithResolver extends ShapeTheme {
+class _ShapeThemeWithResolver<T extends ShapeThemeDataPartial>
+    extends ShapeTheme {
   const _ShapeThemeWithResolver({
     super.key,
     required this.resolver,
@@ -1581,61 +1671,60 @@ class _ShapeThemeWithResolver extends ShapeTheme {
   }) : super._();
 
   @override
-  final ShapeThemeResolver resolver;
+  final ThemeResolver<T> resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<ShapeThemeResolver>("resolver", resolver),
-    );
+    properties.add(DiagnosticsProperty<ThemeResolver<T>>("resolver", resolver));
   }
 }
 
-class _ShapeThemeWithCallback extends ShapeTheme {
+class _ShapeThemeWithCallback<T extends ShapeThemeDataPartial>
+    extends ShapeTheme {
   const _ShapeThemeWithCallback({
     super.key,
     required this.callback,
     required super.child,
   }) : super._();
 
-  final ShapeThemeResolverCallback callback;
+  final ThemeResolverCallback<T> callback;
 
   @override
-  ShapeThemeResolver get resolver => .callback(callback);
+  ThemeResolver<T> get resolver => .callback(callback);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      DiagnosticsProperty<ShapeThemeResolverCallback>("callback", callback),
+      DiagnosticsProperty<ThemeResolverCallback<T>>("callback", callback),
     );
   }
 }
 
-class _ShapeThemeWithData extends ShapeTheme {
+class _ShapeThemeWithData<T extends ShapeThemeDataPartial> extends ShapeTheme {
   const _ShapeThemeWithData({
     super.key,
     required this.data,
     required super.child,
   }) : super._();
 
-  final ShapeThemeDataPartial data;
+  final T data;
 
   @override
-  ShapeThemeResolver get resolver => .value(data);
+  ThemeResolver<T> get resolver => .value(data);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ShapeThemeDataPartial>("data", data));
+    properties.add(DiagnosticsProperty<T>("data", data));
   }
 }
 
 class _ShapeTheme extends InheritedTheme {
   const _ShapeTheme({super.key, required this.resolver, required super.child});
 
-  final ShapeThemeResolver resolver;
+  final ThemeResolver<ShapeThemeDataPartial> resolver;
 
   @override
   bool updateShouldNotify(_ShapeTheme oldWidget) =>
@@ -1645,6 +1734,7 @@ class _ShapeTheme extends InheritedTheme {
   Widget wrap(BuildContext context, Widget child) =>
       _ShapeTheme(resolver: resolver, child: child);
 
-  static ShapeThemeResolver? maybeResolverOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_ShapeTheme>()?.resolver;
+  static ThemeResolver<ShapeThemeDataPartial>? maybeResolverOf(
+    BuildContext context,
+  ) => context.dependOnInheritedWidgetOfExactType<_ShapeTheme>()?.resolver;
 }

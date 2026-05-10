@@ -15,7 +15,7 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
 
   Color? get containedIndicatorColor;
 
-  LoadingIndicatorThemeDataPartial copyWith({
+  LoadingIndicatorThemeDataPartial maybeCopyWith({
     Color? indicatorColor,
     Color? containedContainerColor,
     Color? containedIndicatorColor,
@@ -32,10 +32,10 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
         )
       : this;
 
-  LoadingIndicatorThemeDataPartial merge(
+  LoadingIndicatorThemeDataPartial maybeMerge(
     LoadingIndicatorThemeDataPartial? other,
   ) => other != null
-      ? copyWith(
+      ? maybeCopyWith(
           indicatorColor: other.indicatorColor,
           containedContainerColor: other.containedContainerColor,
           containedIndicatorColor: other.containedIndicatorColor,
@@ -69,23 +69,6 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
       );
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is LoadingIndicatorThemeDataPartial &&
-          indicatorColor == other.indicatorColor &&
-          containedContainerColor == other.containedContainerColor &&
-          containedIndicatorColor == other.containedIndicatorColor;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    indicatorColor,
-    containedContainerColor,
-    containedIndicatorColor,
-  );
-
   static LoadingIndicatorThemeDataPartial? lerp(
     LoadingIndicatorThemeDataPartial? a,
     LoadingIndicatorThemeDataPartial? b,
@@ -108,7 +91,7 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
   }
 }
 
-class _LoadingIndicatorThemeDataPartial
+final class _LoadingIndicatorThemeDataPartial
     extends LoadingIndicatorThemeDataPartial {
   const _LoadingIndicatorThemeDataPartial.from({
     this.indicatorColor,
@@ -124,6 +107,21 @@ class _LoadingIndicatorThemeDataPartial
 
   @override
   final Color? containedIndicatorColor;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _LoadingIndicatorThemeDataPartial &&
+          indicatorColor == other.indicatorColor &&
+          containedContainerColor == other.containedContainerColor &&
+          containedIndicatorColor == other.containedIndicatorColor;
+
+  @override
+  int get hashCode => Object.hash(
+    indicatorColor,
+    containedContainerColor,
+    containedIndicatorColor,
+  );
 }
 
 abstract class LoadingIndicatorThemeData
@@ -146,7 +144,7 @@ abstract class LoadingIndicatorThemeData
   Color get containedIndicatorColor;
 
   @override
-  LoadingIndicatorThemeData copyWith({
+  LoadingIndicatorThemeData maybeCopyWith({
     Color? indicatorColor,
     Color? containedContainerColor,
     Color? containedIndicatorColor,
@@ -164,9 +162,10 @@ abstract class LoadingIndicatorThemeData
       : this;
 
   @override
-  LoadingIndicatorThemeData merge(LoadingIndicatorThemeDataPartial? other) =>
-      other != null
-      ? copyWith(
+  LoadingIndicatorThemeData maybeMerge(
+    LoadingIndicatorThemeDataPartial? other,
+  ) => other != null
+      ? maybeCopyWith(
           indicatorColor: other.indicatorColor,
           containedContainerColor: other.containedContainerColor,
           containedIndicatorColor: other.containedIndicatorColor,
@@ -181,23 +180,6 @@ abstract class LoadingIndicatorThemeData
       ..add(ColorProperty("containedContainerColor", containedContainerColor))
       ..add(ColorProperty("containedIndicatorColor", containedIndicatorColor));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is LoadingIndicatorThemeData &&
-          indicatorColor == other.indicatorColor &&
-          containedContainerColor == other.containedContainerColor &&
-          containedIndicatorColor == other.containedIndicatorColor;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    indicatorColor,
-    containedContainerColor,
-    containedIndicatorColor,
-  );
 
   static LoadingIndicatorThemeData lerp(
     LoadingIndicatorThemeData a,
@@ -221,7 +203,7 @@ abstract class LoadingIndicatorThemeData
   }
 }
 
-class _LoadingIndicatorThemeData extends LoadingIndicatorThemeData {
+final class _LoadingIndicatorThemeData extends LoadingIndicatorThemeData {
   const _LoadingIndicatorThemeData.from({
     required this.indicatorColor,
     required this.containedIndicatorColor,
@@ -236,9 +218,25 @@ class _LoadingIndicatorThemeData extends LoadingIndicatorThemeData {
 
   @override
   final Color containedIndicatorColor;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _LoadingIndicatorThemeData &&
+          indicatorColor == other.indicatorColor &&
+          containedContainerColor == other.containedContainerColor &&
+          containedIndicatorColor == other.containedIndicatorColor;
+
+  @override
+  int get hashCode => Object.hash(
+    indicatorColor,
+    containedContainerColor,
+    containedIndicatorColor,
+  );
 }
 
-class _LoadingIndicatorThemeDataDefaults extends LoadingIndicatorThemeData {
+final class _LoadingIndicatorThemeDataDefaults
+    extends LoadingIndicatorThemeData {
   const _LoadingIndicatorThemeDataDefaults({required ColorThemeData colorTheme})
     : _colorTheme = colorTheme;
 
@@ -286,7 +284,7 @@ class LoadingIndicatorTheme extends InheritedTheme {
   }) => Builder(
     builder: (context) => LoadingIndicatorTheme(
       key: key,
-      data: of(context).merge(data),
+      data: of(context).maybeMerge(data),
       child: child,
     ),
   );

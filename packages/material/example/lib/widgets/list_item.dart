@@ -173,7 +173,7 @@ class ListItemContainer extends StatelessWidget {
         containerColor?.resolve(states) ??
         listItemTheme.containerColor.resolve(states);
 
-    return Material(
+    return Surface(
       clipBehavior: .antiAlias,
       color: resolvedContainerColor,
       shape: resolvedShape,
@@ -543,9 +543,10 @@ class _ListItemInteractionState extends State<ListItemInteraction> {
 
     return listItemContainerScope.buildCenterOptically(
       inverse: true,
-      child: FocusRingTheme.merge(
+      child: FocusRingTheme.partial(
         data: FocusRingThemeDataPartial.from(
           shape: .all(
+            // TODO: add shape corner family
             CornersBorder.rounded(corners: .all(_shapeTheme.cornerLarge)),
           ),
         ),
@@ -672,7 +673,7 @@ class ListItemLayout extends StatelessWidget {
                 child: DefaultTextStyle.merge(
                   textAlign: .start,
                   style: listItemTheme.leadingTextStyle.resolve(states),
-                  child: IconTheme.withData(
+                  child: IconTheme.mergeWithData(
                     data: listItemTheme.leadingIconTheme.resolve(states),
                     child: leading,
                   ),
@@ -716,7 +717,7 @@ class ListItemLayout extends StatelessWidget {
                 child: DefaultTextStyle.merge(
                   textAlign: .end,
                   style: listItemTheme.trailingTextStyle.resolve(states),
-                  child: IconTheme.withData(
+                  child: IconTheme.mergeWithData(
                     data: listItemTheme.trailingIconTheme.resolve(states),
                     child: trailing,
                   ),

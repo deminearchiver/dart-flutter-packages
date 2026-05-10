@@ -27,7 +27,7 @@ abstract class FocusRingThemeDataPartial {
 
   FocusRingStateProperty<OutlinePartial?>? get outline;
 
-  FocusRingThemeDataPartial copyWith({
+  FocusRingThemeDataPartial maybeCopyWith({
     covariant Duration? duration,
     covariant FocusRingStateProperty<double?>? offset,
     covariant FocusRingStateProperty<OutlinedBorder?>? shape,
@@ -41,7 +41,7 @@ abstract class FocusRingThemeDataPartial {
         )
       : this;
 
-  FocusRingThemeDataPartial mergeWith({
+  FocusRingThemeDataPartial maybeMergeWith({
     Duration? duration,
     FocusRingStateProperty<double?>? offset,
     FocusRingStateProperty<OutlinedBorder?>? shape,
@@ -62,32 +62,18 @@ abstract class FocusRingThemeDataPartial {
         )
       : this;
 
-  FocusRingThemeDataPartial merge(FocusRingThemeDataPartial? other) =>
+  FocusRingThemeDataPartial maybeMerge(FocusRingThemeDataPartial? other) =>
       other != null
-      ? mergeWith(
+      ? maybeMergeWith(
           duration: other.duration,
           offset: other.offset,
           shape: other.shape,
           outline: other.outline,
         )
       : this;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is FocusRingThemeDataPartial &&
-          duration == other.duration &&
-          offset == other.offset &&
-          shape == other.shape &&
-          outline == other.outline;
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, duration, offset, shape, outline);
 }
 
-class _FocusRingThemeDataPartial extends FocusRingThemeDataPartial {
+final class _FocusRingThemeDataPartial extends FocusRingThemeDataPartial {
   const _FocusRingThemeDataPartial({
     this.duration,
     this.offset,
@@ -106,6 +92,18 @@ class _FocusRingThemeDataPartial extends FocusRingThemeDataPartial {
 
   @override
   final FocusRingStateProperty<OutlinePartial?>? outline;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _FocusRingThemeDataPartial &&
+          duration == other.duration &&
+          offset == other.offset &&
+          shape == other.shape &&
+          outline == other.outline;
+
+  @override
+  int get hashCode => Object.hash(duration, offset, shape, outline);
 }
 
 abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
@@ -118,11 +116,22 @@ abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
     required FocusRingStateProperty<Outline> outline,
   }) = _FocusRingThemeData;
 
-  const factory FocusRingThemeData.fallback({
+  const factory FocusRingThemeData.defaults({
     required ColorThemeData colorTheme,
     required DurationThemeData durationTheme,
     required ShapeThemeData shapeTheme,
     required StateFocusIndicatorThemeData stateFocusIndicatorTheme,
+  }) = _FocusRingThemeDataDefaults;
+
+  const factory FocusRingThemeData._defaults({
+    required ColorThemeData colorTheme,
+    required DurationThemeData durationTheme,
+    required ShapeThemeData shapeTheme,
+    required StateFocusIndicatorThemeData stateFocusIndicatorTheme,
+    Duration? duration,
+    FocusRingStateProperty<double?>? offset,
+    FocusRingStateProperty<OutlinedBorder?>? shape,
+    FocusRingStateProperty<OutlinePartial?>? outline,
   }) = _FocusRingThemeDataDefaults;
 
   @override
@@ -138,7 +147,7 @@ abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
   FocusRingStateProperty<Outline> get outline;
 
   @override
-  FocusRingThemeData copyWith({
+  FocusRingThemeData maybeCopyWith({
     covariant Duration? duration,
     covariant FocusRingStateProperty<double>? offset,
     covariant FocusRingStateProperty<OutlinedBorder>? shape,
@@ -153,7 +162,7 @@ abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
       : this;
 
   @override
-  FocusRingThemeData mergeWith({
+  FocusRingThemeData maybeMergeWith({
     Duration? duration,
     FocusRingStateProperty<double?>? offset,
     FocusRingStateProperty<OutlinedBorder?>? shape,
@@ -175,31 +184,18 @@ abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
       : this;
 
   @override
-  FocusRingThemeData merge(FocusRingThemeDataPartial? other) => other != null
-      ? mergeWith(
+  FocusRingThemeData maybeMerge(FocusRingThemeDataPartial? other) =>
+      other != null
+      ? maybeMergeWith(
           duration: other.duration,
           offset: other.offset,
           shape: other.shape,
           outline: other.outline,
         )
       : this;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is FocusRingThemeData &&
-          duration == other.duration &&
-          offset == other.offset &&
-          shape == other.shape &&
-          outline == other.outline;
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, duration, offset, shape, outline);
 }
 
-class _FocusRingThemeData extends FocusRingThemeData {
+final class _FocusRingThemeData extends FocusRingThemeData {
   const _FocusRingThemeData({
     required this.duration,
     required this.offset,
@@ -218,9 +214,21 @@ class _FocusRingThemeData extends FocusRingThemeData {
 
   @override
   final FocusRingStateProperty<Outline> outline;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _FocusRingThemeData &&
+          duration == other.duration &&
+          offset == other.offset &&
+          shape == other.shape &&
+          outline == other.outline;
+
+  @override
+  int get hashCode => Object.hash(duration, offset, shape, outline);
 }
 
-class _FocusRingThemeDataDefaults extends FocusRingThemeData {
+final class _FocusRingThemeDataDefaults extends FocusRingThemeData {
   const _FocusRingThemeDataDefaults({
     required ColorThemeData colorTheme,
     required DurationThemeData durationTheme,
@@ -268,9 +276,9 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
   FocusRingStateProperty<OutlinedBorder> get shape => .resolveWith(
     (states) =>
         _shape?.resolve(states) ??
-        CornersBorder.rounded(
+        _shapeTheme.applyCorner(
           // TODO: change to something like md.sys.shape.corner.medium
-          corners: .all(_shapeTheme.cornerFull),
+          corner: _shapeTheme.cornerFull,
         ),
   );
 
@@ -292,7 +300,7 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
   );
 
   @override
-  FocusRingThemeData copyWith({
+  FocusRingThemeData maybeCopyWith({
     covariant Duration? duration,
     covariant FocusRingStateProperty<double>? offset,
     covariant FocusRingStateProperty<OutlinedBorder>? shape,
@@ -316,7 +324,7 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
         );
 
   @override
-  FocusRingThemeData mergeWith({
+  FocusRingThemeData maybeMergeWith({
     Duration? duration,
     FocusRingStateProperty<double?>? offset,
     FocusRingStateProperty<OutlinedBorder?>? shape,
@@ -340,8 +348,9 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
   );
 
   @override
-  FocusRingThemeData merge(FocusRingThemeDataPartial? other) => other != null
-      ? mergeWith(
+  FocusRingThemeData maybeMerge(FocusRingThemeDataPartial? other) =>
+      other != null
+      ? maybeMergeWith(
           duration: other.duration,
           offset: other.offset,
           shape: other.shape,
@@ -352,8 +361,7 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _FocusRingThemeDataDefaults &&
+      other is _FocusRingThemeDataDefaults &&
           _colorTheme == other._colorTheme &&
           _durationTheme == other._durationTheme &&
           _shapeTheme == other._shapeTheme &&
@@ -365,7 +373,6 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
     _colorTheme,
     _durationTheme,
     _shapeTheme,
@@ -377,42 +384,164 @@ class _FocusRingThemeDataDefaults extends FocusRingThemeData {
   );
 }
 
-class FocusRingTheme extends InheritedTheme {
-  const FocusRingTheme({super.key, required this.data, required super.child});
+typedef FocusRingThemeResolver = ThemeResolver<FocusRingThemeDataPartial>;
 
-  final FocusRingThemeData data;
+typedef FocusRingThemeResolverCallback =
+    ThemeResolverCallback<FocusRingThemeDataPartial>;
+
+abstract class FocusRingTheme extends StatelessWidget implements ProxyWidget {
+  const FocusRingTheme._({super.key, required this.child});
+
+  const factory FocusRingTheme.resolver({
+    Key? key,
+    required FocusRingThemeResolver resolver,
+    required Widget child,
+  }) = _FocusRingThemeWithResolver;
+
+  const factory FocusRingTheme.callback({
+    Key? key,
+    required FocusRingThemeResolverCallback callback,
+    required Widget child,
+  }) = _FocusRingThemeWithCallback;
+
+  const factory FocusRingTheme.partial({
+    Key? key,
+    required FocusRingThemeDataPartial data,
+    required Widget child,
+  }) = _FocusRingThemeWithData<FocusRingThemeDataPartial>;
+
+  const factory FocusRingTheme.concrete({
+    Key? key,
+    required FocusRingThemeData data,
+    required Widget child,
+  }) = _FocusRingThemeWithData<FocusRingThemeData>;
+
+  FocusRingThemeResolver get resolver;
 
   @override
-  bool updateShouldNotify(FocusRingTheme oldWidget) => data != oldWidget.data;
+  final Widget child;
 
   @override
-  Widget wrap(BuildContext context, Widget child) =>
-      FocusRingTheme(data: data, child: child);
+  Widget build(BuildContext context) {
+    final inherited = _FocusRingTheme.maybeResolverOf(context);
+    return _FocusRingTheme(
+      resolver: inherited != null
+          ? .combine(inherited, resolver, _combine)
+          : resolver,
+      child: child,
+    );
+  }
+
+  static FocusRingThemeDataPartial _combine(
+    FocusRingThemeDataPartial a,
+    FocusRingThemeDataPartial b,
+  ) => a.maybeMerge(b);
+
+  static FocusRingThemeData of(BuildContext context) {
+    final resolver = _FocusRingTheme.maybeResolverOf(context);
+    final colorTheme = ColorTheme.of(context);
+    final durationTheme = DurationTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateFocusIndicatorTheme = StateFocusIndicatorTheme.of(context);
+    if (resolver != null) {
+      final data = resolver.resolve(context);
+      return ._defaults(
+        colorTheme: colorTheme,
+        durationTheme: durationTheme,
+        shapeTheme: shapeTheme,
+        stateFocusIndicatorTheme: stateFocusIndicatorTheme,
+        duration: data.duration,
+        offset: data.offset,
+        shape: data.shape,
+        outline: data.outline,
+      );
+    }
+    return .defaults(
+      colorTheme: colorTheme,
+      durationTheme: durationTheme,
+      shapeTheme: shapeTheme,
+      stateFocusIndicatorTheme: stateFocusIndicatorTheme,
+    );
+  }
+}
+
+class _FocusRingThemeWithResolver extends FocusRingTheme {
+  const _FocusRingThemeWithResolver({
+    super.key,
+    required this.resolver,
+    required super.child,
+  }) : super._();
+
+  @override
+  final FocusRingThemeResolver resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<FocusRingThemeData>("data", data));
+    properties.add(
+      DiagnosticsProperty<FocusRingThemeResolver>("resolver", resolver),
+    );
   }
+}
 
-  static Widget merge({
-    Key? key,
-    required FocusRingThemeDataPartial data,
-    required Widget child,
-  }) => Builder(
-    builder: (context) =>
-        FocusRingTheme(key: key, data: of(context).merge(data), child: child),
-  );
+class _FocusRingThemeWithCallback extends FocusRingTheme {
+  const _FocusRingThemeWithCallback({
+    super.key,
+    required this.callback,
+    required super.child,
+  }) : super._();
 
-  static FocusRingThemeData? maybeOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<FocusRingTheme>()?.data;
+  final FocusRingThemeResolverCallback callback;
 
-  static FocusRingThemeData of(BuildContext context) =>
-      maybeOf(context) ??
-      .fallback(
-        colorTheme: ColorTheme.of(context),
-        durationTheme: DurationTheme.of(context),
-        shapeTheme: ShapeTheme.of(context),
-        stateFocusIndicatorTheme: StateFocusIndicatorTheme.of(context),
-      );
+  @override
+  FocusRingThemeResolver get resolver => .callback(callback);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<FocusRingThemeResolverCallback>("callback", callback),
+    );
+  }
+}
+
+class _FocusRingThemeWithData<T extends FocusRingThemeDataPartial>
+    extends FocusRingTheme {
+  const _FocusRingThemeWithData({
+    super.key,
+    required this.data,
+    required super.child,
+  }) : super._();
+
+  final T data;
+
+  @override
+  FocusRingThemeResolver get resolver => .value(data);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<T>("data", data));
+  }
+}
+
+class _FocusRingTheme extends InheritedTheme {
+  const _FocusRingTheme({
+    super.key,
+    required this.resolver,
+    required super.child,
+  });
+
+  final FocusRingThemeResolver resolver;
+
+  @override
+  bool updateShouldNotify(_FocusRingTheme oldWidget) =>
+      resolver != oldWidget.resolver;
+
+  @override
+  Widget wrap(BuildContext context, Widget child) =>
+      _FocusRingTheme(resolver: resolver, child: child);
+
+  static FocusRingThemeResolver? maybeResolverOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_FocusRingTheme>()?.resolver;
 }

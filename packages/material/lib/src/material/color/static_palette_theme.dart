@@ -1,9 +1,9 @@
 import 'package:material/src/material/flutter.dart';
 
-abstract class StaticPaletteThemeDataPartial with Diagnosticable {
-  const StaticPaletteThemeDataPartial();
+abstract class StaticPalettePartial with Diagnosticable {
+  const StaticPalettePartial();
 
-  const factory StaticPaletteThemeDataPartial.from({
+  const factory StaticPalettePartial.from({
     Color? white,
     Color? black,
     Color? blue0,
@@ -149,7 +149,7 @@ abstract class StaticPaletteThemeDataPartial with Diagnosticable {
     Color? pink95,
     Color? pink98,
     Color? pink100,
-  }) = _StaticPaletteThemeDataPartial;
+  }) = _StaticPalettePartial;
 
   Color? get white;
 
@@ -441,7 +441,303 @@ abstract class StaticPaletteThemeDataPartial with Diagnosticable {
 
   Color? get pink100;
 
-  StaticPaletteThemeDataPartial copyWith({
+  StaticPalettePartial copy() => copyWith();
+
+  StaticPalettePartial copyWith({
+    Color? white,
+    Color? black,
+    Color? blue0,
+    Color? blue10,
+    Color? blue20,
+    Color? blue30,
+    Color? blue40,
+    Color? blue50,
+    Color? blue60,
+    Color? blue70,
+    Color? blue80,
+    Color? blue90,
+    Color? blue95,
+    Color? blue98,
+    Color? blue100,
+    Color? blueVariant0,
+    Color? blueVariant10,
+    Color? blueVariant20,
+    Color? blueVariant30,
+    Color? blueVariant40,
+    Color? blueVariant50,
+    Color? blueVariant60,
+    Color? blueVariant70,
+    Color? blueVariant80,
+    Color? blueVariant90,
+    Color? blueVariant95,
+    Color? blueVariant98,
+    Color? blueVariant100,
+    Color? yellow0,
+    Color? yellow10,
+    Color? yellow20,
+    Color? yellow30,
+    Color? yellow40,
+    Color? yellow50,
+    Color? yellow60,
+    Color? yellow70,
+    Color? yellow80,
+    Color? yellow90,
+    Color? yellow95,
+    Color? yellow98,
+    Color? yellow100,
+    Color? red0,
+    Color? red10,
+    Color? red20,
+    Color? red30,
+    Color? red40,
+    Color? red50,
+    Color? red60,
+    Color? red70,
+    Color? red80,
+    Color? red90,
+    Color? red95,
+    Color? red98,
+    Color? red100,
+    Color? purple0,
+    Color? purple10,
+    Color? purple20,
+    Color? purple30,
+    Color? purple40,
+    Color? purple50,
+    Color? purple60,
+    Color? purple70,
+    Color? purple80,
+    Color? purple90,
+    Color? purple95,
+    Color? purple98,
+    Color? purple100,
+    Color? cyan0,
+    Color? cyan10,
+    Color? cyan20,
+    Color? cyan30,
+    Color? cyan40,
+    Color? cyan50,
+    Color? cyan60,
+    Color? cyan70,
+    Color? cyan80,
+    Color? cyan90,
+    Color? cyan95,
+    Color? cyan98,
+    Color? cyan100,
+    Color? grey0,
+    Color? grey10,
+    Color? grey20,
+    Color? grey30,
+    Color? grey40,
+    Color? grey50,
+    Color? grey60,
+    Color? grey70,
+    Color? grey80,
+    Color? grey90,
+    Color? grey95,
+    Color? grey98,
+    Color? grey100,
+    Color? greyVariant0,
+    Color? greyVariant10,
+    Color? greyVariant20,
+    Color? greyVariant30,
+    Color? greyVariant40,
+    Color? greyVariant50,
+    Color? greyVariant60,
+    Color? greyVariant70,
+    Color? greyVariant80,
+    Color? greyVariant90,
+    Color? greyVariant95,
+    Color? greyVariant98,
+    Color? greyVariant100,
+    Color? green0,
+    Color? green10,
+    Color? green20,
+    Color? green30,
+    Color? green40,
+    Color? green50,
+    Color? green60,
+    Color? green70,
+    Color? green80,
+    Color? green90,
+    Color? green95,
+    Color? green98,
+    Color? green100,
+    Color? orange0,
+    Color? orange10,
+    Color? orange20,
+    Color? orange30,
+    Color? orange40,
+    Color? orange50,
+    Color? orange60,
+    Color? orange70,
+    Color? orange80,
+    Color? orange90,
+    Color? orange95,
+    Color? orange98,
+    Color? orange100,
+    Color? pink0,
+    Color? pink10,
+    Color? pink20,
+    Color? pink30,
+    Color? pink40,
+    Color? pink50,
+    Color? pink60,
+    Color? pink70,
+    Color? pink80,
+    Color? pink90,
+    Color? pink95,
+    Color? pink98,
+    Color? pink100,
+  }) => .from(
+    white: white ?? this.white,
+    black: black ?? this.black,
+    blue0: blue0 ?? this.blue0,
+    blue10: blue10 ?? this.blue10,
+    blue20: blue20 ?? this.blue20,
+    blue30: blue30 ?? this.blue30,
+    blue40: blue40 ?? this.blue40,
+    blue50: blue50 ?? this.blue50,
+    blue60: blue60 ?? this.blue60,
+    blue70: blue70 ?? this.blue70,
+    blue80: blue80 ?? this.blue80,
+    blue90: blue90 ?? this.blue90,
+    blue95: blue95 ?? this.blue95,
+    blue98: blue98 ?? this.blue98,
+    blue100: blue100 ?? this.blue100,
+    blueVariant0: blueVariant0 ?? this.blueVariant0,
+    blueVariant10: blueVariant10 ?? this.blueVariant10,
+    blueVariant20: blueVariant20 ?? this.blueVariant20,
+    blueVariant30: blueVariant30 ?? this.blueVariant30,
+    blueVariant40: blueVariant40 ?? this.blueVariant40,
+    blueVariant50: blueVariant50 ?? this.blueVariant50,
+    blueVariant60: blueVariant60 ?? this.blueVariant60,
+    blueVariant70: blueVariant70 ?? this.blueVariant70,
+    blueVariant80: blueVariant80 ?? this.blueVariant80,
+    blueVariant90: blueVariant90 ?? this.blueVariant90,
+    blueVariant95: blueVariant95 ?? this.blueVariant95,
+    blueVariant98: blueVariant98 ?? this.blueVariant98,
+    blueVariant100: blueVariant100 ?? this.blueVariant100,
+    yellow0: yellow0 ?? this.yellow0,
+    yellow10: yellow10 ?? this.yellow10,
+    yellow20: yellow20 ?? this.yellow20,
+    yellow30: yellow30 ?? this.yellow30,
+    yellow40: yellow40 ?? this.yellow40,
+    yellow50: yellow50 ?? this.yellow50,
+    yellow60: yellow60 ?? this.yellow60,
+    yellow70: yellow70 ?? this.yellow70,
+    yellow80: yellow80 ?? this.yellow80,
+    yellow90: yellow90 ?? this.yellow90,
+    yellow95: yellow95 ?? this.yellow95,
+    yellow98: yellow98 ?? this.yellow98,
+    yellow100: yellow100 ?? this.yellow100,
+    red0: red0 ?? this.red0,
+    red10: red10 ?? this.red10,
+    red20: red20 ?? this.red20,
+    red30: red30 ?? this.red30,
+    red40: red40 ?? this.red40,
+    red50: red50 ?? this.red50,
+    red60: red60 ?? this.red60,
+    red70: red70 ?? this.red70,
+    red80: red80 ?? this.red80,
+    red90: red90 ?? this.red90,
+    red95: red95 ?? this.red95,
+    red98: red98 ?? this.red98,
+    red100: red100 ?? this.red100,
+    purple0: purple0 ?? this.purple0,
+    purple10: purple10 ?? this.purple10,
+    purple20: purple20 ?? this.purple20,
+    purple30: purple30 ?? this.purple30,
+    purple40: purple40 ?? this.purple40,
+    purple50: purple50 ?? this.purple50,
+    purple60: purple60 ?? this.purple60,
+    purple70: purple70 ?? this.purple70,
+    purple80: purple80 ?? this.purple80,
+    purple90: purple90 ?? this.purple90,
+    purple95: purple95 ?? this.purple95,
+    purple98: purple98 ?? this.purple98,
+    purple100: purple100 ?? this.purple100,
+    cyan0: cyan0 ?? this.cyan0,
+    cyan10: cyan10 ?? this.cyan10,
+    cyan20: cyan20 ?? this.cyan20,
+    cyan30: cyan30 ?? this.cyan30,
+    cyan40: cyan40 ?? this.cyan40,
+    cyan50: cyan50 ?? this.cyan50,
+    cyan60: cyan60 ?? this.cyan60,
+    cyan70: cyan70 ?? this.cyan70,
+    cyan80: cyan80 ?? this.cyan80,
+    cyan90: cyan90 ?? this.cyan90,
+    cyan95: cyan95 ?? this.cyan95,
+    cyan98: cyan98 ?? this.cyan98,
+    cyan100: cyan100 ?? this.cyan100,
+    grey0: grey0 ?? this.grey0,
+    grey10: grey10 ?? this.grey10,
+    grey20: grey20 ?? this.grey20,
+    grey30: grey30 ?? this.grey30,
+    grey40: grey40 ?? this.grey40,
+    grey50: grey50 ?? this.grey50,
+    grey60: grey60 ?? this.grey60,
+    grey70: grey70 ?? this.grey70,
+    grey80: grey80 ?? this.grey80,
+    grey90: grey90 ?? this.grey90,
+    grey95: grey95 ?? this.grey95,
+    grey98: grey98 ?? this.grey98,
+    grey100: grey100 ?? this.grey100,
+    greyVariant0: greyVariant0 ?? this.greyVariant0,
+    greyVariant10: greyVariant10 ?? this.greyVariant10,
+    greyVariant20: greyVariant20 ?? this.greyVariant20,
+    greyVariant30: greyVariant30 ?? this.greyVariant30,
+    greyVariant40: greyVariant40 ?? this.greyVariant40,
+    greyVariant50: greyVariant50 ?? this.greyVariant50,
+    greyVariant60: greyVariant60 ?? this.greyVariant60,
+    greyVariant70: greyVariant70 ?? this.greyVariant70,
+    greyVariant80: greyVariant80 ?? this.greyVariant80,
+    greyVariant90: greyVariant90 ?? this.greyVariant90,
+    greyVariant95: greyVariant95 ?? this.greyVariant95,
+    greyVariant98: greyVariant98 ?? this.greyVariant98,
+    greyVariant100: greyVariant100 ?? this.greyVariant100,
+    green0: green0 ?? this.green0,
+    green10: green10 ?? this.green10,
+    green20: green20 ?? this.green20,
+    green30: green30 ?? this.green30,
+    green40: green40 ?? this.green40,
+    green50: green50 ?? this.green50,
+    green60: green60 ?? this.green60,
+    green70: green70 ?? this.green70,
+    green80: green80 ?? this.green80,
+    green90: green90 ?? this.green90,
+    green95: green95 ?? this.green95,
+    green98: green98 ?? this.green98,
+    green100: green100 ?? this.green100,
+    orange0: orange0 ?? this.orange0,
+    orange10: orange10 ?? this.orange10,
+    orange20: orange20 ?? this.orange20,
+    orange30: orange30 ?? this.orange30,
+    orange40: orange40 ?? this.orange40,
+    orange50: orange50 ?? this.orange50,
+    orange60: orange60 ?? this.orange60,
+    orange70: orange70 ?? this.orange70,
+    orange80: orange80 ?? this.orange80,
+    orange90: orange90 ?? this.orange90,
+    orange95: orange95 ?? this.orange95,
+    orange98: orange98 ?? this.orange98,
+    orange100: orange100 ?? this.orange100,
+    pink0: pink0 ?? this.pink0,
+    pink10: pink10 ?? this.pink10,
+    pink20: pink20 ?? this.pink20,
+    pink30: pink30 ?? this.pink30,
+    pink40: pink40 ?? this.pink40,
+    pink50: pink50 ?? this.pink50,
+    pink60: pink60 ?? this.pink60,
+    pink70: pink70 ?? this.pink70,
+    pink80: pink80 ?? this.pink80,
+    pink90: pink90 ?? this.pink90,
+    pink95: pink95 ?? this.pink95,
+    pink98: pink98 ?? this.pink98,
+    pink100: pink100 ?? this.pink100,
+  );
+
+  StaticPalettePartial maybeCopyWith({
     Color? white,
     Color? black,
     Color? blue0,
@@ -733,158 +1029,307 @@ abstract class StaticPaletteThemeDataPartial with Diagnosticable {
           pink95 != null ||
           pink98 != null ||
           pink100 != null
-      ? .from(
-          white: white ?? this.white,
-          black: black ?? this.black,
-          blue0: blue0 ?? this.blue0,
-          blue10: blue10 ?? this.blue10,
-          blue20: blue20 ?? this.blue20,
-          blue30: blue30 ?? this.blue30,
-          blue40: blue40 ?? this.blue40,
-          blue50: blue50 ?? this.blue50,
-          blue60: blue60 ?? this.blue60,
-          blue70: blue70 ?? this.blue70,
-          blue80: blue80 ?? this.blue80,
-          blue90: blue90 ?? this.blue90,
-          blue95: blue95 ?? this.blue95,
-          blue98: blue98 ?? this.blue98,
-          blue100: blue100 ?? this.blue100,
-          blueVariant0: blueVariant0 ?? this.blueVariant0,
-          blueVariant10: blueVariant10 ?? this.blueVariant10,
-          blueVariant20: blueVariant20 ?? this.blueVariant20,
-          blueVariant30: blueVariant30 ?? this.blueVariant30,
-          blueVariant40: blueVariant40 ?? this.blueVariant40,
-          blueVariant50: blueVariant50 ?? this.blueVariant50,
-          blueVariant60: blueVariant60 ?? this.blueVariant60,
-          blueVariant70: blueVariant70 ?? this.blueVariant70,
-          blueVariant80: blueVariant80 ?? this.blueVariant80,
-          blueVariant90: blueVariant90 ?? this.blueVariant90,
-          blueVariant95: blueVariant95 ?? this.blueVariant95,
-          blueVariant98: blueVariant98 ?? this.blueVariant98,
-          blueVariant100: blueVariant100 ?? this.blueVariant100,
-          yellow0: yellow0 ?? this.yellow0,
-          yellow10: yellow10 ?? this.yellow10,
-          yellow20: yellow20 ?? this.yellow20,
-          yellow30: yellow30 ?? this.yellow30,
-          yellow40: yellow40 ?? this.yellow40,
-          yellow50: yellow50 ?? this.yellow50,
-          yellow60: yellow60 ?? this.yellow60,
-          yellow70: yellow70 ?? this.yellow70,
-          yellow80: yellow80 ?? this.yellow80,
-          yellow90: yellow90 ?? this.yellow90,
-          yellow95: yellow95 ?? this.yellow95,
-          yellow98: yellow98 ?? this.yellow98,
-          yellow100: yellow100 ?? this.yellow100,
-          red0: red0 ?? this.red0,
-          red10: red10 ?? this.red10,
-          red20: red20 ?? this.red20,
-          red30: red30 ?? this.red30,
-          red40: red40 ?? this.red40,
-          red50: red50 ?? this.red50,
-          red60: red60 ?? this.red60,
-          red70: red70 ?? this.red70,
-          red80: red80 ?? this.red80,
-          red90: red90 ?? this.red90,
-          red95: red95 ?? this.red95,
-          red98: red98 ?? this.red98,
-          red100: red100 ?? this.red100,
-          purple0: purple0 ?? this.purple0,
-          purple10: purple10 ?? this.purple10,
-          purple20: purple20 ?? this.purple20,
-          purple30: purple30 ?? this.purple30,
-          purple40: purple40 ?? this.purple40,
-          purple50: purple50 ?? this.purple50,
-          purple60: purple60 ?? this.purple60,
-          purple70: purple70 ?? this.purple70,
-          purple80: purple80 ?? this.purple80,
-          purple90: purple90 ?? this.purple90,
-          purple95: purple95 ?? this.purple95,
-          purple98: purple98 ?? this.purple98,
-          purple100: purple100 ?? this.purple100,
-          cyan0: cyan0 ?? this.cyan0,
-          cyan10: cyan10 ?? this.cyan10,
-          cyan20: cyan20 ?? this.cyan20,
-          cyan30: cyan30 ?? this.cyan30,
-          cyan40: cyan40 ?? this.cyan40,
-          cyan50: cyan50 ?? this.cyan50,
-          cyan60: cyan60 ?? this.cyan60,
-          cyan70: cyan70 ?? this.cyan70,
-          cyan80: cyan80 ?? this.cyan80,
-          cyan90: cyan90 ?? this.cyan90,
-          cyan95: cyan95 ?? this.cyan95,
-          cyan98: cyan98 ?? this.cyan98,
-          cyan100: cyan100 ?? this.cyan100,
-          grey0: grey0 ?? this.grey0,
-          grey10: grey10 ?? this.grey10,
-          grey20: grey20 ?? this.grey20,
-          grey30: grey30 ?? this.grey30,
-          grey40: grey40 ?? this.grey40,
-          grey50: grey50 ?? this.grey50,
-          grey60: grey60 ?? this.grey60,
-          grey70: grey70 ?? this.grey70,
-          grey80: grey80 ?? this.grey80,
-          grey90: grey90 ?? this.grey90,
-          grey95: grey95 ?? this.grey95,
-          grey98: grey98 ?? this.grey98,
-          grey100: grey100 ?? this.grey100,
-          greyVariant0: greyVariant0 ?? this.greyVariant0,
-          greyVariant10: greyVariant10 ?? this.greyVariant10,
-          greyVariant20: greyVariant20 ?? this.greyVariant20,
-          greyVariant30: greyVariant30 ?? this.greyVariant30,
-          greyVariant40: greyVariant40 ?? this.greyVariant40,
-          greyVariant50: greyVariant50 ?? this.greyVariant50,
-          greyVariant60: greyVariant60 ?? this.greyVariant60,
-          greyVariant70: greyVariant70 ?? this.greyVariant70,
-          greyVariant80: greyVariant80 ?? this.greyVariant80,
-          greyVariant90: greyVariant90 ?? this.greyVariant90,
-          greyVariant95: greyVariant95 ?? this.greyVariant95,
-          greyVariant98: greyVariant98 ?? this.greyVariant98,
-          greyVariant100: greyVariant100 ?? this.greyVariant100,
-          green0: green0 ?? this.green0,
-          green10: green10 ?? this.green10,
-          green20: green20 ?? this.green20,
-          green30: green30 ?? this.green30,
-          green40: green40 ?? this.green40,
-          green50: green50 ?? this.green50,
-          green60: green60 ?? this.green60,
-          green70: green70 ?? this.green70,
-          green80: green80 ?? this.green80,
-          green90: green90 ?? this.green90,
-          green95: green95 ?? this.green95,
-          green98: green98 ?? this.green98,
-          green100: green100 ?? this.green100,
-          orange0: orange0 ?? this.orange0,
-          orange10: orange10 ?? this.orange10,
-          orange20: orange20 ?? this.orange20,
-          orange30: orange30 ?? this.orange30,
-          orange40: orange40 ?? this.orange40,
-          orange50: orange50 ?? this.orange50,
-          orange60: orange60 ?? this.orange60,
-          orange70: orange70 ?? this.orange70,
-          orange80: orange80 ?? this.orange80,
-          orange90: orange90 ?? this.orange90,
-          orange95: orange95 ?? this.orange95,
-          orange98: orange98 ?? this.orange98,
-          orange100: orange100 ?? this.orange100,
-          pink0: pink0 ?? this.pink0,
-          pink10: pink10 ?? this.pink10,
-          pink20: pink20 ?? this.pink20,
-          pink30: pink30 ?? this.pink30,
-          pink40: pink40 ?? this.pink40,
-          pink50: pink50 ?? this.pink50,
-          pink60: pink60 ?? this.pink60,
-          pink70: pink70 ?? this.pink70,
-          pink80: pink80 ?? this.pink80,
-          pink90: pink90 ?? this.pink90,
-          pink95: pink95 ?? this.pink95,
-          pink98: pink98 ?? this.pink98,
-          pink100: pink100 ?? this.pink100,
+      ? copyWith(
+          white: white,
+          black: black,
+          blue0: blue0,
+          blue10: blue10,
+          blue20: blue20,
+          blue30: blue30,
+          blue40: blue40,
+          blue50: blue50,
+          blue60: blue60,
+          blue70: blue70,
+          blue80: blue80,
+          blue90: blue90,
+          blue95: blue95,
+          blue98: blue98,
+          blue100: blue100,
+          blueVariant0: blueVariant0,
+          blueVariant10: blueVariant10,
+          blueVariant20: blueVariant20,
+          blueVariant30: blueVariant30,
+          blueVariant40: blueVariant40,
+          blueVariant50: blueVariant50,
+          blueVariant60: blueVariant60,
+          blueVariant70: blueVariant70,
+          blueVariant80: blueVariant80,
+          blueVariant90: blueVariant90,
+          blueVariant95: blueVariant95,
+          blueVariant98: blueVariant98,
+          blueVariant100: blueVariant100,
+          yellow0: yellow0,
+          yellow10: yellow10,
+          yellow20: yellow20,
+          yellow30: yellow30,
+          yellow40: yellow40,
+          yellow50: yellow50,
+          yellow60: yellow60,
+          yellow70: yellow70,
+          yellow80: yellow80,
+          yellow90: yellow90,
+          yellow95: yellow95,
+          yellow98: yellow98,
+          yellow100: yellow100,
+          red0: red0,
+          red10: red10,
+          red20: red20,
+          red30: red30,
+          red40: red40,
+          red50: red50,
+          red60: red60,
+          red70: red70,
+          red80: red80,
+          red90: red90,
+          red95: red95,
+          red98: red98,
+          red100: red100,
+          purple0: purple0,
+          purple10: purple10,
+          purple20: purple20,
+          purple30: purple30,
+          purple40: purple40,
+          purple50: purple50,
+          purple60: purple60,
+          purple70: purple70,
+          purple80: purple80,
+          purple90: purple90,
+          purple95: purple95,
+          purple98: purple98,
+          purple100: purple100,
+          cyan0: cyan0,
+          cyan10: cyan10,
+          cyan20: cyan20,
+          cyan30: cyan30,
+          cyan40: cyan40,
+          cyan50: cyan50,
+          cyan60: cyan60,
+          cyan70: cyan70,
+          cyan80: cyan80,
+          cyan90: cyan90,
+          cyan95: cyan95,
+          cyan98: cyan98,
+          cyan100: cyan100,
+          grey0: grey0,
+          grey10: grey10,
+          grey20: grey20,
+          grey30: grey30,
+          grey40: grey40,
+          grey50: grey50,
+          grey60: grey60,
+          grey70: grey70,
+          grey80: grey80,
+          grey90: grey90,
+          grey95: grey95,
+          grey98: grey98,
+          grey100: grey100,
+          greyVariant0: greyVariant0,
+          greyVariant10: greyVariant10,
+          greyVariant20: greyVariant20,
+          greyVariant30: greyVariant30,
+          greyVariant40: greyVariant40,
+          greyVariant50: greyVariant50,
+          greyVariant60: greyVariant60,
+          greyVariant70: greyVariant70,
+          greyVariant80: greyVariant80,
+          greyVariant90: greyVariant90,
+          greyVariant95: greyVariant95,
+          greyVariant98: greyVariant98,
+          greyVariant100: greyVariant100,
+          green0: green0,
+          green10: green10,
+          green20: green20,
+          green30: green30,
+          green40: green40,
+          green50: green50,
+          green60: green60,
+          green70: green70,
+          green80: green80,
+          green90: green90,
+          green95: green95,
+          green98: green98,
+          green100: green100,
+          orange0: orange0,
+          orange10: orange10,
+          orange20: orange20,
+          orange30: orange30,
+          orange40: orange40,
+          orange50: orange50,
+          orange60: orange60,
+          orange70: orange70,
+          orange80: orange80,
+          orange90: orange90,
+          orange95: orange95,
+          orange98: orange98,
+          orange100: orange100,
+          pink0: pink0,
+          pink10: pink10,
+          pink20: pink20,
+          pink30: pink30,
+          pink40: pink40,
+          pink50: pink50,
+          pink60: pink60,
+          pink70: pink70,
+          pink80: pink80,
+          pink90: pink90,
+          pink95: pink95,
+          pink98: pink98,
+          pink100: pink100,
         )
       : this;
 
-  StaticPaletteThemeDataPartial merge(StaticPaletteThemeDataPartial? other) =>
-      other != null
+  StaticPalettePartial merge(StaticPalettePartial? other) => other != null
       ? copyWith(
+          white: other.white,
+          black: other.black,
+          blue0: other.blue0,
+          blue10: other.blue10,
+          blue20: other.blue20,
+          blue30: other.blue30,
+          blue40: other.blue40,
+          blue50: other.blue50,
+          blue60: other.blue60,
+          blue70: other.blue70,
+          blue80: other.blue80,
+          blue90: other.blue90,
+          blue95: other.blue95,
+          blue98: other.blue98,
+          blue100: other.blue100,
+          blueVariant0: other.blueVariant0,
+          blueVariant10: other.blueVariant10,
+          blueVariant20: other.blueVariant20,
+          blueVariant30: other.blueVariant30,
+          blueVariant40: other.blueVariant40,
+          blueVariant50: other.blueVariant50,
+          blueVariant60: other.blueVariant60,
+          blueVariant70: other.blueVariant70,
+          blueVariant80: other.blueVariant80,
+          blueVariant90: other.blueVariant90,
+          blueVariant95: other.blueVariant95,
+          blueVariant98: other.blueVariant98,
+          blueVariant100: other.blueVariant100,
+          yellow0: other.yellow0,
+          yellow10: other.yellow10,
+          yellow20: other.yellow20,
+          yellow30: other.yellow30,
+          yellow40: other.yellow40,
+          yellow50: other.yellow50,
+          yellow60: other.yellow60,
+          yellow70: other.yellow70,
+          yellow80: other.yellow80,
+          yellow90: other.yellow90,
+          yellow95: other.yellow95,
+          yellow98: other.yellow98,
+          yellow100: other.yellow100,
+          red0: other.red0,
+          red10: other.red10,
+          red20: other.red20,
+          red30: other.red30,
+          red40: other.red40,
+          red50: other.red50,
+          red60: other.red60,
+          red70: other.red70,
+          red80: other.red80,
+          red90: other.red90,
+          red95: other.red95,
+          red98: other.red98,
+          red100: other.red100,
+          purple0: other.purple0,
+          purple10: other.purple10,
+          purple20: other.purple20,
+          purple30: other.purple30,
+          purple40: other.purple40,
+          purple50: other.purple50,
+          purple60: other.purple60,
+          purple70: other.purple70,
+          purple80: other.purple80,
+          purple90: other.purple90,
+          purple95: other.purple95,
+          purple98: other.purple98,
+          purple100: other.purple100,
+          cyan0: other.cyan0,
+          cyan10: other.cyan10,
+          cyan20: other.cyan20,
+          cyan30: other.cyan30,
+          cyan40: other.cyan40,
+          cyan50: other.cyan50,
+          cyan60: other.cyan60,
+          cyan70: other.cyan70,
+          cyan80: other.cyan80,
+          cyan90: other.cyan90,
+          cyan95: other.cyan95,
+          cyan98: other.cyan98,
+          cyan100: other.cyan100,
+          grey0: other.grey0,
+          grey10: other.grey10,
+          grey20: other.grey20,
+          grey30: other.grey30,
+          grey40: other.grey40,
+          grey50: other.grey50,
+          grey60: other.grey60,
+          grey70: other.grey70,
+          grey80: other.grey80,
+          grey90: other.grey90,
+          grey95: other.grey95,
+          grey98: other.grey98,
+          grey100: other.grey100,
+          greyVariant0: other.greyVariant0,
+          greyVariant10: other.greyVariant10,
+          greyVariant20: other.greyVariant20,
+          greyVariant30: other.greyVariant30,
+          greyVariant40: other.greyVariant40,
+          greyVariant50: other.greyVariant50,
+          greyVariant60: other.greyVariant60,
+          greyVariant70: other.greyVariant70,
+          greyVariant80: other.greyVariant80,
+          greyVariant90: other.greyVariant90,
+          greyVariant95: other.greyVariant95,
+          greyVariant98: other.greyVariant98,
+          greyVariant100: other.greyVariant100,
+          green0: other.green0,
+          green10: other.green10,
+          green20: other.green20,
+          green30: other.green30,
+          green40: other.green40,
+          green50: other.green50,
+          green60: other.green60,
+          green70: other.green70,
+          green80: other.green80,
+          green90: other.green90,
+          green95: other.green95,
+          green98: other.green98,
+          green100: other.green100,
+          orange0: other.orange0,
+          orange10: other.orange10,
+          orange20: other.orange20,
+          orange30: other.orange30,
+          orange40: other.orange40,
+          orange50: other.orange50,
+          orange60: other.orange60,
+          orange70: other.orange70,
+          orange80: other.orange80,
+          orange90: other.orange90,
+          orange95: other.orange95,
+          orange98: other.orange98,
+          orange100: other.orange100,
+          pink0: other.pink0,
+          pink10: other.pink10,
+          pink20: other.pink20,
+          pink30: other.pink30,
+          pink40: other.pink40,
+          pink50: other.pink50,
+          pink60: other.pink60,
+          pink70: other.pink70,
+          pink80: other.pink80,
+          pink90: other.pink90,
+          pink95: other.pink95,
+          pink98: other.pink98,
+          pink100: other.pink100,
+        )
+      : copy();
+
+  StaticPalettePartial maybeMerge(StaticPalettePartial? other) => other != null
+      ? maybeCopyWith(
           white: other.white,
           black: other.black,
           blue0: other.blue0,
@@ -1183,325 +1628,10 @@ abstract class StaticPaletteThemeDataPartial with Diagnosticable {
       ..add(ColorProperty("pink98", pink98, defaultValue: null))
       ..add(ColorProperty("pink100", pink100, defaultValue: null));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is StaticPaletteThemeDataPartial &&
-          white == other.white &&
-          black == other.black &&
-          blue0 == other.blue0 &&
-          blue10 == other.blue10 &&
-          blue20 == other.blue20 &&
-          blue30 == other.blue30 &&
-          blue40 == other.blue40 &&
-          blue50 == other.blue50 &&
-          blue60 == other.blue60 &&
-          blue70 == other.blue70 &&
-          blue80 == other.blue80 &&
-          blue90 == other.blue90 &&
-          blue95 == other.blue95 &&
-          blue98 == other.blue98 &&
-          blue100 == other.blue100 &&
-          blueVariant0 == other.blueVariant0 &&
-          blueVariant10 == other.blueVariant10 &&
-          blueVariant20 == other.blueVariant20 &&
-          blueVariant30 == other.blueVariant30 &&
-          blueVariant40 == other.blueVariant40 &&
-          blueVariant50 == other.blueVariant50 &&
-          blueVariant60 == other.blueVariant60 &&
-          blueVariant70 == other.blueVariant70 &&
-          blueVariant80 == other.blueVariant80 &&
-          blueVariant90 == other.blueVariant90 &&
-          blueVariant95 == other.blueVariant95 &&
-          blueVariant98 == other.blueVariant98 &&
-          blueVariant100 == other.blueVariant100 &&
-          yellow0 == other.yellow0 &&
-          yellow10 == other.yellow10 &&
-          yellow20 == other.yellow20 &&
-          yellow30 == other.yellow30 &&
-          yellow40 == other.yellow40 &&
-          yellow50 == other.yellow50 &&
-          yellow60 == other.yellow60 &&
-          yellow70 == other.yellow70 &&
-          yellow80 == other.yellow80 &&
-          yellow90 == other.yellow90 &&
-          yellow95 == other.yellow95 &&
-          yellow98 == other.yellow98 &&
-          yellow100 == other.yellow100 &&
-          red0 == other.red0 &&
-          red10 == other.red10 &&
-          red20 == other.red20 &&
-          red30 == other.red30 &&
-          red40 == other.red40 &&
-          red50 == other.red50 &&
-          red60 == other.red60 &&
-          red70 == other.red70 &&
-          red80 == other.red80 &&
-          red90 == other.red90 &&
-          red95 == other.red95 &&
-          red98 == other.red98 &&
-          red100 == other.red100 &&
-          purple0 == other.purple0 &&
-          purple10 == other.purple10 &&
-          purple20 == other.purple20 &&
-          purple30 == other.purple30 &&
-          purple40 == other.purple40 &&
-          purple50 == other.purple50 &&
-          purple60 == other.purple60 &&
-          purple70 == other.purple70 &&
-          purple80 == other.purple80 &&
-          purple90 == other.purple90 &&
-          purple95 == other.purple95 &&
-          purple98 == other.purple98 &&
-          purple100 == other.purple100 &&
-          cyan0 == other.cyan0 &&
-          cyan10 == other.cyan10 &&
-          cyan20 == other.cyan20 &&
-          cyan30 == other.cyan30 &&
-          cyan40 == other.cyan40 &&
-          cyan50 == other.cyan50 &&
-          cyan60 == other.cyan60 &&
-          cyan70 == other.cyan70 &&
-          cyan80 == other.cyan80 &&
-          cyan90 == other.cyan90 &&
-          cyan95 == other.cyan95 &&
-          cyan98 == other.cyan98 &&
-          cyan100 == other.cyan100 &&
-          grey0 == other.grey0 &&
-          grey10 == other.grey10 &&
-          grey20 == other.grey20 &&
-          grey30 == other.grey30 &&
-          grey40 == other.grey40 &&
-          grey50 == other.grey50 &&
-          grey60 == other.grey60 &&
-          grey70 == other.grey70 &&
-          grey80 == other.grey80 &&
-          grey90 == other.grey90 &&
-          grey95 == other.grey95 &&
-          grey98 == other.grey98 &&
-          grey100 == other.grey100 &&
-          greyVariant0 == other.greyVariant0 &&
-          greyVariant10 == other.greyVariant10 &&
-          greyVariant20 == other.greyVariant20 &&
-          greyVariant30 == other.greyVariant30 &&
-          greyVariant40 == other.greyVariant40 &&
-          greyVariant50 == other.greyVariant50 &&
-          greyVariant60 == other.greyVariant60 &&
-          greyVariant70 == other.greyVariant70 &&
-          greyVariant80 == other.greyVariant80 &&
-          greyVariant90 == other.greyVariant90 &&
-          greyVariant95 == other.greyVariant95 &&
-          greyVariant98 == other.greyVariant98 &&
-          greyVariant100 == other.greyVariant100 &&
-          green0 == other.green0 &&
-          green10 == other.green10 &&
-          green20 == other.green20 &&
-          green30 == other.green30 &&
-          green40 == other.green40 &&
-          green50 == other.green50 &&
-          green60 == other.green60 &&
-          green70 == other.green70 &&
-          green80 == other.green80 &&
-          green90 == other.green90 &&
-          green95 == other.green95 &&
-          green98 == other.green98 &&
-          green100 == other.green100 &&
-          orange0 == other.orange0 &&
-          orange10 == other.orange10 &&
-          orange20 == other.orange20 &&
-          orange30 == other.orange30 &&
-          orange40 == other.orange40 &&
-          orange50 == other.orange50 &&
-          orange60 == other.orange60 &&
-          orange70 == other.orange70 &&
-          orange80 == other.orange80 &&
-          orange90 == other.orange90 &&
-          orange95 == other.orange95 &&
-          orange98 == other.orange98 &&
-          orange100 == other.orange100 &&
-          pink0 == other.pink0 &&
-          pink10 == other.pink10 &&
-          pink20 == other.pink20 &&
-          pink30 == other.pink30 &&
-          pink40 == other.pink40 &&
-          pink50 == other.pink50 &&
-          pink60 == other.pink60 &&
-          pink70 == other.pink70 &&
-          pink80 == other.pink80 &&
-          pink90 == other.pink90 &&
-          pink95 == other.pink95 &&
-          pink98 == other.pink98 &&
-          pink100 == other.pink100;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    white,
-    black,
-    blue0,
-    blue10,
-    blue20,
-    blue30,
-    blue40,
-    blue50,
-    blue60,
-    blue70,
-    blue80,
-    blue90,
-    blue95,
-    blue98,
-    blue100,
-    blueVariant0,
-    blueVariant10,
-    blueVariant20,
-    Object.hash(
-      blueVariant30,
-      blueVariant40,
-      blueVariant50,
-      blueVariant60,
-      blueVariant70,
-      blueVariant80,
-      blueVariant90,
-      blueVariant95,
-      blueVariant98,
-      blueVariant100,
-      yellow0,
-      yellow10,
-      yellow20,
-      yellow30,
-      yellow40,
-      yellow50,
-      yellow60,
-      yellow70,
-      yellow80,
-      Object.hash(
-        yellow90,
-        yellow95,
-        yellow98,
-        yellow100,
-        red0,
-        red10,
-        red20,
-        red30,
-        red40,
-        red50,
-        red60,
-        red70,
-        red80,
-        red90,
-        red95,
-        red98,
-        red100,
-        purple0,
-        purple10,
-        Object.hash(
-          purple20,
-          purple30,
-          purple40,
-          purple50,
-          purple60,
-          purple70,
-          purple80,
-          purple90,
-          purple95,
-          purple98,
-          purple100,
-          cyan0,
-          cyan10,
-          cyan20,
-          cyan30,
-          cyan40,
-          cyan50,
-          cyan60,
-          cyan70,
-          Object.hash(
-            cyan80,
-            cyan90,
-            cyan95,
-            cyan98,
-            cyan100,
-            grey0,
-            grey10,
-            grey20,
-            grey30,
-            grey40,
-            grey50,
-            grey60,
-            grey70,
-            grey80,
-            grey90,
-            grey95,
-            grey98,
-            grey100,
-            greyVariant0,
-            Object.hash(
-              greyVariant10,
-              greyVariant20,
-              greyVariant30,
-              greyVariant40,
-              greyVariant50,
-              greyVariant60,
-              greyVariant70,
-              greyVariant80,
-              greyVariant90,
-              greyVariant95,
-              greyVariant98,
-              greyVariant100,
-              green0,
-              green10,
-              green20,
-              green30,
-              green40,
-              green50,
-              green60,
-              Object.hash(
-                green70,
-                green80,
-                green90,
-                green95,
-                green98,
-                green100,
-                orange0,
-                orange10,
-                orange20,
-                orange30,
-                orange40,
-                orange50,
-                orange60,
-                orange70,
-                orange80,
-                orange90,
-                orange95,
-                orange98,
-                orange100,
-                Object.hash(
-                  pink0,
-                  pink10,
-                  pink20,
-                  pink30,
-                  pink40,
-                  pink50,
-                  pink60,
-                  pink70,
-                  pink80,
-                  pink90,
-                  pink95,
-                  pink98,
-                  pink100,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
 }
 
-class _StaticPaletteThemeDataPartial extends StaticPaletteThemeDataPartial {
-  const _StaticPaletteThemeDataPartial({
+final class _StaticPalettePartial extends StaticPalettePartial {
+  const _StaticPalettePartial({
     this.white,
     this.black,
     this.blue0,
@@ -2083,12 +2213,325 @@ class _StaticPaletteThemeDataPartial extends StaticPaletteThemeDataPartial {
 
   @override
   final Color? pink100;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _StaticPalettePartial &&
+          white == other.white &&
+          black == other.black &&
+          blue0 == other.blue0 &&
+          blue10 == other.blue10 &&
+          blue20 == other.blue20 &&
+          blue30 == other.blue30 &&
+          blue40 == other.blue40 &&
+          blue50 == other.blue50 &&
+          blue60 == other.blue60 &&
+          blue70 == other.blue70 &&
+          blue80 == other.blue80 &&
+          blue90 == other.blue90 &&
+          blue95 == other.blue95 &&
+          blue98 == other.blue98 &&
+          blue100 == other.blue100 &&
+          blueVariant0 == other.blueVariant0 &&
+          blueVariant10 == other.blueVariant10 &&
+          blueVariant20 == other.blueVariant20 &&
+          blueVariant30 == other.blueVariant30 &&
+          blueVariant40 == other.blueVariant40 &&
+          blueVariant50 == other.blueVariant50 &&
+          blueVariant60 == other.blueVariant60 &&
+          blueVariant70 == other.blueVariant70 &&
+          blueVariant80 == other.blueVariant80 &&
+          blueVariant90 == other.blueVariant90 &&
+          blueVariant95 == other.blueVariant95 &&
+          blueVariant98 == other.blueVariant98 &&
+          blueVariant100 == other.blueVariant100 &&
+          yellow0 == other.yellow0 &&
+          yellow10 == other.yellow10 &&
+          yellow20 == other.yellow20 &&
+          yellow30 == other.yellow30 &&
+          yellow40 == other.yellow40 &&
+          yellow50 == other.yellow50 &&
+          yellow60 == other.yellow60 &&
+          yellow70 == other.yellow70 &&
+          yellow80 == other.yellow80 &&
+          yellow90 == other.yellow90 &&
+          yellow95 == other.yellow95 &&
+          yellow98 == other.yellow98 &&
+          yellow100 == other.yellow100 &&
+          red0 == other.red0 &&
+          red10 == other.red10 &&
+          red20 == other.red20 &&
+          red30 == other.red30 &&
+          red40 == other.red40 &&
+          red50 == other.red50 &&
+          red60 == other.red60 &&
+          red70 == other.red70 &&
+          red80 == other.red80 &&
+          red90 == other.red90 &&
+          red95 == other.red95 &&
+          red98 == other.red98 &&
+          red100 == other.red100 &&
+          purple0 == other.purple0 &&
+          purple10 == other.purple10 &&
+          purple20 == other.purple20 &&
+          purple30 == other.purple30 &&
+          purple40 == other.purple40 &&
+          purple50 == other.purple50 &&
+          purple60 == other.purple60 &&
+          purple70 == other.purple70 &&
+          purple80 == other.purple80 &&
+          purple90 == other.purple90 &&
+          purple95 == other.purple95 &&
+          purple98 == other.purple98 &&
+          purple100 == other.purple100 &&
+          cyan0 == other.cyan0 &&
+          cyan10 == other.cyan10 &&
+          cyan20 == other.cyan20 &&
+          cyan30 == other.cyan30 &&
+          cyan40 == other.cyan40 &&
+          cyan50 == other.cyan50 &&
+          cyan60 == other.cyan60 &&
+          cyan70 == other.cyan70 &&
+          cyan80 == other.cyan80 &&
+          cyan90 == other.cyan90 &&
+          cyan95 == other.cyan95 &&
+          cyan98 == other.cyan98 &&
+          cyan100 == other.cyan100 &&
+          grey0 == other.grey0 &&
+          grey10 == other.grey10 &&
+          grey20 == other.grey20 &&
+          grey30 == other.grey30 &&
+          grey40 == other.grey40 &&
+          grey50 == other.grey50 &&
+          grey60 == other.grey60 &&
+          grey70 == other.grey70 &&
+          grey80 == other.grey80 &&
+          grey90 == other.grey90 &&
+          grey95 == other.grey95 &&
+          grey98 == other.grey98 &&
+          grey100 == other.grey100 &&
+          greyVariant0 == other.greyVariant0 &&
+          greyVariant10 == other.greyVariant10 &&
+          greyVariant20 == other.greyVariant20 &&
+          greyVariant30 == other.greyVariant30 &&
+          greyVariant40 == other.greyVariant40 &&
+          greyVariant50 == other.greyVariant50 &&
+          greyVariant60 == other.greyVariant60 &&
+          greyVariant70 == other.greyVariant70 &&
+          greyVariant80 == other.greyVariant80 &&
+          greyVariant90 == other.greyVariant90 &&
+          greyVariant95 == other.greyVariant95 &&
+          greyVariant98 == other.greyVariant98 &&
+          greyVariant100 == other.greyVariant100 &&
+          green0 == other.green0 &&
+          green10 == other.green10 &&
+          green20 == other.green20 &&
+          green30 == other.green30 &&
+          green40 == other.green40 &&
+          green50 == other.green50 &&
+          green60 == other.green60 &&
+          green70 == other.green70 &&
+          green80 == other.green80 &&
+          green90 == other.green90 &&
+          green95 == other.green95 &&
+          green98 == other.green98 &&
+          green100 == other.green100 &&
+          orange0 == other.orange0 &&
+          orange10 == other.orange10 &&
+          orange20 == other.orange20 &&
+          orange30 == other.orange30 &&
+          orange40 == other.orange40 &&
+          orange50 == other.orange50 &&
+          orange60 == other.orange60 &&
+          orange70 == other.orange70 &&
+          orange80 == other.orange80 &&
+          orange90 == other.orange90 &&
+          orange95 == other.orange95 &&
+          orange98 == other.orange98 &&
+          orange100 == other.orange100 &&
+          pink0 == other.pink0 &&
+          pink10 == other.pink10 &&
+          pink20 == other.pink20 &&
+          pink30 == other.pink30 &&
+          pink40 == other.pink40 &&
+          pink50 == other.pink50 &&
+          pink60 == other.pink60 &&
+          pink70 == other.pink70 &&
+          pink80 == other.pink80 &&
+          pink90 == other.pink90 &&
+          pink95 == other.pink95 &&
+          pink98 == other.pink98 &&
+          pink100 == other.pink100;
+
+  @override
+  int get hashCode => Object.hash(
+    white,
+    black,
+    blue0,
+    blue10,
+    blue20,
+    blue30,
+    blue40,
+    blue50,
+    blue60,
+    blue70,
+    blue80,
+    blue90,
+    blue95,
+    blue98,
+    blue100,
+    blueVariant0,
+    blueVariant10,
+    blueVariant20,
+    blueVariant30,
+    Object.hash(
+      blueVariant40,
+      blueVariant50,
+      blueVariant60,
+      blueVariant70,
+      blueVariant80,
+      blueVariant90,
+      blueVariant95,
+      blueVariant98,
+      blueVariant100,
+      yellow0,
+      yellow10,
+      yellow20,
+      yellow30,
+      yellow40,
+      yellow50,
+      yellow60,
+      yellow70,
+      yellow80,
+      yellow90,
+      Object.hash(
+        yellow95,
+        yellow98,
+        yellow100,
+        red0,
+        red10,
+        red20,
+        red30,
+        red40,
+        red50,
+        red60,
+        red70,
+        red80,
+        red90,
+        red95,
+        red98,
+        red100,
+        purple0,
+        purple10,
+        purple20,
+        Object.hash(
+          purple30,
+          purple40,
+          purple50,
+          purple60,
+          purple70,
+          purple80,
+          purple90,
+          purple95,
+          purple98,
+          purple100,
+          cyan0,
+          cyan10,
+          cyan20,
+          cyan30,
+          cyan40,
+          cyan50,
+          cyan60,
+          cyan70,
+          cyan80,
+          Object.hash(
+            cyan90,
+            cyan95,
+            cyan98,
+            cyan100,
+            grey0,
+            grey10,
+            grey20,
+            grey30,
+            grey40,
+            grey50,
+            grey60,
+            grey70,
+            grey80,
+            grey90,
+            grey95,
+            grey98,
+            grey100,
+            greyVariant0,
+            greyVariant10,
+            Object.hash(
+              greyVariant20,
+              greyVariant30,
+              greyVariant40,
+              greyVariant50,
+              greyVariant60,
+              greyVariant70,
+              greyVariant80,
+              greyVariant90,
+              greyVariant95,
+              greyVariant98,
+              greyVariant100,
+              green0,
+              green10,
+              green20,
+              green30,
+              green40,
+              green50,
+              green60,
+              green70,
+              Object.hash(
+                green80,
+                green90,
+                green95,
+                green98,
+                green100,
+                orange0,
+                orange10,
+                orange20,
+                orange30,
+                orange40,
+                orange50,
+                orange60,
+                orange70,
+                orange80,
+                orange90,
+                orange95,
+                orange98,
+                orange100,
+                pink0,
+                Object.hash(
+                  pink10,
+                  pink20,
+                  pink30,
+                  pink40,
+                  pink50,
+                  pink60,
+                  pink70,
+                  pink80,
+                  pink90,
+                  pink95,
+                  pink98,
+                  pink100,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
-abstract class StaticPaletteThemeData extends StaticPaletteThemeDataPartial {
-  const StaticPaletteThemeData();
+abstract class StaticPalette extends StaticPalettePartial {
+  const StaticPalette();
 
-  const factory StaticPaletteThemeData.from({
+  const factory StaticPalette.from({
     required Color white,
     required Color black,
     required Color blue0,
@@ -2234,158 +2677,10 @@ abstract class StaticPaletteThemeData extends StaticPaletteThemeDataPartial {
     required Color pink95,
     required Color pink98,
     required Color pink100,
-  }) = _StaticPaletteThemeData.from;
+  }) = _StaticPalette.from;
 
-  const factory StaticPaletteThemeData.defaults() =
-      _StaticPaletteThemeDataDefaults;
-
-  const factory StaticPaletteThemeData._defaults({
-    Color? white,
-    Color? black,
-    Color? blue0,
-    Color? blue10,
-    Color? blue20,
-    Color? blue30,
-    Color? blue40,
-    Color? blue50,
-    Color? blue60,
-    Color? blue70,
-    Color? blue80,
-    Color? blue90,
-    Color? blue95,
-    Color? blue98,
-    Color? blue100,
-    Color? blueVariant0,
-    Color? blueVariant10,
-    Color? blueVariant20,
-    Color? blueVariant30,
-    Color? blueVariant40,
-    Color? blueVariant50,
-    Color? blueVariant60,
-    Color? blueVariant70,
-    Color? blueVariant80,
-    Color? blueVariant90,
-    Color? blueVariant95,
-    Color? blueVariant98,
-    Color? blueVariant100,
-    Color? yellow0,
-    Color? yellow10,
-    Color? yellow20,
-    Color? yellow30,
-    Color? yellow40,
-    Color? yellow50,
-    Color? yellow60,
-    Color? yellow70,
-    Color? yellow80,
-    Color? yellow90,
-    Color? yellow95,
-    Color? yellow98,
-    Color? yellow100,
-    Color? red0,
-    Color? red10,
-    Color? red20,
-    Color? red30,
-    Color? red40,
-    Color? red50,
-    Color? red60,
-    Color? red70,
-    Color? red80,
-    Color? red90,
-    Color? red95,
-    Color? red98,
-    Color? red100,
-    Color? purple0,
-    Color? purple10,
-    Color? purple20,
-    Color? purple30,
-    Color? purple40,
-    Color? purple50,
-    Color? purple60,
-    Color? purple70,
-    Color? purple80,
-    Color? purple90,
-    Color? purple95,
-    Color? purple98,
-    Color? purple100,
-    Color? cyan0,
-    Color? cyan10,
-    Color? cyan20,
-    Color? cyan30,
-    Color? cyan40,
-    Color? cyan50,
-    Color? cyan60,
-    Color? cyan70,
-    Color? cyan80,
-    Color? cyan90,
-    Color? cyan95,
-    Color? cyan98,
-    Color? cyan100,
-    Color? grey0,
-    Color? grey10,
-    Color? grey20,
-    Color? grey30,
-    Color? grey40,
-    Color? grey50,
-    Color? grey60,
-    Color? grey70,
-    Color? grey80,
-    Color? grey90,
-    Color? grey95,
-    Color? grey98,
-    Color? grey100,
-    Color? greyVariant0,
-    Color? greyVariant10,
-    Color? greyVariant20,
-    Color? greyVariant30,
-    Color? greyVariant40,
-    Color? greyVariant50,
-    Color? greyVariant60,
-    Color? greyVariant70,
-    Color? greyVariant80,
-    Color? greyVariant90,
-    Color? greyVariant95,
-    Color? greyVariant98,
-    Color? greyVariant100,
-    Color? green0,
-    Color? green10,
-    Color? green20,
-    Color? green30,
-    Color? green40,
-    Color? green50,
-    Color? green60,
-    Color? green70,
-    Color? green80,
-    Color? green90,
-    Color? green95,
-    Color? green98,
-    Color? green100,
-    Color? orange0,
-    Color? orange10,
-    Color? orange20,
-    Color? orange30,
-    Color? orange40,
-    Color? orange50,
-    Color? orange60,
-    Color? orange70,
-    Color? orange80,
-    Color? orange90,
-    Color? orange95,
-    Color? orange98,
-    Color? orange100,
-    Color? pink0,
-    Color? pink10,
-    Color? pink20,
-    Color? pink30,
-    Color? pink40,
-    Color? pink50,
-    Color? pink60,
-    Color? pink70,
-    Color? pink80,
-    Color? pink90,
-    Color? pink95,
-    Color? pink98,
-    Color? pink100,
-  }) = _StaticPaletteThemeDataDefaults;
+  const factory StaticPalette.defaults({StaticPalettePartial? overrides}) =
+      _StaticPaletteDefaults;
 
   @override
   Color get white;
@@ -2823,7 +3118,305 @@ abstract class StaticPaletteThemeData extends StaticPaletteThemeDataPartial {
   Color get pink100;
 
   @override
-  StaticPaletteThemeData copyWith({
+  StaticPalette copy() => copyWith();
+
+  @override
+  StaticPalette copyWith({
+    Color? white,
+    Color? black,
+    Color? blue0,
+    Color? blue10,
+    Color? blue20,
+    Color? blue30,
+    Color? blue40,
+    Color? blue50,
+    Color? blue60,
+    Color? blue70,
+    Color? blue80,
+    Color? blue90,
+    Color? blue95,
+    Color? blue98,
+    Color? blue100,
+    Color? blueVariant0,
+    Color? blueVariant10,
+    Color? blueVariant20,
+    Color? blueVariant30,
+    Color? blueVariant40,
+    Color? blueVariant50,
+    Color? blueVariant60,
+    Color? blueVariant70,
+    Color? blueVariant80,
+    Color? blueVariant90,
+    Color? blueVariant95,
+    Color? blueVariant98,
+    Color? blueVariant100,
+    Color? yellow0,
+    Color? yellow10,
+    Color? yellow20,
+    Color? yellow30,
+    Color? yellow40,
+    Color? yellow50,
+    Color? yellow60,
+    Color? yellow70,
+    Color? yellow80,
+    Color? yellow90,
+    Color? yellow95,
+    Color? yellow98,
+    Color? yellow100,
+    Color? red0,
+    Color? red10,
+    Color? red20,
+    Color? red30,
+    Color? red40,
+    Color? red50,
+    Color? red60,
+    Color? red70,
+    Color? red80,
+    Color? red90,
+    Color? red95,
+    Color? red98,
+    Color? red100,
+    Color? purple0,
+    Color? purple10,
+    Color? purple20,
+    Color? purple30,
+    Color? purple40,
+    Color? purple50,
+    Color? purple60,
+    Color? purple70,
+    Color? purple80,
+    Color? purple90,
+    Color? purple95,
+    Color? purple98,
+    Color? purple100,
+    Color? cyan0,
+    Color? cyan10,
+    Color? cyan20,
+    Color? cyan30,
+    Color? cyan40,
+    Color? cyan50,
+    Color? cyan60,
+    Color? cyan70,
+    Color? cyan80,
+    Color? cyan90,
+    Color? cyan95,
+    Color? cyan98,
+    Color? cyan100,
+    Color? grey0,
+    Color? grey10,
+    Color? grey20,
+    Color? grey30,
+    Color? grey40,
+    Color? grey50,
+    Color? grey60,
+    Color? grey70,
+    Color? grey80,
+    Color? grey90,
+    Color? grey95,
+    Color? grey98,
+    Color? grey100,
+    Color? greyVariant0,
+    Color? greyVariant10,
+    Color? greyVariant20,
+    Color? greyVariant30,
+    Color? greyVariant40,
+    Color? greyVariant50,
+    Color? greyVariant60,
+    Color? greyVariant70,
+    Color? greyVariant80,
+    Color? greyVariant90,
+    Color? greyVariant95,
+    Color? greyVariant98,
+    Color? greyVariant100,
+    Color? green0,
+    Color? green10,
+    Color? green20,
+    Color? green30,
+    Color? green40,
+    Color? green50,
+    Color? green60,
+    Color? green70,
+    Color? green80,
+    Color? green90,
+    Color? green95,
+    Color? green98,
+    Color? green100,
+    Color? orange0,
+    Color? orange10,
+    Color? orange20,
+    Color? orange30,
+    Color? orange40,
+    Color? orange50,
+    Color? orange60,
+    Color? orange70,
+    Color? orange80,
+    Color? orange90,
+    Color? orange95,
+    Color? orange98,
+    Color? orange100,
+    Color? pink0,
+    Color? pink10,
+    Color? pink20,
+    Color? pink30,
+    Color? pink40,
+    Color? pink50,
+    Color? pink60,
+    Color? pink70,
+    Color? pink80,
+    Color? pink90,
+    Color? pink95,
+    Color? pink98,
+    Color? pink100,
+  }) => .from(
+    white: white ?? this.white,
+    black: black ?? this.black,
+    blue0: blue0 ?? this.blue0,
+    blue10: blue10 ?? this.blue10,
+    blue20: blue20 ?? this.blue20,
+    blue30: blue30 ?? this.blue30,
+    blue40: blue40 ?? this.blue40,
+    blue50: blue50 ?? this.blue50,
+    blue60: blue60 ?? this.blue60,
+    blue70: blue70 ?? this.blue70,
+    blue80: blue80 ?? this.blue80,
+    blue90: blue90 ?? this.blue90,
+    blue95: blue95 ?? this.blue95,
+    blue98: blue98 ?? this.blue98,
+    blue100: blue100 ?? this.blue100,
+    blueVariant0: blueVariant0 ?? this.blueVariant0,
+    blueVariant10: blueVariant10 ?? this.blueVariant10,
+    blueVariant20: blueVariant20 ?? this.blueVariant20,
+    blueVariant30: blueVariant30 ?? this.blueVariant30,
+    blueVariant40: blueVariant40 ?? this.blueVariant40,
+    blueVariant50: blueVariant50 ?? this.blueVariant50,
+    blueVariant60: blueVariant60 ?? this.blueVariant60,
+    blueVariant70: blueVariant70 ?? this.blueVariant70,
+    blueVariant80: blueVariant80 ?? this.blueVariant80,
+    blueVariant90: blueVariant90 ?? this.blueVariant90,
+    blueVariant95: blueVariant95 ?? this.blueVariant95,
+    blueVariant98: blueVariant98 ?? this.blueVariant98,
+    blueVariant100: blueVariant100 ?? this.blueVariant100,
+    yellow0: yellow0 ?? this.yellow0,
+    yellow10: yellow10 ?? this.yellow10,
+    yellow20: yellow20 ?? this.yellow20,
+    yellow30: yellow30 ?? this.yellow30,
+    yellow40: yellow40 ?? this.yellow40,
+    yellow50: yellow50 ?? this.yellow50,
+    yellow60: yellow60 ?? this.yellow60,
+    yellow70: yellow70 ?? this.yellow70,
+    yellow80: yellow80 ?? this.yellow80,
+    yellow90: yellow90 ?? this.yellow90,
+    yellow95: yellow95 ?? this.yellow95,
+    yellow98: yellow98 ?? this.yellow98,
+    yellow100: yellow100 ?? this.yellow100,
+    red0: red0 ?? this.red0,
+    red10: red10 ?? this.red10,
+    red20: red20 ?? this.red20,
+    red30: red30 ?? this.red30,
+    red40: red40 ?? this.red40,
+    red50: red50 ?? this.red50,
+    red60: red60 ?? this.red60,
+    red70: red70 ?? this.red70,
+    red80: red80 ?? this.red80,
+    red90: red90 ?? this.red90,
+    red95: red95 ?? this.red95,
+    red98: red98 ?? this.red98,
+    red100: red100 ?? this.red100,
+    purple0: purple0 ?? this.purple0,
+    purple10: purple10 ?? this.purple10,
+    purple20: purple20 ?? this.purple20,
+    purple30: purple30 ?? this.purple30,
+    purple40: purple40 ?? this.purple40,
+    purple50: purple50 ?? this.purple50,
+    purple60: purple60 ?? this.purple60,
+    purple70: purple70 ?? this.purple70,
+    purple80: purple80 ?? this.purple80,
+    purple90: purple90 ?? this.purple90,
+    purple95: purple95 ?? this.purple95,
+    purple98: purple98 ?? this.purple98,
+    purple100: purple100 ?? this.purple100,
+    cyan0: cyan0 ?? this.cyan0,
+    cyan10: cyan10 ?? this.cyan10,
+    cyan20: cyan20 ?? this.cyan20,
+    cyan30: cyan30 ?? this.cyan30,
+    cyan40: cyan40 ?? this.cyan40,
+    cyan50: cyan50 ?? this.cyan50,
+    cyan60: cyan60 ?? this.cyan60,
+    cyan70: cyan70 ?? this.cyan70,
+    cyan80: cyan80 ?? this.cyan80,
+    cyan90: cyan90 ?? this.cyan90,
+    cyan95: cyan95 ?? this.cyan95,
+    cyan98: cyan98 ?? this.cyan98,
+    cyan100: cyan100 ?? this.cyan100,
+    grey0: grey0 ?? this.grey0,
+    grey10: grey10 ?? this.grey10,
+    grey20: grey20 ?? this.grey20,
+    grey30: grey30 ?? this.grey30,
+    grey40: grey40 ?? this.grey40,
+    grey50: grey50 ?? this.grey50,
+    grey60: grey60 ?? this.grey60,
+    grey70: grey70 ?? this.grey70,
+    grey80: grey80 ?? this.grey80,
+    grey90: grey90 ?? this.grey90,
+    grey95: grey95 ?? this.grey95,
+    grey98: grey98 ?? this.grey98,
+    grey100: grey100 ?? this.grey100,
+    greyVariant0: greyVariant0 ?? this.greyVariant0,
+    greyVariant10: greyVariant10 ?? this.greyVariant10,
+    greyVariant20: greyVariant20 ?? this.greyVariant20,
+    greyVariant30: greyVariant30 ?? this.greyVariant30,
+    greyVariant40: greyVariant40 ?? this.greyVariant40,
+    greyVariant50: greyVariant50 ?? this.greyVariant50,
+    greyVariant60: greyVariant60 ?? this.greyVariant60,
+    greyVariant70: greyVariant70 ?? this.greyVariant70,
+    greyVariant80: greyVariant80 ?? this.greyVariant80,
+    greyVariant90: greyVariant90 ?? this.greyVariant90,
+    greyVariant95: greyVariant95 ?? this.greyVariant95,
+    greyVariant98: greyVariant98 ?? this.greyVariant98,
+    greyVariant100: greyVariant100 ?? this.greyVariant100,
+    green0: green0 ?? this.green0,
+    green10: green10 ?? this.green10,
+    green20: green20 ?? this.green20,
+    green30: green30 ?? this.green30,
+    green40: green40 ?? this.green40,
+    green50: green50 ?? this.green50,
+    green60: green60 ?? this.green60,
+    green70: green70 ?? this.green70,
+    green80: green80 ?? this.green80,
+    green90: green90 ?? this.green90,
+    green95: green95 ?? this.green95,
+    green98: green98 ?? this.green98,
+    green100: green100 ?? this.green100,
+    orange0: orange0 ?? this.orange0,
+    orange10: orange10 ?? this.orange10,
+    orange20: orange20 ?? this.orange20,
+    orange30: orange30 ?? this.orange30,
+    orange40: orange40 ?? this.orange40,
+    orange50: orange50 ?? this.orange50,
+    orange60: orange60 ?? this.orange60,
+    orange70: orange70 ?? this.orange70,
+    orange80: orange80 ?? this.orange80,
+    orange90: orange90 ?? this.orange90,
+    orange95: orange95 ?? this.orange95,
+    orange98: orange98 ?? this.orange98,
+    orange100: orange100 ?? this.orange100,
+    pink0: pink0 ?? this.pink0,
+    pink10: pink10 ?? this.pink10,
+    pink20: pink20 ?? this.pink20,
+    pink30: pink30 ?? this.pink30,
+    pink40: pink40 ?? this.pink40,
+    pink50: pink50 ?? this.pink50,
+    pink60: pink60 ?? this.pink60,
+    pink70: pink70 ?? this.pink70,
+    pink80: pink80 ?? this.pink80,
+    pink90: pink90 ?? this.pink90,
+    pink95: pink95 ?? this.pink95,
+    pink98: pink98 ?? this.pink98,
+    pink100: pink100 ?? this.pink100,
+  );
+
+  @override
+  StaticPalette maybeCopyWith({
     Color? white,
     Color? black,
     Color? blue0,
@@ -3115,159 +3708,309 @@ abstract class StaticPaletteThemeData extends StaticPaletteThemeDataPartial {
           pink95 != null ||
           pink98 != null ||
           pink100 != null
-      ? .from(
-          white: white ?? this.white,
-          black: black ?? this.black,
-          blue0: blue0 ?? this.blue0,
-          blue10: blue10 ?? this.blue10,
-          blue20: blue20 ?? this.blue20,
-          blue30: blue30 ?? this.blue30,
-          blue40: blue40 ?? this.blue40,
-          blue50: blue50 ?? this.blue50,
-          blue60: blue60 ?? this.blue60,
-          blue70: blue70 ?? this.blue70,
-          blue80: blue80 ?? this.blue80,
-          blue90: blue90 ?? this.blue90,
-          blue95: blue95 ?? this.blue95,
-          blue98: blue98 ?? this.blue98,
-          blue100: blue100 ?? this.blue100,
-          blueVariant0: blueVariant0 ?? this.blueVariant0,
-          blueVariant10: blueVariant10 ?? this.blueVariant10,
-          blueVariant20: blueVariant20 ?? this.blueVariant20,
-          blueVariant30: blueVariant30 ?? this.blueVariant30,
-          blueVariant40: blueVariant40 ?? this.blueVariant40,
-          blueVariant50: blueVariant50 ?? this.blueVariant50,
-          blueVariant60: blueVariant60 ?? this.blueVariant60,
-          blueVariant70: blueVariant70 ?? this.blueVariant70,
-          blueVariant80: blueVariant80 ?? this.blueVariant80,
-          blueVariant90: blueVariant90 ?? this.blueVariant90,
-          blueVariant95: blueVariant95 ?? this.blueVariant95,
-          blueVariant98: blueVariant98 ?? this.blueVariant98,
-          blueVariant100: blueVariant100 ?? this.blueVariant100,
-          yellow0: yellow0 ?? this.yellow0,
-          yellow10: yellow10 ?? this.yellow10,
-          yellow20: yellow20 ?? this.yellow20,
-          yellow30: yellow30 ?? this.yellow30,
-          yellow40: yellow40 ?? this.yellow40,
-          yellow50: yellow50 ?? this.yellow50,
-          yellow60: yellow60 ?? this.yellow60,
-          yellow70: yellow70 ?? this.yellow70,
-          yellow80: yellow80 ?? this.yellow80,
-          yellow90: yellow90 ?? this.yellow90,
-          yellow95: yellow95 ?? this.yellow95,
-          yellow98: yellow98 ?? this.yellow98,
-          yellow100: yellow100 ?? this.yellow100,
-          red0: red0 ?? this.red0,
-          red10: red10 ?? this.red10,
-          red20: red20 ?? this.red20,
-          red30: red30 ?? this.red30,
-          red40: red40 ?? this.red40,
-          red50: red50 ?? this.red50,
-          red60: red60 ?? this.red60,
-          red70: red70 ?? this.red70,
-          red80: red80 ?? this.red80,
-          red90: red90 ?? this.red90,
-          red95: red95 ?? this.red95,
-          red98: red98 ?? this.red98,
-          red100: red100 ?? this.red100,
-          purple0: purple0 ?? this.purple0,
-          purple10: purple10 ?? this.purple10,
-          purple20: purple20 ?? this.purple20,
-          purple30: purple30 ?? this.purple30,
-          purple40: purple40 ?? this.purple40,
-          purple50: purple50 ?? this.purple50,
-          purple60: purple60 ?? this.purple60,
-          purple70: purple70 ?? this.purple70,
-          purple80: purple80 ?? this.purple80,
-          purple90: purple90 ?? this.purple90,
-          purple95: purple95 ?? this.purple95,
-          purple98: purple98 ?? this.purple98,
-          purple100: purple100 ?? this.purple100,
-          cyan0: cyan0 ?? this.cyan0,
-          cyan10: cyan10 ?? this.cyan10,
-          cyan20: cyan20 ?? this.cyan20,
-          cyan30: cyan30 ?? this.cyan30,
-          cyan40: cyan40 ?? this.cyan40,
-          cyan50: cyan50 ?? this.cyan50,
-          cyan60: cyan60 ?? this.cyan60,
-          cyan70: cyan70 ?? this.cyan70,
-          cyan80: cyan80 ?? this.cyan80,
-          cyan90: cyan90 ?? this.cyan90,
-          cyan95: cyan95 ?? this.cyan95,
-          cyan98: cyan98 ?? this.cyan98,
-          cyan100: cyan100 ?? this.cyan100,
-          grey0: grey0 ?? this.grey0,
-          grey10: grey10 ?? this.grey10,
-          grey20: grey20 ?? this.grey20,
-          grey30: grey30 ?? this.grey30,
-          grey40: grey40 ?? this.grey40,
-          grey50: grey50 ?? this.grey50,
-          grey60: grey60 ?? this.grey60,
-          grey70: grey70 ?? this.grey70,
-          grey80: grey80 ?? this.grey80,
-          grey90: grey90 ?? this.grey90,
-          grey95: grey95 ?? this.grey95,
-          grey98: grey98 ?? this.grey98,
-          grey100: grey100 ?? this.grey100,
-          greyVariant0: greyVariant0 ?? this.greyVariant0,
-          greyVariant10: greyVariant10 ?? this.greyVariant10,
-          greyVariant20: greyVariant20 ?? this.greyVariant20,
-          greyVariant30: greyVariant30 ?? this.greyVariant30,
-          greyVariant40: greyVariant40 ?? this.greyVariant40,
-          greyVariant50: greyVariant50 ?? this.greyVariant50,
-          greyVariant60: greyVariant60 ?? this.greyVariant60,
-          greyVariant70: greyVariant70 ?? this.greyVariant70,
-          greyVariant80: greyVariant80 ?? this.greyVariant80,
-          greyVariant90: greyVariant90 ?? this.greyVariant90,
-          greyVariant95: greyVariant95 ?? this.greyVariant95,
-          greyVariant98: greyVariant98 ?? this.greyVariant98,
-          greyVariant100: greyVariant100 ?? this.greyVariant100,
-          green0: green0 ?? this.green0,
-          green10: green10 ?? this.green10,
-          green20: green20 ?? this.green20,
-          green30: green30 ?? this.green30,
-          green40: green40 ?? this.green40,
-          green50: green50 ?? this.green50,
-          green60: green60 ?? this.green60,
-          green70: green70 ?? this.green70,
-          green80: green80 ?? this.green80,
-          green90: green90 ?? this.green90,
-          green95: green95 ?? this.green95,
-          green98: green98 ?? this.green98,
-          green100: green100 ?? this.green100,
-          orange0: orange0 ?? this.orange0,
-          orange10: orange10 ?? this.orange10,
-          orange20: orange20 ?? this.orange20,
-          orange30: orange30 ?? this.orange30,
-          orange40: orange40 ?? this.orange40,
-          orange50: orange50 ?? this.orange50,
-          orange60: orange60 ?? this.orange60,
-          orange70: orange70 ?? this.orange70,
-          orange80: orange80 ?? this.orange80,
-          orange90: orange90 ?? this.orange90,
-          orange95: orange95 ?? this.orange95,
-          orange98: orange98 ?? this.orange98,
-          orange100: orange100 ?? this.orange100,
-          pink0: pink0 ?? this.pink0,
-          pink10: pink10 ?? this.pink10,
-          pink20: pink20 ?? this.pink20,
-          pink30: pink30 ?? this.pink30,
-          pink40: pink40 ?? this.pink40,
-          pink50: pink50 ?? this.pink50,
-          pink60: pink60 ?? this.pink60,
-          pink70: pink70 ?? this.pink70,
-          pink80: pink80 ?? this.pink80,
-          pink90: pink90 ?? this.pink90,
-          pink95: pink95 ?? this.pink95,
-          pink98: pink98 ?? this.pink98,
-          pink100: pink100 ?? this.pink100,
+      ? copyWith(
+          white: white,
+          black: black,
+          blue0: blue0,
+          blue10: blue10,
+          blue20: blue20,
+          blue30: blue30,
+          blue40: blue40,
+          blue50: blue50,
+          blue60: blue60,
+          blue70: blue70,
+          blue80: blue80,
+          blue90: blue90,
+          blue95: blue95,
+          blue98: blue98,
+          blue100: blue100,
+          blueVariant0: blueVariant0,
+          blueVariant10: blueVariant10,
+          blueVariant20: blueVariant20,
+          blueVariant30: blueVariant30,
+          blueVariant40: blueVariant40,
+          blueVariant50: blueVariant50,
+          blueVariant60: blueVariant60,
+          blueVariant70: blueVariant70,
+          blueVariant80: blueVariant80,
+          blueVariant90: blueVariant90,
+          blueVariant95: blueVariant95,
+          blueVariant98: blueVariant98,
+          blueVariant100: blueVariant100,
+          yellow0: yellow0,
+          yellow10: yellow10,
+          yellow20: yellow20,
+          yellow30: yellow30,
+          yellow40: yellow40,
+          yellow50: yellow50,
+          yellow60: yellow60,
+          yellow70: yellow70,
+          yellow80: yellow80,
+          yellow90: yellow90,
+          yellow95: yellow95,
+          yellow98: yellow98,
+          yellow100: yellow100,
+          red0: red0,
+          red10: red10,
+          red20: red20,
+          red30: red30,
+          red40: red40,
+          red50: red50,
+          red60: red60,
+          red70: red70,
+          red80: red80,
+          red90: red90,
+          red95: red95,
+          red98: red98,
+          red100: red100,
+          purple0: purple0,
+          purple10: purple10,
+          purple20: purple20,
+          purple30: purple30,
+          purple40: purple40,
+          purple50: purple50,
+          purple60: purple60,
+          purple70: purple70,
+          purple80: purple80,
+          purple90: purple90,
+          purple95: purple95,
+          purple98: purple98,
+          purple100: purple100,
+          cyan0: cyan0,
+          cyan10: cyan10,
+          cyan20: cyan20,
+          cyan30: cyan30,
+          cyan40: cyan40,
+          cyan50: cyan50,
+          cyan60: cyan60,
+          cyan70: cyan70,
+          cyan80: cyan80,
+          cyan90: cyan90,
+          cyan95: cyan95,
+          cyan98: cyan98,
+          cyan100: cyan100,
+          grey0: grey0,
+          grey10: grey10,
+          grey20: grey20,
+          grey30: grey30,
+          grey40: grey40,
+          grey50: grey50,
+          grey60: grey60,
+          grey70: grey70,
+          grey80: grey80,
+          grey90: grey90,
+          grey95: grey95,
+          grey98: grey98,
+          grey100: grey100,
+          greyVariant0: greyVariant0,
+          greyVariant10: greyVariant10,
+          greyVariant20: greyVariant20,
+          greyVariant30: greyVariant30,
+          greyVariant40: greyVariant40,
+          greyVariant50: greyVariant50,
+          greyVariant60: greyVariant60,
+          greyVariant70: greyVariant70,
+          greyVariant80: greyVariant80,
+          greyVariant90: greyVariant90,
+          greyVariant95: greyVariant95,
+          greyVariant98: greyVariant98,
+          greyVariant100: greyVariant100,
+          green0: green0,
+          green10: green10,
+          green20: green20,
+          green30: green30,
+          green40: green40,
+          green50: green50,
+          green60: green60,
+          green70: green70,
+          green80: green80,
+          green90: green90,
+          green95: green95,
+          green98: green98,
+          green100: green100,
+          orange0: orange0,
+          orange10: orange10,
+          orange20: orange20,
+          orange30: orange30,
+          orange40: orange40,
+          orange50: orange50,
+          orange60: orange60,
+          orange70: orange70,
+          orange80: orange80,
+          orange90: orange90,
+          orange95: orange95,
+          orange98: orange98,
+          orange100: orange100,
+          pink0: pink0,
+          pink10: pink10,
+          pink20: pink20,
+          pink30: pink30,
+          pink40: pink40,
+          pink50: pink50,
+          pink60: pink60,
+          pink70: pink70,
+          pink80: pink80,
+          pink90: pink90,
+          pink95: pink95,
+          pink98: pink98,
+          pink100: pink100,
         )
       : this;
 
   @override
-  StaticPaletteThemeData merge(StaticPaletteThemeDataPartial? other) =>
-      other != null
+  StaticPalette merge(StaticPalettePartial? other) => other != null
       ? copyWith(
+          white: other.white,
+          black: other.black,
+          blue0: other.blue0,
+          blue10: other.blue10,
+          blue20: other.blue20,
+          blue30: other.blue30,
+          blue40: other.blue40,
+          blue50: other.blue50,
+          blue60: other.blue60,
+          blue70: other.blue70,
+          blue80: other.blue80,
+          blue90: other.blue90,
+          blue95: other.blue95,
+          blue98: other.blue98,
+          blue100: other.blue100,
+          blueVariant0: other.blueVariant0,
+          blueVariant10: other.blueVariant10,
+          blueVariant20: other.blueVariant20,
+          blueVariant30: other.blueVariant30,
+          blueVariant40: other.blueVariant40,
+          blueVariant50: other.blueVariant50,
+          blueVariant60: other.blueVariant60,
+          blueVariant70: other.blueVariant70,
+          blueVariant80: other.blueVariant80,
+          blueVariant90: other.blueVariant90,
+          blueVariant95: other.blueVariant95,
+          blueVariant98: other.blueVariant98,
+          blueVariant100: other.blueVariant100,
+          yellow0: other.yellow0,
+          yellow10: other.yellow10,
+          yellow20: other.yellow20,
+          yellow30: other.yellow30,
+          yellow40: other.yellow40,
+          yellow50: other.yellow50,
+          yellow60: other.yellow60,
+          yellow70: other.yellow70,
+          yellow80: other.yellow80,
+          yellow90: other.yellow90,
+          yellow95: other.yellow95,
+          yellow98: other.yellow98,
+          yellow100: other.yellow100,
+          red0: other.red0,
+          red10: other.red10,
+          red20: other.red20,
+          red30: other.red30,
+          red40: other.red40,
+          red50: other.red50,
+          red60: other.red60,
+          red70: other.red70,
+          red80: other.red80,
+          red90: other.red90,
+          red95: other.red95,
+          red98: other.red98,
+          red100: other.red100,
+          purple0: other.purple0,
+          purple10: other.purple10,
+          purple20: other.purple20,
+          purple30: other.purple30,
+          purple40: other.purple40,
+          purple50: other.purple50,
+          purple60: other.purple60,
+          purple70: other.purple70,
+          purple80: other.purple80,
+          purple90: other.purple90,
+          purple95: other.purple95,
+          purple98: other.purple98,
+          purple100: other.purple100,
+          cyan0: other.cyan0,
+          cyan10: other.cyan10,
+          cyan20: other.cyan20,
+          cyan30: other.cyan30,
+          cyan40: other.cyan40,
+          cyan50: other.cyan50,
+          cyan60: other.cyan60,
+          cyan70: other.cyan70,
+          cyan80: other.cyan80,
+          cyan90: other.cyan90,
+          cyan95: other.cyan95,
+          cyan98: other.cyan98,
+          cyan100: other.cyan100,
+          grey0: other.grey0,
+          grey10: other.grey10,
+          grey20: other.grey20,
+          grey30: other.grey30,
+          grey40: other.grey40,
+          grey50: other.grey50,
+          grey60: other.grey60,
+          grey70: other.grey70,
+          grey80: other.grey80,
+          grey90: other.grey90,
+          grey95: other.grey95,
+          grey98: other.grey98,
+          grey100: other.grey100,
+          greyVariant0: other.greyVariant0,
+          greyVariant10: other.greyVariant10,
+          greyVariant20: other.greyVariant20,
+          greyVariant30: other.greyVariant30,
+          greyVariant40: other.greyVariant40,
+          greyVariant50: other.greyVariant50,
+          greyVariant60: other.greyVariant60,
+          greyVariant70: other.greyVariant70,
+          greyVariant80: other.greyVariant80,
+          greyVariant90: other.greyVariant90,
+          greyVariant95: other.greyVariant95,
+          greyVariant98: other.greyVariant98,
+          greyVariant100: other.greyVariant100,
+          green0: other.green0,
+          green10: other.green10,
+          green20: other.green20,
+          green30: other.green30,
+          green40: other.green40,
+          green50: other.green50,
+          green60: other.green60,
+          green70: other.green70,
+          green80: other.green80,
+          green90: other.green90,
+          green95: other.green95,
+          green98: other.green98,
+          green100: other.green100,
+          orange0: other.orange0,
+          orange10: other.orange10,
+          orange20: other.orange20,
+          orange30: other.orange30,
+          orange40: other.orange40,
+          orange50: other.orange50,
+          orange60: other.orange60,
+          orange70: other.orange70,
+          orange80: other.orange80,
+          orange90: other.orange90,
+          orange95: other.orange95,
+          orange98: other.orange98,
+          orange100: other.orange100,
+          pink0: other.pink0,
+          pink10: other.pink10,
+          pink20: other.pink20,
+          pink30: other.pink30,
+          pink40: other.pink40,
+          pink50: other.pink50,
+          pink60: other.pink60,
+          pink70: other.pink70,
+          pink80: other.pink80,
+          pink90: other.pink90,
+          pink95: other.pink95,
+          pink98: other.pink98,
+          pink100: other.pink100,
+        )
+      : copy();
+
+  @override
+  StaticPalette maybeMerge(StaticPalettePartial? other) => other != null
+      ? maybeCopyWith(
           white: other.white,
           black: other.black,
           blue0: other.blue0,
@@ -3566,325 +4309,10 @@ abstract class StaticPaletteThemeData extends StaticPaletteThemeDataPartial {
       ..add(ColorProperty("pink98", pink98))
       ..add(ColorProperty("pink100", pink100));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is StaticPaletteThemeData &&
-          white == other.white &&
-          black == other.black &&
-          blue0 == other.blue0 &&
-          blue10 == other.blue10 &&
-          blue20 == other.blue20 &&
-          blue30 == other.blue30 &&
-          blue40 == other.blue40 &&
-          blue50 == other.blue50 &&
-          blue60 == other.blue60 &&
-          blue70 == other.blue70 &&
-          blue80 == other.blue80 &&
-          blue90 == other.blue90 &&
-          blue95 == other.blue95 &&
-          blue98 == other.blue98 &&
-          blue100 == other.blue100 &&
-          blueVariant0 == other.blueVariant0 &&
-          blueVariant10 == other.blueVariant10 &&
-          blueVariant20 == other.blueVariant20 &&
-          blueVariant30 == other.blueVariant30 &&
-          blueVariant40 == other.blueVariant40 &&
-          blueVariant50 == other.blueVariant50 &&
-          blueVariant60 == other.blueVariant60 &&
-          blueVariant70 == other.blueVariant70 &&
-          blueVariant80 == other.blueVariant80 &&
-          blueVariant90 == other.blueVariant90 &&
-          blueVariant95 == other.blueVariant95 &&
-          blueVariant98 == other.blueVariant98 &&
-          blueVariant100 == other.blueVariant100 &&
-          yellow0 == other.yellow0 &&
-          yellow10 == other.yellow10 &&
-          yellow20 == other.yellow20 &&
-          yellow30 == other.yellow30 &&
-          yellow40 == other.yellow40 &&
-          yellow50 == other.yellow50 &&
-          yellow60 == other.yellow60 &&
-          yellow70 == other.yellow70 &&
-          yellow80 == other.yellow80 &&
-          yellow90 == other.yellow90 &&
-          yellow95 == other.yellow95 &&
-          yellow98 == other.yellow98 &&
-          yellow100 == other.yellow100 &&
-          red0 == other.red0 &&
-          red10 == other.red10 &&
-          red20 == other.red20 &&
-          red30 == other.red30 &&
-          red40 == other.red40 &&
-          red50 == other.red50 &&
-          red60 == other.red60 &&
-          red70 == other.red70 &&
-          red80 == other.red80 &&
-          red90 == other.red90 &&
-          red95 == other.red95 &&
-          red98 == other.red98 &&
-          red100 == other.red100 &&
-          purple0 == other.purple0 &&
-          purple10 == other.purple10 &&
-          purple20 == other.purple20 &&
-          purple30 == other.purple30 &&
-          purple40 == other.purple40 &&
-          purple50 == other.purple50 &&
-          purple60 == other.purple60 &&
-          purple70 == other.purple70 &&
-          purple80 == other.purple80 &&
-          purple90 == other.purple90 &&
-          purple95 == other.purple95 &&
-          purple98 == other.purple98 &&
-          purple100 == other.purple100 &&
-          cyan0 == other.cyan0 &&
-          cyan10 == other.cyan10 &&
-          cyan20 == other.cyan20 &&
-          cyan30 == other.cyan30 &&
-          cyan40 == other.cyan40 &&
-          cyan50 == other.cyan50 &&
-          cyan60 == other.cyan60 &&
-          cyan70 == other.cyan70 &&
-          cyan80 == other.cyan80 &&
-          cyan90 == other.cyan90 &&
-          cyan95 == other.cyan95 &&
-          cyan98 == other.cyan98 &&
-          cyan100 == other.cyan100 &&
-          grey0 == other.grey0 &&
-          grey10 == other.grey10 &&
-          grey20 == other.grey20 &&
-          grey30 == other.grey30 &&
-          grey40 == other.grey40 &&
-          grey50 == other.grey50 &&
-          grey60 == other.grey60 &&
-          grey70 == other.grey70 &&
-          grey80 == other.grey80 &&
-          grey90 == other.grey90 &&
-          grey95 == other.grey95 &&
-          grey98 == other.grey98 &&
-          grey100 == other.grey100 &&
-          greyVariant0 == other.greyVariant0 &&
-          greyVariant10 == other.greyVariant10 &&
-          greyVariant20 == other.greyVariant20 &&
-          greyVariant30 == other.greyVariant30 &&
-          greyVariant40 == other.greyVariant40 &&
-          greyVariant50 == other.greyVariant50 &&
-          greyVariant60 == other.greyVariant60 &&
-          greyVariant70 == other.greyVariant70 &&
-          greyVariant80 == other.greyVariant80 &&
-          greyVariant90 == other.greyVariant90 &&
-          greyVariant95 == other.greyVariant95 &&
-          greyVariant98 == other.greyVariant98 &&
-          greyVariant100 == other.greyVariant100 &&
-          green0 == other.green0 &&
-          green10 == other.green10 &&
-          green20 == other.green20 &&
-          green30 == other.green30 &&
-          green40 == other.green40 &&
-          green50 == other.green50 &&
-          green60 == other.green60 &&
-          green70 == other.green70 &&
-          green80 == other.green80 &&
-          green90 == other.green90 &&
-          green95 == other.green95 &&
-          green98 == other.green98 &&
-          green100 == other.green100 &&
-          orange0 == other.orange0 &&
-          orange10 == other.orange10 &&
-          orange20 == other.orange20 &&
-          orange30 == other.orange30 &&
-          orange40 == other.orange40 &&
-          orange50 == other.orange50 &&
-          orange60 == other.orange60 &&
-          orange70 == other.orange70 &&
-          orange80 == other.orange80 &&
-          orange90 == other.orange90 &&
-          orange95 == other.orange95 &&
-          orange98 == other.orange98 &&
-          orange100 == other.orange100 &&
-          pink0 == other.pink0 &&
-          pink10 == other.pink10 &&
-          pink20 == other.pink20 &&
-          pink30 == other.pink30 &&
-          pink40 == other.pink40 &&
-          pink50 == other.pink50 &&
-          pink60 == other.pink60 &&
-          pink70 == other.pink70 &&
-          pink80 == other.pink80 &&
-          pink90 == other.pink90 &&
-          pink95 == other.pink95 &&
-          pink98 == other.pink98 &&
-          pink100 == other.pink100;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    white,
-    black,
-    blue0,
-    blue10,
-    blue20,
-    blue30,
-    blue40,
-    blue50,
-    blue60,
-    blue70,
-    blue80,
-    blue90,
-    blue95,
-    blue98,
-    blue100,
-    blueVariant0,
-    blueVariant10,
-    blueVariant20,
-    Object.hash(
-      blueVariant30,
-      blueVariant40,
-      blueVariant50,
-      blueVariant60,
-      blueVariant70,
-      blueVariant80,
-      blueVariant90,
-      blueVariant95,
-      blueVariant98,
-      blueVariant100,
-      yellow0,
-      yellow10,
-      yellow20,
-      yellow30,
-      yellow40,
-      yellow50,
-      yellow60,
-      yellow70,
-      yellow80,
-      Object.hash(
-        yellow90,
-        yellow95,
-        yellow98,
-        yellow100,
-        red0,
-        red10,
-        red20,
-        red30,
-        red40,
-        red50,
-        red60,
-        red70,
-        red80,
-        red90,
-        red95,
-        red98,
-        red100,
-        purple0,
-        purple10,
-        Object.hash(
-          purple20,
-          purple30,
-          purple40,
-          purple50,
-          purple60,
-          purple70,
-          purple80,
-          purple90,
-          purple95,
-          purple98,
-          purple100,
-          cyan0,
-          cyan10,
-          cyan20,
-          cyan30,
-          cyan40,
-          cyan50,
-          cyan60,
-          cyan70,
-          Object.hash(
-            cyan80,
-            cyan90,
-            cyan95,
-            cyan98,
-            cyan100,
-            grey0,
-            grey10,
-            grey20,
-            grey30,
-            grey40,
-            grey50,
-            grey60,
-            grey70,
-            grey80,
-            grey90,
-            grey95,
-            grey98,
-            grey100,
-            greyVariant0,
-            Object.hash(
-              greyVariant10,
-              greyVariant20,
-              greyVariant30,
-              greyVariant40,
-              greyVariant50,
-              greyVariant60,
-              greyVariant70,
-              greyVariant80,
-              greyVariant90,
-              greyVariant95,
-              greyVariant98,
-              greyVariant100,
-              green0,
-              green10,
-              green20,
-              green30,
-              green40,
-              green50,
-              green60,
-              Object.hash(
-                green70,
-                green80,
-                green90,
-                green95,
-                green98,
-                green100,
-                orange0,
-                orange10,
-                orange20,
-                orange30,
-                orange40,
-                orange50,
-                orange60,
-                orange70,
-                orange80,
-                orange90,
-                orange95,
-                orange98,
-                orange100,
-                Object.hash(
-                  pink0,
-                  pink10,
-                  pink20,
-                  pink30,
-                  pink40,
-                  pink50,
-                  pink60,
-                  pink70,
-                  pink80,
-                  pink90,
-                  pink95,
-                  pink98,
-                  pink100,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
 }
 
-class _StaticPaletteThemeData extends StaticPaletteThemeData {
-  const _StaticPaletteThemeData.from({
+final class _StaticPalette extends StaticPalette {
+  const _StaticPalette.from({
     required this.white,
     required this.black,
     required this.blue0,
@@ -4466,10 +4894,788 @@ class _StaticPaletteThemeData extends StaticPaletteThemeData {
 
   @override
   final Color pink100;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _StaticPalette &&
+          white == other.white &&
+          black == other.black &&
+          blue0 == other.blue0 &&
+          blue10 == other.blue10 &&
+          blue20 == other.blue20 &&
+          blue30 == other.blue30 &&
+          blue40 == other.blue40 &&
+          blue50 == other.blue50 &&
+          blue60 == other.blue60 &&
+          blue70 == other.blue70 &&
+          blue80 == other.blue80 &&
+          blue90 == other.blue90 &&
+          blue95 == other.blue95 &&
+          blue98 == other.blue98 &&
+          blue100 == other.blue100 &&
+          blueVariant0 == other.blueVariant0 &&
+          blueVariant10 == other.blueVariant10 &&
+          blueVariant20 == other.blueVariant20 &&
+          blueVariant30 == other.blueVariant30 &&
+          blueVariant40 == other.blueVariant40 &&
+          blueVariant50 == other.blueVariant50 &&
+          blueVariant60 == other.blueVariant60 &&
+          blueVariant70 == other.blueVariant70 &&
+          blueVariant80 == other.blueVariant80 &&
+          blueVariant90 == other.blueVariant90 &&
+          blueVariant95 == other.blueVariant95 &&
+          blueVariant98 == other.blueVariant98 &&
+          blueVariant100 == other.blueVariant100 &&
+          yellow0 == other.yellow0 &&
+          yellow10 == other.yellow10 &&
+          yellow20 == other.yellow20 &&
+          yellow30 == other.yellow30 &&
+          yellow40 == other.yellow40 &&
+          yellow50 == other.yellow50 &&
+          yellow60 == other.yellow60 &&
+          yellow70 == other.yellow70 &&
+          yellow80 == other.yellow80 &&
+          yellow90 == other.yellow90 &&
+          yellow95 == other.yellow95 &&
+          yellow98 == other.yellow98 &&
+          yellow100 == other.yellow100 &&
+          red0 == other.red0 &&
+          red10 == other.red10 &&
+          red20 == other.red20 &&
+          red30 == other.red30 &&
+          red40 == other.red40 &&
+          red50 == other.red50 &&
+          red60 == other.red60 &&
+          red70 == other.red70 &&
+          red80 == other.red80 &&
+          red90 == other.red90 &&
+          red95 == other.red95 &&
+          red98 == other.red98 &&
+          red100 == other.red100 &&
+          purple0 == other.purple0 &&
+          purple10 == other.purple10 &&
+          purple20 == other.purple20 &&
+          purple30 == other.purple30 &&
+          purple40 == other.purple40 &&
+          purple50 == other.purple50 &&
+          purple60 == other.purple60 &&
+          purple70 == other.purple70 &&
+          purple80 == other.purple80 &&
+          purple90 == other.purple90 &&
+          purple95 == other.purple95 &&
+          purple98 == other.purple98 &&
+          purple100 == other.purple100 &&
+          cyan0 == other.cyan0 &&
+          cyan10 == other.cyan10 &&
+          cyan20 == other.cyan20 &&
+          cyan30 == other.cyan30 &&
+          cyan40 == other.cyan40 &&
+          cyan50 == other.cyan50 &&
+          cyan60 == other.cyan60 &&
+          cyan70 == other.cyan70 &&
+          cyan80 == other.cyan80 &&
+          cyan90 == other.cyan90 &&
+          cyan95 == other.cyan95 &&
+          cyan98 == other.cyan98 &&
+          cyan100 == other.cyan100 &&
+          grey0 == other.grey0 &&
+          grey10 == other.grey10 &&
+          grey20 == other.grey20 &&
+          grey30 == other.grey30 &&
+          grey40 == other.grey40 &&
+          grey50 == other.grey50 &&
+          grey60 == other.grey60 &&
+          grey70 == other.grey70 &&
+          grey80 == other.grey80 &&
+          grey90 == other.grey90 &&
+          grey95 == other.grey95 &&
+          grey98 == other.grey98 &&
+          grey100 == other.grey100 &&
+          greyVariant0 == other.greyVariant0 &&
+          greyVariant10 == other.greyVariant10 &&
+          greyVariant20 == other.greyVariant20 &&
+          greyVariant30 == other.greyVariant30 &&
+          greyVariant40 == other.greyVariant40 &&
+          greyVariant50 == other.greyVariant50 &&
+          greyVariant60 == other.greyVariant60 &&
+          greyVariant70 == other.greyVariant70 &&
+          greyVariant80 == other.greyVariant80 &&
+          greyVariant90 == other.greyVariant90 &&
+          greyVariant95 == other.greyVariant95 &&
+          greyVariant98 == other.greyVariant98 &&
+          greyVariant100 == other.greyVariant100 &&
+          green0 == other.green0 &&
+          green10 == other.green10 &&
+          green20 == other.green20 &&
+          green30 == other.green30 &&
+          green40 == other.green40 &&
+          green50 == other.green50 &&
+          green60 == other.green60 &&
+          green70 == other.green70 &&
+          green80 == other.green80 &&
+          green90 == other.green90 &&
+          green95 == other.green95 &&
+          green98 == other.green98 &&
+          green100 == other.green100 &&
+          orange0 == other.orange0 &&
+          orange10 == other.orange10 &&
+          orange20 == other.orange20 &&
+          orange30 == other.orange30 &&
+          orange40 == other.orange40 &&
+          orange50 == other.orange50 &&
+          orange60 == other.orange60 &&
+          orange70 == other.orange70 &&
+          orange80 == other.orange80 &&
+          orange90 == other.orange90 &&
+          orange95 == other.orange95 &&
+          orange98 == other.orange98 &&
+          orange100 == other.orange100 &&
+          pink0 == other.pink0 &&
+          pink10 == other.pink10 &&
+          pink20 == other.pink20 &&
+          pink30 == other.pink30 &&
+          pink40 == other.pink40 &&
+          pink50 == other.pink50 &&
+          pink60 == other.pink60 &&
+          pink70 == other.pink70 &&
+          pink80 == other.pink80 &&
+          pink90 == other.pink90 &&
+          pink95 == other.pink95 &&
+          pink98 == other.pink98 &&
+          pink100 == other.pink100;
+
+  @override
+  int get hashCode => Object.hash(
+    white,
+    black,
+    blue0,
+    blue10,
+    blue20,
+    blue30,
+    blue40,
+    blue50,
+    blue60,
+    blue70,
+    blue80,
+    blue90,
+    blue95,
+    blue98,
+    blue100,
+    blueVariant0,
+    blueVariant10,
+    blueVariant20,
+    blueVariant30,
+    Object.hash(
+      blueVariant40,
+      blueVariant50,
+      blueVariant60,
+      blueVariant70,
+      blueVariant80,
+      blueVariant90,
+      blueVariant95,
+      blueVariant98,
+      blueVariant100,
+      yellow0,
+      yellow10,
+      yellow20,
+      yellow30,
+      yellow40,
+      yellow50,
+      yellow60,
+      yellow70,
+      yellow80,
+      yellow90,
+      Object.hash(
+        yellow95,
+        yellow98,
+        yellow100,
+        red0,
+        red10,
+        red20,
+        red30,
+        red40,
+        red50,
+        red60,
+        red70,
+        red80,
+        red90,
+        red95,
+        red98,
+        red100,
+        purple0,
+        purple10,
+        purple20,
+        Object.hash(
+          purple30,
+          purple40,
+          purple50,
+          purple60,
+          purple70,
+          purple80,
+          purple90,
+          purple95,
+          purple98,
+          purple100,
+          cyan0,
+          cyan10,
+          cyan20,
+          cyan30,
+          cyan40,
+          cyan50,
+          cyan60,
+          cyan70,
+          cyan80,
+          Object.hash(
+            cyan90,
+            cyan95,
+            cyan98,
+            cyan100,
+            grey0,
+            grey10,
+            grey20,
+            grey30,
+            grey40,
+            grey50,
+            grey60,
+            grey70,
+            grey80,
+            grey90,
+            grey95,
+            grey98,
+            grey100,
+            greyVariant0,
+            greyVariant10,
+            Object.hash(
+              greyVariant20,
+              greyVariant30,
+              greyVariant40,
+              greyVariant50,
+              greyVariant60,
+              greyVariant70,
+              greyVariant80,
+              greyVariant90,
+              greyVariant95,
+              greyVariant98,
+              greyVariant100,
+              green0,
+              green10,
+              green20,
+              green30,
+              green40,
+              green50,
+              green60,
+              green70,
+              Object.hash(
+                green80,
+                green90,
+                green95,
+                green98,
+                green100,
+                orange0,
+                orange10,
+                orange20,
+                orange30,
+                orange40,
+                orange50,
+                orange60,
+                orange70,
+                orange80,
+                orange90,
+                orange95,
+                orange98,
+                orange100,
+                pink0,
+                Object.hash(
+                  pink10,
+                  pink20,
+                  pink30,
+                  pink40,
+                  pink50,
+                  pink60,
+                  pink70,
+                  pink80,
+                  pink90,
+                  pink95,
+                  pink98,
+                  pink100,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
-class _StaticPaletteThemeDataDefaults extends StaticPaletteThemeData {
-  const _StaticPaletteThemeDataDefaults({
+final class _StaticPaletteDefaults extends StaticPalette {
+  const _StaticPaletteDefaults({StaticPalettePartial? overrides})
+    : _overrides = overrides ?? const .from();
+
+  final StaticPalettePartial _overrides;
+
+  @override
+  Color get white => _overrides.white ?? const Color(0xFFFFFFFF);
+
+  @override
+  Color get black => _overrides.black ?? const Color(0xFF000000);
+
+  @override
+  Color get blue0 => _overrides.blue0 ?? const Color(0xFF000000);
+
+  @override
+  Color get blue10 => _overrides.blue10 ?? const Color(0xFF001944);
+
+  @override
+  Color get blue20 => _overrides.blue20 ?? const Color(0xFF012C6F);
+
+  @override
+  Color get blue30 => _overrides.blue30 ?? const Color(0xFF04409F);
+
+  @override
+  Color get blue40 => _overrides.blue40 ?? const Color(0xFF1157CE);
+
+  @override
+  Color get blue50 => _overrides.blue50 ?? const Color(0xFF3271EA);
+
+  @override
+  Color get blue60 => _overrides.blue60 ?? const Color(0xFF4E8FF8);
+
+  @override
+  Color get blue70 => _overrides.blue70 ?? const Color(0xFF76ACFF);
+
+  @override
+  Color get blue80 => _overrides.blue80 ?? const Color(0xFFA1C9FF);
+
+  @override
+  Color get blue90 => _overrides.blue90 ?? const Color(0xFFD0E4FF);
+
+  @override
+  Color get blue95 => _overrides.blue95 ?? const Color(0xFFE7F2FF);
+
+  @override
+  Color get blue98 => _overrides.blue98 ?? const Color(0xFFF5FAFF);
+
+  @override
+  Color get blue100 => _overrides.blue100 ?? const Color(0xFFFFFFFF);
+
+  @override
+  Color get blueVariant0 => _overrides.blueVariant0 ?? const Color(0xFF000000);
+
+  @override
+  Color get blueVariant10 =>
+      _overrides.blueVariant10 ?? const Color(0xFF001F2D);
+
+  @override
+  Color get blueVariant20 =>
+      _overrides.blueVariant20 ?? const Color(0xFF003549);
+
+  @override
+  Color get blueVariant30 =>
+      _overrides.blueVariant30 ?? const Color(0xFF004D68);
+
+  @override
+  Color get blueVariant40 =>
+      _overrides.blueVariant40 ?? const Color(0xFF006788);
+
+  @override
+  Color get blueVariant50 =>
+      _overrides.blueVariant50 ?? const Color(0xFF0081A8);
+
+  @override
+  Color get blueVariant60 =>
+      _overrides.blueVariant60 ?? const Color(0xFF009DC9);
+
+  @override
+  Color get blueVariant70 =>
+      _overrides.blueVariant70 ?? const Color(0xFF00BBEA);
+
+  @override
+  Color get blueVariant80 =>
+      _overrides.blueVariant80 ?? const Color(0xFF67D4FF);
+
+  @override
+  Color get blueVariant90 =>
+      _overrides.blueVariant90 ?? const Color(0xFFBDE9FF);
+
+  @override
+  Color get blueVariant95 =>
+      _overrides.blueVariant95 ?? const Color(0xFFE0F4FF);
+
+  @override
+  Color get blueVariant98 =>
+      _overrides.blueVariant98 ?? const Color(0xFFF4FAFF);
+
+  @override
+  Color get blueVariant100 =>
+      _overrides.blueVariant100 ?? const Color(0xFFFFFFFF);
+
+  @override
+  Color get yellow0 => _overrides.yellow0 ?? const Color(0xFF000000);
+
+  @override
+  Color get yellow10 => _overrides.yellow10 ?? const Color(0xFF2F1400);
+
+  @override
+  Color get yellow20 => _overrides.yellow20 ?? const Color(0xFF4D2600);
+
+  @override
+  Color get yellow30 => _overrides.yellow30 ?? const Color(0xFF6D3A01);
+
+  @override
+  Color get yellow40 => _overrides.yellow40 ?? const Color(0xFF8F4E06);
+
+  @override
+  Color get yellow50 => _overrides.yellow50 ?? const Color(0xFFB16300);
+
+  @override
+  Color get yellow60 => _overrides.yellow60 ?? const Color(0xFFD37B00);
+
+  @override
+  Color get yellow70 => _overrides.yellow70 ?? const Color(0xFFEF9800);
+
+  @override
+  Color get yellow80 => _overrides.yellow80 ?? const Color(0xFFFCBD00);
+
+  @override
+  Color get yellow90 => _overrides.yellow90 ?? const Color(0xFFFFE07C);
+
+  @override
+  Color get yellow95 => _overrides.yellow95 ?? const Color(0xFFFFE07C);
+
+  @override
+  Color get yellow98 => _overrides.yellow98 ?? const Color(0xFFFFFADE);
+
+  @override
+  Color get yellow100 => _overrides.yellow100 ?? const Color(0xFFFFFFFF);
+
+  @override
+  Color get red0 => _overrides.red0 ?? const Color(0xFF000000);
+
+  @override
+  Color get red10 => _overrides.red10 ?? const Color(0xFF3A0907);
+
+  @override
+  Color get red20 => _overrides.red20 ?? const Color(0xFF60150F);
+
+  @override
+  Color get red30 => _overrides.red30 ?? const Color(0xFF8A1A16);
+
+  @override
+  Color get red40 => _overrides.red40 ?? const Color(0xFFB3251E);
+
+  @override
+  Color get red50 => _overrides.red50 ?? const Color(0xFFDB372D);
+
+  @override
+  Color get red60 => _overrides.red60 ?? const Color(0xFFF55E57);
+
+  @override
+  Color get red70 => _overrides.red70 ?? const Color(0xFFFF8983);
+
+  @override
+  Color get red80 => _overrides.red80 ?? const Color(0xFFFFB3AE);
+
+  @override
+  Color get red90 => _overrides.red90 ?? const Color(0xFFFFDADC);
+
+  @override
+  Color get red95 => _overrides.red95 ?? const Color(0xFFFFECEE);
+
+  @override
+  Color get red98 => _overrides.red98 ?? const Color(0xFFFFF8F8);
+
+  @override
+  Color get red100 => _overrides.red100 ?? const Color(0xFFFFFFFF);
+
+  @override
+  Color get purple0 => _overrides.purple0 ?? const Color(0xFF000000);
+
+  @override
+  Color get purple10 => _overrides.purple10 ?? const Color(0xFF280255);
+
+  @override
+  Color get purple20 => _overrides.purple20 ?? const Color(0xFF400B84);
+
+  @override
+  Color get purple30 => _overrides.purple30 ?? const Color(0xFF5629A4);
+
+  @override
+  Color get purple40 => _overrides.purple40 ?? const Color(0xFF7438D2);
+
+  @override
+  Color get purple50 => _overrides.purple50 ?? const Color(0xFF9254EA);
+
+  @override
+  Color get purple60 => _overrides.purple60 ?? const Color(0xFFAD72FF);
+
+  @override
+  Color get purple70 => _overrides.purple70 ?? const Color(0xFFC597FF);
+
+  @override
+  Color get purple80 => _overrides.purple80 ?? const Color(0xFFD9BAFD);
+
+  @override
+  Color get purple90 => _overrides.purple90 ?? const Color(0xFFEEDCFE);
+
+  @override
+  Color get purple95 => _overrides.purple95 ?? const Color(0xFFF7ECFE);
+
+  @override
+  Color get purple98 => _overrides.purple98 ?? const Color(0xFFFDF8FF);
+
+  @override
+  Color get purple100 => _overrides.purple100 ?? const Color(0xFFFFFFFF);
+
+  @override
+  Color get cyan0 => _overrides.cyan0 ?? const Color(0xFF000000);
+
+  @override
+  Color get cyan10 => _overrides.cyan10 ?? const Color(0xFF001F26);
+
+  @override
+  Color get cyan20 => _overrides.cyan20 ?? const Color(0xFF003641);
+
+  @override
+  Color get cyan30 => _overrides.cyan30 ?? const Color(0xFF004E5D);
+
+  @override
+  Color get cyan40 => _overrides.cyan40 ?? const Color(0xFF00687C);
+
+  @override
+  Color get cyan50 => _overrides.cyan50 ?? const Color(0xFF00839B);
+
+  @override
+  Color get cyan60 => _overrides.cyan60 ?? const Color(0xFF009EBB);
+
+  @override
+  Color get cyan70 => _overrides.cyan70 ?? const Color(0xFF00BBDF);
+
+  @override
+  Color get cyan80 => _overrides.cyan80 ?? const Color(0xFF60D5F3);
+
+  @override
+  Color get cyan90 => _overrides.cyan90 ?? const Color(0xFFACEDFF);
+
+  @override
+  Color get cyan95 => _overrides.cyan95 ?? const Color(0xFFD8F6FF);
+
+  @override
+  Color get cyan98 => _overrides.cyan98 ?? const Color(0xFFF0FBFF);
+
+  @override
+  Color get cyan100 => _overrides.cyan100 ?? const Color(0xFFFFFFFF);
+
+  @override
+  Color get grey0 => _overrides.grey0 ?? const Color(0xFF000000);
+
+  @override
+  Color get grey10 => _overrides.grey10 ?? const Color(0xFF1B1B1C);
+
+  @override
+  Color get grey20 => _overrides.grey20 ?? const Color(0xFF303030);
+
+  @override
+  Color get grey30 => _overrides.grey30 ?? const Color(0xFF474747);
+
+  @override
+  Color get grey40 => _overrides.grey40 ?? const Color(0xFF5E5E5E);
+
+  @override
+  Color get grey50 => _overrides.grey50 ?? const Color(0xFF777777);
+
+  @override
+  Color get grey60 => _overrides.grey60 ?? const Color(0xFF919191);
+
+  @override
+  Color get grey70 => _overrides.grey70 ?? const Color(0xFFABABAB);
+
+  @override
+  Color get grey80 => _overrides.grey80 ?? const Color(0xFFC7C7C7);
+
+  @override
+  Color get grey90 => _overrides.grey90 ?? const Color(0xFFE3E3E3);
+
+  @override
+  Color get grey95 => _overrides.grey95 ?? const Color(0xFFF2F2F2);
+
+  @override
+  Color get grey98 => _overrides.grey98 ?? const Color(0xFFF9F9F9);
+
+  @override
+  Color get grey100 => _overrides.grey100 ?? const Color(0xFFFFFFFF);
+
+  @override
+  Color get greyVariant0 => _overrides.greyVariant0 ?? const Color(0xFF000000);
+
+  @override
+  Color get greyVariant10 =>
+      _overrides.greyVariant10 ?? const Color(0xFF191D1C);
+
+  @override
+  Color get greyVariant20 =>
+      _overrides.greyVariant20 ?? const Color(0xFF2D312F);
+
+  @override
+  Color get greyVariant30 =>
+      _overrides.greyVariant30 ?? const Color(0xFF444746);
+
+  @override
+  Color get greyVariant40 =>
+      _overrides.greyVariant40 ?? const Color(0xFF5C5F5E);
+
+  @override
+  Color get greyVariant50 =>
+      _overrides.greyVariant50 ?? const Color(0xFF747775);
+
+  @override
+  Color get greyVariant60 =>
+      _overrides.greyVariant60 ?? const Color(0xFF8E918F);
+
+  @override
+  Color get greyVariant70 =>
+      _overrides.greyVariant70 ?? const Color(0xFFA9ACAA);
+
+  @override
+  Color get greyVariant80 =>
+      _overrides.greyVariant80 ?? const Color(0xFFC4C7C5);
+
+  @override
+  Color get greyVariant90 =>
+      _overrides.greyVariant90 ?? const Color(0xFFE1E3E1);
+
+  @override
+  Color get greyVariant95 =>
+      _overrides.greyVariant95 ?? const Color(0xFFEFF2EF);
+
+  @override
+  Color get greyVariant98 =>
+      _overrides.greyVariant98 ?? const Color(0xFFF7FAF7);
+
+  @override
+  Color get greyVariant100 =>
+      _overrides.greyVariant100 ?? const Color(0xFFFFFFFF);
+
+  @override
+  Color get green0 => _overrides.green0 ?? const Color(0xFF000000);
+
+  @override
+  Color get green10 => _overrides.green10 ?? const Color(0xFF002110);
+
+  @override
+  Color get green20 => _overrides.green20 ?? const Color(0xFF00381F);
+
+  @override
+  Color get green30 => _overrides.green30 ?? const Color(0xFF00522C);
+
+  @override
+  Color get green40 => _overrides.green40 ?? const Color(0xFF006C35);
+
+  @override
+  Color get green50 => _overrides.green50 ?? const Color(0xFF128937);
+
+  @override
+  Color get green60 => _overrides.green60 ?? const Color(0xFF1AA64A);
+
+  @override
+  Color get green70 => _overrides.green70 ?? const Color(0xFF44C265);
+
+  @override
+  Color get green80 => _overrides.green80 ?? const Color(0xFF80DA88);
+
+  @override
+  Color get green90 => _overrides.green90 ?? const Color(0xFFBEEFBB);
+
+  @override
+  Color get green95 => _overrides.green95 ?? const Color(0xFFDDF8D8);
+
+  @override
+  Color get green98 => _overrides.green98 ?? const Color(0xFFF2FCEF);
+
+  @override
+  Color get green100 => _overrides.green100 ?? const Color(0xFFFFFFFF);
+
+  @override
+  Color get orange0 => _overrides.orange0 ?? const Color(0xFF000000);
+
+  @override
+  Color get orange10 => _overrides.orange10 ?? const Color(0xFF321200);
+
+  @override
+  Color get orange20 => _overrides.orange20 ?? const Color(0xFF522302);
+
+  @override
+  Color get orange30 => _overrides.orange30 ?? const Color(0xFF753403);
+
+  @override
+  Color get orange40 => _overrides.orange40 ?? const Color(0xFF9A4600);
+
+  @override
+  Color get orange50 => _overrides.orange50 ?? const Color(0xFFC05A01);
+
+  @override
+  Color get orange60 => _overrides.orange60 ?? const Color(0xFFE86E00);
+
+  @override
+  Color get orange70 => _overrides.orange70 ?? const Color(0xFFFF8D41);
+
+  @override
+  Color get orange80 => _overrides.orange80 ?? const Color(0xFFFFB683);
+
+  @override
+  Color get orange90 => _overrides.orange90 ?? const Color(0xFFFFDCC3);
+
+  @override
+  Color get orange95 => _overrides.orange95 ?? const Color(0xFFFFEDE1);
+
+  @override
+  Color get orange98 => _overrides.orange98 ?? const Color(0xFFFFF8F4);
+
+  @override
+  Color get orange100 => _overrides.orange100 ?? const Color(0xFFFFFFFF);
+
+  @override
+  Color get pink0 => _overrides.pink0 ?? const Color(0xFF000000);
+
+  @override
+  Color get pink10 => _overrides.pink10 ?? const Color(0xFF3D0023);
+
+  @override
+  Color get pink20 => _overrides.pink20 ?? const Color(0xFF620438);
+
+  @override
+  Color get pink30 => _overrides.pink30 ?? const Color(0xFF8D0053);
+
+  @override
+  Color get pink40 => _overrides.pink40 ?? const Color(0xFFB60D6E);
+
+  @override
+  Color get pink50 => _overrides.pink50 ?? const Color(0xFFDC258D);
+
+  @override
+  Color get pink60 => _overrides.pink60 ?? const Color(0xFFF94AAB);
+
+  @override
+  Color get pink70 => _overrides.pink70 ?? const Color(0xFFFF7DD2);
+
+  @override
+  Color get pink80 => _overrides.pink80 ?? const Color(0xFFFFAEE4);
+
+  @override
+  Color get pink90 => _overrides.pink90 ?? const Color(0xFFFFD8EF);
+
+  @override
+  Color get pink95 => _overrides.pink95 ?? const Color(0xFFFFECF6);
+
+  @override
+  Color get pink98 => _overrides.pink98 ?? const Color(0xFFFFF7FC);
+
+  @override
+  Color get pink100 => _overrides.pink100 ?? const Color(0xFFFFFFFF);
+
+  @override
+  StaticPalette copyWith({
     Color? white,
     Color? black,
     Color? blue0,
@@ -4615,735 +5821,158 @@ class _StaticPaletteThemeDataDefaults extends StaticPaletteThemeData {
     Color? pink95,
     Color? pink98,
     Color? pink100,
-  }) : _white = white,
-       _black = black,
-       _blue0 = blue0,
-       _blue10 = blue10,
-       _blue20 = blue20,
-       _blue30 = blue30,
-       _blue40 = blue40,
-       _blue50 = blue50,
-       _blue60 = blue60,
-       _blue70 = blue70,
-       _blue80 = blue80,
-       _blue90 = blue90,
-       _blue95 = blue95,
-       _blue98 = blue98,
-       _blue100 = blue100,
-       _blueVariant0 = blueVariant0,
-       _blueVariant10 = blueVariant10,
-       _blueVariant20 = blueVariant20,
-       _blueVariant30 = blueVariant30,
-       _blueVariant40 = blueVariant40,
-       _blueVariant50 = blueVariant50,
-       _blueVariant60 = blueVariant60,
-       _blueVariant70 = blueVariant70,
-       _blueVariant80 = blueVariant80,
-       _blueVariant90 = blueVariant90,
-       _blueVariant95 = blueVariant95,
-       _blueVariant98 = blueVariant98,
-       _blueVariant100 = blueVariant100,
-       _yellow0 = yellow0,
-       _yellow10 = yellow10,
-       _yellow20 = yellow20,
-       _yellow30 = yellow30,
-       _yellow40 = yellow40,
-       _yellow50 = yellow50,
-       _yellow60 = yellow60,
-       _yellow70 = yellow70,
-       _yellow80 = yellow80,
-       _yellow90 = yellow90,
-       _yellow95 = yellow95,
-       _yellow98 = yellow98,
-       _yellow100 = yellow100,
-       _red0 = red0,
-       _red10 = red10,
-       _red20 = red20,
-       _red30 = red30,
-       _red40 = red40,
-       _red50 = red50,
-       _red60 = red60,
-       _red70 = red70,
-       _red80 = red80,
-       _red90 = red90,
-       _red95 = red95,
-       _red98 = red98,
-       _red100 = red100,
-       _purple0 = purple0,
-       _purple10 = purple10,
-       _purple20 = purple20,
-       _purple30 = purple30,
-       _purple40 = purple40,
-       _purple50 = purple50,
-       _purple60 = purple60,
-       _purple70 = purple70,
-       _purple80 = purple80,
-       _purple90 = purple90,
-       _purple95 = purple95,
-       _purple98 = purple98,
-       _purple100 = purple100,
-       _cyan0 = cyan0,
-       _cyan10 = cyan10,
-       _cyan20 = cyan20,
-       _cyan30 = cyan30,
-       _cyan40 = cyan40,
-       _cyan50 = cyan50,
-       _cyan60 = cyan60,
-       _cyan70 = cyan70,
-       _cyan80 = cyan80,
-       _cyan90 = cyan90,
-       _cyan95 = cyan95,
-       _cyan98 = cyan98,
-       _cyan100 = cyan100,
-       _grey0 = grey0,
-       _grey10 = grey10,
-       _grey20 = grey20,
-       _grey30 = grey30,
-       _grey40 = grey40,
-       _grey50 = grey50,
-       _grey60 = grey60,
-       _grey70 = grey70,
-       _grey80 = grey80,
-       _grey90 = grey90,
-       _grey95 = grey95,
-       _grey98 = grey98,
-       _grey100 = grey100,
-       _greyVariant0 = greyVariant0,
-       _greyVariant10 = greyVariant10,
-       _greyVariant20 = greyVariant20,
-       _greyVariant30 = greyVariant30,
-       _greyVariant40 = greyVariant40,
-       _greyVariant50 = greyVariant50,
-       _greyVariant60 = greyVariant60,
-       _greyVariant70 = greyVariant70,
-       _greyVariant80 = greyVariant80,
-       _greyVariant90 = greyVariant90,
-       _greyVariant95 = greyVariant95,
-       _greyVariant98 = greyVariant98,
-       _greyVariant100 = greyVariant100,
-       _green0 = green0,
-       _green10 = green10,
-       _green20 = green20,
-       _green30 = green30,
-       _green40 = green40,
-       _green50 = green50,
-       _green60 = green60,
-       _green70 = green70,
-       _green80 = green80,
-       _green90 = green90,
-       _green95 = green95,
-       _green98 = green98,
-       _green100 = green100,
-       _orange0 = orange0,
-       _orange10 = orange10,
-       _orange20 = orange20,
-       _orange30 = orange30,
-       _orange40 = orange40,
-       _orange50 = orange50,
-       _orange60 = orange60,
-       _orange70 = orange70,
-       _orange80 = orange80,
-       _orange90 = orange90,
-       _orange95 = orange95,
-       _orange98 = orange98,
-       _orange100 = orange100,
-       _pink0 = pink0,
-       _pink10 = pink10,
-       _pink20 = pink20,
-       _pink30 = pink30,
-       _pink40 = pink40,
-       _pink50 = pink50,
-       _pink60 = pink60,
-       _pink70 = pink70,
-       _pink80 = pink80,
-       _pink90 = pink90,
-       _pink95 = pink95,
-       _pink98 = pink98,
-       _pink100 = pink100;
-
-  final Color? _white;
-  final Color? _black;
-  final Color? _blue0;
-  final Color? _blue10;
-  final Color? _blue20;
-  final Color? _blue30;
-  final Color? _blue40;
-  final Color? _blue50;
-  final Color? _blue60;
-  final Color? _blue70;
-  final Color? _blue80;
-  final Color? _blue90;
-  final Color? _blue95;
-  final Color? _blue98;
-  final Color? _blue100;
-  final Color? _blueVariant0;
-  final Color? _blueVariant10;
-  final Color? _blueVariant20;
-  final Color? _blueVariant30;
-  final Color? _blueVariant40;
-  final Color? _blueVariant50;
-  final Color? _blueVariant60;
-  final Color? _blueVariant70;
-  final Color? _blueVariant80;
-  final Color? _blueVariant90;
-  final Color? _blueVariant95;
-  final Color? _blueVariant98;
-  final Color? _blueVariant100;
-  final Color? _yellow0;
-  final Color? _yellow10;
-  final Color? _yellow20;
-  final Color? _yellow30;
-  final Color? _yellow40;
-  final Color? _yellow50;
-  final Color? _yellow60;
-  final Color? _yellow70;
-  final Color? _yellow80;
-  final Color? _yellow90;
-  final Color? _yellow95;
-  final Color? _yellow98;
-  final Color? _yellow100;
-  final Color? _red0;
-  final Color? _red10;
-  final Color? _red20;
-  final Color? _red30;
-  final Color? _red40;
-  final Color? _red50;
-  final Color? _red60;
-  final Color? _red70;
-  final Color? _red80;
-  final Color? _red90;
-  final Color? _red95;
-  final Color? _red98;
-  final Color? _red100;
-  final Color? _purple0;
-  final Color? _purple10;
-  final Color? _purple20;
-  final Color? _purple30;
-  final Color? _purple40;
-  final Color? _purple50;
-  final Color? _purple60;
-  final Color? _purple70;
-  final Color? _purple80;
-  final Color? _purple90;
-  final Color? _purple95;
-  final Color? _purple98;
-  final Color? _purple100;
-  final Color? _cyan0;
-  final Color? _cyan10;
-  final Color? _cyan20;
-  final Color? _cyan30;
-  final Color? _cyan40;
-  final Color? _cyan50;
-  final Color? _cyan60;
-  final Color? _cyan70;
-  final Color? _cyan80;
-  final Color? _cyan90;
-  final Color? _cyan95;
-  final Color? _cyan98;
-  final Color? _cyan100;
-  final Color? _grey0;
-  final Color? _grey10;
-  final Color? _grey20;
-  final Color? _grey30;
-  final Color? _grey40;
-  final Color? _grey50;
-  final Color? _grey60;
-  final Color? _grey70;
-  final Color? _grey80;
-  final Color? _grey90;
-  final Color? _grey95;
-  final Color? _grey98;
-  final Color? _grey100;
-  final Color? _greyVariant0;
-  final Color? _greyVariant10;
-  final Color? _greyVariant20;
-  final Color? _greyVariant30;
-  final Color? _greyVariant40;
-  final Color? _greyVariant50;
-  final Color? _greyVariant60;
-  final Color? _greyVariant70;
-  final Color? _greyVariant80;
-  final Color? _greyVariant90;
-  final Color? _greyVariant95;
-  final Color? _greyVariant98;
-  final Color? _greyVariant100;
-  final Color? _green0;
-  final Color? _green10;
-  final Color? _green20;
-  final Color? _green30;
-  final Color? _green40;
-  final Color? _green50;
-  final Color? _green60;
-  final Color? _green70;
-  final Color? _green80;
-  final Color? _green90;
-  final Color? _green95;
-  final Color? _green98;
-  final Color? _green100;
-  final Color? _orange0;
-  final Color? _orange10;
-  final Color? _orange20;
-  final Color? _orange30;
-  final Color? _orange40;
-  final Color? _orange50;
-  final Color? _orange60;
-  final Color? _orange70;
-  final Color? _orange80;
-  final Color? _orange90;
-  final Color? _orange95;
-  final Color? _orange98;
-  final Color? _orange100;
-  final Color? _pink0;
-  final Color? _pink10;
-  final Color? _pink20;
-  final Color? _pink30;
-  final Color? _pink40;
-  final Color? _pink50;
-  final Color? _pink60;
-  final Color? _pink70;
-  final Color? _pink80;
-  final Color? _pink90;
-  final Color? _pink95;
-  final Color? _pink98;
-  final Color? _pink100;
-
-  @override
-  Color get white => _white ?? const Color(0xFFFFFFFF);
-
-  @override
-  Color get black => _black ?? const Color(0xFF000000);
-
-  @override
-  Color get blue0 => _blue0 ?? const Color(0xFF000000);
-
-  @override
-  Color get blue10 => _blue10 ?? const Color(0xFF001944);
-
-  @override
-  Color get blue20 => _blue20 ?? const Color(0xFF012C6F);
-
-  @override
-  Color get blue30 => _blue30 ?? const Color(0xFF04409F);
-
-  @override
-  Color get blue40 => _blue40 ?? const Color(0xFF1157CE);
-
-  @override
-  Color get blue50 => _blue50 ?? const Color(0xFF3271EA);
-
-  @override
-  Color get blue60 => _blue60 ?? const Color(0xFF4E8FF8);
-
-  @override
-  Color get blue70 => _blue70 ?? const Color(0xFF76ACFF);
-
-  @override
-  Color get blue80 => _blue80 ?? const Color(0xFFA1C9FF);
-
-  @override
-  Color get blue90 => _blue90 ?? const Color(0xFFD0E4FF);
-
-  @override
-  Color get blue95 => _blue95 ?? const Color(0xFFE7F2FF);
-
-  @override
-  Color get blue98 => _blue98 ?? const Color(0xFFF5FAFF);
-
-  @override
-  Color get blue100 => _blue100 ?? const Color(0xFFFFFFFF);
-
-  @override
-  Color get blueVariant0 => _blueVariant0 ?? const Color(0xFF000000);
-
-  @override
-  Color get blueVariant10 => _blueVariant10 ?? const Color(0xFF001F2D);
-
-  @override
-  Color get blueVariant20 => _blueVariant20 ?? const Color(0xFF003549);
-
-  @override
-  Color get blueVariant30 => _blueVariant30 ?? const Color(0xFF004D68);
-
-  @override
-  Color get blueVariant40 => _blueVariant40 ?? const Color(0xFF006788);
-
-  @override
-  Color get blueVariant50 => _blueVariant50 ?? const Color(0xFF0081A8);
-
-  @override
-  Color get blueVariant60 => _blueVariant60 ?? const Color(0xFF009DC9);
-
-  @override
-  Color get blueVariant70 => _blueVariant70 ?? const Color(0xFF00BBEA);
-
-  @override
-  Color get blueVariant80 => _blueVariant80 ?? const Color(0xFF67D4FF);
-
-  @override
-  Color get blueVariant90 => _blueVariant90 ?? const Color(0xFFBDE9FF);
-
-  @override
-  Color get blueVariant95 => _blueVariant95 ?? const Color(0xFFE0F4FF);
-
-  @override
-  Color get blueVariant98 => _blueVariant98 ?? const Color(0xFFF4FAFF);
-
-  @override
-  Color get blueVariant100 => _blueVariant100 ?? const Color(0xFFFFFFFF);
-
-  @override
-  Color get yellow0 => _yellow0 ?? const Color(0xFF000000);
-
-  @override
-  Color get yellow10 => _yellow10 ?? const Color(0xFF2F1400);
-
-  @override
-  Color get yellow20 => _yellow20 ?? const Color(0xFF4D2600);
-
-  @override
-  Color get yellow30 => _yellow30 ?? const Color(0xFF6D3A01);
-
-  @override
-  Color get yellow40 => _yellow40 ?? const Color(0xFF8F4E06);
-
-  @override
-  Color get yellow50 => _yellow50 ?? const Color(0xFFB16300);
-
-  @override
-  Color get yellow60 => _yellow60 ?? const Color(0xFFD37B00);
-
-  @override
-  Color get yellow70 => _yellow70 ?? const Color(0xFFEF9800);
-
-  @override
-  Color get yellow80 => _yellow80 ?? const Color(0xFFFCBD00);
-
-  @override
-  Color get yellow90 => _yellow90 ?? const Color(0xFFFFE07C);
-
-  @override
-  Color get yellow95 => _yellow95 ?? const Color(0xFFFFE07C);
-
-  @override
-  Color get yellow98 => _yellow98 ?? const Color(0xFFFFFADE);
-
-  @override
-  Color get yellow100 => _yellow100 ?? const Color(0xFFFFFFFF);
-
-  @override
-  Color get red0 => _red0 ?? const Color(0xFF000000);
-
-  @override
-  Color get red10 => _red10 ?? const Color(0xFF3A0907);
-
-  @override
-  Color get red20 => _red20 ?? const Color(0xFF60150F);
-
-  @override
-  Color get red30 => _red30 ?? const Color(0xFF8A1A16);
-
-  @override
-  Color get red40 => _red40 ?? const Color(0xFFB3251E);
-
-  @override
-  Color get red50 => _red50 ?? const Color(0xFFDB372D);
-
-  @override
-  Color get red60 => _red60 ?? const Color(0xFFF55E57);
-
-  @override
-  Color get red70 => _red70 ?? const Color(0xFFFF8983);
-
-  @override
-  Color get red80 => _red80 ?? const Color(0xFFFFB3AE);
-
-  @override
-  Color get red90 => _red90 ?? const Color(0xFFFFDADC);
-
-  @override
-  Color get red95 => _red95 ?? const Color(0xFFFFECEE);
-
-  @override
-  Color get red98 => _red98 ?? const Color(0xFFFFF8F8);
-
-  @override
-  Color get red100 => _red100 ?? const Color(0xFFFFFFFF);
-
-  @override
-  Color get purple0 => _purple0 ?? const Color(0xFF000000);
-
-  @override
-  Color get purple10 => _purple10 ?? const Color(0xFF280255);
-
-  @override
-  Color get purple20 => _purple20 ?? const Color(0xFF400B84);
-
-  @override
-  Color get purple30 => _purple30 ?? const Color(0xFF5629A4);
-
-  @override
-  Color get purple40 => _purple40 ?? const Color(0xFF7438D2);
-
-  @override
-  Color get purple50 => _purple50 ?? const Color(0xFF9254EA);
-
-  @override
-  Color get purple60 => _purple60 ?? const Color(0xFFAD72FF);
-
-  @override
-  Color get purple70 => _purple70 ?? const Color(0xFFC597FF);
-
-  @override
-  Color get purple80 => _purple80 ?? const Color(0xFFD9BAFD);
-
-  @override
-  Color get purple90 => _purple90 ?? const Color(0xFFEEDCFE);
-
-  @override
-  Color get purple95 => _purple95 ?? const Color(0xFFF7ECFE);
-
-  @override
-  Color get purple98 => _purple98 ?? const Color(0xFFFDF8FF);
-
-  @override
-  Color get purple100 => _purple100 ?? const Color(0xFFFFFFFF);
-
-  @override
-  Color get cyan0 => _cyan0 ?? const Color(0xFF000000);
-
-  @override
-  Color get cyan10 => _cyan10 ?? const Color(0xFF001F26);
-
-  @override
-  Color get cyan20 => _cyan20 ?? const Color(0xFF003641);
-
-  @override
-  Color get cyan30 => _cyan30 ?? const Color(0xFF004E5D);
-
-  @override
-  Color get cyan40 => _cyan40 ?? const Color(0xFF00687C);
-
-  @override
-  Color get cyan50 => _cyan50 ?? const Color(0xFF00839B);
-
-  @override
-  Color get cyan60 => _cyan60 ?? const Color(0xFF009EBB);
-
-  @override
-  Color get cyan70 => _cyan70 ?? const Color(0xFF00BBDF);
-
-  @override
-  Color get cyan80 => _cyan80 ?? const Color(0xFF60D5F3);
-
-  @override
-  Color get cyan90 => _cyan90 ?? const Color(0xFFACEDFF);
-
-  @override
-  Color get cyan95 => _cyan95 ?? const Color(0xFFD8F6FF);
-
-  @override
-  Color get cyan98 => _cyan98 ?? const Color(0xFFF0FBFF);
-
-  @override
-  Color get cyan100 => _cyan100 ?? const Color(0xFFFFFFFF);
-
-  @override
-  Color get grey0 => _grey0 ?? const Color(0xFF000000);
-
-  @override
-  Color get grey10 => _grey10 ?? const Color(0xFF1B1B1C);
-
-  @override
-  Color get grey20 => _grey20 ?? const Color(0xFF303030);
-
-  @override
-  Color get grey30 => _grey30 ?? const Color(0xFF474747);
-
-  @override
-  Color get grey40 => _grey40 ?? const Color(0xFF5E5E5E);
-
-  @override
-  Color get grey50 => _grey50 ?? const Color(0xFF777777);
-
-  @override
-  Color get grey60 => _grey60 ?? const Color(0xFF919191);
-
-  @override
-  Color get grey70 => _grey70 ?? const Color(0xFFABABAB);
-
-  @override
-  Color get grey80 => _grey80 ?? const Color(0xFFC7C7C7);
-
-  @override
-  Color get grey90 => _grey90 ?? const Color(0xFFE3E3E3);
-
-  @override
-  Color get grey95 => _grey95 ?? const Color(0xFFF2F2F2);
-
-  @override
-  Color get grey98 => _grey98 ?? const Color(0xFFF9F9F9);
-
-  @override
-  Color get grey100 => _grey100 ?? const Color(0xFFFFFFFF);
-
-  @override
-  Color get greyVariant0 => _greyVariant0 ?? const Color(0xFF000000);
-
-  @override
-  Color get greyVariant10 => _greyVariant10 ?? const Color(0xFF191D1C);
-
-  @override
-  Color get greyVariant20 => _greyVariant20 ?? const Color(0xFF2D312F);
-
-  @override
-  Color get greyVariant30 => _greyVariant30 ?? const Color(0xFF444746);
-
-  @override
-  Color get greyVariant40 => _greyVariant40 ?? const Color(0xFF5C5F5E);
-
-  @override
-  Color get greyVariant50 => _greyVariant50 ?? const Color(0xFF747775);
-
-  @override
-  Color get greyVariant60 => _greyVariant60 ?? const Color(0xFF8E918F);
-
-  @override
-  Color get greyVariant70 => _greyVariant70 ?? const Color(0xFFA9ACAA);
-
-  @override
-  Color get greyVariant80 => _greyVariant80 ?? const Color(0xFFC4C7C5);
-
-  @override
-  Color get greyVariant90 => _greyVariant90 ?? const Color(0xFFE1E3E1);
-
-  @override
-  Color get greyVariant95 => _greyVariant95 ?? const Color(0xFFEFF2EF);
-
-  @override
-  Color get greyVariant98 => _greyVariant98 ?? const Color(0xFFF7FAF7);
-
-  @override
-  Color get greyVariant100 => _greyVariant100 ?? const Color(0xFFFFFFFF);
-
-  @override
-  Color get green0 => _green0 ?? const Color(0xFF000000);
-
-  @override
-  Color get green10 => _green10 ?? const Color(0xFF002110);
-
-  @override
-  Color get green20 => _green20 ?? const Color(0xFF00381F);
-
-  @override
-  Color get green30 => _green30 ?? const Color(0xFF00522C);
-
-  @override
-  Color get green40 => _green40 ?? const Color(0xFF006C35);
-
-  @override
-  Color get green50 => _green50 ?? const Color(0xFF128937);
-
-  @override
-  Color get green60 => _green60 ?? const Color(0xFF1AA64A);
-
-  @override
-  Color get green70 => _green70 ?? const Color(0xFF44C265);
-
-  @override
-  Color get green80 => _green80 ?? const Color(0xFF80DA88);
-
-  @override
-  Color get green90 => _green90 ?? const Color(0xFFBEEFBB);
-
-  @override
-  Color get green95 => _green95 ?? const Color(0xFFDDF8D8);
-
-  @override
-  Color get green98 => _green98 ?? const Color(0xFFF2FCEF);
-
-  @override
-  Color get green100 => _green100 ?? const Color(0xFFFFFFFF);
-
-  @override
-  Color get orange0 => _orange0 ?? const Color(0xFF000000);
-
-  @override
-  Color get orange10 => _orange10 ?? const Color(0xFF321200);
-
-  @override
-  Color get orange20 => _orange20 ?? const Color(0xFF522302);
-
-  @override
-  Color get orange30 => _orange30 ?? const Color(0xFF753403);
-
-  @override
-  Color get orange40 => _orange40 ?? const Color(0xFF9A4600);
-
-  @override
-  Color get orange50 => _orange50 ?? const Color(0xFFC05A01);
-
-  @override
-  Color get orange60 => _orange60 ?? const Color(0xFFE86E00);
-
-  @override
-  Color get orange70 => _orange70 ?? const Color(0xFFFF8D41);
-
-  @override
-  Color get orange80 => _orange80 ?? const Color(0xFFFFB683);
-
-  @override
-  Color get orange90 => _orange90 ?? const Color(0xFFFFDCC3);
-
-  @override
-  Color get orange95 => _orange95 ?? const Color(0xFFFFEDE1);
-
-  @override
-  Color get orange98 => _orange98 ?? const Color(0xFFFFF8F4);
-
-  @override
-  Color get orange100 => _orange100 ?? const Color(0xFFFFFFFF);
-
-  @override
-  Color get pink0 => _pink0 ?? const Color(0xFF000000);
-
-  @override
-  Color get pink10 => _pink10 ?? const Color(0xFF3D0023);
-
-  @override
-  Color get pink20 => _pink20 ?? const Color(0xFF620438);
-
-  @override
-  Color get pink30 => _pink30 ?? const Color(0xFF8D0053);
-
-  @override
-  Color get pink40 => _pink40 ?? const Color(0xFFB60D6E);
-
-  @override
-  Color get pink50 => _pink50 ?? const Color(0xFFDC258D);
-
-  @override
-  Color get pink60 => _pink60 ?? const Color(0xFFF94AAB);
-
-  @override
-  Color get pink70 => _pink70 ?? const Color(0xFFFF7DD2);
-
-  @override
-  Color get pink80 => _pink80 ?? const Color(0xFFFFAEE4);
-
-  @override
-  Color get pink90 => _pink90 ?? const Color(0xFFFFD8EF);
-
-  @override
-  Color get pink95 => _pink95 ?? const Color(0xFFFFECF6);
-
-  @override
-  Color get pink98 => _pink98 ?? const Color(0xFFFFF7FC);
-
-  @override
-  Color get pink100 => _pink100 ?? const Color(0xFFFFFFFF);
-
-  @override
-  StaticPaletteThemeData copyWith({
+  }) => _StaticPaletteDefaults(
+    overrides: _overrides.copyWith(
+      white: white,
+      black: black,
+      blue0: blue0,
+      blue10: blue10,
+      blue20: blue20,
+      blue30: blue30,
+      blue40: blue40,
+      blue50: blue50,
+      blue60: blue60,
+      blue70: blue70,
+      blue80: blue80,
+      blue90: blue90,
+      blue95: blue95,
+      blue98: blue98,
+      blue100: blue100,
+      blueVariant0: blueVariant0,
+      blueVariant10: blueVariant10,
+      blueVariant20: blueVariant20,
+      blueVariant30: blueVariant30,
+      blueVariant40: blueVariant40,
+      blueVariant50: blueVariant50,
+      blueVariant60: blueVariant60,
+      blueVariant70: blueVariant70,
+      blueVariant80: blueVariant80,
+      blueVariant90: blueVariant90,
+      blueVariant95: blueVariant95,
+      blueVariant98: blueVariant98,
+      blueVariant100: blueVariant100,
+      yellow0: yellow0,
+      yellow10: yellow10,
+      yellow20: yellow20,
+      yellow30: yellow30,
+      yellow40: yellow40,
+      yellow50: yellow50,
+      yellow60: yellow60,
+      yellow70: yellow70,
+      yellow80: yellow80,
+      yellow90: yellow90,
+      yellow95: yellow95,
+      yellow98: yellow98,
+      yellow100: yellow100,
+      red0: red0,
+      red10: red10,
+      red20: red20,
+      red30: red30,
+      red40: red40,
+      red50: red50,
+      red60: red60,
+      red70: red70,
+      red80: red80,
+      red90: red90,
+      red95: red95,
+      red98: red98,
+      red100: red100,
+      purple0: purple0,
+      purple10: purple10,
+      purple20: purple20,
+      purple30: purple30,
+      purple40: purple40,
+      purple50: purple50,
+      purple60: purple60,
+      purple70: purple70,
+      purple80: purple80,
+      purple90: purple90,
+      purple95: purple95,
+      purple98: purple98,
+      purple100: purple100,
+      cyan0: cyan0,
+      cyan10: cyan10,
+      cyan20: cyan20,
+      cyan30: cyan30,
+      cyan40: cyan40,
+      cyan50: cyan50,
+      cyan60: cyan60,
+      cyan70: cyan70,
+      cyan80: cyan80,
+      cyan90: cyan90,
+      cyan95: cyan95,
+      cyan98: cyan98,
+      cyan100: cyan100,
+      grey0: grey0,
+      grey10: grey10,
+      grey20: grey20,
+      grey30: grey30,
+      grey40: grey40,
+      grey50: grey50,
+      grey60: grey60,
+      grey70: grey70,
+      grey80: grey80,
+      grey90: grey90,
+      grey95: grey95,
+      grey98: grey98,
+      grey100: grey100,
+      greyVariant0: greyVariant0,
+      greyVariant10: greyVariant10,
+      greyVariant20: greyVariant20,
+      greyVariant30: greyVariant30,
+      greyVariant40: greyVariant40,
+      greyVariant50: greyVariant50,
+      greyVariant60: greyVariant60,
+      greyVariant70: greyVariant70,
+      greyVariant80: greyVariant80,
+      greyVariant90: greyVariant90,
+      greyVariant95: greyVariant95,
+      greyVariant98: greyVariant98,
+      greyVariant100: greyVariant100,
+      green0: green0,
+      green10: green10,
+      green20: green20,
+      green30: green30,
+      green40: green40,
+      green50: green50,
+      green60: green60,
+      green70: green70,
+      green80: green80,
+      green90: green90,
+      green95: green95,
+      green98: green98,
+      green100: green100,
+      orange0: orange0,
+      orange10: orange10,
+      orange20: orange20,
+      orange30: orange30,
+      orange40: orange40,
+      orange50: orange50,
+      orange60: orange60,
+      orange70: orange70,
+      orange80: orange80,
+      orange90: orange90,
+      orange95: orange95,
+      orange98: orange98,
+      orange100: orange100,
+      pink0: pink0,
+      pink10: pink10,
+      pink20: pink20,
+      pink30: pink30,
+      pink40: pink40,
+      pink50: pink50,
+      pink60: pink60,
+      pink70: pink70,
+      pink80: pink80,
+      pink90: pink90,
+      pink95: pink95,
+      pink98: pink98,
+      pink100: pink100,
+    ),
+  );
+
+  @override
+  StaticPalette maybeCopyWith({
     Color? white,
     Color? black,
     Color? blue0,
@@ -5782,764 +6411,305 @@ class _StaticPaletteThemeDataDefaults extends StaticPaletteThemeData {
           pink98: pink98,
           pink100: pink100,
         )
-      : _StaticPaletteThemeDataDefaults(
-          white: white ?? _white,
-          black: black ?? _black,
-          blue0: blue0 ?? _blue0,
-          blue10: blue10 ?? _blue10,
-          blue20: blue20 ?? _blue20,
-          blue30: blue30 ?? _blue30,
-          blue40: blue40 ?? _blue40,
-          blue50: blue50 ?? _blue50,
-          blue60: blue60 ?? _blue60,
-          blue70: blue70 ?? _blue70,
-          blue80: blue80 ?? _blue80,
-          blue90: blue90 ?? _blue90,
-          blue95: blue95 ?? _blue95,
-          blue98: blue98 ?? _blue98,
-          blue100: blue100 ?? _blue100,
-          blueVariant0: blueVariant0 ?? _blueVariant0,
-          blueVariant10: blueVariant10 ?? _blueVariant10,
-          blueVariant20: blueVariant20 ?? _blueVariant20,
-          blueVariant30: blueVariant30 ?? _blueVariant30,
-          blueVariant40: blueVariant40 ?? _blueVariant40,
-          blueVariant50: blueVariant50 ?? _blueVariant50,
-          blueVariant60: blueVariant60 ?? _blueVariant60,
-          blueVariant70: blueVariant70 ?? _blueVariant70,
-          blueVariant80: blueVariant80 ?? _blueVariant80,
-          blueVariant90: blueVariant90 ?? _blueVariant90,
-          blueVariant95: blueVariant95 ?? _blueVariant95,
-          blueVariant98: blueVariant98 ?? _blueVariant98,
-          blueVariant100: blueVariant100 ?? _blueVariant100,
-          yellow0: yellow0 ?? _yellow0,
-          yellow10: yellow10 ?? _yellow10,
-          yellow20: yellow20 ?? _yellow20,
-          yellow30: yellow30 ?? _yellow30,
-          yellow40: yellow40 ?? _yellow40,
-          yellow50: yellow50 ?? _yellow50,
-          yellow60: yellow60 ?? _yellow60,
-          yellow70: yellow70 ?? _yellow70,
-          yellow80: yellow80 ?? _yellow80,
-          yellow90: yellow90 ?? _yellow90,
-          yellow95: yellow95 ?? _yellow95,
-          yellow98: yellow98 ?? _yellow98,
-          yellow100: yellow100 ?? _yellow100,
-          red0: red0 ?? _red0,
-          red10: red10 ?? _red10,
-          red20: red20 ?? _red20,
-          red30: red30 ?? _red30,
-          red40: red40 ?? _red40,
-          red50: red50 ?? _red50,
-          red60: red60 ?? _red60,
-          red70: red70 ?? _red70,
-          red80: red80 ?? _red80,
-          red90: red90 ?? _red90,
-          red95: red95 ?? _red95,
-          red98: red98 ?? _red98,
-          red100: red100 ?? _red100,
-          purple0: purple0 ?? _purple0,
-          purple10: purple10 ?? _purple10,
-          purple20: purple20 ?? _purple20,
-          purple30: purple30 ?? _purple30,
-          purple40: purple40 ?? _purple40,
-          purple50: purple50 ?? _purple50,
-          purple60: purple60 ?? _purple60,
-          purple70: purple70 ?? _purple70,
-          purple80: purple80 ?? _purple80,
-          purple90: purple90 ?? _purple90,
-          purple95: purple95 ?? _purple95,
-          purple98: purple98 ?? _purple98,
-          purple100: purple100 ?? _purple100,
-          cyan0: cyan0 ?? _cyan0,
-          cyan10: cyan10 ?? _cyan10,
-          cyan20: cyan20 ?? _cyan20,
-          cyan30: cyan30 ?? _cyan30,
-          cyan40: cyan40 ?? _cyan40,
-          cyan50: cyan50 ?? _cyan50,
-          cyan60: cyan60 ?? _cyan60,
-          cyan70: cyan70 ?? _cyan70,
-          cyan80: cyan80 ?? _cyan80,
-          cyan90: cyan90 ?? _cyan90,
-          cyan95: cyan95 ?? _cyan95,
-          cyan98: cyan98 ?? _cyan98,
-          cyan100: cyan100 ?? _cyan100,
-          grey0: grey0 ?? _grey0,
-          grey10: grey10 ?? _grey10,
-          grey20: grey20 ?? _grey20,
-          grey30: grey30 ?? _grey30,
-          grey40: grey40 ?? _grey40,
-          grey50: grey50 ?? _grey50,
-          grey60: grey60 ?? _grey60,
-          grey70: grey70 ?? _grey70,
-          grey80: grey80 ?? _grey80,
-          grey90: grey90 ?? _grey90,
-          grey95: grey95 ?? _grey95,
-          grey98: grey98 ?? _grey98,
-          grey100: grey100 ?? _grey100,
-          greyVariant0: greyVariant0 ?? _greyVariant0,
-          greyVariant10: greyVariant10 ?? _greyVariant10,
-          greyVariant20: greyVariant20 ?? _greyVariant20,
-          greyVariant30: greyVariant30 ?? _greyVariant30,
-          greyVariant40: greyVariant40 ?? _greyVariant40,
-          greyVariant50: greyVariant50 ?? _greyVariant50,
-          greyVariant60: greyVariant60 ?? _greyVariant60,
-          greyVariant70: greyVariant70 ?? _greyVariant70,
-          greyVariant80: greyVariant80 ?? _greyVariant80,
-          greyVariant90: greyVariant90 ?? _greyVariant90,
-          greyVariant95: greyVariant95 ?? _greyVariant95,
-          greyVariant98: greyVariant98 ?? _greyVariant98,
-          greyVariant100: greyVariant100 ?? _greyVariant100,
-          green0: green0 ?? _green0,
-          green10: green10 ?? _green10,
-          green20: green20 ?? _green20,
-          green30: green30 ?? _green30,
-          green40: green40 ?? _green40,
-          green50: green50 ?? _green50,
-          green60: green60 ?? _green60,
-          green70: green70 ?? _green70,
-          green80: green80 ?? _green80,
-          green90: green90 ?? _green90,
-          green95: green95 ?? _green95,
-          green98: green98 ?? _green98,
-          green100: green100 ?? _green100,
-          orange0: orange0 ?? _orange0,
-          orange10: orange10 ?? _orange10,
-          orange20: orange20 ?? _orange20,
-          orange30: orange30 ?? _orange30,
-          orange40: orange40 ?? _orange40,
-          orange50: orange50 ?? _orange50,
-          orange60: orange60 ?? _orange60,
-          orange70: orange70 ?? _orange70,
-          orange80: orange80 ?? _orange80,
-          orange90: orange90 ?? _orange90,
-          orange95: orange95 ?? _orange95,
-          orange98: orange98 ?? _orange98,
-          orange100: orange100 ?? _orange100,
-          pink0: pink0 ?? _pink0,
-          pink10: pink10 ?? _pink10,
-          pink20: pink20 ?? _pink20,
-          pink30: pink30 ?? _pink30,
-          pink40: pink40 ?? _pink40,
-          pink50: pink50 ?? _pink50,
-          pink60: pink60 ?? _pink60,
-          pink70: pink70 ?? _pink70,
-          pink80: pink80 ?? _pink80,
-          pink90: pink90 ?? _pink90,
-          pink95: pink95 ?? _pink95,
-          pink98: pink98 ?? _pink98,
-          pink100: pink100 ?? _pink100,
-        );
+      : white != null ||
+            black != null ||
+            blue0 != null ||
+            blue10 != null ||
+            blue20 != null ||
+            blue30 != null ||
+            blue40 != null ||
+            blue50 != null ||
+            blue60 != null ||
+            blue70 != null ||
+            blue80 != null ||
+            blue90 != null ||
+            blue95 != null ||
+            blue98 != null ||
+            blue100 != null ||
+            blueVariant0 != null ||
+            blueVariant10 != null ||
+            blueVariant20 != null ||
+            blueVariant30 != null ||
+            blueVariant40 != null ||
+            blueVariant50 != null ||
+            blueVariant60 != null ||
+            blueVariant70 != null ||
+            blueVariant80 != null ||
+            blueVariant90 != null ||
+            blueVariant95 != null ||
+            blueVariant98 != null ||
+            blueVariant100 != null ||
+            yellow0 != null ||
+            yellow10 != null ||
+            yellow20 != null ||
+            yellow30 != null ||
+            yellow40 != null ||
+            yellow50 != null ||
+            yellow60 != null ||
+            yellow70 != null ||
+            yellow80 != null ||
+            yellow90 != null ||
+            yellow95 != null ||
+            yellow98 != null ||
+            yellow100 != null ||
+            red0 != null ||
+            red10 != null ||
+            red20 != null ||
+            red30 != null ||
+            red40 != null ||
+            red50 != null ||
+            red60 != null ||
+            red70 != null ||
+            red80 != null ||
+            red90 != null ||
+            red95 != null ||
+            red98 != null ||
+            red100 != null ||
+            purple0 != null ||
+            purple10 != null ||
+            purple20 != null ||
+            purple30 != null ||
+            purple40 != null ||
+            purple50 != null ||
+            purple60 != null ||
+            purple70 != null ||
+            purple80 != null ||
+            purple90 != null ||
+            purple95 != null ||
+            purple98 != null ||
+            purple100 != null ||
+            cyan0 != null ||
+            cyan10 != null ||
+            cyan20 != null ||
+            cyan30 != null ||
+            cyan40 != null ||
+            cyan50 != null ||
+            cyan60 != null ||
+            cyan70 != null ||
+            cyan80 != null ||
+            cyan90 != null ||
+            cyan95 != null ||
+            cyan98 != null ||
+            cyan100 != null ||
+            grey0 != null ||
+            grey10 != null ||
+            grey20 != null ||
+            grey30 != null ||
+            grey40 != null ||
+            grey50 != null ||
+            grey60 != null ||
+            grey70 != null ||
+            grey80 != null ||
+            grey90 != null ||
+            grey95 != null ||
+            grey98 != null ||
+            grey100 != null ||
+            greyVariant0 != null ||
+            greyVariant10 != null ||
+            greyVariant20 != null ||
+            greyVariant30 != null ||
+            greyVariant40 != null ||
+            greyVariant50 != null ||
+            greyVariant60 != null ||
+            greyVariant70 != null ||
+            greyVariant80 != null ||
+            greyVariant90 != null ||
+            greyVariant95 != null ||
+            greyVariant98 != null ||
+            greyVariant100 != null ||
+            green0 != null ||
+            green10 != null ||
+            green20 != null ||
+            green30 != null ||
+            green40 != null ||
+            green50 != null ||
+            green60 != null ||
+            green70 != null ||
+            green80 != null ||
+            green90 != null ||
+            green95 != null ||
+            green98 != null ||
+            green100 != null ||
+            orange0 != null ||
+            orange10 != null ||
+            orange20 != null ||
+            orange30 != null ||
+            orange40 != null ||
+            orange50 != null ||
+            orange60 != null ||
+            orange70 != null ||
+            orange80 != null ||
+            orange90 != null ||
+            orange95 != null ||
+            orange98 != null ||
+            orange100 != null ||
+            pink0 != null ||
+            pink10 != null ||
+            pink20 != null ||
+            pink30 != null ||
+            pink40 != null ||
+            pink50 != null ||
+            pink60 != null ||
+            pink70 != null ||
+            pink80 != null ||
+            pink90 != null ||
+            pink95 != null ||
+            pink98 != null ||
+            pink100 != null
+      ? copyWith(
+          white: white,
+          black: black,
+          blue0: blue0,
+          blue10: blue10,
+          blue20: blue20,
+          blue30: blue30,
+          blue40: blue40,
+          blue50: blue50,
+          blue60: blue60,
+          blue70: blue70,
+          blue80: blue80,
+          blue90: blue90,
+          blue95: blue95,
+          blue98: blue98,
+          blue100: blue100,
+          blueVariant0: blueVariant0,
+          blueVariant10: blueVariant10,
+          blueVariant20: blueVariant20,
+          blueVariant30: blueVariant30,
+          blueVariant40: blueVariant40,
+          blueVariant50: blueVariant50,
+          blueVariant60: blueVariant60,
+          blueVariant70: blueVariant70,
+          blueVariant80: blueVariant80,
+          blueVariant90: blueVariant90,
+          blueVariant95: blueVariant95,
+          blueVariant98: blueVariant98,
+          blueVariant100: blueVariant100,
+          yellow0: yellow0,
+          yellow10: yellow10,
+          yellow20: yellow20,
+          yellow30: yellow30,
+          yellow40: yellow40,
+          yellow50: yellow50,
+          yellow60: yellow60,
+          yellow70: yellow70,
+          yellow80: yellow80,
+          yellow90: yellow90,
+          yellow95: yellow95,
+          yellow98: yellow98,
+          yellow100: yellow100,
+          red0: red0,
+          red10: red10,
+          red20: red20,
+          red30: red30,
+          red40: red40,
+          red50: red50,
+          red60: red60,
+          red70: red70,
+          red80: red80,
+          red90: red90,
+          red95: red95,
+          red98: red98,
+          red100: red100,
+          purple0: purple0,
+          purple10: purple10,
+          purple20: purple20,
+          purple30: purple30,
+          purple40: purple40,
+          purple50: purple50,
+          purple60: purple60,
+          purple70: purple70,
+          purple80: purple80,
+          purple90: purple90,
+          purple95: purple95,
+          purple98: purple98,
+          purple100: purple100,
+          cyan0: cyan0,
+          cyan10: cyan10,
+          cyan20: cyan20,
+          cyan30: cyan30,
+          cyan40: cyan40,
+          cyan50: cyan50,
+          cyan60: cyan60,
+          cyan70: cyan70,
+          cyan80: cyan80,
+          cyan90: cyan90,
+          cyan95: cyan95,
+          cyan98: cyan98,
+          cyan100: cyan100,
+          grey0: grey0,
+          grey10: grey10,
+          grey20: grey20,
+          grey30: grey30,
+          grey40: grey40,
+          grey50: grey50,
+          grey60: grey60,
+          grey70: grey70,
+          grey80: grey80,
+          grey90: grey90,
+          grey95: grey95,
+          grey98: grey98,
+          grey100: grey100,
+          greyVariant0: greyVariant0,
+          greyVariant10: greyVariant10,
+          greyVariant20: greyVariant20,
+          greyVariant30: greyVariant30,
+          greyVariant40: greyVariant40,
+          greyVariant50: greyVariant50,
+          greyVariant60: greyVariant60,
+          greyVariant70: greyVariant70,
+          greyVariant80: greyVariant80,
+          greyVariant90: greyVariant90,
+          greyVariant95: greyVariant95,
+          greyVariant98: greyVariant98,
+          greyVariant100: greyVariant100,
+          green0: green0,
+          green10: green10,
+          green20: green20,
+          green30: green30,
+          green40: green40,
+          green50: green50,
+          green60: green60,
+          green70: green70,
+          green80: green80,
+          green90: green90,
+          green95: green95,
+          green98: green98,
+          green100: green100,
+          orange0: orange0,
+          orange10: orange10,
+          orange20: orange20,
+          orange30: orange30,
+          orange40: orange40,
+          orange50: orange50,
+          orange60: orange60,
+          orange70: orange70,
+          orange80: orange80,
+          orange90: orange90,
+          orange95: orange95,
+          orange98: orange98,
+          orange100: orange100,
+          pink0: pink0,
+          pink10: pink10,
+          pink20: pink20,
+          pink30: pink30,
+          pink40: pink40,
+          pink50: pink50,
+          pink60: pink60,
+          pink70: pink70,
+          pink80: pink80,
+          pink90: pink90,
+          pink95: pink95,
+          pink98: pink98,
+          pink100: pink100,
+        )
+      : this;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _StaticPaletteThemeDataDefaults &&
-          _white == other._white &&
-          _black == other._black &&
-          _blue0 == other._blue0 &&
-          _blue10 == other._blue10 &&
-          _blue20 == other._blue20 &&
-          _blue30 == other._blue30 &&
-          _blue40 == other._blue40 &&
-          _blue50 == other._blue50 &&
-          _blue60 == other._blue60 &&
-          _blue70 == other._blue70 &&
-          _blue80 == other._blue80 &&
-          _blue90 == other._blue90 &&
-          _blue95 == other._blue95 &&
-          _blue98 == other._blue98 &&
-          _blue100 == other._blue100 &&
-          _blueVariant0 == other._blueVariant0 &&
-          _blueVariant10 == other._blueVariant10 &&
-          _blueVariant20 == other._blueVariant20 &&
-          _blueVariant30 == other._blueVariant30 &&
-          _blueVariant40 == other._blueVariant40 &&
-          _blueVariant50 == other._blueVariant50 &&
-          _blueVariant60 == other._blueVariant60 &&
-          _blueVariant70 == other._blueVariant70 &&
-          _blueVariant80 == other._blueVariant80 &&
-          _blueVariant90 == other._blueVariant90 &&
-          _blueVariant95 == other._blueVariant95 &&
-          _blueVariant98 == other._blueVariant98 &&
-          _blueVariant100 == other._blueVariant100 &&
-          _yellow0 == other._yellow0 &&
-          _yellow10 == other._yellow10 &&
-          _yellow20 == other._yellow20 &&
-          _yellow30 == other._yellow30 &&
-          _yellow40 == other._yellow40 &&
-          _yellow50 == other._yellow50 &&
-          _yellow60 == other._yellow60 &&
-          _yellow70 == other._yellow70 &&
-          _yellow80 == other._yellow80 &&
-          _yellow90 == other._yellow90 &&
-          _yellow95 == other._yellow95 &&
-          _yellow98 == other._yellow98 &&
-          _yellow100 == other._yellow100 &&
-          _red0 == other._red0 &&
-          _red10 == other._red10 &&
-          _red20 == other._red20 &&
-          _red30 == other._red30 &&
-          _red40 == other._red40 &&
-          _red50 == other._red50 &&
-          _red60 == other._red60 &&
-          _red70 == other._red70 &&
-          _red80 == other._red80 &&
-          _red90 == other._red90 &&
-          _red95 == other._red95 &&
-          _red98 == other._red98 &&
-          _red100 == other._red100 &&
-          _purple0 == other._purple0 &&
-          _purple10 == other._purple10 &&
-          _purple20 == other._purple20 &&
-          _purple30 == other._purple30 &&
-          _purple40 == other._purple40 &&
-          _purple50 == other._purple50 &&
-          _purple60 == other._purple60 &&
-          _purple70 == other._purple70 &&
-          _purple80 == other._purple80 &&
-          _purple90 == other._purple90 &&
-          _purple95 == other._purple95 &&
-          _purple98 == other._purple98 &&
-          _purple100 == other._purple100 &&
-          _cyan0 == other._cyan0 &&
-          _cyan10 == other._cyan10 &&
-          _cyan20 == other._cyan20 &&
-          _cyan30 == other._cyan30 &&
-          _cyan40 == other._cyan40 &&
-          _cyan50 == other._cyan50 &&
-          _cyan60 == other._cyan60 &&
-          _cyan70 == other._cyan70 &&
-          _cyan80 == other._cyan80 &&
-          _cyan90 == other._cyan90 &&
-          _cyan95 == other._cyan95 &&
-          _cyan98 == other._cyan98 &&
-          _cyan100 == other._cyan100 &&
-          _grey0 == other._grey0 &&
-          _grey10 == other._grey10 &&
-          _grey20 == other._grey20 &&
-          _grey30 == other._grey30 &&
-          _grey40 == other._grey40 &&
-          _grey50 == other._grey50 &&
-          _grey60 == other._grey60 &&
-          _grey70 == other._grey70 &&
-          _grey80 == other._grey80 &&
-          _grey90 == other._grey90 &&
-          _grey95 == other._grey95 &&
-          _grey98 == other._grey98 &&
-          _grey100 == other._grey100 &&
-          _greyVariant0 == other._greyVariant0 &&
-          _greyVariant10 == other._greyVariant10 &&
-          _greyVariant20 == other._greyVariant20 &&
-          _greyVariant30 == other._greyVariant30 &&
-          _greyVariant40 == other._greyVariant40 &&
-          _greyVariant50 == other._greyVariant50 &&
-          _greyVariant60 == other._greyVariant60 &&
-          _greyVariant70 == other._greyVariant70 &&
-          _greyVariant80 == other._greyVariant80 &&
-          _greyVariant90 == other._greyVariant90 &&
-          _greyVariant95 == other._greyVariant95 &&
-          _greyVariant98 == other._greyVariant98 &&
-          _greyVariant100 == other._greyVariant100 &&
-          _green0 == other._green0 &&
-          _green10 == other._green10 &&
-          _green20 == other._green20 &&
-          _green30 == other._green30 &&
-          _green40 == other._green40 &&
-          _green50 == other._green50 &&
-          _green60 == other._green60 &&
-          _green70 == other._green70 &&
-          _green80 == other._green80 &&
-          _green90 == other._green90 &&
-          _green95 == other._green95 &&
-          _green98 == other._green98 &&
-          _green100 == other._green100 &&
-          _orange0 == other._orange0 &&
-          _orange10 == other._orange10 &&
-          _orange20 == other._orange20 &&
-          _orange30 == other._orange30 &&
-          _orange40 == other._orange40 &&
-          _orange50 == other._orange50 &&
-          _orange60 == other._orange60 &&
-          _orange70 == other._orange70 &&
-          _orange80 == other._orange80 &&
-          _orange90 == other._orange90 &&
-          _orange95 == other._orange95 &&
-          _orange98 == other._orange98 &&
-          _orange100 == other._orange100 &&
-          _pink0 == other._pink0 &&
-          _pink10 == other._pink10 &&
-          _pink20 == other._pink20 &&
-          _pink30 == other._pink30 &&
-          _pink40 == other._pink40 &&
-          _pink50 == other._pink50 &&
-          _pink60 == other._pink60 &&
-          _pink70 == other._pink70 &&
-          _pink80 == other._pink80 &&
-          _pink90 == other._pink90 &&
-          _pink95 == other._pink95 &&
-          _pink98 == other._pink98 &&
-          _pink100 == other._pink100;
+      other is _StaticPaletteDefaults && _overrides == other._overrides;
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    _white,
-    _black,
-    _blue0,
-    _blue10,
-    _blue20,
-    _blue30,
-    _blue40,
-    _blue50,
-    _blue60,
-    _blue70,
-    _blue80,
-    _blue90,
-    _blue95,
-    _blue98,
-    _blue100,
-    _blueVariant0,
-    _blueVariant10,
-    _blueVariant20,
-    Object.hash(
-      _blueVariant30,
-      _blueVariant40,
-      _blueVariant50,
-      _blueVariant60,
-      _blueVariant70,
-      _blueVariant80,
-      _blueVariant90,
-      _blueVariant95,
-      _blueVariant98,
-      _blueVariant100,
-      _yellow0,
-      _yellow10,
-      _yellow20,
-      _yellow30,
-      _yellow40,
-      _yellow50,
-      _yellow60,
-      _yellow70,
-      _yellow80,
-      Object.hash(
-        _yellow90,
-        _yellow95,
-        _yellow98,
-        _yellow100,
-        _red0,
-        _red10,
-        _red20,
-        _red30,
-        _red40,
-        _red50,
-        _red60,
-        _red70,
-        _red80,
-        _red90,
-        _red95,
-        _red98,
-        _red100,
-        _purple0,
-        _purple10,
-        Object.hash(
-          _purple20,
-          _purple30,
-          _purple40,
-          _purple50,
-          _purple60,
-          _purple70,
-          _purple80,
-          _purple90,
-          _purple95,
-          _purple98,
-          _purple100,
-          _cyan0,
-          _cyan10,
-          _cyan20,
-          _cyan30,
-          _cyan40,
-          _cyan50,
-          _cyan60,
-          _cyan70,
-          Object.hash(
-            _cyan80,
-            _cyan90,
-            _cyan95,
-            _cyan98,
-            _cyan100,
-            _grey0,
-            _grey10,
-            _grey20,
-            _grey30,
-            _grey40,
-            _grey50,
-            _grey60,
-            _grey70,
-            _grey80,
-            _grey90,
-            _grey95,
-            _grey98,
-            _grey100,
-            _greyVariant0,
-            Object.hash(
-              _greyVariant10,
-              _greyVariant20,
-              _greyVariant30,
-              _greyVariant40,
-              _greyVariant50,
-              _greyVariant60,
-              _greyVariant70,
-              _greyVariant80,
-              _greyVariant90,
-              _greyVariant95,
-              _greyVariant98,
-              _greyVariant100,
-              _green0,
-              _green10,
-              _green20,
-              _green30,
-              _green40,
-              _green50,
-              _green60,
-              Object.hash(
-                _green70,
-                _green80,
-                _green90,
-                _green95,
-                _green98,
-                _green100,
-                _orange0,
-                _orange10,
-                _orange20,
-                _orange30,
-                _orange40,
-                _orange50,
-                _orange60,
-                _orange70,
-                _orange80,
-                _orange90,
-                _orange95,
-                _orange98,
-                _orange100,
-                Object.hash(
-                  _pink0,
-                  _pink10,
-                  _pink20,
-                  _pink30,
-                  _pink40,
-                  _pink50,
-                  _pink60,
-                  _pink70,
-                  _pink80,
-                  _pink90,
-                  _pink95,
-                  _pink98,
-                  _pink100,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-typedef StaticPaletteThemeResolver =
-    ThemeResolver<StaticPaletteThemeDataPartial>;
-
-typedef StaticPaletteThemeResolverCallback =
-    ThemeResolverCallback<StaticPaletteThemeDataPartial>;
-
-class _StaticPaletteThemeResolver
-    extends CombiningThemeResolver<StaticPaletteThemeDataPartial> {
-  const _StaticPaletteThemeResolver(super.a, super.b);
-
-  @override
-  StaticPaletteThemeDataPartial combine(
-    StaticPaletteThemeDataPartial a,
-    StaticPaletteThemeDataPartial b,
-  ) => a.merge(b);
-}
-
-abstract class StaticPaletteTheme extends StatelessWidget
-    implements ProxyWidget {
-  const StaticPaletteTheme._({super.key, required this.child});
-
-  const factory StaticPaletteTheme.withResolver({
-    Key? key,
-    required StaticPaletteThemeResolver resolver,
-    required Widget child,
-  }) = _StaticPaletteThemeWithResolver;
-
-  const factory StaticPaletteTheme.withCallback({
-    Key? key,
-    required StaticPaletteThemeResolverCallback callback,
-    required Widget child,
-  }) = _StaticPaletteThemeWithCallback;
-
-  const factory StaticPaletteTheme.withData({
-    Key? key,
-    required StaticPaletteThemeDataPartial data,
-    required Widget child,
-  }) = _StaticPaletteThemeWithData;
-
-  StaticPaletteThemeResolver get resolver;
-
-  @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final inherited = _StaticPaletteTheme.maybeResolverOf(context);
-    return _StaticPaletteTheme(
-      resolver: inherited != null
-          ? _StaticPaletteThemeResolver(inherited, resolver)
-          : resolver,
-      child: child,
-    );
-  }
-
-  static StaticPaletteThemeData of(BuildContext context) {
-    final resolver = _StaticPaletteTheme.maybeResolverOf(context);
-    if (resolver != null) {
-      final data = resolver.resolve(context);
-      return ._defaults(
-        white: data.white,
-        black: data.black,
-        blue0: data.blue0,
-        blue10: data.blue10,
-        blue20: data.blue20,
-        blue30: data.blue30,
-        blue40: data.blue40,
-        blue50: data.blue50,
-        blue60: data.blue60,
-        blue70: data.blue70,
-        blue80: data.blue80,
-        blue90: data.blue90,
-        blue95: data.blue95,
-        blue98: data.blue98,
-        blue100: data.blue100,
-        blueVariant0: data.blueVariant0,
-        blueVariant10: data.blueVariant10,
-        blueVariant20: data.blueVariant20,
-        blueVariant30: data.blueVariant30,
-        blueVariant40: data.blueVariant40,
-        blueVariant50: data.blueVariant50,
-        blueVariant60: data.blueVariant60,
-        blueVariant70: data.blueVariant70,
-        blueVariant80: data.blueVariant80,
-        blueVariant90: data.blueVariant90,
-        blueVariant95: data.blueVariant95,
-        blueVariant98: data.blueVariant98,
-        blueVariant100: data.blueVariant100,
-        yellow0: data.yellow0,
-        yellow10: data.yellow10,
-        yellow20: data.yellow20,
-        yellow30: data.yellow30,
-        yellow40: data.yellow40,
-        yellow50: data.yellow50,
-        yellow60: data.yellow60,
-        yellow70: data.yellow70,
-        yellow80: data.yellow80,
-        yellow90: data.yellow90,
-        yellow95: data.yellow95,
-        yellow98: data.yellow98,
-        yellow100: data.yellow100,
-        red0: data.red0,
-        red10: data.red10,
-        red20: data.red20,
-        red30: data.red30,
-        red40: data.red40,
-        red50: data.red50,
-        red60: data.red60,
-        red70: data.red70,
-        red80: data.red80,
-        red90: data.red90,
-        red95: data.red95,
-        red98: data.red98,
-        red100: data.red100,
-        purple0: data.purple0,
-        purple10: data.purple10,
-        purple20: data.purple20,
-        purple30: data.purple30,
-        purple40: data.purple40,
-        purple50: data.purple50,
-        purple60: data.purple60,
-        purple70: data.purple70,
-        purple80: data.purple80,
-        purple90: data.purple90,
-        purple95: data.purple95,
-        purple98: data.purple98,
-        purple100: data.purple100,
-        cyan0: data.cyan0,
-        cyan10: data.cyan10,
-        cyan20: data.cyan20,
-        cyan30: data.cyan30,
-        cyan40: data.cyan40,
-        cyan50: data.cyan50,
-        cyan60: data.cyan60,
-        cyan70: data.cyan70,
-        cyan80: data.cyan80,
-        cyan90: data.cyan90,
-        cyan95: data.cyan95,
-        cyan98: data.cyan98,
-        cyan100: data.cyan100,
-        grey0: data.grey0,
-        grey10: data.grey10,
-        grey20: data.grey20,
-        grey30: data.grey30,
-        grey40: data.grey40,
-        grey50: data.grey50,
-        grey60: data.grey60,
-        grey70: data.grey70,
-        grey80: data.grey80,
-        grey90: data.grey90,
-        grey95: data.grey95,
-        grey98: data.grey98,
-        grey100: data.grey100,
-        greyVariant0: data.greyVariant0,
-        greyVariant10: data.greyVariant10,
-        greyVariant20: data.greyVariant20,
-        greyVariant30: data.greyVariant30,
-        greyVariant40: data.greyVariant40,
-        greyVariant50: data.greyVariant50,
-        greyVariant60: data.greyVariant60,
-        greyVariant70: data.greyVariant70,
-        greyVariant80: data.greyVariant80,
-        greyVariant90: data.greyVariant90,
-        greyVariant95: data.greyVariant95,
-        greyVariant98: data.greyVariant98,
-        greyVariant100: data.greyVariant100,
-        green0: data.green0,
-        green10: data.green10,
-        green20: data.green20,
-        green30: data.green30,
-        green40: data.green40,
-        green50: data.green50,
-        green60: data.green60,
-        green70: data.green70,
-        green80: data.green80,
-        green90: data.green90,
-        green95: data.green95,
-        green98: data.green98,
-        green100: data.green100,
-        orange0: data.orange0,
-        orange10: data.orange10,
-        orange20: data.orange20,
-        orange30: data.orange30,
-        orange40: data.orange40,
-        orange50: data.orange50,
-        orange60: data.orange60,
-        orange70: data.orange70,
-        orange80: data.orange80,
-        orange90: data.orange90,
-        orange95: data.orange95,
-        orange98: data.orange98,
-        orange100: data.orange100,
-        pink0: data.pink0,
-        pink10: data.pink10,
-        pink20: data.pink20,
-        pink30: data.pink30,
-        pink40: data.pink40,
-        pink50: data.pink50,
-        pink60: data.pink60,
-        pink70: data.pink70,
-        pink80: data.pink80,
-        pink90: data.pink90,
-        pink95: data.pink95,
-        pink98: data.pink98,
-        pink100: data.pink100,
-      );
-    }
-    return const .defaults();
-  }
-}
-
-class _StaticPaletteThemeWithResolver extends StaticPaletteTheme {
-  const _StaticPaletteThemeWithResolver({
-    super.key,
-    required this.resolver,
-    required super.child,
-  }) : super._();
-
-  @override
-  final StaticPaletteThemeResolver resolver;
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<StaticPaletteThemeResolver>("resolver", resolver),
-    );
-  }
-}
-
-class _StaticPaletteThemeWithCallback extends StaticPaletteTheme {
-  const _StaticPaletteThemeWithCallback({
-    super.key,
-    required this.callback,
-    required super.child,
-  }) : super._();
-
-  final StaticPaletteThemeResolverCallback callback;
-
-  @override
-  StaticPaletteThemeResolver get resolver => .callback(callback);
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<StaticPaletteThemeResolverCallback>(
-        "callback",
-        callback,
-      ),
-    );
-  }
-}
-
-class _StaticPaletteThemeWithData extends StaticPaletteTheme {
-  const _StaticPaletteThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
-
-  final StaticPaletteThemeDataPartial data;
-
-  @override
-  StaticPaletteThemeResolver get resolver => .value(data);
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<StaticPaletteThemeDataPartial>("data", data),
-    );
-  }
-}
-
-class _StaticPaletteTheme extends InheritedTheme {
-  const _StaticPaletteTheme({
-    super.key,
-    required this.resolver,
-    required super.child,
-  });
-
-  final StaticPaletteThemeResolver resolver;
-
-  @override
-  bool updateShouldNotify(_StaticPaletteTheme oldWidget) =>
-      resolver != oldWidget.resolver;
-
-  @override
-  Widget wrap(BuildContext context, Widget child) =>
-      _StaticPaletteTheme(resolver: resolver, child: child);
-
-  static StaticPaletteThemeResolver? maybeResolverOf(BuildContext context) =>
-      context
-          .dependOnInheritedWidgetOfExactType<_StaticPaletteTheme>()
-          ?.resolver;
+  int get hashCode => _overrides.hashCode;
 }

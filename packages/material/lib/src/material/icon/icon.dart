@@ -4,7 +4,7 @@ import 'package:flutter/material.dart' as flutter;
 typedef IconLegacy = flutter.Icon;
 
 /// A graphical icon widget drawn with a glyph from a font described in
-/// an [IconData] such as material's predefined [IconData]s in [Icons].
+/// an [IconData] such as material's predefined [IconData]s in [Symbols].
 ///
 /// Icons are not interactive. For an interactive icon, consider material's
 /// [IconButton].
@@ -15,39 +15,6 @@ typedef IconLegacy = flutter.Icon;
 ///
 /// This widget assumes that the rendered icon is squared. Non-squared icons may
 /// render incorrectly.
-///
-/// {@tool snippet}
-///
-/// This example shows how to create a [Row] of [Icon]s in different colors and
-/// sizes. The first [Icon] uses a [semanticLabel] to announce in accessibility
-/// modes like TalkBack and VoiceOver.
-///
-/// ![The following code snippet would generate a row of icons consisting of a pink heart, a green musical note, and a blue umbrella, each progressively bigger than the last.](https://flutter.github.io/assets-for-api-docs/assets/widgets/icon.png)
-///
-/// ```dart
-/// const Row(
-///   mainAxisAlignment: MainAxisAlignment.spaceAround,
-///   children: <Widget>[
-///     Icon(
-///       Icons.favorite,
-///       color: Colors.pink,
-///       size: 24.0,
-///       semanticLabel: 'Text to announce in accessibility modes',
-///     ),
-///     Icon(
-///       Icons.audiotrack,
-///       color: Colors.green,
-///       size: 30.0,
-///     ),
-///     Icon(
-///       Icons.beach_access,
-///       color: Colors.blue,
-///       size: 36.0,
-///     ),
-///   ],
-/// )
-/// ```
-/// {@end-tool}
 ///
 /// See also:
 ///
@@ -245,7 +212,10 @@ class Icon extends IconLegacy {
   TextDirection? get textDirection => super.textDirection;
 
   @override
-  FontWeight? get fontWeight => null;
+  FontWeight? get fontWeight {
+    final weight = this.weight;
+    return weight != null ? .new(clampInt(weight.round(), 1, 1000)) : null;
+  }
 
   @override
   Widget build(BuildContext context) {

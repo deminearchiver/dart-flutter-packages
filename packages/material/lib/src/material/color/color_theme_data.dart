@@ -94,11 +94,51 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
   factory ColorThemeData.fromPalette({
     required BaselinePaletteThemeData palette,
     required Brightness brightness,
-    // TODO: add contrast level
-  }) => switch (brightness) {
-    .light => _ColorThemeDataFromPaletteLightDefaultContrast(palette),
-    .dark => _ColorThemeDataFromPaletteDarkDefaultContrast(palette),
-  };
+    double contrastLevel = 0.0,
+    ColorThemeDataPartial? overrides,
+  }) {
+    final isDark = brightness == .dark;
+    late final normal = isDark
+        ? _ColorThemeDataFromPaletteDarkNormalContrast(
+            palette: palette,
+            overrides: overrides,
+          )
+        : _ColorThemeDataFromPaletteLightNormalContrast(
+            palette: palette,
+            overrides: overrides,
+          );
+    late final medium = isDark
+        ? _ColorThemeDataFromPaletteDarkMediumContrast(
+            palette: palette,
+            overrides: overrides,
+          )
+        : _ColorThemeDataFromPaletteLightMediumContrast(
+            palette: palette,
+            overrides: overrides,
+          );
+    late final high = isDark
+        ? _ColorThemeDataFromPaletteDarkHighContrast(
+            palette: palette,
+            overrides: overrides,
+          )
+        : _ColorThemeDataFromPaletteLightHighContrast(
+            palette: palette,
+            overrides: overrides,
+          );
+    return switch (contrastLevel) {
+      < 0.25 => normal,
+      < 0.75 => medium,
+      _ => high,
+    };
+    // TODO: explain why lerp can't be used here (breaks contrast ratio)
+    // return switch (contrastLevel) {
+    //   <= 0.0 => normal,
+    //   0.5 => medium,
+    //   < 0.5 => .lerp(normal, medium, contrastLevel / 0.5),
+    //   < 1.0 => .lerp(medium, high, (contrastLevel - 0.5) / 0.5),
+    //   _ => high,
+    // };
+  }
 
   @override
   Brightness get brightness;
@@ -281,7 +321,10 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
   Color get onErrorContainer;
 
   @override
-  ColorThemeData copy({
+  ColorThemeData copy() => copyWith();
+
+  @override
+  ColorThemeData copyWith({
     Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
@@ -415,7 +458,7 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
   );
 
   @override
-  ColorThemeData copyWith({
+  ColorThemeData maybeCopyWith({
     Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
@@ -537,7 +580,7 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
           onError != null ||
           errorContainer != null ||
           onErrorContainer != null
-      ? copy(
+      ? copyWith(
           brightness: brightness,
           primaryPaletteKeyColor: primaryPaletteKeyColor,
           secondaryPaletteKeyColor: secondaryPaletteKeyColor,
@@ -604,6 +647,72 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
   @override
   ColorThemeData merge(ColorThemeDataPartial? other) => other != null
       ? copyWith(
+          brightness: other.brightness,
+          primaryPaletteKeyColor: other.primaryPaletteKeyColor,
+          secondaryPaletteKeyColor: other.secondaryPaletteKeyColor,
+          tertiaryPaletteKeyColor: other.tertiaryPaletteKeyColor,
+          neutralPaletteKeyColor: other.neutralPaletteKeyColor,
+          neutralVariantPaletteKeyColor: other.neutralVariantPaletteKeyColor,
+          errorPaletteKeyColor: other.errorPaletteKeyColor,
+          background: other.background,
+          onBackground: other.onBackground,
+          surface: other.surface,
+          surfaceDim: other.surfaceDim,
+          surfaceBright: other.surfaceBright,
+          surfaceContainerLowest: other.surfaceContainerLowest,
+          surfaceContainerLow: other.surfaceContainerLow,
+          surfaceContainer: other.surfaceContainer,
+          surfaceContainerHigh: other.surfaceContainerHigh,
+          surfaceContainerHighest: other.surfaceContainerHighest,
+          onSurface: other.onSurface,
+          surfaceVariant: other.surfaceVariant,
+          onSurfaceVariant: other.onSurfaceVariant,
+          outline: other.outline,
+          outlineVariant: other.outlineVariant,
+          inverseSurface: other.inverseSurface,
+          inverseOnSurface: other.inverseOnSurface,
+          shadow: other.shadow,
+          scrim: other.scrim,
+          surfaceTint: other.surfaceTint,
+          primary: other.primary,
+          primaryDim: other.primaryDim,
+          onPrimary: other.onPrimary,
+          primaryContainer: other.primaryContainer,
+          onPrimaryContainer: other.onPrimaryContainer,
+          primaryFixed: other.primaryFixed,
+          primaryFixedDim: other.primaryFixedDim,
+          onPrimaryFixed: other.onPrimaryFixed,
+          onPrimaryFixedVariant: other.onPrimaryFixedVariant,
+          inversePrimary: other.inversePrimary,
+          secondary: other.secondary,
+          secondaryDim: other.secondaryDim,
+          onSecondary: other.onSecondary,
+          secondaryContainer: other.secondaryContainer,
+          onSecondaryContainer: other.onSecondaryContainer,
+          secondaryFixed: other.secondaryFixed,
+          secondaryFixedDim: other.secondaryFixedDim,
+          onSecondaryFixed: other.onSecondaryFixed,
+          onSecondaryFixedVariant: other.onSecondaryFixedVariant,
+          tertiary: other.tertiary,
+          tertiaryDim: other.tertiaryDim,
+          onTertiary: other.onTertiary,
+          tertiaryContainer: other.tertiaryContainer,
+          onTertiaryContainer: other.onTertiaryContainer,
+          tertiaryFixed: other.tertiaryFixed,
+          tertiaryFixedDim: other.tertiaryFixedDim,
+          onTertiaryFixed: other.onTertiaryFixed,
+          onTertiaryFixedVariant: other.onTertiaryFixedVariant,
+          error: other.error,
+          errorDim: other.errorDim,
+          onError: other.onError,
+          errorContainer: other.errorContainer,
+          onErrorContainer: other.onErrorContainer,
+        )
+      : copy();
+
+  @override
+  ColorThemeData maybeMerge(ColorThemeDataPartial? other) => other != null
+      ? maybeCopyWith(
           brightness: other.brightness,
           primaryPaletteKeyColor: other.primaryPaletteKeyColor,
           secondaryPaletteKeyColor: other.secondaryPaletteKeyColor,
@@ -875,6 +984,151 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     final r = (abgr & onlyRMask) >> 16;
     final b = abgr & onlyBMask;
     return (abgr & exceptRMask & exceptBMask) | (b << 16) | r;
+  }
+
+  static ColorThemeData lerp(ColorThemeData a, ColorThemeData b, double t) {
+    if (identical(a, b)) return a;
+    if (t == 0.0) return a;
+    if (t == 1.0) return b;
+    if (a == b) return a;
+    return .from(
+      brightness: t < 0.5 ? a.brightness : b.brightness,
+      primaryPaletteKeyColor: Color.lerp(
+        a.primaryPaletteKeyColor,
+        b.primaryPaletteKeyColor,
+        t,
+      )!,
+      secondaryPaletteKeyColor: Color.lerp(
+        a.secondaryPaletteKeyColor,
+        b.secondaryPaletteKeyColor,
+        t,
+      )!,
+      tertiaryPaletteKeyColor: Color.lerp(
+        a.tertiaryPaletteKeyColor,
+        b.tertiaryPaletteKeyColor,
+        t,
+      )!,
+      neutralPaletteKeyColor: Color.lerp(
+        a.neutralPaletteKeyColor,
+        b.neutralPaletteKeyColor,
+        t,
+      )!,
+      neutralVariantPaletteKeyColor: Color.lerp(
+        a.neutralVariantPaletteKeyColor,
+        b.neutralVariantPaletteKeyColor,
+        t,
+      )!,
+      errorPaletteKeyColor: Color.lerp(
+        a.errorPaletteKeyColor,
+        b.errorPaletteKeyColor,
+        t,
+      )!,
+      background: Color.lerp(a.background, b.background, t)!,
+      onBackground: Color.lerp(a.onBackground, b.onBackground, t)!,
+      surface: Color.lerp(a.surface, b.surface, t)!,
+      surfaceDim: Color.lerp(a.surfaceDim, b.surfaceDim, t)!,
+      surfaceBright: Color.lerp(a.surfaceBright, b.surfaceBright, t)!,
+      surfaceContainerLowest: Color.lerp(
+        a.surfaceContainerLowest,
+        b.surfaceContainerLowest,
+        t,
+      )!,
+      surfaceContainerLow: Color.lerp(
+        a.surfaceContainerLow,
+        b.surfaceContainerLow,
+        t,
+      )!,
+      surfaceContainer: Color.lerp(a.surfaceContainer, b.surfaceContainer, t)!,
+      surfaceContainerHigh: Color.lerp(
+        a.surfaceContainerHigh,
+        b.surfaceContainerHigh,
+        t,
+      )!,
+      surfaceContainerHighest: Color.lerp(
+        a.surfaceContainerHighest,
+        b.surfaceContainerHighest,
+        t,
+      )!,
+      onSurface: Color.lerp(a.onSurface, b.onSurface, t)!,
+      surfaceVariant: Color.lerp(a.surfaceVariant, b.surfaceVariant, t)!,
+      onSurfaceVariant: Color.lerp(a.onSurfaceVariant, b.onSurfaceVariant, t)!,
+      outline: Color.lerp(a.outline, b.outline, t)!,
+      outlineVariant: Color.lerp(a.outlineVariant, b.outlineVariant, t)!,
+      inverseSurface: Color.lerp(a.inverseSurface, b.inverseSurface, t)!,
+      inverseOnSurface: Color.lerp(a.inverseOnSurface, b.inverseOnSurface, t)!,
+      shadow: Color.lerp(a.shadow, b.shadow, t)!,
+      scrim: Color.lerp(a.scrim, b.scrim, t)!,
+      surfaceTint: Color.lerp(a.surfaceTint, b.surfaceTint, t)!,
+      primary: Color.lerp(a.primary, b.primary, t)!,
+      primaryDim: Color.lerp(a.primaryDim, b.primaryDim, t)!,
+      onPrimary: Color.lerp(a.onPrimary, b.onPrimary, t)!,
+      primaryContainer: Color.lerp(a.primaryContainer, b.primaryContainer, t)!,
+      onPrimaryContainer: Color.lerp(
+        a.onPrimaryContainer,
+        b.onPrimaryContainer,
+        t,
+      )!,
+      primaryFixed: Color.lerp(a.primaryFixed, b.primaryFixed, t)!,
+      primaryFixedDim: Color.lerp(a.primaryFixedDim, b.primaryFixedDim, t)!,
+      onPrimaryFixed: Color.lerp(a.onPrimaryFixed, b.onPrimaryFixed, t)!,
+      onPrimaryFixedVariant: Color.lerp(
+        a.onPrimaryFixedVariant,
+        b.onPrimaryFixedVariant,
+        t,
+      )!,
+      inversePrimary: Color.lerp(a.inversePrimary, b.inversePrimary, t)!,
+      secondary: Color.lerp(a.secondary, b.secondary, t)!,
+      secondaryDim: Color.lerp(a.secondaryDim, b.secondaryDim, t)!,
+      onSecondary: Color.lerp(a.onSecondary, b.onSecondary, t)!,
+      secondaryContainer: Color.lerp(
+        a.secondaryContainer,
+        b.secondaryContainer,
+        t,
+      )!,
+      onSecondaryContainer: Color.lerp(
+        a.onSecondaryContainer,
+        b.onSecondaryContainer,
+        t,
+      )!,
+      secondaryFixed: Color.lerp(a.secondaryFixed, b.secondaryFixed, t)!,
+      secondaryFixedDim: Color.lerp(
+        a.secondaryFixedDim,
+        b.secondaryFixedDim,
+        t,
+      )!,
+      onSecondaryFixed: Color.lerp(a.onSecondaryFixed, b.onSecondaryFixed, t)!,
+      onSecondaryFixedVariant: Color.lerp(
+        a.onSecondaryFixedVariant,
+        b.onSecondaryFixedVariant,
+        t,
+      )!,
+      tertiary: Color.lerp(a.tertiary, b.tertiary, t)!,
+      tertiaryDim: Color.lerp(a.tertiaryDim, b.tertiaryDim, t)!,
+      onTertiary: Color.lerp(a.onTertiary, b.onTertiary, t)!,
+      tertiaryContainer: Color.lerp(
+        a.tertiaryContainer,
+        b.tertiaryContainer,
+        t,
+      )!,
+      onTertiaryContainer: Color.lerp(
+        a.onTertiaryContainer,
+        b.onTertiaryContainer,
+        t,
+      )!,
+      tertiaryFixed: Color.lerp(a.tertiaryFixed, b.tertiaryFixed, t)!,
+      tertiaryFixedDim: Color.lerp(a.tertiaryFixedDim, b.tertiaryFixedDim, t)!,
+      onTertiaryFixed: Color.lerp(a.onTertiaryFixed, b.onTertiaryFixed, t)!,
+      onTertiaryFixedVariant: Color.lerp(
+        a.onTertiaryFixedVariant,
+        b.onTertiaryFixedVariant,
+        t,
+      )!,
+      error: Color.lerp(a.error, b.error, t)!,
+      errorDim: Color.lerp(a.errorDim, b.errorDim, t)!,
+      onError: Color.lerp(a.onError, b.onError, t)!,
+      errorContainer: Color.lerp(a.errorContainer, b.errorContainer, t)!,
+      onErrorContainer: Color.lerp(a.onErrorContainer, b.onErrorContainer, t)!,
+    );
   }
 }
 
@@ -1616,6 +1870,7 @@ final class _ColorThemeDataFromDynamicScheme extends ColorThemeData {
       );
 
   final _ColorThemeDataFromDynamicSchemeCache _cache;
+
   final ColorThemeDataPartial _overrides;
 
   @override
@@ -1896,6 +2151,134 @@ final class _ColorThemeDataFromDynamicScheme extends ColorThemeData {
     Color? onError,
     Color? errorContainer,
     Color? onErrorContainer,
+  }) => _ColorThemeDataFromDynamicScheme._(
+    cache: _cache,
+    overrides: _overrides.copyWith(
+      brightness: brightness,
+      primaryPaletteKeyColor: primaryPaletteKeyColor,
+      secondaryPaletteKeyColor: secondaryPaletteKeyColor,
+      tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
+      neutralPaletteKeyColor: neutralPaletteKeyColor,
+      neutralVariantPaletteKeyColor: neutralVariantPaletteKeyColor,
+      errorPaletteKeyColor: errorPaletteKeyColor,
+      background: background,
+      onBackground: onBackground,
+      surface: surface,
+      surfaceDim: surfaceDim,
+      surfaceBright: surfaceBright,
+      surfaceContainerLowest: surfaceContainerLowest,
+      surfaceContainerLow: surfaceContainerLow,
+      surfaceContainer: surfaceContainer,
+      surfaceContainerHigh: surfaceContainerHigh,
+      surfaceContainerHighest: surfaceContainerHighest,
+      onSurface: onSurface,
+      surfaceVariant: surfaceVariant,
+      onSurfaceVariant: onSurfaceVariant,
+      outline: outline,
+      outlineVariant: outlineVariant,
+      inverseSurface: inverseSurface,
+      inverseOnSurface: inverseOnSurface,
+      shadow: shadow,
+      scrim: scrim,
+      surfaceTint: surfaceTint,
+      primary: primary,
+      primaryDim: primaryDim,
+      onPrimary: onPrimary,
+      primaryContainer: primaryContainer,
+      onPrimaryContainer: onPrimaryContainer,
+      primaryFixed: primaryFixed,
+      primaryFixedDim: primaryFixedDim,
+      onPrimaryFixed: onPrimaryFixed,
+      onPrimaryFixedVariant: onPrimaryFixedVariant,
+      inversePrimary: inversePrimary,
+      secondary: secondary,
+      secondaryDim: secondaryDim,
+      onSecondary: onSecondary,
+      secondaryContainer: secondaryContainer,
+      onSecondaryContainer: onSecondaryContainer,
+      secondaryFixed: secondaryFixed,
+      secondaryFixedDim: secondaryFixedDim,
+      onSecondaryFixed: onSecondaryFixed,
+      onSecondaryFixedVariant: onSecondaryFixedVariant,
+      tertiary: tertiary,
+      tertiaryDim: tertiaryDim,
+      onTertiary: onTertiary,
+      tertiaryContainer: tertiaryContainer,
+      onTertiaryContainer: onTertiaryContainer,
+      tertiaryFixed: tertiaryFixed,
+      tertiaryFixedDim: tertiaryFixedDim,
+      onTertiaryFixed: onTertiaryFixed,
+      onTertiaryFixedVariant: onTertiaryFixedVariant,
+      error: error,
+      errorDim: errorDim,
+      onError: onError,
+      errorContainer: errorContainer,
+      onErrorContainer: onErrorContainer,
+    ),
+  );
+
+  @override
+  ColorThemeData maybeCopyWith({
+    Brightness? brightness,
+    Color? primaryPaletteKeyColor,
+    Color? secondaryPaletteKeyColor,
+    Color? tertiaryPaletteKeyColor,
+    Color? neutralPaletteKeyColor,
+    Color? neutralVariantPaletteKeyColor,
+    Color? errorPaletteKeyColor,
+    Color? background,
+    Color? onBackground,
+    Color? surface,
+    Color? surfaceDim,
+    Color? surfaceBright,
+    Color? surfaceContainerLowest,
+    Color? surfaceContainerLow,
+    Color? surfaceContainer,
+    Color? surfaceContainerHigh,
+    Color? surfaceContainerHighest,
+    Color? onSurface,
+    Color? surfaceVariant,
+    Color? onSurfaceVariant,
+    Color? outline,
+    Color? outlineVariant,
+    Color? inverseSurface,
+    Color? inverseOnSurface,
+    Color? shadow,
+    Color? scrim,
+    Color? surfaceTint,
+    Color? primary,
+    Color? primaryDim,
+    Color? onPrimary,
+    Color? primaryContainer,
+    Color? onPrimaryContainer,
+    Color? primaryFixed,
+    Color? primaryFixedDim,
+    Color? onPrimaryFixed,
+    Color? onPrimaryFixedVariant,
+    Color? inversePrimary,
+    Color? secondary,
+    Color? secondaryDim,
+    Color? onSecondary,
+    Color? secondaryContainer,
+    Color? onSecondaryContainer,
+    Color? secondaryFixed,
+    Color? secondaryFixedDim,
+    Color? onSecondaryFixed,
+    Color? onSecondaryFixedVariant,
+    Color? tertiary,
+    Color? tertiaryDim,
+    Color? onTertiary,
+    Color? tertiaryContainer,
+    Color? onTertiaryContainer,
+    Color? tertiaryFixed,
+    Color? tertiaryFixedDim,
+    Color? onTertiaryFixed,
+    Color? onTertiaryFixedVariant,
+    Color? error,
+    Color? errorDim,
+    Color? onError,
+    Color? errorContainer,
+    Color? onErrorContainer,
   }) =>
       brightness != null &&
           primaryPaletteKeyColor != null &&
@@ -2079,70 +2462,67 @@ final class _ColorThemeDataFromDynamicScheme extends ColorThemeData {
             onError != null ||
             errorContainer != null ||
             onErrorContainer != null
-      ? _ColorThemeDataFromDynamicScheme._(
-          cache: _cache,
-          overrides: _overrides.copy(
-            brightness: brightness,
-            primaryPaletteKeyColor: primaryPaletteKeyColor,
-            secondaryPaletteKeyColor: secondaryPaletteKeyColor,
-            tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
-            neutralPaletteKeyColor: neutralPaletteKeyColor,
-            neutralVariantPaletteKeyColor: neutralVariantPaletteKeyColor,
-            errorPaletteKeyColor: errorPaletteKeyColor,
-            background: background,
-            onBackground: onBackground,
-            surface: surface,
-            surfaceDim: surfaceDim,
-            surfaceBright: surfaceBright,
-            surfaceContainerLowest: surfaceContainerLowest,
-            surfaceContainerLow: surfaceContainerLow,
-            surfaceContainer: surfaceContainer,
-            surfaceContainerHigh: surfaceContainerHigh,
-            surfaceContainerHighest: surfaceContainerHighest,
-            onSurface: onSurface,
-            surfaceVariant: surfaceVariant,
-            onSurfaceVariant: onSurfaceVariant,
-            outline: outline,
-            outlineVariant: outlineVariant,
-            inverseSurface: inverseSurface,
-            inverseOnSurface: inverseOnSurface,
-            shadow: shadow,
-            scrim: scrim,
-            surfaceTint: surfaceTint,
-            primary: primary,
-            primaryDim: primaryDim,
-            onPrimary: onPrimary,
-            primaryContainer: primaryContainer,
-            onPrimaryContainer: onPrimaryContainer,
-            primaryFixed: primaryFixed,
-            primaryFixedDim: primaryFixedDim,
-            onPrimaryFixed: onPrimaryFixed,
-            onPrimaryFixedVariant: onPrimaryFixedVariant,
-            inversePrimary: inversePrimary,
-            secondary: secondary,
-            secondaryDim: secondaryDim,
-            onSecondary: onSecondary,
-            secondaryContainer: secondaryContainer,
-            onSecondaryContainer: onSecondaryContainer,
-            secondaryFixed: secondaryFixed,
-            secondaryFixedDim: secondaryFixedDim,
-            onSecondaryFixed: onSecondaryFixed,
-            onSecondaryFixedVariant: onSecondaryFixedVariant,
-            tertiary: tertiary,
-            tertiaryDim: tertiaryDim,
-            onTertiary: onTertiary,
-            tertiaryContainer: tertiaryContainer,
-            onTertiaryContainer: onTertiaryContainer,
-            tertiaryFixed: tertiaryFixed,
-            tertiaryFixedDim: tertiaryFixedDim,
-            onTertiaryFixed: onTertiaryFixed,
-            onTertiaryFixedVariant: onTertiaryFixedVariant,
-            error: error,
-            errorDim: errorDim,
-            onError: onError,
-            errorContainer: errorContainer,
-            onErrorContainer: onErrorContainer,
-          ),
+      ? copyWith(
+          brightness: brightness,
+          primaryPaletteKeyColor: primaryPaletteKeyColor,
+          secondaryPaletteKeyColor: secondaryPaletteKeyColor,
+          tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
+          neutralPaletteKeyColor: neutralPaletteKeyColor,
+          neutralVariantPaletteKeyColor: neutralVariantPaletteKeyColor,
+          errorPaletteKeyColor: errorPaletteKeyColor,
+          background: background,
+          onBackground: onBackground,
+          surface: surface,
+          surfaceDim: surfaceDim,
+          surfaceBright: surfaceBright,
+          surfaceContainerLowest: surfaceContainerLowest,
+          surfaceContainerLow: surfaceContainerLow,
+          surfaceContainer: surfaceContainer,
+          surfaceContainerHigh: surfaceContainerHigh,
+          surfaceContainerHighest: surfaceContainerHighest,
+          onSurface: onSurface,
+          surfaceVariant: surfaceVariant,
+          onSurfaceVariant: onSurfaceVariant,
+          outline: outline,
+          outlineVariant: outlineVariant,
+          inverseSurface: inverseSurface,
+          inverseOnSurface: inverseOnSurface,
+          shadow: shadow,
+          scrim: scrim,
+          surfaceTint: surfaceTint,
+          primary: primary,
+          primaryDim: primaryDim,
+          onPrimary: onPrimary,
+          primaryContainer: primaryContainer,
+          onPrimaryContainer: onPrimaryContainer,
+          primaryFixed: primaryFixed,
+          primaryFixedDim: primaryFixedDim,
+          onPrimaryFixed: onPrimaryFixed,
+          onPrimaryFixedVariant: onPrimaryFixedVariant,
+          inversePrimary: inversePrimary,
+          secondary: secondary,
+          secondaryDim: secondaryDim,
+          onSecondary: onSecondary,
+          secondaryContainer: secondaryContainer,
+          onSecondaryContainer: onSecondaryContainer,
+          secondaryFixed: secondaryFixed,
+          secondaryFixedDim: secondaryFixedDim,
+          onSecondaryFixed: onSecondaryFixed,
+          onSecondaryFixedVariant: onSecondaryFixedVariant,
+          tertiary: tertiary,
+          tertiaryDim: tertiaryDim,
+          onTertiary: onTertiary,
+          tertiaryContainer: tertiaryContainer,
+          onTertiaryContainer: onTertiaryContainer,
+          tertiaryFixed: tertiaryFixed,
+          tertiaryFixedDim: tertiaryFixedDim,
+          onTertiaryFixed: onTertiaryFixed,
+          onTertiaryFixedVariant: onTertiaryFixedVariant,
+          error: error,
+          errorDim: errorDim,
+          onError: onError,
+          errorContainer: errorContainer,
+          onErrorContainer: onErrorContainer,
         )
       : this;
 
@@ -2161,7 +2541,7 @@ final class _ColorThemeDataAsLegacy
     with Diagnosticable
     implements ColorSchemeLegacy {
   const _ColorThemeDataAsLegacy(
-    ColorThemeData colorTheme, {
+    ColorThemeData value, {
     Brightness? brightness,
     Color? primary,
     Color? onPrimary,
@@ -2212,7 +2592,7 @@ final class _ColorThemeDataAsLegacy
     Color? background,
     Color? onBackground,
     Color? surfaceVariant,
-  }) : _colorTheme = colorTheme,
+  }) : _value = value,
        _brightness = brightness,
        _primary = primary,
        _onPrimary = onPrimary,
@@ -2264,7 +2644,7 @@ final class _ColorThemeDataAsLegacy
        _onBackground = onBackground,
        _surfaceVariant = surfaceVariant;
 
-  final ColorThemeData _colorTheme;
+  final ColorThemeData _value;
 
   final Brightness? _brightness;
   final Color? _primary;
@@ -2318,174 +2698,165 @@ final class _ColorThemeDataAsLegacy
   final Color? _surfaceVariant;
 
   @override
-  Brightness get brightness => _brightness ?? _colorTheme.brightness;
+  Brightness get brightness => _brightness ?? _value.brightness;
 
   @override
-  Color get primary => _primary ?? _colorTheme.primary;
+  Color get primary => _primary ?? _value.primary;
 
   @override
-  Color get onPrimary => _onPrimary ?? _colorTheme.onPrimary;
+  Color get onPrimary => _onPrimary ?? _value.onPrimary;
 
   @override
-  Color get primaryContainer =>
-      _primaryContainer ?? _colorTheme.primaryContainer;
+  Color get primaryContainer => _primaryContainer ?? _value.primaryContainer;
 
   @override
   Color get onPrimaryContainer =>
-      _onPrimaryContainer ?? _colorTheme.onPrimaryContainer;
+      _onPrimaryContainer ?? _value.onPrimaryContainer;
 
   @override
-  Color get primaryFixed => _primaryFixed ?? _colorTheme.primaryFixed;
+  Color get primaryFixed => _primaryFixed ?? _value.primaryFixed;
 
   @override
-  Color get primaryFixedDim => _primaryFixedDim ?? _colorTheme.primaryFixedDim;
+  Color get primaryFixedDim => _primaryFixedDim ?? _value.primaryFixedDim;
 
   @override
-  Color get onPrimaryFixed => _onPrimaryFixed ?? _colorTheme.onPrimaryFixed;
+  Color get onPrimaryFixed => _onPrimaryFixed ?? _value.onPrimaryFixed;
 
   @override
   Color get onPrimaryFixedVariant =>
-      _onPrimaryFixedVariant ?? _colorTheme.onPrimaryFixedVariant;
+      _onPrimaryFixedVariant ?? _value.onPrimaryFixedVariant;
 
   @override
-  Color get secondary => _secondary ?? _colorTheme.secondary;
+  Color get secondary => _secondary ?? _value.secondary;
 
   @override
-  Color get onSecondary => _onSecondary ?? _colorTheme.onSecondary;
+  Color get onSecondary => _onSecondary ?? _value.onSecondary;
 
   @override
   Color get secondaryContainer =>
-      _secondaryContainer ?? _colorTheme.secondaryContainer;
+      _secondaryContainer ?? _value.secondaryContainer;
 
   @override
   Color get onSecondaryContainer =>
-      _onSecondaryContainer ?? _colorTheme.onSecondaryContainer;
+      _onSecondaryContainer ?? _value.onSecondaryContainer;
 
   @override
-  Color get secondaryFixed => _secondaryFixed ?? _colorTheme.secondaryFixed;
+  Color get secondaryFixed => _secondaryFixed ?? _value.secondaryFixed;
 
   @override
-  Color get secondaryFixedDim =>
-      _secondaryFixedDim ?? _colorTheme.secondaryFixedDim;
+  Color get secondaryFixedDim => _secondaryFixedDim ?? _value.secondaryFixedDim;
 
   @override
-  Color get onSecondaryFixed =>
-      _onSecondaryFixed ?? _colorTheme.onSecondaryFixed;
+  Color get onSecondaryFixed => _onSecondaryFixed ?? _value.onSecondaryFixed;
 
   @override
   Color get onSecondaryFixedVariant =>
-      _onSecondaryFixedVariant ?? _colorTheme.onSecondaryFixedVariant;
+      _onSecondaryFixedVariant ?? _value.onSecondaryFixedVariant;
 
   @override
-  Color get tertiary => _tertiary ?? _colorTheme.tertiary;
+  Color get tertiary => _tertiary ?? _value.tertiary;
 
   @override
-  Color get onTertiary => _onTertiary ?? _colorTheme.onTertiary;
+  Color get onTertiary => _onTertiary ?? _value.onTertiary;
 
   @override
-  Color get tertiaryContainer =>
-      _tertiaryContainer ?? _colorTheme.tertiaryContainer;
+  Color get tertiaryContainer => _tertiaryContainer ?? _value.tertiaryContainer;
 
   @override
   Color get onTertiaryContainer =>
-      _onTertiaryContainer ?? _colorTheme.onTertiaryContainer;
+      _onTertiaryContainer ?? _value.onTertiaryContainer;
 
   @override
-  Color get tertiaryFixed => _tertiaryFixed ?? _colorTheme.tertiaryFixed;
+  Color get tertiaryFixed => _tertiaryFixed ?? _value.tertiaryFixed;
 
   @override
-  Color get tertiaryFixedDim =>
-      _tertiaryFixedDim ?? _colorTheme.tertiaryFixedDim;
+  Color get tertiaryFixedDim => _tertiaryFixedDim ?? _value.tertiaryFixedDim;
 
   @override
-  Color get onTertiaryFixed => _onTertiaryFixed ?? _colorTheme.onTertiaryFixed;
+  Color get onTertiaryFixed => _onTertiaryFixed ?? _value.onTertiaryFixed;
 
   @override
   Color get onTertiaryFixedVariant =>
-      _onTertiaryFixedVariant ?? _colorTheme.onTertiaryFixedVariant;
+      _onTertiaryFixedVariant ?? _value.onTertiaryFixedVariant;
 
   @override
-  Color get error => _error ?? _colorTheme.error;
+  Color get error => _error ?? _value.error;
 
   @override
-  Color get onError => _onError ?? _colorTheme.onError;
+  Color get onError => _onError ?? _value.onError;
 
   @override
-  Color get errorContainer => _errorContainer ?? _colorTheme.errorContainer;
+  Color get errorContainer => _errorContainer ?? _value.errorContainer;
 
   @override
-  Color get onErrorContainer =>
-      _onErrorContainer ?? _colorTheme.onErrorContainer;
+  Color get onErrorContainer => _onErrorContainer ?? _value.onErrorContainer;
 
   @override
-  Color get surface => _surface ?? _colorTheme.surface;
+  Color get surface => _surface ?? _value.surface;
 
   @override
-  Color get onSurface => _onSurface ?? _colorTheme.onSurface;
+  Color get onSurface => _onSurface ?? _value.onSurface;
 
   @override
-  Color get surfaceDim => _surfaceDim ?? _colorTheme.surfaceDim;
+  Color get surfaceDim => _surfaceDim ?? _value.surfaceDim;
 
   @override
-  Color get surfaceBright => _surfaceBright ?? _colorTheme.surfaceBright;
+  Color get surfaceBright => _surfaceBright ?? _value.surfaceBright;
 
   @override
   Color get surfaceContainerLowest =>
-      _surfaceContainerLowest ?? _colorTheme.surfaceContainerLowest;
+      _surfaceContainerLowest ?? _value.surfaceContainerLowest;
 
   @override
   Color get surfaceContainerLow =>
-      _surfaceContainerLow ?? _colorTheme.surfaceContainerLow;
+      _surfaceContainerLow ?? _value.surfaceContainerLow;
 
   @override
-  Color get surfaceContainer =>
-      _surfaceContainer ?? _colorTheme.surfaceContainer;
+  Color get surfaceContainer => _surfaceContainer ?? _value.surfaceContainer;
 
   @override
   Color get surfaceContainerHigh =>
-      _surfaceContainerHigh ?? _colorTheme.surfaceContainerHigh;
+      _surfaceContainerHigh ?? _value.surfaceContainerHigh;
 
   @override
   Color get surfaceContainerHighest =>
-      _surfaceContainerHighest ?? _colorTheme.surfaceContainerHighest;
+      _surfaceContainerHighest ?? _value.surfaceContainerHighest;
 
   @override
-  Color get onSurfaceVariant =>
-      _onSurfaceVariant ?? _colorTheme.onSurfaceVariant;
+  Color get onSurfaceVariant => _onSurfaceVariant ?? _value.onSurfaceVariant;
 
   @override
-  Color get outline => _outline ?? _colorTheme.outline;
+  Color get outline => _outline ?? _value.outline;
 
   @override
-  Color get outlineVariant => _outlineVariant ?? _colorTheme.outlineVariant;
+  Color get outlineVariant => _outlineVariant ?? _value.outlineVariant;
 
   @override
-  Color get shadow => _shadow ?? _colorTheme.shadow;
+  Color get shadow => _shadow ?? _value.shadow;
 
   @override
-  Color get scrim => _scrim ?? _colorTheme.scrim;
+  Color get scrim => _scrim ?? _value.scrim;
 
   @override
-  Color get inverseSurface => _inverseSurface ?? _colorTheme.inverseSurface;
+  Color get inverseSurface => _inverseSurface ?? _value.inverseSurface;
 
   @override
-  Color get onInverseSurface =>
-      _onInverseSurface ?? _colorTheme.inverseOnSurface;
+  Color get onInverseSurface => _onInverseSurface ?? _value.inverseOnSurface;
 
   @override
-  Color get inversePrimary => _inversePrimary ?? _colorTheme.inversePrimary;
+  Color get inversePrimary => _inversePrimary ?? _value.inversePrimary;
 
   @override
-  Color get surfaceTint => _surfaceTint ?? _colorTheme.surfaceTint;
+  Color get surfaceTint => _surfaceTint ?? _value.surfaceTint;
 
   @override
-  Color get background => _background ?? _colorTheme.background;
+  Color get background => _background ?? _value.background;
 
   @override
-  Color get onBackground => _onBackground ?? _colorTheme.onBackground;
+  Color get onBackground => _onBackground ?? _value.onBackground;
 
   @override
-  Color get surfaceVariant => _surfaceVariant ?? _colorTheme.surfaceVariant;
+  Color get surfaceVariant => _surfaceVariant ?? _value.surfaceVariant;
 
   @override
   ColorSchemeLegacy copyWith({
@@ -2539,222 +2910,224 @@ final class _ColorThemeDataAsLegacy
     Color? background,
     Color? onBackground,
     Color? surfaceVariant,
-  }) {
-    if (brightness == null &&
-        primary == null &&
-        onPrimary == null &&
-        primaryContainer == null &&
-        onPrimaryContainer == null &&
-        primaryFixed == null &&
-        primaryFixedDim == null &&
-        onPrimaryFixed == null &&
-        onPrimaryFixedVariant == null &&
-        secondary == null &&
-        onSecondary == null &&
-        secondaryContainer == null &&
-        onSecondaryContainer == null &&
-        secondaryFixed == null &&
-        secondaryFixedDim == null &&
-        onSecondaryFixed == null &&
-        onSecondaryFixedVariant == null &&
-        tertiary == null &&
-        onTertiary == null &&
-        tertiaryContainer == null &&
-        onTertiaryContainer == null &&
-        tertiaryFixed == null &&
-        tertiaryFixedDim == null &&
-        onTertiaryFixed == null &&
-        onTertiaryFixedVariant == null &&
-        error == null &&
-        onError == null &&
-        errorContainer == null &&
-        onErrorContainer == null &&
-        surface == null &&
-        onSurface == null &&
-        surfaceDim == null &&
-        surfaceBright == null &&
-        surfaceContainerLowest == null &&
-        surfaceContainerLow == null &&
-        surfaceContainer == null &&
-        surfaceContainerHigh == null &&
-        surfaceContainerHighest == null &&
-        onSurfaceVariant == null &&
-        outline == null &&
-        outlineVariant == null &&
-        shadow == null &&
-        scrim == null &&
-        inverseSurface == null &&
-        onInverseSurface == null &&
-        inversePrimary == null &&
-        surfaceTint == null &&
-        background == null &&
-        onBackground == null &&
-        surfaceVariant == null) {
-      return this;
-    }
-    if (brightness != null &&
-        primary != null &&
-        onPrimary != null &&
-        primaryContainer != null &&
-        onPrimaryContainer != null &&
-        primaryFixed != null &&
-        primaryFixedDim != null &&
-        onPrimaryFixed != null &&
-        onPrimaryFixedVariant != null &&
-        secondary != null &&
-        onSecondary != null &&
-        secondaryContainer != null &&
-        onSecondaryContainer != null &&
-        secondaryFixed != null &&
-        secondaryFixedDim != null &&
-        onSecondaryFixed != null &&
-        onSecondaryFixedVariant != null &&
-        tertiary != null &&
-        onTertiary != null &&
-        tertiaryContainer != null &&
-        onTertiaryContainer != null &&
-        tertiaryFixed != null &&
-        tertiaryFixedDim != null &&
-        onTertiaryFixed != null &&
-        onTertiaryFixedVariant != null &&
-        error != null &&
-        onError != null &&
-        errorContainer != null &&
-        onErrorContainer != null &&
-        surface != null &&
-        onSurface != null &&
-        surfaceDim != null &&
-        surfaceBright != null &&
-        surfaceContainerLowest != null &&
-        surfaceContainerLow != null &&
-        surfaceContainer != null &&
-        surfaceContainerHigh != null &&
-        surfaceContainerHighest != null &&
-        onSurfaceVariant != null &&
-        outline != null &&
-        outlineVariant != null &&
-        shadow != null &&
-        scrim != null &&
-        inverseSurface != null &&
-        onInverseSurface != null &&
-        inversePrimary != null &&
-        surfaceTint != null &&
-        background != null &&
-        onBackground != null &&
-        surfaceVariant != null) {
-      return ColorSchemeLegacy(
-        brightness: brightness,
-        primary: primary,
-        onPrimary: onPrimary,
-        primaryContainer: primaryContainer,
-        onPrimaryContainer: onPrimaryContainer,
-        primaryFixed: primaryFixed,
-        primaryFixedDim: primaryFixedDim,
-        onPrimaryFixed: onPrimaryFixed,
-        onPrimaryFixedVariant: onPrimaryFixedVariant,
-        secondary: secondary,
-        onSecondary: onSecondary,
-        secondaryContainer: secondaryContainer,
-        onSecondaryContainer: onSecondaryContainer,
-        secondaryFixed: secondaryFixed,
-        secondaryFixedDim: secondaryFixedDim,
-        onSecondaryFixed: onSecondaryFixed,
-        onSecondaryFixedVariant: onSecondaryFixedVariant,
-        tertiary: tertiary,
-        onTertiary: onTertiary,
-        tertiaryContainer: tertiaryContainer,
-        onTertiaryContainer: onTertiaryContainer,
-        tertiaryFixed: tertiaryFixed,
-        tertiaryFixedDim: tertiaryFixedDim,
-        onTertiaryFixed: onTertiaryFixed,
-        onTertiaryFixedVariant: onTertiaryFixedVariant,
-        error: error,
-        onError: onError,
-        errorContainer: errorContainer,
-        onErrorContainer: onErrorContainer,
-        surface: surface,
-        onSurface: onSurface,
-        surfaceDim: surfaceDim,
-        surfaceBright: surfaceBright,
-        surfaceContainerLowest: surfaceContainerLowest,
-        surfaceContainerLow: surfaceContainerLow,
-        surfaceContainer: surfaceContainer,
-        surfaceContainerHigh: surfaceContainerHigh,
-        surfaceContainerHighest: surfaceContainerHighest,
-        onSurfaceVariant: onSurfaceVariant,
-        outline: outline,
-        outlineVariant: outlineVariant,
-        shadow: shadow,
-        scrim: scrim,
-        inverseSurface: inverseSurface,
-        onInverseSurface: onInverseSurface,
-        inversePrimary: inversePrimary,
-        surfaceTint: surfaceTint,
-        background: background,
-        onBackground: onBackground,
-        surfaceVariant: surfaceVariant,
-      );
-    }
-    return _ColorThemeDataAsLegacy(
-      _colorTheme,
-      brightness: brightness,
-      primary: primary,
-      onPrimary: onPrimary,
-      primaryContainer: primaryContainer,
-      onPrimaryContainer: onPrimaryContainer,
-      primaryFixed: primaryFixed,
-      primaryFixedDim: primaryFixedDim,
-      onPrimaryFixed: onPrimaryFixed,
-      onPrimaryFixedVariant: onPrimaryFixedVariant,
-      secondary: secondary,
-      onSecondary: onSecondary,
-      secondaryContainer: secondaryContainer,
-      onSecondaryContainer: onSecondaryContainer,
-      secondaryFixed: secondaryFixed,
-      secondaryFixedDim: secondaryFixedDim,
-      onSecondaryFixed: onSecondaryFixed,
-      onSecondaryFixedVariant: onSecondaryFixedVariant,
-      tertiary: tertiary,
-      onTertiary: onTertiary,
-      tertiaryContainer: tertiaryContainer,
-      onTertiaryContainer: onTertiaryContainer,
-      tertiaryFixed: tertiaryFixed,
-      tertiaryFixedDim: tertiaryFixedDim,
-      onTertiaryFixed: onTertiaryFixed,
-      onTertiaryFixedVariant: onTertiaryFixedVariant,
-      error: error,
-      onError: onError,
-      errorContainer: errorContainer,
-      onErrorContainer: onErrorContainer,
-      surface: surface,
-      onSurface: onSurface,
-      surfaceDim: surfaceDim,
-      surfaceBright: surfaceBright,
-      surfaceContainerLowest: surfaceContainerLowest,
-      surfaceContainerLow: surfaceContainerLow,
-      surfaceContainer: surfaceContainer,
-      surfaceContainerHigh: surfaceContainerHigh,
-      surfaceContainerHighest: surfaceContainerHighest,
-      onSurfaceVariant: onSurfaceVariant,
-      outline: outline,
-      outlineVariant: outlineVariant,
-      shadow: shadow,
-      scrim: scrim,
-      inverseSurface: inverseSurface,
-      onInverseSurface: onInverseSurface,
-      inversePrimary: inversePrimary,
-      surfaceTint: surfaceTint,
-      background: background,
-      onBackground: onBackground,
-      surfaceVariant: surfaceVariant,
-    );
-  }
+  }) =>
+      brightness != null &&
+          primary != null &&
+          onPrimary != null &&
+          primaryContainer != null &&
+          onPrimaryContainer != null &&
+          primaryFixed != null &&
+          primaryFixedDim != null &&
+          onPrimaryFixed != null &&
+          onPrimaryFixedVariant != null &&
+          secondary != null &&
+          onSecondary != null &&
+          secondaryContainer != null &&
+          onSecondaryContainer != null &&
+          secondaryFixed != null &&
+          secondaryFixedDim != null &&
+          onSecondaryFixed != null &&
+          onSecondaryFixedVariant != null &&
+          tertiary != null &&
+          onTertiary != null &&
+          tertiaryContainer != null &&
+          onTertiaryContainer != null &&
+          tertiaryFixed != null &&
+          tertiaryFixedDim != null &&
+          onTertiaryFixed != null &&
+          onTertiaryFixedVariant != null &&
+          error != null &&
+          onError != null &&
+          errorContainer != null &&
+          onErrorContainer != null &&
+          surface != null &&
+          onSurface != null &&
+          surfaceDim != null &&
+          surfaceBright != null &&
+          surfaceContainerLowest != null &&
+          surfaceContainerLow != null &&
+          surfaceContainer != null &&
+          surfaceContainerHigh != null &&
+          surfaceContainerHighest != null &&
+          onSurfaceVariant != null &&
+          outline != null &&
+          outlineVariant != null &&
+          shadow != null &&
+          scrim != null &&
+          inverseSurface != null &&
+          onInverseSurface != null &&
+          inversePrimary != null &&
+          surfaceTint != null &&
+          background != null &&
+          onBackground != null &&
+          surfaceVariant != null
+      ? .new(
+          brightness: brightness,
+          primary: primary,
+          onPrimary: onPrimary,
+          primaryContainer: primaryContainer,
+          onPrimaryContainer: onPrimaryContainer,
+          primaryFixed: primaryFixed,
+          primaryFixedDim: primaryFixedDim,
+          onPrimaryFixed: onPrimaryFixed,
+          onPrimaryFixedVariant: onPrimaryFixedVariant,
+          secondary: secondary,
+          onSecondary: onSecondary,
+          secondaryContainer: secondaryContainer,
+          onSecondaryContainer: onSecondaryContainer,
+          secondaryFixed: secondaryFixed,
+          secondaryFixedDim: secondaryFixedDim,
+          onSecondaryFixed: onSecondaryFixed,
+          onSecondaryFixedVariant: onSecondaryFixedVariant,
+          tertiary: tertiary,
+          onTertiary: onTertiary,
+          tertiaryContainer: tertiaryContainer,
+          onTertiaryContainer: onTertiaryContainer,
+          tertiaryFixed: tertiaryFixed,
+          tertiaryFixedDim: tertiaryFixedDim,
+          onTertiaryFixed: onTertiaryFixed,
+          onTertiaryFixedVariant: onTertiaryFixedVariant,
+          error: error,
+          onError: onError,
+          errorContainer: errorContainer,
+          onErrorContainer: onErrorContainer,
+          surface: surface,
+          onSurface: onSurface,
+          surfaceDim: surfaceDim,
+          surfaceBright: surfaceBright,
+          surfaceContainerLowest: surfaceContainerLowest,
+          surfaceContainerLow: surfaceContainerLow,
+          surfaceContainer: surfaceContainer,
+          surfaceContainerHigh: surfaceContainerHigh,
+          surfaceContainerHighest: surfaceContainerHighest,
+          onSurfaceVariant: onSurfaceVariant,
+          outline: outline,
+          outlineVariant: outlineVariant,
+          shadow: shadow,
+          scrim: scrim,
+          inverseSurface: inverseSurface,
+          onInverseSurface: onInverseSurface,
+          inversePrimary: inversePrimary,
+          surfaceTint: surfaceTint,
+          background: background,
+          onBackground: onBackground,
+          surfaceVariant: surfaceVariant,
+        )
+      : brightness != null ||
+            primary != null ||
+            onPrimary != null ||
+            primaryContainer != null ||
+            onPrimaryContainer != null ||
+            primaryFixed != null ||
+            primaryFixedDim != null ||
+            onPrimaryFixed != null ||
+            onPrimaryFixedVariant != null ||
+            secondary != null ||
+            onSecondary != null ||
+            secondaryContainer != null ||
+            onSecondaryContainer != null ||
+            secondaryFixed != null ||
+            secondaryFixedDim != null ||
+            onSecondaryFixed != null ||
+            onSecondaryFixedVariant != null ||
+            tertiary != null ||
+            onTertiary != null ||
+            tertiaryContainer != null ||
+            onTertiaryContainer != null ||
+            tertiaryFixed != null ||
+            tertiaryFixedDim != null ||
+            onTertiaryFixed != null ||
+            onTertiaryFixedVariant != null ||
+            error != null ||
+            onError != null ||
+            errorContainer != null ||
+            onErrorContainer != null ||
+            surface != null ||
+            onSurface != null ||
+            surfaceDim != null ||
+            surfaceBright != null ||
+            surfaceContainerLowest != null ||
+            surfaceContainerLow != null ||
+            surfaceContainer != null ||
+            surfaceContainerHigh != null ||
+            surfaceContainerHighest != null ||
+            onSurfaceVariant != null ||
+            outline != null ||
+            outlineVariant != null ||
+            shadow != null ||
+            scrim != null ||
+            inverseSurface != null ||
+            onInverseSurface != null ||
+            inversePrimary != null ||
+            surfaceTint != null ||
+            background != null ||
+            onBackground != null ||
+            surfaceVariant != null
+      ? _ColorThemeDataAsLegacy(
+          _value,
+          brightness: brightness ?? _brightness,
+          primary: primary ?? _primary,
+          onPrimary: onPrimary ?? _onPrimary,
+          primaryContainer: primaryContainer ?? _primaryContainer,
+          onPrimaryContainer: onPrimaryContainer ?? _onPrimaryContainer,
+          primaryFixed: primaryFixed ?? _primaryFixed,
+          primaryFixedDim: primaryFixedDim ?? _primaryFixedDim,
+          onPrimaryFixed: onPrimaryFixed ?? _onPrimaryFixed,
+          onPrimaryFixedVariant:
+              onPrimaryFixedVariant ?? _onPrimaryFixedVariant,
+          secondary: secondary ?? _secondary,
+          onSecondary: onSecondary ?? _onSecondary,
+          secondaryContainer: secondaryContainer ?? _secondaryContainer,
+          onSecondaryContainer: onSecondaryContainer ?? _onSecondaryContainer,
+          secondaryFixed: secondaryFixed ?? _secondaryFixed,
+          secondaryFixedDim: secondaryFixedDim ?? _secondaryFixedDim,
+          onSecondaryFixed: onSecondaryFixed ?? _onSecondaryFixed,
+          onSecondaryFixedVariant:
+              onSecondaryFixedVariant ?? _onSecondaryFixedVariant,
+          tertiary: tertiary ?? _tertiary,
+          onTertiary: onTertiary ?? _onTertiary,
+          tertiaryContainer: tertiaryContainer ?? _tertiaryContainer,
+          onTertiaryContainer: onTertiaryContainer ?? _onTertiaryContainer,
+          tertiaryFixed: tertiaryFixed ?? _tertiaryFixed,
+          tertiaryFixedDim: tertiaryFixedDim ?? _tertiaryFixedDim,
+          onTertiaryFixed: onTertiaryFixed ?? _onTertiaryFixed,
+          onTertiaryFixedVariant:
+              onTertiaryFixedVariant ?? _onTertiaryFixedVariant,
+          error: error ?? _error,
+          onError: onError ?? _onError,
+          errorContainer: errorContainer ?? _errorContainer,
+          onErrorContainer: onErrorContainer ?? _onErrorContainer,
+          surface: surface ?? _surface,
+          onSurface: onSurface ?? _onSurface,
+          surfaceDim: surfaceDim ?? _surfaceDim,
+          surfaceBright: surfaceBright ?? _surfaceBright,
+          surfaceContainerLowest:
+              surfaceContainerLowest ?? _surfaceContainerLowest,
+          surfaceContainerLow: surfaceContainerLow ?? _surfaceContainerLow,
+          surfaceContainer: surfaceContainer ?? _surfaceContainer,
+          surfaceContainerHigh: surfaceContainerHigh ?? _surfaceContainerHigh,
+          surfaceContainerHighest:
+              surfaceContainerHighest ?? _surfaceContainerHighest,
+          onSurfaceVariant: onSurfaceVariant ?? _onSurfaceVariant,
+          outline: outline ?? _outline,
+          outlineVariant: outlineVariant ?? _outlineVariant,
+          shadow: shadow ?? _shadow,
+          scrim: scrim ?? _scrim,
+          inverseSurface: inverseSurface ?? _inverseSurface,
+          onInverseSurface: onInverseSurface ?? _onInverseSurface,
+          inversePrimary: inversePrimary ?? _inversePrimary,
+          surfaceTint: surfaceTint ?? _surfaceTint,
+          background: background ?? _background,
+          onBackground: onBackground ?? _onBackground,
+          surfaceVariant: surfaceVariant ?? _surfaceVariant,
+        )
+      : this;
 
   @override
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
-      ..add(DiagnosticsProperty<ColorThemeData>("color theme", _colorTheme))
+      ..add(DiagnosticsProperty<ColorThemeData>("color theme", _value))
       ..add(
         EnumProperty<Brightness>("brightness", _brightness, defaultValue: null),
       )
@@ -2951,7 +3324,7 @@ final class _ColorThemeDataAsLegacy
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _ColorThemeDataAsLegacy &&
-          _colorTheme == other._colorTheme &&
+          _value == other._value &&
           _brightness == other._brightness &&
           _primary == other._primary &&
           _onPrimary == other._onPrimary &&
@@ -3005,7 +3378,7 @@ final class _ColorThemeDataAsLegacy
 
   @override
   int get hashCode => Object.hash(
-    _colorTheme,
+    _value,
     _brightness,
     _primary,
     _onPrimary,

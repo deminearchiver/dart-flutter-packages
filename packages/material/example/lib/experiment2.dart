@@ -105,20 +105,20 @@ class _Experiment2ViewState extends State<Experiment2View> {
                         child: SizedBox(
                           width: maxWidth,
                           height: maxHeight,
-                          child: Material(
+                          child: Surface(
                             borderOnForeground: false,
-                            shape: CornersBorder.rounded(
-                              corners: .all(shapeTheme.cornerLarge),
+                            shape: shapeTheme.applyCorner(
+                              corner: shapeTheme.cornerLarge,
                             ),
                             color: colorTheme.surfaceContainerLowest,
                             child: Align.center(
                               child: SizedBox(
                                 width: width,
                                 height: height,
-                                child: Material(
+                                child: Surface(
                                   clipBehavior: .antiAlias,
                                   borderOnForeground: true,
-                                  shape: CornersBorder.rounded(
+                                  shape: shapeTheme.applyCorners(
                                     corners: .only(
                                       topLeft:
                                           (shapeTheme.cornerExtraExtraLarge *
@@ -198,7 +198,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                           Flexible.tight(
                             child: ListItemContainer(
                               containerShape: .all(
-                                CornersBorder.rounded(
+                                shapeTheme.applyCorners(
                                   corners: .directional(
                                     topStart: outerCorner,
                                     topEnd: innerCorner,
@@ -230,7 +230,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                           Flexible.tight(
                             child: ListItemContainer(
                               containerShape: .all(
-                                CornersBorder.rounded(
+                                shapeTheme.applyCorners(
                                   corners: .directional(
                                     topStart: innerCorner,
                                     topEnd: outerCorner,
@@ -264,7 +264,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                     const SizedBox(height: 2.0),
                     ListItemContainer(
                       containerShape: .all(
-                        CornersBorder.rounded(corners: .all(innerCorner)),
+                        shapeTheme.applyCorner(corner: innerCorner),
                       ),
                       child: Flex.vertical(
                         children: [
@@ -337,7 +337,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                     const SizedBox(height: 2.0),
                     ListItemContainer(
                       containerShape: .all(
-                        CornersBorder.rounded(
+                        shapeTheme.applyCorners(
                           corners: .vertical(
                             top: innerCorner,
                             bottom: outerCorner,

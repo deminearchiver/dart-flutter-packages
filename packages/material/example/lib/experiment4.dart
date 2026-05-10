@@ -183,10 +183,10 @@ class _Experiment4ViewState extends State<Experiment4View>
                   child: SizedBox(
                     width: 100 + sizeBonus,
                     height: 100 + sizeBonus * 0.5,
-                    child: Material(
+                    child: Surface(
                       clipBehavior: .antiAlias,
-                      shape: CornersBorder.rounded(
-                        corners: .all(shapeTheme.cornerExtraLarge),
+                      shape: shapeTheme.applyCorner(
+                        corner: shapeTheme.cornerExtraLarge,
                       ),
                       color: colorTheme.surfaceContainerLowest,
                       child: Align.center(
@@ -252,8 +252,9 @@ class _Route extends PopupRoute<void> {
       );
     }
     final colorTheme = ColorTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
-    return Material.raw(
+    return Surface.raw(
       child: Stack(
         fit: .expand,
         children: [
@@ -262,8 +263,8 @@ class _Route extends PopupRoute<void> {
               layoutLink: link,
               animation: _curvedAnimation,
               child: IgnorePointer(
-                child: Material(
-                  shape: CornersBorder.rounded(
+                child: Surface(
+                  shape: shapeTheme.applyCorners(
                     corners: Corners.all(
                       Corner.lerp(
                         const .fixed(28.0),

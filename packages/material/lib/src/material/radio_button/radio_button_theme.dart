@@ -42,7 +42,7 @@ abstract class RadioButtonThemeDataPartial with Diagnosticable {
 
   RadioButtonStateProperty<Color?>? get iconDotColor;
 
-  RadioButtonThemeDataPartial copyWith({
+  RadioButtonThemeDataPartial maybeCopyWith({
     covariant RadioButtonStateProperty<Size?>? stateLayerSize,
     covariant RadioButtonStateProperty<ShapeBorder?>? stateLayerShape,
     covariant RadioButtonStateProperty<Color?>? stateLayerColor,
@@ -72,7 +72,7 @@ abstract class RadioButtonThemeDataPartial with Diagnosticable {
         )
       : this;
 
-  RadioButtonThemeDataPartial mergeWith({
+  RadioButtonThemeDataPartial maybeMergeWith({
     RadioButtonStateProperty<Size?>? stateLayerSize,
     RadioButtonStateProperty<ShapeBorder?>? stateLayerShape,
     RadioButtonStateProperty<Color?>? stateLayerColor,
@@ -119,9 +119,9 @@ abstract class RadioButtonThemeDataPartial with Diagnosticable {
         )
       : this;
 
-  RadioButtonThemeDataPartial merge(RadioButtonThemeDataPartial? other) =>
+  RadioButtonThemeDataPartial maybeMerge(RadioButtonThemeDataPartial? other) =>
       other != null
-      ? mergeWith(
+      ? maybeMergeWith(
           stateLayerSize: other.stateLayerSize,
           stateLayerShape: other.stateLayerShape,
           stateLayerColor: other.stateLayerColor,
@@ -132,36 +132,9 @@ abstract class RadioButtonThemeDataPartial with Diagnosticable {
           iconDotColor: other.iconDotColor,
         )
       : this;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is RadioButtonThemeDataPartial &&
-          stateLayerSize == other.stateLayerSize &&
-          stateLayerShape == other.stateLayerShape &&
-          stateLayerColor == other.stateLayerColor &&
-          stateLayerOpacity == other.stateLayerOpacity &&
-          iconSize == other.iconSize &&
-          iconBackgroundColor == other.iconBackgroundColor &&
-          iconOutlineColor == other.iconOutlineColor &&
-          iconDotColor == other.iconDotColor;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    stateLayerSize,
-    stateLayerShape,
-    stateLayerColor,
-    stateLayerOpacity,
-    iconSize,
-    iconBackgroundColor,
-    iconOutlineColor,
-    iconDotColor,
-  );
 }
 
-class _RadioButtonThemeDataPartial extends RadioButtonThemeDataPartial {
+final class _RadioButtonThemeDataPartial extends RadioButtonThemeDataPartial {
   const _RadioButtonThemeDataPartial({
     this.stateLayerSize,
     this.stateLayerShape,
@@ -196,6 +169,31 @@ class _RadioButtonThemeDataPartial extends RadioButtonThemeDataPartial {
 
   @override
   final RadioButtonStateProperty<Color?>? iconDotColor;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _RadioButtonThemeDataPartial &&
+          stateLayerSize == other.stateLayerSize &&
+          stateLayerShape == other.stateLayerShape &&
+          stateLayerColor == other.stateLayerColor &&
+          stateLayerOpacity == other.stateLayerOpacity &&
+          iconSize == other.iconSize &&
+          iconBackgroundColor == other.iconBackgroundColor &&
+          iconOutlineColor == other.iconOutlineColor &&
+          iconDotColor == other.iconDotColor;
+
+  @override
+  int get hashCode => Object.hash(
+    stateLayerSize,
+    stateLayerShape,
+    stateLayerColor,
+    stateLayerOpacity,
+    iconSize,
+    iconBackgroundColor,
+    iconOutlineColor,
+    iconDotColor,
+  );
 }
 
 abstract class RadioButtonThemeData extends RadioButtonThemeDataPartial {
@@ -257,7 +255,7 @@ abstract class RadioButtonThemeData extends RadioButtonThemeDataPartial {
   RadioButtonStateProperty<Color> get iconDotColor;
 
   @override
-  RadioButtonThemeData copyWith({
+  RadioButtonThemeData maybeCopyWith({
     covariant RadioButtonStateProperty<Size>? stateLayerSize,
     covariant RadioButtonStateProperty<ShapeBorder>? stateLayerShape,
     covariant RadioButtonStateProperty<Color>? stateLayerColor,
@@ -288,7 +286,7 @@ abstract class RadioButtonThemeData extends RadioButtonThemeDataPartial {
       : this;
 
   @override
-  RadioButtonThemeData mergeWith({
+  RadioButtonThemeData maybeMergeWith({
     RadioButtonStateProperty<Size?>? stateLayerSize,
     RadioButtonStateProperty<ShapeBorder?>? stateLayerShape,
     RadioButtonStateProperty<Color?>? stateLayerColor,
@@ -333,9 +331,9 @@ abstract class RadioButtonThemeData extends RadioButtonThemeDataPartial {
       : this;
 
   @override
-  RadioButtonThemeData merge(RadioButtonThemeDataPartial? other) =>
+  RadioButtonThemeData maybeMerge(RadioButtonThemeDataPartial? other) =>
       other != null
-      ? mergeWith(
+      ? maybeMergeWith(
           stateLayerSize: other.stateLayerSize,
           stateLayerShape: other.stateLayerShape,
           stateLayerColor: other.stateLayerColor,
@@ -346,36 +344,9 @@ abstract class RadioButtonThemeData extends RadioButtonThemeDataPartial {
           iconDotColor: other.iconDotColor,
         )
       : this;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is RadioButtonThemeData &&
-          stateLayerSize == other.stateLayerSize &&
-          stateLayerShape == other.stateLayerShape &&
-          stateLayerColor == other.stateLayerColor &&
-          stateLayerOpacity == other.stateLayerOpacity &&
-          iconSize == other.iconSize &&
-          iconBackgroundColor == other.iconBackgroundColor &&
-          iconOutlineColor == other.iconOutlineColor &&
-          iconDotColor == other.iconDotColor;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    stateLayerSize,
-    stateLayerShape,
-    stateLayerColor,
-    stateLayerOpacity,
-    iconSize,
-    iconBackgroundColor,
-    iconOutlineColor,
-    iconDotColor,
-  );
 }
 
-class _RadioButtonThemeData extends RadioButtonThemeData {
+final class _RadioButtonThemeData extends RadioButtonThemeData {
   const _RadioButtonThemeData({
     required this.stateLayerSize,
     required this.stateLayerShape,
@@ -410,9 +381,34 @@ class _RadioButtonThemeData extends RadioButtonThemeData {
 
   @override
   final RadioButtonStateProperty<Color> iconDotColor;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _RadioButtonThemeData &&
+          stateLayerSize == other.stateLayerSize &&
+          stateLayerShape == other.stateLayerShape &&
+          stateLayerColor == other.stateLayerColor &&
+          stateLayerOpacity == other.stateLayerOpacity &&
+          iconSize == other.iconSize &&
+          iconBackgroundColor == other.iconBackgroundColor &&
+          iconOutlineColor == other.iconOutlineColor &&
+          iconDotColor == other.iconDotColor;
+
+  @override
+  int get hashCode => Object.hash(
+    stateLayerSize,
+    stateLayerShape,
+    stateLayerColor,
+    stateLayerOpacity,
+    iconSize,
+    iconBackgroundColor,
+    iconOutlineColor,
+    iconDotColor,
+  );
 }
 
-class _RadioButtonThemeDataDefaults extends RadioButtonThemeData {
+final class _RadioButtonThemeDataDefaults extends RadioButtonThemeData {
   const _RadioButtonThemeDataDefaults({
     required ColorThemeData colorTheme,
     required ShapeThemeData shapeTheme,
@@ -459,7 +455,7 @@ class _RadioButtonThemeDataDefaults extends RadioButtonThemeData {
   RadioButtonStateProperty<ShapeBorder> get stateLayerShape => .resolveWith(
     (states) =>
         _stateLayerShape?.resolve(states) ??
-        CornersBorder.rounded(corners: .all(_shapeTheme.cornerFull)),
+        _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
   );
 
   @override
@@ -533,7 +529,7 @@ class _RadioButtonThemeDataDefaults extends RadioButtonThemeData {
   );
 
   @override
-  RadioButtonThemeData copyWith({
+  RadioButtonThemeData maybeCopyWith({
     covariant RadioButtonStateProperty<Size>? stateLayerSize,
     covariant RadioButtonStateProperty<ShapeBorder>? stateLayerShape,
     covariant RadioButtonStateProperty<Color>? stateLayerColor,
@@ -576,7 +572,7 @@ class _RadioButtonThemeDataDefaults extends RadioButtonThemeData {
         );
 
   @override
-  RadioButtonThemeData mergeWith({
+  RadioButtonThemeData maybeMergeWith({
     RadioButtonStateProperty<Size?>? stateLayerSize,
     RadioButtonStateProperty<ShapeBorder?>? stateLayerShape,
     RadioButtonStateProperty<Color?>? stateLayerColor,
@@ -613,9 +609,9 @@ class _RadioButtonThemeDataDefaults extends RadioButtonThemeData {
   );
 
   @override
-  RadioButtonThemeData merge(RadioButtonThemeDataPartial? other) =>
+  RadioButtonThemeData maybeMerge(RadioButtonThemeDataPartial? other) =>
       other != null
-      ? mergeWith(
+      ? maybeMergeWith(
           stateLayerSize: other.stateLayerSize,
           stateLayerShape: other.stateLayerShape,
           stateLayerColor: other.stateLayerColor,
@@ -630,8 +626,7 @@ class _RadioButtonThemeDataDefaults extends RadioButtonThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _RadioButtonThemeDataDefaults &&
+      other is _RadioButtonThemeDataDefaults &&
           _colorTheme == other._colorTheme &&
           _shapeTheme == other._shapeTheme &&
           _stateTheme == other._stateTheme &&
@@ -646,7 +641,6 @@ class _RadioButtonThemeDataDefaults extends RadioButtonThemeData {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
     _colorTheme,
     _shapeTheme,
     _stateTheme,
@@ -674,7 +668,7 @@ class _RadioButtonThemeResolver
   RadioButtonThemeDataPartial combine(
     RadioButtonThemeDataPartial a,
     RadioButtonThemeDataPartial b,
-  ) => a.merge(b);
+  ) => a.maybeMerge(b);
 }
 
 abstract class RadioButtonTheme extends StatelessWidget implements ProxyWidget {

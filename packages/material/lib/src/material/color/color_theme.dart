@@ -16,9 +16,6 @@ import 'package:material/material_color_utilities.dart'
 
 import 'package:material/src/material/flutter.dart';
 
-import 'package:flutter/cupertino.dart'
-    show CupertinoColors, CupertinoDynamicColor;
-
 part 'color_theme_source_color.dart';
 part 'color_theme_data_partial.dart';
 part 'color_theme_data.dart';
@@ -46,7 +43,6 @@ extension DynamicSchemeVariantExtension on DynamicSchemeVariant {
 }
 
 extension DynamicSchemeVariantLegacyExtension on flutter.DynamicSchemeVariant {
-  // TODO: decide on a name for this method
   DynamicSchemeVariant get asModern => switch (this) {
     .monochrome => .monochrome,
     .neutral => .neutral,
@@ -60,85 +56,46 @@ extension DynamicSchemeVariantLegacyExtension on flutter.DynamicSchemeVariant {
   };
 }
 
-// class ColorTheme extends InheritedTheme {
-//   const ColorTheme({super.key, required this.data, required super.child});
-
-//   final ColorThemeData data;
-
-//   @override
-//   bool updateShouldNotify(ColorTheme oldWidget) => data != oldWidget.data;
-
-//   @override
-//   Widget wrap(BuildContext context, Widget child) =>
-//       ColorTheme(data: data, child: child);
-
-//   @override
-//   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-//     super.debugFillProperties(properties);
-//     properties.add(DiagnosticsProperty<ColorThemeData>("data", data));
-//   }
-
-//   static Widget merge({
-//     Key? key,
-//     required ColorThemeData data,
-//     required Widget child,
-//   }) => Builder(
-//     builder: (context) =>
-//         ColorTheme(key: key, data: of(context).merge(data), child: child),
-//   );
-
-//   static ColorThemeData? maybeOf(BuildContext context) =>
-//       context.dependOnInheritedWidgetOfExactType<ColorTheme>()?.data;
-
-//   static ColorThemeData of(BuildContext context) =>
-//       maybeOf(context) ??
-// .fromPalette(
-//   palette: BaselinePaletteTheme.of(context),
-//   brightness:
-//       Theme.maybeBrightnessOf(context) ??
-//       MediaQuery.maybePlatformBrightnessOf(context) ??
-//       .light,
-// );
-// }
-
-typedef ColorThemeResolver = ThemeResolver<ColorThemeDataPartial>;
-
-typedef ColorThemeResolverCallback =
-    ThemeResolverCallback<ColorThemeDataPartial>;
-
-class _ColorThemeResolver
-    extends CombiningThemeResolver<ColorThemeDataPartial> {
-  const _ColorThemeResolver(super.a, super.b);
-
-  @override
-  ColorThemeDataPartial combine(
-    ColorThemeDataPartial a,
-    ColorThemeDataPartial b,
-  ) => a.merge(b);
-}
-
 abstract class ColorTheme extends StatelessWidget implements ProxyWidget {
   const ColorTheme._({super.key, required this.child});
 
-  const factory ColorTheme.withResolver({
+  const factory ColorTheme.mergeWithResolver({
     Key? key,
-    required ColorThemeResolver resolver,
+    required ThemeResolver<ColorThemeDataPartial> resolver,
     required Widget child,
-  }) = _ColorThemeWithResolver;
+  }) = _ColorThemeWithResolver<ColorThemeDataPartial>;
 
-  const factory ColorTheme.withCallback({
+  const factory ColorTheme.mergeWithCallback({
     Key? key,
-    required ColorThemeResolverCallback callback,
+    required ThemeResolverCallback<ColorThemeDataPartial> callback,
     required Widget child,
-  }) = _ColorThemeWithCallback;
+  }) = _ColorThemeWithCallback<ColorThemeDataPartial>;
 
-  const factory ColorTheme.withData({
+  const factory ColorTheme.mergeWithData({
     Key? key,
     required ColorThemeDataPartial data,
     required Widget child,
-  }) = _ColorThemeWithData;
+  }) = _ColorThemeWithData<ColorThemeDataPartial>;
 
-  ColorThemeResolver get resolver;
+  const factory ColorTheme.replaceWithResolver({
+    Key? key,
+    required ThemeResolver<ColorThemeData> resolver,
+    required Widget child,
+  }) = _ColorThemeWithResolver<ColorThemeData>;
+
+  const factory ColorTheme.replaceWithCallback({
+    Key? key,
+    required ThemeResolverCallback<ColorThemeData> callback,
+    required Widget child,
+  }) = _ColorThemeWithCallback<ColorThemeData>;
+
+  const factory ColorTheme.replaceWithData({
+    Key? key,
+    required ColorThemeData data,
+    required Widget child,
+  }) = _ColorThemeWithData<ColorThemeData>;
+
+  ThemeResolver<ColorThemeDataPartial> get resolver;
 
   @override
   final Widget child;
@@ -148,32 +105,35 @@ abstract class ColorTheme extends StatelessWidget implements ProxyWidget {
     final inherited = _ColorTheme.maybeResolverOf(context);
     return _ColorTheme(
       resolver: inherited != null
-          ? _ColorThemeResolver(inherited, resolver)
+          ? .combine(inherited, resolver, _merge)
           : resolver,
       child: child,
     );
   }
 
+  static ColorThemeDataPartial _merge(
+    ColorThemeDataPartial a,
+    ColorThemeDataPartial b,
+  ) => a.maybeMerge(b);
+
   static ColorThemeData of(BuildContext context) {
     final resolver = _ColorTheme.maybeResolverOf(context);
-    final defaults = ColorThemeData.fromPalette(
+    final brightness =
+        Theme.maybeBrightnessOf(context) ??
+        MediaQuery.maybePlatformBrightnessOf(context) ??
+        .light;
+    final highContrast = MediaQuery.maybeHighContrastOf(context) ?? false;
+    return .fromPalette(
       palette: BaselinePaletteTheme.of(context),
-      brightness:
-          Theme.maybeBrightnessOf(context) ??
-          MediaQuery.maybePlatformBrightnessOf(context) ??
-          .light,
+      brightness: brightness,
+      contrastLevel: highContrast ? 1.0 : 0.0,
+      overrides: resolver?.resolve(context),
     );
-    if (resolver != null) {
-      final data = resolver.resolve(context);
-      return defaults.merge(data);
-      // return ._defaults(a: data.a, b: data.b, c: data.c);
-    }
-    return defaults;
-    // return const .defaults();
   }
 }
 
-class _ColorThemeWithResolver extends ColorTheme {
+class _ColorThemeWithResolver<T extends ColorThemeDataPartial>
+    extends ColorTheme {
   const _ColorThemeWithResolver({
     super.key,
     required this.resolver,
@@ -181,61 +141,60 @@ class _ColorThemeWithResolver extends ColorTheme {
   }) : super._();
 
   @override
-  final ColorThemeResolver resolver;
+  final ThemeResolver<T> resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<ColorThemeResolver>("resolver", resolver),
-    );
+    properties.add(DiagnosticsProperty<ThemeResolver<T>>("resolver", resolver));
   }
 }
 
-class _ColorThemeWithCallback extends ColorTheme {
+class _ColorThemeWithCallback<T extends ColorThemeDataPartial>
+    extends ColorTheme {
   const _ColorThemeWithCallback({
     super.key,
     required this.callback,
     required super.child,
   }) : super._();
 
-  final ColorThemeResolverCallback callback;
+  final ThemeResolverCallback<T> callback;
 
   @override
-  ColorThemeResolver get resolver => .callback(callback);
+  ThemeResolver<T> get resolver => .callback(callback);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      DiagnosticsProperty<ColorThemeResolverCallback>("callback", callback),
+      DiagnosticsProperty<ThemeResolverCallback<T>>("callback", callback),
     );
   }
 }
 
-class _ColorThemeWithData extends ColorTheme {
+class _ColorThemeWithData<T extends ColorThemeDataPartial> extends ColorTheme {
   const _ColorThemeWithData({
     super.key,
     required this.data,
     required super.child,
   }) : super._();
 
-  final ColorThemeDataPartial data;
+  final T data;
 
   @override
-  ColorThemeResolver get resolver => .value(data);
+  ThemeResolver<T> get resolver => .value(data);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ColorThemeDataPartial>("data", data));
+    properties.add(DiagnosticsProperty<T>("data", data));
   }
 }
 
 class _ColorTheme extends InheritedTheme {
   const _ColorTheme({super.key, required this.resolver, required super.child});
 
-  final ColorThemeResolver resolver;
+  final ThemeResolver<ColorThemeDataPartial> resolver;
 
   @override
   bool updateShouldNotify(_ColorTheme oldWidget) =>
@@ -245,6 +204,7 @@ class _ColorTheme extends InheritedTheme {
   Widget wrap(BuildContext context, Widget child) =>
       _ColorTheme(resolver: resolver, child: child);
 
-  static ColorThemeResolver? maybeResolverOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_ColorTheme>()?.resolver;
+  static ThemeResolver<ColorThemeDataPartial>? maybeResolverOf(
+    BuildContext context,
+  ) => context.dependOnInheritedWidgetOfExactType<_ColorTheme>()?.resolver;
 }

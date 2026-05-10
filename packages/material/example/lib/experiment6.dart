@@ -55,19 +55,21 @@ class _Experiment6ViewState extends State<Experiment6View> {
                           leadingPadding: const .symmetric(
                             vertical: 10.0 - (48.0 - 40.0) / 2.0,
                           ),
-                          leading: Checkbox.bistate(
-                            onCheckedChanged: (value) {
-                              if (value) {
-                                setState(() {
-                                  _selected.add(index);
-                                });
-                              } else {
-                                setState(() {
-                                  _selected.remove(index);
-                                });
-                              }
-                            },
-                            checked: _selected.contains(index),
+                          leading: ExcludeFocus(
+                            child: Checkbox.bistate(
+                              onCheckedChanged: (value) {
+                                if (value) {
+                                  setState(() {
+                                    _selected.add(index);
+                                  });
+                                } else {
+                                  setState(() {
+                                    _selected.remove(index);
+                                  });
+                                }
+                              },
+                              checked: _selected.contains(index),
+                            ),
                           ),
                           headline: Text("Item ${index + 1}"),
                         ),
@@ -133,7 +135,7 @@ class _Layer2State extends State<_Layer2> {
       height: 136.0,
       child: Padding(
         padding: .symmetric(horizontal: 24.0),
-        child: Material(
+        child: Surface(
           shape: CornersBorder(delegate: delegate, corners: corners),
           color: colorTheme.onPrimary,
           child: Stack(

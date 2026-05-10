@@ -10,17 +10,33 @@ abstract class SpringPartial with Diagnosticable {
 
   double? get damping;
 
-  SpringPartial copyWith({double? stiffness, double? damping}) =>
+  SpringPartial copy() => copyWith();
+
+  SpringPartial copyWith({double? stiffness, double? damping}) => .from(
+    stiffness: stiffness ?? this.stiffness,
+    damping: damping ?? this.damping,
+  );
+
+  SpringPartial maybeCopyWith({double? stiffness, double? damping}) =>
       stiffness != null || damping != null
-      ? .from(
-          stiffness: stiffness ?? this.stiffness,
-          damping: damping ?? this.damping,
-        )
+      ? copyWith(stiffness: stiffness, damping: damping)
       : this;
 
   SpringPartial merge(SpringPartial? other) => other != null
       ? copyWith(stiffness: other.stiffness, damping: other.damping)
+      : copyWith();
+
+  SpringPartial maybeMerge(SpringPartial? other) => other != null
+      ? maybeCopyWith(stiffness: other.stiffness, damping: other.damping)
       : this;
+
+  bool get isEmpty => stiffness == null && damping == null;
+
+  bool get isNotEmpty => !isEmpty;
+
+  bool get isConcrete => stiffness != null && damping != null;
+
+  Spring? get asConcrete => isConcrete ? _SpringPartialAsConcrete(this) : null;
 
   @override
   // ignore: must_call_super
@@ -29,20 +45,9 @@ abstract class SpringPartial with Diagnosticable {
       ..add(DoubleProperty("stiffness", stiffness, defaultValue: null))
       ..add(DoubleProperty("damping", damping, defaultValue: null));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is SpringPartial &&
-          stiffness == other.stiffness &&
-          damping == other.damping;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, stiffness, damping);
 }
 
-class _SpringPartial extends SpringPartial {
+final class _SpringPartial extends SpringPartial {
   const _SpringPartial({this.stiffness, this.damping});
 
   @override
@@ -50,6 +55,52 @@ class _SpringPartial extends SpringPartial {
 
   @override
   final double? damping;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _SpringPartial &&
+          stiffness == other.stiffness &&
+          damping == other.damping;
+
+  @override
+  int get hashCode => Object.hash(stiffness, damping);
+}
+
+final class _SpringPartialAsConcrete extends Spring {
+  _SpringPartialAsConcrete(SpringPartial value)
+    : assert(value.isConcrete),
+      _value = value;
+
+  final SpringPartial _value;
+
+  @override
+  double get stiffness => _value.stiffness!;
+
+  @override
+  double get damping => _value.damping!;
+
+  @override
+  Spring copyWith({double? stiffness, double? damping}) =>
+      _SpringPartialAsConcrete(
+        _value.copyWith(stiffness: stiffness, damping: damping),
+      );
+
+  @override
+  Spring maybeCopyWith({double? stiffness, double? damping}) =>
+      stiffness != null && damping != null
+      ? .from(stiffness: stiffness, damping: damping)
+      : stiffness != null || damping != null
+      ? copyWith(stiffness: stiffness, damping: damping)
+      : this;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _SpringPartialAsConcrete && _value == other._value;
+
+  @override
+  int get hashCode => _value.hashCode;
 }
 
 abstract class Spring extends SpringPartial {
@@ -67,18 +118,40 @@ abstract class Spring extends SpringPartial {
   double get damping;
 
   @override
-  Spring copyWith({double? stiffness, double? damping}) =>
+  Spring copy() => copyWith();
+
+  @override
+  Spring copyWith({double? stiffness, double? damping}) => .from(
+    stiffness: stiffness ?? this.stiffness,
+    damping: damping ?? this.damping,
+  );
+
+  @override
+  Spring maybeCopyWith({double? stiffness, double? damping}) =>
       stiffness != null || damping != null
-      ? .from(
-          stiffness: stiffness ?? this.stiffness,
-          damping: damping ?? this.damping,
-        )
+      ? copyWith(stiffness: stiffness, damping: damping)
       : this;
 
   @override
-  Spring merge(SpringPartial? other) => other != null
-      ? copyWith(stiffness: other.stiffness, damping: other.damping)
+  Spring merge(SpringPartial? other) =>
+      copyWith(stiffness: other?.stiffness, damping: other?.damping);
+
+  @override
+  Spring maybeMerge(SpringPartial? other) => other != null
+      ? maybeCopyWith(stiffness: other.stiffness, damping: other.damping)
       : this;
+
+  @override
+  bool get isEmpty => false;
+
+  @override
+  bool get isNotEmpty => true;
+
+  @override
+  bool get isConcrete => true;
+
+  @override
+  Spring get asConcrete => this;
 
   SpringDescription toSpringDescription() =>
       .withDampingRatio(mass: 1.0, stiffness: stiffness, ratio: damping);
@@ -93,20 +166,9 @@ abstract class Spring extends SpringPartial {
       ..add(DoubleProperty("stiffness", stiffness))
       ..add(DoubleProperty("damping", damping));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is Spring &&
-          stiffness == other.stiffness &&
-          damping == other.damping;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, stiffness, damping);
 }
 
-class _Spring extends Spring {
+final class _Spring extends Spring {
   const _Spring({required this.stiffness, required this.damping});
 
   @override
@@ -114,6 +176,16 @@ class _Spring extends Spring {
 
   @override
   final double damping;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _Spring &&
+          stiffness == other.stiffness &&
+          damping == other.damping;
+
+  @override
+  int get hashCode => Object.hash(stiffness, damping);
 }
 
 abstract class SpringThemeDataPartial with Diagnosticable {
@@ -140,7 +212,25 @@ abstract class SpringThemeDataPartial with Diagnosticable {
 
   SpringPartial? get slowEffects;
 
+  SpringThemeDataPartial copy() => copyWith();
+
   SpringThemeDataPartial copyWith({
+    covariant SpringPartial? fastSpatial,
+    covariant SpringPartial? fastEffects,
+    covariant SpringPartial? defaultSpatial,
+    covariant SpringPartial? defaultEffects,
+    covariant SpringPartial? slowSpatial,
+    covariant SpringPartial? slowEffects,
+  }) => .from(
+    fastSpatial: fastSpatial ?? this.fastSpatial,
+    fastEffects: fastEffects ?? this.fastEffects,
+    defaultSpatial: defaultSpatial ?? this.defaultSpatial,
+    defaultEffects: defaultEffects ?? this.defaultEffects,
+    slowSpatial: slowSpatial ?? this.slowSpatial,
+    slowEffects: slowEffects ?? this.slowEffects,
+  );
+
+  SpringThemeDataPartial maybeCopyWith({
     covariant SpringPartial? fastSpatial,
     covariant SpringPartial? fastEffects,
     covariant SpringPartial? defaultSpatial,
@@ -154,17 +244,35 @@ abstract class SpringThemeDataPartial with Diagnosticable {
           defaultEffects != null ||
           slowSpatial != null ||
           slowEffects != null
-      ? .from(
-          fastSpatial: fastSpatial ?? this.fastSpatial,
-          fastEffects: fastEffects ?? this.fastEffects,
-          defaultSpatial: defaultSpatial ?? this.defaultSpatial,
-          defaultEffects: defaultEffects ?? this.defaultEffects,
-          slowSpatial: slowSpatial ?? this.slowSpatial,
-          slowEffects: slowEffects ?? this.slowEffects,
+      ? copyWith(
+          fastSpatial: fastSpatial,
+          fastEffects: fastEffects,
+          defaultSpatial: defaultSpatial,
+          defaultEffects: defaultEffects,
+          slowSpatial: slowSpatial,
+          slowEffects: slowEffects,
         )
       : this;
 
   SpringThemeDataPartial mergeWith({
+    SpringPartial? fastSpatial,
+    SpringPartial? fastEffects,
+    SpringPartial? defaultSpatial,
+    SpringPartial? defaultEffects,
+    SpringPartial? slowSpatial,
+    SpringPartial? slowEffects,
+  }) => .from(
+    fastSpatial: this.fastSpatial?.merge(fastSpatial) ?? fastSpatial,
+    fastEffects: this.fastEffects?.merge(fastEffects) ?? fastEffects,
+    defaultSpatial:
+        this.defaultSpatial?.merge(defaultSpatial) ?? defaultSpatial,
+    defaultEffects:
+        this.defaultEffects?.merge(defaultEffects) ?? defaultEffects,
+    slowSpatial: this.slowSpatial?.merge(slowSpatial) ?? slowSpatial,
+    slowEffects: this.slowEffects?.merge(slowEffects) ?? slowEffects,
+  );
+
+  SpringThemeDataPartial maybeMergeWith({
     SpringPartial? fastSpatial,
     SpringPartial? fastEffects,
     SpringPartial? defaultSpatial,
@@ -179,14 +287,14 @@ abstract class SpringThemeDataPartial with Diagnosticable {
           slowSpatial != null ||
           slowEffects != null
       ? .from(
-          fastSpatial: this.fastSpatial?.merge(fastSpatial) ?? fastSpatial,
-          fastEffects: this.fastEffects?.merge(fastEffects) ?? fastEffects,
+          fastSpatial: this.fastSpatial?.maybeMerge(fastSpatial) ?? fastSpatial,
+          fastEffects: this.fastEffects?.maybeMerge(fastEffects) ?? fastEffects,
           defaultSpatial:
-              this.defaultSpatial?.merge(defaultSpatial) ?? defaultSpatial,
+              this.defaultSpatial?.maybeMerge(defaultSpatial) ?? defaultSpatial,
           defaultEffects:
-              this.defaultEffects?.merge(defaultEffects) ?? defaultEffects,
-          slowSpatial: this.slowSpatial?.merge(slowSpatial) ?? slowSpatial,
-          slowEffects: this.slowEffects?.merge(slowEffects) ?? slowEffects,
+              this.defaultEffects?.maybeMerge(defaultEffects) ?? defaultEffects,
+          slowSpatial: this.slowSpatial?.maybeMerge(slowSpatial) ?? slowSpatial,
+          slowEffects: this.slowEffects?.maybeMerge(slowEffects) ?? slowEffects,
         )
       : this;
 
@@ -199,33 +307,91 @@ abstract class SpringThemeDataPartial with Diagnosticable {
           slowSpatial: other.slowSpatial,
           slowEffects: other.slowEffects,
         )
+      : copy();
+
+  SpringThemeDataPartial maybeMerge(SpringThemeDataPartial? other) =>
+      other != null
+      ? maybeMergeWith(
+          fastSpatial: other.fastSpatial,
+          fastEffects: other.fastEffects,
+          defaultSpatial: other.defaultSpatial,
+          defaultEffects: other.defaultEffects,
+          slowSpatial: other.slowSpatial,
+          slowEffects: other.slowEffects,
+        )
       : this;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is SpringThemeDataPartial &&
-          fastSpatial == other.fastSpatial &&
-          fastEffects == other.fastEffects &&
-          defaultSpatial == other.defaultSpatial &&
-          defaultEffects == other.defaultEffects &&
-          slowSpatial == other.slowSpatial &&
-          slowEffects == other.slowEffects;
+  bool get isEmpty =>
+      fastSpatial?.isEmpty != false &&
+      fastEffects?.isEmpty != false &&
+      defaultSpatial?.isEmpty != false &&
+      defaultEffects?.isEmpty != false &&
+      slowSpatial?.isEmpty != false &&
+      slowEffects?.isEmpty != false;
+
+  bool get isNotEmpty => !isEmpty;
+
+  bool get isConcrete =>
+      fastSpatial?.isConcrete == true &&
+      fastEffects?.isConcrete == true &&
+      defaultSpatial?.isConcrete == true &&
+      defaultEffects?.isConcrete == true &&
+      slowSpatial?.isConcrete == true &&
+      slowEffects?.isConcrete == true;
+
+  SpringThemeData? get asConcrete =>
+      isConcrete ? _SpringThemeDataPartialAsConcrete(this) : null;
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    fastSpatial,
-    fastEffects,
-    defaultSpatial,
-    defaultEffects,
-    slowSpatial,
-    slowEffects,
-  );
+  // ignore: must_call_super
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    properties
+      ..add(
+        DiagnosticsProperty<SpringPartial>(
+          "fastSpatial",
+          fastSpatial,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<SpringPartial>(
+          "fastEffects",
+          fastEffects,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<SpringPartial>(
+          "defaultSpatial",
+          defaultSpatial,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<SpringPartial>(
+          "defaultEffects",
+          defaultEffects,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<SpringPartial>(
+          "slowSpatial",
+          slowSpatial,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<SpringPartial>(
+          "slowEffects",
+          slowEffects,
+          defaultValue: null,
+        ),
+      );
+  }
 }
 
-class _SpringThemeDataPartial extends SpringThemeDataPartial {
+final class _SpringThemeDataPartial extends SpringThemeDataPartial {
   const _SpringThemeDataPartial({
     this.fastSpatial,
     this.fastEffects,
@@ -252,6 +418,160 @@ class _SpringThemeDataPartial extends SpringThemeDataPartial {
 
   @override
   final SpringPartial? slowEffects;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _SpringThemeDataPartial &&
+          fastSpatial == other.fastSpatial &&
+          fastEffects == other.fastEffects &&
+          defaultSpatial == other.defaultSpatial &&
+          defaultEffects == other.defaultEffects &&
+          slowSpatial == other.slowSpatial &&
+          slowEffects == other.slowEffects;
+
+  @override
+  int get hashCode => Object.hash(
+    fastSpatial,
+    fastEffects,
+    defaultSpatial,
+    defaultEffects,
+    slowSpatial,
+    slowEffects,
+  );
+}
+
+final class _SpringThemeDataPartialAsConcrete extends SpringThemeData {
+  _SpringThemeDataPartialAsConcrete(SpringThemeDataPartial value)
+    : assert(value.isConcrete),
+      _value = value;
+
+  final SpringThemeDataPartial _value;
+
+  @override
+  Spring get fastSpatial => _value.fastSpatial!.asConcrete!;
+
+  @override
+  Spring get fastEffects => _value.fastEffects!.asConcrete!;
+
+  @override
+  Spring get defaultSpatial => _value.defaultSpatial!.asConcrete!;
+
+  @override
+  Spring get defaultEffects => _value.defaultEffects!.asConcrete!;
+
+  @override
+  Spring get slowSpatial => _value.slowSpatial!.asConcrete!;
+
+  @override
+  Spring get slowEffects => _value.slowEffects!.asConcrete!;
+
+  @override
+  SpringThemeData copyWith({
+    covariant Spring? fastSpatial,
+    covariant Spring? fastEffects,
+    covariant Spring? defaultSpatial,
+    covariant Spring? defaultEffects,
+    covariant Spring? slowSpatial,
+    covariant Spring? slowEffects,
+  }) => _SpringThemeDataPartialAsConcrete(
+    _value.copyWith(
+      fastSpatial: fastSpatial,
+      fastEffects: fastEffects,
+      defaultSpatial: defaultSpatial,
+      defaultEffects: defaultEffects,
+      slowSpatial: slowSpatial,
+      slowEffects: slowEffects,
+    ),
+  );
+
+  @override
+  SpringThemeData maybeCopyWith({
+    covariant Spring? fastSpatial,
+    covariant Spring? fastEffects,
+    covariant Spring? defaultSpatial,
+    covariant Spring? defaultEffects,
+    covariant Spring? slowSpatial,
+    covariant Spring? slowEffects,
+  }) =>
+      fastSpatial != null &&
+          fastEffects != null &&
+          defaultSpatial != null &&
+          defaultEffects != null &&
+          slowSpatial != null &&
+          slowEffects != null
+      ? .from(
+          fastSpatial: fastSpatial,
+          fastEffects: fastEffects,
+          defaultSpatial: defaultSpatial,
+          defaultEffects: defaultEffects,
+          slowSpatial: slowSpatial,
+          slowEffects: slowEffects,
+        )
+      : fastSpatial != null ||
+            fastEffects != null ||
+            defaultSpatial != null ||
+            defaultEffects != null ||
+            slowSpatial != null ||
+            slowEffects != null
+      ? copyWith(
+          fastSpatial: fastSpatial,
+          fastEffects: fastEffects,
+          defaultSpatial: defaultSpatial,
+          defaultEffects: defaultEffects,
+          slowSpatial: slowSpatial,
+          slowEffects: slowEffects,
+        )
+      : this;
+
+  @override
+  SpringThemeData mergeWith({
+    SpringPartial? fastSpatial,
+    SpringPartial? fastEffects,
+    SpringPartial? defaultSpatial,
+    SpringPartial? defaultEffects,
+    SpringPartial? slowSpatial,
+    SpringPartial? slowEffects,
+  }) => _SpringThemeDataPartialAsConcrete(
+    _value.mergeWith(
+      fastSpatial: fastSpatial,
+      fastEffects: fastEffects,
+      defaultSpatial: defaultSpatial,
+      defaultEffects: defaultEffects,
+      slowSpatial: slowSpatial,
+      slowEffects: slowEffects,
+    ),
+  );
+
+  @override
+  SpringThemeData maybeMergeWith({
+    SpringPartial? fastSpatial,
+    SpringPartial? fastEffects,
+    SpringPartial? defaultSpatial,
+    SpringPartial? defaultEffects,
+    SpringPartial? slowSpatial,
+    SpringPartial? slowEffects,
+  }) {
+    final value = _value.maybeMergeWith(
+      fastSpatial: fastSpatial,
+      fastEffects: fastEffects,
+      defaultSpatial: defaultSpatial,
+      defaultEffects: defaultEffects,
+      slowSpatial: slowSpatial,
+      slowEffects: slowEffects,
+    );
+    return identical(_value, value)
+        ? this
+        : _SpringThemeDataPartialAsConcrete(value);
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _SpringThemeDataPartialAsConcrete && _value == other._value;
+
+  @override
+  int get hashCode => _value.hashCode;
 }
 
 abstract class SpringThemeData extends SpringThemeDataPartial {
@@ -266,28 +586,12 @@ abstract class SpringThemeData extends SpringThemeDataPartial {
     required Spring slowEffects,
   }) = _SpringThemeData;
 
-  const factory SpringThemeData.defaultsStandard() =
-      _SpringThemeDataStandardDefaults;
-
-  const factory SpringThemeData._defaultsStandard({
-    SpringPartial? fastSpatial,
-    SpringPartial? fastEffects,
-    SpringPartial? defaultSpatial,
-    SpringPartial? defaultEffects,
-    SpringPartial? slowSpatial,
-    SpringPartial? slowEffects,
+  const factory SpringThemeData.defaultsStandard({
+    SpringThemeDataPartial? overrides,
   }) = _SpringThemeDataStandardDefaults;
 
-  const factory SpringThemeData.defaultsExpressive() =
-      _SpringThemeDataExpressiveDefaults;
-
-  const factory SpringThemeData._defaultsExpressive({
-    SpringPartial? fastSpatial,
-    SpringPartial? fastEffects,
-    SpringPartial? defaultSpatial,
-    SpringPartial? defaultEffects,
-    SpringPartial? slowSpatial,
-    SpringPartial? slowEffects,
+  const factory SpringThemeData.defaultsExpressive({
+    SpringThemeDataPartial? overrides,
   }) = _SpringThemeDataExpressiveDefaults;
 
   @override
@@ -309,7 +613,27 @@ abstract class SpringThemeData extends SpringThemeDataPartial {
   Spring get slowEffects;
 
   @override
+  SpringThemeData copy() => copyWith();
+
+  @override
   SpringThemeData copyWith({
+    covariant Spring? fastSpatial,
+    covariant Spring? fastEffects,
+    covariant Spring? defaultSpatial,
+    covariant Spring? defaultEffects,
+    covariant Spring? slowSpatial,
+    covariant Spring? slowEffects,
+  }) => .from(
+    fastSpatial: fastSpatial ?? this.fastSpatial,
+    fastEffects: fastEffects ?? this.fastEffects,
+    defaultSpatial: defaultSpatial ?? this.defaultSpatial,
+    defaultEffects: defaultEffects ?? this.defaultEffects,
+    slowSpatial: slowSpatial ?? this.slowSpatial,
+    slowEffects: slowEffects ?? this.slowEffects,
+  );
+
+  @override
+  SpringThemeData maybeCopyWith({
     covariant Spring? fastSpatial,
     covariant Spring? fastEffects,
     covariant Spring? defaultSpatial,
@@ -323,18 +647,35 @@ abstract class SpringThemeData extends SpringThemeDataPartial {
           defaultEffects != null ||
           slowSpatial != null ||
           slowEffects != null
-      ? .from(
-          fastSpatial: fastSpatial ?? this.fastSpatial,
-          fastEffects: fastEffects ?? this.fastEffects,
-          defaultSpatial: defaultSpatial ?? this.defaultSpatial,
-          defaultEffects: defaultEffects ?? this.defaultEffects,
-          slowSpatial: slowSpatial ?? this.slowSpatial,
-          slowEffects: slowEffects ?? this.slowEffects,
+      ? copyWith(
+          fastSpatial: fastSpatial,
+          fastEffects: fastEffects,
+          defaultSpatial: defaultSpatial,
+          defaultEffects: defaultEffects,
+          slowSpatial: slowSpatial,
+          slowEffects: slowEffects,
         )
       : this;
 
   @override
   SpringThemeData mergeWith({
+    SpringPartial? fastSpatial,
+    SpringPartial? fastEffects,
+    SpringPartial? defaultSpatial,
+    SpringPartial? defaultEffects,
+    SpringPartial? slowSpatial,
+    SpringPartial? slowEffects,
+  }) => .from(
+    fastSpatial: this.fastSpatial.merge(fastSpatial),
+    fastEffects: this.fastEffects.merge(fastEffects),
+    defaultSpatial: this.defaultSpatial.merge(defaultSpatial),
+    defaultEffects: this.defaultEffects.merge(defaultEffects),
+    slowSpatial: this.slowSpatial.merge(slowSpatial),
+    slowEffects: this.slowEffects.merge(slowEffects),
+  );
+
+  @override
+  SpringThemeData maybeMergeWith({
     SpringPartial? fastSpatial,
     SpringPartial? fastEffects,
     SpringPartial? defaultSpatial,
@@ -349,12 +690,12 @@ abstract class SpringThemeData extends SpringThemeDataPartial {
           slowSpatial != null ||
           slowEffects != null
       ? .from(
-          fastSpatial: this.fastSpatial.merge(fastSpatial),
-          fastEffects: this.fastEffects.merge(fastEffects),
-          defaultSpatial: this.defaultSpatial.merge(defaultSpatial),
-          defaultEffects: this.defaultEffects.merge(defaultEffects),
-          slowSpatial: this.slowSpatial.merge(slowSpatial),
-          slowEffects: this.slowEffects.merge(slowEffects),
+          fastSpatial: this.fastSpatial.maybeMerge(fastSpatial),
+          fastEffects: this.fastEffects.maybeMerge(fastEffects),
+          defaultSpatial: this.defaultSpatial.maybeMerge(defaultSpatial),
+          defaultEffects: this.defaultEffects.maybeMerge(defaultEffects),
+          slowSpatial: this.slowSpatial.maybeMerge(slowSpatial),
+          slowEffects: this.slowEffects.maybeMerge(slowEffects),
         )
       : this;
 
@@ -368,33 +709,46 @@ abstract class SpringThemeData extends SpringThemeDataPartial {
           slowSpatial: other.slowSpatial,
           slowEffects: other.slowEffects,
         )
+      : copy();
+
+  @override
+  SpringThemeData maybeMerge(SpringThemeDataPartial? other) => other != null
+      ? maybeMergeWith(
+          fastSpatial: other.fastSpatial,
+          fastEffects: other.fastEffects,
+          defaultSpatial: other.defaultSpatial,
+          defaultEffects: other.defaultEffects,
+          slowSpatial: other.slowSpatial,
+          slowEffects: other.slowEffects,
+        )
       : this;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is SpringThemeData &&
-          fastSpatial == other.fastSpatial &&
-          fastEffects == other.fastEffects &&
-          defaultSpatial == other.defaultSpatial &&
-          defaultEffects == other.defaultEffects &&
-          slowSpatial == other.slowSpatial &&
-          slowEffects == other.slowEffects;
+  bool get isEmpty => false;
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    fastSpatial,
-    fastEffects,
-    defaultSpatial,
-    defaultEffects,
-    slowSpatial,
-    slowEffects,
-  );
+  bool get isNotEmpty => true;
+
+  @override
+  bool get isConcrete => true;
+
+  @override
+  SpringThemeData get asConcrete => this;
+
+  @override
+  // ignore: must_call_super
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    properties
+      ..add(DiagnosticsProperty<Spring>("fastSpatial", fastSpatial))
+      ..add(DiagnosticsProperty<Spring>("fastEffects", fastEffects))
+      ..add(DiagnosticsProperty<Spring>("defaultSpatial", defaultSpatial))
+      ..add(DiagnosticsProperty<Spring>("defaultEffects", defaultEffects))
+      ..add(DiagnosticsProperty<Spring>("slowSpatial", slowSpatial))
+      ..add(DiagnosticsProperty<Spring>("slowEffects", slowEffects));
+  }
 }
 
-class _SpringThemeData extends SpringThemeData {
+final class _SpringThemeData extends SpringThemeData {
   const _SpringThemeData({
     required this.fastSpatial,
     required this.fastEffects,
@@ -403,22 +757,6 @@ class _SpringThemeData extends SpringThemeData {
     required this.slowSpatial,
     required this.slowEffects,
   });
-
-  const _SpringThemeData.standard()
-    : fastSpatial = const .from(stiffness: 1400.0, damping: 0.9),
-      fastEffects = const .from(stiffness: 3800.0, damping: 1.0),
-      defaultSpatial = const .from(stiffness: 700.0, damping: 0.9),
-      defaultEffects = const .from(stiffness: 1600.0, damping: 1.0),
-      slowSpatial = const .from(stiffness: 300.0, damping: 0.9),
-      slowEffects = const .from(stiffness: 800.0, damping: 1.0);
-
-  const _SpringThemeData.expressive()
-    : fastSpatial = const .from(stiffness: 800.0, damping: 0.6),
-      fastEffects = const .from(stiffness: 3800.0, damping: 1.0),
-      defaultSpatial = const .from(stiffness: 380.0, damping: 0.8),
-      defaultEffects = const .from(stiffness: 1600.0, damping: 1.0),
-      slowSpatial = const .from(stiffness: 200.0, damping: 0.8),
-      slowEffects = const .from(stiffness: 800.0, damping: 1.0);
 
   @override
   final Spring fastSpatial;
@@ -437,90 +775,83 @@ class _SpringThemeData extends SpringThemeData {
 
   @override
   final Spring slowEffects;
-}
-
-abstract class _SpringThemeDataDefaults extends SpringThemeData {
-  const _SpringThemeDataDefaults({
-    SpringPartial? fastSpatial,
-    SpringPartial? fastEffects,
-    SpringPartial? defaultSpatial,
-    SpringPartial? defaultEffects,
-    SpringPartial? slowSpatial,
-    SpringPartial? slowEffects,
-  }) : _fastSpatial = fastSpatial,
-       _fastEffects = fastEffects,
-       _defaultSpatial = defaultSpatial,
-       _defaultEffects = defaultEffects,
-       _slowSpatial = slowSpatial,
-       _slowEffects = slowEffects;
-
-  final SpringPartial? _fastSpatial;
-  final SpringPartial? _fastEffects;
-  final SpringPartial? _defaultSpatial;
-  final SpringPartial? _defaultEffects;
-  final SpringPartial? _slowSpatial;
-  final SpringPartial? _slowEffects;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _SpringThemeDataDefaults &&
-          _fastSpatial == other._fastSpatial &&
-          _fastEffects == other._fastEffects &&
-          _defaultSpatial == other._defaultSpatial &&
-          _defaultEffects == other._defaultEffects &&
-          _slowSpatial == other._slowSpatial &&
-          _slowEffects == other._slowEffects;
+      other is _SpringThemeData &&
+          fastSpatial == other.fastSpatial &&
+          fastEffects == other.fastEffects &&
+          defaultSpatial == other.defaultSpatial &&
+          defaultEffects == other.defaultEffects &&
+          slowSpatial == other.slowSpatial &&
+          slowEffects == other.slowEffects;
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    _fastSpatial,
-    _fastEffects,
-    _defaultSpatial,
-    _defaultEffects,
-    _slowSpatial,
-    _slowEffects,
+    fastSpatial,
+    fastEffects,
+    defaultSpatial,
+    defaultEffects,
+    slowSpatial,
+    slowEffects,
   );
 }
 
-class _SpringThemeDataStandardDefaults extends _SpringThemeDataDefaults {
-  const _SpringThemeDataStandardDefaults({
-    super.fastSpatial,
-    super.fastEffects,
-    super.defaultSpatial,
-    super.defaultEffects,
-    super.slowSpatial,
-    super.slowEffects,
-  });
+mixin _SpringThemeDataDefaultsMixin<T extends _SpringThemeDataDefaultsMixin<T>>
+    on SpringThemeData {
+  SpringThemeDataPartial get _overrides;
+
+  Spring get _fastSpatial;
+  Spring get _fastEffects;
+  Spring get _defaultSpatial;
+  Spring get _defaultEffects;
+  Spring get _slowSpatial;
+  Spring get _slowEffects;
 
   @override
-  Spring get fastSpatial =>
-      const Spring.from(stiffness: 1400.0, damping: 0.9).merge(_fastSpatial);
+  Spring get fastSpatial => _fastSpatial.maybeMerge(_overrides.fastSpatial);
 
   @override
-  Spring get fastEffects =>
-      const Spring.from(stiffness: 3800.0, damping: 1.0).merge(_fastEffects);
+  Spring get fastEffects => _fastEffects.maybeMerge(_overrides.fastEffects);
 
   @override
   Spring get defaultSpatial =>
-      const Spring.from(stiffness: 700.0, damping: 0.9).merge(_defaultSpatial);
+      _defaultSpatial.maybeMerge(_overrides.defaultSpatial);
 
   @override
   Spring get defaultEffects =>
-      const Spring.from(stiffness: 1600.0, damping: 1.0).merge(_defaultEffects);
+      _defaultEffects.maybeMerge(_overrides.defaultEffects);
 
   @override
-  Spring get slowSpatial =>
-      const Spring.from(stiffness: 300.0, damping: 0.9).merge(_slowSpatial);
+  Spring get slowSpatial => _slowSpatial.maybeMerge(_overrides.slowSpatial);
 
   @override
-  Spring get slowEffects =>
-      const Spring.from(stiffness: 800.0, damping: 1.0).merge(_slowEffects);
+  Spring get slowEffects => _slowEffects.maybeMerge(_overrides.slowEffects);
+
+  T _create({SpringThemeDataPartial? overrides});
 
   @override
   SpringThemeData copyWith({
+    covariant Spring? fastSpatial,
+    covariant Spring? fastEffects,
+    covariant Spring? defaultSpatial,
+    covariant Spring? defaultEffects,
+    covariant Spring? slowSpatial,
+    covariant Spring? slowEffects,
+  }) => _create(
+    overrides: _overrides.copyWith(
+      fastSpatial: fastSpatial,
+      fastEffects: fastEffects,
+      defaultSpatial: defaultSpatial,
+      defaultEffects: defaultEffects,
+      slowSpatial: slowSpatial,
+      slowEffects: slowEffects,
+    ),
+  );
+
+  @override
+  SpringThemeData maybeCopyWith({
     covariant Spring? fastSpatial,
     covariant Spring? fastEffects,
     covariant Spring? defaultSpatial,
@@ -542,93 +873,13 @@ class _SpringThemeDataStandardDefaults extends _SpringThemeDataDefaults {
           slowSpatial: slowSpatial,
           slowEffects: slowEffects,
         )
-      : _SpringThemeDataStandardDefaults(
-          fastSpatial: fastSpatial ?? _fastSpatial,
-          fastEffects: fastEffects ?? _fastEffects,
-          defaultSpatial: defaultSpatial ?? _defaultSpatial,
-          defaultEffects: defaultEffects ?? _defaultEffects,
-          slowSpatial: slowSpatial ?? _slowSpatial,
-          slowEffects: slowEffects ?? _slowEffects,
-        );
-
-  @override
-  SpringThemeData mergeWith({
-    SpringPartial? fastSpatial,
-    SpringPartial? fastEffects,
-    SpringPartial? defaultSpatial,
-    SpringPartial? defaultEffects,
-    SpringPartial? slowSpatial,
-    SpringPartial? slowEffects,
-  }) =>
-      fastSpatial != null ||
-          fastEffects != null ||
-          defaultSpatial != null ||
-          defaultEffects != null ||
-          slowSpatial != null ||
-          slowEffects != null
-      ? _SpringThemeDataStandardDefaults(
-          fastSpatial: _fastSpatial?.merge(fastSpatial) ?? fastSpatial,
-          fastEffects: _fastEffects?.merge(fastEffects) ?? fastEffects,
-          defaultSpatial:
-              _defaultSpatial?.merge(defaultSpatial) ?? defaultSpatial,
-          defaultEffects:
-              _defaultEffects?.merge(defaultEffects) ?? defaultEffects,
-          slowSpatial: _slowSpatial?.merge(slowSpatial) ?? slowSpatial,
-          slowEffects: _slowEffects?.merge(slowEffects) ?? slowEffects,
-        )
-      : this;
-}
-
-class _SpringThemeDataExpressiveDefaults extends _SpringThemeDataDefaults {
-  const _SpringThemeDataExpressiveDefaults({
-    super.fastSpatial,
-    super.fastEffects,
-    super.defaultSpatial,
-    super.defaultEffects,
-    super.slowSpatial,
-    super.slowEffects,
-  });
-
-  @override
-  Spring get fastSpatial =>
-      const Spring.from(stiffness: 800.0, damping: 0.6).merge(_fastSpatial);
-
-  @override
-  Spring get fastEffects =>
-      const Spring.from(stiffness: 3800.0, damping: 1.0).merge(_fastEffects);
-
-  @override
-  Spring get defaultSpatial =>
-      const Spring.from(stiffness: 380.0, damping: 0.8).merge(_defaultSpatial);
-
-  @override
-  Spring get defaultEffects =>
-      const Spring.from(stiffness: 1600.0, damping: 1.0).merge(_defaultEffects);
-
-  @override
-  Spring get slowSpatial =>
-      const Spring.from(stiffness: 200.0, damping: 0.8).merge(_slowSpatial);
-
-  @override
-  Spring get slowEffects =>
-      const Spring.from(stiffness: 800.0, damping: 1.0).merge(_slowEffects);
-
-  @override
-  SpringThemeData copyWith({
-    covariant Spring? fastSpatial,
-    covariant Spring? fastEffects,
-    covariant Spring? defaultSpatial,
-    covariant Spring? defaultEffects,
-    covariant Spring? slowSpatial,
-    covariant Spring? slowEffects,
-  }) =>
-      fastSpatial != null &&
-          fastEffects != null &&
-          defaultSpatial != null &&
-          defaultEffects != null &&
-          slowSpatial != null &&
-          slowEffects != null
-      ? .from(
+      : fastSpatial != null ||
+            fastEffects != null ||
+            defaultSpatial != null ||
+            defaultEffects != null ||
+            slowSpatial != null ||
+            slowEffects != null
+      ? copyWith(
           fastSpatial: fastSpatial,
           fastEffects: fastEffects,
           defaultSpatial: defaultSpatial,
@@ -636,14 +887,7 @@ class _SpringThemeDataExpressiveDefaults extends _SpringThemeDataDefaults {
           slowSpatial: slowSpatial,
           slowEffects: slowEffects,
         )
-      : _SpringThemeDataExpressiveDefaults(
-          fastSpatial: fastSpatial ?? _fastSpatial,
-          fastEffects: fastEffects ?? _fastEffects,
-          defaultSpatial: defaultSpatial ?? _defaultSpatial,
-          defaultEffects: defaultEffects ?? _defaultEffects,
-          slowSpatial: slowSpatial ?? _slowSpatial,
-          slowEffects: slowEffects ?? _slowEffects,
-        );
+      : this;
 
   @override
   SpringThemeData mergeWith({
@@ -653,64 +897,155 @@ class _SpringThemeDataExpressiveDefaults extends _SpringThemeDataDefaults {
     SpringPartial? defaultEffects,
     SpringPartial? slowSpatial,
     SpringPartial? slowEffects,
-  }) =>
-      fastSpatial != null ||
-          fastEffects != null ||
-          defaultSpatial != null ||
-          defaultEffects != null ||
-          slowSpatial != null ||
-          slowEffects != null
-      ? _SpringThemeDataExpressiveDefaults(
-          fastSpatial: _fastSpatial?.merge(fastSpatial) ?? fastSpatial,
-          fastEffects: _fastEffects?.merge(fastEffects) ?? fastEffects,
-          defaultSpatial:
-              _defaultSpatial?.merge(defaultSpatial) ?? defaultSpatial,
-          defaultEffects:
-              _defaultEffects?.merge(defaultEffects) ?? defaultEffects,
-          slowSpatial: _slowSpatial?.merge(slowSpatial) ?? slowSpatial,
-          slowEffects: _slowEffects?.merge(slowEffects) ?? slowEffects,
-        )
-      : this;
-}
-
-typedef SpringThemeResolver = ThemeResolver<SpringThemeDataPartial>;
-
-typedef SpringThemeResolverCallback =
-    ThemeResolverCallback<SpringThemeDataPartial>;
-
-class _SpringThemeResolver
-    extends CombiningThemeResolver<SpringThemeDataPartial> {
-  const _SpringThemeResolver(super.a, super.b);
+  }) => _create(
+    overrides: _overrides.mergeWith(
+      fastSpatial: fastSpatial,
+      fastEffects: fastEffects,
+      defaultSpatial: defaultSpatial,
+      defaultEffects: defaultEffects,
+      slowSpatial: slowSpatial,
+      slowEffects: slowEffects,
+    ),
+  );
 
   @override
-  SpringThemeDataPartial combine(
-    SpringThemeDataPartial a,
-    SpringThemeDataPartial b,
-  ) => a.merge(b);
+  SpringThemeData maybeMergeWith({
+    SpringPartial? fastSpatial,
+    SpringPartial? fastEffects,
+    SpringPartial? defaultSpatial,
+    SpringPartial? defaultEffects,
+    SpringPartial? slowSpatial,
+    SpringPartial? slowEffects,
+  }) {
+    final overrides = _overrides.maybeMergeWith(
+      fastSpatial: fastSpatial,
+      fastEffects: fastEffects,
+      defaultSpatial: defaultSpatial,
+      defaultEffects: defaultEffects,
+      slowSpatial: slowSpatial,
+      slowEffects: slowEffects,
+    );
+    return identical(_overrides, overrides)
+        ? this
+        : _create(overrides: overrides);
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is T && _overrides == other._overrides;
+
+  @override
+  int get hashCode => _overrides.hashCode;
+}
+
+final class _SpringThemeDataStandardDefaults extends SpringThemeData
+    with _SpringThemeDataDefaultsMixin<_SpringThemeDataStandardDefaults> {
+  const _SpringThemeDataStandardDefaults({SpringThemeDataPartial? overrides})
+    : _overrides = overrides ?? const .from();
+
+  @override
+  final SpringThemeDataPartial _overrides;
+
+  @override
+  Spring get _fastSpatial => const Spring.from(stiffness: 1400.0, damping: 0.9);
+
+  @override
+  Spring get _fastEffects => const Spring.from(stiffness: 3800.0, damping: 1.0);
+
+  @override
+  Spring get _defaultSpatial =>
+      const Spring.from(stiffness: 700.0, damping: 0.9);
+
+  @override
+  Spring get _defaultEffects =>
+      const Spring.from(stiffness: 1600.0, damping: 1.0);
+
+  @override
+  Spring get _slowSpatial => const Spring.from(stiffness: 300.0, damping: 0.9);
+
+  @override
+  Spring get _slowEffects => const Spring.from(stiffness: 800.0, damping: 1.0);
+
+  @override
+  _SpringThemeDataStandardDefaults _create({
+    SpringThemeDataPartial? overrides,
+  }) => .new(overrides: overrides);
+}
+
+final class _SpringThemeDataExpressiveDefaults extends SpringThemeData
+    with _SpringThemeDataDefaultsMixin<_SpringThemeDataExpressiveDefaults> {
+  const _SpringThemeDataExpressiveDefaults({SpringThemeDataPartial? overrides})
+    : _overrides = overrides ?? const .from();
+
+  @override
+  final SpringThemeDataPartial _overrides;
+
+  @override
+  Spring get _fastSpatial => const Spring.from(stiffness: 800.0, damping: 0.6);
+
+  @override
+  Spring get _fastEffects => const Spring.from(stiffness: 3800.0, damping: 1.0);
+
+  @override
+  Spring get _defaultSpatial =>
+      const Spring.from(stiffness: 380.0, damping: 0.8);
+
+  @override
+  Spring get _defaultEffects =>
+      const Spring.from(stiffness: 1600.0, damping: 1.0);
+
+  @override
+  Spring get _slowSpatial => const Spring.from(stiffness: 200.0, damping: 0.8);
+
+  @override
+  Spring get _slowEffects => const Spring.from(stiffness: 800.0, damping: 1.0);
+
+  @override
+  _SpringThemeDataExpressiveDefaults _create({
+    SpringThemeDataPartial? overrides,
+  }) => .new(overrides: overrides);
 }
 
 abstract class SpringTheme extends StatelessWidget implements ProxyWidget {
   const SpringTheme._({super.key, required this.child});
 
-  const factory SpringTheme.withResolver({
+  const factory SpringTheme.mergeWithResolver({
     Key? key,
-    required SpringThemeResolver resolver,
+    required ThemeResolver<SpringThemeDataPartial> resolver,
     required Widget child,
-  }) = _SpringThemeWithResolver;
+  }) = _SpringThemeWithResolver<SpringThemeDataPartial>;
 
-  const factory SpringTheme.withCallback({
+  const factory SpringTheme.mergeWithCallback({
     Key? key,
-    required SpringThemeResolverCallback callback,
+    required ThemeResolverCallback<SpringThemeDataPartial> callback,
     required Widget child,
-  }) = _SpringThemeWithCallback;
+  }) = _SpringThemeWithCallback<SpringThemeDataPartial>;
 
-  const factory SpringTheme.withData({
+  const factory SpringTheme.mergeWithData({
     Key? key,
     required SpringThemeDataPartial data,
     required Widget child,
-  }) = _SpringThemeWithData;
+  }) = _SpringThemeWithData<SpringThemeDataPartial>;
 
-  SpringThemeResolver get resolver;
+  const factory SpringTheme.replaceWithResolver({
+    Key? key,
+    required ThemeResolver<SpringThemeData> resolver,
+    required Widget child,
+  }) = _SpringThemeWithResolver<SpringThemeData>;
+
+  const factory SpringTheme.replaceWithCallback({
+    Key? key,
+    required ThemeResolverCallback<SpringThemeData> callback,
+    required Widget child,
+  }) = _SpringThemeWithCallback<SpringThemeData>;
+
+  const factory SpringTheme.replaceWithData({
+    Key? key,
+    required SpringThemeData data,
+    required Widget child,
+  }) = _SpringThemeWithData<SpringThemeData>;
+
+  ThemeResolver<SpringThemeDataPartial> get resolver;
 
   @override
   final Widget child;
@@ -720,30 +1055,25 @@ abstract class SpringTheme extends StatelessWidget implements ProxyWidget {
     final inherited = _SpringTheme.maybeResolverOf(context);
     return _SpringTheme(
       resolver: inherited != null
-          ? _SpringThemeResolver(inherited, resolver)
+          ? .combine(inherited, resolver, _merge)
           : resolver,
       child: child,
     );
   }
 
+  static SpringThemeDataPartial _merge(
+    SpringThemeDataPartial a,
+    SpringThemeDataPartial b,
+  ) => a.maybeMerge(b);
+
   static SpringThemeData of(BuildContext context) {
     final resolver = _SpringTheme.maybeResolverOf(context);
-    if (resolver != null) {
-      final data = resolver.resolve(context);
-      return ._defaultsStandard(
-        fastSpatial: data.fastSpatial,
-        fastEffects: data.fastEffects,
-        defaultSpatial: data.defaultSpatial,
-        defaultEffects: data.defaultEffects,
-        slowSpatial: data.slowSpatial,
-        slowEffects: data.slowEffects,
-      );
-    }
-    return const .defaultsStandard();
+    return .defaultsStandard(overrides: resolver?.resolve(context));
   }
 }
 
-class _SpringThemeWithResolver extends SpringTheme {
+class _SpringThemeWithResolver<T extends SpringThemeDataPartial>
+    extends SpringTheme {
   const _SpringThemeWithResolver({
     super.key,
     required this.resolver,
@@ -751,61 +1081,61 @@ class _SpringThemeWithResolver extends SpringTheme {
   }) : super._();
 
   @override
-  final SpringThemeResolver resolver;
+  final ThemeResolver<T> resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<SpringThemeResolver>("resolver", resolver),
-    );
+    properties.add(DiagnosticsProperty<ThemeResolver<T>>("resolver", resolver));
   }
 }
 
-class _SpringThemeWithCallback extends SpringTheme {
+class _SpringThemeWithCallback<T extends SpringThemeDataPartial>
+    extends SpringTheme {
   const _SpringThemeWithCallback({
     super.key,
     required this.callback,
     required super.child,
   }) : super._();
 
-  final SpringThemeResolverCallback callback;
+  final ThemeResolverCallback<T> callback;
 
   @override
-  SpringThemeResolver get resolver => .callback(callback);
+  ThemeResolver<T> get resolver => .callback(callback);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      DiagnosticsProperty<SpringThemeResolverCallback>("callback", callback),
+      DiagnosticsProperty<ThemeResolverCallback<T>>("callback", callback),
     );
   }
 }
 
-class _SpringThemeWithData extends SpringTheme {
+class _SpringThemeWithData<T extends SpringThemeDataPartial>
+    extends SpringTheme {
   const _SpringThemeWithData({
     super.key,
     required this.data,
     required super.child,
   }) : super._();
 
-  final SpringThemeDataPartial data;
+  final T data;
 
   @override
-  SpringThemeResolver get resolver => .value(data);
+  ThemeResolver<T> get resolver => .value(data);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<SpringThemeDataPartial>("data", data));
+    properties.add(DiagnosticsProperty<T>("data", data));
   }
 }
 
 class _SpringTheme extends InheritedTheme {
   const _SpringTheme({super.key, required this.resolver, required super.child});
 
-  final SpringThemeResolver resolver;
+  final ThemeResolver<SpringThemeDataPartial> resolver;
 
   @override
   bool updateShouldNotify(_SpringTheme oldWidget) =>
@@ -815,6 +1145,7 @@ class _SpringTheme extends InheritedTheme {
   Widget wrap(BuildContext context, Widget child) =>
       _SpringTheme(resolver: resolver, child: child);
 
-  static SpringThemeResolver? maybeResolverOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_SpringTheme>()?.resolver;
+  static ThemeResolver<SpringThemeDataPartial>? maybeResolverOf(
+    BuildContext context,
+  ) => context.dependOnInheritedWidgetOfExactType<_SpringTheme>()?.resolver;
 }

@@ -54,7 +54,45 @@ abstract class DurationThemeDataPartial with Diagnosticable {
 
   Duration? get extraLong4;
 
+  DurationThemeDataPartial copy() => copyWith();
+
   DurationThemeDataPartial copyWith({
+    Duration? short1,
+    Duration? short2,
+    Duration? short3,
+    Duration? short4,
+    Duration? medium1,
+    Duration? medium2,
+    Duration? medium3,
+    Duration? medium4,
+    Duration? long1,
+    Duration? long2,
+    Duration? long3,
+    Duration? long4,
+    Duration? extraLong1,
+    Duration? extraLong2,
+    Duration? extraLong3,
+    Duration? extraLong4,
+  }) => .from(
+    short1: short1 ?? this.short1,
+    short2: short2 ?? this.short2,
+    short3: short3 ?? this.short3,
+    short4: short4 ?? this.short4,
+    medium1: medium1 ?? this.medium1,
+    medium2: medium2 ?? this.medium2,
+    medium3: medium3 ?? this.medium3,
+    medium4: medium4 ?? this.medium4,
+    long1: long1 ?? this.long1,
+    long2: long2 ?? this.long2,
+    long3: long3 ?? this.long3,
+    long4: long4 ?? this.long4,
+    extraLong1: extraLong1 ?? this.extraLong1,
+    extraLong2: extraLong2 ?? this.extraLong2,
+    extraLong3: extraLong3 ?? this.extraLong3,
+    extraLong4: extraLong4 ?? this.extraLong4,
+  );
+
+  DurationThemeDataPartial maybeCopyWith({
     Duration? short1,
     Duration? short2,
     Duration? short3,
@@ -88,23 +126,23 @@ abstract class DurationThemeDataPartial with Diagnosticable {
           extraLong2 != null ||
           extraLong3 != null ||
           extraLong4 != null
-      ? .from(
-          short1: short1 ?? this.short1,
-          short2: short2 ?? this.short2,
-          short3: short3 ?? this.short3,
-          short4: short4 ?? this.short4,
-          medium1: medium1 ?? this.medium1,
-          medium2: medium2 ?? this.medium2,
-          medium3: medium3 ?? this.medium3,
-          medium4: medium4 ?? this.medium4,
-          long1: long1 ?? this.long1,
-          long2: long2 ?? this.long2,
-          long3: long3 ?? this.long3,
-          long4: long4 ?? this.long4,
-          extraLong1: extraLong1 ?? this.extraLong1,
-          extraLong2: extraLong2 ?? this.extraLong2,
-          extraLong3: extraLong3 ?? this.extraLong3,
-          extraLong4: extraLong4 ?? this.extraLong4,
+      ? copyWith(
+          short1: short1,
+          short2: short2,
+          short3: short3,
+          short4: short4,
+          medium1: medium1,
+          medium2: medium2,
+          medium3: medium3,
+          medium4: medium4,
+          long1: long1,
+          long2: long2,
+          long3: long3,
+          long4: long4,
+          extraLong1: extraLong1,
+          extraLong2: extraLong2,
+          extraLong3: extraLong3,
+          extraLong4: extraLong4,
         )
       : this;
 
@@ -128,7 +166,70 @@ abstract class DurationThemeDataPartial with Diagnosticable {
           extraLong3: other.extraLong3,
           extraLong4: other.extraLong4,
         )
+      : copy();
+
+  DurationThemeDataPartial maybeMerge(DurationThemeDataPartial? other) =>
+      other != null
+      ? maybeCopyWith(
+          short1: other.short1,
+          short2: other.short2,
+          short3: other.short3,
+          short4: other.short4,
+          medium1: other.medium1,
+          medium2: other.medium2,
+          medium3: other.medium3,
+          medium4: other.medium4,
+          long1: other.long1,
+          long2: other.long2,
+          long3: other.long3,
+          long4: other.long4,
+          extraLong1: other.extraLong1,
+          extraLong2: other.extraLong2,
+          extraLong3: other.extraLong3,
+          extraLong4: other.extraLong4,
+        )
       : this;
+
+  bool get isEmpty =>
+      short1 == null &&
+      short2 == null &&
+      short3 == null &&
+      short4 == null &&
+      medium1 == null &&
+      medium2 == null &&
+      medium3 == null &&
+      medium4 == null &&
+      long1 == null &&
+      long2 == null &&
+      long3 == null &&
+      long4 == null &&
+      extraLong1 == null &&
+      extraLong2 == null &&
+      extraLong3 == null &&
+      extraLong4 == null;
+
+  bool get isNotEmpty => !isEmpty;
+
+  bool get isConcrete =>
+      short1 != null &&
+      short2 != null &&
+      short3 != null &&
+      short4 != null &&
+      medium1 != null &&
+      medium2 != null &&
+      medium3 != null &&
+      medium4 != null &&
+      long1 != null &&
+      long2 != null &&
+      long3 != null &&
+      long4 != null &&
+      extraLong1 != null &&
+      extraLong2 != null &&
+      extraLong3 != null &&
+      extraLong4 != null;
+
+  DurationThemeData? get asConcrete =>
+      isConcrete ? _DurationThemeDataPartialAsConcrete(this) : null;
 
   @override
   // ignore: must_call_super
@@ -183,52 +284,9 @@ abstract class DurationThemeDataPartial with Diagnosticable {
         ),
       );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is DurationThemeDataPartial &&
-          short1 == other.short1 &&
-          short2 == other.short2 &&
-          short3 == other.short3 &&
-          short4 == other.short4 &&
-          medium1 == other.medium1 &&
-          medium2 == other.medium2 &&
-          medium3 == other.medium3 &&
-          medium4 == other.medium4 &&
-          long1 == other.long1 &&
-          long2 == other.long2 &&
-          long3 == other.long3 &&
-          long4 == other.long4 &&
-          extraLong1 == other.extraLong1 &&
-          extraLong2 == other.extraLong2 &&
-          extraLong3 == other.extraLong3 &&
-          extraLong4 == other.extraLong4;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    short1,
-    short2,
-    short3,
-    short4,
-    medium1,
-    medium2,
-    medium3,
-    medium4,
-    long1,
-    long2,
-    long3,
-    long4,
-    extraLong1,
-    extraLong2,
-    extraLong3,
-    extraLong4,
-  );
 }
 
-class _DurationThemeDataPartial extends DurationThemeDataPartial {
+final class _DurationThemeDataPartial extends DurationThemeDataPartial {
   const _DurationThemeDataPartial({
     this.short1,
     this.short2,
@@ -295,6 +353,239 @@ class _DurationThemeDataPartial extends DurationThemeDataPartial {
 
   @override
   final Duration? extraLong4;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _DurationThemeDataPartial &&
+          short1 == other.short1 &&
+          short2 == other.short2 &&
+          short3 == other.short3 &&
+          short4 == other.short4 &&
+          medium1 == other.medium1 &&
+          medium2 == other.medium2 &&
+          medium3 == other.medium3 &&
+          medium4 == other.medium4 &&
+          long1 == other.long1 &&
+          long2 == other.long2 &&
+          long3 == other.long3 &&
+          long4 == other.long4 &&
+          extraLong1 == other.extraLong1 &&
+          extraLong2 == other.extraLong2 &&
+          extraLong3 == other.extraLong3 &&
+          extraLong4 == other.extraLong4;
+
+  @override
+  int get hashCode => Object.hash(
+    short1,
+    short2,
+    short3,
+    short4,
+    medium1,
+    medium2,
+    medium3,
+    medium4,
+    long1,
+    long2,
+    long3,
+    long4,
+    extraLong1,
+    extraLong2,
+    extraLong3,
+    extraLong4,
+  );
+}
+
+final class _DurationThemeDataPartialAsConcrete extends DurationThemeData {
+  _DurationThemeDataPartialAsConcrete(DurationThemeDataPartial value)
+    : assert(value.isConcrete),
+      _value = value;
+
+  final DurationThemeDataPartial _value;
+
+  @override
+  Duration get short1 => _value.short1!;
+
+  @override
+  Duration get short2 => _value.short2!;
+
+  @override
+  Duration get short3 => _value.short3!;
+
+  @override
+  Duration get short4 => _value.short4!;
+
+  @override
+  Duration get medium1 => _value.medium1!;
+
+  @override
+  Duration get medium2 => _value.medium2!;
+
+  @override
+  Duration get medium3 => _value.medium3!;
+
+  @override
+  Duration get medium4 => _value.medium4!;
+
+  @override
+  Duration get long1 => _value.long1!;
+
+  @override
+  Duration get long2 => _value.long2!;
+
+  @override
+  Duration get long3 => _value.long3!;
+
+  @override
+  Duration get long4 => _value.long4!;
+
+  @override
+  Duration get extraLong1 => _value.extraLong1!;
+
+  @override
+  Duration get extraLong2 => _value.extraLong2!;
+
+  @override
+  Duration get extraLong3 => _value.extraLong3!;
+
+  @override
+  Duration get extraLong4 => _value.extraLong4!;
+
+  @override
+  DurationThemeData copyWith({
+    Duration? short1,
+    Duration? short2,
+    Duration? short3,
+    Duration? short4,
+    Duration? medium1,
+    Duration? medium2,
+    Duration? medium3,
+    Duration? medium4,
+    Duration? long1,
+    Duration? long2,
+    Duration? long3,
+    Duration? long4,
+    Duration? extraLong1,
+    Duration? extraLong2,
+    Duration? extraLong3,
+    Duration? extraLong4,
+  }) => _DurationThemeDataPartialAsConcrete(
+    _value.copyWith(
+      short1: short1,
+      short2: short2,
+      short3: short3,
+      short4: short4,
+      medium1: medium1,
+      medium2: medium2,
+      medium3: medium3,
+      medium4: medium4,
+      long1: long1,
+      long2: long2,
+      long3: long3,
+      long4: long4,
+      extraLong1: extraLong1,
+      extraLong2: extraLong2,
+      extraLong3: extraLong3,
+      extraLong4: extraLong4,
+    ),
+  );
+
+  @override
+  DurationThemeData maybeCopyWith({
+    Duration? short1,
+    Duration? short2,
+    Duration? short3,
+    Duration? short4,
+    Duration? medium1,
+    Duration? medium2,
+    Duration? medium3,
+    Duration? medium4,
+    Duration? long1,
+    Duration? long2,
+    Duration? long3,
+    Duration? long4,
+    Duration? extraLong1,
+    Duration? extraLong2,
+    Duration? extraLong3,
+    Duration? extraLong4,
+  }) =>
+      short1 != null &&
+          short2 != null &&
+          short3 != null &&
+          short4 != null &&
+          medium1 != null &&
+          medium2 != null &&
+          medium3 != null &&
+          medium4 != null &&
+          long1 != null &&
+          long2 != null &&
+          long3 != null &&
+          long4 != null &&
+          extraLong1 != null &&
+          extraLong2 != null &&
+          extraLong3 != null &&
+          extraLong4 != null
+      ? .from(
+          short1: short1,
+          short2: short2,
+          short3: short3,
+          short4: short4,
+          medium1: medium1,
+          medium2: medium2,
+          medium3: medium3,
+          medium4: medium4,
+          long1: long1,
+          long2: long2,
+          long3: long3,
+          long4: long4,
+          extraLong1: extraLong1,
+          extraLong2: extraLong2,
+          extraLong3: extraLong3,
+          extraLong4: extraLong4,
+        )
+      : short1 != null ||
+            short2 != null ||
+            short3 != null ||
+            short4 != null ||
+            medium1 != null ||
+            medium2 != null ||
+            medium3 != null ||
+            medium4 != null ||
+            long1 != null ||
+            long2 != null ||
+            long3 != null ||
+            long4 != null ||
+            extraLong1 != null ||
+            extraLong2 != null ||
+            extraLong3 != null ||
+            extraLong4 != null
+      ? copyWith(
+          short1: short1,
+          short2: short2,
+          short3: short3,
+          short4: short4,
+          medium1: medium1,
+          medium2: medium2,
+          medium3: medium3,
+          medium4: medium4,
+          long1: long1,
+          long2: long2,
+          long3: long3,
+          long4: long4,
+          extraLong1: extraLong1,
+          extraLong2: extraLong2,
+          extraLong3: extraLong3,
+          extraLong4: extraLong4,
+        )
+      : this;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _DurationThemeDataPartialAsConcrete && _value == other._value;
+
+  @override
+  int get hashCode => _value.hashCode;
 }
 
 abstract class DurationThemeData extends DurationThemeDataPartial {
@@ -319,25 +610,8 @@ abstract class DurationThemeData extends DurationThemeDataPartial {
     required Duration extraLong4,
   }) = _DurationThemeData;
 
-  const factory DurationThemeData.defaults() = _DurationThemeDataDefaults;
-
-  const factory DurationThemeData._defaults({
-    Duration? short1,
-    Duration? short2,
-    Duration? short3,
-    Duration? short4,
-    Duration? medium1,
-    Duration? medium2,
-    Duration? medium3,
-    Duration? medium4,
-    Duration? long1,
-    Duration? long2,
-    Duration? long3,
-    Duration? long4,
-    Duration? extraLong1,
-    Duration? extraLong2,
-    Duration? extraLong3,
-    Duration? extraLong4,
+  const factory DurationThemeData.defaults({
+    DurationThemeDataPartial? overrides,
   }) = _DurationThemeDataDefaults;
 
   @override
@@ -389,7 +663,47 @@ abstract class DurationThemeData extends DurationThemeDataPartial {
   Duration get extraLong4;
 
   @override
+  DurationThemeData copy() => copyWith();
+
+  @override
   DurationThemeData copyWith({
+    Duration? short1,
+    Duration? short2,
+    Duration? short3,
+    Duration? short4,
+    Duration? medium1,
+    Duration? medium2,
+    Duration? medium3,
+    Duration? medium4,
+    Duration? long1,
+    Duration? long2,
+    Duration? long3,
+    Duration? long4,
+    Duration? extraLong1,
+    Duration? extraLong2,
+    Duration? extraLong3,
+    Duration? extraLong4,
+  }) => .from(
+    short1: short1 ?? this.short1,
+    short2: short2 ?? this.short2,
+    short3: short3 ?? this.short3,
+    short4: short4 ?? this.short4,
+    medium1: medium1 ?? this.medium1,
+    medium2: medium2 ?? this.medium2,
+    medium3: medium3 ?? this.medium3,
+    medium4: medium4 ?? this.medium4,
+    long1: long1 ?? this.long1,
+    long2: long2 ?? this.long2,
+    long3: long3 ?? this.long3,
+    long4: long4 ?? this.long4,
+    extraLong1: extraLong1 ?? this.extraLong1,
+    extraLong2: extraLong2 ?? this.extraLong2,
+    extraLong3: extraLong3 ?? this.extraLong3,
+    extraLong4: extraLong4 ?? this.extraLong4,
+  );
+
+  @override
+  DurationThemeData maybeCopyWith({
     Duration? short1,
     Duration? short2,
     Duration? short3,
@@ -423,23 +737,23 @@ abstract class DurationThemeData extends DurationThemeDataPartial {
           extraLong2 != null ||
           extraLong3 != null ||
           extraLong4 != null
-      ? .from(
-          short1: short1 ?? this.short1,
-          short2: short2 ?? this.short2,
-          short3: short3 ?? this.short3,
-          short4: short4 ?? this.short4,
-          medium1: medium1 ?? this.medium1,
-          medium2: medium2 ?? this.medium2,
-          medium3: medium3 ?? this.medium3,
-          medium4: medium4 ?? this.medium4,
-          long1: long1 ?? this.long1,
-          long2: long2 ?? this.long2,
-          long3: long3 ?? this.long3,
-          long4: long4 ?? this.long4,
-          extraLong1: extraLong1 ?? this.extraLong1,
-          extraLong2: extraLong2 ?? this.extraLong2,
-          extraLong3: extraLong3 ?? this.extraLong3,
-          extraLong4: extraLong4 ?? this.extraLong4,
+      ? copyWith(
+          short1: short1,
+          short2: short2,
+          short3: short3,
+          short4: short4,
+          medium1: medium1,
+          medium2: medium2,
+          medium3: medium3,
+          medium4: medium4,
+          long1: long1,
+          long2: long2,
+          long3: long3,
+          long4: long4,
+          extraLong1: extraLong1,
+          extraLong2: extraLong2,
+          extraLong3: extraLong3,
+          extraLong4: extraLong4,
         )
       : this;
 
@@ -463,7 +777,41 @@ abstract class DurationThemeData extends DurationThemeDataPartial {
           extraLong3: other.extraLong3,
           extraLong4: other.extraLong4,
         )
+      : copy();
+
+  @override
+  DurationThemeData maybeMerge(DurationThemeDataPartial? other) => other != null
+      ? maybeCopyWith(
+          short1: other.short1,
+          short2: other.short2,
+          short3: other.short3,
+          short4: other.short4,
+          medium1: other.medium1,
+          medium2: other.medium2,
+          medium3: other.medium3,
+          medium4: other.medium4,
+          long1: other.long1,
+          long2: other.long2,
+          long3: other.long3,
+          long4: other.long4,
+          extraLong1: other.extraLong1,
+          extraLong2: other.extraLong2,
+          extraLong3: other.extraLong3,
+          extraLong4: other.extraLong4,
+        )
       : this;
+
+  @override
+  bool get isEmpty => false;
+
+  @override
+  bool get isNotEmpty => true;
+
+  @override
+  bool get isConcrete => true;
+
+  @override
+  DurationThemeData get asConcrete => this;
 
   @override
   // ignore: must_call_super
@@ -486,52 +834,9 @@ abstract class DurationThemeData extends DurationThemeDataPartial {
       ..add(DiagnosticsProperty<Duration>("extraLong3", extraLong3))
       ..add(DiagnosticsProperty<Duration>("extraLong4", extraLong4));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is DurationThemeData &&
-          short1 == other.short1 &&
-          short2 == other.short2 &&
-          short3 == other.short3 &&
-          short4 == other.short4 &&
-          medium1 == other.medium1 &&
-          medium2 == other.medium2 &&
-          medium3 == other.medium3 &&
-          medium4 == other.medium4 &&
-          long1 == other.long1 &&
-          long2 == other.long2 &&
-          long3 == other.long3 &&
-          long4 == other.long4 &&
-          extraLong1 == other.extraLong1 &&
-          extraLong2 == other.extraLong2 &&
-          extraLong3 == other.extraLong3 &&
-          extraLong4 == other.extraLong4;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    short1,
-    short2,
-    short3,
-    short4,
-    medium1,
-    medium2,
-    medium3,
-    medium4,
-    long1,
-    long2,
-    long3,
-    long4,
-    extraLong1,
-    extraLong2,
-    extraLong3,
-    extraLong4,
-  );
 }
 
-class _DurationThemeData extends DurationThemeData {
+final class _DurationThemeData extends DurationThemeData {
   const _DurationThemeData({
     required this.short1,
     required this.short2,
@@ -598,10 +903,109 @@ class _DurationThemeData extends DurationThemeData {
 
   @override
   final Duration extraLong4;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _DurationThemeData &&
+          short1 == other.short1 &&
+          short2 == other.short2 &&
+          short3 == other.short3 &&
+          short4 == other.short4 &&
+          medium1 == other.medium1 &&
+          medium2 == other.medium2 &&
+          medium3 == other.medium3 &&
+          medium4 == other.medium4 &&
+          long1 == other.long1 &&
+          long2 == other.long2 &&
+          long3 == other.long3 &&
+          long4 == other.long4 &&
+          extraLong1 == other.extraLong1 &&
+          extraLong2 == other.extraLong2 &&
+          extraLong3 == other.extraLong3 &&
+          extraLong4 == other.extraLong4;
+
+  @override
+  int get hashCode => Object.hash(
+    short1,
+    short2,
+    short3,
+    short4,
+    medium1,
+    medium2,
+    medium3,
+    medium4,
+    long1,
+    long2,
+    long3,
+    long4,
+    extraLong1,
+    extraLong2,
+    extraLong3,
+    extraLong4,
+  );
 }
 
-class _DurationThemeDataDefaults extends DurationThemeData {
-  const _DurationThemeDataDefaults({
+final class _DurationThemeDataDefaults extends DurationThemeData {
+  const _DurationThemeDataDefaults({DurationThemeDataPartial? overrides})
+    : _overrides = overrides ?? const .from();
+
+  final DurationThemeDataPartial _overrides;
+
+  @override
+  Duration get short1 => _overrides.short1 ?? const .new(milliseconds: 50);
+
+  @override
+  Duration get short2 => _overrides.short2 ?? const .new(milliseconds: 100);
+
+  @override
+  Duration get short3 => _overrides.short3 ?? const .new(milliseconds: 150);
+
+  @override
+  Duration get short4 => _overrides.short4 ?? const .new(milliseconds: 200);
+
+  @override
+  Duration get medium1 => _overrides.medium1 ?? const .new(milliseconds: 250);
+
+  @override
+  Duration get medium2 => _overrides.medium2 ?? const .new(milliseconds: 300);
+
+  @override
+  Duration get medium3 => _overrides.medium3 ?? const .new(milliseconds: 350);
+
+  @override
+  Duration get medium4 => _overrides.medium4 ?? const .new(milliseconds: 400);
+
+  @override
+  Duration get long1 => _overrides.long1 ?? const .new(milliseconds: 450);
+
+  @override
+  Duration get long2 => _overrides.long2 ?? const .new(milliseconds: 500);
+
+  @override
+  Duration get long3 => _overrides.long3 ?? const .new(milliseconds: 550);
+
+  @override
+  Duration get long4 => _overrides.long4 ?? const .new(milliseconds: 600);
+
+  @override
+  Duration get extraLong1 =>
+      _overrides.extraLong1 ?? const .new(milliseconds: 700);
+
+  @override
+  Duration get extraLong2 =>
+      _overrides.extraLong2 ?? const .new(milliseconds: 800);
+
+  @override
+  Duration get extraLong3 =>
+      _overrides.extraLong3 ?? const .new(milliseconds: 900);
+
+  @override
+  Duration get extraLong4 =>
+      _overrides.extraLong4 ?? const .new(milliseconds: 1000);
+
+  @override
+  DurationThemeData copyWith({
     Duration? short1,
     Duration? short2,
     Duration? short3,
@@ -618,90 +1022,29 @@ class _DurationThemeDataDefaults extends DurationThemeData {
     Duration? extraLong2,
     Duration? extraLong3,
     Duration? extraLong4,
-  }) : _short1 = short1,
-       _short2 = short2,
-       _short3 = short3,
-       _short4 = short4,
-       _medium1 = medium1,
-       _medium2 = medium2,
-       _medium3 = medium3,
-       _medium4 = medium4,
-       _long1 = long1,
-       _long2 = long2,
-       _long3 = long3,
-       _long4 = long4,
-       _extraLong1 = extraLong1,
-       _extraLong2 = extraLong2,
-       _extraLong3 = extraLong3,
-       _extraLong4 = extraLong4;
-
-  final Duration? _short1;
-  final Duration? _short2;
-  final Duration? _short3;
-  final Duration? _short4;
-  final Duration? _medium1;
-  final Duration? _medium2;
-  final Duration? _medium3;
-  final Duration? _medium4;
-  final Duration? _long1;
-  final Duration? _long2;
-  final Duration? _long3;
-  final Duration? _long4;
-  final Duration? _extraLong1;
-  final Duration? _extraLong2;
-  final Duration? _extraLong3;
-  final Duration? _extraLong4;
+  }) => _DurationThemeDataDefaults(
+    overrides: _overrides.copyWith(
+      short1: short1,
+      short2: short2,
+      short3: short3,
+      short4: short4,
+      medium1: medium1,
+      medium2: medium2,
+      medium3: medium3,
+      medium4: medium4,
+      long1: long1,
+      long2: long2,
+      long3: long3,
+      long4: long4,
+      extraLong1: extraLong1,
+      extraLong2: extraLong2,
+      extraLong3: extraLong3,
+      extraLong4: extraLong4,
+    ),
+  );
 
   @override
-  Duration get short1 => _short1 ?? const .new(milliseconds: 50);
-
-  @override
-  Duration get short2 => _short2 ?? const .new(milliseconds: 100);
-
-  @override
-  Duration get short3 => _short3 ?? const .new(milliseconds: 150);
-
-  @override
-  Duration get short4 => _short4 ?? const .new(milliseconds: 200);
-
-  @override
-  Duration get medium1 => _medium1 ?? const .new(milliseconds: 250);
-
-  @override
-  Duration get medium2 => _medium2 ?? const .new(milliseconds: 300);
-
-  @override
-  Duration get medium3 => _medium3 ?? const .new(milliseconds: 350);
-
-  @override
-  Duration get medium4 => _medium4 ?? const .new(milliseconds: 400);
-
-  @override
-  Duration get long1 => _long1 ?? const .new(milliseconds: 450);
-
-  @override
-  Duration get long2 => _long2 ?? const .new(milliseconds: 500);
-
-  @override
-  Duration get long3 => _long3 ?? const .new(milliseconds: 550);
-
-  @override
-  Duration get long4 => _long4 ?? const .new(milliseconds: 600);
-
-  @override
-  Duration get extraLong1 => _extraLong1 ?? const .new(milliseconds: 700);
-
-  @override
-  Duration get extraLong2 => _extraLong2 ?? const .new(milliseconds: 800);
-
-  @override
-  Duration get extraLong3 => _extraLong3 ?? const .new(milliseconds: 900);
-
-  @override
-  Duration get extraLong4 => _extraLong4 ?? const .new(milliseconds: 1000);
-
-  @override
-  DurationThemeData copyWith({
+  DurationThemeData maybeCopyWith({
     Duration? short1,
     Duration? short2,
     Duration? short3,
@@ -753,107 +1096,91 @@ class _DurationThemeDataDefaults extends DurationThemeData {
           extraLong3: extraLong3,
           extraLong4: extraLong4,
         )
-      : _DurationThemeDataDefaults(
-          short1: short1 ?? _short1,
-          short2: short2 ?? _short2,
-          short3: short3 ?? _short3,
-          short4: short4 ?? _short4,
-          medium1: medium1 ?? _medium1,
-          medium2: medium2 ?? _medium2,
-          medium3: medium3 ?? _medium3,
-          medium4: medium4 ?? _medium4,
-          long1: long1 ?? _long1,
-          long2: long2 ?? _long2,
-          long3: long3 ?? _long3,
-          long4: long4 ?? _long4,
-          extraLong1: extraLong1 ?? _extraLong1,
-          extraLong2: extraLong2 ?? _extraLong2,
-          extraLong3: extraLong3 ?? _extraLong3,
-          extraLong4: extraLong4 ?? _extraLong4,
-        );
+      : short1 != null ||
+            short2 != null ||
+            short3 != null ||
+            short4 != null ||
+            medium1 != null ||
+            medium2 != null ||
+            medium3 != null ||
+            medium4 != null ||
+            long1 != null ||
+            long2 != null ||
+            long3 != null ||
+            long4 != null ||
+            extraLong1 != null ||
+            extraLong2 != null ||
+            extraLong3 != null ||
+            extraLong4 != null
+      ? copyWith(
+          short1: short1,
+          short2: short2,
+          short3: short3,
+          short4: short4,
+          medium1: medium1,
+          medium2: medium2,
+          medium3: medium3,
+          medium4: medium4,
+          long1: long1,
+          long2: long2,
+          long3: long3,
+          long4: long4,
+          extraLong1: extraLong1,
+          extraLong2: extraLong2,
+          extraLong3: extraLong3,
+          extraLong4: extraLong4,
+        )
+      : this;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _DurationThemeDataDefaults &&
-          _short1 == other._short1 &&
-          _short2 == other._short2 &&
-          _short3 == other._short3 &&
-          _short4 == other._short4 &&
-          _medium1 == other._medium1 &&
-          _medium2 == other._medium2 &&
-          _medium3 == other._medium3 &&
-          _medium4 == other._medium4 &&
-          _long1 == other._long1 &&
-          _long2 == other._long2 &&
-          _long3 == other._long3 &&
-          _long4 == other._long4 &&
-          _extraLong1 == other._extraLong1 &&
-          _extraLong2 == other._extraLong2 &&
-          _extraLong3 == other._extraLong3 &&
-          _extraLong4 == other._extraLong4;
+      other is _DurationThemeDataDefaults && _overrides == other._overrides;
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    _short1,
-    _short2,
-    _short3,
-    _short4,
-    _medium1,
-    _medium2,
-    _medium3,
-    _medium4,
-    _long1,
-    _long2,
-    _long3,
-    _long4,
-    _extraLong1,
-    _extraLong2,
-    _extraLong3,
-    _extraLong4,
-  );
-}
-
-typedef DurationThemeResolver = ThemeResolver<DurationThemeDataPartial>;
-
-typedef DurationThemeResolverCallback =
-    ThemeResolverCallback<DurationThemeDataPartial>;
-
-class _DurationThemeResolver
-    extends CombiningThemeResolver<DurationThemeDataPartial> {
-  const _DurationThemeResolver(super.a, super.b);
-
-  @override
-  DurationThemeDataPartial combine(
-    DurationThemeDataPartial a,
-    DurationThemeDataPartial b,
-  ) => a.merge(b);
+  int get hashCode => _overrides.hashCode;
 }
 
 abstract class DurationTheme extends StatelessWidget implements ProxyWidget {
   const DurationTheme._({super.key, required this.child});
 
-  const factory DurationTheme.withResolver({
+  const factory DurationTheme.mergeWithResolver({
     Key? key,
-    required DurationThemeResolver resolver,
+    required ThemeResolver<DurationThemeDataPartial> resolver,
     required Widget child,
-  }) = _DurationThemeWithResolver;
+  }) = _DurationThemeWithResolver<DurationThemeDataPartial>;
 
-  const factory DurationTheme.withCallback({
+  const factory DurationTheme.mergeWithCallback({
     Key? key,
-    required DurationThemeResolverCallback callback,
+    required ThemeResolverCallback<DurationThemeDataPartial> callback,
     required Widget child,
-  }) = _DurationThemeWithCallback;
+  }) = _DurationThemeWithCallback<DurationThemeDataPartial>;
 
-  const factory DurationTheme.withData({
+  const factory DurationTheme.mergeWithData({
     Key? key,
     required DurationThemeDataPartial data,
     required Widget child,
-  }) = _DurationThemeWithData;
+  }) = _DurationThemeWithData<DurationThemeDataPartial>;
 
-  DurationThemeResolver get resolver;
+  const factory DurationTheme.replaceWithResolver({
+    Key? key,
+    required ThemeResolver<DurationThemeData> resolver,
+    required Widget child,
+  }) = _DurationThemeWithResolver<DurationThemeData>;
+
+  const factory DurationTheme.replaceWithCallback({
+    Key? key,
+    required ThemeResolverCallback<DurationThemeData> callback,
+    required Widget child,
+  }) = _DurationThemeWithCallback<DurationThemeData>;
+
+  const factory DurationTheme.replaceWithData({
+    Key? key,
+    required DurationThemeData data,
+    required Widget child,
+  }) = _DurationThemeWithData<DurationThemeData>;
+
+  ThemeResolver<DurationThemeDataPartial> get resolver;
 
   @override
   final Widget child;
@@ -863,40 +1190,25 @@ abstract class DurationTheme extends StatelessWidget implements ProxyWidget {
     final inherited = _DurationTheme.maybeResolverOf(context);
     return _DurationTheme(
       resolver: inherited != null
-          ? _DurationThemeResolver(inherited, resolver)
+          ? .combine(inherited, resolver, _merge)
           : resolver,
       child: child,
     );
   }
 
+  static DurationThemeDataPartial _merge(
+    DurationThemeDataPartial a,
+    DurationThemeDataPartial b,
+  ) => a.maybeMerge(b);
+
   static DurationThemeData of(BuildContext context) {
     final resolver = _DurationTheme.maybeResolverOf(context);
-    if (resolver != null) {
-      final data = resolver.resolve(context);
-      return ._defaults(
-        short1: data.short1,
-        short2: data.short2,
-        short3: data.short3,
-        short4: data.short4,
-        medium1: data.medium1,
-        medium2: data.medium2,
-        medium3: data.medium3,
-        medium4: data.medium4,
-        long1: data.long1,
-        long2: data.long2,
-        long3: data.long3,
-        long4: data.long4,
-        extraLong1: data.extraLong1,
-        extraLong2: data.extraLong2,
-        extraLong3: data.extraLong3,
-        extraLong4: data.extraLong4,
-      );
-    }
-    return const .defaults();
+    return .defaults(overrides: resolver?.resolve(context));
   }
 }
 
-class _DurationThemeWithResolver extends DurationTheme {
+class _DurationThemeWithResolver<T extends DurationThemeDataPartial>
+    extends DurationTheme {
   const _DurationThemeWithResolver({
     super.key,
     required this.resolver,
@@ -904,54 +1216,54 @@ class _DurationThemeWithResolver extends DurationTheme {
   }) : super._();
 
   @override
-  final DurationThemeResolver resolver;
+  final ThemeResolver<T> resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<DurationThemeResolver>("resolver", resolver),
-    );
+    properties.add(DiagnosticsProperty<ThemeResolver<T>>("resolver", resolver));
   }
 }
 
-class _DurationThemeWithCallback extends DurationTheme {
+class _DurationThemeWithCallback<T extends DurationThemeDataPartial>
+    extends DurationTheme {
   const _DurationThemeWithCallback({
     super.key,
     required this.callback,
     required super.child,
   }) : super._();
 
-  final DurationThemeResolverCallback callback;
+  final ThemeResolverCallback<T> callback;
 
   @override
-  DurationThemeResolver get resolver => .callback(callback);
+  ThemeResolver<T> get resolver => .callback(callback);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      DiagnosticsProperty<DurationThemeResolverCallback>("callback", callback),
+      DiagnosticsProperty<ThemeResolverCallback<T>>("callback", callback),
     );
   }
 }
 
-class _DurationThemeWithData extends DurationTheme {
+class _DurationThemeWithData<T extends DurationThemeDataPartial>
+    extends DurationTheme {
   const _DurationThemeWithData({
     super.key,
     required this.data,
     required super.child,
   }) : super._();
 
-  final DurationThemeDataPartial data;
+  final T data;
 
   @override
-  DurationThemeResolver get resolver => .value(data);
+  ThemeResolver<T> get resolver => .value(data);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<DurationThemeDataPartial>("data", data));
+    properties.add(DiagnosticsProperty<T>("data", data));
   }
 }
 
@@ -962,7 +1274,7 @@ class _DurationTheme extends InheritedTheme {
     required super.child,
   });
 
-  final DurationThemeResolver resolver;
+  final ThemeResolver<DurationThemeDataPartial> resolver;
 
   @override
   bool updateShouldNotify(_DurationTheme oldWidget) =>
@@ -972,6 +1284,7 @@ class _DurationTheme extends InheritedTheme {
   Widget wrap(BuildContext context, Widget child) =>
       _DurationTheme(resolver: resolver, child: child);
 
-  static DurationThemeResolver? maybeResolverOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_DurationTheme>()?.resolver;
+  static ThemeResolver<DurationThemeDataPartial>? maybeResolverOf(
+    BuildContext context,
+  ) => context.dependOnInheritedWidgetOfExactType<_DurationTheme>()?.resolver;
 }

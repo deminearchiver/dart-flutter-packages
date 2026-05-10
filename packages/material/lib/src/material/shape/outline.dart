@@ -73,18 +73,6 @@ abstract class OutlinePartial with Diagnosticable {
       ..add(ColorProperty("color", color, defaultValue: null));
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is OutlinePartial &&
-          width == other.width &&
-          alignment == other.alignment &&
-          color == other.color;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, width, alignment, color);
-
   static OutlinePartial? lerp(OutlinePartial? a, OutlinePartial? b, double t) {
     if (identical(a, b)) return a;
     if (a == null) {
@@ -119,6 +107,17 @@ class _OutlinePartial extends OutlinePartial {
 
   @override
   final Color? color;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _OutlinePartial &&
+          width == other.width &&
+          alignment == other.alignment &&
+          color == other.color;
+
+  @override
+  int get hashCode => Object.hash(width, alignment, color);
 }
 
 abstract class Outline extends OutlinePartial {
@@ -186,18 +185,6 @@ abstract class Outline extends OutlinePartial {
       ..add(ColorProperty("color", color));
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is Outline &&
-          width == other.width &&
-          alignment == other.alignment &&
-          color == other.color;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, width, alignment, color);
-
   /// The border is drawn fully inside of the border path.
   ///
   /// This is a constant for use with [alignment].
@@ -244,6 +231,17 @@ class _Outline extends Outline {
 
   @override
   final Color color;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _Outline &&
+          width == other.width &&
+          alignment == other.alignment &&
+          color == other.color;
+
+  @override
+  int get hashCode => Object.hash(width, alignment, color);
 }
 
 class OutlinePartialTween extends Tween<OutlinePartial?> {

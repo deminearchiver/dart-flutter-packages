@@ -16,7 +16,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   Widget _buildTypefaceTheme(BuildContext context, Widget child) =>
-      TypefaceTheme.withData(data: _typography.typeface, child: child);
+      TypefaceTheme.mergeWithData(data: _typography.typeface, child: child);
 
   Widget _buildReferenceThemes(BuildContext context, Widget child) =>
       CombiningBuilder(
@@ -26,7 +26,11 @@ class _AppState extends State<App> {
       );
 
   Widget _buildColorThemes(BuildContext context, Widget child) {
-    final brightness = MediaQuery.platformBrightnessOf(context);
+    final Brightness brightness = switch (_themeMode) {
+      .system => MediaQuery.platformBrightnessOf(context),
+      .light => .light,
+      .dark => .dark,
+    };
     final highContrast = MediaQuery.highContrastOf(context);
     final contrastLevel = highContrast ? 1.0 : 0.0;
     final colorTheme = ColorThemeData.fromSeed(
@@ -43,25 +47,33 @@ class _AppState extends State<App> {
       platform: _platform,
       specVersion: _specVersion,
     );
-    return ColorTheme.withData(
+    return ColorTheme.replaceWithData(
       data: colorTheme,
       child: StaticColors(data: staticColors, child: child),
     );
   }
 
   Widget _buildSpringTheme(BuildContext context, Widget child) =>
-      SpringTheme.withData(
+      SpringTheme.replaceWithData(
         data: const SpringThemeData.defaultsExpressive(),
         child: child,
       );
 
   Widget _buildTypescaleTheme(BuildContext context, Widget child) =>
-      TypescaleTheme.withData(data: _typography.typescale, child: child);
+      TypescaleTheme.mergeWithData(data: _typography.typescale, child: child);
 
   Widget _buildSystemThemes(BuildContext context, Widget child) =>
       CombiningBuilder(
         useOuterContext: true,
-        builders: [_buildColorThemes, _buildSpringTheme, _buildTypescaleTheme],
+        builders: [
+          _buildColorThemes,
+          _buildSpringTheme,
+          _buildTypescaleTheme,
+          // (context, child) => ShapeTheme.mergeWithData(
+          //   data: .from(cornerFamily: .rounded),
+          //   child: child,
+          // ),
+        ],
         child: child,
       );
 
@@ -129,11 +141,12 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    final appBuilder = Builder(builder: _buildApp);
+    final appBuilder = Builder(key: GlobalObjectKey(this), builder: _buildApp);
     return _buildThemes(context, appBuilder);
   }
 
-  static const _variant = DynamicSchemeVariant.expressive;
+  static const _themeMode = ThemeMode.system;
+  static const _variant = DynamicSchemeVariant.cmf;
   static const _platform = DynamicSchemePlatform.phone;
   static const _specVersion = DynamicSchemeSpecVersion.spec2026;
   static const _typography = TypographyDefaults.material3Expressive2026;

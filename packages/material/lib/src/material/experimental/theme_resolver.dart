@@ -5,7 +5,7 @@ typedef ThemeResolverCallback<T extends Object?> =
 
 typedef ThemeResolverCombineCallback<T extends Object?> = T Function(T a, T b);
 
-abstract class ThemeResolver<T extends Object?> with Diagnosticable {
+abstract class ThemeResolver<T extends Object?> {
   const ThemeResolver();
 
   const factory ThemeResolver.callback(ThemeResolverCallback<T> callback) =
@@ -22,13 +22,16 @@ abstract class ThemeResolver<T extends Object?> with Diagnosticable {
   ) => _ThemeResolverCombine(a, b, combine);
 }
 
-class _CallbackThemeResolver<T extends Object?> extends ThemeResolver<T> {
+final class _CallbackThemeResolver<T extends Object?> extends ThemeResolver<T> {
   const _CallbackThemeResolver(this._callback);
 
   final ThemeResolverCallback<T> _callback;
 
   @override
   T resolve(BuildContext context) => _callback(context);
+
+  @override
+  String toString() => "ThemeResolver<$T>.callback($_callback)";
 
   @override
   bool operator ==(Object other) =>
@@ -39,13 +42,16 @@ class _CallbackThemeResolver<T extends Object?> extends ThemeResolver<T> {
   int get hashCode => _callback.hashCode;
 }
 
-class _ValueThemeResolver<T extends Object?> extends ThemeResolver<T> {
+final class _ValueThemeResolver<T extends Object?> extends ThemeResolver<T> {
   const _ValueThemeResolver(this._value);
 
   final T _value;
 
   @override
   T resolve(BuildContext context) => _value;
+
+  @override
+  String toString() => "ThemeResolver<$T>.value($_value)";
 
   @override
   bool operator ==(Object other) =>
@@ -69,20 +75,9 @@ abstract class CombiningThemeResolver<T extends Object?>
   @override
   T resolve(BuildContext context) =>
       combine(a.resolve(context), b.resolve(context));
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is CombiningThemeResolver<T> &&
-          a == other.a &&
-          b == other.b;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, a, b);
 }
 
-class _ThemeResolverCombine<T extends Object>
+final class _ThemeResolverCombine<T extends Object>
     extends CombiningThemeResolver<T> {
   const _ThemeResolverCombine(
     super.a,
@@ -94,6 +89,9 @@ class _ThemeResolverCombine<T extends Object>
 
   @override
   T combine(T a, T b) => _combine(a, b);
+
+  @override
+  String toString() => "ThemeResolver.combine<$T>($a, $b, $_combine)";
 
   @override
   bool operator ==(Object other) =>

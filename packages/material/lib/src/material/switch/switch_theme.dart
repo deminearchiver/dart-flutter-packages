@@ -61,7 +61,7 @@ abstract class SwitchThemeDataPartial with Diagnosticable {
 
   SwitchStateProperty<IconThemeDataPartial?>? get iconTheme;
 
-  SwitchThemeDataPartial copyWith({
+  SwitchThemeDataPartial maybeCopyWith({
     covariant SwitchStateProperty<Size?>? minTapTargetSize,
     covariant SwitchStateProperty<Size?>? trackSize,
     covariant SwitchStateProperty<OutlinedBorder?>? trackShape,
@@ -195,7 +195,8 @@ abstract class SwitchThemeDataPartial with Diagnosticable {
                   ?.orElseMaybe(this.iconTheme?.resolve)
                   .mapValue(
                     (states, value) =>
-                        this.iconTheme?.resolve(states)?.merge(value) ?? value,
+                        this.iconTheme?.resolve(states)?.maybeMerge(value) ??
+                        value,
                   ) ??
               this.iconTheme,
         )
@@ -219,48 +220,9 @@ abstract class SwitchThemeDataPartial with Diagnosticable {
           iconTheme: other.iconTheme,
         )
       : this;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is SwitchThemeDataPartial &&
-          minTapTargetSize == other.minTapTargetSize &&
-          trackSize == other.trackSize &&
-          trackShape == other.trackShape &&
-          trackColor == other.trackColor &&
-          trackOutline == other.trackOutline &&
-          stateLayerSize == other.stateLayerSize &&
-          stateLayerShape == other.stateLayerShape &&
-          stateLayerColor == other.stateLayerColor &&
-          stateLayerOpacity == other.stateLayerOpacity &&
-          handleSize == other.handleSize &&
-          handleShape == other.handleShape &&
-          handleColor == other.handleColor &&
-          handleOutline == other.handleOutline &&
-          iconTheme == other.iconTheme;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    minTapTargetSize,
-    trackSize,
-    trackShape,
-    trackColor,
-    trackOutline,
-    stateLayerSize,
-    stateLayerShape,
-    stateLayerColor,
-    stateLayerOpacity,
-    handleSize,
-    handleShape,
-    handleColor,
-    handleOutline,
-    iconTheme,
-  );
 }
 
-class _SwitchThemeDataPartial extends SwitchThemeDataPartial {
+final class _SwitchThemeDataPartial extends SwitchThemeDataPartial {
   const _SwitchThemeDataPartial({
     this.minTapTargetSize,
     this.trackSize,
@@ -319,6 +281,43 @@ class _SwitchThemeDataPartial extends SwitchThemeDataPartial {
 
   @override
   final SwitchStateProperty<IconThemeDataPartial?>? iconTheme;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _SwitchThemeDataPartial &&
+          minTapTargetSize == other.minTapTargetSize &&
+          trackSize == other.trackSize &&
+          trackShape == other.trackShape &&
+          trackColor == other.trackColor &&
+          trackOutline == other.trackOutline &&
+          stateLayerSize == other.stateLayerSize &&
+          stateLayerShape == other.stateLayerShape &&
+          stateLayerColor == other.stateLayerColor &&
+          stateLayerOpacity == other.stateLayerOpacity &&
+          handleSize == other.handleSize &&
+          handleShape == other.handleShape &&
+          handleColor == other.handleColor &&
+          handleOutline == other.handleOutline &&
+          iconTheme == other.iconTheme;
+
+  @override
+  int get hashCode => Object.hash(
+    minTapTargetSize,
+    trackSize,
+    trackShape,
+    trackColor,
+    trackOutline,
+    stateLayerSize,
+    stateLayerShape,
+    stateLayerColor,
+    stateLayerOpacity,
+    handleSize,
+    handleShape,
+    handleColor,
+    handleOutline,
+    iconTheme,
+  );
 }
 
 abstract class SwitchThemeData extends SwitchThemeDataPartial {
@@ -410,7 +409,7 @@ abstract class SwitchThemeData extends SwitchThemeDataPartial {
   SwitchStateProperty<IconThemeDataPartial> get iconTheme;
 
   @override
-  SwitchThemeData copyWith({
+  SwitchThemeData maybeCopyWith({
     covariant SwitchStateProperty<Size>? minTapTargetSize,
     covariant SwitchStateProperty<Size>? trackSize,
     covariant SwitchStateProperty<OutlinedBorder>? trackShape,
@@ -538,7 +537,7 @@ abstract class SwitchThemeData extends SwitchThemeDataPartial {
                   ?.orElse(this.iconTheme.resolve)
                   .mapValue(
                     (states, value) =>
-                        this.iconTheme.resolve(states).merge(value),
+                        this.iconTheme.resolve(states).maybeMerge(value),
                   ) ??
               this.iconTheme,
         )
@@ -563,47 +562,9 @@ abstract class SwitchThemeData extends SwitchThemeDataPartial {
           iconTheme: other.iconTheme,
         )
       : this;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is SwitchThemeData &&
-          minTapTargetSize == other.minTapTargetSize &&
-          trackSize == other.trackSize &&
-          trackShape == other.trackShape &&
-          trackColor == other.trackColor &&
-          trackOutline == other.trackOutline &&
-          stateLayerSize == other.stateLayerSize &&
-          stateLayerShape == other.stateLayerShape &&
-          stateLayerColor == other.stateLayerColor &&
-          stateLayerOpacity == other.stateLayerOpacity &&
-          handleSize == other.handleSize &&
-          handleShape == other.handleShape &&
-          handleColor == other.handleColor &&
-          handleOutline == other.handleOutline &&
-          iconTheme == other.iconTheme;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    trackSize,
-    trackShape,
-    trackColor,
-    trackOutline,
-    stateLayerSize,
-    stateLayerShape,
-    stateLayerColor,
-    stateLayerOpacity,
-    handleSize,
-    handleShape,
-    handleColor,
-    handleOutline,
-    iconTheme,
-  );
 }
 
-class _SwitchThemeData extends SwitchThemeData {
+final class _SwitchThemeData extends SwitchThemeData {
   const _SwitchThemeData({
     required this.minTapTargetSize,
     required this.trackSize,
@@ -662,9 +623,45 @@ class _SwitchThemeData extends SwitchThemeData {
 
   @override
   final SwitchStateProperty<IconThemeDataPartial> iconTheme;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _SwitchThemeData &&
+          minTapTargetSize == other.minTapTargetSize &&
+          trackSize == other.trackSize &&
+          trackShape == other.trackShape &&
+          trackColor == other.trackColor &&
+          trackOutline == other.trackOutline &&
+          stateLayerSize == other.stateLayerSize &&
+          stateLayerShape == other.stateLayerShape &&
+          stateLayerColor == other.stateLayerColor &&
+          stateLayerOpacity == other.stateLayerOpacity &&
+          handleSize == other.handleSize &&
+          handleShape == other.handleShape &&
+          handleColor == other.handleColor &&
+          handleOutline == other.handleOutline &&
+          iconTheme == other.iconTheme;
+
+  @override
+  int get hashCode => Object.hash(
+    trackSize,
+    trackShape,
+    trackColor,
+    trackOutline,
+    stateLayerSize,
+    stateLayerShape,
+    stateLayerColor,
+    stateLayerOpacity,
+    handleSize,
+    handleShape,
+    handleColor,
+    handleOutline,
+    iconTheme,
+  );
 }
 
-class _SwitchThemeDataDefaults extends SwitchThemeData {
+final class _SwitchThemeDataDefaults extends SwitchThemeData {
   const _SwitchThemeDataDefaults({
     required ColorThemeData colorTheme,
     required ShapeThemeData shapeTheme,
@@ -734,7 +731,7 @@ class _SwitchThemeDataDefaults extends SwitchThemeData {
   SwitchStateProperty<OutlinedBorder> get trackShape => .resolveWith(
     (states) =>
         _trackShape?.resolve(states) ??
-        CornersBorder.rounded(corners: .all(_shapeTheme.cornerFull)),
+        _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
   );
 
   @override
@@ -779,7 +776,7 @@ class _SwitchThemeDataDefaults extends SwitchThemeData {
   SwitchStateProperty<ShapeBorder> get stateLayerShape => .resolveWith(
     (states) =>
         _stateLayerShape?.resolve(states) ??
-        CornersBorder.rounded(corners: .all(_shapeTheme.cornerFull)),
+        _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
   );
 
   @override
@@ -819,7 +816,7 @@ class _SwitchThemeDataDefaults extends SwitchThemeData {
   SwitchStateProperty<OutlinedBorder> get handleShape => .resolveWith(
     (states) =>
         _handleShape?.resolve(states) ??
-        CornersBorder.rounded(corners: .all(_shapeTheme.cornerFull)),
+        _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
   );
 
   @override
@@ -864,11 +861,11 @@ class _SwitchThemeDataDefaults extends SwitchThemeData {
       size: 16.0,
       color: color,
     );
-    return result.merge(_iconTheme?.resolve(states));
+    return result.maybeMerge(_iconTheme?.resolve(states));
   });
 
   @override
-  SwitchThemeData copyWith({
+  SwitchThemeData maybeCopyWith({
     covariant SwitchStateProperty<Size>? minTapTargetSize,
     covariant SwitchStateProperty<Size>? trackSize,
     covariant SwitchStateProperty<OutlinedBorder>? trackShape,
@@ -998,7 +995,7 @@ class _SwitchThemeDataDefaults extends SwitchThemeData {
             ?.orElseMaybe(_iconTheme?.resolve)
             .mapValue(
               (states, value) =>
-                  _iconTheme?.resolve(states)?.merge(value) ?? value,
+                  _iconTheme?.resolve(states)?.maybeMerge(value) ?? value,
             ) ??
         _iconTheme,
   );
@@ -1026,8 +1023,7 @@ class _SwitchThemeDataDefaults extends SwitchThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _SwitchThemeDataDefaults &&
+      other is _SwitchThemeDataDefaults &&
           _colorTheme == other._colorTheme &&
           _shapeTheme == other._shapeTheme &&
           _stateTheme == other._stateTheme &&
@@ -1048,7 +1044,6 @@ class _SwitchThemeDataDefaults extends SwitchThemeData {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
     _colorTheme,
     _shapeTheme,
     _stateTheme,

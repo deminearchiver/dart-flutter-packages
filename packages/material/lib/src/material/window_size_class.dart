@@ -40,8 +40,7 @@ class WindowSizeClass with Diagnosticable {
           windowHeightSizeClass == other.windowHeightSizeClass;
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, windowWidthSizeClass, windowHeightSizeClass);
+  int get hashCode => Object.hash(windowWidthSizeClass, windowHeightSizeClass);
 
   static WindowSizeClass? maybeOf(BuildContext context) {
     final size = MediaQuery.maybeSizeOf(context);
