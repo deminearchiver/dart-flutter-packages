@@ -4,7 +4,7 @@ mixin _ColorThemeDataFromPaletteMixin<
   T extends _ColorThemeDataFromPaletteMixin<T>
 >
     on ColorThemeData {
-  BaselinePaletteThemeData get _palette;
+  BaselinePalette get _palette;
   ColorThemeDataPartial get _overrides;
 
   Brightness get _brightness;
@@ -69,7 +69,7 @@ mixin _ColorThemeDataFromPaletteMixin<
   Color get _onErrorContainer;
 
   T _create({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   });
 
@@ -734,13 +734,13 @@ final class _ColorThemeDataFromPaletteLightNormalContrast extends ColorThemeData
           _ColorThemeDataFromPaletteLightNormalContrast
         > {
   const _ColorThemeDataFromPaletteLightNormalContrast({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePaletteThemeData _palette;
+  final BaselinePalette _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -882,7 +882,7 @@ final class _ColorThemeDataFromPaletteLightNormalContrast extends ColorThemeData
 
   @override
   _ColorThemeDataFromPaletteLightNormalContrast _create({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }
@@ -893,13 +893,13 @@ final class _ColorThemeDataFromPaletteLightMediumContrast extends ColorThemeData
           _ColorThemeDataFromPaletteLightMediumContrast
         > {
   const _ColorThemeDataFromPaletteLightMediumContrast({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePaletteThemeData _palette;
+  final BaselinePalette _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -1041,7 +1041,7 @@ final class _ColorThemeDataFromPaletteLightMediumContrast extends ColorThemeData
 
   @override
   _ColorThemeDataFromPaletteLightMediumContrast _create({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }
@@ -1052,13 +1052,13 @@ final class _ColorThemeDataFromPaletteLightHighContrast extends ColorThemeData
           _ColorThemeDataFromPaletteLightHighContrast
         > {
   const _ColorThemeDataFromPaletteLightHighContrast({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePaletteThemeData _palette;
+  final BaselinePalette _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -1200,7 +1200,7 @@ final class _ColorThemeDataFromPaletteLightHighContrast extends ColorThemeData
 
   @override
   _ColorThemeDataFromPaletteLightHighContrast _create({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }
@@ -1211,13 +1211,13 @@ final class _ColorThemeDataFromPaletteDarkNormalContrast extends ColorThemeData
           _ColorThemeDataFromPaletteDarkNormalContrast
         > {
   const _ColorThemeDataFromPaletteDarkNormalContrast({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePaletteThemeData _palette;
+  final BaselinePalette _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -1359,7 +1359,7 @@ final class _ColorThemeDataFromPaletteDarkNormalContrast extends ColorThemeData
 
   @override
   _ColorThemeDataFromPaletteDarkNormalContrast _create({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }
@@ -1370,13 +1370,13 @@ final class _ColorThemeDataFromPaletteDarkMediumContrast extends ColorThemeData
           _ColorThemeDataFromPaletteDarkMediumContrast
         > {
   const _ColorThemeDataFromPaletteDarkMediumContrast({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePaletteThemeData _palette;
+  final BaselinePalette _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -1518,7 +1518,7 @@ final class _ColorThemeDataFromPaletteDarkMediumContrast extends ColorThemeData
 
   @override
   _ColorThemeDataFromPaletteDarkMediumContrast _create({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }
@@ -1529,13 +1529,13 @@ final class _ColorThemeDataFromPaletteDarkHighContrast extends ColorThemeData
           _ColorThemeDataFromPaletteDarkHighContrast
         > {
   const _ColorThemeDataFromPaletteDarkHighContrast({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePaletteThemeData _palette;
+  final BaselinePalette _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -1677,7 +1677,7 @@ final class _ColorThemeDataFromPaletteDarkHighContrast extends ColorThemeData
 
   @override
   _ColorThemeDataFromPaletteDarkHighContrast _create({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }

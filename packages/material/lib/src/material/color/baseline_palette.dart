@@ -1,9 +1,9 @@
 import 'package:material/src/material/flutter.dart';
 
-abstract class BaselinePaletteThemeDataPartial with Diagnosticable {
-  const BaselinePaletteThemeDataPartial();
+abstract class BaselinePalettePartial with Diagnosticable {
+  const BaselinePalettePartial();
 
-  const factory BaselinePaletteThemeDataPartial.from({
+  const factory BaselinePalettePartial.from({
     Color? primary0,
     Color? primary10,
     Color? primary20,
@@ -98,7 +98,7 @@ abstract class BaselinePaletteThemeDataPartial with Diagnosticable {
     Color? error98,
     Color? error99,
     Color? error100,
-  }) = _BaselinePaletteThemeDataPartial;
+  }) = _BaselinePalettePartial;
 
   Color? get primary0;
 
@@ -288,9 +288,9 @@ abstract class BaselinePaletteThemeDataPartial with Diagnosticable {
 
   Color? get error100;
 
-  BaselinePaletteThemeDataPartial copy() => copyWith();
+  BaselinePalettePartial copy() => copyWith();
 
-  BaselinePaletteThemeDataPartial copyWith({
+  BaselinePalettePartial copyWith({
     Color? primary0,
     Color? primary10,
     Color? primary20,
@@ -482,7 +482,7 @@ abstract class BaselinePaletteThemeDataPartial with Diagnosticable {
     error100: error100 ?? this.error100,
   );
 
-  BaselinePaletteThemeDataPartial maybeCopyWith({
+  BaselinePalettePartial maybeCopyWith({
     Color? primary0,
     Color? primary10,
     Color? primary20,
@@ -770,9 +770,7 @@ abstract class BaselinePaletteThemeDataPartial with Diagnosticable {
         )
       : this;
 
-  BaselinePaletteThemeDataPartial merge(
-    BaselinePaletteThemeDataPartial? other,
-  ) => other != null
+  BaselinePalettePartial merge(BaselinePalettePartial? other) => other != null
       ? copyWith(
           primary0: other.primary0,
           primary10: other.primary10,
@@ -871,9 +869,8 @@ abstract class BaselinePaletteThemeDataPartial with Diagnosticable {
         )
       : copy();
 
-  BaselinePaletteThemeDataPartial maybeMerge(
-    BaselinePaletteThemeDataPartial? other,
-  ) => other != null
+  BaselinePalettePartial maybeMerge(BaselinePalettePartial? other) =>
+      other != null
       ? maybeCopyWith(
           primary0: other.primary0,
           primary10: other.primary10,
@@ -1105,9 +1102,8 @@ abstract class BaselinePaletteThemeDataPartial with Diagnosticable {
   }
 }
 
-final class _BaselinePaletteThemeDataPartial
-    extends BaselinePaletteThemeDataPartial {
-  const _BaselinePaletteThemeDataPartial({
+final class _BaselinePalettePartial extends BaselinePalettePartial {
+  const _BaselinePalettePartial({
     this.primary0,
     this.primary10,
     this.primary20,
@@ -1489,7 +1485,7 @@ final class _BaselinePaletteThemeDataPartial
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _BaselinePaletteThemeDataPartial &&
+      other is _BaselinePalettePartial &&
           primary0 == other.primary0 &&
           primary10 == other.primary10 &&
           primary20 == other.primary20 &&
@@ -1692,11 +1688,10 @@ final class _BaselinePaletteThemeDataPartial
   );
 }
 
-abstract class BaselinePaletteThemeData
-    extends BaselinePaletteThemeDataPartial {
-  const BaselinePaletteThemeData();
+abstract class BaselinePalette extends BaselinePalettePartial {
+  const BaselinePalette();
 
-  const factory BaselinePaletteThemeData.from({
+  const factory BaselinePalette.from({
     required Color primary0,
     required Color primary10,
     required Color primary20,
@@ -1791,11 +1786,10 @@ abstract class BaselinePaletteThemeData
     required Color error98,
     required Color error99,
     required Color error100,
-  }) = _BaselinePaletteThemeData.from;
+  }) = _BaselinePalette.from;
 
-  const factory BaselinePaletteThemeData.defaults({
-    BaselinePaletteThemeDataPartial? overrides,
-  }) = _BaselinePaletteThemeDataDefaults;
+  const factory BaselinePalette.defaults({BaselinePalettePartial? overrides}) =
+      _BaselinePaletteDefaults;
 
   @override
   Color get primary0;
@@ -2080,10 +2074,10 @@ abstract class BaselinePaletteThemeData
   Color get error100;
 
   @override
-  BaselinePaletteThemeData copy() => copyWith();
+  BaselinePalette copy() => copyWith();
 
   @override
-  BaselinePaletteThemeData copyWith({
+  BaselinePalette copyWith({
     Color? primary0,
     Color? primary10,
     Color? primary20,
@@ -2276,7 +2270,7 @@ abstract class BaselinePaletteThemeData
   );
 
   @override
-  BaselinePaletteThemeData maybeCopyWith({
+  BaselinePalette maybeCopyWith({
     Color? primary0,
     Color? primary10,
     Color? primary20,
@@ -2565,8 +2559,7 @@ abstract class BaselinePaletteThemeData
       : this;
 
   @override
-  BaselinePaletteThemeData merge(BaselinePaletteThemeDataPartial? other) =>
-      other != null
+  BaselinePalette merge(BaselinePalettePartial? other) => other != null
       ? copyWith(
           primary0: other.primary0,
           primary10: other.primary10,
@@ -2666,8 +2659,7 @@ abstract class BaselinePaletteThemeData
       : copy();
 
   @override
-  BaselinePaletteThemeData maybeMerge(BaselinePaletteThemeDataPartial? other) =>
-      other != null
+  BaselinePalette maybeMerge(BaselinePalettePartial? other) => other != null
       ? maybeCopyWith(
           primary0: other.primary0,
           primary10: other.primary10,
@@ -2867,8 +2859,8 @@ abstract class BaselinePaletteThemeData
   }
 }
 
-final class _BaselinePaletteThemeData extends BaselinePaletteThemeData {
-  const _BaselinePaletteThemeData.from({
+final class _BaselinePalette extends BaselinePalette {
+  const _BaselinePalette.from({
     required this.primary0,
     required this.primary10,
     required this.primary20,
@@ -3250,7 +3242,7 @@ final class _BaselinePaletteThemeData extends BaselinePaletteThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _BaselinePaletteThemeData &&
+      other is _BaselinePalette &&
           primary0 == other.primary0 &&
           primary10 == other.primary10 &&
           primary20 == other.primary20 &&
@@ -3453,12 +3445,11 @@ final class _BaselinePaletteThemeData extends BaselinePaletteThemeData {
   );
 }
 
-final class _BaselinePaletteThemeDataDefaults extends BaselinePaletteThemeData {
-  const _BaselinePaletteThemeDataDefaults({
-    BaselinePaletteThemeDataPartial? overrides,
-  }) : _overrides = overrides ?? const .from();
+final class _BaselinePaletteDefaults extends BaselinePalette {
+  const _BaselinePaletteDefaults({BaselinePalettePartial? overrides})
+    : _overrides = overrides ?? const .from();
 
-  final BaselinePaletteThemeDataPartial _overrides;
+  final BaselinePalettePartial _overrides;
 
   @override
   Color get primary0 => _overrides.primary0 ?? const Color(0xFF000000);
@@ -3757,7 +3748,7 @@ final class _BaselinePaletteThemeDataDefaults extends BaselinePaletteThemeData {
   Color get error100 => _overrides.error100 ?? const Color(0xFFFFFFFF);
 
   @override
-  BaselinePaletteThemeData copyWith({
+  BaselinePalette copyWith({
     Color? primary0,
     Color? primary10,
     Color? primary20,
@@ -3852,7 +3843,7 @@ final class _BaselinePaletteThemeDataDefaults extends BaselinePaletteThemeData {
     Color? error98,
     Color? error99,
     Color? error100,
-  }) => _BaselinePaletteThemeDataDefaults(
+  }) => _BaselinePaletteDefaults(
     overrides: _overrides.copyWith(
       primary0: primary0,
       primary10: primary10,
@@ -3952,7 +3943,7 @@ final class _BaselinePaletteThemeDataDefaults extends BaselinePaletteThemeData {
   );
 
   @override
-  BaselinePaletteThemeData maybeCopyWith({
+  BaselinePalette maybeCopyWith({
     Color? primary0,
     Color? primary10,
     Color? primary20,
@@ -4433,8 +4424,7 @@ final class _BaselinePaletteThemeDataDefaults extends BaselinePaletteThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _BaselinePaletteThemeDataDefaults &&
-          _overrides == other._overrides;
+      other is _BaselinePaletteDefaults && _overrides == other._overrides;
 
   @override
   int get hashCode => _overrides.hashCode;
@@ -4446,41 +4436,41 @@ abstract class BaselinePaletteTheme extends StatelessWidget
 
   const factory BaselinePaletteTheme.mergeWithResolver({
     Key? key,
-    required ThemeResolver<BaselinePaletteThemeDataPartial> resolver,
+    required ThemeResolver<BaselinePalettePartial> resolver,
     required Widget child,
-  }) = _BaselinePaletteThemeWithResolver<BaselinePaletteThemeDataPartial>;
+  }) = _BaselinePaletteThemeWithResolver<BaselinePalettePartial>;
 
   const factory BaselinePaletteTheme.mergeWithCallback({
     Key? key,
-    required ThemeResolverCallback<BaselinePaletteThemeDataPartial> callback,
+    required ThemeResolverCallback<BaselinePalettePartial> callback,
     required Widget child,
-  }) = _BaselinePaletteThemeWithCallback<BaselinePaletteThemeDataPartial>;
+  }) = _BaselinePaletteThemeWithCallback<BaselinePalettePartial>;
 
   const factory BaselinePaletteTheme.mergeWithData({
     Key? key,
-    required BaselinePaletteThemeDataPartial data,
+    required BaselinePalettePartial data,
     required Widget child,
-  }) = _BaselinePaletteThemeWithData<BaselinePaletteThemeDataPartial>;
+  }) = _BaselinePaletteThemeWithData<BaselinePalettePartial>;
 
   const factory BaselinePaletteTheme.replaceWithResolver({
     Key? key,
-    required ThemeResolver<BaselinePaletteThemeData> resolver,
+    required ThemeResolver<BaselinePalette> resolver,
     required Widget child,
-  }) = _BaselinePaletteThemeWithResolver<BaselinePaletteThemeData>;
+  }) = _BaselinePaletteThemeWithResolver<BaselinePalette>;
 
   const factory BaselinePaletteTheme.replaceWithCallback({
     Key? key,
-    required ThemeResolverCallback<BaselinePaletteThemeData> callback,
+    required ThemeResolverCallback<BaselinePalette> callback,
     required Widget child,
-  }) = _BaselinePaletteThemeWithCallback<BaselinePaletteThemeData>;
+  }) = _BaselinePaletteThemeWithCallback<BaselinePalette>;
 
   const factory BaselinePaletteTheme.replaceWithData({
     Key? key,
-    required BaselinePaletteThemeData data,
+    required BaselinePalette data,
     required Widget child,
-  }) = _BaselinePaletteThemeWithData<BaselinePaletteThemeData>;
+  }) = _BaselinePaletteThemeWithData<BaselinePalette>;
 
-  ThemeResolver<BaselinePaletteThemeDataPartial> get resolver;
+  ThemeResolver<BaselinePalettePartial> get resolver;
 
   @override
   final Widget child;
@@ -4496,20 +4486,18 @@ abstract class BaselinePaletteTheme extends StatelessWidget
     );
   }
 
-  static BaselinePaletteThemeDataPartial _merge(
-    BaselinePaletteThemeDataPartial a,
-    BaselinePaletteThemeDataPartial b,
+  static BaselinePalettePartial _merge(
+    BaselinePalettePartial a,
+    BaselinePalettePartial b,
   ) => a.maybeMerge(b);
 
-  static BaselinePaletteThemeData of(BuildContext context) {
+  static BaselinePalette of(BuildContext context) {
     final resolver = _BaselinePaletteTheme.maybeResolverOf(context);
     return .defaults(overrides: resolver?.resolve(context));
   }
 }
 
-class _BaselinePaletteThemeWithResolver<
-  T extends BaselinePaletteThemeDataPartial
->
+class _BaselinePaletteThemeWithResolver<T extends BaselinePalettePartial>
     extends BaselinePaletteTheme {
   const _BaselinePaletteThemeWithResolver({
     super.key,
@@ -4527,9 +4515,7 @@ class _BaselinePaletteThemeWithResolver<
   }
 }
 
-class _BaselinePaletteThemeWithCallback<
-  T extends BaselinePaletteThemeDataPartial
->
+class _BaselinePaletteThemeWithCallback<T extends BaselinePalettePartial>
     extends BaselinePaletteTheme {
   const _BaselinePaletteThemeWithCallback({
     super.key,
@@ -4551,7 +4537,7 @@ class _BaselinePaletteThemeWithCallback<
   }
 }
 
-class _BaselinePaletteThemeWithData<T extends BaselinePaletteThemeDataPartial>
+class _BaselinePaletteThemeWithData<T extends BaselinePalettePartial>
     extends BaselinePaletteTheme {
   const _BaselinePaletteThemeWithData({
     super.key,
@@ -4578,7 +4564,7 @@ class _BaselinePaletteTheme extends InheritedTheme {
     required super.child,
   });
 
-  final ThemeResolver<BaselinePaletteThemeDataPartial> resolver;
+  final ThemeResolver<BaselinePalettePartial> resolver;
 
   @override
   bool updateShouldNotify(_BaselinePaletteTheme oldWidget) =>
@@ -4588,7 +4574,7 @@ class _BaselinePaletteTheme extends InheritedTheme {
   Widget wrap(BuildContext context, Widget child) =>
       _BaselinePaletteTheme(resolver: resolver, child: child);
 
-  static ThemeResolver<BaselinePaletteThemeDataPartial>? maybeResolverOf(
+  static ThemeResolver<BaselinePalettePartial>? maybeResolverOf(
     BuildContext context,
   ) => context
       .dependOnInheritedWidgetOfExactType<_BaselinePaletteTheme>()

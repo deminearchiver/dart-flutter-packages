@@ -92,7 +92,7 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
   }
 
   factory ColorThemeData.fromPalette({
-    required BaselinePaletteThemeData palette,
+    required BaselinePalette palette,
     required Brightness brightness,
     double contrastLevel = 0.0,
     ColorThemeDataPartial? overrides,
