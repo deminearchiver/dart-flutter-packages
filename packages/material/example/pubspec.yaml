@@ -34,6 +34,8 @@ dependencies:
   slang_flutter: ^4.14.0
   follow_the_leader: ^0.5.3
   vector_math: ^2.2.0
+  collection: ^1.19.1
+  cue: ^0.2.1
 
 dev_dependencies:
   # SDK dependencies

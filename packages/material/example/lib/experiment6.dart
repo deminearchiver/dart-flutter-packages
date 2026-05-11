@@ -56,7 +56,21 @@ class _Experiment6ViewState extends State<Experiment6View> {
                             vertical: 10.0 - (48.0 - 40.0) / 2.0,
                           ),
                           leading: ExcludeFocus(
-                            child: Checkbox.bistate(
+                            // child: Checkbox.bistate(
+                            //   onCheckedChanged: (value) {
+                            //     if (value) {
+                            //       setState(() {
+                            //         _selected.add(index);
+                            //       });
+                            //     } else {
+                            //       setState(() {
+                            //         _selected.remove(index);
+                            //       });
+                            //     }
+                            //   },
+                            //   checked: _selected.contains(index),
+                            // ),
+                            child: Switch(
                               onCheckedChanged: (value) {
                                 if (value) {
                                   setState(() {
@@ -70,6 +84,20 @@ class _Experiment6ViewState extends State<Experiment6View> {
                               },
                               checked: _selected.contains(index),
                             ),
+                            // child: RadioButton(
+                            //   onTap: () {
+                            //     if (_selected.contains(index)) {
+                            //       setState(() {
+                            //         _selected.remove(index);
+                            //       });
+                            //     } else {
+                            //       setState(() {
+                            //         _selected.add(index);
+                            //       });
+                            //     }
+                            //   },
+                            //   selected: _selected.contains(index),
+                            // ),
                           ),
                           headline: Text("Item ${index + 1}"),
                         ),

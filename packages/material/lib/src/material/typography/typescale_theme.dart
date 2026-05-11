@@ -1938,7 +1938,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.displayLarge);
+  ).maybeMerge(_overrides.displayLarge);
 
   @override
   TextGeometry get displayMedium => .from(
@@ -1956,7 +1956,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.displayMedium);
+  ).maybeMerge(_overrides.displayMedium);
 
   @override
   TextGeometry get displaySmall => .from(
@@ -1974,7 +1974,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.displaySmall);
+  ).maybeMerge(_overrides.displaySmall);
 
   @override
   TextGeometry get headlineLarge => .from(
@@ -1992,7 +1992,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.headlineLarge);
+  ).maybeMerge(_overrides.headlineLarge);
 
   @override
   TextGeometry get headlineMedium => .from(
@@ -2010,7 +2010,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.headlineMedium);
+  ).maybeMerge(_overrides.headlineMedium);
 
   @override
   TextGeometry get headlineSmall => .from(
@@ -2028,7 +2028,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.headlineSmall);
+  ).maybeMerge(_overrides.headlineSmall);
 
   @override
   TextGeometry get titleLarge => .from(
@@ -2046,7 +2046,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.titleLarge);
+  ).maybeMerge(_overrides.titleLarge);
 
   @override
   TextGeometry get titleMedium => .from(
@@ -2064,7 +2064,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.titleMedium);
+  ).maybeMerge(_overrides.titleMedium);
 
   @override
   TextGeometry get titleSmall => .from(
@@ -2082,7 +2082,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.titleSmall);
+  ).maybeMerge(_overrides.titleSmall);
 
   @override
   TextGeometry get bodyLarge => .from(
@@ -2100,7 +2100,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.bodyLarge);
+  ).maybeMerge(_overrides.bodyLarge);
 
   @override
   TextGeometry get bodyMedium => .from(
@@ -2118,7 +2118,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.bodyMedium);
+  ).maybeMerge(_overrides.bodyMedium);
 
   @override
   TextGeometry get bodySmall => .from(
@@ -2136,7 +2136,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.bodySmall);
+  ).maybeMerge(_overrides.bodySmall);
 
   @override
   TextGeometry get labelLarge => .from(
@@ -2154,7 +2154,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.labelLarge);
+  ).maybeMerge(_overrides.labelLarge);
 
   @override
   TextGeometry get labelMedium => .from(
@@ -2172,7 +2172,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.labelMedium);
+  ).maybeMerge(_overrides.labelMedium);
 
   @override
   TextGeometry get labelSmall => .from(
@@ -2190,7 +2190,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.labelSmall);
+  ).maybeMerge(_overrides.labelSmall);
 
   @override
   TextGeometry get displayLargeEmphasized => .from(
@@ -2208,7 +2208,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.displayLargeEmphasized);
+  ).maybeMerge(_overrides.displayLargeEmphasized);
 
   @override
   TextGeometry get displayMediumEmphasized => .from(
@@ -2226,7 +2226,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.displayMediumEmphasized);
+  ).maybeMerge(_overrides.displayMediumEmphasized);
 
   @override
   TextGeometry get displaySmallEmphasized => .from(
@@ -2244,7 +2244,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.displaySmallEmphasized);
+  ).maybeMerge(_overrides.displaySmallEmphasized);
 
   @override
   TextGeometry get headlineLargeEmphasized => .from(
@@ -2262,7 +2262,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.headlineLargeEmphasized);
+  ).maybeMerge(_overrides.headlineLargeEmphasized);
 
   @override
   TextGeometry get headlineMediumEmphasized => .from(
@@ -2280,7 +2280,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.headlineMediumEmphasized);
+  ).maybeMerge(_overrides.headlineMediumEmphasized);
 
   @override
   TextGeometry get headlineSmallEmphasized => .from(
@@ -2298,7 +2298,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.headlineSmallEmphasized);
+  ).maybeMerge(_overrides.headlineSmallEmphasized);
 
   @override
   TextGeometry get titleLargeEmphasized => .from(
@@ -2316,7 +2316,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.titleLargeEmphasized);
+  ).maybeMerge(_overrides.titleLargeEmphasized);
 
   @override
   TextGeometry get titleMediumEmphasized => .from(
@@ -2334,7 +2334,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.titleMediumEmphasized);
+  ).maybeMerge(_overrides.titleMediumEmphasized);
 
   @override
   TextGeometry get titleSmallEmphasized => .from(
@@ -2352,7 +2352,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.titleSmallEmphasized);
+  ).maybeMerge(_overrides.titleSmallEmphasized);
 
   @override
   TextGeometry get bodyLargeEmphasized => .from(
@@ -2370,7 +2370,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.bodyLargeEmphasized);
+  ).maybeMerge(_overrides.bodyLargeEmphasized);
 
   @override
   TextGeometry get bodyMediumEmphasized => .from(
@@ -2388,7 +2388,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.bodyMediumEmphasized);
+  ).maybeMerge(_overrides.bodyMediumEmphasized);
 
   @override
   TextGeometry get bodySmallEmphasized => .from(
@@ -2406,7 +2406,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.bodySmallEmphasized);
+  ).maybeMerge(_overrides.bodySmallEmphasized);
 
   @override
   TextGeometry get labelLargeEmphasized => .from(
@@ -2424,7 +2424,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.labelLargeEmphasized);
+  ).maybeMerge(_overrides.labelLargeEmphasized);
 
   @override
   TextGeometry get labelMediumEmphasized => .from(
@@ -2442,7 +2442,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.labelMediumEmphasized);
+  ).maybeMerge(_overrides.labelMediumEmphasized);
 
   @override
   TextGeometry get labelSmallEmphasized => .from(
@@ -2460,7 +2460,7 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  ).merge(_overrides.labelSmallEmphasized);
+  ).maybeMerge(_overrides.labelSmallEmphasized);
 
   @override
   TypescaleThemeData copyWith({

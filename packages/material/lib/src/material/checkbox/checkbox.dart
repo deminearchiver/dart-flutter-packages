@@ -630,7 +630,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
             consumeOutsideTaps: false,
             onTapOutside: !_states.isDisabled ? _onTapOutside : null,
             onTapUpOutside: !_states.isDisabled ? _onTapOutside : null,
-            child: FocusRingTheme.partial(
+            child: FocusRingTheme.mergeWithData(
               data: .from(
                 shape: .all(
                   _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),

@@ -109,69 +109,37 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
     Corner? cornerExtraLargeIncreased,
     Corner? cornerExtraExtraLarge,
     Corner? cornerFull,
-  }) =>
-      cornerValueNone != null ||
-          cornerValueExtraSmall != null ||
-          cornerValueSmall != null ||
-          cornerValueMedium != null ||
-          cornerValueLarge != null ||
-          cornerValueLargeIncreased != null ||
-          cornerValueExtraLarge != null ||
-          cornerValueExtraLargeIncreased != null ||
-          cornerValueExtraExtraLarge != null ||
-          cornerFamily != null ||
-          cornerNone != null ||
-          cornerExtraSmall != null ||
-          cornerExtraSmallTop != null ||
-          cornerSmall != null ||
-          cornerMedium != null ||
-          cornerLarge != null ||
-          cornerLargeStart != null ||
-          cornerLargeEnd != null ||
-          cornerLargeTop != null ||
-          cornerLargeIncreased != null ||
-          cornerExtraLarge != null ||
-          cornerExtraLargeTop != null ||
-          cornerExtraLargeIncreased != null ||
-          cornerExtraExtraLarge != null ||
-          cornerFull != null
-      ? .from(
-          cornerValueNone: cornerValueNone ?? this.cornerValueNone,
-          cornerValueExtraSmall:
-              cornerValueExtraSmall ?? this.cornerValueExtraSmall,
-          cornerValueSmall: cornerValueSmall ?? this.cornerValueSmall,
-          cornerValueMedium: cornerValueMedium ?? this.cornerValueMedium,
-          cornerValueLarge: cornerValueLarge ?? this.cornerValueLarge,
-          cornerValueLargeIncreased:
-              cornerValueLargeIncreased ?? this.cornerValueLargeIncreased,
-          cornerValueExtraLarge:
-              cornerValueExtraLarge ?? this.cornerValueExtraLarge,
-          cornerValueExtraLargeIncreased:
-              cornerValueExtraLargeIncreased ??
-              this.cornerValueExtraLargeIncreased,
-          cornerValueExtraExtraLarge:
-              cornerValueExtraExtraLarge ?? this.cornerValueExtraExtraLarge,
-          cornerFamily: cornerFamily ?? this.cornerFamily,
-          cornerNone: cornerNone ?? this.cornerNone,
-          cornerExtraSmall: cornerExtraSmall ?? this.cornerExtraSmall,
-          cornerExtraSmallTop: cornerExtraSmallTop ?? this.cornerExtraSmallTop,
-          cornerSmall: cornerSmall ?? this.cornerSmall,
-          cornerMedium: cornerMedium ?? this.cornerMedium,
-          cornerLarge: cornerLarge ?? this.cornerLarge,
-          cornerLargeStart: cornerLargeStart ?? this.cornerLargeStart,
-          cornerLargeEnd: cornerLargeEnd ?? this.cornerLargeEnd,
-          cornerLargeTop: cornerLargeTop ?? this.cornerLargeTop,
-          cornerLargeIncreased:
-              cornerLargeIncreased ?? this.cornerLargeIncreased,
-          cornerExtraLarge: cornerExtraLarge ?? this.cornerExtraLarge,
-          cornerExtraLargeTop: cornerExtraLargeTop ?? this.cornerExtraLargeTop,
-          cornerExtraLargeIncreased:
-              cornerExtraLargeIncreased ?? this.cornerExtraLargeIncreased,
-          cornerExtraExtraLarge:
-              cornerExtraExtraLarge ?? this.cornerExtraExtraLarge,
-          cornerFull: cornerFull ?? this.cornerFull,
-        )
-      : this;
+  }) => .from(
+    cornerValueNone: cornerValueNone ?? this.cornerValueNone,
+    cornerValueExtraSmall: cornerValueExtraSmall ?? this.cornerValueExtraSmall,
+    cornerValueSmall: cornerValueSmall ?? this.cornerValueSmall,
+    cornerValueMedium: cornerValueMedium ?? this.cornerValueMedium,
+    cornerValueLarge: cornerValueLarge ?? this.cornerValueLarge,
+    cornerValueLargeIncreased:
+        cornerValueLargeIncreased ?? this.cornerValueLargeIncreased,
+    cornerValueExtraLarge: cornerValueExtraLarge ?? this.cornerValueExtraLarge,
+    cornerValueExtraLargeIncreased:
+        cornerValueExtraLargeIncreased ?? this.cornerValueExtraLargeIncreased,
+    cornerValueExtraExtraLarge:
+        cornerValueExtraExtraLarge ?? this.cornerValueExtraExtraLarge,
+    cornerFamily: cornerFamily ?? this.cornerFamily,
+    cornerNone: cornerNone ?? this.cornerNone,
+    cornerExtraSmall: cornerExtraSmall ?? this.cornerExtraSmall,
+    cornerExtraSmallTop: cornerExtraSmallTop ?? this.cornerExtraSmallTop,
+    cornerSmall: cornerSmall ?? this.cornerSmall,
+    cornerMedium: cornerMedium ?? this.cornerMedium,
+    cornerLarge: cornerLarge ?? this.cornerLarge,
+    cornerLargeStart: cornerLargeStart ?? this.cornerLargeStart,
+    cornerLargeEnd: cornerLargeEnd ?? this.cornerLargeEnd,
+    cornerLargeTop: cornerLargeTop ?? this.cornerLargeTop,
+    cornerLargeIncreased: cornerLargeIncreased ?? this.cornerLargeIncreased,
+    cornerExtraLarge: cornerExtraLarge ?? this.cornerExtraLarge,
+    cornerExtraLargeTop: cornerExtraLargeTop ?? this.cornerExtraLargeTop,
+    cornerExtraLargeIncreased:
+        cornerExtraLargeIncreased ?? this.cornerExtraLargeIncreased,
+    cornerExtraExtraLarge: cornerExtraExtraLarge ?? this.cornerExtraExtraLarge,
+    cornerFull: cornerFull ?? this.cornerFull,
+  );
 
   ShapeThemeDataPartial maybeCopyWith({
     double? cornerValueNone,
@@ -822,69 +790,37 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
     Corner? cornerExtraLargeIncreased,
     Corner? cornerExtraExtraLarge,
     Corner? cornerFull,
-  }) =>
-      cornerValueNone != null ||
-          cornerValueExtraSmall != null ||
-          cornerValueSmall != null ||
-          cornerValueMedium != null ||
-          cornerValueLarge != null ||
-          cornerValueLargeIncreased != null ||
-          cornerValueExtraLarge != null ||
-          cornerValueExtraLargeIncreased != null ||
-          cornerValueExtraExtraLarge != null ||
-          cornerFamily != null ||
-          cornerNone != null ||
-          cornerExtraSmall != null ||
-          cornerExtraSmallTop != null ||
-          cornerSmall != null ||
-          cornerMedium != null ||
-          cornerLarge != null ||
-          cornerLargeStart != null ||
-          cornerLargeEnd != null ||
-          cornerLargeTop != null ||
-          cornerLargeIncreased != null ||
-          cornerExtraLarge != null ||
-          cornerExtraLargeTop != null ||
-          cornerExtraLargeIncreased != null ||
-          cornerExtraExtraLarge != null ||
-          cornerFull != null
-      ? .from(
-          cornerValueNone: cornerValueNone ?? this.cornerValueNone,
-          cornerValueExtraSmall:
-              cornerValueExtraSmall ?? this.cornerValueExtraSmall,
-          cornerValueSmall: cornerValueSmall ?? this.cornerValueSmall,
-          cornerValueMedium: cornerValueMedium ?? this.cornerValueMedium,
-          cornerValueLarge: cornerValueLarge ?? this.cornerValueLarge,
-          cornerValueLargeIncreased:
-              cornerValueLargeIncreased ?? this.cornerValueLargeIncreased,
-          cornerValueExtraLarge:
-              cornerValueExtraLarge ?? this.cornerValueExtraLarge,
-          cornerValueExtraLargeIncreased:
-              cornerValueExtraLargeIncreased ??
-              this.cornerValueExtraLargeIncreased,
-          cornerValueExtraExtraLarge:
-              cornerValueExtraExtraLarge ?? this.cornerValueExtraExtraLarge,
-          cornerFamily: cornerFamily ?? this.cornerFamily,
-          cornerNone: cornerNone ?? this.cornerNone,
-          cornerExtraSmall: cornerExtraSmall ?? this.cornerExtraSmall,
-          cornerExtraSmallTop: cornerExtraSmallTop ?? this.cornerExtraSmallTop,
-          cornerSmall: cornerSmall ?? this.cornerSmall,
-          cornerMedium: cornerMedium ?? this.cornerMedium,
-          cornerLarge: cornerLarge ?? this.cornerLarge,
-          cornerLargeStart: cornerLargeStart ?? this.cornerLargeStart,
-          cornerLargeEnd: cornerLargeEnd ?? this.cornerLargeEnd,
-          cornerLargeTop: cornerLargeTop ?? this.cornerLargeTop,
-          cornerLargeIncreased:
-              cornerLargeIncreased ?? this.cornerLargeIncreased,
-          cornerExtraLarge: cornerExtraLarge ?? this.cornerExtraLarge,
-          cornerExtraLargeTop: cornerExtraLargeTop ?? this.cornerExtraLargeTop,
-          cornerExtraLargeIncreased:
-              cornerExtraLargeIncreased ?? this.cornerExtraLargeIncreased,
-          cornerExtraExtraLarge:
-              cornerExtraExtraLarge ?? this.cornerExtraExtraLarge,
-          cornerFull: cornerFull ?? this.cornerFull,
-        )
-      : this;
+  }) => .from(
+    cornerValueNone: cornerValueNone ?? this.cornerValueNone,
+    cornerValueExtraSmall: cornerValueExtraSmall ?? this.cornerValueExtraSmall,
+    cornerValueSmall: cornerValueSmall ?? this.cornerValueSmall,
+    cornerValueMedium: cornerValueMedium ?? this.cornerValueMedium,
+    cornerValueLarge: cornerValueLarge ?? this.cornerValueLarge,
+    cornerValueLargeIncreased:
+        cornerValueLargeIncreased ?? this.cornerValueLargeIncreased,
+    cornerValueExtraLarge: cornerValueExtraLarge ?? this.cornerValueExtraLarge,
+    cornerValueExtraLargeIncreased:
+        cornerValueExtraLargeIncreased ?? this.cornerValueExtraLargeIncreased,
+    cornerValueExtraExtraLarge:
+        cornerValueExtraExtraLarge ?? this.cornerValueExtraExtraLarge,
+    cornerFamily: cornerFamily ?? this.cornerFamily,
+    cornerNone: cornerNone ?? this.cornerNone,
+    cornerExtraSmall: cornerExtraSmall ?? this.cornerExtraSmall,
+    cornerExtraSmallTop: cornerExtraSmallTop ?? this.cornerExtraSmallTop,
+    cornerSmall: cornerSmall ?? this.cornerSmall,
+    cornerMedium: cornerMedium ?? this.cornerMedium,
+    cornerLarge: cornerLarge ?? this.cornerLarge,
+    cornerLargeStart: cornerLargeStart ?? this.cornerLargeStart,
+    cornerLargeEnd: cornerLargeEnd ?? this.cornerLargeEnd,
+    cornerLargeTop: cornerLargeTop ?? this.cornerLargeTop,
+    cornerLargeIncreased: cornerLargeIncreased ?? this.cornerLargeIncreased,
+    cornerExtraLarge: cornerExtraLarge ?? this.cornerExtraLarge,
+    cornerExtraLargeTop: cornerExtraLargeTop ?? this.cornerExtraLargeTop,
+    cornerExtraLargeIncreased:
+        cornerExtraLargeIncreased ?? this.cornerExtraLargeIncreased,
+    cornerExtraExtraLarge: cornerExtraExtraLarge ?? this.cornerExtraExtraLarge,
+    cornerFull: cornerFull ?? this.cornerFull,
+  );
 
   @override
   ShapeThemeData maybeCopyWith({

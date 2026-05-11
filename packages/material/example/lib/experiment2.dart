@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:material_example/flutter.dart';
+import 'package:collection/collection.dart';
+import 'package:cue/cue.dart';
+import 'package:material_example/flutter.dart' hide Spring;
 
 class Experiment2View extends StatefulWidget {
   const Experiment2View({super.key});
@@ -23,6 +25,8 @@ class _Experiment2ViewState extends State<Experiment2View> {
   var _fractionalBottomLeft = 0.0;
   var _fractionalBottomRight = 0.0;
 
+  var _delegate = CornersBorderDelegate.rounded;
+
   String _formatPercentage(double value, bool fill) {
     final unpadded = "${(value * 100).round()}%";
     return fill ? unpadded.padLeft(4, " ") : unpadded;
@@ -33,6 +37,12 @@ class _Experiment2ViewState extends State<Experiment2View> {
     return fill ? unpadded.padLeft(4, " ") : unpadded;
   }
 
+  static const _delegateToName = <CornersBorderDelegate, String>{
+    .rounded: "Rounded",
+    .superellipse: "Superellipse",
+    .cut: "Cut",
+  };
+
   @override
   Widget build(BuildContext context) {
     final colorTheme = ColorTheme.of(context);
@@ -42,8 +52,8 @@ class _Experiment2ViewState extends State<Experiment2View> {
     final typescaleTheme = TypescaleTheme.of(context);
 
     // Candidates: 128, 192, 256, 312, 360
-    const maxWidth = 192.0;
-    const maxHeight = 192.0;
+    const maxWidth = 256.0;
+    const maxHeight = 256.0;
     const maxArea = maxWidth * maxHeight;
 
     final innerCorner = shapeTheme.cornerExtraSmall;
@@ -56,17 +66,22 @@ class _Experiment2ViewState extends State<Experiment2View> {
 
     final progress = area / maxArea;
 
-    // final aspectRatio = width == 0.0 && height == 0.0
-    //     ? 0.0
-    //     : math.min(width, height) / math.max(width, height);
-
-    // final thickness = lerpDouble(
-    //   1.0,
-    //   lerpDouble(1.0, 3.0, math.min(_width, _height)),
-    //   aspectRatio,
-    // );
-
     final thickness = lerpDouble(1.0, 3.0, progress);
+
+    final corners = Corners.only(
+      topLeft: (shapeTheme.cornerExtraExtraLarge * _fixedTopLeft).add(
+        .fractional(_fractionalTopLeft),
+      ),
+      topRight: (shapeTheme.cornerExtraExtraLarge * _fixedTopRight).add(
+        .fractional(_fractionalTopRight),
+      ),
+      bottomLeft: (shapeTheme.cornerExtraExtraLarge * _fixedBottomLeft).add(
+        .fractional(_fractionalBottomLeft),
+      ),
+      bottomRight: (shapeTheme.cornerExtraExtraLarge * _fixedBottomRight).add(
+        .fractional(_fractionalBottomRight),
+      ),
+    );
 
     return Scaffold(
       backgroundColor: colorTheme.surfaceContainer,
@@ -118,39 +133,9 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                 child: Surface(
                                   clipBehavior: .antiAlias,
                                   borderOnForeground: true,
-                                  shape: shapeTheme.applyCorners(
-                                    corners: .only(
-                                      topLeft:
-                                          (shapeTheme.cornerExtraExtraLarge *
-                                                  _fixedTopLeft)
-                                              .add(
-                                                .fractional(_fractionalTopLeft),
-                                              ),
-                                      topRight:
-                                          (shapeTheme.cornerExtraExtraLarge *
-                                                  _fixedTopRight)
-                                              .add(
-                                                .fractional(
-                                                  _fractionalTopRight,
-                                                ),
-                                              ),
-                                      bottomLeft:
-                                          (shapeTheme.cornerExtraExtraLarge *
-                                                  _fixedBottomLeft)
-                                              .add(
-                                                .fractional(
-                                                  _fractionalBottomLeft,
-                                                ),
-                                              ),
-                                      bottomRight:
-                                          (shapeTheme.cornerExtraExtraLarge *
-                                                  _fixedBottomRight)
-                                              .add(
-                                                .fractional(
-                                                  _fractionalBottomRight,
-                                                ),
-                                              ),
-                                    ),
+                                  shape: CornersBorder(
+                                    delegate: _delegate,
+                                    corners: corners,
                                     side: .new(
                                       width: thickness,
                                       color: colorTheme.onSecondaryContainer,
@@ -166,19 +151,23 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                           stateTheme.asWidgetStateLayerOpacity,
                                     ),
                                     onTap: () {},
-                                    child: Align.center(
-                                      child: ConstrainedBox(
-                                        constraints: .new(
-                                          maxWidth: 64.0,
-                                          maxHeight: 64.0,
-                                        ),
-                                        child: FittedBox(
-                                          fit: .contain,
-                                          child: DeterminateLoadingIndicator(
-                                            contained: false,
-                                            indicatorColor:
-                                                colorTheme.onSecondaryContainer,
-                                            progress: progress,
+                                    child: CenterOptically(
+                                      corners: corners,
+                                      maxOffsets: .infinity,
+                                      child: Align.center(
+                                        child: ConstrainedBox(
+                                          constraints: const .new(
+                                            maxWidth: 64.0,
+                                            maxHeight: 64.0,
+                                          ),
+                                          child: FittedBox(
+                                            fit: .contain,
+                                            child: DeterminateLoadingIndicator(
+                                              contained: false,
+                                              indicatorColor: colorTheme
+                                                  .onSecondaryContainer,
+                                              progress: progress,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -191,7 +180,96 @@ class _Experiment2ViewState extends State<Experiment2View> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0 - 4.0),
+                    Padding(
+                      padding: .fromLTRB(16.0, 0.0, 16.0, 0.0),
+                      child: Flex.horizontal(
+                        spacing: 2.0,
+                        children: _delegateToName.entries
+                            .mapIndexed<Widget>((index, entry) {
+                              final MapEntry(key: value, value: label) = entry;
+                              final isFirst = index == 0;
+                              final isLast =
+                                  index == _delegateToName.length - 1;
+                              final isSelected = _delegate == value;
+                              final unselectedCorners =
+                                  CornersDirectional.horizontal(
+                                    start: isFirst
+                                        ? shapeTheme.cornerFull
+                                        : shapeTheme.cornerSmall,
+                                    end: isLast
+                                        ? shapeTheme.cornerFull
+                                        : shapeTheme.cornerSmall,
+                                  );
+                              final selectedCorners = Corners.all(
+                                shapeTheme.cornerFull,
+                              );
+                              return Flexible.tight(
+                                child: Cue.onToggle(
+                                  toggled: isSelected,
+                                  child: TweenActor<double>(
+                                    motion: Spring.custom(
+                                      desc:
+                                          const SpringThemeData.defaultsExpressive()
+                                              .fastSpatial
+                                              .toSpringDescription(),
+                                      snapToEnd: true,
+                                    ),
+                                    from: 0.0,
+                                    to: 1.0,
+                                    // tweenBuilder: ShapeBorderTween(),
+                                    builder: (context, animation) =>
+                                        AnimatedBuilder(
+                                          animation: animation,
+                                          builder: (context, _) {
+                                            final corners =
+                                                CornersGeometry.lerp(
+                                                  unselectedCorners,
+                                                  selectedCorners,
+                                                  animation.value,
+                                                )!;
+                                            return FilledButton(
+                                              style:
+                                                  LegacyThemeFactory.createButtonStyle(
+                                                    colorTheme: colorTheme,
+                                                    elevationTheme:
+                                                        elevationTheme,
+                                                    shapeTheme: shapeTheme,
+                                                    stateTheme: stateTheme,
+                                                    typescaleTheme:
+                                                        typescaleTheme,
+                                                    color: .tonal,
+                                                    isSelected: isSelected,
+                                                  ).copyWith(
+                                                    shape: .all(
+                                                      shapeTheme.applyCorners(
+                                                        corners: corners,
+                                                      ),
+                                                    ),
+                                                  ),
+                                              onPressed: () => setState(
+                                                () => _delegate = value,
+                                              ),
+                                              child: CenterOptically(
+                                                corners: corners,
+                                                maxOffsets: .infinity,
+                                                child: Align.center(
+                                                  widthFactor: 1.0,
+                                                  heightFactor: 1.0,
+                                                  child: Text(label),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                  ),
+                                ),
+                              );
+                            })
+                            .toList(growable: false),
+                      ),
+                    ),
+                    const SizedBox(height: 16.0 - 4.0),
                     IntrinsicHeight(
                       child: Flex.horizontal(
                         children: [

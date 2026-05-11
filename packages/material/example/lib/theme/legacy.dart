@@ -274,6 +274,8 @@ abstract final class LegacyThemeFactory {
     ButtonColor color = .filled,
     bool? isSelected,
     MaterialTapTargetSize tapTargetSize = .padded,
+    ButtonShape? unselectedShape,
+    ButtonShape? selectedShape,
     TextStyle? textStyle,
     TextStyle? unselectedTextStyle,
     TextStyle? selectedTextStyle,
@@ -322,15 +324,24 @@ abstract final class LegacyThemeFactory {
       .extraLarge => shapeTheme.cornerExtraLarge,
     };
     final corner = isSelectedNotDefault
-        ? switch (shape) {
-            .round => cornerSquare,
-            .square => cornerRound,
+        ? selectedShape != null
+              ? switch (selectedShape) {
+                  .round => cornerRound,
+                  .square => cornerSquare,
+                }
+              : switch (shape) {
+                  .round => cornerSquare,
+                  .square => cornerRound,
+                }
+        : unselectedShape != null
+        ? switch (unselectedShape) {
+            .round => cornerRound,
+            .square => cornerSquare,
           }
         : switch (shape) {
             .round => cornerRound,
             .square => cornerSquare,
           };
-
     final iconSize = switch (size) {
       .extraSmall => 20.0,
       .small => 20.0,

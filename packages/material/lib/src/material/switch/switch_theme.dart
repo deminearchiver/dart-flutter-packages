@@ -61,6 +61,40 @@ abstract class SwitchThemeDataPartial with Diagnosticable {
 
   SwitchStateProperty<IconThemeDataPartial?>? get iconTheme;
 
+  SwitchThemeDataPartial copy() => copyWith();
+
+  SwitchThemeDataPartial copyWith({
+    covariant SwitchStateProperty<Size?>? minTapTargetSize,
+    covariant SwitchStateProperty<Size?>? trackSize,
+    covariant SwitchStateProperty<OutlinedBorder?>? trackShape,
+    covariant SwitchStateProperty<Color?>? trackColor,
+    covariant SwitchStateProperty<OutlinePartial?>? trackOutline,
+    covariant SwitchStateProperty<Size?>? stateLayerSize,
+    covariant SwitchStateProperty<ShapeBorder?>? stateLayerShape,
+    covariant SwitchStateProperty<Color?>? stateLayerColor,
+    covariant SwitchStateProperty<double?>? stateLayerOpacity,
+    covariant SwitchStateProperty<Size?>? handleSize,
+    covariant SwitchStateProperty<OutlinedBorder?>? handleShape,
+    covariant SwitchStateProperty<Color?>? handleColor,
+    covariant SwitchStateProperty<OutlinePartial?>? handleOutline,
+    covariant SwitchStateProperty<IconThemeDataPartial?>? iconTheme,
+  }) => .from(
+    minTapTargetSize: minTapTargetSize ?? this.minTapTargetSize,
+    trackSize: trackSize ?? this.trackSize,
+    trackShape: trackShape ?? this.trackShape,
+    trackColor: trackColor ?? this.trackColor,
+    trackOutline: trackOutline ?? this.trackOutline,
+    stateLayerSize: stateLayerSize ?? this.stateLayerSize,
+    stateLayerShape: stateLayerShape ?? this.stateLayerShape,
+    stateLayerColor: stateLayerColor ?? this.stateLayerColor,
+    stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
+    handleSize: handleSize ?? this.handleSize,
+    handleShape: handleShape ?? this.handleShape,
+    handleColor: handleColor ?? this.handleColor,
+    handleOutline: handleOutline ?? this.handleOutline,
+    iconTheme: iconTheme ?? this.iconTheme,
+  );
+
   SwitchThemeDataPartial maybeCopyWith({
     covariant SwitchStateProperty<Size?>? minTapTargetSize,
     covariant SwitchStateProperty<Size?>? trackSize,
@@ -91,25 +125,70 @@ abstract class SwitchThemeDataPartial with Diagnosticable {
           handleColor != null ||
           handleOutline != null ||
           iconTheme != null
-      ? .from(
-          minTapTargetSize: minTapTargetSize ?? this.minTapTargetSize,
-          trackSize: trackSize ?? this.trackSize,
-          trackShape: trackShape ?? this.trackShape,
-          trackColor: trackColor ?? this.trackColor,
-          trackOutline: trackOutline ?? this.trackOutline,
-          stateLayerSize: stateLayerSize ?? this.stateLayerSize,
-          stateLayerShape: stateLayerShape ?? this.stateLayerShape,
-          stateLayerColor: stateLayerColor ?? this.stateLayerColor,
-          stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
-          handleSize: handleSize ?? this.handleSize,
-          handleShape: handleShape ?? this.handleShape,
-          handleColor: handleColor ?? this.handleColor,
-          handleOutline: handleOutline ?? this.handleOutline,
-          iconTheme: iconTheme ?? this.iconTheme,
+      ? copyWith(
+          minTapTargetSize: minTapTargetSize,
+          trackSize: trackSize,
+          trackShape: trackShape,
+          trackColor: trackColor,
+          trackOutline: trackOutline,
+          stateLayerSize: stateLayerSize,
+          stateLayerShape: stateLayerShape,
+          stateLayerColor: stateLayerColor,
+          stateLayerOpacity: stateLayerOpacity,
+          handleSize: handleSize,
+          handleShape: handleShape,
+          handleColor: handleColor,
+          handleOutline: handleOutline,
+          iconTheme: iconTheme,
         )
       : this;
 
   SwitchThemeDataPartial mergeWith({
+    SwitchStateProperty<Size?>? minTapTargetSize,
+    SwitchStateProperty<Size?>? trackSize,
+    SwitchStateProperty<OutlinedBorder?>? trackShape,
+    SwitchStateProperty<Color?>? trackColor,
+    SwitchStateProperty<OutlinePartial?>? trackOutline,
+    SwitchStateProperty<Size?>? stateLayerSize,
+    SwitchStateProperty<ShapeBorder?>? stateLayerShape,
+    SwitchStateProperty<Color?>? stateLayerColor,
+    SwitchStateProperty<double?>? stateLayerOpacity,
+    SwitchStateProperty<Size?>? handleSize,
+    SwitchStateProperty<OutlinedBorder?>? handleShape,
+    SwitchStateProperty<Color?>? handleColor,
+    SwitchStateProperty<OutlinePartial?>? handleOutline,
+    SwitchStateProperty<IconThemeDataPartial?>? iconTheme,
+  }) => .from(
+    minTapTargetSize: this.minTapTargetSize.maybeMergeNullable(
+      minTapTargetSize,
+    ),
+    trackSize: this.trackSize.maybeMergeNullable(trackSize),
+    trackShape: this.trackShape.maybeMergeNullable(trackShape),
+    trackColor: this.trackColor.maybeMergeNullable(trackColor),
+    trackOutline: this.trackOutline.maybeCombineNullable(
+      trackOutline,
+      OutlinePartial.combine,
+    ),
+    stateLayerSize: this.stateLayerSize.maybeMergeNullable(stateLayerSize),
+    stateLayerShape: this.stateLayerShape.maybeMergeNullable(stateLayerShape),
+    stateLayerColor: this.stateLayerColor.maybeMergeNullable(stateLayerColor),
+    stateLayerOpacity: this.stateLayerOpacity.maybeMergeNullable(
+      stateLayerOpacity,
+    ),
+    handleSize: this.handleSize.maybeMergeNullable(handleSize),
+    handleShape: this.handleShape.maybeMergeNullable(handleShape),
+    handleColor: this.handleColor.maybeMergeNullable(handleColor),
+    handleOutline: this.handleOutline.maybeCombineNullable(
+      handleOutline,
+      OutlinePartial.combine,
+    ),
+    iconTheme: this.iconTheme.maybeCombineNullable(
+      iconTheme,
+      (a, b) => a.merge(b),
+    ),
+  );
+
+  SwitchThemeDataPartial maybeMergeWith({
     SwitchStateProperty<Size?>? minTapTargetSize,
     SwitchStateProperty<Size?>? trackSize,
     SwitchStateProperty<OutlinedBorder?>? trackShape,
@@ -140,70 +219,64 @@ abstract class SwitchThemeDataPartial with Diagnosticable {
           handleOutline != null ||
           iconTheme != null
       ? .from(
-          minTapTargetSize:
-              minTapTargetSize?.orElseMaybe(this.minTapTargetSize?.resolve) ??
-              this.minTapTargetSize,
-          trackSize:
-              trackSize?.orElseMaybe(this.trackSize?.resolve) ?? this.trackSize,
-          trackShape:
-              trackShape?.orElseMaybe(this.trackShape?.resolve) ??
-              this.trackShape,
-          trackColor:
-              trackColor?.orElseMaybe(this.trackColor?.resolve) ??
-              this.trackColor,
-          trackOutline:
-              trackOutline
-                  ?.orElseMaybe(this.trackOutline?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.trackOutline?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              this.trackOutline,
-          stateLayerSize:
-              stateLayerSize?.orElseMaybe(this.stateLayerSize?.resolve) ??
-              this.stateLayerSize,
-          stateLayerShape:
-              stateLayerShape?.orElseMaybe(this.stateLayerShape?.resolve) ??
-              this.stateLayerShape,
-          stateLayerColor:
-              stateLayerColor?.orElseMaybe(this.stateLayerColor?.resolve) ??
-              this.stateLayerColor,
-          stateLayerOpacity:
-              stateLayerOpacity?.orElseMaybe(this.stateLayerOpacity?.resolve) ??
-              this.stateLayerOpacity,
-          handleSize:
-              handleSize?.orElseMaybe(this.handleSize?.resolve) ??
-              this.handleSize,
-          handleShape:
-              handleShape?.orElseMaybe(this.handleShape?.resolve) ??
-              this.handleShape,
-          handleColor:
-              handleColor?.orElseMaybe(this.handleColor?.resolve) ??
-              this.handleColor,
-          handleOutline:
-              handleOutline
-                  ?.orElseMaybe(this.handleOutline?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.handleOutline?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              this.handleOutline,
-          iconTheme:
-              iconTheme
-                  ?.orElseMaybe(this.iconTheme?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.iconTheme?.resolve(states)?.maybeMerge(value) ??
-                        value,
-                  ) ??
-              this.iconTheme,
+          minTapTargetSize: this.minTapTargetSize.maybeMergeNullable(
+            minTapTargetSize,
+          ),
+          trackSize: this.trackSize.maybeMergeNullable(trackSize),
+          trackShape: this.trackShape.maybeMergeNullable(trackShape),
+          trackColor: this.trackColor.maybeMergeNullable(trackColor),
+          trackOutline: this.trackOutline.maybeCombineNullable(
+            trackOutline,
+            OutlinePartial.maybeCombine,
+          ),
+          stateLayerSize: this.stateLayerSize.maybeMergeNullable(
+            stateLayerSize,
+          ),
+          stateLayerShape: this.stateLayerShape.maybeMergeNullable(
+            stateLayerShape,
+          ),
+          stateLayerColor: this.stateLayerColor.maybeMergeNullable(
+            stateLayerColor,
+          ),
+          stateLayerOpacity: this.stateLayerOpacity.maybeMergeNullable(
+            stateLayerOpacity,
+          ),
+          handleSize: this.handleSize.maybeMergeNullable(handleSize),
+          handleShape: this.handleShape.maybeMergeNullable(handleShape),
+          handleColor: this.handleColor.maybeMergeNullable(handleColor),
+          handleOutline: this.handleOutline.maybeCombineNullable(
+            handleOutline,
+            OutlinePartial.maybeCombine,
+          ),
+          iconTheme: this.iconTheme.maybeCombineNullable(
+            iconTheme,
+            (a, b) => a.maybeMerge(b),
+          ),
         )
       : this;
 
   SwitchThemeDataPartial merge(SwitchThemeDataPartial? other) => other != null
       ? mergeWith(
+          minTapTargetSize: other.minTapTargetSize,
+          trackSize: other.trackSize,
+          trackShape: other.trackShape,
+          trackColor: other.trackColor,
+          trackOutline: other.trackOutline,
+          stateLayerSize: other.stateLayerSize,
+          stateLayerShape: other.stateLayerShape,
+          stateLayerColor: other.stateLayerColor,
+          stateLayerOpacity: other.stateLayerOpacity,
+          handleSize: other.handleSize,
+          handleShape: other.handleShape,
+          handleColor: other.handleColor,
+          handleOutline: other.handleOutline,
+          iconTheme: other.iconTheme,
+        )
+      : copy();
+
+  SwitchThemeDataPartial maybeMerge(SwitchThemeDataPartial? other) =>
+      other != null
+      ? maybeMergeWith(
           minTapTargetSize: other.minTapTargetSize,
           trackSize: other.trackSize,
           trackShape: other.trackShape,
@@ -344,26 +417,7 @@ abstract class SwitchThemeData extends SwitchThemeDataPartial {
     required ColorThemeData colorTheme,
     required ShapeThemeData shapeTheme,
     required StateThemeData stateTheme,
-  }) = _SwitchThemeDataDefaults;
-
-  const factory SwitchThemeData._defaults({
-    required ColorThemeData colorTheme,
-    required ShapeThemeData shapeTheme,
-    required StateThemeData stateTheme,
-    SwitchStateProperty<Size?>? minTapTargetSize,
-    SwitchStateProperty<Size?>? trackSize,
-    SwitchStateProperty<OutlinedBorder?>? trackShape,
-    SwitchStateProperty<Color?>? trackColor,
-    SwitchStateProperty<OutlinePartial?>? trackOutline,
-    SwitchStateProperty<Size?>? stateLayerSize,
-    SwitchStateProperty<ShapeBorder?>? stateLayerShape,
-    SwitchStateProperty<Color?>? stateLayerColor,
-    SwitchStateProperty<double?>? stateLayerOpacity,
-    SwitchStateProperty<Size?>? handleSize,
-    SwitchStateProperty<OutlinedBorder?>? handleShape,
-    SwitchStateProperty<Color?>? handleColor,
-    SwitchStateProperty<OutlinePartial?>? handleOutline,
-    SwitchStateProperty<IconThemeDataPartial?>? iconTheme,
+    SwitchThemeDataPartial? overrides,
   }) = _SwitchThemeDataDefaults;
 
   @override
@@ -409,6 +463,42 @@ abstract class SwitchThemeData extends SwitchThemeDataPartial {
   SwitchStateProperty<IconThemeDataPartial> get iconTheme;
 
   @override
+  SwitchThemeData copy() => copyWith();
+
+  @override
+  SwitchThemeData copyWith({
+    covariant SwitchStateProperty<Size>? minTapTargetSize,
+    covariant SwitchStateProperty<Size>? trackSize,
+    covariant SwitchStateProperty<OutlinedBorder>? trackShape,
+    covariant SwitchStateProperty<Color>? trackColor,
+    covariant SwitchStateProperty<Outline>? trackOutline,
+    covariant SwitchStateProperty<Size>? stateLayerSize,
+    covariant SwitchStateProperty<ShapeBorder>? stateLayerShape,
+    covariant SwitchStateProperty<Color>? stateLayerColor,
+    covariant SwitchStateProperty<double>? stateLayerOpacity,
+    covariant SwitchStateProperty<Size>? handleSize,
+    covariant SwitchStateProperty<OutlinedBorder>? handleShape,
+    covariant SwitchStateProperty<Color>? handleColor,
+    covariant SwitchStateProperty<Outline>? handleOutline,
+    covariant SwitchStateProperty<IconThemeDataPartial>? iconTheme,
+  }) => .from(
+    minTapTargetSize: minTapTargetSize ?? this.minTapTargetSize,
+    trackSize: trackSize ?? this.trackSize,
+    trackShape: trackShape ?? this.trackShape,
+    trackColor: trackColor ?? this.trackColor,
+    trackOutline: trackOutline ?? this.trackOutline,
+    stateLayerSize: stateLayerSize ?? this.stateLayerSize,
+    stateLayerShape: stateLayerShape ?? this.stateLayerShape,
+    stateLayerColor: stateLayerColor ?? this.stateLayerColor,
+    stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
+    handleSize: handleSize ?? this.handleSize,
+    handleShape: handleShape ?? this.handleShape,
+    handleColor: handleColor ?? this.handleColor,
+    handleOutline: handleOutline ?? this.handleOutline,
+    iconTheme: iconTheme ?? this.iconTheme,
+  );
+
+  @override
   SwitchThemeData maybeCopyWith({
     covariant SwitchStateProperty<Size>? minTapTargetSize,
     covariant SwitchStateProperty<Size>? trackSize,
@@ -439,26 +529,62 @@ abstract class SwitchThemeData extends SwitchThemeDataPartial {
           handleColor != null ||
           handleOutline != null ||
           iconTheme != null
-      ? .from(
-          minTapTargetSize: minTapTargetSize ?? this.minTapTargetSize,
-          trackSize: trackSize ?? this.trackSize,
-          trackShape: trackShape ?? this.trackShape,
-          trackColor: trackColor ?? this.trackColor,
-          trackOutline: trackOutline ?? this.trackOutline,
-          stateLayerSize: stateLayerSize ?? this.stateLayerSize,
-          stateLayerShape: stateLayerShape ?? this.stateLayerShape,
-          stateLayerColor: stateLayerColor ?? this.stateLayerColor,
-          stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
-          handleSize: handleSize ?? this.handleSize,
-          handleShape: handleShape ?? this.handleShape,
-          handleColor: handleColor ?? this.handleColor,
-          handleOutline: handleOutline ?? this.handleOutline,
-          iconTheme: iconTheme ?? this.iconTheme,
+      ? copyWith(
+          minTapTargetSize: minTapTargetSize,
+          trackSize: trackSize,
+          trackShape: trackShape,
+          trackColor: trackColor,
+          trackOutline: trackOutline,
+          stateLayerSize: stateLayerSize,
+          stateLayerShape: stateLayerShape,
+          stateLayerColor: stateLayerColor,
+          stateLayerOpacity: stateLayerOpacity,
+          handleSize: handleSize,
+          handleShape: handleShape,
+          handleColor: handleColor,
+          handleOutline: handleOutline,
+          iconTheme: iconTheme,
         )
       : this;
 
   @override
   SwitchThemeData mergeWith({
+    SwitchStateProperty<Size?>? minTapTargetSize,
+    SwitchStateProperty<Size?>? trackSize,
+    SwitchStateProperty<OutlinedBorder?>? trackShape,
+    SwitchStateProperty<Color?>? trackColor,
+    SwitchStateProperty<OutlinePartial?>? trackOutline,
+    SwitchStateProperty<Size?>? stateLayerSize,
+    SwitchStateProperty<ShapeBorder?>? stateLayerShape,
+    SwitchStateProperty<Color?>? stateLayerColor,
+    SwitchStateProperty<double?>? stateLayerOpacity,
+    SwitchStateProperty<Size?>? handleSize,
+    SwitchStateProperty<OutlinedBorder?>? handleShape,
+    SwitchStateProperty<Color?>? handleColor,
+    SwitchStateProperty<OutlinePartial?>? handleOutline,
+    SwitchStateProperty<IconThemeDataPartial?>? iconTheme,
+  }) => .from(
+    minTapTargetSize: this.minTapTargetSize.maybeMerge(minTapTargetSize),
+    trackSize: this.trackSize.maybeMerge(trackSize),
+    trackShape: this.trackShape.maybeMerge(trackShape),
+    trackColor: this.trackColor.maybeMerge(trackColor),
+    trackOutline: this.trackOutline.maybeCombine(trackOutline, Outline.combine),
+    stateLayerSize: this.stateLayerSize.maybeMerge(stateLayerSize),
+    stateLayerShape: this.stateLayerShape.maybeMerge(stateLayerShape),
+    stateLayerColor: this.stateLayerColor.maybeMerge(stateLayerColor),
+    stateLayerOpacity: this.stateLayerOpacity.maybeMerge(stateLayerOpacity),
+    handleSize: this.handleSize.maybeMerge(handleSize),
+    handleShape: this.handleShape.maybeMerge(handleShape),
+    handleColor: this.handleColor.maybeMerge(handleColor),
+    handleOutline: this.handleOutline.maybeCombine(
+      handleOutline,
+      Outline.combine,
+    ),
+    iconTheme: this.iconTheme.maybeCombine(iconTheme, (a, b) => a.merge(b)),
+  );
+
+  @override
+  SwitchThemeData maybeMergeWith({
     SwitchStateProperty<Size?>? minTapTargetSize,
     SwitchStateProperty<Size?>? trackSize,
     SwitchStateProperty<OutlinedBorder?>? trackShape,
@@ -489,63 +615,57 @@ abstract class SwitchThemeData extends SwitchThemeDataPartial {
           handleOutline != null ||
           iconTheme != null
       ? .from(
-          minTapTargetSize:
-              minTapTargetSize?.orElse(this.minTapTargetSize.resolve) ??
-              this.minTapTargetSize,
-          trackSize:
-              trackSize?.orElse(this.trackSize.resolve) ?? this.trackSize,
-          trackShape:
-              trackShape?.orElse(this.trackShape.resolve) ?? this.trackShape,
-          trackColor:
-              trackColor?.orElse(this.trackColor.resolve) ?? this.trackColor,
-          trackOutline:
-              trackOutline
-                  ?.orElse(this.trackOutline.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.trackOutline.resolve(states).merge(value),
-                  ) ??
-              this.trackOutline,
-          stateLayerSize:
-              stateLayerSize?.orElse(this.stateLayerSize.resolve) ??
-              this.stateLayerSize,
-          stateLayerShape:
-              stateLayerShape?.orElse(this.stateLayerShape.resolve) ??
-              this.stateLayerShape,
-          stateLayerColor:
-              stateLayerColor?.orElse(this.stateLayerColor.resolve) ??
-              this.stateLayerColor,
-          stateLayerOpacity:
-              stateLayerOpacity?.orElse(this.stateLayerOpacity.resolve) ??
-              this.stateLayerOpacity,
-          handleSize:
-              handleSize?.orElse(this.handleSize.resolve) ?? this.handleSize,
-          handleShape:
-              handleShape?.orElse(this.handleShape.resolve) ?? this.handleShape,
-          handleColor:
-              handleColor?.orElse(this.handleColor.resolve) ?? this.handleColor,
-          handleOutline:
-              handleOutline
-                  ?.orElse(this.handleOutline.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.handleOutline.resolve(states).merge(value),
-                  ) ??
-              this.handleOutline,
-          iconTheme:
-              iconTheme
-                  ?.orElse(this.iconTheme.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.iconTheme.resolve(states).maybeMerge(value),
-                  ) ??
-              this.iconTheme,
+          minTapTargetSize: this.minTapTargetSize.maybeMerge(minTapTargetSize),
+          trackSize: this.trackSize.maybeMerge(trackSize),
+          trackShape: this.trackShape.maybeMerge(trackShape),
+          trackColor: this.trackColor.maybeMerge(trackColor),
+          trackOutline: this.trackOutline.maybeCombine(
+            trackOutline,
+            Outline.maybeCombine,
+          ),
+          stateLayerSize: this.stateLayerSize.maybeMerge(stateLayerSize),
+          stateLayerShape: this.stateLayerShape.maybeMerge(stateLayerShape),
+          stateLayerColor: this.stateLayerColor.maybeMerge(stateLayerColor),
+          stateLayerOpacity: this.stateLayerOpacity.maybeMerge(
+            stateLayerOpacity,
+          ),
+          handleSize: this.handleSize.maybeMerge(handleSize),
+          handleShape: this.handleShape.maybeMerge(handleShape),
+          handleColor: this.handleColor.maybeMerge(handleColor),
+          handleOutline: this.handleOutline.maybeCombine(
+            handleOutline,
+            Outline.maybeCombine,
+          ),
+          iconTheme: this.iconTheme.maybeCombine(
+            iconTheme,
+            (a, b) => a.maybeMerge(b),
+          ),
         )
       : this;
 
   @override
   SwitchThemeData merge(SwitchThemeDataPartial? other) => other != null
       ? mergeWith(
+          minTapTargetSize: other.minTapTargetSize,
+          trackSize: other.trackSize,
+          trackShape: other.trackShape,
+          trackColor: other.trackColor,
+          trackOutline: other.trackOutline,
+          stateLayerSize: other.stateLayerSize,
+          stateLayerShape: other.stateLayerShape,
+          stateLayerColor: other.stateLayerColor,
+          stateLayerOpacity: other.stateLayerOpacity,
+          handleSize: other.handleSize,
+          handleShape: other.handleShape,
+          handleColor: other.handleColor,
+          handleOutline: other.handleOutline,
+          iconTheme: other.iconTheme,
+        )
+      : copy();
+
+  @override
+  SwitchThemeData maybeMerge(SwitchThemeDataPartial? other) => other != null
+      ? maybeMergeWith(
           minTapTargetSize: other.minTapTargetSize,
           trackSize: other.trackSize,
           trackShape: other.trackShape,
@@ -666,78 +786,39 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
     required ColorThemeData colorTheme,
     required ShapeThemeData shapeTheme,
     required StateThemeData stateTheme,
-    SwitchStateProperty<Size?>? minTapTargetSize,
-    SwitchStateProperty<Size?>? trackSize,
-    SwitchStateProperty<OutlinedBorder?>? trackShape,
-    SwitchStateProperty<Color?>? trackColor,
-    SwitchStateProperty<OutlinePartial?>? trackOutline,
-    SwitchStateProperty<Size?>? stateLayerSize,
-    SwitchStateProperty<ShapeBorder?>? stateLayerShape,
-    SwitchStateProperty<Color?>? stateLayerColor,
-    SwitchStateProperty<double?>? stateLayerOpacity,
-    SwitchStateProperty<Size?>? handleSize,
-    SwitchStateProperty<OutlinedBorder?>? handleShape,
-    SwitchStateProperty<Color?>? handleColor,
-    SwitchStateProperty<OutlinePartial?>? handleOutline,
-    SwitchStateProperty<IconThemeDataPartial?>? iconTheme,
+    SwitchThemeDataPartial? overrides,
   }) : _colorTheme = colorTheme,
        _shapeTheme = shapeTheme,
        _stateTheme = stateTheme,
-       _minTapTargetSize = minTapTargetSize,
-       _trackSize = trackSize,
-       _trackShape = trackShape,
-       _trackColor = trackColor,
-       _trackOutline = trackOutline,
-       _stateLayerSize = stateLayerSize,
-       _stateLayerShape = stateLayerShape,
-       _stateLayerColor = stateLayerColor,
-       _stateLayerOpacity = stateLayerOpacity,
-       _handleSize = handleSize,
-       _handleShape = handleShape,
-       _handleColor = handleColor,
-       _handleOutline = handleOutline,
-       _iconTheme = iconTheme;
+       _overrides = overrides ?? const .from();
 
   final ColorThemeData _colorTheme;
   final ShapeThemeData _shapeTheme;
   final StateThemeData _stateTheme;
-
-  final SwitchStateProperty<Size?>? _minTapTargetSize;
-  final SwitchStateProperty<Size?>? _trackSize;
-  final SwitchStateProperty<OutlinedBorder?>? _trackShape;
-  final SwitchStateProperty<Color?>? _trackColor;
-  final SwitchStateProperty<OutlinePartial?>? _trackOutline;
-  final SwitchStateProperty<Size?>? _stateLayerSize;
-  final SwitchStateProperty<ShapeBorder?>? _stateLayerShape;
-  final SwitchStateProperty<Color?>? _stateLayerColor;
-  final SwitchStateProperty<double?>? _stateLayerOpacity;
-  final SwitchStateProperty<Size?>? _handleSize;
-  final SwitchStateProperty<OutlinedBorder?>? _handleShape;
-  final SwitchStateProperty<Color?>? _handleColor;
-  final SwitchStateProperty<OutlinePartial?>? _handleOutline;
-  final SwitchStateProperty<IconThemeDataPartial?>? _iconTheme;
+  final SwitchThemeDataPartial _overrides;
 
   @override
   SwitchStateProperty<Size> get minTapTargetSize => .resolveWith(
-    (states) => _minTapTargetSize?.resolve(states) ?? const .square(48.0),
+    (states) =>
+        _overrides.minTapTargetSize?.resolve(states) ?? const .square(48.0),
   );
 
   @override
   SwitchStateProperty<Size> get trackSize => .resolveWith(
-    (states) => _trackSize?.resolve(states) ?? const Size(52.0, 32.0),
+    (states) => _overrides.trackSize?.resolve(states) ?? const Size(52.0, 32.0),
   );
 
   @override
   SwitchStateProperty<OutlinedBorder> get trackShape => .resolveWith(
     (states) =>
-        _trackShape?.resolve(states) ??
+        _overrides.trackShape?.resolve(states) ??
         _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
   );
 
   @override
   SwitchStateProperty<Color> get trackColor => .resolveWith(
     (states) =>
-        _trackColor?.resolve(states) ??
+        _overrides.trackColor?.resolve(states) ??
         switch (states) {
           SwitchDisabledStates(isSelected: false) =>
             _colorTheme.surfaceContainerHighest.withValues(alpha: 0.1),
@@ -764,32 +845,33 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
           alpha: 0.0,
         ),
       },
-    ).merge(_trackOutline?.resolve(states)),
+    ).maybeMerge(_overrides.trackOutline?.resolve(states)),
   );
 
   @override
   SwitchStateProperty<Size> get stateLayerSize => .resolveWith(
-    (states) => _stateLayerSize?.resolve(states) ?? const .square(40.0),
+    (states) =>
+        _overrides.stateLayerSize?.resolve(states) ?? const .square(40.0),
   );
 
   @override
   SwitchStateProperty<ShapeBorder> get stateLayerShape => .resolveWith(
     (states) =>
-        _stateLayerShape?.resolve(states) ??
+        _overrides.stateLayerShape?.resolve(states) ??
         _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
   );
 
   @override
   SwitchStateProperty<Color> get stateLayerColor => .resolveWith(
     (states) =>
-        _stateLayerColor?.resolve(states) ??
+        _overrides.stateLayerColor?.resolve(states) ??
         (states.isSelected ? _colorTheme.primary : _colorTheme.onSurface),
   );
 
   @override
   SwitchStateProperty<double> get stateLayerOpacity => .resolveWith(
     (states) =>
-        _stateLayerOpacity?.resolve(states) ??
+        _overrides.stateLayerOpacity?.resolve(states) ??
         switch (states) {
           SwitchEnabledStates(isPressed: true) =>
             _stateTheme.pressedStateLayerOpacity,
@@ -803,7 +885,7 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
   @override
   SwitchStateProperty<Size> get handleSize => .resolveWith(
     (states) =>
-        _handleSize?.resolve(states) ??
+        _overrides.handleSize?.resolve(states) ??
         switch (states) {
           SwitchEnabledStates(isPressed: true) => const .square(28.0),
           SwitchStates(hasIcon: true) ||
@@ -815,14 +897,14 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
   @override
   SwitchStateProperty<OutlinedBorder> get handleShape => .resolveWith(
     (states) =>
-        _handleShape?.resolve(states) ??
+        _overrides.handleShape?.resolve(states) ??
         _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
   );
 
   @override
   SwitchStateProperty<Color> get handleColor => .resolveWith(
     (states) =>
-        _handleColor?.resolve(states) ??
+        _overrides.handleColor?.resolve(states) ??
         switch (states) {
           SwitchDisabledStates(isSelected: false) =>
             _colorTheme.onSurface.withValues(alpha: 0.38),
@@ -838,7 +920,7 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
       width: 0.0,
       alignment: Outline.alignmentInside,
       color: Colors.transparent,
-    ).merge(_handleOutline?.resolve(states)),
+    ).maybeMerge(_overrides.handleOutline?.resolve(states)),
   );
 
   @override
@@ -855,14 +937,52 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
     };
     final result = IconThemeDataPartial.from(
       fill: 1.0,
-      weight: 400.0,
+      weight: 500.0, // TODO: investigate the usefulness of this default
       grade: 0.0,
       opticalSize: 24.0,
       size: 16.0,
       color: color,
     );
-    return result.maybeMerge(_iconTheme?.resolve(states));
+    return result.maybeMerge(_overrides.iconTheme?.resolve(states));
   });
+
+  @override
+  SwitchThemeData copyWith({
+    covariant SwitchStateProperty<Size>? minTapTargetSize,
+    covariant SwitchStateProperty<Size>? trackSize,
+    covariant SwitchStateProperty<OutlinedBorder>? trackShape,
+    covariant SwitchStateProperty<Color>? trackColor,
+    covariant SwitchStateProperty<Outline>? trackOutline,
+    covariant SwitchStateProperty<Size>? stateLayerSize,
+    covariant SwitchStateProperty<ShapeBorder>? stateLayerShape,
+    covariant SwitchStateProperty<Color>? stateLayerColor,
+    covariant SwitchStateProperty<double>? stateLayerOpacity,
+    covariant SwitchStateProperty<Size>? handleSize,
+    covariant SwitchStateProperty<OutlinedBorder>? handleShape,
+    covariant SwitchStateProperty<Color>? handleColor,
+    covariant SwitchStateProperty<Outline>? handleOutline,
+    covariant SwitchStateProperty<IconThemeDataPartial>? iconTheme,
+  }) => _SwitchThemeDataDefaults(
+    colorTheme: _colorTheme,
+    shapeTheme: _shapeTheme,
+    stateTheme: _stateTheme,
+    overrides: _overrides.copyWith(
+      minTapTargetSize: minTapTargetSize,
+      trackSize: trackSize,
+      trackShape: trackShape,
+      trackColor: trackColor,
+      trackOutline: trackOutline,
+      stateLayerSize: stateLayerSize,
+      stateLayerShape: stateLayerShape,
+      stateLayerColor: stateLayerColor,
+      stateLayerOpacity: stateLayerOpacity,
+      handleSize: handleSize,
+      handleShape: handleShape,
+      handleColor: handleColor,
+      handleOutline: handleOutline,
+      iconTheme: iconTheme,
+    ),
+  );
 
   @override
   SwitchThemeData maybeCopyWith({
@@ -911,25 +1031,37 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
           handleOutline: handleOutline,
           iconTheme: iconTheme,
         )
-      : _SwitchThemeDataDefaults(
-          colorTheme: _colorTheme,
-          shapeTheme: _shapeTheme,
-          stateTheme: _stateTheme,
-          minTapTargetSize: minTapTargetSize ?? _minTapTargetSize,
-          trackSize: trackSize ?? _trackSize,
-          trackShape: trackShape ?? _trackShape,
-          trackColor: trackColor ?? _trackColor,
-          trackOutline: trackOutline ?? _trackOutline,
-          stateLayerSize: stateLayerSize ?? _stateLayerSize,
-          stateLayerShape: stateLayerShape ?? _stateLayerShape,
-          stateLayerColor: stateLayerColor ?? _stateLayerColor,
-          stateLayerOpacity: stateLayerOpacity ?? _stateLayerOpacity,
-          handleSize: handleSize ?? _handleSize,
-          handleShape: handleShape ?? _handleShape,
-          handleColor: handleColor ?? _handleColor,
-          handleOutline: handleOutline ?? _handleOutline,
-          iconTheme: iconTheme ?? _iconTheme,
-        );
+      : minTapTargetSize != null ||
+            trackSize != null ||
+            trackShape != null ||
+            trackColor != null ||
+            trackOutline != null ||
+            stateLayerSize != null ||
+            stateLayerShape != null ||
+            stateLayerColor != null ||
+            stateLayerOpacity != null ||
+            handleSize != null ||
+            handleShape != null ||
+            handleColor != null ||
+            handleOutline != null ||
+            iconTheme != null
+      ? copyWith(
+          minTapTargetSize: minTapTargetSize,
+          trackSize: trackSize,
+          trackShape: trackShape,
+          trackColor: trackColor,
+          trackOutline: trackOutline,
+          stateLayerSize: stateLayerSize,
+          stateLayerShape: stateLayerShape,
+          stateLayerColor: stateLayerColor,
+          stateLayerOpacity: stateLayerOpacity,
+          handleSize: handleSize,
+          handleShape: handleShape,
+          handleColor: handleColor,
+          handleOutline: handleOutline,
+          iconTheme: iconTheme,
+        )
+      : this;
 
   @override
   SwitchThemeData mergeWith({
@@ -951,74 +1083,66 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
     colorTheme: _colorTheme,
     shapeTheme: _shapeTheme,
     stateTheme: _stateTheme,
-    minTapTargetSize:
-        minTapTargetSize?.orElseMaybe(_minTapTargetSize?.resolve) ??
-        _minTapTargetSize,
-    trackSize: trackSize?.orElseMaybe(_trackSize?.resolve) ?? _trackSize,
-    trackShape: trackShape?.orElseMaybe(_trackShape?.resolve) ?? _trackShape,
-    trackColor: trackColor?.orElseMaybe(_trackColor?.resolve) ?? _trackColor,
-    trackOutline:
-        trackOutline
-            ?.orElseMaybe(_trackOutline?.resolve)
-            .mapValue(
-              (states, value) =>
-                  _trackOutline?.resolve(states)?.merge(value) ?? value,
-            ) ??
-        _trackOutline,
-    stateLayerSize:
-        stateLayerSize?.orElseMaybe(_stateLayerSize?.resolve) ??
-        _stateLayerSize,
-    stateLayerShape:
-        stateLayerShape?.orElseMaybe(_stateLayerShape?.resolve) ??
-        _stateLayerShape,
-    stateLayerColor:
-        stateLayerColor?.orElseMaybe(_stateLayerColor?.resolve) ??
-        _stateLayerColor,
-    stateLayerOpacity:
-        stateLayerOpacity?.orElseMaybe(_stateLayerOpacity?.resolve) ??
-        _stateLayerOpacity,
-    handleSize: handleSize?.orElseMaybe(_handleSize?.resolve) ?? _handleSize,
-    handleShape:
-        handleShape?.orElseMaybe(_handleShape?.resolve) ?? _handleShape,
-    handleColor:
-        handleColor?.orElseMaybe(_handleColor?.resolve) ?? _handleColor,
-    handleOutline:
-        handleOutline
-            ?.orElseMaybe(_handleOutline?.resolve)
-            .mapValue(
-              (states, value) =>
-                  _handleOutline?.resolve(states)?.merge(value) ?? value,
-            ) ??
-        _handleOutline,
-    iconTheme:
-        iconTheme
-            ?.orElseMaybe(_iconTheme?.resolve)
-            .mapValue(
-              (states, value) =>
-                  _iconTheme?.resolve(states)?.maybeMerge(value) ?? value,
-            ) ??
-        _iconTheme,
+    overrides: _overrides.mergeWith(
+      minTapTargetSize: minTapTargetSize,
+      trackSize: trackSize,
+      trackShape: trackShape,
+      trackColor: trackColor,
+      trackOutline: trackOutline,
+      stateLayerSize: stateLayerSize,
+      stateLayerShape: stateLayerShape,
+      stateLayerColor: stateLayerColor,
+      stateLayerOpacity: stateLayerOpacity,
+      handleSize: handleSize,
+      handleShape: handleShape,
+      handleColor: handleColor,
+      handleOutline: handleOutline,
+      iconTheme: iconTheme,
+    ),
   );
 
   @override
-  SwitchThemeData merge(SwitchThemeDataPartial? other) => other != null
-      ? mergeWith(
-          minTapTargetSize: other.minTapTargetSize,
-          trackSize: other.trackSize,
-          trackShape: other.trackShape,
-          trackColor: other.trackColor,
-          trackOutline: other.trackOutline,
-          stateLayerSize: other.stateLayerSize,
-          stateLayerShape: other.stateLayerShape,
-          stateLayerColor: other.stateLayerColor,
-          stateLayerOpacity: other.stateLayerOpacity,
-          handleSize: other.handleSize,
-          handleShape: other.handleShape,
-          handleColor: other.handleColor,
-          handleOutline: other.handleOutline,
-          iconTheme: other.iconTheme,
-        )
-      : this;
+  SwitchThemeData maybeMergeWith({
+    SwitchStateProperty<Size?>? minTapTargetSize,
+    SwitchStateProperty<Size?>? trackSize,
+    SwitchStateProperty<OutlinedBorder?>? trackShape,
+    SwitchStateProperty<Color?>? trackColor,
+    SwitchStateProperty<OutlinePartial?>? trackOutline,
+    SwitchStateProperty<Size?>? stateLayerSize,
+    SwitchStateProperty<ShapeBorder?>? stateLayerShape,
+    SwitchStateProperty<Color?>? stateLayerColor,
+    SwitchStateProperty<double?>? stateLayerOpacity,
+    SwitchStateProperty<Size?>? handleSize,
+    SwitchStateProperty<OutlinedBorder?>? handleShape,
+    SwitchStateProperty<Color?>? handleColor,
+    SwitchStateProperty<OutlinePartial?>? handleOutline,
+    SwitchStateProperty<IconThemeDataPartial?>? iconTheme,
+  }) {
+    final overrides = _overrides.maybeMergeWith(
+      minTapTargetSize: minTapTargetSize,
+      trackSize: trackSize,
+      trackShape: trackShape,
+      trackColor: trackColor,
+      trackOutline: trackOutline,
+      stateLayerSize: stateLayerSize,
+      stateLayerShape: stateLayerShape,
+      stateLayerColor: stateLayerColor,
+      stateLayerOpacity: stateLayerOpacity,
+      handleSize: handleSize,
+      handleShape: handleShape,
+      handleColor: handleColor,
+      handleOutline: handleOutline,
+      iconTheme: iconTheme,
+    );
+    return identical(_overrides, overrides)
+        ? this
+        : _SwitchThemeDataDefaults(
+            colorTheme: _colorTheme,
+            shapeTheme: _shapeTheme,
+            stateTheme: _stateTheme,
+            overrides: overrides,
+          );
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -1027,81 +1151,53 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
           _colorTheme == other._colorTheme &&
           _shapeTheme == other._shapeTheme &&
           _stateTheme == other._stateTheme &&
-          _minTapTargetSize == other._minTapTargetSize &&
-          _trackSize == other._trackSize &&
-          _trackShape == other._trackShape &&
-          _trackColor == other._trackColor &&
-          _trackOutline == other._trackOutline &&
-          _stateLayerSize == other._stateLayerSize &&
-          _stateLayerShape == other._stateLayerShape &&
-          _stateLayerColor == other._stateLayerColor &&
-          _stateLayerOpacity == other._stateLayerOpacity &&
-          _handleSize == other._handleSize &&
-          _handleShape == other._handleShape &&
-          _handleColor == other._handleColor &&
-          _handleOutline == other._handleOutline &&
-          _iconTheme == other._iconTheme;
+          _overrides == other._overrides;
 
   @override
-  int get hashCode => Object.hash(
-    _colorTheme,
-    _shapeTheme,
-    _stateTheme,
-    _minTapTargetSize,
-    _trackSize,
-    _trackShape,
-    _trackColor,
-    _trackOutline,
-    _stateLayerSize,
-    _stateLayerShape,
-    _stateLayerColor,
-    _stateLayerOpacity,
-    _handleSize,
-    _handleShape,
-    _handleColor,
-    _handleOutline,
-    _iconTheme,
-  );
-}
-
-typedef SwitchThemeResolver = ThemeResolver<SwitchThemeDataPartial>;
-
-typedef SwitchThemeResolverCallback =
-    ThemeResolverCallback<SwitchThemeDataPartial>;
-
-class _SwitchThemeResolver
-    extends CombiningThemeResolver<SwitchThemeDataPartial> {
-  const _SwitchThemeResolver(super.a, super.b);
-
-  @override
-  SwitchThemeDataPartial combine(
-    SwitchThemeDataPartial a,
-    SwitchThemeDataPartial b,
-  ) => a.merge(b);
+  int get hashCode =>
+      Object.hash(_colorTheme, _shapeTheme, _stateTheme, _overrides);
 }
 
 abstract class SwitchTheme extends StatelessWidget implements ProxyWidget {
   const SwitchTheme._({super.key, required this.child});
 
-  const factory SwitchTheme.withResolver({
+  const factory SwitchTheme.mergeWithResolver({
     Key? key,
-    required SwitchThemeResolver resolver,
+    required ThemeResolver<SwitchThemeDataPartial> resolver,
     required Widget child,
-  }) = _SwitchThemeWithResolver;
+  }) = _SwitchThemeWithResolver<SwitchThemeDataPartial>;
 
-  const factory SwitchTheme.withCallback({
+  const factory SwitchTheme.mergeWithCallback({
     Key? key,
-    required SwitchThemeResolverCallback callback,
+    required ThemeResolverCallback<SwitchThemeDataPartial> callback,
     required Widget child,
-  }) = _SwitchThemeWithCallback;
+  }) = _SwitchThemeWithCallback<SwitchThemeDataPartial>;
 
-  const factory SwitchTheme.withData({
+  const factory SwitchTheme.mergeWithData({
     Key? key,
     required SwitchThemeDataPartial data,
     required Widget child,
-  }) = _SwitchThemeWithData;
+  }) = _SwitchThemeWithData<SwitchThemeDataPartial>;
 
-  SwitchThemeResolver get resolver;
+  const factory SwitchTheme.replaceWithResolver({
+    Key? key,
+    required ThemeResolver<SwitchThemeData> resolver,
+    required Widget child,
+  }) = _SwitchThemeWithResolver<SwitchThemeData>;
+
+  const factory SwitchTheme.replaceWithCallback({
+    Key? key,
+    required ThemeResolverCallback<SwitchThemeData> callback,
+    required Widget child,
+  }) = _SwitchThemeWithCallback<SwitchThemeData>;
+
+  const factory SwitchTheme.replaceWithData({
+    Key? key,
+    required SwitchThemeData data,
+    required Widget child,
+  }) = _SwitchThemeWithData<SwitchThemeData>;
+
+  ThemeResolver<SwitchThemeDataPartial> get resolver;
 
   @override
   final Widget child;
@@ -1111,48 +1207,30 @@ abstract class SwitchTheme extends StatelessWidget implements ProxyWidget {
     final inherited = _SwitchTheme.maybeResolverOf(context);
     return _SwitchTheme(
       resolver: inherited != null
-          ? _SwitchThemeResolver(inherited, resolver)
+          ? .combine(inherited, resolver, _merge)
           : resolver,
       child: child,
     );
   }
 
+  static SwitchThemeDataPartial _merge(
+    SwitchThemeDataPartial a,
+    SwitchThemeDataPartial b,
+  ) => a.maybeMerge(b);
+
   static SwitchThemeData of(BuildContext context) {
     final resolver = _SwitchTheme.maybeResolverOf(context);
-    final colorTheme = ColorTheme.of(context);
-    final shapeTheme = ShapeTheme.of(context);
-    final stateTheme = StateTheme.of(context);
-    if (resolver != null) {
-      final data = resolver.resolve(context);
-      return ._defaults(
-        colorTheme: colorTheme,
-        shapeTheme: shapeTheme,
-        stateTheme: stateTheme,
-        minTapTargetSize: data.minTapTargetSize,
-        trackSize: data.trackSize,
-        trackShape: data.trackShape,
-        trackColor: data.trackColor,
-        trackOutline: data.trackOutline,
-        stateLayerSize: data.stateLayerSize,
-        stateLayerShape: data.stateLayerShape,
-        stateLayerColor: data.stateLayerColor,
-        stateLayerOpacity: data.stateLayerOpacity,
-        handleSize: data.handleSize,
-        handleShape: data.handleShape,
-        handleColor: data.handleColor,
-        handleOutline: data.handleOutline,
-        iconTheme: data.iconTheme,
-      );
-    }
     return .defaults(
-      colorTheme: colorTheme,
-      shapeTheme: shapeTheme,
-      stateTheme: stateTheme,
+      colorTheme: ColorTheme.of(context),
+      shapeTheme: ShapeTheme.of(context),
+      stateTheme: StateTheme.of(context),
+      overrides: resolver?.resolve(context),
     );
   }
 }
 
-class _SwitchThemeWithResolver extends SwitchTheme {
+class _SwitchThemeWithResolver<T extends SwitchThemeDataPartial>
+    extends SwitchTheme {
   const _SwitchThemeWithResolver({
     super.key,
     required this.resolver,
@@ -1160,61 +1238,61 @@ class _SwitchThemeWithResolver extends SwitchTheme {
   }) : super._();
 
   @override
-  final SwitchThemeResolver resolver;
+  final ThemeResolver<T> resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<SwitchThemeResolver>("resolver", resolver),
-    );
+    properties.add(DiagnosticsProperty<ThemeResolver<T>>("resolver", resolver));
   }
 }
 
-class _SwitchThemeWithCallback extends SwitchTheme {
+class _SwitchThemeWithCallback<T extends SwitchThemeDataPartial>
+    extends SwitchTheme {
   const _SwitchThemeWithCallback({
     super.key,
     required this.callback,
     required super.child,
   }) : super._();
 
-  final SwitchThemeResolverCallback callback;
+  final ThemeResolverCallback<T> callback;
 
   @override
-  SwitchThemeResolver get resolver => .callback(callback);
+  ThemeResolver<T> get resolver => .callback(callback);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      DiagnosticsProperty<SwitchThemeResolverCallback>("callback", callback),
+      DiagnosticsProperty<ThemeResolverCallback<T>>("callback", callback),
     );
   }
 }
 
-class _SwitchThemeWithData extends SwitchTheme {
+class _SwitchThemeWithData<T extends SwitchThemeDataPartial>
+    extends SwitchTheme {
   const _SwitchThemeWithData({
     super.key,
     required this.data,
     required super.child,
   }) : super._();
 
-  final SwitchThemeDataPartial data;
+  final T data;
 
   @override
-  SwitchThemeResolver get resolver => .value(data);
+  ThemeResolver<T> get resolver => .value(data);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<SwitchThemeDataPartial>("data", data));
+    properties.add(DiagnosticsProperty<T>("data", data));
   }
 }
 
 class _SwitchTheme extends InheritedTheme {
   const _SwitchTheme({super.key, required this.resolver, required super.child});
 
-  final SwitchThemeResolver resolver;
+  final ThemeResolver<SwitchThemeDataPartial> resolver;
 
   @override
   bool updateShouldNotify(_SwitchTheme oldWidget) =>
@@ -1224,6 +1302,7 @@ class _SwitchTheme extends InheritedTheme {
   Widget wrap(BuildContext context, Widget child) =>
       _SwitchTheme(resolver: resolver, child: child);
 
-  static SwitchThemeResolver? maybeResolverOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_SwitchTheme>()?.resolver;
+  static ThemeResolver<SwitchThemeDataPartial>? maybeResolverOf(
+    BuildContext context,
+  ) => context.dependOnInheritedWidgetOfExactType<_SwitchTheme>()?.resolver;
 }

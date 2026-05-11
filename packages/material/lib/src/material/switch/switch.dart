@@ -711,7 +711,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
             onTapUpOutside: !_states.isDisabled ? _onTapOutside : null,
             child: AnimatedBuilder(
               animation: _effectsController,
-              builder: (context, child) => FocusRingTheme.partial(
+              builder: (context, child) => FocusRingTheme.mergeWithData(
                 data: .from(
                   // Don't use _resolvedTrackShapeAnimation because it has border.
                   shape: .all(_trackShapeAnimation.value ?? _trackShape),

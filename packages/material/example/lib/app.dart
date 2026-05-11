@@ -49,6 +49,11 @@ class _AppState extends State<App> {
     );
     return ColorTheme.replaceWithData(
       data: colorTheme,
+      // data: .fromPalette(
+      //   palette: const .defaults(),
+      //   brightness: brightness,
+      //   contrastLevel: contrastLevel,
+      // ),
       child: StaticColors(data: staticColors, child: child),
     );
   }
@@ -146,7 +151,7 @@ class _AppState extends State<App> {
   }
 
   static const _themeMode = ThemeMode.system;
-  static const _variant = DynamicSchemeVariant.cmf;
+  static const _variant = DynamicSchemeVariant.vibrant;
   static const _platform = DynamicSchemePlatform.phone;
   static const _specVersion = DynamicSchemeSpecVersion.spec2026;
   static const _typography = TypographyDefaults.material3Expressive2026;

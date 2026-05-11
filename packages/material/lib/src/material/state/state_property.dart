@@ -170,8 +170,7 @@ class StatePropertyTween<T extends Object, S extends Object?>
   final LerpFunction<T> _lerpFunction;
 
   @override
-  StateProperty<T?, S>? lerp(double t) =>
-      StateProperty.lerp(begin, end, t, _lerpFunction);
+  StateProperty<T?, S>? lerp(double t) => .lerp(begin, end, t, _lerpFunction);
 }
 
 class StateMapper<T extends Object?, S extends Object?>
@@ -299,11 +298,51 @@ extension StatePropertyExtension2<T extends Object, S extends Object?>
 
   StateProperty<T, S> orWith(StateProperty<T, S> property) =>
       mapValue((states, value) => value ?? property.resolve(states));
+
+  StateProperty<T?, S> orWithMaybe(StateProperty<T?, S>? property) =>
+      property != null
+      ? mapValue((states, value) => value ?? property.resolve(states))
+      : this;
 }
 
 extension StatePropertyExtenion3<T extends Object?>
     on StateProperty<T, WidgetStates> {
   flutter.WidgetStateProperty<T> get asLegacy => _Legacy(this);
+}
+
+extension StatePropertyExtension4<T extends Object, S extends Object?>
+    on StateProperty<T?, S>? {
+  StateProperty<T?, S>? maybeMergeNullable(StateProperty<T?, S>? other) =>
+      other != null
+      ? other.mapValue((states, value) => value ?? this?.resolve(states))
+      : this;
+
+  StateProperty<T?, S>? maybeCombineNullable(
+    StateProperty<T?, S>? other,
+    T Function(T a, T? b) combine,
+  ) => other != null
+      ? other.mapValue((states, b) {
+          final a = this?.resolve(states);
+          return a != null ? combine(a, b) : b;
+        })
+      : this;
+}
+
+extension StatePropertyExtension5<T extends Object, S extends Object?>
+    on StateProperty<T, S> {
+  StateProperty<T, S> maybeMerge(StateProperty<T?, S>? other) => other != null
+      ? other.mapValue((states, value) => value ?? resolve(states))
+      : this;
+
+  StateProperty<T, S> maybeCombine<U extends Object>(
+    StateProperty<U?, S>? other,
+    T Function(T a, U? b) combine,
+  ) => other != null
+      ? other.mapValue((states, b) {
+          final a = resolve(states);
+          return combine(a, b);
+        })
+      : this;
 }
 
 class _MapValueWithStatesAndValue<
@@ -319,6 +358,16 @@ class _MapValueWithStatesAndValue<
 
   @override
   U resolve(S states) => _callback(states, _parent.resolve(states));
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _MapValueWithStatesAndValue<T, S, U> &&
+          _parent == other._parent &&
+          _callback == other._callback;
+
+  @override
+  int get hashCode => Object.hash(_parent, _callback);
 }
 
 class _MapStatesWithStates<T, S> implements StateProperty<T, S> {
@@ -329,6 +378,16 @@ class _MapStatesWithStates<T, S> implements StateProperty<T, S> {
 
   @override
   T resolve(S states) => _parent.resolve(_callback(states));
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _MapStatesWithStates<T, S> &&
+          _parent == other._parent &&
+          _callback == other._callback;
+
+  @override
+  int get hashCode => Object.hash(_parent, _callback);
 }
 
 // class _Merged<T1, T2, S, U> implements StateProperty<U, S> {

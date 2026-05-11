@@ -543,7 +543,7 @@ class _ListItemInteractionState extends State<ListItemInteraction> {
 
     return listItemContainerScope.buildCenterOptically(
       inverse: true,
-      child: FocusRingTheme.partial(
+      child: FocusRingTheme.mergeWithData(
         data: FocusRingThemeDataPartial.from(
           shape: .all(
             // TODO: add shape corner family
