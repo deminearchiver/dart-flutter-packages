@@ -75,7 +75,7 @@ class _AppState extends State<App> {
           _buildSpringTheme,
           _buildTypescaleTheme,
           // (context, child) => ShapeTheme.mergeWithData(
-          //   data: .from(cornerFamily: .rounded),
+          //   data: .from(cornerFamily: .cut),
           //   child: child,
           // ),
         ],

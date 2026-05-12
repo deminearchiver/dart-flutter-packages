@@ -706,6 +706,7 @@ class _CutCornersBorderDelegate extends CornersBorderDelegate
   String toString() => "CornersBorderDelegate.cut";
 
   static Path _createPath(RRect rrect) {
+    if (rrect.isEmpty) return Path();
     if (rrect.isRect) return Path()..addRect(rrect.outerRect);
     final RRect(
       :left,

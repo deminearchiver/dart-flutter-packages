@@ -37,6 +37,9 @@ abstract class CornersGeometry {
     BorderRadiusGeometry borderRadius,
   ) = _CornersGeometryFromBorderRadiusGeometry;
 
+  CornersGeometry clamp({CornersGeometry? minimum, CornersGeometry? maximum}) =>
+      _CornersClamp(this, minimum, maximum);
+
   Corners resolve(TextDirection? textDirection);
 
   CornersGeometry add(CornersGeometry other) => _CornersAdd(this, other);
@@ -77,14 +80,14 @@ abstract class CornersGeometry {
     }
     if (a is _CornersGeometry && b is _CornersGeometry) {
       return _MixedCorners(
-        .lerp(a._topLeft, b._topLeft, t)!,
-        .lerp(a._topRight, b._topRight, t)!,
-        .lerp(a._bottomLeft, b._bottomLeft, t)!,
-        .lerp(a._bottomRight, b._bottomRight, t)!,
-        .lerp(a._topStart, b._topStart, t)!,
-        .lerp(a._topEnd, b._topEnd, t)!,
-        .lerp(a._bottomStart, b._bottomStart, t)!,
-        .lerp(a._bottomEnd, b._bottomEnd, t)!,
+        .lerp(a._topLeft, b._topLeft, t),
+        .lerp(a._topRight, b._topRight, t),
+        .lerp(a._bottomLeft, b._bottomLeft, t),
+        .lerp(a._bottomRight, b._bottomRight, t),
+        .lerp(a._topStart, b._topStart, t),
+        .lerp(a._topEnd, b._topEnd, t),
+        .lerp(a._bottomStart, b._bottomStart, t),
+        .lerp(a._bottomEnd, b._bottomEnd, t),
       );
     }
     return _CornersLerp(a, b, t);
@@ -280,6 +283,59 @@ final class _CornersSubtract extends _CornersWithCornersOperation {
   String toString() => "$_a - $_b";
 }
 
+final class _CornersClamp extends CornersGeometry {
+  const _CornersClamp(
+    CornersGeometry value,
+    CornersGeometry? minimum,
+    CornersGeometry? maximum,
+  ) : _value = value,
+      _minimum = minimum,
+      _maximum = maximum;
+
+  final CornersGeometry _value;
+  final CornersGeometry? _minimum;
+  final CornersGeometry? _maximum;
+
+  @override
+  Corners resolve(TextDirection? textDirection) {
+    final value = _value.resolve(textDirection);
+    final minimum = _minimum?.resolve(textDirection);
+    final maximum = _maximum?.resolve(textDirection);
+    return .only(
+      topLeft: value.topLeft.clamp(
+        minimum: minimum?.topLeft,
+        maximum: maximum?.topLeft,
+      ),
+      topRight: value.topRight.clamp(
+        minimum: minimum?.topRight,
+        maximum: maximum?.topRight,
+      ),
+      bottomLeft: value.bottomLeft.clamp(
+        minimum: minimum?.bottomLeft,
+        maximum: maximum?.bottomLeft,
+      ),
+      bottomRight: value.bottomRight.clamp(
+        minimum: minimum?.bottomRight,
+        maximum: maximum?.bottomRight,
+      ),
+    );
+  }
+
+  @override
+  String toString() => "$_value.clamp($_minimum, $_maximum)";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _CornersClamp &&
+          _value == other._value &&
+          _minimum == other._minimum &&
+          _maximum == other._maximum;
+
+  @override
+  int get hashCode => Object.hash(_value, _minimum, _maximum);
+}
+
 final class _CornersLerp extends CornersGeometry {
   const _CornersLerp(CornersGeometry a, CornersGeometry b, double t)
     : _a = a,
@@ -317,185 +373,355 @@ final class _CornersLerp extends CornersGeometry {
 abstract class _CornersGeometry extends CornersGeometry {
   const _CornersGeometry();
 
-  Corner get _topLeft;
+  Corner? get _topLeft;
+  Corner? get _topRight;
+  Corner? get _bottomLeft;
+  Corner? get _bottomRight;
+  Corner? get _topStart;
+  Corner? get _topEnd;
+  Corner? get _bottomStart;
+  Corner? get _bottomEnd;
 
-  Corner get _topRight;
+  // TODO: fix clamp here as well
+  // @override
+  // CornersGeometry clamp(CornersGeometry minimum, CornersGeometry maximum) =>
+  //     minimum is _CornersGeometry && maximum is _CornersGeometry
+  //     ? _MixedCorners(
+  //         _topLeft.clamp(minimum._topLeft, maximum._topLeft),
+  //         _topRight.clamp(minimum._topRight, maximum._topRight),
+  //         _bottomLeft.clamp(minimum._bottomLeft, maximum._bottomLeft),
+  //         _bottomRight.clamp(minimum._bottomRight, maximum._bottomRight),
+  //         _topStart.clamp(minimum._topStart, maximum._topStart),
+  //         _topEnd.clamp(minimum._topEnd, maximum._topEnd),
+  //         _bottomStart.clamp(minimum._bottomStart, maximum._bottomStart),
+  //         _bottomEnd.clamp(minimum._bottomEnd, maximum._bottomEnd),
+  //       )
+  //     : super.clamp(minimum, maximum);
 
-  Corner get _bottomLeft;
-
-  Corner get _bottomRight;
-
-  Corner get _topStart;
-
-  Corner get _topEnd;
-
-  Corner get _bottomStart;
-
-  Corner get _bottomEnd;
+  // @override
+  // CornersGeometry clamp({CornersGeometry? minimum, CornersGeometry? maximum}) {
+  //   if (minimum is _CornersGeometry? && maximum is _CornersGeometry?) {
+  //     final topLeft = _topLeft;
+  //     final topRight = _topRight;
+  //     final bottomLeft = _bottomLeft;
+  //     final bottomRight = _bottomRight;
+  //     final topStart = _topStart;
+  //     final topEnd = _topEnd;
+  //     final bottomStart = _bottomStart;
+  //     final bottomEnd = _bottomEnd;
+  //     return _MixedCorners(
+  //       topLeft?.clamp(minimum: minimum?._topLeft, maximum: maximum?._topLeft),
+  //       topRight?.clamp(
+  //         minimum: minimum?._topRight,
+  //         maximum: maximum?._topRight,
+  //       ),
+  //       bottomLeft?.clamp(
+  //         minimum: minimum?._bottomLeft,
+  //         maximum: maximum?._bottomLeft,
+  //       ),
+  //       bottomRight?.clamp(
+  //         minimum: minimum?._bottomRight,
+  //         maximum: maximum?._bottomRight,
+  //       ),
+  //       topStart?.clamp(
+  //         minimum: minimum?._topStart,
+  //         maximum: maximum?._topStart,
+  //       ),
+  //       topEnd?.clamp(minimum: minimum?._topEnd, maximum: maximum?._topEnd),
+  //       bottomStart?.clamp(
+  //         minimum: minimum?._bottomStart,
+  //         maximum: maximum?._bottomStart,
+  //       ),
+  //       bottomEnd?.clamp(
+  //         minimum: minimum?._bottomEnd,
+  //         maximum: maximum?._bottomEnd,
+  //       ),
+  //     );
+  //   }
+  //   return super.clamp(minimum: minimum, maximum: maximum);
+  // }
 
   @override
   Corners resolve(TextDirection? textDirection) {
     assert(debugCheckCanResolveTextDirection(textDirection, "$_MixedCorners"));
+    final topLeft = _topLeft;
+    final topRight = _topRight;
+    final bottomLeft = _bottomLeft;
+    final bottomRight = _bottomRight;
+    final topStart = _topStart;
+    final topEnd = _topEnd;
+    final bottomStart = _bottomStart;
+    final bottomEnd = _bottomEnd;
     return switch (textDirection!) {
       .ltr => .only(
-        topLeft: _topLeft.add(_topStart),
-        topRight: _topRight.add(_topEnd),
-        bottomLeft: _bottomLeft.add(_bottomStart),
-        bottomRight: _bottomRight.add(_bottomEnd),
+        topLeft: topLeft != null && topStart != null
+            ? topLeft.add(topStart)
+            : topLeft ?? topStart ?? .zero,
+        topRight: topRight != null && topEnd != null
+            ? topRight.add(topEnd)
+            : topRight ?? topEnd ?? .zero,
+        bottomLeft: bottomLeft != null && bottomStart != null
+            ? bottomLeft.add(bottomStart)
+            : bottomLeft ?? bottomStart ?? .zero,
+        bottomRight: bottomRight != null && bottomEnd != null
+            ? bottomRight.add(bottomEnd)
+            : bottomRight ?? bottomEnd ?? .zero,
       ),
       .rtl => .only(
-        topLeft: _topLeft.subtract(_topEnd),
-        topRight: _topRight.subtract(_topStart),
-        bottomLeft: _bottomLeft.subtract(_bottomEnd),
-        bottomRight: _bottomRight.subtract(_bottomStart),
+        topLeft: topLeft != null && topEnd != null
+            ? topLeft.add(topEnd)
+            : topLeft ?? topEnd ?? .zero,
+        topRight: topRight != null && topStart != null
+            ? topRight.add(topStart)
+            : topRight ?? topStart ?? .zero,
+        bottomLeft: bottomLeft != null && bottomEnd != null
+            ? bottomLeft.add(bottomEnd)
+            : bottomLeft ?? bottomEnd ?? .zero,
+        bottomRight: bottomRight != null && bottomStart != null
+            ? bottomRight.add(bottomStart)
+            : bottomRight ?? bottomStart ?? .zero,
       ),
     };
   }
 
   @override
-  CornersGeometry add(CornersGeometry other) => other is _CornersGeometry
-      ? _MixedCorners(
-          _topLeft.add(other._topLeft),
-          _topRight.add(other._topRight),
-          _bottomLeft.add(other._bottomLeft),
-          _bottomRight.add(other._bottomRight),
-          _topStart.add(other._topStart),
-          _topEnd.add(other._topEnd),
-          _bottomStart.add(other._bottomStart),
-          _bottomEnd.add(other._bottomEnd),
-        )
-      : super.add(other);
+  CornersGeometry add(CornersGeometry other) {
+    if (other is _CornersGeometry) {
+      final atl = _topLeft;
+      final atr = _topRight;
+      final abl = _bottomLeft;
+      final abr = _bottomRight;
+      final ats = _topStart;
+      final ate = _topEnd;
+      final abs = _bottomStart;
+      final abe = _bottomEnd;
+      final btl = other._topLeft;
+      final btr = other._topRight;
+      final bbl = other._bottomLeft;
+      final bbr = other._bottomRight;
+      final bts = other._topStart;
+      final bte = other._topEnd;
+      final bbs = other._bottomStart;
+      final bbe = other._bottomEnd;
+      return _MixedCorners(
+        atl != null && btl != null ? atl.add(btl) : atl ?? btl,
+        atr != null && btr != null ? atr.add(btr) : atr ?? btr,
+        abl != null && bbl != null ? abl.add(bbl) : abl ?? bbl,
+        abr != null && bbr != null ? abr.add(bbr) : abr ?? bbr,
+        ats != null && bts != null ? ats.add(bts) : ats ?? bts,
+        ate != null && bte != null ? ate.add(bte) : ate ?? bte,
+        abs != null && bbs != null ? abs.add(bbs) : abs ?? bbs,
+        abe != null && bbe != null ? abe.add(bbe) : abe ?? bbe,
+      );
+    }
+    return super.add(other);
+  }
 
   @override
-  CornersGeometry subtract(CornersGeometry other) => other is _CornersGeometry
-      ? _MixedCorners(
-          _topLeft.subtract(other._topLeft),
-          _topRight.subtract(other._topRight),
-          _bottomLeft.subtract(other._bottomLeft),
-          _bottomRight.subtract(other._bottomRight),
-          _topStart.subtract(other._topStart),
-          _topEnd.subtract(other._topEnd),
-          _bottomStart.subtract(other._bottomStart),
-          _bottomEnd.subtract(other._bottomEnd),
-        )
-      : super.subtract(other);
+  CornersGeometry subtract(CornersGeometry other) {
+    if (other is _CornersGeometry) {
+      final atl = _topLeft;
+      final atr = _topRight;
+      final abl = _bottomLeft;
+      final abr = _bottomRight;
+      final ats = _topStart;
+      final ate = _topEnd;
+      final abs = _bottomStart;
+      final abe = _bottomEnd;
+      final btl = other._topLeft;
+      final btr = other._topRight;
+      final bbl = other._bottomLeft;
+      final bbr = other._bottomRight;
+      final bts = other._topStart;
+      final bte = other._topEnd;
+      final bbs = other._bottomStart;
+      final bbe = other._bottomEnd;
+      return _MixedCorners(
+        atl != null && btl != null ? atl.subtract(btl) : atl ?? btl,
+        atr != null && btr != null ? atr.subtract(btr) : atr ?? btr,
+        abl != null && bbl != null ? abl.subtract(bbl) : abl ?? bbl,
+        abr != null && bbr != null ? abr.subtract(bbr) : abr ?? bbr,
+        ats != null && bts != null ? ats.subtract(bts) : ats ?? bts,
+        ate != null && bte != null ? ate.subtract(bte) : ate ?? bte,
+        abs != null && bbs != null ? abs.subtract(bbs) : abs ?? bbs,
+        abe != null && bbe != null ? abe.subtract(bbe) : abe ?? bbe,
+      );
+    }
+    return super.add(other);
+  }
 
   @override
-  _CornersGeometry operator -() => _MixedCorners(
-    -_topLeft,
-    -_topRight,
-    -_bottomLeft,
-    -_bottomRight,
-    -_topStart,
-    -_topEnd,
-    -_bottomStart,
-    -_bottomEnd,
-  );
+  _CornersGeometry operator -() {
+    final topLeft = _topLeft;
+    final topRight = _topRight;
+    final bottomLeft = _bottomLeft;
+    final bottomRight = _bottomRight;
+    final topStart = _topStart;
+    final topEnd = _topEnd;
+    final bottomStart = _bottomStart;
+    final bottomEnd = _bottomEnd;
+    return _MixedCorners(
+      topLeft != null ? -topLeft : null,
+      topRight != null ? -topRight : null,
+      bottomLeft != null ? -bottomLeft : null,
+      bottomRight != null ? -bottomRight : null,
+      topStart != null ? -topStart : null,
+      topEnd != null ? -topEnd : null,
+      bottomStart != null ? -bottomStart : null,
+      bottomEnd != null ? -bottomEnd : null,
+    );
+  }
 
   @override
-  _CornersGeometry operator *(double operand) => _MixedCorners(
-    _topLeft * operand,
-    _topRight * operand,
-    _bottomLeft * operand,
-    _bottomRight * operand,
-    _topStart * operand,
-    _topEnd * operand,
-    _bottomStart * operand,
-    _bottomEnd * operand,
-  );
+  _CornersGeometry operator *(double operand) {
+    final topLeft = _topLeft;
+    final topRight = _topRight;
+    final bottomLeft = _bottomLeft;
+    final bottomRight = _bottomRight;
+    final topStart = _topStart;
+    final topEnd = _topEnd;
+    final bottomStart = _bottomStart;
+    final bottomEnd = _bottomEnd;
+    return _MixedCorners(
+      topLeft != null ? topLeft * operand : null,
+      topRight != null ? topRight * operand : null,
+      bottomLeft != null ? bottomLeft * operand : null,
+      bottomRight != null ? bottomRight * operand : null,
+      topStart != null ? topStart * operand : null,
+      topEnd != null ? topEnd * operand : null,
+      bottomStart != null ? bottomStart * operand : null,
+      bottomEnd != null ? bottomEnd * operand : null,
+    );
+  }
 
   @override
-  _CornersGeometry operator /(double operand) => _MixedCorners(
-    _topLeft / operand,
-    _topRight / operand,
-    _bottomLeft / operand,
-    _bottomRight / operand,
-    _topStart / operand,
-    _topEnd / operand,
-    _bottomStart / operand,
-    _bottomEnd / operand,
-  );
+  _CornersGeometry operator /(double operand) {
+    final topLeft = _topLeft;
+    final topRight = _topRight;
+    final bottomLeft = _bottomLeft;
+    final bottomRight = _bottomRight;
+    final topStart = _topStart;
+    final topEnd = _topEnd;
+    final bottomStart = _bottomStart;
+    final bottomEnd = _bottomEnd;
+    return _MixedCorners(
+      topLeft != null ? topLeft / operand : null,
+      topRight != null ? topRight / operand : null,
+      bottomLeft != null ? bottomLeft / operand : null,
+      bottomRight != null ? bottomRight / operand : null,
+      topStart != null ? topStart / operand : null,
+      topEnd != null ? topEnd / operand : null,
+      bottomStart != null ? bottomStart / operand : null,
+      bottomEnd != null ? bottomEnd / operand : null,
+    );
+  }
 
   @override
-  _CornersGeometry operator ~/(double operand) => _MixedCorners(
-    _topLeft ~/ operand,
-    _topRight ~/ operand,
-    _bottomLeft ~/ operand,
-    _bottomRight ~/ operand,
-    _topStart ~/ operand,
-    _topEnd ~/ operand,
-    _bottomStart ~/ operand,
-    _bottomEnd ~/ operand,
-  );
+  _CornersGeometry operator ~/(double operand) {
+    final topLeft = _topLeft;
+    final topRight = _topRight;
+    final bottomLeft = _bottomLeft;
+    final bottomRight = _bottomRight;
+    final topStart = _topStart;
+    final topEnd = _topEnd;
+    final bottomStart = _bottomStart;
+    final bottomEnd = _bottomEnd;
+    return _MixedCorners(
+      topLeft != null ? topLeft ~/ operand : null,
+      topRight != null ? topRight ~/ operand : null,
+      bottomLeft != null ? bottomLeft ~/ operand : null,
+      bottomRight != null ? bottomRight ~/ operand : null,
+      topStart != null ? topStart ~/ operand : null,
+      topEnd != null ? topEnd ~/ operand : null,
+      bottomStart != null ? bottomStart ~/ operand : null,
+      bottomEnd != null ? bottomEnd ~/ operand : null,
+    );
+  }
 
   @override
-  _CornersGeometry operator %(double operand) => _MixedCorners(
-    _topLeft % operand,
-    _topRight % operand,
-    _bottomLeft % operand,
-    _bottomRight % operand,
-    _topStart % operand,
-    _topEnd % operand,
-    _bottomStart % operand,
-    _bottomEnd % operand,
-  );
+  _CornersGeometry operator %(double operand) {
+    final topLeft = _topLeft;
+    final topRight = _topRight;
+    final bottomLeft = _bottomLeft;
+    final bottomRight = _bottomRight;
+    final topStart = _topStart;
+    final topEnd = _topEnd;
+    final bottomStart = _bottomStart;
+    final bottomEnd = _bottomEnd;
+    return _MixedCorners(
+      topLeft != null ? topLeft % operand : null,
+      topRight != null ? topRight % operand : null,
+      bottomLeft != null ? bottomLeft % operand : null,
+      bottomRight != null ? bottomRight % operand : null,
+      topStart != null ? topStart % operand : null,
+      topEnd != null ? topEnd % operand : null,
+      bottomStart != null ? bottomStart % operand : null,
+      bottomEnd != null ? bottomEnd % operand : null,
+    );
+  }
 
   @override
   String toString() {
+    final topLeft = _topLeft ?? .zero;
+    final topRight = _topRight ?? .zero;
+    final bottomLeft = _bottomLeft ?? .zero;
+    final bottomRight = _bottomRight ?? .zero;
+    final topStart = _topStart ?? .zero;
+    final topEnd = _topEnd ?? .zero;
+    final bottomStart = _bottomStart ?? .zero;
+    final bottomEnd = _bottomEnd ?? .zero;
     String? visual;
     String? logical;
-    if (_topLeft == _topRight &&
-        _topRight == _bottomLeft &&
-        _bottomLeft == _bottomRight) {
-      if (_topLeft != .zero) visual = "Corners.all($_topLeft)";
+    if (topLeft == topRight &&
+        topRight == bottomLeft &&
+        bottomLeft == bottomRight) {
+      if (topLeft != .zero) visual = "Corners.all($topLeft)";
     } else {
       final result = StringBuffer("Corners.only(");
       var comma = false;
-      if (_topLeft != .zero) {
-        result.write("topLeft: $_topLeft");
+      if (topLeft != .zero) {
+        result.write("topLeft: $topLeft");
         comma = true;
       }
-      if (_topRight != .zero) {
+      if (topRight != .zero) {
         if (comma) result.write(", ");
-        result.write("topRight: $_topRight");
+        result.write("topRight: $topRight");
         comma = true;
       }
-      if (_bottomLeft != .zero) {
+      if (bottomLeft != .zero) {
         if (comma) result.write(", ");
-        result.write("bottomLeft: $_bottomLeft");
+        result.write("bottomLeft: $bottomLeft");
         comma = true;
       }
-      if (_bottomRight != .zero) {
+      if (bottomRight != .zero) {
         if (comma) result.write(", ");
-        result.write("bottomRight: $_bottomRight");
+        result.write("bottomRight: $bottomRight");
       }
       result.write(")");
       visual = result.toString();
     }
-    if (_topStart == _topEnd &&
-        _topEnd == _bottomEnd &&
-        _bottomEnd == _bottomStart) {
-      if (_topStart != .zero) logical = "CornersDirectional.all($_topStart)";
+    if (topStart == topEnd && topEnd == bottomEnd && bottomEnd == bottomStart) {
+      if (topStart != .zero) logical = "CornersDirectional.all($topStart)";
     } else {
       final result = StringBuffer("CornersDirectional.only(");
       var comma = false;
-      if (_topStart != .zero) {
-        result.write("topStart: $_topStart");
+      if (topStart != .zero) {
+        result.write("topStart: $topStart");
         comma = true;
       }
-      if (_topEnd != .zero) {
+      if (topEnd != .zero) {
         if (comma) result.write(", ");
-        result.write("topEnd: $_topEnd");
+        result.write("topEnd: $topEnd");
         comma = true;
       }
-      if (_bottomStart != .zero) {
+      if (bottomStart != .zero) {
         if (comma) result.write(", ");
-        result.write("bottomStart: $_bottomStart");
+        result.write("bottomStart: $bottomStart");
         comma = true;
       }
-      if (_bottomEnd != .zero) {
+      if (bottomEnd != .zero) {
         if (comma) result.write(", ");
-        result.write("bottomEnd: $_bottomEnd");
+        result.write("bottomEnd: $bottomEnd");
       }
       result.write(")");
       logical = result.toString();
@@ -544,56 +770,56 @@ final class _MixedCorners extends _CornersGeometry {
   );
 
   @override
-  final Corner _topLeft;
+  final Corner? _topLeft;
 
   @override
-  final Corner _topRight;
+  final Corner? _topRight;
 
   @override
-  final Corner _bottomLeft;
+  final Corner? _bottomLeft;
 
   @override
-  final Corner _bottomRight;
+  final Corner? _bottomRight;
 
   @override
-  final Corner _topStart;
+  final Corner? _topStart;
 
   @override
-  final Corner _topEnd;
+  final Corner? _topEnd;
 
   @override
-  final Corner _bottomStart;
+  final Corner? _bottomStart;
 
   @override
-  final Corner _bottomEnd;
+  final Corner? _bottomEnd;
 }
 
 final class _ZeroCorners extends _CornersGeometry {
   const _ZeroCorners();
 
   @override
-  Corner get _topLeft => .zero;
+  Null get _topLeft => null;
 
   @override
-  Corner get _topRight => .zero;
+  Null get _topRight => null;
 
   @override
-  Corner get _bottomLeft => .zero;
+  Null get _bottomLeft => null;
 
   @override
-  Corner get _bottomRight => .zero;
+  Null get _bottomRight => null;
 
   @override
-  Corner get _topStart => .zero;
+  Null get _topStart => null;
 
   @override
-  Corner get _topEnd => .zero;
+  Null get _topEnd => null;
 
   @override
-  Corner get _bottomStart => .zero;
+  Null get _bottomStart => null;
 
   @override
-  Corner get _bottomEnd => .zero;
+  Null get _bottomEnd => null;
 
   @override
   Corners resolve(TextDirection? textDirection) => .zero;
@@ -664,16 +890,16 @@ abstract class Corners extends _CornersGeometry {
   Corner get _bottomRight => bottomRight;
 
   @override
-  Corner get _topStart => .zero;
+  Null get _topStart => null;
 
   @override
-  Corner get _topEnd => .zero;
+  Null get _topEnd => null;
 
   @override
-  Corner get _bottomStart => .zero;
+  Null get _bottomStart => null;
 
   @override
-  Corner get _bottomEnd => .zero;
+  Null get _bottomEnd => null;
 
   Corners copyWith({
     Corner? topLeft,
@@ -698,6 +924,29 @@ abstract class Corners extends _CornersGeometry {
 
   RSuperellipse toRSuperellipse(Rect rect) =>
       toBorderRadius(rect.size).toRSuperellipse(rect);
+
+  @override
+  CornersGeometry clamp({CornersGeometry? minimum, CornersGeometry? maximum}) =>
+      minimum is Corners? && maximum is Corners?
+      ? Corners.only(
+          topLeft: topLeft.clamp(
+            minimum: minimum?.topLeft,
+            maximum: maximum?.topLeft,
+          ),
+          topRight: topRight.clamp(
+            minimum: minimum?.topRight,
+            maximum: maximum?.topRight,
+          ),
+          bottomLeft: bottomLeft.clamp(
+            minimum: minimum?.bottomLeft,
+            maximum: maximum?.bottomLeft,
+          ),
+          bottomRight: bottomRight.clamp(
+            minimum: minimum?.bottomRight,
+            maximum: maximum?.bottomRight,
+          ),
+        )
+      : super.clamp(minimum: minimum, maximum: maximum);
 
   @override
   Corners resolve(TextDirection? textDirection) => this;
@@ -880,16 +1129,16 @@ abstract class CornersDirectional extends _CornersGeometry {
   Corner get bottomEnd;
 
   @override
-  Corner get _topLeft => .zero;
+  Null get _topLeft => null;
 
   @override
-  Corner get _topRight => .zero;
+  Null get _topRight => null;
 
   @override
-  Corner get _bottomLeft => .zero;
+  Null get _bottomLeft => null;
 
   @override
-  Corner get _bottomRight => .zero;
+  Null get _bottomRight => null;
 
   @override
   Corner get _topStart => topStart;
@@ -915,6 +1164,36 @@ abstract class CornersDirectional extends _CornersGeometry {
     bottomEnd: bottomEnd ?? this.bottomEnd,
   );
 
+  BorderRadiusDirectional toBorderRadius(Size size) => .only(
+    topStart: topStart.toRadius(size),
+    topEnd: topEnd.toRadius(size),
+    bottomStart: bottomStart.toRadius(size),
+    bottomEnd: bottomEnd.toRadius(size),
+  );
+
+  @override
+  CornersGeometry clamp({CornersGeometry? minimum, CornersGeometry? maximum}) =>
+      minimum is CornersDirectional? && maximum is CornersDirectional?
+      ? CornersDirectional.only(
+          topStart: topStart.clamp(
+            minimum: minimum?.topStart,
+            maximum: maximum?.topStart,
+          ),
+          topEnd: topEnd.clamp(
+            minimum: minimum?.topEnd,
+            maximum: maximum?.topEnd,
+          ),
+          bottomStart: bottomStart.clamp(
+            minimum: minimum?.bottomStart,
+            maximum: maximum?.bottomStart,
+          ),
+          bottomEnd: bottomEnd.clamp(
+            minimum: minimum?.bottomEnd,
+            maximum: maximum?.bottomEnd,
+          ),
+        )
+      : super.clamp(minimum: minimum, maximum: maximum);
+
   @override
   Corners resolve(TextDirection? textDirection) {
     assert(
@@ -935,13 +1214,6 @@ abstract class CornersDirectional extends _CornersGeometry {
       ),
     };
   }
-
-  BorderRadiusDirectional toBorderRadius(Size size) => .only(
-    topStart: topStart.toRadius(size),
-    topEnd: topEnd.toRadius(size),
-    bottomStart: bottomStart.toRadius(size),
-    bottomEnd: bottomEnd.toRadius(size),
-  );
 
   @override
   CornersGeometry add(CornersGeometry other) =>

@@ -39,7 +39,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
 
   static const _delegateToName = <CornersBorderDelegate, String>{
     .rounded: "Rounded",
-    .superellipse: "Superellipse",
+    .superellipse: "Smooth",
     .cut: "Cut",
   };
 
@@ -83,6 +83,10 @@ class _Experiment2ViewState extends State<Experiment2View> {
       ),
     );
 
+    final containerCorners = Corners.all(shapeTheme.cornerLarge);
+
+    final emptyProgress = 1.0 - clampDouble(progress / 0.25, 0.0, 1.0);
+
     return Scaffold(
       backgroundColor: colorTheme.surfaceContainer,
       body: SafeArea(
@@ -103,7 +107,10 @@ class _Experiment2ViewState extends State<Experiment2View> {
             ),
             SliderTheme(
               data: SliderTheme.of(context).copyWith(
+                padding: .zero,
                 trackHeight: 8.0,
+                trackGap: 6.0,
+
                 thumbSize: .resolveWith(
                   (states) => states.contains(WidgetState.pressed)
                       ? const Size(2.0, 32.0)
@@ -122,51 +129,186 @@ class _Experiment2ViewState extends State<Experiment2View> {
                           height: maxHeight,
                           child: Surface(
                             borderOnForeground: false,
-                            shape: shapeTheme.applyCorner(
-                              corner: shapeTheme.cornerLarge,
+                            shape: shapeTheme.applyCorners(
+                              corners: containerCorners,
                             ),
                             color: colorTheme.surfaceContainerLowest,
-                            child: Align.center(
-                              child: SizedBox(
-                                width: width,
-                                height: height,
-                                child: Surface(
-                                  clipBehavior: .antiAlias,
-                                  borderOnForeground: true,
-                                  shape: CornersBorder(
-                                    delegate: _delegate,
-                                    corners: corners,
-                                    side: .new(
-                                      width: thickness,
-                                      color: colorTheme.onSecondaryContainer,
+                            child: Stack(
+                              fit: .expand,
+                              children: [
+                                Visibility(
+                                  visible: emptyProgress > 0.0,
+                                  child: ClipPath(
+                                    clipBehavior: .antiAlias,
+                                    clipper: ShapeBorderClipper(
+                                      shape: shapeTheme.applyCorners(
+                                        corners: containerCorners,
+                                      ),
+                                    ),
+                                    child: Opacity(
+                                      opacity: emptyProgress,
+                                      child: ImageFiltered(
+                                        imageFilter: .blur(
+                                          sigmaX: lerpDouble(
+                                            8.0,
+                                            0.0,
+                                            emptyProgress,
+                                          ),
+                                          sigmaY: lerpDouble(
+                                            8.0,
+                                            0.0,
+                                            emptyProgress,
+                                          ),
+                                        ),
+                                        child: OverflowBox(
+                                          alignment: .center,
+                                          maxHeight: .infinity,
+                                          child: Flex.vertical(
+                                            mainAxisSize: .min,
+                                            mainAxisAlignment: .center,
+                                            crossAxisAlignment: .stretch,
+                                            children: [
+                                              SizedBox(
+                                                height: 200.0 / 3.0,
+                                                child: Align.center(
+                                                  widthFactor: 1.0,
+                                                  child: Text(
+                                                    "Empty",
+                                                    textAlign: .center,
+                                                    style: typescaleTheme
+                                                        .displayMedium
+                                                        .toTextStyle(
+                                                          color: colorTheme
+                                                              .outline,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 200.0 / 3.0,
+                                                child: Align.center(
+                                                  widthFactor: 1.0,
+                                                  child: Text(
+                                                    "Empty",
+                                                    textAlign: .center,
+                                                    style: typescaleTheme
+                                                        .displayMedium
+                                                        .toTextStyle(
+                                                          color: colorTheme
+                                                              .outline,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 200.0 / 3.0,
+                                                child: Align.center(
+                                                  widthFactor: 1.0,
+                                                  child: Text(
+                                                    "Empty",
+                                                    textAlign: .center,
+                                                    style:
+                                                        TextGeometry.lerp(
+                                                          typescaleTheme
+                                                              .displayMedium,
+                                                          typescaleTheme
+                                                              .displayLargeEmphasized,
+                                                          emptyProgress,
+                                                        ).toTextStyle(
+                                                          color: Color.lerp(
+                                                            colorTheme.outline,
+                                                            colorTheme
+                                                                .onSurface,
+                                                            emptyProgress,
+                                                          ),
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 200.0 / 3.0,
+                                                child: Align.center(
+                                                  widthFactor: 1.0,
+                                                  child: Text(
+                                                    "Empty",
+                                                    textAlign: .center,
+                                                    style: typescaleTheme
+                                                        .displayMedium
+                                                        .toTextStyle(
+                                                          color: colorTheme
+                                                              .outline,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 200.0 / 3.0,
+                                                child: Align.center(
+                                                  widthFactor: 1.0,
+                                                  child: Text(
+                                                    "Empty",
+                                                    textAlign: .center,
+                                                    style: typescaleTheme
+                                                        .displayMedium
+                                                        .toTextStyle(
+                                                          color: colorTheme
+                                                              .outline,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  color: colorTheme.secondaryContainer,
-                                  child: InkWell(
-                                    overlayColor: WidgetStateLayerColor(
-                                      color: .all(
-                                        colorTheme.onSecondaryContainer,
+                                ),
+                                Align.center(
+                                  child: SizedBox(
+                                    width: width,
+                                    height: height,
+                                    child: Surface(
+                                      clipBehavior: .antiAlias,
+                                      borderOnForeground: true,
+                                      shape: CornersBorder(
+                                        delegate: _delegate,
+                                        corners: corners,
+                                        side: .new(
+                                          width: thickness,
+                                          color:
+                                              colorTheme.onSecondaryContainer,
+                                        ),
                                       ),
-                                      opacity:
-                                          stateTheme.asWidgetStateLayerOpacity,
-                                    ),
-                                    onTap: () {},
-                                    child: CenterOptically(
-                                      corners: corners,
-                                      maxOffsets: .infinity,
-                                      child: Align.center(
-                                        child: ConstrainedBox(
-                                          constraints: const .new(
-                                            maxWidth: 64.0,
-                                            maxHeight: 64.0,
+                                      color: colorTheme.secondaryContainer,
+                                      child: InkWell(
+                                        overlayColor: WidgetStateLayerColor(
+                                          color: .all(
+                                            colorTheme.onSecondaryContainer,
                                           ),
-                                          child: FittedBox(
-                                            fit: .contain,
-                                            child: DeterminateLoadingIndicator(
-                                              contained: false,
-                                              indicatorColor: colorTheme
-                                                  .onSecondaryContainer,
-                                              progress: progress,
+                                          opacity: stateTheme
+                                              .asWidgetStateLayerOpacity,
+                                        ),
+                                        onTap: () {},
+                                        child: CenterOptically(
+                                          corners: corners,
+                                          maxOffsets: .infinity,
+                                          child: Align.center(
+                                            child: ConstrainedBox(
+                                              constraints: const .new(
+                                                maxWidth: 64.0,
+                                                maxHeight: 64.0,
+                                              ),
+                                              child: FittedBox(
+                                                fit: .contain,
+                                                child:
+                                                    DeterminateLoadingIndicator(
+                                                      contained: false,
+                                                      indicatorColor: colorTheme
+                                                          .onSecondaryContainer,
+                                                      progress: progress,
+                                                    ),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -174,7 +316,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                     ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
                         ),
@@ -191,19 +333,15 @@ class _Experiment2ViewState extends State<Experiment2View> {
                               final isFirst = index == 0;
                               final isLast =
                                   index == _delegateToName.length - 1;
+                              final innerCorner = shapeTheme.cornerSmall;
+                              final outerCorner = shapeTheme.cornerFull;
                               final isSelected = _delegate == value;
                               final unselectedCorners =
                                   CornersDirectional.horizontal(
-                                    start: isFirst
-                                        ? shapeTheme.cornerFull
-                                        : shapeTheme.cornerSmall,
-                                    end: isLast
-                                        ? shapeTheme.cornerFull
-                                        : shapeTheme.cornerSmall,
+                                    start: isFirst ? outerCorner : innerCorner,
+                                    end: isLast ? outerCorner : innerCorner,
                                   );
-                              final selectedCorners = Corners.all(
-                                shapeTheme.cornerFull,
-                              );
+                              final selectedCorners = Corners.all(outerCorner);
                               return Flexible.tight(
                                 child: Cue.onToggle(
                                   toggled: isSelected,
@@ -217,7 +355,6 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                     ),
                                     from: 0.0,
                                     to: 1.0,
-                                    // tweenBuilder: ShapeBorderTween(),
                                     builder: (context, animation) =>
                                         AnimatedBuilder(
                                           animation: animation,
@@ -227,7 +364,12 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                                   unselectedCorners,
                                                   selectedCorners,
                                                   animation.value,
-                                                )!;
+                                                )!.clamp(maximum: .circle);
+
+                                            if (index == 0) {
+                                              // print(animation.value);
+                                              // print(corners);
+                                            }
                                             return FilledButton(
                                               style:
                                                   LegacyThemeFactory.createButtonStyle(
@@ -238,6 +380,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                                     stateTheme: stateTheme,
                                                     typescaleTheme:
                                                         typescaleTheme,
+                                                    size: .small,
                                                     color: .tonal,
                                                     isSelected: isSelected,
                                                   ).copyWith(
@@ -256,7 +399,12 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                                 child: Align.center(
                                                   widthFactor: 1.0,
                                                   heightFactor: 1.0,
-                                                  child: Text(label),
+                                                  child: Text(
+                                                    label,
+                                                    maxLines: 1,
+                                                    softWrap: false,
+                                                    overflow: .ellipsis,
+                                                  ),
                                                 ),
                                               ),
                                             );
@@ -291,7 +439,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                     leading: const Icon(Symbols.width_rounded),
                                     headline: Text("Width"),
                                     trailing: Text(
-                                      _formatPercentage(_width, false),
+                                      "${_formatValue(width, true, "dp")} ",
                                     ),
                                   ),
                                   Slider(
@@ -320,10 +468,10 @@ class _Experiment2ViewState extends State<Experiment2View> {
                               child: Flex.vertical(
                                 children: [
                                   ListItemLayout(
-                                    leading: const Icon(Symbols.width_rounded),
+                                    leading: const Icon(Symbols.height_rounded),
                                     headline: Text("Height"),
                                     trailing: Text(
-                                      _formatPercentage(_height, false),
+                                      "${_formatValue(height, true, "dp")} ",
                                     ),
                                   ),
                                   Slider(
@@ -347,7 +495,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                       child: Flex.vertical(
                         children: [
                           ListItemLayout(
-                            leading: const Icon(Symbols.width_rounded),
+                            leading: const Icon(Symbols.rounded_corner_rounded),
                             headline: Text("Fixed"),
                             trailing: Text(
                               "${_formatValue(shapeTheme.cornerValueExtraExtraLarge * _fixedTopLeft, true, "dp")} "
@@ -425,7 +573,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                       child: Flex.vertical(
                         children: [
                           ListItemLayout(
-                            leading: const Icon(Symbols.width_rounded),
+                            leading: const Icon(Symbols.percent_rounded),
                             headline: Text("Fractional"),
                             trailing: Text(
                               "${_formatPercentage(_fractionalTopLeft, true)} "

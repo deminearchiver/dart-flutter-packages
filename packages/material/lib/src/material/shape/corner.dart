@@ -27,7 +27,7 @@ abstract class Corner {
   /// A [Corner] with X and Y swapped.
   Corner get flipped;
 
-  Corner clamp(Corner minimum, Corner maximum) =>
+  Corner clamp({Corner? minimum, Corner? maximum}) =>
       _CornerClamp(this, minimum, maximum);
 
   Radius toRadius(Size size);
@@ -62,10 +62,10 @@ abstract class Corner {
     }
     if (a is _Corner && b is _Corner) {
       return _MixedCorner(
-        lerpDouble(a._radiusX, b._radiusX, t),
-        lerpDouble(a._radiusY, b._radiusY, t),
-        lerpDouble(a._fractionX, b._fractionX, t),
-        lerpDouble(a._fractionY, b._fractionY, t),
+        lerpDouble(a._radiusX ?? 0.0, b._radiusX ?? 0.0, t),
+        lerpDouble(a._radiusY ?? 0.0, b._radiusY ?? 0.0, t),
+        lerpDouble(a._fractionX ?? 0.0, b._fractionX ?? 0.0, t),
+        lerpDouble(a._fractionY ?? 0.0, b._fractionY ?? 0.0, t),
       );
     }
     return _CornerLerp(a, b, t);
@@ -220,27 +220,35 @@ final class _CornerSubtract extends _CornerWithCornerOperation {
 }
 
 final class _CornerClamp extends Corner {
-  const _CornerClamp(Corner value, Corner minimum, Corner maximum)
+  const _CornerClamp(Corner value, Corner? minimum, Corner? maximum)
     : _value = value,
       _minimum = minimum,
       _maximum = maximum;
 
   final Corner _value;
-  final Corner _minimum;
-  final Corner _maximum;
+  final Corner? _minimum;
+  final Corner? _maximum;
 
   @override
   _CornerClamp get flipped =>
-      _CornerClamp(_value.flipped, _minimum.flipped, _maximum.flipped);
+      _CornerClamp(_value.flipped, _minimum?.flipped, _maximum?.flipped);
 
   @override
   Radius toRadius(Size size) {
     final value = _value.toRadius(size);
-    final minimum = _minimum.toRadius(size);
-    final maximum = _maximum.toRadius(size);
+    final minimum = _minimum?.toRadius(size);
+    final maximum = _maximum?.toRadius(size);
     return .elliptical(
-      clampDouble(value.x, minimum.x, maximum.x),
-      clampDouble(value.y, minimum.y, maximum.y),
+      clampDouble(
+        value.x,
+        minimum?.x ?? .negativeInfinity,
+        maximum?.x ?? .infinity,
+      ),
+      clampDouble(
+        value.y,
+        minimum?.y ?? .negativeInfinity,
+        maximum?.y ?? .infinity,
+      ),
     );
   }
 
@@ -298,10 +306,10 @@ final class _CornerLerp extends Corner {
 abstract class _Corner extends Corner {
   const _Corner();
 
-  double get _radiusX;
-  double get _radiusY;
-  double get _fractionX;
-  double get _fractionY;
+  double? get _radiusX;
+  double? get _radiusY;
+  double? get _fractionX;
+  double? get _fractionY;
 
   // @override
   // bool get isNonNegative =>
@@ -314,97 +322,188 @@ abstract class _Corner extends Corner {
   _Corner get flipped =>
       _MixedCorner(_radiusY, _radiusX, _fractionY, _fractionX);
 
-  @override
-  Corner clamp(Corner minimum, Corner maximum) =>
-      minimum is _Corner && maximum is _Corner
-      ? _MixedCorner(
-          clampDouble(_radiusX, minimum._radiusX, maximum._radiusX),
-          clampDouble(_radiusY, minimum._radiusY, maximum._radiusY),
-          clampDouble(_fractionX, minimum._fractionX, maximum._fractionX),
-          clampDouble(_fractionY, minimum._fractionY, maximum._fractionY),
-        )
-      : super.clamp(minimum, maximum);
+  // @override
+  // Corner clamp({Corner? minimum, Corner? maximum}) {
+  //   if (minimum is _Corner? && maximum is _Corner?) {
+  //     final radiusX = _radiusX;
+  //     final radiusY = _radiusY;
+  //     final fractionX = _fractionX;
+  //     final fractionY = _fractionY;
+  //     return _MixedCorner(
+  //       radiusX != null
+  //           ? clampDouble(
+  //               radiusX,
+  //               minimum?._radiusX ?? .negativeInfinity,
+  //               maximum?._radiusX ?? .infinity,
+  //             )
+  //           : null,
+  //       radiusY != null
+  //           ? clampDouble(
+  //               radiusY,
+  //               minimum?._radiusY ?? .negativeInfinity,
+  //               maximum?._radiusY ?? .infinity,
+  //             )
+  //           : null,
+  //       fractionX != null
+  //           ? clampDouble(
+  //               fractionX,
+  //               minimum?._fractionX ?? .negativeInfinity,
+  //               maximum?._fractionX ?? .infinity,
+  //             )
+  //           : null,
+  //       fractionY != null
+  //           ? clampDouble(
+  //               fractionY,
+  //               minimum?._fractionY ?? .negativeInfinity,
+  //               maximum?._fractionY ?? .infinity,
+  //             )
+  //           : null,
+  //     );
+  //   }
+  //   return super.clamp(minimum: minimum, maximum: maximum);
+  // }
 
   @override
   Radius toRadius(Size size) {
     final shortestSide = size.shortestSide;
     return .elliptical(
-      _radiusX + shortestSide * _fractionX,
-      _radiusY + shortestSide * _fractionY,
+      (_radiusX ?? 0.0) + shortestSide * (_fractionX ?? 0.0),
+      (_radiusY ?? 0.0) + shortestSide * (_fractionY ?? 0.0),
     );
   }
 
   @override
-  Corner add(Corner other) => other is _Corner
-      ? _MixedCorner(
-          _radiusX + other._radiusX,
-          _radiusY + other._radiusY,
-          _fractionX + other._fractionX,
-          _fractionY + other._fractionY,
-        )
-      : super.add(other);
+  Corner add(Corner other) {
+    if (other is _Corner) {
+      final arx = _radiusX;
+      final ary = _radiusY;
+      final afx = _fractionX;
+      final afy = _fractionY;
+      final brx = other._radiusX;
+      final bry = other._radiusY;
+      final bfx = other._fractionX;
+      final bfy = other._fractionY;
+      return _MixedCorner(
+        arx != null && brx != null ? arx + brx : arx ?? brx,
+        ary != null && bry != null ? ary + bry : ary ?? bry,
+        afx != null && bfx != null ? afx + bfx : afx ?? bfx,
+        afy != null && bfy != null ? afy + bfy : afy ?? bfy,
+      );
+    }
+    return super.add(other);
+  }
 
   @override
-  Corner subtract(Corner other) => other is _Corner
-      ? _MixedCorner(
-          _radiusX - other._radiusX,
-          _radiusY - other._radiusY,
-          _fractionX - other._fractionX,
-          _fractionY - other._fractionY,
-        )
-      : super.subtract(other);
+  Corner subtract(Corner other) {
+    if (other is _Corner) {
+      final arx = _radiusX;
+      final ary = _radiusY;
+      final afx = _fractionX;
+      final afy = _fractionY;
+      final brx = other._radiusX;
+      final bry = other._radiusY;
+      final bfx = other._fractionX;
+      final bfy = other._fractionY;
+      return _MixedCorner(
+        arx != null && brx != null ? arx - brx : arx ?? brx,
+        ary != null && bry != null ? ary - bry : ary ?? bry,
+        afx != null && bfx != null ? afx - bfx : afx ?? bfx,
+        afy != null && bfy != null ? afy - bfy : afy ?? bfy,
+      );
+    }
+    return super.subtract(other);
+  }
 
   @override
-  _Corner operator -() =>
-      _MixedCorner(-_radiusX, -_radiusY, -_fractionX, -_fractionY);
+  _Corner operator -() {
+    final radiusX = _radiusX;
+    final radiusY = _radiusY;
+    final fractionX = _fractionX;
+    final fractionY = _fractionY;
+    return _MixedCorner(
+      radiusX != null ? -radiusX : null,
+      radiusY != null ? -radiusY : null,
+      fractionX != null ? -fractionX : null,
+      fractionY != null ? -fractionY : null,
+    );
+  }
 
   @override
-  _Corner operator *(double operand) => _MixedCorner(
-    _radiusX * operand,
-    _radiusY * operand,
-    _fractionX * operand,
-    _fractionY * operand,
-  );
+  _Corner operator *(double operand) {
+    final radiusX = _radiusX;
+    final radiusY = _radiusY;
+    final fractionX = _fractionX;
+    final fractionY = _fractionY;
+    return _MixedCorner(
+      radiusX != null ? radiusX * operand : null,
+      radiusY != null ? radiusY * operand : null,
+      fractionX != null ? fractionX * operand : null,
+      fractionY != null ? fractionY * operand : null,
+    );
+  }
 
   @override
-  _Corner operator /(double operand) => _MixedCorner(
-    _radiusX / operand,
-    _radiusY / operand,
-    _fractionX / operand,
-    _fractionY / operand,
-  );
+  _Corner operator /(double operand) {
+    final radiusX = _radiusX;
+    final radiusY = _radiusY;
+    final fractionX = _fractionX;
+    final fractionY = _fractionY;
+    return _MixedCorner(
+      radiusX != null ? radiusX / operand : null,
+      radiusY != null ? radiusY / operand : null,
+      fractionX != null ? fractionX / operand : null,
+      fractionY != null ? fractionY / operand : null,
+    );
+  }
 
   @override
-  _Corner operator ~/(double operand) => _MixedCorner(
-    (_radiusX ~/ operand).toDouble(),
-    (_radiusY ~/ operand).toDouble(),
-    (_fractionX ~/ operand).toDouble(),
-    (_fractionY ~/ operand).toDouble(),
-  );
+  _Corner operator ~/(double operand) {
+    final radiusX = _radiusX;
+    final radiusY = _radiusY;
+    final fractionX = _fractionX;
+    final fractionY = _fractionY;
+    return _MixedCorner(
+      radiusX != null ? (radiusX ~/ operand).toDouble() : null,
+      radiusY != null ? (radiusY ~/ operand).toDouble() : null,
+      fractionX != null ? (fractionX ~/ operand).toDouble() : null,
+      fractionY != null ? (fractionY ~/ operand).toDouble() : null,
+    );
+  }
 
   @override
-  _Corner operator %(double operand) => _MixedCorner(
-    _radiusX % operand,
-    _radiusY % operand,
-    _fractionX % operand,
-    _fractionY % operand,
-  );
+  _Corner operator %(double operand) {
+    final radiusX = _radiusX;
+    final radiusY = _radiusY;
+    final fractionX = _fractionX;
+    final fractionY = _fractionY;
+    return _MixedCorner(
+      radiusX != null ? radiusX % operand : null,
+      radiusY != null ? radiusY % operand : null,
+      fractionX != null ? fractionX % operand : null,
+      fractionY != null ? fractionY % operand : null,
+    );
+  }
 
   @override
   String toString() {
+    final radiusX = _radiusX ?? 0.0;
+    final radiusY = _radiusY ?? 0.0;
+    final fractionX = _fractionX ?? 0.0;
+    final fractionY = _fractionY ?? 0.0;
+
     // Used to determine whether the corner is zero.
-    final zeroFixed = _radiusX == 0.0 && _radiusY == 0.0;
-    final zeroFractional = _fractionX == 0.0 && _fractionY == 0.0;
+    final zeroFixed = radiusX == 0.0 && radiusY == 0.0;
+    final zeroFractional = fractionX == 0.0 && fractionY == 0.0;
 
     // Lazily initialize fixed and fractional parts.
-    late final fixed = _radiusX == _radiusY
-        ? "Corner.fixed(${_radiusX.toStringAsFixed(1)})"
-        : "Corner.fixedXY(${_radiusX.toStringAsFixed(1)}, "
-              "${_radiusY.toStringAsFixed(1)})";
-    late final fractional = _fractionX == _fractionY
-        ? "Corner.fractional(${_fractionX.toStringAsFixed(1)})"
-        : "Corner.fractionalXY(${_fractionX.toStringAsFixed(1)}, "
-              "${_fractionY.toStringAsFixed(1)})";
+    late final fixed = radiusX == radiusY
+        ? "Corner.fixed(${radiusX.toStringAsFixed(1)})"
+        : "Corner.fixedXY(${radiusX.toStringAsFixed(1)}, "
+              "${radiusY.toStringAsFixed(1)})";
+    late final fractional = fractionX == fractionY
+        ? "Corner.fractional(${fractionX.toStringAsFixed(1)})"
+        : "Corner.fractionalXY(${fractionX.toStringAsFixed(1)}, "
+              "${fractionY.toStringAsFixed(1)})";
 
     // Return "Corner.zero" if both radius and fraction are zero,
     // otherwise returns a single non-zero part or a concatenation
@@ -436,32 +535,32 @@ final class _MixedCorner extends _Corner {
   );
 
   @override
-  final double _radiusX;
+  final double? _radiusX;
 
   @override
-  final double _radiusY;
+  final double? _radiusY;
 
   @override
-  final double _fractionX;
+  final double? _fractionX;
 
   @override
-  final double _fractionY;
+  final double? _fractionY;
 }
 
 final class _ZeroCorner extends _Corner {
   const _ZeroCorner();
 
   @override
-  double get _radiusX => 0.0;
+  Null get _radiusX => null;
 
   @override
-  double get _radiusY => 0.0;
+  Null get _radiusY => null;
 
   @override
-  double get _fractionX => 0.0;
+  Null get _fractionX => null;
 
   @override
-  double get _fractionY => 0.0;
+  Null get _fractionY => null;
 
   // @override
   // bool get isNonNegative => true;
@@ -515,10 +614,10 @@ abstract class FixedCorner extends _Corner {
   double get _radiusY => radiusY;
 
   @override
-  double get _fractionX => 0.0;
+  Null get _fractionX => null;
 
   @override
-  double get _fractionY => 0.0;
+  Null get _fractionY => null;
 
   /// Whether every dimension is non-negative.
   // @override
@@ -527,6 +626,23 @@ abstract class FixedCorner extends _Corner {
   /// A [FixedCorner] with [radiusX] and [radiusY] swapped.
   @override
   FixedCorner get flipped => .elliptical(radiusY, radiusX);
+
+  @override
+  Corner clamp({Corner? minimum, Corner? maximum}) =>
+      minimum is FixedCorner? && maximum is FixedCorner?
+      ? FixedCorner.elliptical(
+          clampDouble(
+            radiusX,
+            minimum?.radiusX ?? .negativeInfinity,
+            maximum?.radiusX ?? .infinity,
+          ),
+          clampDouble(
+            radiusY,
+            minimum?.radiusY ?? .negativeInfinity,
+            maximum?.radiusY ?? .infinity,
+          ),
+        )
+      : super.clamp(minimum: minimum, maximum: maximum);
 
   @override
   Radius toRadius(Size size) => .elliptical(radiusX, radiusY);
@@ -622,10 +738,10 @@ abstract class FractionalCorner extends _Corner {
   double get fractionY;
 
   @override
-  double get _radiusX => 0.0;
+  Null get _radiusX => null;
 
   @override
-  double get _radiusY => 0.0;
+  Null get _radiusY => null;
 
   @override
   double get _fractionX => fractionX;
@@ -640,6 +756,23 @@ abstract class FractionalCorner extends _Corner {
   /// A [FractionalCorner] with [fractionX] and [fractionY] swapped.
   @override
   FractionalCorner get flipped => .elliptical(fractionY, fractionX);
+
+  @override
+  Corner clamp({Corner? minimum, Corner? maximum}) =>
+      minimum is FractionalCorner? && maximum is FractionalCorner?
+      ? FractionalCorner.elliptical(
+          clampDouble(
+            fractionX,
+            minimum?.fractionX ?? .negativeInfinity,
+            maximum?.fractionX ?? .infinity,
+          ),
+          clampDouble(
+            fractionY,
+            minimum?.fractionY ?? .negativeInfinity,
+            maximum?.fractionY ?? .infinity,
+          ),
+        )
+      : super.clamp(minimum: minimum, maximum: maximum);
 
   @override
   Radius toRadius(Size size) {
