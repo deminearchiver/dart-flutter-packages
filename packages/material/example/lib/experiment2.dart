@@ -39,7 +39,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
 
   static const _delegateToName = <CornersBorderDelegate, String>{
     .rounded: "Rounded",
-    .superellipse: "Smooth",
+    .smooth: "Smooth",
     .cut: "Cut",
   };
 
@@ -48,12 +48,15 @@ class _Experiment2ViewState extends State<Experiment2View> {
     final colorTheme = ColorTheme.of(context);
     final elevationTheme = ElevationTheme.of(context);
     final shapeTheme = ShapeTheme.of(context);
+    final spaceTheme = SpaceTheme.of(context);
     final stateTheme = StateTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
 
     // Candidates: 128, 192, 256, 312, 360
-    const maxWidth = 256.0;
-    const maxHeight = 256.0;
+
+    const scrollFieldHeight = 200.0; // md.sys.comp.scroll-field.height
+    const maxWidth = 200.0;
+    const maxHeight = scrollFieldHeight;
     const maxArea = maxWidth * maxHeight;
 
     final innerCorner = shapeTheme.cornerExtraSmall;
@@ -66,7 +69,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
 
     final progress = area / maxArea;
 
-    final thickness = lerpDouble(1.0, 3.0, progress);
+    final thickness = lerpDouble(0.0, 8.0, progress);
 
     final corners = Corners.only(
       topLeft: (shapeTheme.cornerExtraExtraLarge * _fixedTopLeft).add(
@@ -83,9 +86,12 @@ class _Experiment2ViewState extends State<Experiment2View> {
       ),
     );
 
+    final deflatedCorners = _delegate.deflateCorners(corners, thickness);
+
     final containerCorners = Corners.all(shapeTheme.cornerLarge);
 
     final emptyProgress = 1.0 - clampDouble(progress / 0.25, 0.0, 1.0);
+    final smallProgress = clampDouble(progress / 0.5, 0.0, 1.0);
 
     return Scaffold(
       backgroundColor: colorTheme.surfaceContainer,
@@ -110,7 +116,6 @@ class _Experiment2ViewState extends State<Experiment2View> {
                 padding: .zero,
                 trackHeight: 8.0,
                 trackGap: 6.0,
-
                 thumbSize: .resolveWith(
                   (states) => states.contains(WidgetState.pressed)
                       ? const Size(2.0, 32.0)
@@ -118,11 +123,11 @@ class _Experiment2ViewState extends State<Experiment2View> {
                 ),
               ),
               child: SliverPadding(
-                padding: .symmetric(horizontal: 8.0),
+                padding: .symmetric(horizontal: spaceTheme.space100),
                 sliver: SliverList.list(
                   children: [
                     Padding(
-                      padding: const .symmetric(horizontal: 16.0),
+                      padding: .symmetric(horizontal: spaceTheme.space200),
                       child: Align.center(
                         child: SizedBox(
                           width: maxWidth,
@@ -136,6 +141,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                             child: Stack(
                               fit: .expand,
                               children: [
+                                // md.comp.scroll-field
                                 Visibility(
                                   visible: emptyProgress > 0.0,
                                   child: ClipPath(
@@ -169,11 +175,11 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                             crossAxisAlignment: .stretch,
                                             children: [
                                               SizedBox(
-                                                height: 200.0 / 3.0,
+                                                height: scrollFieldHeight / 3.0,
                                                 child: Align.center(
                                                   widthFactor: 1.0,
                                                   child: Text(
-                                                    "Empty",
+                                                    "M3B",
                                                     textAlign: .center,
                                                     style: typescaleTheme
                                                         .displayMedium
@@ -185,27 +191,11 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                height: 200.0 / 3.0,
+                                                height: scrollFieldHeight / 3.0,
                                                 child: Align.center(
                                                   widthFactor: 1.0,
                                                   child: Text(
-                                                    "Empty",
-                                                    textAlign: .center,
-                                                    style: typescaleTheme
-                                                        .displayMedium
-                                                        .toTextStyle(
-                                                          color: colorTheme
-                                                              .outline,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 200.0 / 3.0,
-                                                child: Align.center(
-                                                  widthFactor: 1.0,
-                                                  child: Text(
-                                                    "Empty",
+                                                    "M3E",
                                                     textAlign: .center,
                                                     style:
                                                         TextGeometry.lerp(
@@ -226,27 +216,11 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                height: 200.0 / 3.0,
+                                                height: scrollFieldHeight / 3.0,
                                                 child: Align.center(
                                                   widthFactor: 1.0,
                                                   child: Text(
-                                                    "Empty",
-                                                    textAlign: .center,
-                                                    style: typescaleTheme
-                                                        .displayMedium
-                                                        .toTextStyle(
-                                                          color: colorTheme
-                                                              .outline,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 200.0 / 3.0,
-                                                child: Align.center(
-                                                  widthFactor: 1.0,
-                                                  child: Text(
-                                                    "Empty",
+                                                    "M??",
                                                     textAlign: .center,
                                                     style: typescaleTheme
                                                         .displayMedium
@@ -264,6 +238,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                     ),
                                   ),
                                 ),
+                                // Custom
                                 Align.center(
                                   child: SizedBox(
                                     width: width,
@@ -276,38 +251,49 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                         corners: corners,
                                         side: .new(
                                           width: thickness,
-                                          color:
-                                              colorTheme.onSecondaryContainer,
+                                          color: colorTheme.primary,
                                         ),
                                       ),
-                                      color: colorTheme.secondaryContainer,
+                                      color: colorTheme.surfaceContainerHighest,
                                       child: InkWell(
                                         overlayColor: WidgetStateLayerColor(
-                                          color: .all(
-                                            colorTheme.onSecondaryContainer,
-                                          ),
+                                          color: .all(colorTheme.primary),
                                           opacity: stateTheme
                                               .asWidgetStateLayerOpacity,
                                         ),
                                         onTap: () {},
                                         child: CenterOptically(
-                                          corners: corners,
+                                          corners: deflatedCorners,
                                           maxOffsets: .infinity,
                                           child: Align.center(
-                                            child: ConstrainedBox(
-                                              constraints: const .new(
-                                                maxWidth: 64.0,
-                                                maxHeight: 64.0,
-                                              ),
-                                              child: FittedBox(
-                                                fit: .contain,
-                                                child:
-                                                    DeterminateLoadingIndicator(
-                                                      contained: false,
-                                                      indicatorColor: colorTheme
-                                                          .onSecondaryContainer,
-                                                      progress: progress,
-                                                    ),
+                                            child: OverflowBox(
+                                              minWidth: 48.0,
+                                              maxWidth: 48.0,
+                                              minHeight: 48.0,
+                                              maxHeight: 48.0,
+                                              child: Opacity(
+                                                opacity: smallProgress,
+                                                child: ImageFiltered(
+                                                  imageFilter: .blur(
+                                                    sigmaX:
+                                                        (1.0 - smallProgress) *
+                                                        8.0,
+                                                    sigmaY:
+                                                        (1.0 - smallProgress) *
+                                                        8.0,
+                                                  ),
+                                                  child: Transform.scale(
+                                                    scale: smallProgress,
+                                                    child:
+                                                        DeterminateLoadingIndicator(
+                                                          contained: false,
+                                                          indicatorColor:
+                                                              colorTheme
+                                                                  .primary,
+                                                          progress: progress,
+                                                        ),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -322,11 +308,16 @@ class _Experiment2ViewState extends State<Experiment2View> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16.0 - 4.0),
+                    SizedBox(height: spaceTheme.space200 - 4.0),
                     Padding(
-                      padding: .fromLTRB(16.0, 0.0, 16.0, 0.0),
+                      padding: .fromLTRB(
+                        spaceTheme.space200,
+                        0.0,
+                        spaceTheme.space200,
+                        0.0,
+                      ),
                       child: Flex.horizontal(
-                        spacing: 2.0,
+                        spacing: spaceTheme.space25,
                         children: _delegateToName.entries
                             .mapIndexed<Widget>((index, entry) {
                               final MapEntry(key: value, value: label) = entry;
@@ -342,74 +333,77 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                     end: isLast ? outerCorner : innerCorner,
                                   );
                               final selectedCorners = Corners.all(outerCorner);
-                              return Flexible.tight(
-                                child: Cue.onToggle(
-                                  toggled: isSelected,
-                                  child: TweenActor<double>(
-                                    motion: Spring.custom(
-                                      desc:
-                                          const SpringThemeData.defaultsExpressive()
-                                              .fastSpatial
-                                              .toSpringDescription(),
-                                      snapToEnd: true,
-                                    ),
-                                    from: 0.0,
-                                    to: 1.0,
-                                    builder: (context, animation) =>
-                                        AnimatedBuilder(
-                                          animation: animation,
-                                          builder: (context, _) {
-                                            final corners =
-                                                CornersGeometry.lerp(
-                                                  unselectedCorners,
-                                                  selectedCorners,
-                                                  animation.value,
-                                                )!.clamp(maximum: .circle);
+                              return KeyedSubtree(
+                                key: ValueKey(index),
+                                child: Flexible.tight(
+                                  child: Cue.onToggle(
+                                    toggled: isSelected,
+                                    child: TweenActor<double>(
+                                      motion: Spring.custom(
+                                        desc:
+                                            const SpringThemeData.defaultsExpressive()
+                                                .fastSpatial
+                                                .toSpringDescription(),
+                                        snapToEnd: true,
+                                      ),
+                                      from: 0.0,
+                                      to: 1.0,
+                                      builder: (context, animation) =>
+                                          AnimatedBuilder(
+                                            animation: animation,
+                                            builder: (context, _) {
+                                              final corners =
+                                                  CornersGeometry.lerp(
+                                                    unselectedCorners,
+                                                    selectedCorners,
+                                                    animation.value,
+                                                  )!.clamp(maximum: .circle);
 
-                                            if (index == 0) {
-                                              // print(animation.value);
-                                              // print(corners);
-                                            }
-                                            return FilledButton(
-                                              style:
-                                                  LegacyThemeFactory.createButtonStyle(
-                                                    colorTheme: colorTheme,
-                                                    elevationTheme:
-                                                        elevationTheme,
-                                                    shapeTheme: shapeTheme,
-                                                    stateTheme: stateTheme,
-                                                    typescaleTheme:
-                                                        typescaleTheme,
-                                                    size: .small,
-                                                    color: .tonal,
-                                                    isSelected: isSelected,
-                                                  ).copyWith(
-                                                    shape: .all(
-                                                      shapeTheme.applyCorners(
-                                                        corners: corners,
+                                              if (index == 0) {
+                                                // print(animation.value);
+                                                // print(corners);
+                                              }
+                                              return FilledButton(
+                                                style:
+                                                    LegacyThemeFactory.createButtonStyle(
+                                                      colorTheme: colorTheme,
+                                                      elevationTheme:
+                                                          elevationTheme,
+                                                      shapeTheme: shapeTheme,
+                                                      stateTheme: stateTheme,
+                                                      typescaleTheme:
+                                                          typescaleTheme,
+                                                      size: .small,
+                                                      color: .tonal,
+                                                      isSelected: isSelected,
+                                                    ).copyWith(
+                                                      shape: .all(
+                                                        shapeTheme.applyCorners(
+                                                          corners: corners,
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                              onPressed: () => setState(
-                                                () => _delegate = value,
-                                              ),
-                                              child: CenterOptically(
-                                                corners: corners,
-                                                maxOffsets: .infinity,
-                                                child: Align.center(
-                                                  widthFactor: 1.0,
-                                                  heightFactor: 1.0,
-                                                  child: Text(
-                                                    label,
-                                                    maxLines: 1,
-                                                    softWrap: false,
-                                                    overflow: .ellipsis,
+                                                onPressed: () => setState(
+                                                  () => _delegate = value,
+                                                ),
+                                                child: CenterOptically(
+                                                  corners: corners,
+                                                  maxOffsets: .infinity,
+                                                  child: Align.center(
+                                                    widthFactor: 1.0,
+                                                    heightFactor: 1.0,
+                                                    child: Text(
+                                                      label,
+                                                      maxLines: 1,
+                                                      softWrap: false,
+                                                      overflow: .ellipsis,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            );
-                                          },
-                                        ),
+                                              );
+                                            },
+                                          ),
+                                    ),
                                   ),
                                 ),
                               );
@@ -417,7 +411,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                             .toList(growable: false),
                       ),
                     ),
-                    const SizedBox(height: 16.0 - 4.0),
+                    SizedBox(height: spaceTheme.space200 - 4.0),
                     IntrinsicHeight(
                       child: Flex.horizontal(
                         children: [
@@ -443,7 +437,12 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                     ),
                                   ),
                                   Slider(
-                                    padding: .fromLTRB(16.0, 0.0, 16.0, 10.0),
+                                    padding: .fromLTRB(
+                                      spaceTheme.space200,
+                                      0.0,
+                                      spaceTheme.space200,
+                                      spaceTheme.space125,
+                                    ),
                                     value: _width,
                                     onChanged: (value) =>
                                         setState(() => _width = value),
@@ -452,7 +451,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 2.0),
+                          SizedBox(width: spaceTheme.space25),
                           Flexible.tight(
                             child: ListItemContainer(
                               containerShape: .all(
@@ -475,7 +474,12 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                     ),
                                   ),
                                   Slider(
-                                    padding: .fromLTRB(16.0, 0.0, 16.0, 10.0),
+                                    padding: .fromLTRB(
+                                      spaceTheme.space200,
+                                      0.0,
+                                      spaceTheme.space200,
+                                      spaceTheme.space125,
+                                    ),
                                     value: _height,
                                     onChanged: (value) =>
                                         setState(() => _height = value),
@@ -487,7 +491,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 2.0),
+                    SizedBox(height: spaceTheme.space25),
                     ListItemContainer(
                       containerShape: .all(
                         shapeTheme.applyCorner(corner: innerCorner),
@@ -509,11 +513,16 @@ class _Experiment2ViewState extends State<Experiment2View> {
                             ),
                           ),
                           Padding(
-                            padding: .fromLTRB(16.0, 6.0, 16.0, 16.0),
+                            padding: .fromLTRB(
+                              spaceTheme.space200,
+                              spaceTheme.space75,
+                              spaceTheme.space200,
+                              spaceTheme.space200,
+                            ),
                             child: Flex.vertical(
                               children: [
                                 Flex.horizontal(
-                                  spacing: 12.0,
+                                  spacing: spaceTheme.space150,
                                   children: [
                                     Flexible.tight(
                                       child: Slider(
@@ -534,7 +543,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                   ],
                                 ),
                                 Flex.horizontal(
-                                  spacing: 12.0,
+                                  spacing: spaceTheme.space150,
                                   children: [
                                     Flexible.tight(
                                       child: Slider(
@@ -560,7 +569,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 2.0),
+                    SizedBox(height: spaceTheme.space25),
                     ListItemContainer(
                       containerShape: .all(
                         shapeTheme.applyCorners(
@@ -587,11 +596,16 @@ class _Experiment2ViewState extends State<Experiment2View> {
                             ),
                           ),
                           Padding(
-                            padding: .fromLTRB(16.0, 6.0, 16.0, 16.0),
+                            padding: .fromLTRB(
+                              spaceTheme.space200,
+                              spaceTheme.space75,
+                              spaceTheme.space200,
+                              spaceTheme.space200,
+                            ),
                             child: Flex.vertical(
                               children: [
                                 Flex.horizontal(
-                                  spacing: 12.0,
+                                  spacing: spaceTheme.space150,
                                   children: [
                                     Flexible.tight(
                                       child: Slider(
@@ -612,7 +626,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                   ],
                                 ),
                                 Flex.horizontal(
-                                  spacing: 12.0,
+                                  spacing: spaceTheme.space150,
                                   children: [
                                     Flexible.tight(
                                       child: Slider(

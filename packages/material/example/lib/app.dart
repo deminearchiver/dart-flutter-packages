@@ -74,6 +74,8 @@ class _AppState extends State<App> {
           _buildColorThemes,
           _buildSpringTheme,
           _buildTypescaleTheme,
+          (context, child) =>
+              SpaceTheme.mergeWithData(data: .from(unit: 8.0), child: child),
           // (context, child) => ShapeTheme.mergeWithData(
           //   data: .from(cornerFamily: .cut),
           //   child: child,
@@ -151,7 +153,7 @@ class _AppState extends State<App> {
   }
 
   static const _themeMode = ThemeMode.system;
-  static const _variant = DynamicSchemeVariant.vibrant;
+  static const _variant = DynamicSchemeVariant.expressive;
   static const _platform = DynamicSchemePlatform.phone;
   static const _specVersion = DynamicSchemeSpecVersion.spec2026;
   static const _typography = TypographyDefaults.material3Expressive2026;
@@ -174,6 +176,7 @@ class _NavigationViewState extends State<NavigationView> {
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.paddingOf(context);
     final colorTheme = ColorTheme.of(context);
     final elevationTheme = ElevationTheme.of(context);
     final shapeTheme = ShapeTheme.of(context);
@@ -182,44 +185,51 @@ class _NavigationViewState extends State<NavigationView> {
     return Stack(
       fit: .expand,
       children: [
-        Positioned.fill(
-          child: KeyedSubtree(
-            key: ValueKey(_selectedIndex),
-            child: switch (_selectedIndex) {
-              1 => const Experiment1View(),
-              2 => const Experiment2View(),
-              3 => const Experiment3View(),
-              4 => const Experiment4View(),
-              5 => const Experiment5View(),
-              6 => const Experiment6View(),
-              _ => Scaffold(
-                backgroundColor: colorTheme.surfaceContainer,
-                body: const Placeholder(),
-              ),
-            },
-          ),
-        ),
-        Positioned(
-          left: 16.0,
-          bottom: 16.0,
-          child: IconButton(
-            style: LegacyThemeFactory.createIconButtonStyle(
-              colorTheme: colorTheme,
-              elevationTheme: elevationTheme,
-              shapeTheme: shapeTheme,
-              stateTheme: stateTheme,
-              color: .tonal,
-              size: .medium,
-              shape: .square,
-              containerColor: colorTheme.tertiaryContainer,
-              iconColor: colorTheme.onTertiaryContainer,
-              containerElevation: elevationTheme.level3,
+        KeyedSubtree(
+          key: ValueKey(_selectedIndex),
+          child: switch (_selectedIndex) {
+            1 => const Experiment1View(),
+            2 => const Experiment2View(),
+            3 => const Experiment3View(),
+            4 => const Experiment4View(),
+            5 => const Experiment5View(),
+            6 => const Experiment6View(),
+            _ => Scaffold(
+              backgroundColor: colorTheme.surfaceContainer,
+              body: const Placeholder(),
             ),
-            onPressed: () {
-              setState(() => _setSelectedIndex(_selectedIndex + 1));
-            },
-            icon: const Icon(Symbols.swap_horiz_rounded),
-            tooltip: "Show next experiment",
+          },
+        ),
+        Padding(
+          padding: padding,
+          child: Align.centerStart(
+            child: Padding(
+              padding: .symmetric(horizontal: 4.0, vertical: 4.0),
+              child: IconButton(
+                style: LegacyThemeFactory.createIconButtonStyle(
+                  colorTheme: colorTheme,
+                  elevationTheme: elevationTheme,
+                  shapeTheme: shapeTheme,
+                  stateTheme: stateTheme,
+                  width: .normal,
+                  color: .tonal,
+                  size: .small,
+                  shape: .square,
+                  containerColor: colorTheme.inverseSurface,
+                  iconColor: colorTheme.inverseOnSurface,
+                  // containerElevation: elevationTheme.level3,
+                ),
+                onPressed: () {
+                  setState(() => _setSelectedIndex(_selectedIndex + 1));
+                },
+                icon: const Icon(
+                  Symbols.menu_open_rounded,
+                  opticalSize: 20.0,
+                  size: 20.0,
+                ),
+                tooltip: "Show next experiment",
+              ),
+            ),
           ),
         ),
       ],

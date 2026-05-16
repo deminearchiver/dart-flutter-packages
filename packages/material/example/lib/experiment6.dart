@@ -155,7 +155,7 @@ class _Layer2State extends State<_Layer2> {
     final shapeTheme = ShapeTheme.of(context);
     final focusInsetRingTheme = FocusInsetRingTheme.of(context);
 
-    const delegate = CornersBorderDelegate.superellipse;
+    const delegate = CornersBorderDelegate.smooth;
     final corners = Corners.all(.fractional(0.5));
 
     return SizedBox(

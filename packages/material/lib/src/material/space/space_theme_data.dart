@@ -1,5 +1,33 @@
 part of 'space_theme.dart';
 
+// ```css
+// /*!
+//  * Copyright 2026 Google LLC
+//  * SPDX-License-Identifier: Apache-2.0
+//  */
+// --md-sys-space-unit: 8px;
+// --md-sys-space-0: 0px;
+// --md-sys-space-25: 2px;
+// --md-sys-space-50: 4px;
+// --md-sys-space-75: 6px;
+// --md-sys-space-100: 8px;
+// --md-sys-space-125: 10px;
+// --md-sys-space-150: 12px;
+// --md-sys-space-175: 14px;
+// --md-sys-space-200: 16px;
+// --md-sys-space-250: 20px;
+// --md-sys-space-300: 24px;
+// --md-sys-space-400: 32px;
+// --md-sys-space-450: 36px;
+// --md-sys-space-500: 40px;
+// --md-sys-space-600: 48px;
+// --md-sys-space-700: 56px;
+// --md-sys-space-800: 64px;
+// --md-sys-space-900: 72px;
+// ```
+//
+// See: https://github.com/material-components/material-web/blob/95013d6621339322695f469ab6f5cf327869f3bb/labs/gb/styles/space/md-space-tokens.scss
+
 @pragma("wasm:prefer-inline")
 @pragma("vm:prefer-inline")
 @pragma("dart2js:prefer-inline")

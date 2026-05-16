@@ -2,16 +2,18 @@ import 'dart:math' as math;
 
 import 'package:material/src/material/flutter.dart';
 
+part 'geometry.dart';
+
 // In this file, switch statements for BorderSide.style are not used
 // because we assume it will remain the same in future releases of the
 // framework. We need to keep track of new enum members being added.
 
 abstract class _OffsetCornersGeometry extends CornersGeometry {
-  const _OffsetCornersGeometry(CornersGeometry corners, double delta)
-    : _corners = corners,
+  const _OffsetCornersGeometry(CornersGeometry value, double delta)
+    : _value = value,
       _delta = delta;
 
-  final CornersGeometry _corners;
+  final CornersGeometry _value;
   final double _delta;
 
   @override
@@ -22,19 +24,47 @@ abstract class _OffsetCornersGeometry extends CornersGeometry {
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is _OffsetCornersGeometry &&
-          _corners == other._corners &&
+          _value == other._value &&
           _delta == other._delta;
 
   @override
-  int get hashCode => Object.hash(_corners, _delta);
+  int get hashCode => Object.hash(_value, _delta);
+
+  static String _toString({
+    required Object value,
+    required double delta,
+    required String shapeFamily,
+  }) {
+    // TODO: decide what the final formatting shall be
+
+    if (delta == 0.0) return "$value";
+    final direction = delta > 0.0 ? "inflated" : "deflated";
+    // final direction = delta > 0.0 ? "inflateBy" : "deflateBy";
+    final amount = delta.abs().toStringAsFixed(1);
+
+    // "$value $direction as $cornerShape by $amount"
+    // "$value $direction with ($cornerShape, $amount)"
+    // "$value $direction($cornerShape) by $amount"
+    // return "$value $direction ($cornerShape, $amount)";
+    return "$value $direction as $shapeFamily by $amount";
+
+    // if (delta == 0.0) return "$value";
+    // final operator = delta > 0.0 ? "+" : "-";
+    // final amount = delta.abs().toStringAsFixed(1);
+    // return "$value[] $operator $amount";
+  }
 }
 
-abstract class _OffsetCorners extends Corners {
-  const _OffsetCorners(Corners corners, double delta)
-    : _corners = corners,
+abstract class _OffsetCorners extends Corners
+    implements _OffsetCornersGeometry {
+  const _OffsetCorners(Corners value, double delta)
+    : _value = value,
       _delta = delta;
 
-  final Corners _corners;
+  @override
+  final Corners _value;
+
+  @override
   final double _delta;
 
   @override
@@ -50,74 +80,92 @@ abstract class _OffsetCorners extends Corners {
   _OffsetCorner get topRight;
 
   @override
-  _OffsetCorners resolve(TextDirection? textDirection) => this;
-
-  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is _OffsetCorners &&
-          _corners == other._corners &&
+          _value == other._value &&
           _delta == other._delta;
 
   @override
-  int get hashCode => Object.hash(_corners, _delta);
+  int get hashCode => Object.hash(_value, _delta);
 }
 
 abstract class _OffsetCorner extends Corner {
-  const _OffsetCorner(Corner corner, double delta)
-    : _corner = corner,
+  const _OffsetCorner(Corner value, double delta)
+    : _value = value,
       _delta = delta;
 
-  final Corner _corner;
+  final Corner _value;
   final double _delta;
+
+  @override
+  _OffsetCorner get flipped;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is _CutCorner &&
-          _corner == other._corner &&
+          _value == other._value &&
           _delta == other._delta;
 
   @override
-  int get hashCode => Object.hash(_corner, _delta);
+  int get hashCode => Object.hash(_value, _delta);
 }
 
 class _RoundedCornersGeometry extends _OffsetCornersGeometry {
-  const _RoundedCornersGeometry(super.corners, super.delta);
+  const _RoundedCornersGeometry(super.value, super.delta);
 
   @override
   _RoundedCorners resolve(TextDirection? textDirection) =>
-      .new(_corners.resolve(textDirection), _delta);
+      .new(_value.resolve(textDirection), _delta);
+
+  @override
+  String toString() => _OffsetCornersGeometry._toString(
+    value: _value,
+    delta: _delta,
+    shapeFamily: "rounded",
+  );
 }
 
-class _RoundedCorners extends _OffsetCorners {
-  const _RoundedCorners(super.corners, super.delta);
+class _RoundedCorners extends _OffsetCorners
+    implements _RoundedCornersGeometry {
+  const _RoundedCorners(super.value, super.delta);
 
   @override
-  _RoundedCorner get bottomLeft => .new(_corners.bottomLeft, _delta);
+  _RoundedCorner get bottomLeft => .new(_value.bottomLeft, _delta);
 
   @override
-  _RoundedCorner get bottomRight => .new(_corners.bottomRight, _delta);
+  _RoundedCorner get bottomRight => .new(_value.bottomRight, _delta);
 
   @override
-  _RoundedCorner get topLeft => .new(_corners.topLeft, _delta);
+  _RoundedCorner get topLeft => .new(_value.topLeft, _delta);
 
   @override
-  _RoundedCorner get topRight => .new(_corners.topRight, _delta);
+  _RoundedCorner get topRight => .new(_value.topRight, _delta);
+
+  @override
+  _RoundedCorners resolve(TextDirection? textDirection) => this;
+
+  @override
+  String toString() => _OffsetCornersGeometry._toString(
+    value: _value,
+    delta: _delta,
+    shapeFamily: "rounded",
+  );
 }
 
 class _RoundedCorner extends _OffsetCorner {
-  const _RoundedCorner(super.corner, super.delta);
+  const _RoundedCorner(super.value, super.delta);
 
   @override
-  Corner get flipped => _RoundedCorner(_corner.flipped, _delta);
+  _RoundedCorner get flipped => .new(_value.flipped, _delta);
 
   @override
   Radius toRadius(Size size) {
     // Skip calculations if nothing is being offset.
-    if (_delta == 0.0) return _corner.toRadius(size);
+    if (_delta == 0.0) return _value.toRadius(size);
 
     // We use an inversely-inflated size and resolve the corner in it.
     // This gives us a suitable radius for further transformations.
@@ -126,47 +174,71 @@ class _RoundedCorner extends _OffsetCorner {
       size.width - dimensionDelta,
       size.height - dimensionDelta,
     );
-    final Radius(:x, :y) = _corner.toRadius(deflatedSize);
+    final Radius(:x, :y) = _value.toRadius(deflatedSize);
 
     // Apply constant offset to corners.
     return .elliptical(x + _delta, y + _delta);
   }
+
+  @override
+  String toString() => _OffsetCornersGeometry._toString(
+    value: _value,
+    delta: _delta,
+    shapeFamily: "rounded",
+  );
 }
 
 class _CutCornersGeometry extends _OffsetCornersGeometry {
-  const _CutCornersGeometry(super.corners, super.delta);
+  const _CutCornersGeometry(super.value, super.delta);
 
   @override
   _CutCorners resolve(TextDirection? textDirection) =>
-      .new(_corners.resolve(textDirection), _delta);
+      .new(_value.resolve(textDirection), _delta);
+
+  @override
+  String toString() => _OffsetCornersGeometry._toString(
+    value: _value,
+    delta: _delta,
+    shapeFamily: "cut",
+  );
 }
 
-class _CutCorners extends _OffsetCorners {
-  const _CutCorners(super.corners, super.delta);
+class _CutCorners extends _OffsetCorners implements _CutCornersGeometry {
+  const _CutCorners(super.value, super.delta);
 
   @override
-  _CutCorner get bottomLeft => .new(_corners.bottomLeft, _delta);
+  _CutCorner get bottomLeft => .new(_value.bottomLeft, _delta);
 
   @override
-  _CutCorner get bottomRight => .new(_corners.bottomRight, _delta);
+  _CutCorner get bottomRight => .new(_value.bottomRight, _delta);
 
   @override
-  _CutCorner get topLeft => .new(_corners.topLeft, _delta);
+  _CutCorner get topLeft => .new(_value.topLeft, _delta);
 
   @override
-  _CutCorner get topRight => .new(_corners.topRight, _delta);
+  _CutCorner get topRight => .new(_value.topRight, _delta);
+
+  @override
+  _CutCorners resolve(TextDirection? textDirection) => this;
+
+  @override
+  String toString() => _OffsetCornersGeometry._toString(
+    value: _value,
+    delta: _delta,
+    shapeFamily: "cut",
+  );
 }
 
 class _CutCorner extends _OffsetCorner {
-  const _CutCorner(super.corner, super.delta);
+  const _CutCorner(super.value, super.delta);
 
   @override
-  Corner get flipped => _CutCorner(_corner.flipped, _delta);
+  _CutCorner get flipped => .new(_value.flipped, _delta);
 
   @override
   Radius toRadius(Size size) {
     // Skip calculations if nothing is being offset.
-    if (_delta == 0.0) return _corner.toRadius(size);
+    if (_delta == 0.0) return _value.toRadius(size);
 
     // We use an inversely-inflated size and resolve the corner in it.
     // This gives us a suitable radius for further transformations.
@@ -175,7 +247,7 @@ class _CutCorner extends _OffsetCorner {
       size.width - dimensionDelta,
       size.height - dimensionDelta,
     );
-    final Radius(:x, :y) = _corner.toRadius(deflatedSize);
+    final Radius(:x, :y) = _value.toRadius(deflatedSize);
 
     // Apply non-linear offset to corners as if they were bevels of a rectangle.
     final hypotenuse = math.sqrt(x * x + y * y);
@@ -184,6 +256,13 @@ class _CutCorner extends _OffsetCorner {
       x != 0.0 ? math.max(0.0, y + _delta * ((hypotenuse - y) / x)) : 0.0,
     );
   }
+
+  @override
+  String toString() => _OffsetCornersGeometry._toString(
+    value: _value,
+    delta: _delta,
+    shapeFamily: "cut",
+  );
 }
 
 abstract class CornersBorderDelegate {
@@ -191,30 +270,28 @@ abstract class CornersBorderDelegate {
 
   // Calculations
 
-  CornersGeometry inflateCorners(CornersGeometry corners, double delta);
+  CornersGeometry inflateCorners(CornersGeometry value, double delta);
 
-  CornersGeometry deflateCorners(CornersGeometry corners, double delta) =>
-      inflateCorners(corners, -delta);
+  CornersGeometry deflateCorners(CornersGeometry value, double delta) =>
+      inflateCorners(value, -delta);
 
-  BorderRadius inflateBorderRadius(BorderRadius borderRadius, double delta);
+  BorderRadius inflateBorderRadius(BorderRadius value, double delta);
 
-  BorderRadius deflateBorderRadius(BorderRadius borderRadius, double delta) =>
-      inflateBorderRadius(borderRadius, -delta);
+  BorderRadius deflateBorderRadius(BorderRadius value, double delta) =>
+      inflateBorderRadius(value, -delta);
 
-  Rect inflateRect(Rect rect, double delta);
+  Rect inflateRect(Rect value, double delta);
 
-  Rect deflateRect(Rect rect, double delta) => inflateRect(rect, -delta);
+  Rect deflateRect(Rect value, double delta) => inflateRect(value, -delta);
 
-  RRect inflateRRect(RRect rRect, double delta);
+  RRect inflateRRect(RRect value, double delta);
 
-  RRect deflateRRect(RRect rRect, double delta) => inflateRRect(rRect, -delta);
+  RRect deflateRRect(RRect value, double delta) => inflateRRect(value, -delta);
 
-  RSuperellipse inflateRSuperellipse(RSuperellipse rSuperellipse, double delta);
+  RSuperellipse inflateRSuperellipse(RSuperellipse value, double delta);
 
-  RSuperellipse deflateRSuperellipse(
-    RSuperellipse rSuperellipse,
-    double delta,
-  ) => inflateRSuperellipse(rSuperellipse, -delta);
+  RSuperellipse deflateRSuperellipse(RSuperellipse value, double delta) =>
+      inflateRSuperellipse(value, -delta);
 
   // Painting
 
@@ -272,8 +349,7 @@ abstract class CornersBorderDelegate {
 
   static const CornersBorderDelegate rounded = _RoundedCornersBorderDelegate();
 
-  static const CornersBorderDelegate superellipse =
-      _SuperellipseCornersBorderDelegate();
+  static const CornersBorderDelegate smooth = _SmoothCornersBorderDelegate();
 
   static const CornersBorderDelegate cut = _CutCornersBorderDelegate();
 
@@ -289,48 +365,24 @@ abstract class CornersBorderDelegate {
 
 mixin _RoundedCornerCalculations implements CornersBorderDelegate {
   @override
-  CornersGeometry inflateCorners(CornersGeometry corners, double delta) {
-    if (delta == 0.0) return corners;
-    return _RoundedCornersGeometry(corners, delta);
-  }
+  CornersGeometry inflateCorners(CornersGeometry value, double delta) =>
+      ShapeCornerFamily.rounded.corners.inflate(value, delta);
 
   @override
-  BorderRadius inflateBorderRadius(BorderRadius borderRadius, double delta) {
-    if (delta == 0.0) return borderRadius;
-    final BorderRadius(
-      topLeft: Radius(x: tlX, y: tlY),
-      topRight: Radius(x: trX, y: trY),
-      bottomLeft: Radius(x: blX, y: blY),
-      bottomRight: Radius(x: brX, y: brY),
-    ) = borderRadius;
-    return .only(
-      topLeft: .elliptical(tlX + delta, tlY + delta),
-      topRight: .elliptical(trX + delta, trY + delta),
-      bottomLeft: .elliptical(blX + delta, blY + delta),
-      bottomRight: .elliptical(brX + delta, brY + delta),
-    );
-  }
+  BorderRadius inflateBorderRadius(BorderRadius value, double delta) =>
+      ShapeCornerFamily.rounded.borderRadius.inflate(value, delta);
 
   @override
-  Rect inflateRect(Rect rect, double delta) {
-    if (delta == 0.0) return rect;
-    return rect.inflate(delta);
-  }
+  Rect inflateRect(Rect value, double delta) =>
+      delta != 0.0 ? value.inflate(delta) : value;
 
   @override
-  RRect inflateRRect(RRect rRect, double delta) {
-    if (delta == 0.0) return rRect;
-    return rRect.inflate(delta);
-  }
+  RRect inflateRRect(RRect value, double delta) =>
+      ShapeCornerFamily.rounded.rRect.inflate(value, delta);
 
   @override
-  RSuperellipse inflateRSuperellipse(
-    RSuperellipse rSuperellipse,
-    double delta,
-  ) {
-    if (delta == 0.0) return rSuperellipse;
-    return rSuperellipse.inflate(delta);
-  }
+  RSuperellipse inflateRSuperellipse(RSuperellipse value, double delta) =>
+      ShapeCornerFamily.rounded.rSuperellipse.inflate(value, delta);
 }
 
 class _RoundedCornersBorderDelegate extends CornersBorderDelegate
@@ -406,12 +458,12 @@ class _RoundedCornersBorderDelegate extends CornersBorderDelegate
   String toString() => "CornersBorderDelegate.rounded";
 }
 
-class _SuperellipseCornersBorderDelegate extends CornersBorderDelegate
+class _SmoothCornersBorderDelegate extends CornersBorderDelegate
     with _RoundedCornerCalculations {
-  const _SuperellipseCornersBorderDelegate();
+  const _SmoothCornersBorderDelegate();
 
   @override
-  _SuperellipseCornersBorderDelegate scale(double t) => this;
+  _SmoothCornersBorderDelegate scale(double t) => this;
 
   @override
   Path getOuterPath({
@@ -487,147 +539,29 @@ class _SuperellipseCornersBorderDelegate extends CornersBorderDelegate
   // TODO: implement lerpFrom and lerpTo
 
   @override
-  String toString() => "CornersBorderDelegate.superellipse";
+  String toString() => "CornersBorderDelegate.smooth";
 }
 
 mixin _CutCornerCalculations implements CornersBorderDelegate {
   @override
-  CornersGeometry inflateCorners(CornersGeometry corners, double delta) {
-    if (delta == 0.0) return corners;
-    return _CutCornersGeometry(corners, delta);
-  }
+  CornersGeometry inflateCorners(CornersGeometry value, double delta) =>
+      ShapeCornerFamily.cut.corners.inflate(value, delta);
 
   @override
-  BorderRadius inflateBorderRadius(BorderRadius borderRadius, double delta) {
-    if (delta == 0.0) return borderRadius;
-    final BorderRadius(
-      topLeft: Radius(x: tlX, y: tlY),
-      topRight: Radius(x: trX, y: trY),
-      bottomLeft: Radius(x: blX, y: blY),
-      bottomRight: Radius(x: brX, y: brY),
-    ) = borderRadius;
-    final tlH = math.sqrt(tlX * tlX + tlY * tlY);
-    final trH = math.sqrt(trX * trX + trY * trY);
-    final blH = math.sqrt(blX * blX + blY * blY);
-    final brH = math.sqrt(brX * brX + brY * brY);
-    return .only(
-      topLeft: .elliptical(
-        tlY != 0.0 ? math.max(0.0, tlX + delta * ((tlH - tlX) / tlY)) : 0.0,
-        tlX != 0.0 ? math.max(0.0, tlY + delta * ((tlH - tlY) / tlX)) : 0.0,
-      ),
-      topRight: .elliptical(
-        trY != 0.0 ? math.max(0.0, trX + delta * ((trH - trX) / trY)) : 0.0,
-        trX != 0.0 ? math.max(0.0, trY + delta * ((trH - trY) / trX)) : 0.0,
-      ),
-      bottomLeft: .elliptical(
-        blY != 0.0 ? math.max(0.0, blX + delta * ((blH - blX) / blY)) : 0.0,
-        blX != 0.0 ? math.max(0.0, blY + delta * ((blH - blY) / blX)) : 0.0,
-      ),
-      bottomRight: .elliptical(
-        brY != 0.0 ? math.max(0.0, brX + delta * ((brH - brX) / brY)) : 0.0,
-        brX != 0.0 ? math.max(0.0, brY + delta * ((brH - brY) / brX)) : 0.0,
-      ),
-    );
-  }
+  BorderRadius inflateBorderRadius(BorderRadius value, double delta) =>
+      ShapeCornerFamily.cut.borderRadius.inflate(value, delta);
 
   @override
-  Rect inflateRect(Rect rect, double delta) {
-    if (delta == 0.0) return rect;
-    return rect.inflate(delta);
-  }
+  Rect inflateRect(Rect value, double delta) =>
+      delta != 0.0 ? value.inflate(delta) : value;
 
   @override
-  RRect inflateRRect(RRect rRect, double delta) {
-    if (delta == 0.0) return rRect;
-    final RRect(
-      :left,
-      :top,
-      :right,
-      :bottom,
-      tlRadiusX: tlX,
-      tlRadiusY: tlY,
-      trRadiusX: trX,
-      trRadiusY: trY,
-      blRadiusX: blX,
-      blRadiusY: blY,
-      brRadiusX: brX,
-      brRadiusY: brY,
-    ) = rRect;
-    final tlH = math.sqrt(tlX * tlX + tlY * tlY);
-    final trH = math.sqrt(trX * trX + trY * trY);
-    final blH = math.sqrt(blX * blX + blY * blY);
-    final brH = math.sqrt(brX * brX + brY * brY);
-    return .fromLTRBAndCorners(
-      left - delta,
-      top - delta,
-      right + delta,
-      bottom + delta,
-      topLeft: .elliptical(
-        tlY != 0.0 ? math.max(0.0, tlX + delta * ((tlH - tlX) / tlY)) : 0.0,
-        tlX != 0.0 ? math.max(0.0, tlY + delta * ((tlH - tlY) / tlX)) : 0.0,
-      ),
-      topRight: .elliptical(
-        trY != 0.0 ? math.max(0.0, trX + delta * ((trH - trX) / trY)) : 0.0,
-        trX != 0.0 ? math.max(0.0, trY + delta * ((trH - trY) / trX)) : 0.0,
-      ),
-      bottomLeft: .elliptical(
-        blY != 0.0 ? math.max(0.0, blX + delta * ((blH - blX) / blY)) : 0.0,
-        blX != 0.0 ? math.max(0.0, blY + delta * ((blH - blY) / blX)) : 0.0,
-      ),
-      bottomRight: .elliptical(
-        brY != 0.0 ? math.max(0.0, brX + delta * ((brH - brX) / brY)) : 0.0,
-        brX != 0.0 ? math.max(0.0, brY + delta * ((brH - brY) / brX)) : 0.0,
-      ),
-    );
-  }
+  RRect inflateRRect(RRect value, double delta) =>
+      ShapeCornerFamily.cut.rRect.inflate(value, delta);
 
   @override
-  RSuperellipse inflateRSuperellipse(
-    RSuperellipse rSuperellipse,
-    double delta,
-  ) {
-    if (delta == 0.0) return rSuperellipse;
-    final RSuperellipse(
-      :left,
-      :top,
-      :right,
-      :bottom,
-      tlRadiusX: tlX,
-      tlRadiusY: tlY,
-      trRadiusX: trX,
-      trRadiusY: trY,
-      blRadiusX: blX,
-      blRadiusY: blY,
-      brRadiusX: brX,
-      brRadiusY: brY,
-    ) = rSuperellipse;
-    final tlH = math.sqrt(tlX * tlX + tlY * tlY);
-    final trH = math.sqrt(trX * trX + trY * trY);
-    final blH = math.sqrt(blX * blX + blY * blY);
-    final brH = math.sqrt(brX * brX + brY * brY);
-    return .fromLTRBAndCorners(
-      left - delta,
-      top - delta,
-      right + delta,
-      bottom + delta,
-      topLeft: .elliptical(
-        tlY != 0.0 ? math.max(0.0, tlX + delta * ((tlH - tlX) / tlY)) : 0.0,
-        tlX != 0.0 ? math.max(0.0, tlY + delta * ((tlH - tlY) / tlX)) : 0.0,
-      ),
-      topRight: .elliptical(
-        trY != 0.0 ? math.max(0.0, trX + delta * ((trH - trX) / trY)) : 0.0,
-        trX != 0.0 ? math.max(0.0, trY + delta * ((trH - trY) / trX)) : 0.0,
-      ),
-      bottomLeft: .elliptical(
-        blY != 0.0 ? math.max(0.0, blX + delta * ((blH - blX) / blY)) : 0.0,
-        blX != 0.0 ? math.max(0.0, blY + delta * ((blH - blY) / blX)) : 0.0,
-      ),
-      bottomRight: .elliptical(
-        brY != 0.0 ? math.max(0.0, brX + delta * ((brH - brX) / brY)) : 0.0,
-        brX != 0.0 ? math.max(0.0, brY + delta * ((brH - brY) / brX)) : 0.0,
-      ),
-    );
-  }
+  RSuperellipse inflateRSuperellipse(RSuperellipse value, double delta) =>
+      ShapeCornerFamily.cut.rSuperellipse.inflate(value, delta);
 }
 
 class _CutCornersBorderDelegate extends CornersBorderDelegate
@@ -747,8 +681,8 @@ class CornersBorder extends OutlinedBorder {
   const CornersBorder.rounded({super.side, this.corners = .zero})
     : delegate = .rounded;
 
-  const CornersBorder.superellipse({super.side, this.corners = .zero})
-    : delegate = .superellipse;
+  const CornersBorder.smooth({super.side, this.corners = .zero})
+    : delegate = .smooth;
 
   const CornersBorder.cut({super.side, this.corners = .zero}) : delegate = .cut;
 
@@ -841,7 +775,7 @@ class CornersBorder extends OutlinedBorder {
       );
     }
     if (a is RoundedSuperellipseBorder) {
-      const aDelegate = CornersBorderDelegate.superellipse;
+      const aDelegate = CornersBorderDelegate.smooth;
       final aCorners = CornersGeometry.fromBorderRadius(a.borderRadius);
       return CornersBorder(
         side: BorderSide.lerp(a.side, side, t),
@@ -881,7 +815,7 @@ class CornersBorder extends OutlinedBorder {
       );
     }
     if (b is RoundedSuperellipseBorder) {
-      const bDelegate = CornersBorderDelegate.superellipse;
+      const bDelegate = CornersBorderDelegate.smooth;
       final bCorners = CornersGeometry.fromBorderRadius(b.borderRadius);
       return CornersBorder(
         side: BorderSide.lerp(side, b.side, t),

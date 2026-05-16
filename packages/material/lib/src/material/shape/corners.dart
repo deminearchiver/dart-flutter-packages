@@ -6,6 +6,10 @@ import 'package:material/src/material/flutter.dart';
 // Compound corners (flexible API and high customizability) //
 // ////////////////////////////////////////////////////////////////
 
+/// Base class for [Corners] that allows for text-direction aware resolution.
+///
+/// To convert a [CornersGeometry] object of indeterminate type into a
+/// [Corners] object, call the [resolve] method.
 abstract class CornersGeometry {
   const CornersGeometry();
 
@@ -59,7 +63,16 @@ abstract class CornersGeometry {
 
   CornersGeometry operator %(double operand) => _CornersModulo(this, operand);
 
-  static const CornersGeometry zero = _ZeroCorners();
+  static const CornersGeometry zero = _MixedCorners(
+    .zero,
+    .zero,
+    .zero,
+    .zero,
+    .zero,
+    .zero,
+    .zero,
+    .zero,
+  );
 
   // TODO: rename to "circular" because it better matches spec
   static const CornersGeometry circle = Corners.circle;
@@ -794,59 +807,59 @@ final class _MixedCorners extends _CornersGeometry {
   final Corner? _bottomEnd;
 }
 
-final class _ZeroCorners extends _CornersGeometry {
-  const _ZeroCorners();
+// final class _ZeroCorners extends _CornersGeometry {
+//   const _ZeroCorners();
 
-  @override
-  Null get _topLeft => null;
+//   @override
+//   Null get _topLeft => null;
 
-  @override
-  Null get _topRight => null;
+//   @override
+//   Null get _topRight => null;
 
-  @override
-  Null get _bottomLeft => null;
+//   @override
+//   Null get _bottomLeft => null;
 
-  @override
-  Null get _bottomRight => null;
+//   @override
+//   Null get _bottomRight => null;
 
-  @override
-  Null get _topStart => null;
+//   @override
+//   Null get _topStart => null;
 
-  @override
-  Null get _topEnd => null;
+//   @override
+//   Null get _topEnd => null;
 
-  @override
-  Null get _bottomStart => null;
+//   @override
+//   Null get _bottomStart => null;
 
-  @override
-  Null get _bottomEnd => null;
+//   @override
+//   Null get _bottomEnd => null;
 
-  @override
-  Corners resolve(TextDirection? textDirection) => .zero;
+//   @override
+//   Corners resolve(TextDirection? textDirection) => .zero;
 
-  @override
-  CornersGeometry add(CornersGeometry other) =>
-      other is _ZeroCorners ? this : other;
+//   @override
+//   CornersGeometry add(CornersGeometry other) =>
+//       other is _ZeroCorners ? this : other;
 
-  @override
-  CornersGeometry subtract(CornersGeometry other) =>
-      other is _ZeroCorners ? this : -other;
+//   @override
+//   CornersGeometry subtract(CornersGeometry other) =>
+//       other is _ZeroCorners ? this : -other;
 
-  @override
-  _ZeroCorners operator -() => this;
+//   @override
+//   _ZeroCorners operator -() => this;
 
-  @override
-  _ZeroCorners operator *(double operand) => this;
+//   @override
+//   _ZeroCorners operator *(double operand) => this;
 
-  @override
-  _ZeroCorners operator /(double operand) => this;
+//   @override
+//   _ZeroCorners operator /(double operand) => this;
 
-  @override
-  _ZeroCorners operator ~/(double operand) => this;
+//   @override
+//   _ZeroCorners operator ~/(double operand) => this;
 
-  @override
-  _ZeroCorners operator %(double operand) => this;
-}
+//   @override
+//   _ZeroCorners operator %(double operand) => this;
+// }
 
 abstract class Corners extends _CornersGeometry {
   const Corners();

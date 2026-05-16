@@ -21,7 +21,10 @@ abstract class Corner {
 
   const factory Corner.fromRadius(Radius radius) = FixedCorner.fromRadius;
 
-  /// Whether every dimension is non-negative.
+  // /// Whether [toRadius] would return [Radius.zero].
+  // bool get isZero;
+
+  // /// Whether every dimension is non-negative.
   // bool get isNonNegative;
 
   /// A [Corner] with X and Y swapped.
@@ -46,7 +49,7 @@ abstract class Corner {
 
   Corner operator %(double operand) => _CornerModulo(this, operand);
 
-  static const Corner zero = _ZeroCorner();
+  static const Corner zero = _MixedCorner(0.0, 0.0, 0.0, 0.0);
 
   static const round = Corner.fractional(0.5);
 
@@ -547,51 +550,51 @@ final class _MixedCorner extends _Corner {
   final double? _fractionY;
 }
 
-final class _ZeroCorner extends _Corner {
-  const _ZeroCorner();
+// final class _ZeroCorner extends _Corner {
+//   const _ZeroCorner();
 
-  @override
-  Null get _radiusX => null;
+//   @override
+//   Null get _radiusX => null;
 
-  @override
-  Null get _radiusY => null;
+//   @override
+//   Null get _radiusY => null;
 
-  @override
-  Null get _fractionX => null;
+//   @override
+//   Null get _fractionX => null;
 
-  @override
-  Null get _fractionY => null;
+//   @override
+//   Null get _fractionY => null;
 
-  // @override
-  // bool get isNonNegative => true;
+//   // @override
+//   // bool get isNonNegative => true;
 
-  @override
-  _ZeroCorner get flipped => this;
+//   @override
+//   _ZeroCorner get flipped => this;
 
-  @override
-  Radius toRadius(Size size) => .zero;
+//   @override
+//   Radius toRadius(Size size) => .zero;
 
-  @override
-  Corner add(Corner other) => other is _ZeroCorner ? this : other;
+//   @override
+//   Corner add(Corner other) => other is _ZeroCorner ? this : other;
 
-  @override
-  Corner subtract(Corner other) => other is _ZeroCorner ? this : -other;
+//   @override
+//   Corner subtract(Corner other) => other is _ZeroCorner ? this : -other;
 
-  @override
-  _ZeroCorner operator -() => this;
+//   @override
+//   _ZeroCorner operator -() => this;
 
-  @override
-  _ZeroCorner operator *(double operand) => this;
+//   @override
+//   _ZeroCorner operator *(double operand) => this;
 
-  @override
-  _ZeroCorner operator /(double operand) => this;
+//   @override
+//   _ZeroCorner operator /(double operand) => this;
 
-  @override
-  _ZeroCorner operator ~/(double operand) => this;
+//   @override
+//   _ZeroCorner operator ~/(double operand) => this;
 
-  @override
-  _ZeroCorner operator %(double operand) => this;
-}
+//   @override
+//   _ZeroCorner operator %(double operand) => this;
+// }
 
 abstract class FixedCorner extends _Corner {
   const FixedCorner();

@@ -163,6 +163,7 @@ class _PlayerBottomSheetState extends State<PlayerBottomSheet>
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.paddingOf(context);
     final colorTheme = ColorTheme.of(context);
     final elevationTheme = ElevationTheme.of(context);
     final shapeTheme = ShapeTheme.of(context);
@@ -222,35 +223,38 @@ class _PlayerBottomSheetState extends State<PlayerBottomSheet>
             ),
           ),
           const SizedBox(height: 2.0),
-          SizedBox(
-            height: 64.0,
-            child: ListItemContainer(
-              isFirst: true,
-              containerColor: .all(colorTheme.surfaceContainerHighest),
-              child: const Flex.horizontal(
-                children: [
-                  Flexible.tight(
-                    child: _VerticalNavigationItem(
-                      isSelected: true,
-                      icon: Icon(Symbols.home),
-                      label: Text("Home"),
+          ListItemContainer(
+            isFirst: true,
+            containerColor: .all(colorTheme.surfaceContainerHighest),
+            child: Padding(
+              padding: .only(bottom: padding.bottom),
+              child: SizedBox(
+                height: 64.0,
+                child: const Flex.horizontal(
+                  children: [
+                    Flexible.tight(
+                      child: _VerticalNavigationItem(
+                        isSelected: true,
+                        icon: Icon(Symbols.home),
+                        label: Text("Home"),
+                      ),
                     ),
-                  ),
-                  Flexible.tight(
-                    child: _VerticalNavigationItem(
-                      isSelected: false,
-                      icon: Icon(Symbols.library_music_rounded),
-                      label: Text("Library"),
+                    Flexible.tight(
+                      child: _VerticalNavigationItem(
+                        isSelected: false,
+                        icon: Icon(Symbols.library_music_rounded),
+                        label: Text("Library"),
+                      ),
                     ),
-                  ),
-                  Flexible.tight(
-                    child: _VerticalNavigationItem(
-                      isSelected: false,
-                      icon: Icon(Symbols.settings_rounded),
-                      label: Text("Settings"),
+                    Flexible.tight(
+                      child: _VerticalNavigationItem(
+                        isSelected: false,
+                        icon: Icon(Symbols.settings_rounded),
+                        label: Text("Settings"),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
