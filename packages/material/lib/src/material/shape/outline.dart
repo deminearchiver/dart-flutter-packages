@@ -89,6 +89,28 @@ abstract class OutlinePartial with Diagnosticable {
     return shape.copyWith(side: side);
   }
 
+  double? get inset {
+    final width = this.width;
+    final alignment = this.alignment;
+    return width != null && alignment != null
+        ? width * (1.0 - (1.0 + alignment) / 2.0)
+        : null;
+  }
+
+  double? get outset {
+    final width = this.width;
+    final alignment = this.alignment;
+    return width != null && alignment != null
+        ? width * (1.0 + alignment) / 2.0
+        : null;
+  }
+
+  double? get offset {
+    final width = this.width;
+    final alignment = this.alignment;
+    return width != null && alignment != null ? width * alignment : null;
+  }
+
   @override
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -269,7 +291,16 @@ abstract class Outline extends OutlinePartial {
     ),
   );
 
-  // TODO(deminearchiver): consider adding default values (except for alignment?)
+  @override
+  double get inset => width * (1.0 - (1.0 + alignment) / 2.0);
+
+  @override
+  double get outset => width * (1.0 + alignment) / 2.0;
+
+  @override
+  double get offset => width * alignment;
+
+  // TODO: consider adding default values (except for alignment?)
   @override
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

@@ -738,8 +738,8 @@ class _RenderRadioButtonPaint extends RenderBox
 
     final dotRadius = lerpDouble(0.0, relativeDotRadius, animation.value);
 
-    // TODO(deminearchiver): remove scaling once the magic numbers are extracted into theme.
-    // TODO(deminearchiver): reconsider above statement as it seems wrong now
+    // TODO: remove scaling once the magic numbers are extracted into theme.
+    // TODO: reconsider above statement as it seems wrong now
     context.withCanvasTransform((context) {
       context.canvas.translate(center.dx, center.dy);
       context.canvas.scale(scale);
