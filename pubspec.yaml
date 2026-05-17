@@ -15,6 +15,11 @@ workspace:
   - packages/device_info_ffi/example
   - packages/dynamic_color_ffi
   - packages/dynamic_color_ffi/example
+  - packages/google_symbols
+  - packages/google_symbols_icons
+  - packages/harfbuzz
+  - packages/harfbuzz_ffi
+  - packages/harfbuzz_rs
   - packages/layout
   - packages/libmonet
   - packages/linked_layouts
