@@ -5,7 +5,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:ffi/ffi.dart';
-import 'package:harfbuzz_ffi/harfbuzz_ffi.dart';
+import 'package:harfbuzz_ffi/harfbuzz_ffi_bindings.dart';
 import 'package:meta/meta.dart';
 
 void main(List<String> arguments) {

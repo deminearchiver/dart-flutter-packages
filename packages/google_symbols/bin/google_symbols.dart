@@ -2,7 +2,7 @@
 
 import 'dart:ffi';
 
-import 'package:harfbuzz_ffi/harfbuzz_ffi.dart';
+import 'package:harfbuzz_ffi/harfbuzz_ffi_bindings.dart';
 import 'package:ffi/ffi.dart';
 
 Future<void> main(List<String> arguments) async {
