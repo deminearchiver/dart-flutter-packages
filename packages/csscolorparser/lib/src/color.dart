@@ -22,12 +22,8 @@ class Color {
   /// * `g`: Green value [0..255]
   /// * `b`: Blue value [0..255]
   /// * `a`: Alpha value [0..255]
-  factory Color.fromRgba8(int r, int g, int b, int a) => Color(
-    r.toDouble() / 255.0,
-    g.toDouble() / 255.0,
-    b.toDouble() / 255.0,
-    a.toDouble() / 255.0,
-  );
+  factory Color.fromRgba8(int r, int g, int b, int a) =>
+      Color(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
 
   /// Arguments:
   ///
@@ -48,12 +44,7 @@ class Color {
   /// * `b`: Blue value [0..255]
   /// * `a`: Alpha value [0..255]
   factory Color.fromLinearRgba8(int r, int g, int b, int a) =>
-      Color.fromLinearRgba(
-        r.toDouble() / 255.0,
-        g.toDouble() / 255.0,
-        b.toDouble() / 255.0,
-        a.toDouble() / 255.0,
-      );
+      Color.fromLinearRgba(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
 
   /// Arguments:
   ///
@@ -64,8 +55,8 @@ class Color {
   factory Color.fromHsva(double h, double s, double v, double a) {
     final (outR, outG, outB) = hsvToRgb(
       normalizeAngle(h),
-      s.clamp(0.0, 1.0).toDouble(),
-      v.clamp(0.0, 1.0).toDouble(),
+      s.clamp(0.0, 1.0),
+      v.clamp(0.0, 1.0),
     );
     return Color(outR, outG, outB, a);
   }
@@ -79,8 +70,8 @@ class Color {
   factory Color.fromHsla(double h, double s, double l, double a) {
     final (outR, outG, outB) = hslToRgb(
       normalizeAngle(h),
-      s.clamp(0.0, 1.0).toDouble(),
-      l.clamp(0.0, 1.0).toDouble(),
+      s.clamp(0.0, 1.0),
+      l.clamp(0.0, 1.0),
     );
     return Color(outR, outG, outB, a);
   }
@@ -94,8 +85,8 @@ class Color {
   factory Color.fromHwba(double h, double w, double b, double a) {
     final (outR, outG, outB) = hwbToRgb(
       normalizeAngle(h),
-      w.clamp(0.0, 1.0).toDouble(),
-      b.clamp(0.0, 1.0).toDouble(),
+      w.clamp(0.0, 1.0),
+      b.clamp(0.0, 1.0),
     );
     return Color(outR, outG, outB, a);
   }
@@ -157,10 +148,10 @@ class Color {
 
   /// Restricts R, G, B, A values to the range [0..1].
   Color get clamped => Color(
-    r.clamp(0.0, 1.0).toDouble(),
-    g.clamp(0.0, 1.0).toDouble(),
-    b.clamp(0.0, 1.0).toDouble(),
-    a.clamp(0.0, 1.0).toDouble(),
+    r.clamp(0.0, 1.0),
+    g.clamp(0.0, 1.0),
+    b.clamp(0.0, 1.0),
+    a.clamp(0.0, 1.0),
   );
 
   /// Returns name if there is a name for this color.
@@ -179,10 +170,10 @@ class Color {
   ///
   /// * Red, green, blue and alpha in the range [0..1]
   (double, double, double, double) toArray() => (
-    r.clamp(0.0, 1.0).toDouble(),
-    g.clamp(0.0, 1.0).toDouble(),
-    b.clamp(0.0, 1.0).toDouble(),
-    a.clamp(0.0, 1.0).toDouble(),
+    r.clamp(0.0, 1.0),
+    g.clamp(0.0, 1.0),
+    b.clamp(0.0, 1.0),
+    a.clamp(0.0, 1.0),
   );
 
   /// Returns: `[r, g, b, a]`
@@ -213,16 +204,11 @@ class Color {
   /// * `a`: Alpha [0..1]
   (double, double, double, double) toHsva() {
     final (h, s, v) = rgbToHsv(
-      r.clamp(0.0, 1.0).toDouble(),
-      g.clamp(0.0, 1.0).toDouble(),
-      b.clamp(0.0, 1.0).toDouble(),
+      r.clamp(0.0, 1.0),
+      g.clamp(0.0, 1.0),
+      b.clamp(0.0, 1.0),
     );
-    return (
-      h,
-      s.clamp(0.0, 1.0).toDouble(),
-      v.clamp(0.0, 1.0).toDouble(),
-      a.clamp(0.0, 1.0).toDouble(),
-    );
+    return (h, s.clamp(0.0, 1.0), v.clamp(0.0, 1.0), a.clamp(0.0, 1.0));
   }
 
   /// Returns: `[h, s, l, a]`
@@ -233,16 +219,11 @@ class Color {
   /// * `a`: Alpha [0..1]
   (double, double, double, double) toHsla() {
     final (h, s, l) = rgbToHsl(
-      r.clamp(0.0, 1.0).toDouble(),
-      g.clamp(0.0, 1.0).toDouble(),
-      b.clamp(0.0, 1.0).toDouble(),
+      r.clamp(0.0, 1.0),
+      g.clamp(0.0, 1.0),
+      b.clamp(0.0, 1.0),
     );
-    return (
-      h,
-      s.clamp(0.0, 1.0).toDouble(),
-      l.clamp(0.0, 1.0).toDouble(),
-      a.clamp(0.0, 1.0).toDouble(),
-    );
+    return (h, s.clamp(0.0, 1.0), l.clamp(0.0, 1.0), a.clamp(0.0, 1.0));
   }
 
   /// Returns: `[h, w, b, a]`
@@ -253,15 +234,15 @@ class Color {
   /// * `a`: Alpha [0..1]
   (double, double, double, double) toHwba() {
     final (outH, outW, outB) = rgbToHwb(
-      r.clamp(0.0, 1.0).toDouble(),
-      g.clamp(0.0, 1.0).toDouble(),
-      b.clamp(0.0, 1.0).toDouble(),
+      r.clamp(0.0, 1.0),
+      g.clamp(0.0, 1.0),
+      b.clamp(0.0, 1.0),
     );
     return (
       outH,
-      outW.clamp(0.0, 1.0).toDouble(),
-      outB.clamp(0.0, 1.0).toDouble(),
-      a.clamp(0.0, 1.0).toDouble(),
+      outW.clamp(0.0, 1.0),
+      outB.clamp(0.0, 1.0),
+      a.clamp(0.0, 1.0),
     );
   }
 
@@ -270,7 +251,7 @@ class Color {
   /// * Red, green, blue and alpha in the range [0..1]
   (double, double, double, double) toLinearRgba() {
     double toLinear(double x) => x >= 0.04045
-        ? math.pow((x + 0.055) / 1.055, 2.4).toDouble()
+        ? (math.pow((x + 0.055) / 1.055, 2.4) as double)
         : x / 12.92;
     return (toLinear(r), toLinear(g), toLinear(b), a);
   }
@@ -292,7 +273,7 @@ class Color {
   (double, double, double, double) toOklaba() {
     final (linearR, linearG, linearB, _) = toLinearRgba();
     final (outL, outA, outB) = linearRgbToOklab(linearR, linearG, linearB);
-    return (outL, outA, outB, a.clamp(0.0, 1.0).toDouble());
+    return (outL, outA, outB, a.clamp(0.0, 1.0));
   }
 
   /// Returns: `[l, c, h, alpha]`
@@ -307,7 +288,7 @@ class Color {
   (double, double, double, double) toLaba() {
     final (r, g, b, alpha) = toLinearRgba();
     final (outL, outA, outB) = linearRgbToLab(r, g, b);
-    return (outL, outA, outB, alpha.clamp(0.0, 1.0).toDouble());
+    return (outL, outA, outB, alpha.clamp(0.0, 1.0));
   }
 
   /// Returns: `[l, c, h, alpha]`
@@ -315,7 +296,7 @@ class Color {
     final (l, a, b, alpha) = toLaba();
     final c = math.sqrt(a * a + b * b);
     final h = math.atan2(b, a);
-    return (l, c, h, alpha.clamp(0.0, 1.0).toDouble());
+    return (l, c, h, alpha.clamp(0.0, 1.0));
   }
 
   /// Get CSS RGB hexadecimal color representation

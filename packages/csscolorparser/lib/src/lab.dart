@@ -47,7 +47,7 @@ const double _delta3 = _delta2 * _delta;
 // Helper function for XYZ to LAB conversion
 (double, double, double) _xyzToLab(double x, double y, double z) {
   double labF(double t) => t > _delta3
-      ? math.pow(t, 1.0 / 3.0).toDouble()
+      ? (math.pow(t, 1.0 / 3.0) as double)
       : (t / (3.0 * _delta2)) + (4.0 / 29.0);
 
   final fx = labF(x / _d65X);
