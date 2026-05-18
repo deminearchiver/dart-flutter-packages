@@ -329,9 +329,9 @@ final class DynamicColor {
 
   static bool toneAllowsLightForeground(double tone) => tone.round() <= 49.0;
 
-  static DynamicSchemeCallback<double> getInitialToneFromBackground([
+  static DynamicSchemeCallback<double> getInitialToneFromBackground(
     DynamicSchemeCallback<DynamicColor?>? background,
-  ]) => background != null
+  ) => background != null
       ? (scheme) => background(scheme)?.getTone(scheme) ?? 50.0
       : (_) => 50.0;
 }

@@ -33,19 +33,19 @@ abstract final class Score {
     // total count.
     final colorsHct = <Hct>[];
     final huePopulation = List<int>.filled(360, 0);
-    var populationSum = 0.0;
+    var populationSum = 0;
     for (final MapEntry(:key, :value) in colorsToPopulation.entries) {
       final hct = Hct.fromInt(key);
       colorsHct.add(hct);
       final hue = hct.hue.floor();
       huePopulation[hue] += value;
-      populationSum += value.toDouble();
+      populationSum += value;
     }
 
     // Hues with more usage in neighboring 30 degree slice get a larger number.
     final hueExcitedProportions = List<double>.filled(360, 0.0);
     for (var hue = 0; hue < 360; hue++) {
-      final proportion = huePopulation[hue].toDouble() / populationSum;
+      final proportion = huePopulation[hue] / populationSum;
       for (var i = hue - 14; i < hue + 16; i++) {
         final neighborHue = MathUtils.sanitizeDegreesInt(i);
         hueExcitedProportions[neighborHue] += proportion;

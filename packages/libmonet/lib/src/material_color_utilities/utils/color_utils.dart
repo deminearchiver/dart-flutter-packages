@@ -139,14 +139,14 @@ abstract final class ColorUtils {
     final normalized = rgbComponent / 255.0;
     return normalized <= 0.040449936
         ? normalized / 12.92 * 100.0
-        : math.pow((normalized + 0.055) / 1.055, 2.4).toDouble() * 100.0;
+        : 100.0 * math.pow((normalized + 0.055) / 1.055, 2.4);
   }
 
   static int delinearized(double rgbComponent) {
     final normalized = rgbComponent / 100.0;
     final delinearized = normalized <= 0.0031308
         ? normalized * 12.92
-        : 1.055 * math.pow(normalized, 1.0 / 2.4).toDouble() - 0.055;
+        : 1.055 * math.pow(normalized, 1.0 / 2.4) - 0.055;
     return MathUtils.clampInt(0, 255, (delinearized * 255.0).round());
   }
 
@@ -154,7 +154,7 @@ abstract final class ColorUtils {
     const e = 216.0 / 24389.0;
     const kappa = 24389.0 / 27.0;
     if (t > e) {
-      return math.pow(t, 1.0 / 3.0).toDouble();
+      return math.pow(t, 1.0 / 3.0) as double;
     } else {
       return (kappa * t + 16.0) / 116.0;
     }

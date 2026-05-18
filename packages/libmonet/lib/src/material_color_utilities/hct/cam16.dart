@@ -56,15 +56,12 @@ final class Cam16 {
     final bD = viewingConditions.rgbD[2] * bT;
 
     // Chromatic adaptation
-    final rAF = math
-        .pow(viewingConditions.fl * rD.abs() / 100.0, 0.42)
-        .toDouble();
-    final gAF = math
-        .pow(viewingConditions.fl * gD.abs() / 100.0, 0.42)
-        .toDouble();
-    final bAF = math
-        .pow(viewingConditions.fl * bD.abs() / 100.0, 0.42)
-        .toDouble();
+    final rAF =
+        math.pow(viewingConditions.fl * rD.abs() / 100.0, 0.42) as double;
+    final gAF =
+        math.pow(viewingConditions.fl * gD.abs() / 100.0, 0.42) as double;
+    final bAF =
+        math.pow(viewingConditions.fl * bD.abs() / 100.0, 0.42) as double;
     final rA = rD.sign * 400.0 * rAF / (rAF + 27.13);
     final gA = gD.sign * 400.0 * gAF / (gAF + 27.13);
     final bA = bD.sign * 400.0 * bAF / (bAF + 27.13);
@@ -90,12 +87,10 @@ final class Cam16 {
     // CAM16 lightness and brightness
     final j =
         100.0 *
-        math
-            .pow(
-              ac / viewingConditions.aw,
-              viewingConditions.c * viewingConditions.z,
-            )
-            .toDouble();
+        math.pow(
+          ac / viewingConditions.aw,
+          viewingConditions.c * viewingConditions.z,
+        );
     final q =
         4.0 /
         viewingConditions.c *
@@ -110,10 +105,9 @@ final class Cam16 {
         50000.0 / 13.0 * eHue * viewingConditions.nc * viewingConditions.ncb;
     final t = p1 * MathUtils.hypot(a, b) / (u + 0.305);
     final alpha =
-        math
-            .pow(1.64 - math.pow(0.29, viewingConditions.n).toDouble(), 0.73)
-            .toDouble() *
-        math.pow(t, 0.9).toDouble();
+        (math.pow(1.64 - math.pow(0.29, viewingConditions.n), 0.73) *
+                math.pow(t, 0.9))
+            as double;
     // CAM16 chroma, colorfulness, saturation
     final c = alpha * math.sqrt(j / 100.0);
     final m = c * viewingConditions.flRoot;
@@ -123,7 +117,7 @@ final class Cam16 {
 
     // CAM16-UCS components
     final jstar = (1.0 + 100.0 * 0.007) * j / (1.0 + 0.007 * j);
-    final mstar = 1.0 / 0.0228 * math.log(1.0 + 0.0228 * m); // log1p
+    final mstar = 1.0 / 0.0228 * MathUtils.log1p(0.0228 * m);
     final astar = mstar * math.cos(hueRadians);
     final bstar = mstar * math.sin(hueRadians);
     return ._(hue, c, j, q, m, s, jstar, astar, bstar);
@@ -173,7 +167,7 @@ final class Cam16 {
 
     final hueRadians = MathUtils.toRadians(h);
     final jstar = (1.0 + 100.0 * 0.007) * j / (1.0 + 0.007 * j);
-    final mstar = 1.0 / 0.0228 * math.log(1.0 + 0.0228 * m);
+    final mstar = 1.0 / 0.0228 * MathUtils.log1p(0.0228 * m);
     final astar = mstar * math.cos(hueRadians);
     final bstar = mstar * math.sin(hueRadians);
     return ._(h, c, j, q, m, s, jstar, astar, bstar);
@@ -192,7 +186,7 @@ final class Cam16 {
     ViewingConditions viewingConditions,
   ) {
     final m = MathUtils.hypot(astar, bstar);
-    final m2 = (math.exp(m * 0.0228) - 1.0) / 0.0228;
+    final m2 = MathUtils.expm1(m * 0.0228) / 0.0228;
     final c = m2 / viewingConditions.flRoot;
     var h = math.atan2(bstar, astar) * (180.0 / math.pi);
     if (h < 0.0) {
@@ -254,7 +248,7 @@ final class Cam16 {
     final dA = astar - other.astar;
     final dB = bstar - other.bstar;
     final dEPrime = math.sqrt(dJ * dJ + dA * dA + dB * dB);
-    final dE = 1.41 * math.pow(dEPrime, 0.63).toDouble();
+    final dE = 1.41 * math.pow(dEPrime, 0.63);
     return dE;
   }
 
@@ -263,12 +257,13 @@ final class Cam16 {
         ? 0.0
         : chroma / math.sqrt(j / 100.0);
 
-    final t = math
-        .pow(
-          alpha / math.pow(1.64 - math.pow(0.29, viewingConditions.n), 0.73),
-          1.0 / 0.9,
-        )
-        .toDouble();
+    final t =
+        math.pow(
+              alpha /
+                  math.pow(1.64 - math.pow(0.29, viewingConditions.n), 0.73),
+              1.0 / 0.9,
+            )
+            as double;
     final hRad = MathUtils.toRadians(hue);
 
     final eHue = 0.25 * (math.cos(hRad + 2.0) + 3.8);
@@ -295,19 +290,13 @@ final class Cam16 {
 
     final rCBase = math.max(0, (27.13 * rA.abs()) / (400.0 - rA.abs()));
     final rC =
-        rA.sign *
-        (100.0 / viewingConditions.fl) *
-        math.pow(rCBase, 1.0 / 0.42).toDouble();
+        rA.sign * (100.0 / viewingConditions.fl) * math.pow(rCBase, 1.0 / 0.42);
     final gCBase = math.max(0, (27.13 * gA.abs()) / (400.0 - gA.abs()));
     final gC =
-        gA.sign *
-        (100.0 / viewingConditions.fl) *
-        math.pow(gCBase, 1.0 / 0.42).toDouble();
+        gA.sign * (100.0 / viewingConditions.fl) * math.pow(gCBase, 1.0 / 0.42);
     final bCBase = math.max(0, (27.13 * bA.abs()) / (400.0 - bA.abs()));
     final bC =
-        bA.sign *
-        (100.0 / viewingConditions.fl) *
-        math.pow(bCBase, 1.0 / 0.42).toDouble();
+        bA.sign * (100.0 / viewingConditions.fl) * math.pow(bCBase, 1.0 / 0.42);
     final rF = rC / viewingConditions.rgbD[0];
     final gF = gC / viewingConditions.rgbD[1];
     final bF = bC / viewingConditions.rgbD[2];
@@ -325,17 +314,11 @@ final class Cam16 {
     return ColorUtils.argbFromXyz(xyz[0], xyz[1], xyz[2]);
   }
 
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
   int viewedInSrgb() => viewed(.srgb);
 
   /// ARGB representation of the color. Assumes the color was viewed
   /// in default viewing conditions, which are near-identical
   /// to the default viewing conditions for sRGB.
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
   int toInt() => viewedInSrgb();
 
   @override
@@ -371,7 +354,7 @@ final class Cam16 {
 
   /// Transforms XYZ color space coordinates to 'cone'/'RGB' responses in CAM16.
   @internal
-  static const List<List<double>> xyzToCam16rgb = [
+  static const xyzToCam16rgb = <List<double>>[
     [0.401288, 0.650173, -0.051461],
     [-0.250268, 1.204414, 0.045854],
     [-0.002079, 0.048952, 0.953127],
@@ -379,7 +362,7 @@ final class Cam16 {
 
   /// Transforms 'cone'/'RGB' responses in CAM16 to XYZ color space coordinates.
   @internal
-  static const List<List<double>> cam16rgbToXyz = [
+  static const cam16rgbToXyz = <List<double>>[
     [1.8620678, -1.0112547, 0.14918678],
     [0.38752654, 0.62144744, -0.00897398],
     [-0.01584150, -0.03412294, 1.0499644],

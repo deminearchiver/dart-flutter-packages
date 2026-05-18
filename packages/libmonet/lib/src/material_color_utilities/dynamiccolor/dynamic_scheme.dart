@@ -24,7 +24,7 @@ enum Platform { phone, watch }
 /// 3. Whether or not its dark mode.
 /// 4. Contrast level. (-1 to 1, currently contrast ratio 3.0 and 7.0)
 class DynamicScheme {
-  const DynamicScheme._({
+  const DynamicScheme.raw({
     required this.sourceColor,
     required this.variant,
     required this.isDark,
@@ -49,7 +49,7 @@ class DynamicScheme {
     required TonalPalette neutralPalette,
     required TonalPalette neutralVariantPalette,
     required TonalPalette errorPalette,
-  }) : this._(
+  }) : this.raw(
          sourceColor: sourceColor,
          variant: settings.variant,
          isDark: settings.isDark,
@@ -94,7 +94,7 @@ class DynamicScheme {
          errorPalette: errorPalette,
        );
 
-  DynamicScheme._fromSpec({
+  DynamicScheme._fromColorSpec({
     required TonalPaletteSourceColor sourceColor,
     required Variant variant,
     required bool isDark,
@@ -108,7 +108,7 @@ class DynamicScheme {
     TonalPalette? neutralVariantPalette,
     TonalPalette? errorPalette,
     required ColorSpec colorSpec,
-  }) : this._(
+  }) : this.raw(
          sourceColor: sourceColor,
          variant: variant,
          isDark: isDark,
@@ -187,7 +187,7 @@ class DynamicScheme {
     TonalPalette? neutralPalette,
     TonalPalette? neutralVariantPalette,
     TonalPalette? errorPalette,
-  }) : this._fromSpec(
+  }) : this._fromColorSpec(
          sourceColor: sourceColor,
          variant: settings.variant,
          isDark: settings.isDark,

@@ -73,7 +73,7 @@ final class ViewingConditions {
                   ((1.0 / 3.6) * math.exp((-adaptingLuminance - 42.0) / 92.0)));
     d = MathUtils.clampDouble(0.0, 1.0, d);
     final nc = f;
-    final rgbD = [
+    final rgbD = <double>[
       d * (100.0 / rW) + 1.0 - d,
       d * (100.0 / gW) + 1.0 - d,
       d * (100.0 / bW) + 1.0 - d,
@@ -83,21 +83,18 @@ final class ViewingConditions {
     final k4F = 1.0 - k4;
     final fl =
         (k4 * adaptingLuminance) +
-        (0.1 *
-            k4F *
-            k4F *
-            math.pow(5.0 * adaptingLuminance, 1.0 / 3.0).toDouble());
+        (0.1 * k4F * k4F * math.pow(5.0 * adaptingLuminance, 1.0 / 3.0));
     final n = ColorUtils.yFromLstar(backgroundLstar) / whitePoint[1];
     final z = 1.48 + math.sqrt(n);
     final nbb = 0.725 / math.pow(n, 0.2);
     final ncb = nbb;
-    final rgbAFactors = [
-      math.pow(fl * rgbD[0] * rW / 100.0, 0.42),
-      math.pow(fl * rgbD[1] * gW / 100.0, 0.42),
-      math.pow(fl * rgbD[2] * bW / 100.0, 0.42),
+    final rgbAFactors = <double>[
+      math.pow(fl * rgbD[0] * rW / 100.0, 0.42) as double,
+      math.pow(fl * rgbD[1] * gW / 100.0, 0.42) as double,
+      math.pow(fl * rgbD[2] * bW / 100.0, 0.42) as double,
     ];
 
-    final rgbA = [
+    final rgbA = <double>[
       (400.0 * rgbAFactors[0]) / (rgbAFactors[0] + 27.13),
       (400.0 * rgbAFactors[1]) / (rgbAFactors[1] + 27.13),
       (400.0 * rgbAFactors[2]) / (rgbAFactors[2] + 27.13),
@@ -113,7 +110,7 @@ final class ViewingConditions {
       nc,
       rgbD,
       fl,
-      math.pow(fl, 0.25).toDouble(),
+      math.pow(fl, 0.25) as double,
       z,
     );
   }

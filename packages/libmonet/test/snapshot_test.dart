@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_annotation_target
+// ignore_for_file: avoid_print, invalid_annotation_target
 
 import 'dart:convert';
 import 'dart:io';
@@ -261,6 +261,8 @@ class _ColorHct implements Color {
 
 @freezed
 abstract class SnapshotScheme with _$SnapshotScheme {
+  const SnapshotScheme._();
+
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory SnapshotScheme({
     required SnapshotSchemeProperties properties,
@@ -274,6 +276,8 @@ abstract class SnapshotScheme with _$SnapshotScheme {
 
 @freezed
 abstract class SnapshotSchemeProperties with _$SnapshotSchemeProperties {
+  const SnapshotSchemeProperties._();
+
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory SnapshotSchemeProperties({
     String? fallbackConstructorName,
@@ -287,6 +291,101 @@ abstract class SnapshotSchemeProperties with _$SnapshotSchemeProperties {
 
   factory SnapshotSchemeProperties.fromJson(Map<String, Object?> json) =>
       _$SnapshotSchemePropertiesFromJson(json);
+
+  bool matchDynamicScheme(DynamicScheme scheme) =>
+      isDark == scheme.isDark &&
+      sourceColor.argb == scheme.sourceColorArgb &&
+      contrastLevel == scheme.contrastLevel &&
+      variant == scheme.variant &&
+      contrastLevel == scheme.contrastLevel &&
+      variant == scheme.variant &&
+      platform == scheme.platform &&
+      specVersion == scheme.specVersion;
+
+  DynamicScheme toDynamicSchemeRaw() => _rawWithDefaults(
+    isDark: isDark,
+    sourceColor: .fromArgb(sourceColor.argb),
+    contrastLevel: contrastLevel,
+    variant: variant,
+    platform: platform,
+    specVersion: specVersion,
+  );
+
+  DynamicScheme toDynamicScheme() => .withDefaults(
+    isDark: isDark,
+    sourceColor: .fromArgb(sourceColor.argb),
+    contrastLevel: contrastLevel,
+    variant: variant,
+    platform: platform,
+    specVersion: specVersion,
+  );
+
+  static DynamicScheme _rawWithDefaults({
+    required TonalPaletteSourceColor sourceColor,
+    required Variant variant,
+    required bool isDark,
+    required double contrastLevel,
+    required Platform platform,
+    required SpecVersion specVersion,
+  }) {
+    final colorSpec = ColorSpecs.get(specVersion);
+    return .raw(
+      sourceColor: sourceColor,
+      variant: variant,
+      isDark: isDark,
+      contrastLevel: contrastLevel,
+      platform: platform,
+      specVersion: specVersion,
+      primaryPalette: colorSpec.getPrimaryPalette(
+        sourceColor,
+        variant,
+        isDark,
+        contrastLevel,
+        platform,
+        specVersion,
+      ),
+      secondaryPalette: colorSpec.getSecondaryPalette(
+        sourceColor,
+        variant,
+        isDark,
+        contrastLevel,
+        platform,
+        specVersion,
+      ),
+      tertiaryPalette: colorSpec.getTertiaryPalette(
+        sourceColor,
+        variant,
+        isDark,
+        contrastLevel,
+        platform,
+        specVersion,
+      ),
+      neutralPalette: colorSpec.getNeutralPalette(
+        sourceColor,
+        variant,
+        isDark,
+        contrastLevel,
+        platform,
+        specVersion,
+      ),
+      neutralVariantPalette: colorSpec.getNeutralVariantPalette(
+        sourceColor,
+        variant,
+        isDark,
+        contrastLevel,
+        platform,
+        specVersion,
+      ),
+      errorPalette: colorSpec.getErrorPalette(
+        sourceColor,
+        variant,
+        isDark,
+        contrastLevel,
+        platform,
+        specVersion,
+      ),
+    );
+  }
 }
 
 class VariantConverter extends JsonConverter<Variant, String> {
@@ -406,7 +505,7 @@ void main() {
   );
 
   // TODO(deminearchiver): generate kotlin snapshot and enable the following test
-  // Implementation priority: medium
+  // Implementation priority: high
   // test(
   //   "matches kotlin snapshot",
   //   () => _expectMatchesSnapshot("./test/snapshots/kotlin.json"),
@@ -415,8 +514,8 @@ void main() {
   // Implementation priority: low
   // TODO(deminearchiver): generate typescript snapshot and enable the following test
   // test(
-  //   "matches kotlin snapshot",
-  //   () => _expectMatchesSnapshot("./test/snapshots/kotlin.json"),
+  //   "matches typescript snapshot",
+  //   () => _expectMatchesSnapshot("./test/snapshots/typescript.json"),
   // );
 }
 
@@ -442,21 +541,27 @@ void _expectMatchesSnapshot(String snapshotFilePath) {
   // JSON parsing
   final snapshots = _tryParseSnapshots(validJson);
 
+  var rawSnapshotCount = 0;
+
   for (final snapshot in snapshots) {
-    final scheme = DynamicScheme.withDefaults(
-      isDark: snapshot.properties.isDark,
-      sourceColor: .fromArgb(snapshot.properties.sourceColor.argb),
-      contrastLevel: snapshot.properties.contrastLevel,
-      variant: snapshot.properties.variant,
-      platform: snapshot.properties.platform,
-      specVersion: snapshot.properties.specVersion,
+    var scheme = snapshot.properties.toDynamicScheme();
+    final schemeMatchesSnapshot = snapshot.properties.matchDynamicScheme(
+      scheme,
     );
+    if (!schemeMatchesSnapshot) {
+      // print(
+      //   "scheme doesn't match snapshot: marking as raw\n"
+      //   "snapshot: ${snapshot.properties}\n"
+      //   "scheme: $scheme\n",
+      // );
+      rawSnapshotCount += 1;
+      scheme = snapshot.properties.toDynamicSchemeRaw();
+    }
 
     final snapshotColors = {
       ...snapshot.materialDynamicColors,
       ...snapshot.androidOnlyDynamicColors,
     };
-
     final dynamicColorsMapCopy = Map.of(dynamicColorsMap);
     for (final MapEntry(key: name, value: snapshotColor)
         in snapshotColors.entries) {
@@ -468,11 +573,20 @@ void _expectMatchesSnapshot(String snapshotFilePath) {
           generatedColor.argb,
           snapshotColor.argb,
           reason:
-              "snapshot: ${snapshot.properties}\nscheme: $scheme\ncolor: $name",
+              "snapshot: ${snapshot.properties}\n"
+              "scheme: $scheme\n"
+              "color: $name\n"
+              "snapshot value: ${snapshotColor.hct}\n"
+              "scheme value: ${generatedColor.hct}",
         );
       }
     }
     expect(dynamicColorsMapCopy, isEmpty);
+  }
+  if (rawSnapshotCount > 0) {
+    // print(
+    //   "marked $rawSnapshotCount snapshots out of ${snapshots.length} as raw",
+    // );
   }
 }
 

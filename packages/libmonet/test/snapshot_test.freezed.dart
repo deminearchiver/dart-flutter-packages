@@ -129,14 +129,15 @@ class _$SnapshotSchemeCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _SnapshotScheme implements SnapshotScheme {
+class _SnapshotScheme extends SnapshotScheme {
   const _SnapshotScheme({
     required this.properties,
     @ColorConverter() final Map<String, Color> materialDynamicColors = const {},
     @ColorConverter()
     final Map<String, Color> androidOnlyDynamicColors = const {},
   }) : _materialDynamicColors = materialDynamicColors,
-       _androidOnlyDynamicColors = androidOnlyDynamicColors;
+       _androidOnlyDynamicColors = androidOnlyDynamicColors,
+       super._();
   factory _SnapshotScheme.fromJson(Map<String, dynamic> json) =>
       _$SnapshotSchemeFromJson(json);
 
@@ -419,7 +420,7 @@ class _$SnapshotSchemePropertiesCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _SnapshotSchemeProperties implements SnapshotSchemeProperties {
+class _SnapshotSchemeProperties extends SnapshotSchemeProperties {
   const _SnapshotSchemeProperties({
     this.fallbackConstructorName,
     @ColorConverter() required this.sourceColor,
@@ -428,7 +429,7 @@ class _SnapshotSchemeProperties implements SnapshotSchemeProperties {
     @VariantConverter() required this.variant,
     @SpecVersionConverter() required this.specVersion,
     @PlatformConverter() required this.platform,
-  });
+  }) : super._();
   factory _SnapshotSchemeProperties.fromJson(Map<String, dynamic> json) =>
       _$SnapshotSchemePropertiesFromJson(json);
 

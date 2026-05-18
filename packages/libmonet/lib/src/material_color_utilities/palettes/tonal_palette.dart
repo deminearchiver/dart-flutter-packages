@@ -38,9 +38,6 @@ final class TonalPalette {
 
   /// Given a tone, use hue and chroma of palette to create a color,
   /// and return it as HCT.
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
   Hct getHct(double tone) => tone == 99.0 && Hct.isYellow(hue)
       ? .fromInt(this.tone(99))
       : .from(hue, chroma, tone);
