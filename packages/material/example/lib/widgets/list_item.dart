@@ -628,7 +628,7 @@ class ListItemLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final spaceTheme = SpaceTheme.of(context);
+    final measurementTheme = MeasurementTheme.of(context);
     final listItemTheme = ListItemTheme.of(context);
 
     const states = _ListItemStates(isFirst: false, isLast: false);
@@ -641,33 +641,33 @@ class ListItemLayout extends StatelessWidget {
     );
 
     final resolvedPadding =
-        padding ?? .symmetric(horizontal: spaceTheme.space200);
+        padding ?? .symmetric(horizontal: measurementTheme.space200);
 
-    final resolvedLeadingSpace = leadingSpace ?? spaceTheme.space150;
+    final resolvedLeadingSpace = leadingSpace ?? measurementTheme.space150;
 
     final resolvedLeadingPadding =
         leadingPadding?.add(.directional(end: resolvedLeadingSpace)) ??
         // Avoid getting _MixedEdgeInsets
         .fromSTEB(
           0.0,
-          spaceTheme.space125,
+          measurementTheme.space125,
           resolvedLeadingSpace,
-          spaceTheme.space125,
+          measurementTheme.space125,
         );
 
     final resolvedContentPadding =
-        contentPadding ?? .symmetric(vertical: spaceTheme.space125);
+        contentPadding ?? .symmetric(vertical: measurementTheme.space125);
 
-    final resolvedTrailingSpace = trailingSpace ?? spaceTheme.space150;
+    final resolvedTrailingSpace = trailingSpace ?? measurementTheme.space150;
 
     final resolvedTrailingPadding =
         trailingPadding?.add(.directional(start: resolvedTrailingSpace)) ??
         // Avoid getting _MixedEdgeInsets
         .fromSTEB(
           resolvedTrailingSpace,
-          spaceTheme.space125,
+          measurementTheme.space125,
           0.0,
-          spaceTheme.space125,
+          measurementTheme.space125,
         );
 
     return ConstrainedBox(

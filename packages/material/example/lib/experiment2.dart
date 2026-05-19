@@ -48,7 +48,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
     final colorTheme = ColorTheme.of(context);
     final elevationTheme = ElevationTheme.of(context);
     final shapeTheme = ShapeTheme.of(context);
-    final spaceTheme = SpaceTheme.of(context);
+    final measurementTheme = MeasurementTheme.of(context);
     final stateTheme = StateTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
 
@@ -123,11 +123,13 @@ class _Experiment2ViewState extends State<Experiment2View> {
                 ),
               ),
               child: SliverPadding(
-                padding: .symmetric(horizontal: spaceTheme.space100),
+                padding: .symmetric(horizontal: measurementTheme.space100),
                 sliver: SliverList.list(
                   children: [
                     Padding(
-                      padding: .symmetric(horizontal: spaceTheme.space200),
+                      padding: .symmetric(
+                        horizontal: measurementTheme.space200,
+                      ),
                       child: Align.center(
                         child: SizedBox(
                           width: maxWidth,
@@ -308,16 +310,16 @@ class _Experiment2ViewState extends State<Experiment2View> {
                         ),
                       ),
                     ),
-                    SizedBox(height: spaceTheme.space200 - 4.0),
+                    SizedBox(height: measurementTheme.space200 - 4.0),
                     Padding(
                       padding: .fromLTRB(
-                        spaceTheme.space200,
+                        measurementTheme.space200,
                         0.0,
-                        spaceTheme.space200,
+                        measurementTheme.space200,
                         0.0,
                       ),
                       child: Flex.horizontal(
-                        spacing: spaceTheme.space25,
+                        spacing: measurementTheme.space25,
                         children: _delegateToName.entries
                             .mapIndexed<Widget>((index, entry) {
                               final MapEntry(key: value, value: label) = entry;
@@ -411,7 +413,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                             .toList(growable: false),
                       ),
                     ),
-                    SizedBox(height: spaceTheme.space200 - 4.0),
+                    SizedBox(height: measurementTheme.space200 - 4.0),
                     IntrinsicHeight(
                       child: Flex.horizontal(
                         children: [
@@ -438,10 +440,10 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                   ),
                                   Slider(
                                     padding: .fromLTRB(
-                                      spaceTheme.space200,
+                                      measurementTheme.space200,
                                       0.0,
-                                      spaceTheme.space200,
-                                      spaceTheme.space125,
+                                      measurementTheme.space200,
+                                      measurementTheme.space125,
                                     ),
                                     value: _width,
                                     onChanged: (value) =>
@@ -451,7 +453,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                               ),
                             ),
                           ),
-                          SizedBox(width: spaceTheme.space25),
+                          SizedBox(width: measurementTheme.space25),
                           Flexible.tight(
                             child: ListItemContainer(
                               containerShape: .all(
@@ -475,10 +477,10 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                   ),
                                   Slider(
                                     padding: .fromLTRB(
-                                      spaceTheme.space200,
+                                      measurementTheme.space200,
                                       0.0,
-                                      spaceTheme.space200,
-                                      spaceTheme.space125,
+                                      measurementTheme.space200,
+                                      measurementTheme.space125,
                                     ),
                                     value: _height,
                                     onChanged: (value) =>
@@ -491,7 +493,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                         ],
                       ),
                     ),
-                    SizedBox(height: spaceTheme.space25),
+                    SizedBox(height: measurementTheme.space25),
                     ListItemContainer(
                       containerShape: .all(
                         shapeTheme.applyCorner(corner: innerCorner),
@@ -514,15 +516,15 @@ class _Experiment2ViewState extends State<Experiment2View> {
                           ),
                           Padding(
                             padding: .fromLTRB(
-                              spaceTheme.space200,
-                              spaceTheme.space75,
-                              spaceTheme.space200,
-                              spaceTheme.space200,
+                              measurementTheme.space200,
+                              measurementTheme.space75,
+                              measurementTheme.space200,
+                              measurementTheme.space200,
                             ),
                             child: Flex.vertical(
                               children: [
                                 Flex.horizontal(
-                                  spacing: spaceTheme.space150,
+                                  spacing: measurementTheme.space150,
                                   children: [
                                     Flexible.tight(
                                       child: Slider(
@@ -543,7 +545,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                   ],
                                 ),
                                 Flex.horizontal(
-                                  spacing: spaceTheme.space150,
+                                  spacing: measurementTheme.space150,
                                   children: [
                                     Flexible.tight(
                                       child: Slider(
@@ -569,7 +571,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                         ],
                       ),
                     ),
-                    SizedBox(height: spaceTheme.space25),
+                    SizedBox(height: measurementTheme.space25),
                     ListItemContainer(
                       containerShape: .all(
                         shapeTheme.applyCorners(
@@ -597,15 +599,15 @@ class _Experiment2ViewState extends State<Experiment2View> {
                           ),
                           Padding(
                             padding: .fromLTRB(
-                              spaceTheme.space200,
-                              spaceTheme.space75,
-                              spaceTheme.space200,
-                              spaceTheme.space200,
+                              measurementTheme.space200,
+                              measurementTheme.space75,
+                              measurementTheme.space200,
+                              measurementTheme.space200,
                             ),
                             child: Flex.vertical(
                               children: [
                                 Flex.horizontal(
-                                  spacing: spaceTheme.space150,
+                                  spacing: measurementTheme.space150,
                                   children: [
                                     Flexible.tight(
                                       child: Slider(
@@ -626,7 +628,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                   ],
                                 ),
                                 Flex.horizontal(
-                                  spacing: spaceTheme.space150,
+                                  spacing: measurementTheme.space150,
                                   children: [
                                     Flexible.tight(
                                       child: Slider(
