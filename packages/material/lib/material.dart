@@ -55,7 +55,7 @@ export 'src/material/raw_material_app.dart';
 
 export 'src/material/experimental/focus_inset_ring_theme.dart';
 export 'src/material/experimental/theme_resolver.dart';
-export 'src/material/space/space_theme.dart';
+export 'src/material/measurement/measurement_theme.dart';
 
 import 'package:material/src/material/flutter.dart';
 

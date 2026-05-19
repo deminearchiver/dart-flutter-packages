@@ -1,32 +1,4 @@
-part of 'space_theme.dart';
-
-// ```scss
-// /*!
-//  * Copyright 2026 Google LLC
-//  * SPDX-License-Identifier: Apache-2.0
-//  */
-// --md-sys-space-unit: 8px;
-// --md-sys-space-0: calc(var(--md-sys-space-unit) * 0);
-// --md-sys-space-25: calc(var(--md-sys-space-unit) * 0.25);
-// --md-sys-space-50: calc(var(--md-sys-space-unit) * 0.5);
-// --md-sys-space-75: calc(var(--md-sys-space-unit) * 0.75);
-// --md-sys-space-100: var(--md-sys-space-unit);
-// --md-sys-space-125: calc(var(--md-sys-space-unit) * 1.25);
-// --md-sys-space-150: calc(var(--md-sys-space-unit) * 1.5);
-// --md-sys-space-175: calc(var(--md-sys-space-unit) * 1.75);
-// --md-sys-space-200: calc(var(--md-sys-space-unit) * 2);
-// --md-sys-space-250: calc(var(--md-sys-space-unit) * 2.5);
-// --md-sys-space-300: calc(var(--md-sys-space-unit) * 3);
-// --md-sys-space-400: calc(var(--md-sys-space-unit) * 4);
-// --md-sys-space-450: calc(var(--md-sys-space-unit) * 4.5);
-// --md-sys-space-500: calc(var(--md-sys-space-unit) * 5);
-// --md-sys-space-600: calc(var(--md-sys-space-unit) * 6);
-// --md-sys-space-700: calc(var(--md-sys-space-unit) * 7);
-// --md-sys-space-800: calc(var(--md-sys-space-unit) * 8);
-// --md-sys-space-900: calc(var(--md-sys-space-unit) * 9);
-// ```
-//
-// See: https://github.com/material-components/material-web/blob/95013d6621339322695f469ab6f5cf327869f3bb/labs/gb/styles/space/md-space-tokens.scss
+part of 'measurement_theme.dart';
 
 @pragma("wasm:prefer-inline")
 @pragma("vm:prefer-inline")
@@ -36,11 +8,10 @@ double? _lerpDoublePartial(double? a, double? b, double t) {
   return _lerpDoubleConcrete(a, b, t);
 }
 
-abstract class SpaceThemeDataPartial with Diagnosticable {
-  const SpaceThemeDataPartial();
+abstract class MeasurementThemeDataPartial with Diagnosticable {
+  const MeasurementThemeDataPartial();
 
-  const factory SpaceThemeDataPartial.from({
-    double? unit,
+  const factory MeasurementThemeDataPartial.from({
     double? space0,
     double? space25,
     double? space50,
@@ -59,9 +30,8 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
     double? space700,
     double? space800,
     double? space900,
-  }) = _SpaceThemeDataPartial;
+  }) = _MeasurementThemeDataPartial;
 
-  double? get unit;
   double? get space0;
   double? get space25;
   double? get space50;
@@ -81,10 +51,9 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
   double? get space800;
   double? get space900;
 
-  SpaceThemeDataPartial copy() => copyWith();
+  MeasurementThemeDataPartial copy() => copyWith();
 
-  SpaceThemeDataPartial copyWith({
-    double? unit,
+  MeasurementThemeDataPartial copyWith({
     double? space0,
     double? space25,
     double? space50,
@@ -104,7 +73,6 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
     double? space800,
     double? space900,
   }) => .from(
-    unit: unit ?? this.unit,
     space0: space0 ?? this.space0,
     space25: space25 ?? this.space25,
     space50: space50 ?? this.space50,
@@ -125,8 +93,7 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
     space900: space900 ?? this.space900,
   );
 
-  SpaceThemeDataPartial maybeCopyWith({
-    double? unit,
+  MeasurementThemeDataPartial maybeCopyWith({
     double? space0,
     double? space25,
     double? space50,
@@ -146,8 +113,7 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
     double? space800,
     double? space900,
   }) =>
-      unit != null ||
-          space0 != null ||
+      space0 != null ||
           space25 != null ||
           space50 != null ||
           space75 != null ||
@@ -166,7 +132,6 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
           space800 != null ||
           space900 != null
       ? copyWith(
-          unit: unit,
           space0: space0,
           space25: space25,
           space50: space50,
@@ -188,9 +153,9 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
         )
       : this;
 
-  SpaceThemeDataPartial merge(SpaceThemeDataPartial? other) => other != null
+  MeasurementThemeDataPartial merge(MeasurementThemeDataPartial? other) =>
+      other != null
       ? copyWith(
-          unit: unit,
           space0: space0,
           space25: space25,
           space50: space50,
@@ -212,10 +177,9 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
         )
       : copy();
 
-  SpaceThemeDataPartial maybeMerge(SpaceThemeDataPartial? other) =>
+  MeasurementThemeDataPartial maybeMerge(MeasurementThemeDataPartial? other) =>
       other != null
       ? maybeCopyWith(
-          unit: unit,
           space0: space0,
           space25: space25,
           space50: space50,
@@ -238,7 +202,6 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
       : this;
 
   bool get isEmpty =>
-      unit == null &&
       space0 == null &&
       space25 == null &&
       space50 == null &&
@@ -261,7 +224,6 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
   bool get isNotEmpty => !isEmpty;
 
   bool get isConcrete =>
-      unit != null &&
       space0 != null &&
       space25 != null &&
       space50 != null &&
@@ -281,8 +243,8 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
       space800 != null &&
       space900 != null;
 
-  SpaceThemeData? get asConcrete =>
-      isConcrete ? _SpaceThemeDataPartialAsConcrete(this) : null;
+  MeasurementThemeData? get asConcrete =>
+      isConcrete ? _MeasurementThemeDataPartialAsConcrete(this) : null;
 
   double? get(double level) => switch (level) {
     <= 0.0 => space0,
@@ -310,7 +272,6 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
-      ..add(DoubleProperty("unit", unit, defaultValue: null))
       ..add(DoubleProperty("space0", space0, defaultValue: null))
       ..add(DoubleProperty("space25", space25, defaultValue: null))
       ..add(DoubleProperty("space50", space50, defaultValue: null))
@@ -332,9 +293,8 @@ abstract class SpaceThemeDataPartial with Diagnosticable {
   }
 }
 
-final class _SpaceThemeDataPartial extends SpaceThemeDataPartial {
-  const _SpaceThemeDataPartial({
-    this.unit,
+final class _MeasurementThemeDataPartial extends MeasurementThemeDataPartial {
+  const _MeasurementThemeDataPartial({
     this.space0,
     this.space25,
     this.space50,
@@ -354,9 +314,6 @@ final class _SpaceThemeDataPartial extends SpaceThemeDataPartial {
     this.space800,
     this.space900,
   });
-
-  @override
-  final double? unit;
 
   @override
   final double? space0;
@@ -415,8 +372,7 @@ final class _SpaceThemeDataPartial extends SpaceThemeDataPartial {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _SpaceThemeDataPartial &&
-          unit == other.unit &&
+      other is _MeasurementThemeDataPartial &&
           space0 == other.space0 &&
           space25 == other.space25 &&
           space50 == other.space50 &&
@@ -438,7 +394,6 @@ final class _SpaceThemeDataPartial extends SpaceThemeDataPartial {
 
   @override
   int get hashCode => Object.hash(
-    unit,
     space0,
     space25,
     space50,
@@ -460,15 +415,13 @@ final class _SpaceThemeDataPartial extends SpaceThemeDataPartial {
   );
 }
 
-final class _SpaceThemeDataPartialAsConcrete extends SpaceThemeData {
-  _SpaceThemeDataPartialAsConcrete(SpaceThemeDataPartial value)
+final class _MeasurementThemeDataPartialAsConcrete
+    extends MeasurementThemeData {
+  _MeasurementThemeDataPartialAsConcrete(MeasurementThemeDataPartial value)
     : assert(value.isConcrete),
       _value = value;
 
-  final SpaceThemeDataPartial _value;
-
-  @override
-  double get unit => _value.unit!;
+  final MeasurementThemeDataPartial _value;
 
   @override
   double get space0 => _value.space0!;
@@ -525,8 +478,7 @@ final class _SpaceThemeDataPartialAsConcrete extends SpaceThemeData {
   double get space900 => _value.space900!;
 
   @override
-  SpaceThemeData copyWith({
-    double? unit,
+  MeasurementThemeData copyWith({
     double? space0,
     double? space25,
     double? space50,
@@ -545,9 +497,8 @@ final class _SpaceThemeDataPartialAsConcrete extends SpaceThemeData {
     double? space700,
     double? space800,
     double? space900,
-  }) => _SpaceThemeDataPartialAsConcrete(
+  }) => _MeasurementThemeDataPartialAsConcrete(
     _value.copyWith(
-      unit: unit,
       space0: space0,
       space25: space25,
       space50: space50,
@@ -570,8 +521,7 @@ final class _SpaceThemeDataPartialAsConcrete extends SpaceThemeData {
   );
 
   @override
-  SpaceThemeData maybeCopyWith({
-    double? unit,
+  MeasurementThemeData maybeCopyWith({
     double? space0,
     double? space25,
     double? space50,
@@ -591,8 +541,7 @@ final class _SpaceThemeDataPartialAsConcrete extends SpaceThemeData {
     double? space800,
     double? space900,
   }) =>
-      unit != null &&
-          space0 != null &&
+      space0 != null &&
           space25 != null &&
           space50 != null &&
           space75 != null &&
@@ -611,7 +560,6 @@ final class _SpaceThemeDataPartialAsConcrete extends SpaceThemeData {
           space800 != null &&
           space900 != null
       ? .from(
-          unit: unit,
           space0: space0,
           space25: space25,
           space50: space50,
@@ -631,8 +579,7 @@ final class _SpaceThemeDataPartialAsConcrete extends SpaceThemeData {
           space800: space800,
           space900: space900,
         )
-      : unit != null ||
-            space0 != null ||
+      : space0 != null ||
             space25 != null ||
             space50 != null ||
             space75 != null ||
@@ -651,7 +598,6 @@ final class _SpaceThemeDataPartialAsConcrete extends SpaceThemeData {
             space800 != null ||
             space900 != null
       ? copyWith(
-          unit: unit,
           space0: space0,
           space25: space25,
           space50: space50,
@@ -676,7 +622,7 @@ final class _SpaceThemeDataPartialAsConcrete extends SpaceThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _SpaceThemeDataPartialAsConcrete && _value == other._value;
+      other is _MeasurementThemeDataPartialAsConcrete && _value == other._value;
 
   @override
   int get hashCode => _value.hashCode;

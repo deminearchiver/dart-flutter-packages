@@ -1,32 +1,4 @@
-part of 'space_theme.dart';
-
-// ```css
-// /*!
-//  * Copyright 2026 Google LLC
-//  * SPDX-License-Identifier: Apache-2.0
-//  */
-// --md-sys-space-unit: 8px;
-// --md-sys-space-0: 0px;
-// --md-sys-space-25: 2px;
-// --md-sys-space-50: 4px;
-// --md-sys-space-75: 6px;
-// --md-sys-space-100: 8px;
-// --md-sys-space-125: 10px;
-// --md-sys-space-150: 12px;
-// --md-sys-space-175: 14px;
-// --md-sys-space-200: 16px;
-// --md-sys-space-250: 20px;
-// --md-sys-space-300: 24px;
-// --md-sys-space-400: 32px;
-// --md-sys-space-450: 36px;
-// --md-sys-space-500: 40px;
-// --md-sys-space-600: 48px;
-// --md-sys-space-700: 56px;
-// --md-sys-space-800: 64px;
-// --md-sys-space-900: 72px;
-// ```
-//
-// See: https://github.com/material-components/material-web/blob/95013d6621339322695f469ab6f5cf327869f3bb/labs/gb/styles/space/md-space-tokens.scss
+part of 'measurement_theme.dart';
 
 @pragma("wasm:prefer-inline")
 @pragma("vm:prefer-inline")
@@ -38,11 +10,10 @@ double _lerpDoubleConcrete(double a, double b, double t) {
   return lerpDouble(a, b, t);
 }
 
-abstract class SpaceThemeData extends SpaceThemeDataPartial {
-  const SpaceThemeData();
+abstract class MeasurementThemeData extends MeasurementThemeDataPartial {
+  const MeasurementThemeData();
 
-  const factory SpaceThemeData.from({
-    required double unit,
+  const factory MeasurementThemeData.from({
     required double space0,
     required double space25,
     required double space50,
@@ -61,13 +32,11 @@ abstract class SpaceThemeData extends SpaceThemeDataPartial {
     required double space700,
     required double space800,
     required double space900,
-  }) = _SpaceThemeData;
+  }) = _MeasurementThemeData;
 
-  const factory SpaceThemeData.defaults({SpaceThemeDataPartial? overrides}) =
-      _SpaceThemeDataDefaults;
-
-  @override
-  double get unit;
+  const factory MeasurementThemeData.defaults({
+    MeasurementThemeDataPartial? overrides,
+  }) = _MeasurementThemeDataDefaults;
 
   @override
   double get space0;
@@ -124,11 +93,10 @@ abstract class SpaceThemeData extends SpaceThemeDataPartial {
   double get space900;
 
   @override
-  SpaceThemeData copy() => copyWith();
+  MeasurementThemeData copy() => copyWith();
 
   @override
-  SpaceThemeData copyWith({
-    double? unit,
+  MeasurementThemeData copyWith({
     double? space0,
     double? space25,
     double? space50,
@@ -148,7 +116,6 @@ abstract class SpaceThemeData extends SpaceThemeDataPartial {
     double? space800,
     double? space900,
   }) => .from(
-    unit: unit ?? this.unit,
     space0: space0 ?? this.space0,
     space25: space25 ?? this.space25,
     space50: space50 ?? this.space50,
@@ -170,8 +137,7 @@ abstract class SpaceThemeData extends SpaceThemeDataPartial {
   );
 
   @override
-  SpaceThemeData maybeCopyWith({
-    double? unit,
+  MeasurementThemeData maybeCopyWith({
     double? space0,
     double? space25,
     double? space50,
@@ -191,8 +157,7 @@ abstract class SpaceThemeData extends SpaceThemeDataPartial {
     double? space800,
     double? space900,
   }) =>
-      unit != null ||
-          space0 != null ||
+      space0 != null ||
           space25 != null ||
           space50 != null ||
           space75 != null ||
@@ -211,7 +176,6 @@ abstract class SpaceThemeData extends SpaceThemeDataPartial {
           space800 != null ||
           space900 != null
       ? copyWith(
-          unit: unit,
           space0: space0,
           space25: space25,
           space50: space50,
@@ -234,9 +198,9 @@ abstract class SpaceThemeData extends SpaceThemeDataPartial {
       : this;
 
   @override
-  SpaceThemeData merge(SpaceThemeDataPartial? other) => other != null
+  MeasurementThemeData merge(MeasurementThemeDataPartial? other) =>
+      other != null
       ? copyWith(
-          unit: unit,
           space0: space0,
           space25: space25,
           space50: space50,
@@ -259,9 +223,9 @@ abstract class SpaceThemeData extends SpaceThemeDataPartial {
       : copy();
 
   @override
-  SpaceThemeData maybeMerge(SpaceThemeDataPartial? other) => other != null
+  MeasurementThemeData maybeMerge(MeasurementThemeDataPartial? other) =>
+      other != null
       ? maybeCopyWith(
-          unit: unit,
           space0: space0,
           space25: space25,
           space50: space50,
@@ -293,7 +257,7 @@ abstract class SpaceThemeData extends SpaceThemeDataPartial {
   bool get isConcrete => true;
 
   @override
-  SpaceThemeData get asConcrete => this;
+  MeasurementThemeData get asConcrete => this;
 
   @override
   double get(double level) => switch (level) {
@@ -322,7 +286,6 @@ abstract class SpaceThemeData extends SpaceThemeDataPartial {
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
-      ..add(DoubleProperty("unit", unit))
       ..add(DoubleProperty("space0", space0))
       ..add(DoubleProperty("space25", space25))
       ..add(DoubleProperty("space50", space50))
@@ -344,9 +307,8 @@ abstract class SpaceThemeData extends SpaceThemeDataPartial {
   }
 }
 
-final class _SpaceThemeData extends SpaceThemeData {
-  const _SpaceThemeData({
-    required this.unit,
+final class _MeasurementThemeData extends MeasurementThemeData {
+  const _MeasurementThemeData({
     required this.space0,
     required this.space25,
     required this.space50,
@@ -366,9 +328,6 @@ final class _SpaceThemeData extends SpaceThemeData {
     required this.space800,
     required this.space900,
   });
-
-  @override
-  final double unit;
 
   @override
   final double space0;
@@ -427,8 +386,7 @@ final class _SpaceThemeData extends SpaceThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _SpaceThemeData &&
-          unit == other.unit &&
+      other is _MeasurementThemeData &&
           space0 == other.space0 &&
           space25 == other.space25 &&
           space50 == other.space50 &&
@@ -450,7 +408,6 @@ final class _SpaceThemeData extends SpaceThemeData {
 
   @override
   int get hashCode => Object.hash(
-    unit,
     space0,
     space25,
     space50,
@@ -472,72 +429,68 @@ final class _SpaceThemeData extends SpaceThemeData {
   );
 }
 
-final class _SpaceThemeDataDefaults extends SpaceThemeData {
-  const _SpaceThemeDataDefaults({SpaceThemeDataPartial? overrides})
+final class _MeasurementThemeDataDefaults extends MeasurementThemeData {
+  const _MeasurementThemeDataDefaults({MeasurementThemeDataPartial? overrides})
     : _overrides = overrides ?? const .from();
 
-  final SpaceThemeDataPartial _overrides;
+  final MeasurementThemeDataPartial _overrides;
 
   @override
-  double get unit => _overrides.unit ?? 8.0;
+  double get space0 => _overrides.space0 ?? space100 * 0.0;
 
   @override
-  double get space0 => _overrides.space0 ?? unit * 0.0;
+  double get space25 => _overrides.space25 ?? space100 * 0.25;
 
   @override
-  double get space25 => _overrides.space25 ?? unit * 0.25;
+  double get space50 => _overrides.space50 ?? space100 * 0.5;
 
   @override
-  double get space50 => _overrides.space50 ?? unit * 0.5;
+  double get space75 => _overrides.space75 ?? space100 * 0.75;
 
   @override
-  double get space75 => _overrides.space75 ?? unit * 0.75;
+  double get space100 => _overrides.space100 ?? 8.0;
 
   @override
-  double get space100 => _overrides.space100 ?? unit;
+  double get space125 => _overrides.space125 ?? space100 * 1.25;
 
   @override
-  double get space125 => _overrides.space125 ?? unit * 1.25;
+  double get space150 => _overrides.space150 ?? space100 * 1.5;
 
   @override
-  double get space150 => _overrides.space150 ?? unit * 1.5;
+  double get space175 => _overrides.space175 ?? space100 * 1.75;
 
   @override
-  double get space175 => _overrides.space175 ?? unit * 1.75;
+  double get space200 => _overrides.space200 ?? space100 * 2.0;
 
   @override
-  double get space200 => _overrides.space200 ?? unit * 2.0;
+  double get space250 => _overrides.space250 ?? space100 * 2.5;
 
   @override
-  double get space250 => _overrides.space250 ?? unit * 2.5;
+  double get space300 => _overrides.space300 ?? space100 * 3.0;
 
   @override
-  double get space300 => _overrides.space300 ?? unit * 3.0;
+  double get space400 => _overrides.space400 ?? space100 * 4.0;
 
   @override
-  double get space400 => _overrides.space400 ?? unit * 4.0;
+  double get space450 => _overrides.space450 ?? space100 * 4.5;
 
   @override
-  double get space450 => _overrides.space450 ?? unit * 4.5;
+  double get space500 => _overrides.space500 ?? space100 * 5.0;
 
   @override
-  double get space500 => _overrides.space500 ?? unit * 5.0;
+  double get space600 => _overrides.space600 ?? space100 * 6.0;
 
   @override
-  double get space600 => _overrides.space600 ?? unit * 6.0;
+  double get space700 => _overrides.space700 ?? space100 * 7.0;
 
   @override
-  double get space700 => _overrides.space700 ?? unit * 7.0;
+  double get space800 => _overrides.space800 ?? space100 * 8.0;
 
   @override
-  double get space800 => _overrides.space800 ?? unit * 8.0;
+  double get space900 => _overrides.space900 ?? space100 * 9.0;
 
   @override
-  double get space900 => _overrides.space900 ?? unit * 9.0;
-
-  @override
-  SpaceThemeData copyWith({
-    double? unit,
+  MeasurementThemeData copyWith({
     double? space0,
     double? space25,
     double? space50,
@@ -556,9 +509,8 @@ final class _SpaceThemeDataDefaults extends SpaceThemeData {
     double? space700,
     double? space800,
     double? space900,
-  }) => _SpaceThemeDataDefaults(
+  }) => _MeasurementThemeDataDefaults(
     overrides: _overrides.copyWith(
-      unit: unit,
       space0: space0,
       space25: space25,
       space50: space50,
@@ -581,8 +533,7 @@ final class _SpaceThemeDataDefaults extends SpaceThemeData {
   );
 
   @override
-  SpaceThemeData maybeCopyWith({
-    double? unit,
+  MeasurementThemeData maybeCopyWith({
     double? space0,
     double? space25,
     double? space50,
@@ -602,8 +553,7 @@ final class _SpaceThemeDataDefaults extends SpaceThemeData {
     double? space800,
     double? space900,
   }) =>
-      unit != null &&
-          space0 != null &&
+      space0 != null &&
           space25 != null &&
           space50 != null &&
           space75 != null &&
@@ -622,7 +572,6 @@ final class _SpaceThemeDataDefaults extends SpaceThemeData {
           space800 != null &&
           space900 != null
       ? .from(
-          unit: unit,
           space0: space0,
           space25: space25,
           space50: space50,
@@ -642,8 +591,7 @@ final class _SpaceThemeDataDefaults extends SpaceThemeData {
           space800: space800,
           space900: space900,
         )
-      : unit != null ||
-            space0 != null ||
+      : space0 != null ||
             space25 != null ||
             space50 != null ||
             space75 != null ||
@@ -662,7 +610,6 @@ final class _SpaceThemeDataDefaults extends SpaceThemeData {
             space800 != null ||
             space900 != null
       ? copyWith(
-          unit: unit,
           space0: space0,
           space25: space25,
           space50: space50,
@@ -687,7 +634,7 @@ final class _SpaceThemeDataDefaults extends SpaceThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _SpaceThemeDataDefaults && _overrides == other._overrides;
+      other is _MeasurementThemeDataDefaults && _overrides == other._overrides;
 
   @override
   int get hashCode => _overrides.hashCode;
