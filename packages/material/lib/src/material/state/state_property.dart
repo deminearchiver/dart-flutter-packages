@@ -1,96 +1,59 @@
-// ignore_for_file: use_to_and_as_if_applicable
-
 import 'dart:convert';
 
-import 'package:collection/collection.dart';
+import 'package:fic/fic.dart';
 import 'package:flutter/widgets.dart' as flutter;
 import 'package:material/src/material/flutter.dart';
 
-mixin StatesConstraint<S extends Object?> {
+abstract interface class StatesConstraint<S extends Object?> {
+  const StatesConstraint();
+
+  const factory StatesConstraint.custom(bool Function(S states) isSatisfiedBy) =
+      _CustomStatesConstraint<S>;
+
+  @literal
+  const factory StatesConstraint.any() = _AnyStates<S>;
+
+  @literal
+  const factory StatesConstraint.not(StatesConstraint<S> value) =
+      _StatesConstraintNot<S>;
+
+  @literal
+  const factory StatesConstraint.or(
+    StatesConstraint<S> a,
+    StatesConstraint<S> b,
+  ) = _StatesConstraintOr<S>;
+
+  @literal
+  const factory StatesConstraint.and(
+    StatesConstraint<S> a,
+    StatesConstraint<S> b,
+  ) = _StatesConstraintAnd<S>;
+
   /// Whether the provided [states] satisfy this object's criteria.
   bool isSatisfiedBy(S states);
-
-  /// Combines two [StatesConstraint] values using logical "and".
-  StatesConstraint<S> operator &(StatesConstraint<S> other) =>
-      _StateAnd<S>(this, other);
-
-  /// Combines two [StatesConstraint] values using logical "or".
-  StatesConstraint<S> operator |(StatesConstraint<S> other) =>
-      _StateOr<S>(this, other);
-
-  /// Takes a StatesConstraint] and applies the logical "not".
-  StatesConstraint<S> operator ~() => _StateNot<S>(this);
-
-  static StatesConstraint<S> any<S extends Object?>() => _AnyStates<S>();
 }
 
-sealed class _StateCombo<S extends Object?> with StatesConstraint<S> {
-  const _StateCombo(this.first, this.second);
+final class _CustomStatesConstraint<S extends Object?>
+    implements StatesConstraint<S> {
+  const _CustomStatesConstraint(bool Function(S states) isSatisfiedBy)
+    : _isSatisfiedBy = isSatisfiedBy;
 
-  final StatesConstraint<S> first;
-  final StatesConstraint<S> second;
+  final bool Function(S states) _isSatisfiedBy;
+
+  @override
+  bool isSatisfiedBy(S states) => _isSatisfiedBy(states);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _StateCombo<S> && first == other.first && second == other.second;
+      other is _CustomStatesConstraint &&
+          _isSatisfiedBy == other._isSatisfiedBy;
 
   @override
-  int get hashCode => Object.hash(first, second);
+  int get hashCode => _isSatisfiedBy.hashCode;
 }
 
-class _StateAnd<S extends Object?> extends _StateCombo<S> {
-  const _StateAnd(super.first, super.second);
-
-  @override
-  bool isSatisfiedBy(S states) =>
-      first.isSatisfiedBy(states) && second.isSatisfiedBy(states);
-
-  @override
-  String toString() => "($first & $second)";
-}
-
-class _StateOr<S extends Object?> extends _StateCombo<S> {
-  const _StateOr(super.first, super.second);
-
-  @override
-  bool isSatisfiedBy(S states) =>
-      first.isSatisfiedBy(states) || second.isSatisfiedBy(states);
-
-  @override
-  String toString() => "($first | $second)";
-}
-
-class _StateNot<S extends Object?> with StatesConstraint<S> {
-  const _StateNot(this.value);
-
-  final StatesConstraint<S> value;
-
-  @override
-  bool isSatisfiedBy(S states) => !value.isSatisfiedBy(states);
-
-  @override
-  String toString() => "~$value";
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is _StateNot<S> && value == other.value;
-
-  @override
-  int get hashCode => value.hashCode;
-}
-
-extension StatesConstraintExtension<S extends Object?> on StatesConstraint<S> {
-  StatesConstraint<S> operator &(StatesConstraint<S> other) =>
-      _StateAnd<S>(this, other);
-
-  StatesConstraint<S> operator |(StatesConstraint<S> other) =>
-      _StateOr<S>(this, other);
-
-  StatesConstraint<S> operator ~() => _StateNot<S>(this);
-}
-
-class _AnyStates<S extends Object?> with StatesConstraint<S> {
+final class _AnyStates<S extends Object?> implements StatesConstraint<S> {
   const _AnyStates();
 
   @override
@@ -108,6 +71,112 @@ class _AnyStates<S extends Object?> with StatesConstraint<S> {
   int get hashCode => runtimeType.hashCode;
 }
 
+final class _StatesConstraintNot<S extends Object?>
+    implements StatesConstraint<S> {
+  const _StatesConstraintNot(StatesConstraint<S> value) : _value = value;
+
+  final StatesConstraint<S> _value;
+
+  @override
+  bool isSatisfiedBy(S states) => !_value.isSatisfiedBy(states);
+
+  @override
+  String toString() => "~($_value)";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _StatesConstraintNot<S> && _value == other._value;
+
+  @override
+  int get hashCode => _value.hashCode;
+}
+
+final class _StatesConstraintAnd<S extends Object?>
+    implements StatesConstraint<S> {
+  const _StatesConstraintAnd(StatesConstraint<S> a, StatesConstraint<S> b)
+    : _a = a,
+      _b = b;
+
+  final StatesConstraint<S> _a;
+  final StatesConstraint<S> _b;
+
+  @override
+  bool isSatisfiedBy(S states) =>
+      _a.isSatisfiedBy(states) && _b.isSatisfiedBy(states);
+
+  @override
+  String toString() => "($_a & $_b)";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _StatesConstraintAnd<S> && _a == other._a && _b == other._b;
+
+  @override
+  int get hashCode => Object.hash(_a, _b);
+}
+
+final class _StatesConstraintOr<S extends Object?>
+    implements StatesConstraint<S> {
+  const _StatesConstraintOr(StatesConstraint<S> a, StatesConstraint<S> b)
+    : _a = a,
+      _b = b;
+
+  final StatesConstraint<S> _a;
+  final StatesConstraint<S> _b;
+
+  @override
+  bool isSatisfiedBy(S states) =>
+      _a.isSatisfiedBy(states) || _b.isSatisfiedBy(states);
+
+  @override
+  String toString() => "($_a | $_b)";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _StatesConstraintOr<S> && _a == other._a && _b == other._b;
+
+  @override
+  int get hashCode => Object.hash(_a, _b);
+}
+
+extension StatesConstraintExtension<S extends Object?> on StatesConstraint<S> {
+  /// Takes a StatesConstraint] and applies the logical "not".
+  StatesConstraint<S> operator ~() => .not(this);
+
+  /// Combines two [StatesConstraint] values using logical "or".
+  StatesConstraint<S> operator |(StatesConstraint<S> other) => .or(this, other);
+
+  /// Combines two [StatesConstraint] values using logical "and".
+  StatesConstraint<S> operator &(StatesConstraint<S> other) =>
+      .and(this, other);
+}
+
+enum WidgetStatesConstraint implements StatesConstraint<WidgetStates> {
+  hovered(.hovered),
+  focused(.focused),
+  pressed(.pressed),
+  dragged(.dragged),
+  selected(.selected),
+  scrolledUnder(.scrolledUnder),
+  disabled(.disabled),
+  error(.error);
+
+  const WidgetStatesConstraint(this._value);
+
+  final WidgetState _value;
+
+  WidgetState get asLegacy => _value;
+
+  @override
+  bool isSatisfiedBy(WidgetStates states) {
+    states as StrictSet<WidgetState>;
+    return states.contains(_value);
+  }
+}
+
 typedef PropertyResolver<T extends Object?, S extends Object?> =
     T Function(S states);
 
@@ -116,10 +185,10 @@ typedef PropertyFactory<T extends Object?> = T Function();
 typedef StateMap<T extends Object?, S extends Object?> =
     Map<StatesConstraint<S>, T>;
 
-abstract class StateProperty<T extends Object?, S extends Object?> {
+abstract interface class StateProperty<T extends Object?, S extends Object?> {
   const StateProperty();
 
-  const factory StateProperty.fromMap(StateMap<T, S> map) = StateMapper;
+  factory StateProperty.fromMap(StateMap<T, S> map) = StateMapper;
 
   const factory StateProperty.resolveWith(PropertyResolver<T, S> callback) =
       _StatePropertyWith;
@@ -178,16 +247,29 @@ class StateMapper<T extends Object?, S extends Object?>
     implements StateProperty<T, S> {
   /// Creates a [WidgetStateProperty] object that can resolve
   /// to a value of type [T] using the provided [map].
-  const StateMapper(StateMap<T, S> map) : _map = map;
+  StateMapper(StateMap<T, S> map)
+    : _map = map.lock(),
+      _keys = map.keys.toList(growable: false),
+      _values = map.values.toList(growable: false);
 
-  final StateMap<T, S> _map;
+  final ImmutableMap<StatesConstraint<S>, T> _map;
+  final List<StatesConstraint<S>> _keys;
+  final List<T> _values;
 
   @override
   T resolve(S states) {
-    for (final entry in _map.entries) {
-      if (entry.key.isSatisfiedBy(states)) {
-        return entry.value;
+    final keys = _keys;
+    final values = _values;
+    final length = keys.length;
+
+    for (var i = 0; i < length; i++) {
+      if (keys[i].isSatisfiedBy(states)) {
+        return values[i];
       }
+    }
+
+    if (null is T) {
+      return null as T;
     }
 
     try {
@@ -207,22 +289,24 @@ class StateMapper<T extends Object?, S extends Object?>
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<StateMap<T, S>>("map", _map));
+    properties.add(
+      DiagnosticsProperty<StateMap<T, S>>("map", _map.unlockView()),
+    );
   }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) =>
-      "CustomStateMapper<$T, $S>($_map)";
+      "StateMapper<$T, $S>($_map)";
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is StateMapper<T, S> &&
-          mapEquals(_map, other._map);
+          _map == other._map;
 
   @override
-  int get hashCode => MapEquality<StatesConstraint<S>, T>().hash(_map);
+  int get hashCode => _map.hashCode;
 }
 
 class _StatePropertyWith<T extends Object?, S extends Object?>
@@ -435,7 +519,7 @@ abstract class WidgetStateProperty<T extends Object?>
     WidgetPropertyResolver<T> callback,
   ) = _WidgetStatePropertyWith<T>;
 
-  const factory WidgetStateProperty.fromMap(WidgetStateMap<T> map) =
+  factory WidgetStateProperty.fromMap(WidgetStateMap<T> map) =
       WidgetStateMapper<T>;
 
   static T resolveAs<T>(T value, Set<WidgetState> states) {
@@ -461,7 +545,7 @@ typedef WidgetStateMap<T extends Object?> = StateMap<T, WidgetStates>;
 
 class WidgetStateMapper<T extends Object?> extends StateMapper<T, WidgetStates>
     implements WidgetStateProperty<T>, flutter.WidgetStateMapper<T> {
-  const WidgetStateMapper(super.map);
+  WidgetStateMapper(super.map);
 
   @override
   void debugFillProperties(

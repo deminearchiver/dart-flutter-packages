@@ -6,54 +6,6 @@ FontWeight? _closestFontWeightToOrNull(double? weight) =>
 FontWeight _closestFontWeightTo(double weight) =>
     FontWeight(clampInt(weight.round(), 1, 1000));
 
-// bool _debugTextStyleHasFont(TextStyle? style) {
-//   if (style == null) return false;
-//   if (style.fontFamily != null) return true;
-//   if (style.fontFamilyFallback case final fontFamilyFallback?) {
-//     return fontFamilyFallback.isNotEmpty;
-//   }
-//   return false;
-// }
-
-// bool _debugTextStyleHasWeight(TextStyle? style) {
-//   if (style == null) return false;
-//   if (style.fontWeight != null) return true;
-//   if (style.fontVariations case final fontVariations?) {
-//     return fontVariations.any((fontVariation) => fontVariation.axis == "wght");
-//   }
-//   return false;
-// }
-
-// bool _debugTextStyleHasSize(TextStyle? style) {
-//   if (style == null) return false;
-//   return style.fontSize != null;
-// }
-
-// bool _debugTextStyleHasLineHeight(TextStyle? style) {
-//   if (style == null) return false;
-//   return style.fontSize != null && style.height != null;
-// }
-
-// bool _debugTextStyleHasTracking(TextStyle? style) {
-//   if (style == null) return false;
-//   return style.letterSpacing != null;
-// }
-
-// extension on FontWeight {
-//   double _toDouble() => value.toDouble();
-// }
-
-// extension on TextStyle {
-//   Map<String, double>? get _variableFontAxesOrNull => <String, double>{
-//     for (final fontVariation in fontVariations ?? const <FontVariation>[])
-//       fontVariation.axis: fontVariation.value,
-//   };
-
-//   Map<String, double> get _variableFontAxes => _variableFontAxesOrNull ?? {};
-
-//   double? _variableFontAxis(String axis) => _variableFontAxesOrNull?[axis];
-// }
-
 extension type const _VariableFontAxis._(String _) implements String {
   const _VariableFontAxis(String tag)
     : assert(tag.length == 4, "Axis tag must be exactly 4 characters long."),
@@ -76,7 +28,7 @@ abstract class TextGeometryPartial with Diagnosticable {
   const TextGeometryPartial();
 
   const factory TextGeometryPartial.from({
-    List<String>? font,
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -92,7 +44,7 @@ abstract class TextGeometryPartial with Diagnosticable {
     double? hexp,
   }) = _TextGeometryPartial;
 
-  List<String>? get font;
+  ImmutableList<String>? get font;
 
   double? get weight;
 
@@ -123,7 +75,7 @@ abstract class TextGeometryPartial with Diagnosticable {
   TextGeometryPartial copy() => copyWith();
 
   TextGeometryPartial copyWith({
-    List<String>? font,
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -155,7 +107,7 @@ abstract class TextGeometryPartial with Diagnosticable {
   );
 
   TextGeometryPartial maybeCopyWith({
-    List<String>? font,
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -203,7 +155,7 @@ abstract class TextGeometryPartial with Diagnosticable {
       : this;
 
   TextGeometryPartial mergeWith({
-    List<String>? font,
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -235,7 +187,7 @@ abstract class TextGeometryPartial with Diagnosticable {
   );
 
   TextGeometryPartial maybeMergeWith({
-    List<String>? font,
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -466,7 +418,7 @@ final class _TextGeometryPartial extends TextGeometryPartial {
   });
 
   @override
-  final List<String>? font;
+  final ImmutableList<String>? font;
 
   @override
   final double? weight;
@@ -511,7 +463,7 @@ final class _TextGeometryPartial extends TextGeometryPartial {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _TextGeometryPartial &&
-          _stringListEquality.equals(font, other.font) &&
+          font == other.font &&
           weight == other.weight &&
           size == other.size &&
           tracking == other.tracking &&
@@ -528,7 +480,7 @@ final class _TextGeometryPartial extends TextGeometryPartial {
 
   @override
   int get hashCode => Object.hash(
-    _stringListEquality.hash(font),
+    font,
     weight,
     size,
     tracking,
@@ -549,7 +501,7 @@ abstract class TextGeometry extends TextGeometryPartial {
   const TextGeometry();
 
   const factory TextGeometry.from({
-    required List<String> font,
+    required ImmutableList<String> font,
     required double weight,
     required double size,
     required double tracking,
@@ -566,7 +518,7 @@ abstract class TextGeometry extends TextGeometryPartial {
   }) = _TextGeometry;
 
   @override
-  List<String> get font;
+  ImmutableList<String> get font;
 
   @override
   double get weight;
@@ -612,7 +564,7 @@ abstract class TextGeometry extends TextGeometryPartial {
 
   @override
   TextGeometry copyWith({
-    List<String>? font,
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -645,7 +597,7 @@ abstract class TextGeometry extends TextGeometryPartial {
 
   @override
   TextGeometry maybeCopyWith({
-    List<String>? font,
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -694,7 +646,7 @@ abstract class TextGeometry extends TextGeometryPartial {
 
   @override
   TextGeometry mergeWith({
-    List<String>? font,
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -727,7 +679,7 @@ abstract class TextGeometry extends TextGeometryPartial {
 
   @override
   TextGeometry maybeMergeWith({
-    List<String>? font,
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -956,7 +908,7 @@ final class _TextGeometry extends TextGeometry {
   }) : assert(font.length > 0, "TextGeometry.font must be non-empty.");
 
   @override
-  final List<String> font;
+  final ImmutableList<String> font;
 
   @override
   final double weight;
@@ -1001,7 +953,7 @@ final class _TextGeometry extends TextGeometry {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _TextGeometry &&
-          _stringListEquality.equals(font, other.font) &&
+          font == other.font &&
           weight == other.weight &&
           size == other.size &&
           tracking == other.tracking &&
@@ -1018,7 +970,7 @@ final class _TextGeometry extends TextGeometry {
 
   @override
   int get hashCode => Object.hash(
-    _stringListEquality.hash(font),
+    font,
     weight,
     size,
     tracking,

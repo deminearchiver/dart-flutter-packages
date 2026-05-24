@@ -26,23 +26,34 @@ class Icon extends IconLegacy {
   const Icon(
     super.icon, {
     super.key,
-    super.size,
+    this.roundness,
     super.fill,
     super.weight,
     super.grade,
     super.opticalSize,
+    super.size,
     super.color,
     super.shadows,
     super.applyTextScaling,
     super.blendMode,
     super.semanticLabel,
     super.textDirection,
-  }) : super(fontWeight: null);
+  }) : assert(roundness == null || (0.0 <= roundness && roundness <= 100.0)),
+       assert(weight == null || (1.0 <= weight && weight <= 1000.0)),
+       super(fontWeight: null);
 
   /// The icon can be null, in which case the widget will render as an empty
   /// space of the specified [size].
   @override
   IconData? get icon => super.icon;
+
+  /// The roundness for drawing the icon.
+  ///
+  /// Requires the underlying icon font to support the `ROND` [FontVariation]
+  /// axis, otherwise has no effect. Variable font filenames often indicate
+  /// the supported axes. Must be between 0.0 (sharp) and 100.0 (rounded),
+  /// inclusive.
+  final double? roundness;
 
   /// The fill for drawing the icon.
   ///
@@ -225,12 +236,13 @@ class Icon extends IconLegacy {
     final iconTheme = IconTheme.of(context, allowLegacy: true);
 
     final icon = this.icon;
+    final roundness = this.roundness ?? iconTheme.roundness;
     final fill = this.fill ?? iconTheme.fill;
     final weight = this.weight ?? iconTheme.weight;
     final grade = this.grade ?? iconTheme.grade;
     final opticalSize = this.opticalSize ?? iconTheme.opticalSize;
     var size = this.size ?? iconTheme.size;
-    final shadows = this.shadows ?? iconTheme.shadows;
+    final shadows = this.shadows ?? iconTheme.shadows.unlockView();
     final applyTextScaling =
         this.applyTextScaling ?? iconTheme.applyTextScaling;
 
@@ -269,6 +281,7 @@ class Icon extends IconLegacy {
       foreground: foreground,
       shadows: shadows,
       fontVariations: [
+        FontVariation("ROND", roundness),
         FontVariation("FILL", fill),
         FontVariation("wght", weight),
         FontVariation("GRAD", grade),

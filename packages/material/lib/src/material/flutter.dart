@@ -66,13 +66,9 @@ export 'package:flutter/material.dart'
         SwitchTheme,
         SwitchThemeData;
 
-// Third-party packages
-
+export 'package:fic/fic.dart';
 export 'package:meta/meta.dart';
-export 'package:motor/motor.dart';
-
-// Internal packages
-
 export 'package:layout/layout.dart';
+export 'package:motor/motor.dart';
 export 'package:material/material.dart';
 export 'package:material/material_symbols.dart';

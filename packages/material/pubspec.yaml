@@ -9,8 +9,8 @@ publish_to: none
 resolution: workspace
 
 environment:
-  sdk: ^3.11.0
-  flutter: ">=3.41.0"
+  sdk: ^3.12.0
+  flutter: ">=3.44.0"
 
 dependencies:
   # SDK dependencies
@@ -30,6 +30,7 @@ dependencies:
   material_symbols_icons: ^4.2928.1
   meta: ^1.17.0
   motor: ^1.1.0
+  fic: ^1.0.0-dev.6
 
 dev_dependencies:
   # SDK dependencies

@@ -4,6 +4,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
   const IconThemeData();
 
   const factory IconThemeData.from({
+    required double roundness,
     required double fill,
     required double weight,
     required double grade,
@@ -11,7 +12,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
     required double size,
     required Color color,
     required double opacity,
-    required List<Shadow> shadows,
+    required ImmutableList<Shadow> shadows,
     required bool applyTextScaling,
   }) = _IconThemeData;
 
@@ -22,6 +23,9 @@ abstract class IconThemeData extends IconThemeDataPartial {
     required ColorThemeData colorTheme,
     IconThemeDataPartial? overrides,
   }) = _IconThemeDataDefaults;
+
+  @override
+  double get roundness;
 
   @override
   double get fill;
@@ -45,7 +49,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
   double get opacity;
 
   @override
-  List<Shadow> get shadows;
+  ImmutableList<Shadow> get shadows;
 
   @override
   bool get applyTextScaling;
@@ -55,6 +59,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
 
   @override
   IconThemeData copyWith({
+    double? roundness,
     double? fill,
     double? weight,
     double? grade,
@@ -62,9 +67,10 @@ abstract class IconThemeData extends IconThemeDataPartial {
     double? size,
     Color? color,
     double? opacity,
-    List<Shadow>? shadows,
+    ImmutableList<Shadow>? shadows,
     bool? applyTextScaling,
   }) => .from(
+    roundness: roundness ?? this.roundness,
     fill: fill ?? this.fill,
     weight: weight ?? this.weight,
     grade: grade ?? this.grade,
@@ -78,6 +84,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
 
   @override
   IconThemeData maybeCopyWith({
+    double? roundness,
     double? fill,
     double? weight,
     double? grade,
@@ -85,10 +92,11 @@ abstract class IconThemeData extends IconThemeDataPartial {
     double? size,
     Color? color,
     double? opacity,
-    List<Shadow>? shadows,
+    ImmutableList<Shadow>? shadows,
     bool? applyTextScaling,
   }) =>
-      fill != null ||
+      roundness != null ||
+          fill != null ||
           weight != null ||
           grade != null ||
           opticalSize != null ||
@@ -98,6 +106,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
           shadows != null ||
           applyTextScaling != null
       ? .from(
+          roundness: roundness ?? this.roundness,
           fill: fill ?? this.fill,
           weight: weight ?? this.weight,
           grade: grade ?? this.grade,
@@ -113,6 +122,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
   @override
   IconThemeDataPartial merge(IconThemeDataPartial? other) => other != null
       ? copyWith(
+          roundness: other.roundness,
           fill: other.fill,
           weight: other.weight,
           grade: other.grade,
@@ -128,6 +138,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
   @override
   IconThemeData maybeMerge(IconThemeDataPartial? other) => other != null
       ? maybeCopyWith(
+          roundness: other.roundness,
           fill: other.fill,
           weight: other.weight,
           grade: other.grade,
@@ -156,6 +167,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
+      ..add(DoubleProperty("roundness", roundness, defaultValue: 50.0))
       ..add(DoubleProperty("fill", fill, defaultValue: 0.0))
       ..add(DoubleProperty("weight", weight, defaultValue: 400.0))
       ..add(DoubleProperty("grade", grade, defaultValue: 0.0))
@@ -183,6 +195,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
       identical(a, b) || a == b
       ? a
       : .from(
+          roundness: lerpDouble(a.roundness, b.roundness, t),
           fill: lerpDouble(a.fill, b.fill, t),
           weight: lerpDouble(a.weight, b.weight, t),
           grade: lerpDouble(a.grade, b.grade, t),
@@ -190,13 +203,18 @@ abstract class IconThemeData extends IconThemeDataPartial {
           size: lerpDouble(a.size, b.size, t),
           color: Color.lerp(a.color, b.color, t)!,
           opacity: lerpDouble(a.opacity, b.opacity, t),
-          shadows: Shadow.lerpList(a.shadows, b.shadows, t)!,
+          shadows: Shadow.lerpList(
+            a.shadows.unlockView(),
+            b.shadows.unlockView(),
+            t,
+          )!.lock(),
           applyTextScaling: t < 0.5 ? a.applyTextScaling : b.applyTextScaling,
         );
 }
 
 final class _IconThemeData extends IconThemeData {
   const _IconThemeData({
+    required this.roundness,
     required this.fill,
     required this.weight,
     required this.grade,
@@ -206,7 +224,14 @@ final class _IconThemeData extends IconThemeData {
     required this.opacity,
     required this.shadows,
     required this.applyTextScaling,
-  }) : assert(opacity >= 0.0 && opacity <= 1.0);
+  }) : assert(0.0 <= roundness && roundness <= 100.0),
+       assert(0.0 <= fill && fill <= 1.0),
+       assert(1.0 <= weight && weight <= 1000.0),
+       assert(0.0 < opticalSize),
+       assert(0.0 <= opacity && opacity <= 1.0);
+
+  @override
+  final double roundness;
 
   @override
   final double fill;
@@ -230,7 +255,7 @@ final class _IconThemeData extends IconThemeData {
   final double opacity;
 
   @override
-  final List<Shadow> shadows;
+  final ImmutableList<Shadow> shadows;
 
   @override
   final bool applyTextScaling;
@@ -239,6 +264,7 @@ final class _IconThemeData extends IconThemeData {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _IconThemeData &&
+          roundness == other.roundness &&
           fill == other.fill &&
           weight == other.weight &&
           grade == other.grade &&
@@ -251,6 +277,7 @@ final class _IconThemeData extends IconThemeData {
 
   @override
   int get hashCode => Object.hash(
+    roundness,
     fill,
     weight,
     grade,
@@ -275,6 +302,9 @@ final class _IconThemeDataDefaults extends IconThemeData {
   final IconThemeDataPartial _overrides;
 
   @override
+  double get roundness => _overrides.roundness ?? 50.0;
+
+  @override
   double get fill => _overrides.fill ?? 0.0;
 
   @override
@@ -296,13 +326,15 @@ final class _IconThemeDataDefaults extends IconThemeData {
   double get opacity => _overrides.opacity ?? 1.0;
 
   @override
-  List<Shadow> get shadows => _overrides.shadows ?? const [];
+  ImmutableList<Shadow> get shadows =>
+      _overrides.shadows ?? const .emptyLiteral();
 
   @override
   bool get applyTextScaling => _overrides.applyTextScaling ?? false;
 
   @override
   IconThemeData copyWith({
+    double? roundness,
     double? fill,
     double? weight,
     double? grade,
@@ -310,11 +342,12 @@ final class _IconThemeDataDefaults extends IconThemeData {
     double? size,
     Color? color,
     double? opacity,
-    List<Shadow>? shadows,
+    ImmutableList<Shadow>? shadows,
     bool? applyTextScaling,
   }) => _IconThemeDataDefaults(
     colorTheme: _colorTheme,
     overrides: _overrides.copyWith(
+      roundness: roundness,
       fill: fill,
       weight: weight,
       grade: grade,
@@ -329,6 +362,7 @@ final class _IconThemeDataDefaults extends IconThemeData {
 
   @override
   IconThemeData maybeCopyWith({
+    double? roundness,
     double? fill,
     double? weight,
     double? grade,
@@ -336,10 +370,11 @@ final class _IconThemeDataDefaults extends IconThemeData {
     double? size,
     Color? color,
     double? opacity,
-    List<Shadow>? shadows,
+    ImmutableList<Shadow>? shadows,
     bool? applyTextScaling,
   }) =>
-      fill != null &&
+      roundness != null &&
+          fill != null &&
           weight != null &&
           grade != null &&
           opticalSize != null &&
@@ -349,6 +384,7 @@ final class _IconThemeDataDefaults extends IconThemeData {
           shadows != null &&
           applyTextScaling != null
       ? .from(
+          roundness: roundness,
           fill: fill,
           weight: weight,
           grade: grade,
@@ -359,7 +395,8 @@ final class _IconThemeDataDefaults extends IconThemeData {
           shadows: shadows,
           applyTextScaling: applyTextScaling,
         )
-      : fill != null ||
+      : roundness != null ||
+            fill != null ||
             weight != null ||
             grade != null ||
             opticalSize != null ||
@@ -369,6 +406,7 @@ final class _IconThemeDataDefaults extends IconThemeData {
             shadows != null ||
             applyTextScaling != null
       ? copyWith(
+          roundness: roundness,
           fill: fill,
           weight: weight,
           grade: grade,
@@ -401,6 +439,7 @@ class IconThemeDataTween extends Tween<IconThemeData?> {
     final b = end;
     if (identical(a, b) || a == b) return a;
     return .from(
+      roundness: lerpDoubleNullable(a?.roundness, b?.roundness, t)!,
       fill: lerpDoubleNullable(a?.fill, b?.fill, t)!,
       weight: lerpDoubleNullable(a?.weight, b?.weight, t)!,
       grade: lerpDoubleNullable(a?.grade, b?.grade, t)!,
@@ -408,7 +447,11 @@ class IconThemeDataTween extends Tween<IconThemeData?> {
       size: lerpDoubleNullable(a?.size, b?.size, t)!,
       color: Color.lerp(a?.color, b?.color, t)!,
       opacity: lerpDoubleNullable(a?.opacity, b?.opacity, t)!,
-      shadows: Shadow.lerpList(a?.shadows, b?.shadows, t)!,
+      shadows: Shadow.lerpList(
+        a?.shadows.unlockView(),
+        b?.shadows.unlockView(),
+        t,
+      )!.lock(),
       applyTextScaling: t < 0.5 ? a!.applyTextScaling : b!.applyTextScaling,
     );
   }

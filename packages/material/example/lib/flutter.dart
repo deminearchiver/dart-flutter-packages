@@ -68,10 +68,11 @@ export 'package:flutter/material.dart'
 
 // Third-party packages
 
+export 'package:meta/meta.dart';
+export 'package:fic/fic.dart';
 export 'package:layout/layout.dart';
 export 'package:material/material.dart';
 export 'package:material/material_symbols.dart';
-export 'package:meta/meta.dart';
 export 'package:motor/motor.dart';
 export 'package:linked_layouts/linked_layouts.dart';
 

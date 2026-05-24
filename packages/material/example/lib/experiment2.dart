@@ -181,7 +181,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                                 child: Align.center(
                                                   widthFactor: 1.0,
                                                   child: Text(
-                                                    "M3B",
+                                                    "Base",
                                                     textAlign: .center,
                                                     style: typescaleTheme
                                                         .displayMedium
@@ -197,7 +197,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                                 child: Align.center(
                                                   widthFactor: 1.0,
                                                   child: Text(
-                                                    "M3E",
+                                                    "Expr",
                                                     textAlign: .center,
                                                     style:
                                                         TextGeometry.lerp(
@@ -222,8 +222,11 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                                 child: Align.center(
                                                   widthFactor: 1.0,
                                                   child: Text(
-                                                    "M??",
+                                                    "Neur",
                                                     textAlign: .center,
+                                                    maxLines: 1,
+                                                    softWrap: false,
+                                                    overflow: .ellipsis,
                                                     style: typescaleTheme
                                                         .displayMedium
                                                         .toTextStyle(

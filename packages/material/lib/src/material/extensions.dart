@@ -1,4 +1,5 @@
 import 'package:material/src/material/flutter.dart';
+import 'package:meta/meta.dart';
 
 extension AnimatableExtensions<T> on Animatable<T> {
   Animatable<T> get reversed => _ReversedAnimatable(this);
@@ -373,9 +374,14 @@ extension DefaultTextStyleWrapExtension on DefaultTextStyle {
 
 extension type const StrictSet<E extends Object?>._(Set<E> _)
     implements Set<E> {
-  StrictSet() : this._(<E>{});
+  factory StrictSet() => ._(.new());
 
-  StrictSet.identity() : this._(Set<E>.identity());
+  factory StrictSet.identity() => ._(.identity());
+
+  factory StrictSet.of(Iterable<E> elements) => ._(.of(elements));
+
+  factory StrictSet.unmodifiable(Iterable<E> elements) =>
+      ._(.unmodifiable(elements));
 
   @redeclare
   bool contains(E value) => _.contains(value);
@@ -396,10 +402,25 @@ extension type const StrictSet<E extends Object?>._(Set<E> _)
   bool containsAll(Iterable<E> other) => _.containsAll(other);
 
   @redeclare
-  Set<E> intersection(Set<E> other) => _.intersection(other);
+  StrictSet<E> intersection(Set<E> other) =>
+      _.intersection(other) as StrictSet<E>;
 
   @redeclare
-  Set<E> difference(Set<E> other) => _.difference(other);
+  StrictSet<E> union(Set<E> other) => _.union(other) as StrictSet<E>;
+
+  @redeclare
+  StrictSet<E> difference(Set<E> other) => _.difference(other) as StrictSet<E>;
+
+  @redeclare
+  StrictSet<R> cast<R extends Object?>() => ._(_.cast<R>());
+
+  @redeclare
+  StrictSet<E> toSet() => ._(_.toSet());
+
+  static StrictSet<T> castFrom<S, T>(
+    Set<S> source, {
+    Set<R> Function<R>()? newSet,
+  }) => ._(.castFrom<S, T>(source, newSet: newSet));
 }
 
 extension SpringDescriptionExtension on SpringDescription {
