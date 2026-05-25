@@ -85,4 +85,26 @@ abstract final class MathUtils {
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")
   static double hypot(double a, double b) => math.sqrt(a * a + b * b);
+
+  // TODO: investigate if the advanced libm implementation should be used
+
+  static double log1p(double x) {
+    if (x.isNaN || x == .infinity) return x;
+    if (x == -1.0) return .negativeInfinity;
+    if (x < -1.0) return .nan;
+    final u = 1.0 + x;
+    if (u == 1.0) return x;
+    return math.log(u) * x / (u - 1.0);
+  }
+
+  static double expm1(double x) {
+    if (x.isNaN || x == .infinity) return x;
+    if (x == .negativeInfinity) return -1.0;
+    if (x.abs() < 1.0) {
+      final u = math.exp(x);
+      if (u == 1.0) return x;
+      return (u - 1.0) * x / math.log(u);
+    }
+    return math.exp(x) - 1.0;
+  }
 }

@@ -1,87 +1,10 @@
-import 'package:collection/collection.dart';
-import 'package:material/src/material/flutter.dart';
+part of 'typography.dart';
 
 FontWeight? _closestFontWeightToOrNull(double? weight) =>
     weight != null ? _closestFontWeightToOrNull(weight) : null;
 
-FontWeight _closestFontWeightTo(double weight) {
-  assert(weight >= 0.0, "Font weight cannot be negative.");
-  const values = FontWeight.values;
-  var closest = values[0];
-  for (var i = 1; i < values.length; i++) {
-    final element = values[i];
-    if ((weight - element.value.toDouble()).abs() <=
-        (weight - closest.value.toDouble()).abs()) {
-      closest = element;
-    }
-  }
-  return closest;
-}
-
-// (FontWeight? fontWeight, double? wght) _resolveFontWeights(
-//   double? weight,
-//   double? wght,
-// ) {
-//   if (wght != null) {
-//     final fontWeight = _closestFontWeightTo(wght);
-//     return (fontWeight, wght);
-//   } else if (weight != null && wght == null) {
-//     final fontWeight = _closestFontWeightTo(weight);
-//     return (fontWeight, weight);
-//   } else {
-//     return (null, null);
-//   }
-// }
-
-// bool _debugTextStyleHasFont(TextStyle? style) {
-//   if (style == null) return false;
-//   if (style.fontFamily != null) return true;
-//   if (style.fontFamilyFallback case final fontFamilyFallback?) {
-//     return fontFamilyFallback.isNotEmpty;
-//   }
-//   return false;
-// }
-
-// bool _debugTextStyleHasWeight(TextStyle? style) {
-//   if (style == null) return false;
-//   if (style.fontWeight != null) return true;
-//   if (style.fontVariations case final fontVariations?) {
-//     return fontVariations.any((fontVariation) => fontVariation.axis == "wght");
-//   }
-//   return false;
-// }
-
-// bool _debugTextStyleHasSize(TextStyle? style) {
-//   if (style == null) return false;
-//   return style.fontSize != null;
-// }
-
-// bool _debugTextStyleHasLineHeight(TextStyle? style) {
-//   if (style == null) return false;
-//   return style.fontSize != null && style.height != null;
-// }
-
-// bool _debugTextStyleHasTracking(TextStyle? style) {
-//   if (style == null) return false;
-//   return style.letterSpacing != null;
-// }
-
-// extension on FontWeight {
-//   double _toDouble() => value.toDouble();
-// }
-
-// extension on TextStyle {
-//   Map<String, double>? get _variableFontAxesOrNull => <String, double>{
-//     for (final fontVariation in fontVariations ?? const <FontVariation>[])
-//       fontVariation.axis: fontVariation.value,
-//   };
-
-//   Map<String, double> get _variableFontAxes => _variableFontAxesOrNull ?? {};
-
-//   double? _variableFontAxis(String axis) => _variableFontAxesOrNull?[axis];
-// }
-
-const _stringListEquality = ListEquality<String>();
+FontWeight _closestFontWeightTo(double weight) =>
+    FontWeight(clampInt(weight.round(), 1, 1000));
 
 extension type const _VariableFontAxis._(String _) implements String {
   const _VariableFontAxis(String tag)
@@ -105,7 +28,7 @@ abstract class TextGeometryPartial with Diagnosticable {
   const TextGeometryPartial();
 
   const factory TextGeometryPartial.from({
-    List<String>? font,
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -121,7 +44,7 @@ abstract class TextGeometryPartial with Diagnosticable {
     double? hexp,
   }) = _TextGeometryPartial;
 
-  List<String>? get font;
+  ImmutableList<String>? get font;
 
   double? get weight;
 
@@ -149,8 +72,42 @@ abstract class TextGeometryPartial with Diagnosticable {
 
   double? get hexp;
 
+  TextGeometryPartial copy() => copyWith();
+
   TextGeometryPartial copyWith({
-    List<String>? font,
+    ImmutableList<String>? font,
+    double? weight,
+    double? size,
+    double? tracking,
+    double? lineHeight,
+    double? wght,
+    double? grad,
+    double? wdth,
+    double? rond,
+    double? opsz,
+    double? crsv,
+    double? slnt,
+    double? fill,
+    double? hexp,
+  }) => .from(
+    font: font ?? this.font,
+    weight: weight ?? this.weight,
+    size: size ?? this.size,
+    tracking: tracking ?? this.tracking,
+    lineHeight: lineHeight ?? this.lineHeight,
+    wght: wght ?? this.wght,
+    grad: grad ?? this.grad,
+    wdth: wdth ?? this.wdth,
+    rond: rond ?? this.rond,
+    opsz: opsz ?? this.opsz,
+    crsv: crsv ?? this.crsv,
+    slnt: slnt ?? this.slnt,
+    fill: fill ?? this.fill,
+    hexp: hexp ?? this.hexp,
+  );
+
+  TextGeometryPartial maybeCopyWith({
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -179,26 +136,58 @@ abstract class TextGeometryPartial with Diagnosticable {
           slnt != null ||
           fill != null ||
           hexp != null
-      ? .from(
-          font: font ?? this.font,
-          weight: weight ?? this.weight,
-          size: size ?? this.size,
-          tracking: tracking ?? this.tracking,
-          lineHeight: lineHeight ?? this.lineHeight,
-          wght: wght ?? this.wght,
-          grad: grad ?? this.grad,
-          wdth: wdth ?? this.wdth,
-          rond: rond ?? this.rond,
-          opsz: opsz ?? this.opsz,
-          crsv: crsv ?? this.crsv,
-          slnt: slnt ?? this.slnt,
-          fill: fill ?? this.fill,
-          hexp: hexp ?? this.hexp,
+      ? copyWith(
+          font: font,
+          weight: weight,
+          size: size,
+          tracking: tracking,
+          lineHeight: lineHeight,
+          wght: wght,
+          grad: grad,
+          wdth: wdth,
+          rond: rond,
+          opsz: opsz,
+          crsv: crsv,
+          slnt: slnt,
+          fill: fill,
+          hexp: hexp,
         )
       : this;
 
   TextGeometryPartial mergeWith({
-    List<String>? font,
+    ImmutableList<String>? font,
+    double? weight,
+    double? size,
+    double? tracking,
+    double? lineHeight,
+    double? wght,
+    double? grad,
+    double? wdth,
+    double? rond,
+    double? opsz,
+    double? crsv,
+    double? slnt,
+    double? fill,
+    double? hexp,
+  }) => .from(
+    font: _mergeFontsOrNull(this.font, font),
+    weight: weight ?? this.weight,
+    size: size ?? this.size,
+    tracking: tracking ?? this.tracking,
+    lineHeight: lineHeight ?? this.lineHeight,
+    wght: wght ?? this.wght,
+    grad: grad ?? this.grad,
+    wdth: wdth ?? this.wdth,
+    rond: rond ?? this.rond,
+    opsz: opsz ?? this.opsz,
+    crsv: crsv ?? this.crsv,
+    slnt: slnt ?? this.slnt,
+    fill: fill ?? this.fill,
+    hexp: hexp ?? this.hexp,
+  );
+
+  TextGeometryPartial maybeMergeWith({
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -228,7 +217,7 @@ abstract class TextGeometryPartial with Diagnosticable {
           fill != null ||
           hexp != null
       ? .from(
-          font: font != null ? [...font, ...?this.font] : this.font,
+          font: _mergeFontsOrNull(this.font, font),
           weight: weight ?? this.weight,
           size: size ?? this.size,
           tracking: tracking ?? this.tracking,
@@ -247,6 +236,25 @@ abstract class TextGeometryPartial with Diagnosticable {
 
   TextGeometryPartial merge(TextGeometryPartial? other) => other != null
       ? mergeWith(
+          font: other.font,
+          weight: other.weight,
+          size: other.size,
+          tracking: other.tracking,
+          lineHeight: other.lineHeight,
+          wght: other.wght,
+          grad: other.grad,
+          wdth: other.wdth,
+          rond: other.rond,
+          opsz: other.opsz,
+          crsv: other.crsv,
+          slnt: other.slnt,
+          fill: other.fill,
+          hexp: other.hexp,
+        )
+      : copy();
+
+  TextGeometryPartial maybeMerge(TextGeometryPartial? other) => other != null
+      ? maybeMergeWith(
           font: other.font,
           weight: other.weight,
           size: other.size,
@@ -310,7 +318,7 @@ abstract class TextGeometryPartial with Diagnosticable {
     TextOverflow? overflow,
   }) {
     final fontFamily = font?.firstOrNull;
-    final fontFamilyFallback = font?.skip(1).toList();
+    final fontFamilyFallback = font?.skip(1).toList(growable: false);
     return TextStyle(
       inherit: inherit,
       color: color,
@@ -366,45 +374,6 @@ abstract class TextGeometryPartial with Diagnosticable {
       ..add(DoubleProperty("hexp", hexp, defaultValue: null));
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is TextGeometryPartial &&
-          _stringListEquality.equals(font, other.font) &&
-          weight == other.weight &&
-          size == other.size &&
-          tracking == other.tracking &&
-          lineHeight == other.lineHeight &&
-          wght == other.wght &&
-          grad == other.grad &&
-          wdth == other.wdth &&
-          rond == other.rond &&
-          opsz == other.opsz &&
-          crsv == other.crsv &&
-          slnt == other.slnt &&
-          fill == other.fill &&
-          hexp == other.hexp;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    _stringListEquality.hash(font),
-    weight,
-    size,
-    tracking,
-    lineHeight,
-    wght,
-    grad,
-    wdth,
-    rond,
-    opsz,
-    crsv,
-    slnt,
-    fill,
-    hexp,
-  );
-
   static TextGeometryPartial? lerp(
     TextGeometryPartial? a,
     TextGeometryPartial? b,
@@ -430,7 +399,7 @@ abstract class TextGeometryPartial with Diagnosticable {
   }
 }
 
-class _TextGeometryPartial extends TextGeometryPartial {
+final class _TextGeometryPartial extends TextGeometryPartial {
   const _TextGeometryPartial({
     this.font,
     this.weight,
@@ -449,7 +418,7 @@ class _TextGeometryPartial extends TextGeometryPartial {
   });
 
   @override
-  final List<String>? font;
+  final ImmutableList<String>? font;
 
   @override
   final double? weight;
@@ -489,13 +458,50 @@ class _TextGeometryPartial extends TextGeometryPartial {
 
   @override
   final double? hexp;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _TextGeometryPartial &&
+          font == other.font &&
+          weight == other.weight &&
+          size == other.size &&
+          tracking == other.tracking &&
+          lineHeight == other.lineHeight &&
+          wght == other.wght &&
+          grad == other.grad &&
+          wdth == other.wdth &&
+          rond == other.rond &&
+          opsz == other.opsz &&
+          crsv == other.crsv &&
+          slnt == other.slnt &&
+          fill == other.fill &&
+          hexp == other.hexp;
+
+  @override
+  int get hashCode => Object.hash(
+    font,
+    weight,
+    size,
+    tracking,
+    lineHeight,
+    wght,
+    grad,
+    wdth,
+    rond,
+    opsz,
+    crsv,
+    slnt,
+    fill,
+    hexp,
+  );
 }
 
 abstract class TextGeometry extends TextGeometryPartial {
   const TextGeometry();
 
   const factory TextGeometry.from({
-    required List<String> font,
+    required ImmutableList<String> font,
     required double weight,
     required double size,
     required double tracking,
@@ -512,7 +518,7 @@ abstract class TextGeometry extends TextGeometryPartial {
   }) = _TextGeometry;
 
   @override
-  List<String> get font;
+  ImmutableList<String> get font;
 
   @override
   double get weight;
@@ -554,8 +560,44 @@ abstract class TextGeometry extends TextGeometryPartial {
   double get hexp;
 
   @override
+  TextGeometry copy() => copyWith();
+
+  @override
   TextGeometry copyWith({
-    List<String>? font,
+    ImmutableList<String>? font,
+    double? weight,
+    double? size,
+    double? tracking,
+    double? lineHeight,
+    double? wght,
+    double? grad,
+    double? wdth,
+    double? rond,
+    double? opsz,
+    double? crsv,
+    double? slnt,
+    double? fill,
+    double? hexp,
+  }) => .from(
+    font: font ?? this.font,
+    weight: weight ?? this.weight,
+    size: size ?? this.size,
+    tracking: tracking ?? this.tracking,
+    lineHeight: lineHeight ?? this.lineHeight,
+    wght: wght ?? this.wght,
+    grad: grad ?? this.grad,
+    wdth: wdth ?? this.wdth,
+    rond: rond ?? this.rond,
+    opsz: opsz ?? this.opsz,
+    crsv: crsv ?? this.crsv,
+    slnt: slnt ?? this.slnt,
+    fill: fill ?? this.fill,
+    hexp: hexp ?? this.hexp,
+  );
+
+  @override
+  TextGeometry maybeCopyWith({
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -584,27 +626,60 @@ abstract class TextGeometry extends TextGeometryPartial {
           slnt != null ||
           fill != null ||
           hexp != null
-      ? .from(
-          font: font ?? this.font,
-          weight: weight ?? this.weight,
-          size: size ?? this.size,
-          tracking: tracking ?? this.tracking,
-          lineHeight: lineHeight ?? this.lineHeight,
-          wght: wght ?? this.wght,
-          grad: grad ?? this.grad,
-          wdth: wdth ?? this.wdth,
-          rond: rond ?? this.rond,
-          opsz: opsz ?? this.opsz,
-          crsv: crsv ?? this.crsv,
-          slnt: slnt ?? this.slnt,
-          fill: fill ?? this.fill,
-          hexp: hexp ?? this.hexp,
+      ? copyWith(
+          font: font,
+          weight: weight,
+          size: size,
+          tracking: tracking,
+          lineHeight: lineHeight,
+          wght: wght,
+          grad: grad,
+          wdth: wdth,
+          rond: rond,
+          opsz: opsz,
+          crsv: crsv,
+          slnt: slnt,
+          fill: fill,
+          hexp: hexp,
         )
       : this;
 
   @override
   TextGeometry mergeWith({
-    List<String>? font,
+    ImmutableList<String>? font,
+    double? weight,
+    double? size,
+    double? tracking,
+    double? lineHeight,
+    double? wght,
+    double? grad,
+    double? wdth,
+    double? rond,
+    double? opsz,
+    double? crsv,
+    double? slnt,
+    double? fill,
+    double? hexp,
+  }) => .from(
+    font: _mergeFonts(this.font, font),
+    weight: weight ?? this.weight,
+    size: size ?? this.size,
+    tracking: tracking ?? this.tracking,
+    lineHeight: lineHeight ?? this.lineHeight,
+    wght: wght ?? this.wght,
+    grad: grad ?? this.grad,
+    wdth: wdth ?? this.wdth,
+    rond: rond ?? this.rond,
+    opsz: opsz ?? this.opsz,
+    crsv: crsv ?? this.crsv,
+    slnt: slnt ?? this.slnt,
+    fill: fill ?? this.fill,
+    hexp: hexp ?? this.hexp,
+  );
+
+  @override
+  TextGeometry maybeMergeWith({
+    ImmutableList<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -634,7 +709,7 @@ abstract class TextGeometry extends TextGeometryPartial {
           fill != null ||
           hexp != null
       ? .from(
-          font: font != null ? [...font, ...this.font] : this.font,
+          font: _mergeFonts(this.font, font),
           weight: weight ?? this.weight,
           size: size ?? this.size,
           tracking: tracking ?? this.tracking,
@@ -654,6 +729,26 @@ abstract class TextGeometry extends TextGeometryPartial {
   @override
   TextGeometry merge(TextGeometryPartial? other) => other != null
       ? mergeWith(
+          font: other.font,
+          weight: other.weight,
+          size: other.size,
+          tracking: other.tracking,
+          lineHeight: other.lineHeight,
+          wght: other.wght,
+          grad: other.grad,
+          wdth: other.wdth,
+          rond: other.rond,
+          opsz: other.opsz,
+          crsv: other.crsv,
+          slnt: other.slnt,
+          fill: other.fill,
+          hexp: other.hexp,
+        )
+      : copy();
+
+  @override
+  TextGeometry maybeMerge(TextGeometryPartial? other) => other != null
+      ? maybeMergeWith(
           font: other.font,
           weight: other.weight,
           size: other.size,
@@ -720,7 +815,7 @@ abstract class TextGeometry extends TextGeometryPartial {
     TextOverflow? overflow,
   }) {
     final fontFamily = font.first;
-    final fontFamilyFallback = font.skip(1).toList();
+    final fontFamilyFallback = font.skip(1).toList(growable: false);
     return TextStyle(
       inherit: inherit,
       color: color,
@@ -773,45 +868,6 @@ abstract class TextGeometry extends TextGeometryPartial {
       ..add(DoubleProperty("hexp", hexp));
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is TextGeometry &&
-          _stringListEquality.equals(font, other.font) &&
-          weight == other.weight &&
-          size == other.size &&
-          tracking == other.tracking &&
-          lineHeight == other.lineHeight &&
-          wght == other.wght &&
-          grad == other.grad &&
-          wdth == other.wdth &&
-          rond == other.rond &&
-          opsz == other.opsz &&
-          crsv == other.crsv &&
-          slnt == other.slnt &&
-          fill == other.fill &&
-          hexp == other.hexp;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    _stringListEquality.hash(font),
-    weight,
-    size,
-    tracking,
-    lineHeight,
-    wght,
-    grad,
-    wdth,
-    rond,
-    opsz,
-    crsv,
-    slnt,
-    fill,
-    hexp,
-  );
-
   static TextGeometry lerp(TextGeometry a, TextGeometry b, double t) {
     if (identical(a, b)) return a;
     return .from(
@@ -833,7 +889,7 @@ abstract class TextGeometry extends TextGeometryPartial {
   }
 }
 
-class _TextGeometry extends TextGeometry {
+final class _TextGeometry extends TextGeometry {
   const _TextGeometry({
     required this.font,
     required this.weight,
@@ -849,10 +905,10 @@ class _TextGeometry extends TextGeometry {
     required this.slnt,
     required this.fill,
     required this.hexp,
-  });
+  }) : assert(font.length > 0, "TextGeometry.font must be non-empty.");
 
   @override
-  final List<String> font;
+  final ImmutableList<String> font;
 
   @override
   final double weight;
@@ -892,4 +948,41 @@ class _TextGeometry extends TextGeometry {
 
   @override
   final double hexp;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _TextGeometry &&
+          font == other.font &&
+          weight == other.weight &&
+          size == other.size &&
+          tracking == other.tracking &&
+          lineHeight == other.lineHeight &&
+          wght == other.wght &&
+          grad == other.grad &&
+          wdth == other.wdth &&
+          rond == other.rond &&
+          opsz == other.opsz &&
+          crsv == other.crsv &&
+          slnt == other.slnt &&
+          fill == other.fill &&
+          hexp == other.hexp;
+
+  @override
+  int get hashCode => Object.hash(
+    font,
+    weight,
+    size,
+    tracking,
+    lineHeight,
+    wght,
+    grad,
+    wdth,
+    rond,
+    opsz,
+    crsv,
+    slnt,
+    fill,
+    hexp,
+  );
 }

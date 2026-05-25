@@ -387,11 +387,9 @@ class SearchBarContainer extends StatelessWidget {
     return SizedBox(
       width: .infinity,
       height: height ?? 56.0,
-      child: Material(
+      child: Surface(
         clipBehavior: .antiAlias,
-        shape:
-            shape ??
-            CornersBorder.rounded(corners: .all(shapeTheme.corner.full)),
+        shape: shape ?? shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
         color: color ?? colorTheme.surfaceContainer,
         elevation: elevation ?? elevationTheme.level0,
         shadowColor: shadowColor ?? colorTheme.shadow,
@@ -468,7 +466,7 @@ class _SearchBarPaintState extends State<SearchBarPaint> {
       color: widget.containerColor,
       child: _SearchBarLayout(
         centerAlignmentFraction: widget.centerAlignmentFraction,
-        tapRegion: Material.raw(
+        tapRegion: Surface.raw(
           child: InkWell(
             overlayColor: WidgetStateLayerColor(
               // TODO: tokens say onSurface, but might it be onSurfaceVariant?
@@ -834,7 +832,7 @@ class _AppBarWithSearchState extends State<_AppBarWithSearch> {
     //   "offstage: ${route?.offstage} / status: ${route?.animation?.status.name}",
     // );
 
-    return Material(
+    return Surface(
       color: colorTheme.surfaceContainer,
       child: Visibility(
         visible: visible,
@@ -993,12 +991,13 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
     final value = controller?.value;
     final velocity = controller?.velocity ?? 0.0;
     return SpringSimulation(
-      // const SpringThemeData.expressive().fastSpatial.toSpringDescription(),
-      SpringDescription.withDampingRatio(
-        mass: 1.0,
-        stiffness: 800.0,
-        ratio: 0.5,
-      ),
+      const SpringThemeData.defaultsExpressive().fastSpatial
+          .toSpringDescription(),
+      // SpringDescription.withDampingRatio(
+      //   mass: 1.0,
+      //   stiffness: 800.0,
+      //   ratio: 0.5,
+      // ),
       value ?? (forward ? 0.0 : 1.0),
       forward ? 1.0 : 0.0,
       velocity,
@@ -1025,7 +1024,7 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
         fit: .expand,
         children: [
           Positioned.fill(
-            child: Material(
+            child: Surface(
               clipBehavior: .none,
               color: Color.lerp(
                 colorTheme.surfaceContainerLow.withValues(alpha: 0.0),
@@ -1111,15 +1110,16 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
                     ],
                   ),
                 ),
-                supportingText: ColoredBox(
-                  color: Colors.red,
-                  child: const Text("Search"),
-                ),
+                supportingText: const Text("Search"),
+                // supportingText: ColoredBox(
+                //   color: Colors.red,
+                //   child: const Text("Search"),
+                // ),
               ),
-              // searchBarContainer: Material(
+              // searchBarContainer: Surface(
               //   clipBehavior: .antiAlias,
-              //   shape: CornersBorder.rounded(
-              //     corners: .all(shapeTheme.corner.full),
+              //   shape: shapeTheme.shapeWithCorner(
+              //     corner: shapeTheme.corner.full,
               //   ),
               //   color: Color.lerp(
               //     colorTheme.surfaceContainerHighest,
@@ -1180,10 +1180,10 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
                               child: ListItemLayout(
                                 leading: SizedBox.square(
                                   dimension: 32.0,
-                                  child: Material(
+                                  child: Surface(
                                     color: colorTheme.surfaceContainerHigh,
-                                    shape: CornersBorder.rounded(
-                                      corners: .all(shapeTheme.corner.full),
+                                    shape: shapeTheme.applyCorner(
+                                      corner: shapeTheme.cornerFull,
                                     ),
                                     child: const Icon(
                                       Symbols.search_rounded,

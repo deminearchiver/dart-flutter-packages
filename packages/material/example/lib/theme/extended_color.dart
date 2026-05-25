@@ -57,8 +57,7 @@ class ExtendedColorPairing {
           contentColorRole == other.contentColorRole;
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, containerColorRole, contentColorRole);
+  int get hashCode => Object.hash(containerColorRole, contentColorRole);
 
   static const normal = ExtendedColorPairing.from(
     containerColorRole: .color,
@@ -289,33 +288,6 @@ abstract class ExtendedColor with Diagnosticable {
       ..add(ColorProperty("onColorFixed", onColorFixed))
       ..add(ColorProperty("onColorFixedVariant", onColorFixedVariant));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is ExtendedColor &&
-          color == other.color &&
-          onColor == other.onColor &&
-          colorContainer == other.colorContainer &&
-          onColorContainer == other.onColorContainer &&
-          colorFixed == other.colorFixed &&
-          colorFixedDim == other.colorFixedDim &&
-          onColorFixed == other.onColorFixed &&
-          onColorFixedVariant == other.onColorFixedVariant;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    color,
-    onColor,
-    colorContainer,
-    onColorContainer,
-    colorFixed,
-    colorFixedDim,
-    onColorFixed,
-    onColorFixedVariant,
-  );
 }
 
 class _ExtendedColor extends ExtendedColor {
@@ -353,4 +325,29 @@ class _ExtendedColor extends ExtendedColor {
 
   @override
   final Color onColorFixedVariant;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _ExtendedColor &&
+          color == other.color &&
+          onColor == other.onColor &&
+          colorContainer == other.colorContainer &&
+          onColorContainer == other.onColorContainer &&
+          colorFixed == other.colorFixed &&
+          colorFixedDim == other.colorFixedDim &&
+          onColorFixed == other.onColorFixed &&
+          onColorFixedVariant == other.onColorFixedVariant;
+
+  @override
+  int get hashCode => Object.hash(
+    color,
+    onColor,
+    colorContainer,
+    onColorContainer,
+    colorFixed,
+    colorFixedDim,
+    onColorFixed,
+    onColorFixedVariant,
+  );
 }

@@ -158,6 +158,7 @@ final class MaterialDynamicColors {
   ///
   /// A list containing getters for all dynamic colors of this class.
   /// Iteration order is stable.
+  // TODO: List.unmodifiable is dynamic. List.unmodifiableOf will be static.
   late final List<DynamicColor Function()> allDynamicColors = .unmodifiable([
     () => primaryPaletteKeyColor,
     () => secondaryPaletteKeyColor,

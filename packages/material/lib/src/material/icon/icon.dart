@@ -4,7 +4,7 @@ import 'package:flutter/material.dart' as flutter;
 typedef IconLegacy = flutter.Icon;
 
 /// A graphical icon widget drawn with a glyph from a font described in
-/// an [IconData] such as material's predefined [IconData]s in [Icons].
+/// an [IconData] such as material's predefined [IconData]s in [Symbols].
 ///
 /// Icons are not interactive. For an interactive icon, consider material's
 /// [IconButton].
@@ -16,39 +16,6 @@ typedef IconLegacy = flutter.Icon;
 /// This widget assumes that the rendered icon is squared. Non-squared icons may
 /// render incorrectly.
 ///
-/// {@tool snippet}
-///
-/// This example shows how to create a [Row] of [Icon]s in different colors and
-/// sizes. The first [Icon] uses a [semanticLabel] to announce in accessibility
-/// modes like TalkBack and VoiceOver.
-///
-/// ![The following code snippet would generate a row of icons consisting of a pink heart, a green musical note, and a blue umbrella, each progressively bigger than the last.](https://flutter.github.io/assets-for-api-docs/assets/widgets/icon.png)
-///
-/// ```dart
-/// const Row(
-///   mainAxisAlignment: MainAxisAlignment.spaceAround,
-///   children: <Widget>[
-///     Icon(
-///       Icons.favorite,
-///       color: Colors.pink,
-///       size: 24.0,
-///       semanticLabel: 'Text to announce in accessibility modes',
-///     ),
-///     Icon(
-///       Icons.audiotrack,
-///       color: Colors.green,
-///       size: 30.0,
-///     ),
-///     Icon(
-///       Icons.beach_access,
-///       color: Colors.blue,
-///       size: 36.0,
-///     ),
-///   ],
-/// )
-/// ```
-/// {@end-tool}
-///
 /// See also:
 ///
 ///  * [IconButton], for interactive icons.
@@ -59,23 +26,34 @@ class Icon extends IconLegacy {
   const Icon(
     super.icon, {
     super.key,
-    super.size,
+    this.roundness,
     super.fill,
     super.weight,
     super.grade,
     super.opticalSize,
+    super.size,
     super.color,
     super.shadows,
     super.applyTextScaling,
     super.blendMode,
     super.semanticLabel,
     super.textDirection,
-  }) : super(fontWeight: null);
+  }) : assert(roundness == null || (0.0 <= roundness && roundness <= 100.0)),
+       assert(weight == null || (1.0 <= weight && weight <= 1000.0)),
+       super(fontWeight: null);
 
   /// The icon can be null, in which case the widget will render as an empty
   /// space of the specified [size].
   @override
   IconData? get icon => super.icon;
+
+  /// The roundness for drawing the icon.
+  ///
+  /// Requires the underlying icon font to support the `ROND` [FontVariation]
+  /// axis, otherwise has no effect. Variable font filenames often indicate
+  /// the supported axes. Must be between 0.0 (sharp) and 100.0 (rounded),
+  /// inclusive.
+  final double? roundness;
 
   /// The fill for drawing the icon.
   ///
@@ -245,7 +223,10 @@ class Icon extends IconLegacy {
   TextDirection? get textDirection => super.textDirection;
 
   @override
-  FontWeight? get fontWeight => null;
+  FontWeight? get fontWeight {
+    final weight = this.weight;
+    return weight != null ? .new(clampInt(weight.round(), 1, 1000)) : null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -255,12 +236,13 @@ class Icon extends IconLegacy {
     final iconTheme = IconTheme.of(context, allowLegacy: true);
 
     final icon = this.icon;
+    final roundness = this.roundness ?? iconTheme.roundness;
     final fill = this.fill ?? iconTheme.fill;
     final weight = this.weight ?? iconTheme.weight;
     final grade = this.grade ?? iconTheme.grade;
     final opticalSize = this.opticalSize ?? iconTheme.opticalSize;
     var size = this.size ?? iconTheme.size;
-    final shadows = this.shadows ?? iconTheme.shadows;
+    final shadows = this.shadows ?? iconTheme.shadows.unlockView();
     final applyTextScaling =
         this.applyTextScaling ?? iconTheme.applyTextScaling;
 
@@ -299,6 +281,7 @@ class Icon extends IconLegacy {
       foreground: foreground,
       shadows: shadows,
       fontVariations: [
+        FontVariation("ROND", roundness),
         FontVariation("FILL", fill),
         FontVariation("wght", weight),
         FontVariation("GRAD", grade),

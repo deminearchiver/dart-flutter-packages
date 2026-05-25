@@ -16,7 +16,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   Widget _buildTypefaceTheme(BuildContext context, Widget child) =>
-      TypefaceTheme.merge(data: _typography.typeface, child: child);
+      TypefaceTheme.mergeWithData(data: _typography.typeface, child: child);
 
   Widget _buildReferenceThemes(BuildContext context, Widget child) =>
       CombiningBuilder(
@@ -26,7 +26,11 @@ class _AppState extends State<App> {
       );
 
   Widget _buildColorThemes(BuildContext context, Widget child) {
-    final brightness = MediaQuery.platformBrightnessOf(context);
+    final Brightness brightness = switch (_themeMode) {
+      .system => MediaQuery.platformBrightnessOf(context),
+      .light => .light,
+      .dark => .dark,
+    };
     final highContrast = MediaQuery.highContrastOf(context);
     final contrastLevel = highContrast ? 1.0 : 0.0;
     final colorTheme = ColorThemeData.fromSeed(
@@ -43,22 +47,42 @@ class _AppState extends State<App> {
       platform: _platform,
       specVersion: _specVersion,
     );
-    return ColorTheme(
+    return ColorTheme.replaceWithData(
       data: colorTheme,
+      // data: .fromPalette(
+      //   palette: const .defaults(),
+      //   brightness: brightness,
+      //   contrastLevel: contrastLevel,
+      // ),
       child: StaticColors(data: staticColors, child: child),
     );
   }
 
   Widget _buildSpringTheme(BuildContext context, Widget child) =>
-      SpringTheme(data: const .expressive(), child: child);
+      SpringTheme.replaceWithData(
+        data: const SpringThemeData.defaultsExpressive(),
+        child: child,
+      );
 
   Widget _buildTypescaleTheme(BuildContext context, Widget child) =>
-      TypescaleTheme.merge(data: _typography.typescale, child: child);
+      TypescaleTheme.mergeWithData(data: _typography.typescale, child: child);
 
   Widget _buildSystemThemes(BuildContext context, Widget child) =>
       CombiningBuilder(
         useOuterContext: true,
-        builders: [_buildColorThemes, _buildSpringTheme, _buildTypescaleTheme],
+        builders: [
+          _buildColorThemes,
+          _buildSpringTheme,
+          _buildTypescaleTheme,
+          // (context, child) => MeasurementTheme.mergeWithData(
+          //   data: const .from(space100: 8.0),
+          //   child: child,
+          // ),
+          // (context, child) => ShapeTheme.mergeWithData(
+          //   data: .from(cornerFamily: .cut),
+          //   child: child,
+          // ),
+        ],
         child: child,
       );
 
@@ -99,7 +123,7 @@ class _AppState extends State<App> {
     final typescaleTheme = TypescaleTheme.of(context);
     return DefaultTextGeometry(
       style: typescaleTheme.bodyLarge.toTextStyle(color: colorTheme.onSurface),
-      child: child,
+      child: TouchGroup(child: child),
     );
   }
 
@@ -126,10 +150,11 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    final appBuilder = Builder(builder: _buildApp);
+    final appBuilder = Builder(key: GlobalObjectKey(this), builder: _buildApp);
     return _buildThemes(context, appBuilder);
   }
 
+  static const _themeMode = ThemeMode.system;
   static const _variant = DynamicSchemeVariant.expressive;
   static const _platform = DynamicSchemePlatform.phone;
   static const _specVersion = DynamicSchemeSpecVersion.spec2026;
@@ -153,6 +178,7 @@ class _NavigationViewState extends State<NavigationView> {
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.paddingOf(context);
     final colorTheme = ColorTheme.of(context);
     final elevationTheme = ElevationTheme.of(context);
     final shapeTheme = ShapeTheme.of(context);
@@ -161,44 +187,51 @@ class _NavigationViewState extends State<NavigationView> {
     return Stack(
       fit: .expand,
       children: [
-        Positioned.fill(
-          child: KeyedSubtree(
-            key: ValueKey(_selectedIndex),
-            child: switch (_selectedIndex) {
-              1 => const Experiment1View(),
-              2 => const Experiment2View(),
-              3 => const Experiment3View(),
-              4 => const Experiment4View(),
-              5 => const Experiment5View(),
-              6 => const Experiment6View(),
-              _ => Scaffold(
-                backgroundColor: colorTheme.surfaceContainer,
-                body: const Placeholder(),
-              ),
-            },
-          ),
-        ),
-        Positioned(
-          left: 16.0,
-          bottom: 16.0,
-          child: IconButton(
-            style: LegacyThemeFactory.createIconButtonStyle(
-              colorTheme: colorTheme,
-              elevationTheme: elevationTheme,
-              shapeTheme: shapeTheme,
-              stateTheme: stateTheme,
-              color: .tonal,
-              size: .medium,
-              shape: .square,
-              containerColor: colorTheme.tertiaryContainer,
-              iconColor: colorTheme.onTertiaryContainer,
-              containerElevation: elevationTheme.level3,
+        KeyedSubtree(
+          key: ValueKey(_selectedIndex),
+          child: switch (_selectedIndex) {
+            1 => const Experiment1View(),
+            2 => const Experiment2View(),
+            3 => const Experiment3View(),
+            4 => const Experiment4View(),
+            5 => const Experiment5View(),
+            6 => const Experiment6View(),
+            _ => Scaffold(
+              backgroundColor: colorTheme.surfaceContainer,
+              body: const Placeholder(),
             ),
-            onPressed: () {
-              setState(() => _setSelectedIndex(_selectedIndex + 1));
-            },
-            icon: const Icon(Symbols.swap_horiz_rounded),
-            tooltip: "Show next experiment",
+          },
+        ),
+        Padding(
+          padding: padding,
+          child: Align.centerStart(
+            child: Padding(
+              padding: .symmetric(horizontal: 4.0, vertical: 4.0),
+              child: IconButton(
+                style: LegacyThemeFactory.createIconButtonStyle(
+                  colorTheme: colorTheme,
+                  elevationTheme: elevationTheme,
+                  shapeTheme: shapeTheme,
+                  stateTheme: stateTheme,
+                  width: .normal,
+                  color: .tonal,
+                  size: .small,
+                  shape: .square,
+                  containerColor: colorTheme.inverseSurface,
+                  iconColor: colorTheme.inverseOnSurface,
+                  // containerElevation: elevationTheme.level3,
+                ),
+                onPressed: () {
+                  setState(() => _setSelectedIndex(_selectedIndex + 1));
+                },
+                icon: const Icon(
+                  Symbols.menu_open_rounded,
+                  opticalSize: 20.0,
+                  size: 20.0,
+                ),
+                tooltip: "Show next experiment",
+              ),
+            ),
           ),
         ),
       ],
@@ -207,4 +240,23 @@ class _NavigationViewState extends State<NavigationView> {
 
   static const _firstIndex = 1;
   static const _lastIndex = 6;
+}
+
+class Navigation2View extends StatefulWidget {
+  const Navigation2View({super.key});
+
+  @override
+  State<Navigation2View> createState() => _Navigation2ViewState();
+}
+
+class _Navigation2ViewState extends State<Navigation2View> {
+  @override
+  Widget build(BuildContext context) {
+    final colorTheme = ColorTheme.of(context);
+    final elevationTheme = ElevationTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    final typescaleTheme = TypescaleTheme.of(context);
+    return Scaffold(backgroundColor: colorTheme.surfaceContainer);
+  }
 }

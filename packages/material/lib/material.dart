@@ -4,10 +4,11 @@ export 'src/material/extensions.dart';
 export 'src/material/window_size_class.dart';
 export 'src/material/shape/outline.dart';
 export 'src/material/center_optically.dart';
-export 'src/material/custom_material.dart';
+export 'src/material/surface.dart';
 
+export 'src/material/color/static_palette.dart';
+export 'src/material/color/baseline_palette.dart';
 export 'src/material/color/color_theme.dart';
-export 'src/material/color/palette_theme.dart';
 
 export 'src/material/motion/duration_theme.dart';
 export 'src/material/motion/easing_theme.dart';
@@ -20,12 +21,11 @@ export 'src/material/shape/shape_theme.dart';
 
 export 'src/material/state/state_focus_indicator_theme.dart';
 export 'src/material/state/state_property.dart';
+export 'src/material/state/state_layer_properties.dart';
 export 'src/material/state/state_theme.dart';
 export 'src/material/state/states.dart';
 
-export 'src/material/typography/text_geometry.dart';
-export 'src/material/typography/typeface_theme.dart';
-export 'src/material/typography/typescale_theme.dart';
+export 'src/material/typography/typography.dart';
 
 export 'src/material/elevation/elevation_theme.dart';
 
@@ -48,13 +48,14 @@ export 'src/material/switch/switch_theme.dart';
 
 export 'src/material/list/list_theme.dart';
 
-// TODO: review after LoadingIndicator gets a custom implementation
 export 'src/material/loading_indicator/loading_indicator.dart';
 export 'src/material/loading_indicator/loading_indicator_theme.dart';
 
 export 'src/material/raw_material_app.dart';
 
 export 'src/material/experimental/focus_inset_ring_theme.dart';
+export 'src/material/experimental/theme_resolver.dart';
+export 'src/material/measurement/measurement_theme.dart';
 
 import 'package:material/src/material/flutter.dart';
 

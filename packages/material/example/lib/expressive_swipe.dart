@@ -168,7 +168,6 @@ class ExpressiveSwipeController extends Animation<double> {
         _simulationController.value,
         value,
         _simulationController.velocity,
-        snapToEnd: true,
       );
       unawaited(
         _simulationController.animateWith(
@@ -190,18 +189,17 @@ class ExpressiveSwipeController extends Animation<double> {
     _lastSpring = spring;
     _lastStartVelocity = startVelocity;
     final simulation = SpringSimulation(
-      _lastSpring,
+      spring,
       _simulationController.value,
       to,
-      _lastStartVelocity,
+      startVelocity,
       snapToEnd: true,
     );
-    _simulationController.stop(canceled: true);
     unawaited(
       _simulationController.animateWith(
         simulation,
         .forward,
-        resetTicker: true,
+        resetTicker: false,
       ),
     );
   }

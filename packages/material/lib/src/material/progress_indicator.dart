@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:material/src/material/flutter.dart';
@@ -205,14 +206,14 @@ class _LinearProgressIndicatorPainter extends CustomPainter {
         return;
       }
 
-      final bool isLtr = textDirection == TextDirection.ltr;
+      final isLtr = textDirection == TextDirection.ltr;
       final double left =
           (isLtr ? startFraction : 1 - endFraction) * size.width;
       final double right =
           (isLtr ? endFraction : 1 - startFraction) * size.width;
 
-      final Rect rect = Rect.fromLTRB(left, 0, right, size.height);
-      final Paint paint = Paint()..color = color;
+      final rect = Rect.fromLTRB(left, 0, right, size.height);
+      final paint = Paint()..color = color;
 
       if (indicatorBorderRadius != null) {
         final RRect rrect = indicatorBorderRadius!
@@ -228,7 +229,7 @@ class _LinearProgressIndicatorPainter extends CustomPainter {
       // Limit the stop indicator to the height of the indicator.
       final double maxRadius = size.height / 2;
       final double radius = math.min(stopIndicatorRadius!, maxRadius);
-      final Paint indicatorPaint = Paint()..color = stopIndicatorColor!;
+      final indicatorPaint = Paint()..color = stopIndicatorColor!;
       final Offset position = switch (textDirection) {
         TextDirection.rtl => Offset(maxRadius, maxRadius),
         TextDirection.ltr => Offset(size.width - maxRadius, maxRadius),
@@ -580,7 +581,7 @@ class _LinearProgressIndicatorState extends State<LinearProgressIndicator>
 
   void _updateControllerAnimatingStatus() {
     if (widget.value == null && !_internalController.isAnimating) {
-      _internalController.repeat();
+      unawaited(_internalController.repeat());
     } else if (widget.value != null && _internalController.isAnimating) {
       _internalController.stop();
     }
@@ -660,7 +661,7 @@ class _LinearProgressIndicatorState extends State<LinearProgressIndicator>
 
     return AnimatedBuilder(
       animation: _controller.view,
-      builder: (BuildContext context, Widget? child) {
+      builder: (context, child) {
         return _buildIndicator(context, _controller.value, textDirection);
       },
     );
@@ -715,7 +716,7 @@ class _CircularProgressIndicatorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
+    final paint = Paint()
       ..color = valueColor
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
@@ -723,15 +724,15 @@ class _CircularProgressIndicatorPainter extends CustomPainter {
     // Use the negative operator as intended to keep the exposed constant value
     // as users are already familiar with.
     final double strokeOffset = strokeWidth / 2 * -strokeAlign;
-    final Offset arcBaseOffset = Offset(strokeOffset, strokeOffset);
-    final Size arcActualSize = Size(
+    final arcBaseOffset = Offset(strokeOffset, strokeOffset);
+    final arcActualSize = Size(
       size.width - strokeOffset * 2,
       size.height - strokeOffset * 2,
     );
     final bool hasGap = trackGap != null && trackGap! > 0;
 
     if (trackColor != null) {
-      final Paint backgroundPaint = Paint()
+      final backgroundPaint = Paint()
         ..color = trackColor!
         ..strokeWidth = strokeWidth
         ..strokeCap = strokeCap ?? StrokeCap.round
@@ -783,18 +784,19 @@ class _CircularProgressIndicatorPainter extends CustomPainter {
           _twoPi - clampDouble(value!, 0.0, 1.0) * _twoPi - endGap,
         );
         // Flip the canvas for the background arc.
-        canvas.save();
-        canvas.scale(-1, 1);
-        canvas.translate(-size.width, 0);
-        canvas.drawArc(
-          arcBaseOffset & arcActualSize,
-          startSweep,
-          endSweep,
-          false,
-          backgroundPaint,
-        );
-        // Restore the canvas to draw the foreground arc.
-        canvas.restore();
+        canvas
+          ..save()
+          ..scale(-1, 1)
+          ..translate(-size.width, 0)
+          ..drawArc(
+            arcBaseOffset & arcActualSize,
+            startSweep,
+            endSweep,
+            false,
+            backgroundPaint,
+          )
+          // Restore the canvas to draw the foreground arc.
+          ..restore();
       } else if (hasGap && value == null) {
         final double arcRadius = arcActualSize.shortestSide / 2;
         final double strokeRadius = strokeWidth / arcRadius;
@@ -805,15 +807,16 @@ class _CircularProgressIndicatorPainter extends CustomPainter {
         final startSweep = arcStart + arcSweep + startGap;
         final endSweep = (math.pi * 2.0) - arcSweep - endGap;
 
-        canvas.save();
-        canvas.drawArc(
-          arcBaseOffset & arcActualSize,
-          startSweep,
-          endSweep,
-          false,
-          backgroundPaint,
-        );
-        canvas.restore();
+        canvas
+          ..save()
+          ..drawArc(
+            arcBaseOffset & arcActualSize,
+            startSweep,
+            endSweep,
+            false,
+            backgroundPaint,
+          )
+          ..restore();
       } else {
         canvas.drawArc(
           arcBaseOffset & arcActualSize,
@@ -1110,7 +1113,7 @@ class _CircularProgressIndicatorState extends State<CircularProgressIndicator>
 
   void _updateControllerAnimatingStatus() {
     if (widget.value == null && !_internalController.isAnimating) {
-      _internalController.repeat();
+      unawaited(_internalController.repeat());
     } else if (widget.value != null && _internalController.isAnimating) {
       _internalController.stop();
     }
@@ -1188,7 +1191,7 @@ class _CircularProgressIndicatorState extends State<CircularProgressIndicator>
   Widget _buildAnimation() {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget? child) {
+      builder: (context, child) {
         return _buildMaterialIndicator(
           context,
           _strokeHeadTween.evaluate(_controller),

@@ -173,7 +173,7 @@ class ListItemContainer extends StatelessWidget {
         containerColor?.resolve(states) ??
         listItemTheme.containerColor.resolve(states);
 
-    return Material(
+    return Surface(
       clipBehavior: .antiAlias,
       color: resolvedContainerColor,
       shape: resolvedShape,
@@ -543,10 +543,11 @@ class _ListItemInteractionState extends State<ListItemInteraction> {
 
     return listItemContainerScope.buildCenterOptically(
       inverse: true,
-      child: FocusRingTheme.merge(
+      child: FocusRingTheme.mergeWithData(
         data: FocusRingThemeDataPartial.from(
           shape: .all(
-            CornersBorder.rounded(corners: .all(_shapeTheme.corner.large)),
+            // TODO: add shape corner family
+            CornersBorder.rounded(corners: .all(_shapeTheme.cornerLarge)),
           ),
         ),
         child: FocusRing(
@@ -627,9 +628,10 @@ class ListItemLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final measurementTheme = MeasurementTheme.of(context);
     final listItemTheme = ListItemTheme.of(context);
 
-    final states = const _ListItemStates(isFirst: false, isLast: false);
+    const states = _ListItemStates(isFirst: false, isLast: false);
 
     final resolvedConstraints = BoxConstraints(
       minWidth: 0.0,
@@ -638,24 +640,35 @@ class ListItemLayout extends StatelessWidget {
       maxHeight: maxHeight ?? .infinity,
     );
 
-    final resolvedPadding = padding ?? const .symmetric(horizontal: 16.0);
+    final resolvedPadding =
+        padding ?? .symmetric(horizontal: measurementTheme.space200);
 
-    final resolvedLeadingSpace = leadingSpace ?? 12.0;
+    final resolvedLeadingSpace = leadingSpace ?? measurementTheme.space150;
 
     final resolvedLeadingPadding =
         leadingPadding?.add(.directional(end: resolvedLeadingSpace)) ??
         // Avoid getting _MixedEdgeInsets
-        .fromSTEB(0.0, 10.0, resolvedLeadingSpace, 10.0);
+        .fromSTEB(
+          0.0,
+          measurementTheme.space125,
+          resolvedLeadingSpace,
+          measurementTheme.space125,
+        );
 
     final resolvedContentPadding =
-        contentPadding ?? const .symmetric(vertical: 10.0);
+        contentPadding ?? .symmetric(vertical: measurementTheme.space125);
 
-    final resolvedTrailingSpace = trailingSpace ?? 12.0;
+    final resolvedTrailingSpace = trailingSpace ?? measurementTheme.space150;
 
     final resolvedTrailingPadding =
         trailingPadding?.add(.directional(start: resolvedTrailingSpace)) ??
         // Avoid getting _MixedEdgeInsets
-        .fromSTEB(resolvedTrailingSpace, 10.0, 0.0, 10.0);
+        .fromSTEB(
+          resolvedTrailingSpace,
+          measurementTheme.space125,
+          0.0,
+          measurementTheme.space125,
+        );
 
     return ConstrainedBox(
       constraints: resolvedConstraints,
@@ -672,7 +685,7 @@ class ListItemLayout extends StatelessWidget {
                 child: DefaultTextStyle.merge(
                   textAlign: .start,
                   style: listItemTheme.leadingTextStyle.resolve(states),
-                  child: IconTheme.merge(
+                  child: IconTheme.mergeWithData(
                     data: listItemTheme.leadingIconTheme.resolve(states),
                     child: leading,
                   ),
@@ -716,7 +729,7 @@ class ListItemLayout extends StatelessWidget {
                 child: DefaultTextStyle.merge(
                   textAlign: .end,
                   style: listItemTheme.trailingTextStyle.resolve(states),
-                  child: IconTheme.merge(
+                  child: IconTheme.mergeWithData(
                     data: listItemTheme.trailingIconTheme.resolve(states),
                     child: trailing,
                   ),

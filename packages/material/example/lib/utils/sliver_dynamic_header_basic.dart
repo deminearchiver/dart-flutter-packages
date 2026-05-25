@@ -78,13 +78,8 @@ class SliverDynamicHeaderLayoutInfo with Diagnosticable {
           shrinkOffset == other.shrinkOffset;
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    minExtent,
-    maxExtent,
-    currentExtent,
-    shrinkOffset,
-  );
+  int get hashCode =>
+      Object.hash(minExtent, maxExtent, currentExtent, shrinkOffset);
 }
 
 typedef SliverDynamicHeaderBuilder =

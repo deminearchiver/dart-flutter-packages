@@ -42,6 +42,7 @@ workspace:
   - packages/system_colors/system_colors_platform_interface
   - packages/system_colors/system_colors_web
   - packages/system_colors/system_colors_windows
+  - packages/touch_targets
 
 # This is needed for the VSCode extension to identify Flutter properly
 # https://github.com/Dart-Code/Dart-Code/blob/1b24cf3d1d84ffb3a761711a96b5cef4c4f6e26f/src/shared/utils/fs.ts#L187

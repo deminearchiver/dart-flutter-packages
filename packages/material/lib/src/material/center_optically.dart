@@ -163,26 +163,48 @@ class RenderCenterOptically extends RenderShiftedBox {
     getVerticalPaddingCorrection(borderRadius),
   );
 
-  Size _layout(BoxChildLayoutStrategy strategy, BoxConstraints constraints) {
+  Size _computeLayout(
+    BoxChildLayoutStrategy strategy,
+    BoxConstraints constraints,
+  ) {
     final child = this.child;
     if (child == null) return constraints.smallest;
-    final size = constraints.constrain(
-      strategy.layoutChildForSize(child, constraints),
-    );
+    final childSize = strategy.layoutChildForSize(child, constraints);
     final paddingCorrection = enabled
-        ? _getPaddingCorrection(_resolvedCorners.toBorderRadius(size))
+        ? _getPaddingCorrection(_resolvedCorners.toBorderRadius(childSize))
         : Offset.zero;
-    strategy.positionChild(child, paddingCorrection);
-    return size;
+    if (strategy.affectsLayoutState) {
+      strategy.positionChild(child, paddingCorrection);
+    }
+    return childSize;
   }
 
   @override
   Size computeDryLayout(BoxConstraints constraints) =>
-      _layout(.dry, constraints);
+      _computeLayout(.dry, constraints);
+
+  @override
+  double? computeDryBaseline(
+    covariant BoxConstraints constraints,
+    TextBaseline baseline,
+  ) {
+    final child = this.child;
+    if (child == null) return null;
+
+    final childBaseline = child.getDryBaseline(constraints, baseline);
+    if (childBaseline == null) return null;
+
+    final childSize = child.getDryLayout(constraints);
+    final paddingCorrection = enabled
+        ? _getPaddingCorrection(_resolvedCorners.toBorderRadius(childSize))
+        : Offset.zero;
+
+    return childBaseline + paddingCorrection.dy;
+  }
 
   @override
   void performLayout() {
-    size = _layout(.wet, constraints);
+    size = _computeLayout(.wet, constraints);
   }
 
   @override

@@ -22,7 +22,7 @@ abstract class StaticColorsData with Diagnosticable {
     double contrastLevel = 0.0,
     DynamicSchemeSpecVersion? specVersion = DynamicScheme.defaultSpecVersion,
   }) {
-    const palette = StaticPaletteThemeData.fallback();
+    const palette = StaticPalette.defaults();
     return .from(
       blue: .fromSeed(
         sourceColor: palette.blue50,
@@ -167,33 +167,6 @@ abstract class StaticColorsData with Diagnosticable {
       ..add(DiagnosticsProperty<ExtendedColor>("orange", orange))
       ..add(DiagnosticsProperty<ExtendedColor>("pink", pink));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is StaticColorsData &&
-          blue == other.blue &&
-          yellow == other.yellow &&
-          red == other.red &&
-          purple == other.purple &&
-          cyan == other.cyan &&
-          green == other.green &&
-          orange == other.orange &&
-          pink == other.pink;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    blue,
-    yellow,
-    red,
-    purple,
-    cyan,
-    green,
-    orange,
-    pink,
-  );
 }
 
 class _StaticColorsData extends StaticColorsData {
@@ -231,6 +204,23 @@ class _StaticColorsData extends StaticColorsData {
 
   @override
   final ExtendedColor pink;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _StaticColorsData &&
+          blue == other.blue &&
+          yellow == other.yellow &&
+          red == other.red &&
+          purple == other.purple &&
+          cyan == other.cyan &&
+          green == other.green &&
+          orange == other.orange &&
+          pink == other.pink;
+
+  @override
+  int get hashCode =>
+      Object.hash(blue, yellow, red, purple, cyan, green, orange, pink);
 }
 
 class StaticColors extends InheritedTheme {
@@ -252,10 +242,10 @@ class StaticColors extends InheritedTheme {
     final result = maybeOf(context);
     if (result != null) return result;
     final colorTheme = ColorTheme.of(context);
-    final highContarst = MediaQuery.highContrastOf(context);
+    final highContrast = MediaQuery.highContrastOf(context);
     return .fallback(
       brightness: colorTheme.brightness,
-      contrastLevel: highContarst ? 1.0 : 0.0,
+      contrastLevel: highContrast ? 1.0 : 0.0,
       platform: .phone,
       variant: .tonalSpot,
       specVersion: .spec2026,

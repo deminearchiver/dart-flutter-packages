@@ -48,7 +48,33 @@ abstract class CheckboxThemeDataPartial with Diagnosticable {
 
   CheckboxStateProperty<Color?>? get iconColor;
 
+  CheckboxThemeDataPartial copy() => copyWith();
+
   CheckboxThemeDataPartial copyWith({
+    covariant CheckboxStateProperty<Size?>? stateLayerSize,
+    covariant CheckboxStateProperty<ShapeBorder?>? stateLayerShape,
+    covariant CheckboxStateProperty<Color?>? stateLayerColor,
+    covariant CheckboxStateProperty<double?>? stateLayerOpacity,
+    covariant CheckboxStateProperty<double?>? containerSize,
+    covariant CheckboxStateProperty<OutlinedBorder?>? containerShape,
+    covariant CheckboxStateProperty<Color?>? containerColor,
+    covariant CheckboxStateProperty<OutlinePartial?>? containerOutline,
+    covariant CheckboxStateProperty<double?>? iconSize,
+    covariant CheckboxStateProperty<Color?>? iconColor,
+  }) => .from(
+    stateLayerSize: stateLayerSize ?? this.stateLayerSize,
+    stateLayerShape: stateLayerShape ?? this.stateLayerShape,
+    stateLayerColor: stateLayerColor ?? this.stateLayerColor,
+    stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
+    containerSize: containerSize ?? this.containerSize,
+    containerShape: containerShape ?? this.containerShape,
+    containerColor: containerColor ?? this.containerColor,
+    containerOutline: containerOutline ?? this.containerOutline,
+    iconSize: iconSize ?? this.iconSize,
+    iconColor: iconColor ?? this.iconColor,
+  );
+
+  CheckboxThemeDataPartial maybeCopyWith({
     covariant CheckboxStateProperty<Size?>? stateLayerSize,
     covariant CheckboxStateProperty<ShapeBorder?>? stateLayerShape,
     covariant CheckboxStateProperty<Color?>? stateLayerColor,
@@ -70,21 +96,50 @@ abstract class CheckboxThemeDataPartial with Diagnosticable {
           containerOutline != null ||
           iconSize != null ||
           iconColor != null
-      ? .from(
-          stateLayerSize: stateLayerSize ?? this.stateLayerSize,
-          stateLayerShape: stateLayerShape ?? this.stateLayerShape,
-          stateLayerColor: stateLayerColor ?? this.stateLayerColor,
-          stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
-          containerSize: containerSize ?? this.containerSize,
-          containerShape: containerShape ?? this.containerShape,
-          containerColor: containerColor ?? this.containerColor,
-          containerOutline: containerOutline ?? this.containerOutline,
-          iconSize: iconSize ?? this.iconSize,
-          iconColor: iconColor ?? this.iconColor,
+      ? copyWith(
+          stateLayerSize: stateLayerSize,
+          stateLayerShape: stateLayerShape,
+          stateLayerColor: stateLayerColor,
+          stateLayerOpacity: stateLayerOpacity,
+          containerSize: containerSize,
+          containerShape: containerShape,
+          containerColor: containerColor,
+          containerOutline: containerOutline,
+          iconSize: iconSize,
+          iconColor: iconColor,
         )
       : this;
 
   CheckboxThemeDataPartial mergeWith({
+    CheckboxStateProperty<Size?>? stateLayerSize,
+    CheckboxStateProperty<ShapeBorder?>? stateLayerShape,
+    CheckboxStateProperty<Color?>? stateLayerColor,
+    CheckboxStateProperty<double?>? stateLayerOpacity,
+    CheckboxStateProperty<double?>? containerSize,
+    CheckboxStateProperty<OutlinedBorder?>? containerShape,
+    CheckboxStateProperty<Color?>? containerColor,
+    CheckboxStateProperty<OutlinePartial?>? containerOutline,
+    CheckboxStateProperty<double?>? iconSize,
+    CheckboxStateProperty<Color?>? iconColor,
+  }) => .from(
+    stateLayerSize: this.stateLayerSize.maybeMergeNullable(stateLayerSize),
+    stateLayerShape: this.stateLayerShape.maybeMergeNullable(stateLayerShape),
+    stateLayerColor: this.stateLayerColor.maybeMergeNullable(stateLayerColor),
+    stateLayerOpacity: this.stateLayerOpacity.maybeMergeNullable(
+      stateLayerOpacity,
+    ),
+    containerSize: this.containerSize.maybeMergeNullable(containerSize),
+    containerShape: this.containerShape.maybeMergeNullable(containerShape),
+    containerColor: this.containerColor.maybeMergeNullable(containerColor),
+    containerOutline: this.containerOutline.maybeCombineNullable(
+      containerOutline,
+      OutlinePartial.combine,
+    ),
+    iconSize: this.iconSize.maybeMergeNullable(iconSize),
+    iconColor: this.iconColor.maybeMergeNullable(iconColor),
+  );
+
+  CheckboxThemeDataPartial maybeMergeWith({
     CheckboxStateProperty<Size?>? stateLayerSize,
     CheckboxStateProperty<ShapeBorder?>? stateLayerShape,
     CheckboxStateProperty<Color?>? stateLayerColor,
@@ -107,40 +162,31 @@ abstract class CheckboxThemeDataPartial with Diagnosticable {
           iconSize != null ||
           iconColor != null
       ? .from(
-          stateLayerSize:
-              stateLayerSize?.orElseMaybe(this.stateLayerSize?.resolve) ??
-              this.stateLayerSize,
-          stateLayerShape:
-              stateLayerShape?.orElseMaybe(this.stateLayerShape?.resolve) ??
-              this.stateLayerShape,
-          stateLayerColor:
-              stateLayerColor?.orElseMaybe(this.stateLayerColor?.resolve) ??
-              this.stateLayerColor,
-          stateLayerOpacity:
-              stateLayerOpacity?.orElseMaybe(this.stateLayerOpacity?.resolve) ??
-              this.stateLayerOpacity,
-          containerSize:
-              containerSize?.orElseMaybe(this.containerSize?.resolve) ??
-              this.containerSize,
-          containerShape:
-              containerShape?.orElseMaybe(this.containerShape?.resolve) ??
-              this.containerShape,
-          containerColor:
-              containerColor?.orElseMaybe(this.containerColor?.resolve) ??
-              this.containerColor,
-          containerOutline:
-              containerOutline
-                  ?.orElseMaybe(this.containerOutline?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.containerOutline?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              this.containerOutline,
-          iconSize:
-              iconSize?.orElseMaybe(this.iconSize?.resolve) ?? this.iconSize,
-          iconColor:
-              iconColor?.orElseMaybe(this.iconColor?.resolve) ?? this.iconColor,
+          stateLayerSize: this.stateLayerSize.maybeMergeNullable(
+            stateLayerSize,
+          ),
+          stateLayerShape: this.stateLayerShape.maybeMergeNullable(
+            stateLayerShape,
+          ),
+          stateLayerColor: this.stateLayerColor.maybeMergeNullable(
+            stateLayerColor,
+          ),
+          stateLayerOpacity: this.stateLayerOpacity.maybeMergeNullable(
+            stateLayerOpacity,
+          ),
+          containerSize: this.containerSize.maybeMergeNullable(containerSize),
+          containerShape: this.containerShape.maybeMergeNullable(
+            containerShape,
+          ),
+          containerColor: this.containerColor.maybeMergeNullable(
+            containerColor,
+          ),
+          containerOutline: this.containerOutline.maybeCombineNullable(
+            containerOutline,
+            OutlinePartial.maybeCombine,
+          ),
+          iconSize: this.iconSize.maybeMergeNullable(iconSize),
+          iconColor: this.iconColor.maybeMergeNullable(iconColor),
         )
       : this;
 
@@ -158,41 +204,26 @@ abstract class CheckboxThemeDataPartial with Diagnosticable {
           iconSize: other.iconSize,
           iconColor: other.iconColor,
         )
+      : copy();
+
+  CheckboxThemeDataPartial maybeMerge(CheckboxThemeDataPartial? other) =>
+      other != null
+      ? maybeMergeWith(
+          stateLayerSize: other.stateLayerSize,
+          stateLayerShape: other.stateLayerShape,
+          stateLayerColor: other.stateLayerColor,
+          stateLayerOpacity: other.stateLayerOpacity,
+          containerSize: other.containerSize,
+          containerShape: other.containerShape,
+          containerColor: other.containerColor,
+          containerOutline: other.containerOutline,
+          iconSize: other.iconSize,
+          iconColor: other.iconColor,
+        )
       : this;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is CheckboxThemeDataPartial &&
-          stateLayerSize == other.stateLayerSize &&
-          stateLayerShape == other.stateLayerShape &&
-          stateLayerColor == other.stateLayerColor &&
-          stateLayerOpacity == other.stateLayerOpacity &&
-          containerSize == other.containerSize &&
-          containerShape == other.containerShape &&
-          containerColor == other.containerColor &&
-          containerOutline == other.containerOutline &&
-          iconSize == other.iconSize &&
-          iconColor == other.iconColor;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    stateLayerSize,
-    stateLayerShape,
-    stateLayerColor,
-    stateLayerOpacity,
-    containerSize,
-    containerShape,
-    containerColor,
-    containerOutline,
-    iconSize,
-    iconColor,
-  );
 }
 
-class _CheckboxThemeDataPartial extends CheckboxThemeDataPartial {
+final class _CheckboxThemeDataPartial extends CheckboxThemeDataPartial {
   const _CheckboxThemeDataPartial({
     this.stateLayerSize,
     this.stateLayerShape,
@@ -235,6 +266,35 @@ class _CheckboxThemeDataPartial extends CheckboxThemeDataPartial {
 
   @override
   final CheckboxStateProperty<Color?>? iconColor;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _CheckboxThemeDataPartial &&
+          stateLayerSize == other.stateLayerSize &&
+          stateLayerShape == other.stateLayerShape &&
+          stateLayerColor == other.stateLayerColor &&
+          stateLayerOpacity == other.stateLayerOpacity &&
+          containerSize == other.containerSize &&
+          containerShape == other.containerShape &&
+          containerColor == other.containerColor &&
+          containerOutline == other.containerOutline &&
+          iconSize == other.iconSize &&
+          iconColor == other.iconColor;
+
+  @override
+  int get hashCode => Object.hash(
+    stateLayerSize,
+    stateLayerShape,
+    stateLayerColor,
+    stateLayerOpacity,
+    containerSize,
+    containerShape,
+    containerColor,
+    containerOutline,
+    iconSize,
+    iconColor,
+  );
 }
 
 abstract class CheckboxThemeData extends CheckboxThemeDataPartial {
@@ -253,10 +313,11 @@ abstract class CheckboxThemeData extends CheckboxThemeDataPartial {
     required CheckboxStateProperty<Color> iconColor,
   }) = _CheckboxThemeData;
 
-  const factory CheckboxThemeData.fallback({
+  const factory CheckboxThemeData.defaults({
     required ColorThemeData colorTheme,
     required ShapeThemeData shapeTheme,
     required StateThemeData stateTheme,
+    CheckboxThemeDataPartial? overrides,
   }) = _CheckboxThemeDataDefaults;
 
   @override
@@ -290,7 +351,35 @@ abstract class CheckboxThemeData extends CheckboxThemeDataPartial {
   CheckboxStateProperty<Color> get iconColor;
 
   @override
+  CheckboxThemeData copy() => copyWith();
+
+  @override
   CheckboxThemeData copyWith({
+    covariant CheckboxStateProperty<Size>? stateLayerSize,
+    covariant CheckboxStateProperty<ShapeBorder>? stateLayerShape,
+    covariant CheckboxStateProperty<Color>? stateLayerColor,
+    covariant CheckboxStateProperty<double>? stateLayerOpacity,
+    covariant CheckboxStateProperty<double>? containerSize,
+    covariant CheckboxStateProperty<OutlinedBorder>? containerShape,
+    covariant CheckboxStateProperty<Color>? containerColor,
+    covariant CheckboxStateProperty<Outline>? containerOutline,
+    covariant CheckboxStateProperty<double>? iconSize,
+    covariant CheckboxStateProperty<Color>? iconColor,
+  }) => .from(
+    stateLayerSize: stateLayerSize ?? this.stateLayerSize,
+    stateLayerShape: stateLayerShape ?? this.stateLayerShape,
+    stateLayerColor: stateLayerColor ?? this.stateLayerColor,
+    stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
+    containerSize: containerSize ?? this.containerSize,
+    containerShape: containerShape ?? this.containerShape,
+    containerColor: containerColor ?? this.containerColor,
+    containerOutline: containerOutline ?? this.containerOutline,
+    iconSize: iconSize ?? this.iconSize,
+    iconColor: iconColor ?? this.iconColor,
+  );
+
+  @override
+  CheckboxThemeData maybeCopyWith({
     covariant CheckboxStateProperty<Size>? stateLayerSize,
     covariant CheckboxStateProperty<ShapeBorder>? stateLayerShape,
     covariant CheckboxStateProperty<Color>? stateLayerColor,
@@ -312,22 +401,50 @@ abstract class CheckboxThemeData extends CheckboxThemeDataPartial {
           containerOutline != null ||
           iconSize != null ||
           iconColor != null
-      ? .from(
-          stateLayerSize: stateLayerSize ?? this.stateLayerSize,
-          stateLayerShape: stateLayerShape ?? this.stateLayerShape,
-          stateLayerColor: stateLayerColor ?? this.stateLayerColor,
-          stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
-          containerSize: containerSize ?? this.containerSize,
-          containerShape: containerShape ?? this.containerShape,
-          containerColor: containerColor ?? this.containerColor,
-          containerOutline: containerOutline ?? this.containerOutline,
-          iconSize: iconSize ?? this.iconSize,
-          iconColor: iconColor ?? this.iconColor,
+      ? copyWith(
+          stateLayerSize: stateLayerSize,
+          stateLayerShape: stateLayerShape,
+          stateLayerColor: stateLayerColor,
+          stateLayerOpacity: stateLayerOpacity,
+          containerSize: containerSize,
+          containerShape: containerShape,
+          containerColor: containerColor,
+          containerOutline: containerOutline,
+          iconSize: iconSize,
+          iconColor: iconColor,
         )
       : this;
 
   @override
   CheckboxThemeData mergeWith({
+    CheckboxStateProperty<Size?>? stateLayerSize,
+    CheckboxStateProperty<ShapeBorder?>? stateLayerShape,
+    CheckboxStateProperty<Color?>? stateLayerColor,
+    CheckboxStateProperty<double?>? stateLayerOpacity,
+    CheckboxStateProperty<double?>? containerSize,
+    CheckboxStateProperty<OutlinedBorder?>? containerShape,
+    CheckboxStateProperty<Color?>? containerColor,
+    CheckboxStateProperty<OutlinePartial?>? containerOutline,
+    CheckboxStateProperty<double?>? iconSize,
+    CheckboxStateProperty<Color?>? iconColor,
+  }) => .from(
+    stateLayerSize: this.stateLayerSize.maybeMerge(stateLayerSize),
+    stateLayerShape: this.stateLayerShape.maybeMerge(stateLayerShape),
+    stateLayerColor: this.stateLayerColor.maybeMerge(stateLayerColor),
+    stateLayerOpacity: this.stateLayerOpacity.maybeMerge(stateLayerOpacity),
+    containerSize: this.containerSize.maybeMerge(containerSize),
+    containerShape: this.containerShape.maybeMerge(containerShape),
+    containerColor: this.containerColor.maybeMerge(containerColor),
+    containerOutline: this.containerOutline.maybeCombine(
+      containerOutline,
+      Outline.combine,
+    ),
+    iconSize: this.iconSize.maybeMerge(iconSize),
+    iconColor: this.iconColor.maybeMerge(iconColor),
+  );
+
+  @override
+  CheckboxThemeData maybeMergeWith({
     CheckboxStateProperty<Size?>? stateLayerSize,
     CheckboxStateProperty<ShapeBorder?>? stateLayerShape,
     CheckboxStateProperty<Color?>? stateLayerColor,
@@ -350,38 +467,21 @@ abstract class CheckboxThemeData extends CheckboxThemeDataPartial {
           iconSize != null ||
           iconColor != null
       ? .from(
-          stateLayerSize:
-              stateLayerSize?.orElse(this.stateLayerSize.resolve) ??
-              this.stateLayerSize,
-          stateLayerShape:
-              stateLayerShape?.orElse(this.stateLayerShape.resolve) ??
-              this.stateLayerShape,
-          stateLayerColor:
-              stateLayerColor?.orElse(this.stateLayerColor.resolve) ??
-              this.stateLayerColor,
-          stateLayerOpacity:
-              stateLayerOpacity?.orElse(this.stateLayerOpacity.resolve) ??
-              this.stateLayerOpacity,
-          containerSize:
-              containerSize?.orElse(this.containerSize.resolve) ??
-              this.containerSize,
-          containerShape:
-              containerShape?.orElse(this.containerShape.resolve) ??
-              this.containerShape,
-          containerColor:
-              containerColor?.orElse(this.containerColor.resolve) ??
-              this.containerColor,
-          containerOutline:
-              containerOutline
-                  ?.orElse(this.containerOutline.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.containerOutline.resolve(states).merge(value),
-                  ) ??
-              this.containerOutline,
-          iconSize: iconSize?.orElse(this.iconSize.resolve) ?? this.iconSize,
-          iconColor:
-              iconColor?.orElse(this.iconColor.resolve) ?? this.iconColor,
+          stateLayerSize: this.stateLayerSize.maybeMerge(stateLayerSize),
+          stateLayerShape: this.stateLayerShape.maybeMerge(stateLayerShape),
+          stateLayerColor: this.stateLayerColor.maybeMerge(stateLayerColor),
+          stateLayerOpacity: this.stateLayerOpacity.maybeMerge(
+            stateLayerOpacity,
+          ),
+          containerSize: this.containerSize.maybeMerge(containerSize),
+          containerShape: this.containerShape.maybeMerge(containerShape),
+          containerColor: this.containerColor.maybeMerge(containerColor),
+          containerOutline: this.containerOutline.maybeCombine(
+            containerOutline,
+            Outline.maybeCombine,
+          ),
+          iconSize: this.iconSize.maybeMerge(iconSize),
+          iconColor: this.iconColor.maybeMerge(iconColor),
         )
       : this;
 
@@ -399,40 +499,26 @@ abstract class CheckboxThemeData extends CheckboxThemeDataPartial {
           iconSize: other.iconSize,
           iconColor: other.iconColor,
         )
-      : this;
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is CheckboxThemeData &&
-          stateLayerSize == other.stateLayerSize &&
-          stateLayerShape == other.stateLayerShape &&
-          stateLayerColor == other.stateLayerColor &&
-          stateLayerOpacity == other.stateLayerOpacity &&
-          containerSize == other.containerSize &&
-          containerShape == other.containerShape &&
-          containerColor == other.containerColor &&
-          containerOutline == other.containerOutline &&
-          iconSize == other.iconSize &&
-          iconColor == other.iconColor;
+      : copy();
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    stateLayerSize,
-    stateLayerShape,
-    stateLayerColor,
-    stateLayerOpacity,
-    containerSize,
-    containerShape,
-    containerColor,
-    containerOutline,
-    iconSize,
-    iconColor,
-  );
+  CheckboxThemeData maybeMerge(CheckboxThemeDataPartial? other) => other != null
+      ? maybeMergeWith(
+          stateLayerSize: other.stateLayerSize,
+          stateLayerShape: other.stateLayerShape,
+          stateLayerColor: other.stateLayerColor,
+          stateLayerOpacity: other.stateLayerOpacity,
+          containerSize: other.containerSize,
+          containerShape: other.containerShape,
+          containerColor: other.containerColor,
+          containerOutline: other.containerOutline,
+          iconSize: other.iconSize,
+          iconColor: other.iconColor,
+        )
+      : this;
 }
 
-class _CheckboxThemeData extends CheckboxThemeData {
+final class _CheckboxThemeData extends CheckboxThemeData {
   const _CheckboxThemeData({
     required this.stateLayerSize,
     required this.stateLayerShape,
@@ -475,74 +561,77 @@ class _CheckboxThemeData extends CheckboxThemeData {
 
   @override
   final CheckboxStateProperty<Color> iconColor;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _CheckboxThemeData &&
+          stateLayerSize == other.stateLayerSize &&
+          stateLayerShape == other.stateLayerShape &&
+          stateLayerColor == other.stateLayerColor &&
+          stateLayerOpacity == other.stateLayerOpacity &&
+          containerSize == other.containerSize &&
+          containerShape == other.containerShape &&
+          containerColor == other.containerColor &&
+          containerOutline == other.containerOutline &&
+          iconSize == other.iconSize &&
+          iconColor == other.iconColor;
+
+  @override
+  int get hashCode => Object.hash(
+    stateLayerSize,
+    stateLayerShape,
+    stateLayerColor,
+    stateLayerOpacity,
+    containerSize,
+    containerShape,
+    containerColor,
+    containerOutline,
+    iconSize,
+    iconColor,
+  );
 }
 
-class _CheckboxThemeDataDefaults extends CheckboxThemeData {
+final class _CheckboxThemeDataDefaults extends CheckboxThemeData {
   const _CheckboxThemeDataDefaults({
     required ColorThemeData colorTheme,
     required ShapeThemeData shapeTheme,
     required StateThemeData stateTheme,
-    CheckboxStateProperty<Size?>? stateLayerSize,
-    CheckboxStateProperty<ShapeBorder?>? stateLayerShape,
-    CheckboxStateProperty<Color?>? stateLayerColor,
-    CheckboxStateProperty<double?>? stateLayerOpacity,
-    CheckboxStateProperty<double?>? containerSize,
-    CheckboxStateProperty<OutlinedBorder?>? containerShape,
-    CheckboxStateProperty<Color?>? containerColor,
-    CheckboxStateProperty<OutlinePartial?>? containerOutline,
-    CheckboxStateProperty<double?>? iconSize,
-    CheckboxStateProperty<Color?>? iconColor,
+    CheckboxThemeDataPartial? overrides,
   }) : _colorTheme = colorTheme,
        _shapeTheme = shapeTheme,
        _stateTheme = stateTheme,
-       _stateLayerSize = stateLayerSize,
-       _stateLayerShape = stateLayerShape,
-       _stateLayerColor = stateLayerColor,
-       _stateLayerOpacity = stateLayerOpacity,
-       _containerSize = containerSize,
-       _containerShape = containerShape,
-       _containerColor = containerColor,
-       _containerOutline = containerOutline,
-       _iconSize = iconSize,
-       _iconColor = iconColor;
+       _overrides = overrides ?? const .from();
 
   final ColorThemeData _colorTheme;
   final ShapeThemeData _shapeTheme;
   final StateThemeData _stateTheme;
-  final CheckboxStateProperty<Size?>? _stateLayerSize;
-  final CheckboxStateProperty<ShapeBorder?>? _stateLayerShape;
-  final CheckboxStateProperty<Color?>? _stateLayerColor;
-  final CheckboxStateProperty<double?>? _stateLayerOpacity;
-  final CheckboxStateProperty<double?>? _containerSize;
-  final CheckboxStateProperty<OutlinedBorder?>? _containerShape;
-  final CheckboxStateProperty<Color?>? _containerColor;
-  final CheckboxStateProperty<OutlinePartial?>? _containerOutline;
-  final CheckboxStateProperty<double?>? _iconSize;
-  final CheckboxStateProperty<Color?>? _iconColor;
+  final CheckboxThemeDataPartial _overrides;
 
   @override
   CheckboxStateProperty<Size> get stateLayerSize => .resolveWith(
-    (states) => _stateLayerSize?.resolve(states) ?? const .square(40.0),
+    (states) =>
+        _overrides.stateLayerSize?.resolve(states) ?? const .square(40.0),
   );
 
   @override
   CheckboxStateProperty<ShapeBorder> get stateLayerShape => .resolveWith(
     (states) =>
-        _stateLayerShape?.resolve(states) ??
-        CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
+        _overrides.stateLayerShape?.resolve(states) ??
+        _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
   );
 
   @override
   CheckboxStateProperty<Color> get stateLayerColor => .resolveWith(
     (states) =>
-        _stateLayerColor?.resolve(states) ??
+        _overrides.stateLayerColor?.resolve(states) ??
         (states.isSelected ? _colorTheme.primary : _colorTheme.onSurface),
   );
 
   @override
   CheckboxStateProperty<double> get stateLayerOpacity => .resolveWith(
     (states) =>
-        _stateLayerOpacity?.resolve(states) ??
+        _overrides.stateLayerOpacity?.resolve(states) ??
         switch (states) {
           CheckboxEnabledStates(isPressed: true) =>
             _stateTheme.pressedStateLayerOpacity,
@@ -554,20 +643,21 @@ class _CheckboxThemeDataDefaults extends CheckboxThemeData {
   );
 
   @override
-  CheckboxStateProperty<double> get containerSize =>
-      .resolveWith((states) => _containerSize?.resolve(states) ?? 18.0);
+  CheckboxStateProperty<double> get containerSize => .resolveWith(
+    (states) => _overrides.containerSize?.resolve(states) ?? 18.0,
+  );
 
   @override
   CheckboxStateProperty<OutlinedBorder> get containerShape => .resolveWith(
     (states) =>
-        _containerShape?.resolve(states) ??
-        const CornersBorder.rounded(corners: .all(.fixed(2.0))),
+        _overrides.containerShape?.resolve(states) ??
+        _shapeTheme.applyCornerValue(cornerValue: 2.0),
   );
 
   @override
   CheckboxStateProperty<Color> get containerColor => .resolveWith(
     (states) =>
-        _containerColor?.resolve(states) ??
+        _overrides.containerColor?.resolve(states) ??
         switch (states) {
           CheckboxDisabledStates(isSelected: false) =>
             _colorTheme.onSurface.withValues(alpha: 0.0),
@@ -602,17 +692,17 @@ class _CheckboxThemeDataDefaults extends CheckboxThemeData {
           alpha: 0.0,
         ),
       },
-    ).merge(_containerOutline?.resolve(states)),
+    ).maybeMerge(_overrides.containerOutline?.resolve(states)),
   );
 
   @override
   CheckboxStateProperty<double> get iconSize =>
-      .resolveWith((states) => _iconSize?.resolve(states) ?? 18.0);
+      .resolveWith((states) => _overrides.iconSize?.resolve(states) ?? 18.0);
 
   @override
   CheckboxStateProperty<Color> get iconColor => .resolveWith(
     (states) =>
-        _iconColor?.resolve(states) ??
+        _overrides.iconColor?.resolve(states) ??
         switch (states) {
           CheckboxDisabledStates(isSelected: true) =>
             _colorTheme.surface.withValues(alpha: 0.38),
@@ -624,6 +714,36 @@ class _CheckboxThemeDataDefaults extends CheckboxThemeData {
 
   @override
   CheckboxThemeData copyWith({
+    covariant CheckboxStateProperty<Size>? stateLayerSize,
+    covariant CheckboxStateProperty<ShapeBorder>? stateLayerShape,
+    covariant CheckboxStateProperty<Color>? stateLayerColor,
+    covariant CheckboxStateProperty<double>? stateLayerOpacity,
+    covariant CheckboxStateProperty<double>? containerSize,
+    covariant CheckboxStateProperty<OutlinedBorder>? containerShape,
+    covariant CheckboxStateProperty<Color>? containerColor,
+    covariant CheckboxStateProperty<Outline>? containerOutline,
+    covariant CheckboxStateProperty<double>? iconSize,
+    covariant CheckboxStateProperty<Color>? iconColor,
+  }) => _CheckboxThemeDataDefaults(
+    colorTheme: _colorTheme,
+    shapeTheme: _shapeTheme,
+    stateTheme: _stateTheme,
+    overrides: _overrides.copyWith(
+      stateLayerSize: stateLayerSize,
+      stateLayerShape: stateLayerShape,
+      stateLayerColor: stateLayerColor,
+      stateLayerOpacity: stateLayerOpacity,
+      containerSize: containerSize,
+      containerShape: containerShape,
+      containerColor: containerColor,
+      containerOutline: containerOutline,
+      iconSize: iconSize,
+      iconColor: iconColor,
+    ),
+  );
+
+  @override
+  CheckboxThemeData maybeCopyWith({
     covariant CheckboxStateProperty<Size>? stateLayerSize,
     covariant CheckboxStateProperty<ShapeBorder>? stateLayerShape,
     covariant CheckboxStateProperty<Color>? stateLayerColor,
@@ -657,21 +777,29 @@ class _CheckboxThemeDataDefaults extends CheckboxThemeData {
           iconSize: iconSize,
           iconColor: iconColor,
         )
-      : _CheckboxThemeDataDefaults(
-          colorTheme: _colorTheme,
-          shapeTheme: _shapeTheme,
-          stateTheme: _stateTheme,
-          stateLayerSize: stateLayerSize ?? _stateLayerSize,
-          stateLayerShape: stateLayerShape ?? _stateLayerShape,
-          stateLayerColor: stateLayerColor ?? _stateLayerColor,
-          stateLayerOpacity: stateLayerOpacity ?? _stateLayerOpacity,
-          containerSize: containerSize ?? _containerSize,
-          containerShape: containerShape ?? _containerShape,
-          containerColor: containerColor ?? _containerColor,
-          containerOutline: containerOutline ?? _containerOutline,
-          iconSize: iconSize ?? _iconSize,
-          iconColor: iconColor ?? _iconColor,
-        );
+      : stateLayerSize != null ||
+            stateLayerShape != null ||
+            stateLayerColor != null ||
+            stateLayerOpacity != null ||
+            containerSize != null ||
+            containerShape != null ||
+            containerColor != null ||
+            containerOutline != null ||
+            iconSize != null ||
+            iconColor != null
+      ? copyWith(
+          stateLayerSize: stateLayerSize,
+          stateLayerShape: stateLayerShape,
+          stateLayerColor: stateLayerColor,
+          stateLayerOpacity: stateLayerOpacity,
+          containerSize: containerSize,
+          containerShape: containerShape,
+          containerColor: containerColor,
+          containerOutline: containerOutline,
+          iconSize: iconSize,
+          iconColor: iconColor,
+        )
+      : this;
 
   @override
   CheckboxThemeData mergeWith({
@@ -689,129 +817,218 @@ class _CheckboxThemeDataDefaults extends CheckboxThemeData {
     colorTheme: _colorTheme,
     shapeTheme: _shapeTheme,
     stateTheme: _stateTheme,
-    stateLayerSize:
-        stateLayerSize?.orElseMaybe(_stateLayerSize?.resolve) ??
-        _stateLayerSize,
-    stateLayerShape:
-        stateLayerShape?.orElseMaybe(_stateLayerShape?.resolve) ??
-        _stateLayerShape,
-    stateLayerColor:
-        stateLayerColor?.orElseMaybe(_stateLayerColor?.resolve) ??
-        _stateLayerColor,
-    stateLayerOpacity:
-        stateLayerOpacity?.orElseMaybe(_stateLayerOpacity?.resolve) ??
-        _stateLayerOpacity,
-    containerSize:
-        containerSize?.orElseMaybe(_containerSize?.resolve) ?? _containerSize,
-    containerShape:
-        containerShape?.orElseMaybe(_containerShape?.resolve) ??
-        _containerShape,
-    containerColor:
-        containerColor?.orElseMaybe(_containerColor?.resolve) ??
-        _containerColor,
-    containerOutline:
-        containerOutline
-            ?.orElseMaybe(_containerOutline?.resolve)
-            .mapValue(
-              (states, value) =>
-                  _containerOutline?.resolve(states)?.merge(value) ?? value,
-            ) ??
-        _containerOutline,
-    iconSize: iconSize?.orElseMaybe(_iconSize?.resolve) ?? _iconSize,
-    iconColor: iconColor?.orElseMaybe(_iconColor?.resolve) ?? _iconColor,
+    overrides: _overrides.mergeWith(
+      stateLayerSize: stateLayerSize,
+      stateLayerShape: stateLayerShape,
+      stateLayerColor: stateLayerColor,
+      stateLayerOpacity: stateLayerOpacity,
+      containerSize: containerSize,
+      containerShape: containerShape,
+      containerColor: containerColor,
+      containerOutline: containerOutline,
+      iconSize: iconSize,
+      iconColor: iconColor,
+    ),
   );
 
   @override
-  CheckboxThemeData merge(CheckboxThemeDataPartial? other) => other != null
-      ? mergeWith(
-          stateLayerSize: other.stateLayerSize,
-          stateLayerShape: other.stateLayerShape,
-          stateLayerColor: other.stateLayerColor,
-          stateLayerOpacity: other.stateLayerOpacity,
-          containerSize: other.containerSize,
-          containerShape: other.containerShape,
-          containerColor: other.containerColor,
-          containerOutline: other.containerOutline,
-          iconSize: other.iconSize,
-          iconColor: other.iconColor,
-        )
-      : this;
+  CheckboxThemeData maybeMergeWith({
+    CheckboxStateProperty<Size?>? stateLayerSize,
+    CheckboxStateProperty<ShapeBorder?>? stateLayerShape,
+    CheckboxStateProperty<Color?>? stateLayerColor,
+    CheckboxStateProperty<double?>? stateLayerOpacity,
+    CheckboxStateProperty<double?>? containerSize,
+    CheckboxStateProperty<OutlinedBorder?>? containerShape,
+    CheckboxStateProperty<Color?>? containerColor,
+    CheckboxStateProperty<OutlinePartial?>? containerOutline,
+    CheckboxStateProperty<double?>? iconSize,
+    CheckboxStateProperty<Color?>? iconColor,
+  }) {
+    final overrides = _overrides.maybeMergeWith(
+      stateLayerSize: stateLayerSize,
+      stateLayerShape: stateLayerShape,
+      stateLayerColor: stateLayerColor,
+      stateLayerOpacity: stateLayerOpacity,
+      containerSize: containerSize,
+      containerShape: containerShape,
+      containerColor: containerColor,
+      containerOutline: containerOutline,
+      iconSize: iconSize,
+      iconColor: iconColor,
+    );
+    return identical(_overrides, overrides)
+        ? this
+        : _CheckboxThemeDataDefaults(
+            colorTheme: _colorTheme,
+            shapeTheme: _shapeTheme,
+            stateTheme: _stateTheme,
+            overrides: overrides,
+          );
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _CheckboxThemeDataDefaults &&
+      other is _CheckboxThemeDataDefaults &&
           _colorTheme == other._colorTheme &&
           _shapeTheme == other._shapeTheme &&
           _stateTheme == other._stateTheme &&
-          _stateLayerSize == other._stateLayerSize &&
-          _stateLayerShape == other._stateLayerShape &&
-          _stateLayerColor == other._stateLayerColor &&
-          _stateLayerOpacity == other._stateLayerOpacity &&
-          _containerSize == other._containerSize &&
-          _containerShape == other._containerShape &&
-          _containerColor == other._containerColor &&
-          _containerOutline == other._containerOutline &&
-          _iconSize == other._iconSize &&
-          _iconColor == other._iconColor;
+          _overrides == other._overrides;
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    _colorTheme,
-    _shapeTheme,
-    _stateTheme,
-    _stateLayerSize,
-    _stateLayerShape,
-    _stateLayerColor,
-    _stateLayerOpacity,
-    _containerSize,
-    _containerShape,
-    _containerColor,
-    _containerOutline,
-    _iconSize,
-    _iconColor,
-  );
+  int get hashCode =>
+      Object.hash(_colorTheme, _shapeTheme, _stateTheme, _overrides);
 }
 
-class CheckboxTheme extends InheritedTheme {
-  const CheckboxTheme({super.key, required this.data, required super.child});
+abstract class CheckboxTheme extends StatelessWidget implements ProxyWidget {
+  const CheckboxTheme._({super.key, required this.child});
 
-  final CheckboxThemeData data;
+  const factory CheckboxTheme.mergeWithResolver({
+    Key? key,
+    required ThemeResolver<CheckboxThemeDataPartial> resolver,
+    required Widget child,
+  }) = _CheckboxThemeWithResolver<CheckboxThemeDataPartial>;
+
+  const factory CheckboxTheme.mergeWithCallback({
+    Key? key,
+    required ThemeResolverCallback<CheckboxThemeDataPartial> callback,
+    required Widget child,
+  }) = _CheckboxThemeWithCallback<CheckboxThemeDataPartial>;
+
+  const factory CheckboxTheme.mergeWithData({
+    Key? key,
+    required CheckboxThemeDataPartial data,
+    required Widget child,
+  }) = _CheckboxThemeWithData<CheckboxThemeDataPartial>;
+
+  const factory CheckboxTheme.replaceWithResolver({
+    Key? key,
+    required ThemeResolver<CheckboxThemeData> resolver,
+    required Widget child,
+  }) = _CheckboxThemeWithResolver<CheckboxThemeData>;
+
+  const factory CheckboxTheme.replaceWithCallback({
+    Key? key,
+    required ThemeResolverCallback<CheckboxThemeData> callback,
+    required Widget child,
+  }) = _CheckboxThemeWithCallback<CheckboxThemeData>;
+
+  const factory CheckboxTheme.replaceWithData({
+    Key? key,
+    required CheckboxThemeData data,
+    required Widget child,
+  }) = _CheckboxThemeWithData<CheckboxThemeData>;
+
+  ThemeResolver<CheckboxThemeDataPartial> get resolver;
 
   @override
-  bool updateShouldNotify(CheckboxTheme oldWidget) => data != oldWidget.data;
+  final Widget child;
 
   @override
-  Widget wrap(BuildContext context, Widget child) =>
-      CheckboxTheme(data: data, child: child);
+  Widget build(BuildContext context) {
+    final inherited = _CheckboxTheme.maybeResolverOf(context);
+    return _CheckboxTheme(
+      resolver: inherited != null
+          ? .combine(inherited, resolver, _merge)
+          : resolver,
+      child: child,
+    );
+  }
+
+  static CheckboxThemeDataPartial _merge(
+    CheckboxThemeDataPartial a,
+    CheckboxThemeDataPartial b,
+  ) => a.maybeMerge(b);
+
+  static CheckboxThemeData of(BuildContext context) {
+    final resolver = _CheckboxTheme.maybeResolverOf(context);
+    return .defaults(
+      colorTheme: ColorTheme.of(context),
+      shapeTheme: ShapeTheme.of(context),
+      stateTheme: StateTheme.of(context),
+      overrides: resolver?.resolve(context),
+    );
+  }
+}
+
+class _CheckboxThemeWithResolver<T extends CheckboxThemeDataPartial>
+    extends CheckboxTheme {
+  const _CheckboxThemeWithResolver({
+    super.key,
+    required this.resolver,
+    required super.child,
+  }) : super._();
+
+  @override
+  final ThemeResolver<T> resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<CheckboxThemeData>("data", data));
+    properties.add(DiagnosticsProperty<ThemeResolver<T>>("resolver", resolver));
   }
+}
 
-  static Widget merge({
-    Key? key,
-    required CheckboxThemeDataPartial data,
-    required Widget child,
-  }) => Builder(
-    builder: (context) =>
-        CheckboxTheme(key: key, data: of(context).merge(data), child: child),
-  );
+class _CheckboxThemeWithCallback<T extends CheckboxThemeDataPartial>
+    extends CheckboxTheme {
+  const _CheckboxThemeWithCallback({
+    super.key,
+    required this.callback,
+    required super.child,
+  }) : super._();
 
-  static CheckboxThemeData? maybeOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<CheckboxTheme>()?.data;
+  final ThemeResolverCallback<T> callback;
 
-  static CheckboxThemeData of(BuildContext context) {
-    final result = maybeOf(context);
-    if (result != null) return result;
-    return .fallback(
-      colorTheme: ColorTheme.of(context),
-      shapeTheme: ShapeTheme.of(context),
-      stateTheme: StateTheme.of(context),
+  @override
+  ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<ThemeResolverCallback<T>>("callback", callback),
     );
   }
+}
+
+class _CheckboxThemeWithData<T extends CheckboxThemeDataPartial>
+    extends CheckboxTheme {
+  const _CheckboxThemeWithData({
+    super.key,
+    required this.data,
+    required super.child,
+  }) : super._();
+
+  final T data;
+
+  @override
+  ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<T>("data", data));
+  }
+}
+
+class _CheckboxTheme extends InheritedTheme {
+  const _CheckboxTheme({
+    super.key,
+    required this.resolver,
+    required super.child,
+  });
+
+  final ThemeResolver<CheckboxThemeDataPartial> resolver;
+
+  @override
+  bool updateShouldNotify(_CheckboxTheme oldWidget) =>
+      resolver != oldWidget.resolver;
+
+  @override
+  Widget wrap(BuildContext context, Widget child) =>
+      _CheckboxTheme(resolver: resolver, child: child);
+
+  static ThemeResolver<CheckboxThemeDataPartial>? maybeResolverOf(
+    BuildContext context,
+  ) => context.dependOnInheritedWidgetOfExactType<_CheckboxTheme>()?.resolver;
 }

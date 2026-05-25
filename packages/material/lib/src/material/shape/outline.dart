@@ -15,13 +15,21 @@ abstract class OutlinePartial with Diagnosticable {
   double? get alignment;
   Color? get color;
 
+  OutlinePartial copy() => copyWith();
+
   OutlinePartial copyWith({double? width, double? alignment, Color? color}) =>
-      width != null || alignment != null || color != null
-      ? .from(
-          width: width ?? this.width,
-          alignment: alignment ?? this.alignment,
-          color: color ?? this.color,
-        )
+      .from(
+        width: width ?? this.width,
+        alignment: alignment ?? this.alignment,
+        color: color ?? this.color,
+      );
+
+  OutlinePartial maybeCopyWith({
+    double? width,
+    double? alignment,
+    Color? color,
+  }) => width != null || alignment != null || color != null
+      ? copyWith(width: width, alignment: alignment, color: color)
       : this;
 
   OutlinePartial merge(OutlinePartial? other) => other != null
@@ -30,7 +38,24 @@ abstract class OutlinePartial with Diagnosticable {
           alignment: other.alignment,
           color: other.color,
         )
+      : copy();
+
+  OutlinePartial maybeMerge(OutlinePartial? other) => other != null
+      ? maybeCopyWith(
+          width: other.width,
+          alignment: other.alignment,
+          color: other.color,
+        )
       : this;
+
+  bool get isEmpty => width == null && alignment == null && color == null;
+
+  bool get isNotEmpty => !isEmpty;
+
+  bool get isConcrete => width != null && alignment != null && color != null;
+
+  Outline? get asConcrete =>
+      isConcrete ? _OutlinePartialAsConcrete(this) : null;
 
   OutlinePartial scale(double t) => switch (width) {
     final width? => copyWith(width: math.max(width * t, 0.0)),
@@ -64,6 +89,28 @@ abstract class OutlinePartial with Diagnosticable {
     return shape.copyWith(side: side);
   }
 
+  double? get inset {
+    final width = this.width;
+    final alignment = this.alignment;
+    return width != null && alignment != null
+        ? width * (1.0 - (1.0 + alignment) / 2.0)
+        : null;
+  }
+
+  double? get outset {
+    final width = this.width;
+    final alignment = this.alignment;
+    return width != null && alignment != null
+        ? width * (1.0 + alignment) / 2.0
+        : null;
+  }
+
+  double? get offset {
+    final width = this.width;
+    final alignment = this.alignment;
+    return width != null && alignment != null ? width * alignment : null;
+  }
+
   @override
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -73,37 +120,21 @@ abstract class OutlinePartial with Diagnosticable {
       ..add(ColorProperty("color", color, defaultValue: null));
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is OutlinePartial &&
-          width == other.width &&
-          alignment == other.alignment &&
-          color == other.color;
+  static OutlinePartial combine(OutlinePartial a, OutlinePartial? b) =>
+      a.merge(b);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, width, alignment, color);
+  static OutlinePartial maybeCombine(OutlinePartial a, OutlinePartial? b) =>
+      a.maybeMerge(b);
 
   static OutlinePartial? lerp(OutlinePartial? a, OutlinePartial? b, double t) {
     if (identical(a, b)) return a;
-    if (a == null) {
-      if (b == null) {
-        return null;
-      } else {
-        return b.scale(t);
-      }
-    } else {
-      if (b == null) {
-        return a.scale(1.0 - t);
-      } else {
-        return .from(
-          width: lerpDoubleNullable(a.width, b.width, t),
-          alignment: lerpDoubleNullable(a.alignment, b.alignment, t),
-          color: Color.lerp(a.color, b.color, t),
-        );
-      }
-    }
+    if (a == null) return b!.scale(t);
+    if (b == null) return a.scale(1.0 - t);
+    return .from(
+      width: lerpDoubleNullable(a.width, b.width, t),
+      alignment: lerpDoubleNullable(a.alignment, b.alignment, t),
+      color: Color.lerp(a.color, b.color, t),
+    );
   }
 }
 
@@ -119,6 +150,63 @@ class _OutlinePartial extends OutlinePartial {
 
   @override
   final Color? color;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _OutlinePartial &&
+          width == other.width &&
+          alignment == other.alignment &&
+          color == other.color;
+
+  @override
+  int get hashCode => Object.hash(width, alignment, color);
+}
+
+class _OutlinePartialAsConcrete extends Outline {
+  _OutlinePartialAsConcrete(OutlinePartial value)
+    : assert(value.isConcrete),
+      _value = value;
+
+  final OutlinePartial _value;
+
+  @override
+  double get width => _value.width!;
+
+  @override
+  double get alignment => _value.alignment!;
+
+  @override
+  Color get color => _value.color!;
+
+  @override
+  Outline copyWith({double? width, double? alignment, Color? color}) =>
+      _OutlinePartialAsConcrete(
+        _value.copyWith(width: width, alignment: alignment, color: color),
+      );
+
+  @override
+  Outline maybeCopyWith({double? width, double? alignment, Color? color}) =>
+      width != null && alignment != null && color != null
+      ? .from(width: width, alignment: alignment, color: color)
+      : width != null || alignment != null || color != null
+      ? copyWith(width: width, alignment: alignment, color: color)
+      : this;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _OutlinePartialAsConcrete && _value == other._value;
+
+  @override
+  int get hashCode => _value.hashCode;
+}
+
+class OutlinePartialTween extends Tween<OutlinePartial?> {
+  OutlinePartialTween({super.begin, super.end});
+
+  @override
+  OutlinePartial? lerp(double t) => .lerp(begin, end, t);
 }
 
 abstract class Outline extends OutlinePartial {
@@ -137,13 +225,19 @@ abstract class Outline extends OutlinePartial {
   Color get color;
 
   @override
-  Outline copyWith({double? width, double? alignment, Color? color}) =>
+  Outline copy() => copyWith();
+
+  @override
+  Outline copyWith({double? width, double? alignment, Color? color}) => .from(
+    width: width ?? this.width,
+    alignment: alignment ?? this.alignment,
+    color: color ?? this.color,
+  );
+
+  @override
+  Outline maybeCopyWith({double? width, double? alignment, Color? color}) =>
       width != null || alignment != null || color != null
-      ? .from(
-          width: width ?? this.width,
-          alignment: alignment ?? this.alignment,
-          color: color ?? this.color,
-        )
+      ? copyWith(width: width, alignment: alignment, color: color)
       : this;
 
   @override
@@ -153,7 +247,28 @@ abstract class Outline extends OutlinePartial {
           alignment: other.alignment,
           color: other.color,
         )
+      : copy();
+
+  @override
+  Outline maybeMerge(OutlinePartial? other) => other != null
+      ? maybeCopyWith(
+          width: other.width,
+          alignment: other.alignment,
+          color: other.color,
+        )
       : this;
+
+  @override
+  bool get isEmpty => false;
+
+  @override
+  bool get isNotEmpty => true;
+
+  @override
+  bool get isConcrete => true;
+
+  @override
+  Outline get asConcrete => this;
 
   @override
   Outline scale(double t) => copyWith(width: math.max(width * t, 0.0));
@@ -176,7 +291,16 @@ abstract class Outline extends OutlinePartial {
     ),
   );
 
-  // TODO(deminearchiver): consider adding default values (except for alignment?)
+  @override
+  double get inset => width * (1.0 - (1.0 + alignment) / 2.0);
+
+  @override
+  double get outset => width * (1.0 + alignment) / 2.0;
+
+  @override
+  double get offset => width * alignment;
+
+  // TODO: consider adding default values (except for alignment?)
   @override
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -185,18 +309,6 @@ abstract class Outline extends OutlinePartial {
       ..add(DoubleProperty("alignment", alignment))
       ..add(ColorProperty("color", color));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is Outline &&
-          width == other.width &&
-          alignment == other.alignment &&
-          color == other.color;
-
-  @override
-  int get hashCode => Object.hash(runtimeType, width, alignment, color);
 
   /// The border is drawn fully inside of the border path.
   ///
@@ -217,12 +329,14 @@ abstract class Outline extends OutlinePartial {
   /// This is a constant for use with [alignment].
   static const double alignmentOutside = 1.0;
 
+  static Outline combine(Outline a, OutlinePartial? b) => a.merge(b);
+
+  static Outline maybeCombine(Outline a, OutlinePartial? b) => a.maybeMerge(b);
+
   static Outline lerp(Outline a, Outline b, double t) {
     if (identical(a, b)) return a;
-    if (t == 0.0) return a;
-    if (t == 1.0) return b;
     return .from(
-      width: math.max(lerpDouble(a.width, b.width, t), 0.0),
+      width: lerpDouble(a.width, b.width, t),
       alignment: lerpDouble(a.alignment, b.alignment, t),
       color: Color.lerp(a.color, b.color, t)!,
     );
@@ -244,13 +358,17 @@ class _Outline extends Outline {
 
   @override
   final Color color;
-}
-
-class OutlinePartialTween extends Tween<OutlinePartial?> {
-  OutlinePartialTween({super.begin, super.end});
 
   @override
-  OutlinePartial? lerp(double t) => .lerp(begin, end, t);
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _Outline &&
+          width == other.width &&
+          alignment == other.alignment &&
+          color == other.color;
+
+  @override
+  int get hashCode => Object.hash(width, alignment, color);
 }
 
 class OutlineTween extends Tween<Outline?> {
@@ -260,19 +378,8 @@ class OutlineTween extends Tween<Outline?> {
   Outline? lerp(double t) {
     final a = begin;
     final b = end;
-    if (identical(a, b)) return a;
-    if (a == null) {
-      if (b == null) {
-        return null;
-      } else {
-        return b.scale(t);
-      }
-    } else {
-      if (b == null) {
-        return a.scale(1.0 - t);
-      } else {
-        return .lerp(a, b, t);
-      }
-    }
+    if (a == null) return b!.scale(t);
+    if (b == null) return a.scale(1.0 - t);
+    return .lerp(a, b, t);
   }
 }

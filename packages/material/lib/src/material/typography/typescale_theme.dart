@@ -1,4 +1,4 @@
-import 'package:material/src/material/flutter.dart';
+part of 'typography.dart';
 
 abstract class TypescaleThemeDataPartial with Diagnosticable {
   const TypescaleThemeDataPartial();
@@ -96,7 +96,79 @@ abstract class TypescaleThemeDataPartial with Diagnosticable {
 
   TextGeometryPartial? get labelSmallEmphasized;
 
+  TypescaleThemeDataPartial copy() => copyWith();
+
   TypescaleThemeDataPartial copyWith({
+    covariant TextGeometryPartial? displayLarge,
+    covariant TextGeometryPartial? displayMedium,
+    covariant TextGeometryPartial? displaySmall,
+    covariant TextGeometryPartial? headlineLarge,
+    covariant TextGeometryPartial? headlineMedium,
+    covariant TextGeometryPartial? headlineSmall,
+    covariant TextGeometryPartial? titleLarge,
+    covariant TextGeometryPartial? titleMedium,
+    covariant TextGeometryPartial? titleSmall,
+    covariant TextGeometryPartial? bodyLarge,
+    covariant TextGeometryPartial? bodyMedium,
+    covariant TextGeometryPartial? bodySmall,
+    covariant TextGeometryPartial? labelLarge,
+    covariant TextGeometryPartial? labelMedium,
+    covariant TextGeometryPartial? labelSmall,
+    covariant TextGeometryPartial? displayLargeEmphasized,
+    covariant TextGeometryPartial? displayMediumEmphasized,
+    covariant TextGeometryPartial? displaySmallEmphasized,
+    covariant TextGeometryPartial? headlineLargeEmphasized,
+    covariant TextGeometryPartial? headlineMediumEmphasized,
+    covariant TextGeometryPartial? headlineSmallEmphasized,
+    covariant TextGeometryPartial? titleLargeEmphasized,
+    covariant TextGeometryPartial? titleMediumEmphasized,
+    covariant TextGeometryPartial? titleSmallEmphasized,
+    covariant TextGeometryPartial? bodyLargeEmphasized,
+    covariant TextGeometryPartial? bodyMediumEmphasized,
+    covariant TextGeometryPartial? bodySmallEmphasized,
+    covariant TextGeometryPartial? labelLargeEmphasized,
+    covariant TextGeometryPartial? labelMediumEmphasized,
+    covariant TextGeometryPartial? labelSmallEmphasized,
+  }) => .from(
+    displayLarge: displayLarge ?? this.displayLarge,
+    displayMedium: displayMedium ?? this.displayMedium,
+    displaySmall: displaySmall ?? this.displaySmall,
+    headlineLarge: headlineLarge ?? this.headlineLarge,
+    headlineMedium: headlineMedium ?? this.headlineMedium,
+    headlineSmall: headlineSmall ?? this.headlineSmall,
+    titleLarge: titleLarge ?? this.titleLarge,
+    titleMedium: titleMedium ?? this.titleMedium,
+    titleSmall: titleSmall ?? this.titleSmall,
+    bodyLarge: bodyLarge ?? this.bodyLarge,
+    bodyMedium: bodyMedium ?? this.bodyMedium,
+    bodySmall: bodySmall ?? this.bodySmall,
+    labelLarge: labelLarge ?? this.labelLarge,
+    labelMedium: labelMedium ?? this.labelMedium,
+    labelSmall: labelSmall ?? this.labelSmall,
+    displayLargeEmphasized:
+        displayLargeEmphasized ?? this.displayLargeEmphasized,
+    displayMediumEmphasized:
+        displayMediumEmphasized ?? this.displayMediumEmphasized,
+    displaySmallEmphasized:
+        displaySmallEmphasized ?? this.displaySmallEmphasized,
+    headlineLargeEmphasized:
+        headlineLargeEmphasized ?? this.headlineLargeEmphasized,
+    headlineMediumEmphasized:
+        headlineMediumEmphasized ?? this.headlineMediumEmphasized,
+    headlineSmallEmphasized:
+        headlineSmallEmphasized ?? this.headlineSmallEmphasized,
+    titleLargeEmphasized: titleLargeEmphasized ?? this.titleLargeEmphasized,
+    titleMediumEmphasized: titleMediumEmphasized ?? this.titleMediumEmphasized,
+    titleSmallEmphasized: titleSmallEmphasized ?? this.titleSmallEmphasized,
+    bodyLargeEmphasized: bodyLargeEmphasized ?? this.bodyLargeEmphasized,
+    bodyMediumEmphasized: bodyMediumEmphasized ?? this.bodyMediumEmphasized,
+    bodySmallEmphasized: bodySmallEmphasized ?? this.bodySmallEmphasized,
+    labelLargeEmphasized: labelLargeEmphasized ?? this.labelLargeEmphasized,
+    labelMediumEmphasized: labelMediumEmphasized ?? this.labelMediumEmphasized,
+    labelSmallEmphasized: labelSmallEmphasized ?? this.labelSmallEmphasized,
+  );
+
+  TypescaleThemeDataPartial maybeCopyWith({
     covariant TextGeometryPartial? displayLarge,
     covariant TextGeometryPartial? displayMedium,
     covariant TextGeometryPartial? displaySmall,
@@ -158,54 +230,136 @@ abstract class TypescaleThemeDataPartial with Diagnosticable {
           labelLargeEmphasized != null ||
           labelMediumEmphasized != null ||
           labelSmallEmphasized != null
-      ? TypescaleThemeDataPartial.from(
-          displayLarge: displayLarge ?? this.displayLarge,
-          displayMedium: displayMedium ?? this.displayMedium,
-          displaySmall: displaySmall ?? this.displaySmall,
-          headlineLarge: headlineLarge ?? this.headlineLarge,
-          headlineMedium: headlineMedium ?? this.headlineMedium,
-          headlineSmall: headlineSmall ?? this.headlineSmall,
-          titleLarge: titleLarge ?? this.titleLarge,
-          titleMedium: titleMedium ?? this.titleMedium,
-          titleSmall: titleSmall ?? this.titleSmall,
-          bodyLarge: bodyLarge ?? this.bodyLarge,
-          bodyMedium: bodyMedium ?? this.bodyMedium,
-          bodySmall: bodySmall ?? this.bodySmall,
-          labelLarge: labelLarge ?? this.labelLarge,
-          labelMedium: labelMedium ?? this.labelMedium,
-          labelSmall: labelSmall ?? this.labelSmall,
-          displayLargeEmphasized:
-              displayLargeEmphasized ?? this.displayLargeEmphasized,
-          displayMediumEmphasized:
-              displayMediumEmphasized ?? this.displayMediumEmphasized,
-          displaySmallEmphasized:
-              displaySmallEmphasized ?? this.displaySmallEmphasized,
-          headlineLargeEmphasized:
-              headlineLargeEmphasized ?? this.headlineLargeEmphasized,
-          headlineMediumEmphasized:
-              headlineMediumEmphasized ?? this.headlineMediumEmphasized,
-          headlineSmallEmphasized:
-              headlineSmallEmphasized ?? this.headlineSmallEmphasized,
-          titleLargeEmphasized:
-              titleLargeEmphasized ?? this.titleLargeEmphasized,
-          titleMediumEmphasized:
-              titleMediumEmphasized ?? this.titleMediumEmphasized,
-          titleSmallEmphasized:
-              titleSmallEmphasized ?? this.titleSmallEmphasized,
-          bodyLargeEmphasized: bodyLargeEmphasized ?? this.bodyLargeEmphasized,
-          bodyMediumEmphasized:
-              bodyMediumEmphasized ?? this.bodyMediumEmphasized,
-          bodySmallEmphasized: bodySmallEmphasized ?? this.bodySmallEmphasized,
-          labelLargeEmphasized:
-              labelLargeEmphasized ?? this.labelLargeEmphasized,
-          labelMediumEmphasized:
-              labelMediumEmphasized ?? this.labelMediumEmphasized,
-          labelSmallEmphasized:
-              labelSmallEmphasized ?? this.labelSmallEmphasized,
+      ? copyWith(
+          displayLarge: displayLarge,
+          displayMedium: displayMedium,
+          displaySmall: displaySmall,
+          headlineLarge: headlineLarge,
+          headlineMedium: headlineMedium,
+          headlineSmall: headlineSmall,
+          titleLarge: titleLarge,
+          titleMedium: titleMedium,
+          titleSmall: titleSmall,
+          bodyLarge: bodyLarge,
+          bodyMedium: bodyMedium,
+          bodySmall: bodySmall,
+          labelLarge: labelLarge,
+          labelMedium: labelMedium,
+          labelSmall: labelSmall,
+          displayLargeEmphasized: displayLargeEmphasized,
+          displayMediumEmphasized: displayMediumEmphasized,
+          displaySmallEmphasized: displaySmallEmphasized,
+          headlineLargeEmphasized: headlineLargeEmphasized,
+          headlineMediumEmphasized: headlineMediumEmphasized,
+          headlineSmallEmphasized: headlineSmallEmphasized,
+          titleLargeEmphasized: titleLargeEmphasized,
+          titleMediumEmphasized: titleMediumEmphasized,
+          titleSmallEmphasized: titleSmallEmphasized,
+          bodyLargeEmphasized: bodyLargeEmphasized,
+          bodyMediumEmphasized: bodyMediumEmphasized,
+          bodySmallEmphasized: bodySmallEmphasized,
+          labelLargeEmphasized: labelLargeEmphasized,
+          labelMediumEmphasized: labelMediumEmphasized,
+          labelSmallEmphasized: labelSmallEmphasized,
         )
       : this;
 
   TypescaleThemeDataPartial mergeWith({
+    TextGeometryPartial? displayLarge,
+    TextGeometryPartial? displayMedium,
+    TextGeometryPartial? displaySmall,
+    TextGeometryPartial? headlineLarge,
+    TextGeometryPartial? headlineMedium,
+    TextGeometryPartial? headlineSmall,
+    TextGeometryPartial? titleLarge,
+    TextGeometryPartial? titleMedium,
+    TextGeometryPartial? titleSmall,
+    TextGeometryPartial? bodyLarge,
+    TextGeometryPartial? bodyMedium,
+    TextGeometryPartial? bodySmall,
+    TextGeometryPartial? labelLarge,
+    TextGeometryPartial? labelMedium,
+    TextGeometryPartial? labelSmall,
+    TextGeometryPartial? displayLargeEmphasized,
+    TextGeometryPartial? displayMediumEmphasized,
+    TextGeometryPartial? displaySmallEmphasized,
+    TextGeometryPartial? headlineLargeEmphasized,
+    TextGeometryPartial? headlineMediumEmphasized,
+    TextGeometryPartial? headlineSmallEmphasized,
+    TextGeometryPartial? titleLargeEmphasized,
+    TextGeometryPartial? titleMediumEmphasized,
+    TextGeometryPartial? titleSmallEmphasized,
+    TextGeometryPartial? bodyLargeEmphasized,
+    TextGeometryPartial? bodyMediumEmphasized,
+    TextGeometryPartial? bodySmallEmphasized,
+    TextGeometryPartial? labelLargeEmphasized,
+    TextGeometryPartial? labelMediumEmphasized,
+    TextGeometryPartial? labelSmallEmphasized,
+  }) => .from(
+    displayLarge: this.displayLarge?.merge(displayLarge) ?? displayLarge,
+    displayMedium: this.displayMedium?.merge(displayMedium) ?? displayMedium,
+    displaySmall: this.displaySmall?.merge(displaySmall) ?? displaySmall,
+    headlineLarge: this.headlineLarge?.merge(headlineLarge) ?? headlineLarge,
+    headlineMedium:
+        this.headlineMedium?.merge(headlineMedium) ?? headlineMedium,
+    headlineSmall: this.headlineSmall?.merge(headlineSmall) ?? headlineSmall,
+    titleLarge: this.titleLarge?.merge(titleLarge) ?? titleLarge,
+    titleMedium: this.titleMedium?.merge(titleMedium) ?? titleMedium,
+    titleSmall: this.titleSmall?.merge(titleSmall) ?? titleSmall,
+    bodyLarge: this.bodyLarge?.merge(bodyLarge) ?? bodyLarge,
+    bodyMedium: this.bodyMedium?.merge(bodyMedium) ?? bodyMedium,
+    bodySmall: this.bodySmall?.merge(bodySmall) ?? bodySmall,
+    labelLarge: this.labelLarge?.merge(labelLarge) ?? labelLarge,
+    labelMedium: this.labelMedium?.merge(labelMedium) ?? labelMedium,
+    labelSmall: this.labelSmall?.merge(labelSmall) ?? labelSmall,
+    displayLargeEmphasized:
+        this.displayLargeEmphasized?.merge(displayLargeEmphasized) ??
+        displayLargeEmphasized,
+    displayMediumEmphasized:
+        this.displayMediumEmphasized?.merge(displayMediumEmphasized) ??
+        displayMediumEmphasized,
+    displaySmallEmphasized:
+        this.displaySmallEmphasized?.merge(displaySmallEmphasized) ??
+        displaySmallEmphasized,
+    headlineLargeEmphasized:
+        this.headlineLargeEmphasized?.merge(headlineLargeEmphasized) ??
+        headlineLargeEmphasized,
+    headlineMediumEmphasized:
+        this.headlineMediumEmphasized?.merge(headlineMediumEmphasized) ??
+        headlineMediumEmphasized,
+    headlineSmallEmphasized:
+        this.headlineSmallEmphasized?.merge(headlineSmallEmphasized) ??
+        headlineSmallEmphasized,
+    titleLargeEmphasized:
+        this.titleLargeEmphasized?.merge(titleLargeEmphasized) ??
+        titleLargeEmphasized,
+    titleMediumEmphasized:
+        this.titleMediumEmphasized?.merge(titleMediumEmphasized) ??
+        titleMediumEmphasized,
+    titleSmallEmphasized:
+        this.titleSmallEmphasized?.merge(titleSmallEmphasized) ??
+        titleSmallEmphasized,
+    bodyLargeEmphasized:
+        this.bodyLargeEmphasized?.merge(bodyLargeEmphasized) ??
+        bodyLargeEmphasized,
+    bodyMediumEmphasized:
+        this.bodyMediumEmphasized?.merge(bodyMediumEmphasized) ??
+        bodyMediumEmphasized,
+    bodySmallEmphasized:
+        this.bodySmallEmphasized?.merge(bodySmallEmphasized) ??
+        bodySmallEmphasized,
+    labelLargeEmphasized:
+        this.labelLargeEmphasized?.merge(labelLargeEmphasized) ??
+        labelLargeEmphasized,
+    labelMediumEmphasized:
+        this.labelMediumEmphasized?.merge(labelMediumEmphasized) ??
+        labelMediumEmphasized,
+    labelSmallEmphasized:
+        this.labelSmallEmphasized?.merge(labelSmallEmphasized) ??
+        labelSmallEmphasized,
+  );
+
+  TypescaleThemeDataPartial maybeMergeWith({
     TextGeometryPartial? displayLarge,
     TextGeometryPartial? displayMedium,
     TextGeometryPartial? displaySmall,
@@ -267,70 +421,80 @@ abstract class TypescaleThemeDataPartial with Diagnosticable {
           labelLargeEmphasized != null ||
           labelMediumEmphasized != null ||
           labelSmallEmphasized != null
-      ? TypescaleThemeDataPartial.from(
-          displayLarge: this.displayLarge?.merge(displayLarge) ?? displayLarge,
+      ? .from(
+          displayLarge:
+              this.displayLarge?.maybeMerge(displayLarge) ?? displayLarge,
           displayMedium:
-              this.displayMedium?.merge(displayMedium) ?? displayMedium,
-          displaySmall: this.displaySmall?.merge(displaySmall) ?? displaySmall,
+              this.displayMedium?.maybeMerge(displayMedium) ?? displayMedium,
+          displaySmall:
+              this.displaySmall?.maybeMerge(displaySmall) ?? displaySmall,
           headlineLarge:
-              this.headlineLarge?.merge(headlineLarge) ?? headlineLarge,
+              this.headlineLarge?.maybeMerge(headlineLarge) ?? headlineLarge,
           headlineMedium:
-              this.headlineMedium?.merge(headlineMedium) ?? headlineMedium,
+              this.headlineMedium?.maybeMerge(headlineMedium) ?? headlineMedium,
           headlineSmall:
-              this.headlineSmall?.merge(headlineSmall) ?? headlineSmall,
-          titleLarge: this.titleLarge?.merge(titleLarge) ?? titleLarge,
-          titleMedium: this.titleMedium?.merge(titleMedium) ?? titleMedium,
-          titleSmall: this.titleSmall?.merge(titleSmall) ?? titleSmall,
-          bodyLarge: this.bodyLarge?.merge(bodyLarge) ?? bodyLarge,
-          bodyMedium: this.bodyMedium?.merge(bodyMedium) ?? bodyMedium,
-          bodySmall: this.bodySmall?.merge(bodySmall) ?? bodySmall,
-          labelLarge: this.labelLarge?.merge(labelLarge) ?? labelLarge,
-          labelMedium: this.labelMedium?.merge(labelMedium) ?? labelMedium,
-          labelSmall: this.labelSmall?.merge(labelSmall) ?? labelSmall,
+              this.headlineSmall?.maybeMerge(headlineSmall) ?? headlineSmall,
+          titleLarge: this.titleLarge?.maybeMerge(titleLarge) ?? titleLarge,
+          titleMedium: this.titleMedium?.maybeMerge(titleMedium) ?? titleMedium,
+          titleSmall: this.titleSmall?.maybeMerge(titleSmall) ?? titleSmall,
+          bodyLarge: this.bodyLarge?.maybeMerge(bodyLarge) ?? bodyLarge,
+          bodyMedium: this.bodyMedium?.maybeMerge(bodyMedium) ?? bodyMedium,
+          bodySmall: this.bodySmall?.maybeMerge(bodySmall) ?? bodySmall,
+          labelLarge: this.labelLarge?.maybeMerge(labelLarge) ?? labelLarge,
+          labelMedium: this.labelMedium?.maybeMerge(labelMedium) ?? labelMedium,
+          labelSmall: this.labelSmall?.maybeMerge(labelSmall) ?? labelSmall,
           displayLargeEmphasized:
-              this.displayLargeEmphasized?.merge(displayLargeEmphasized) ??
+              this.displayLargeEmphasized?.maybeMerge(displayLargeEmphasized) ??
               displayLargeEmphasized,
           displayMediumEmphasized:
-              this.displayMediumEmphasized?.merge(displayMediumEmphasized) ??
+              this.displayMediumEmphasized?.maybeMerge(
+                displayMediumEmphasized,
+              ) ??
               displayMediumEmphasized,
           displaySmallEmphasized:
-              this.displaySmallEmphasized?.merge(displaySmallEmphasized) ??
+              this.displaySmallEmphasized?.maybeMerge(displaySmallEmphasized) ??
               displaySmallEmphasized,
           headlineLargeEmphasized:
-              this.headlineLargeEmphasized?.merge(headlineLargeEmphasized) ??
+              this.headlineLargeEmphasized?.maybeMerge(
+                headlineLargeEmphasized,
+              ) ??
               headlineLargeEmphasized,
           headlineMediumEmphasized:
-              this.headlineMediumEmphasized?.merge(headlineMediumEmphasized) ??
+              this.headlineMediumEmphasized?.maybeMerge(
+                headlineMediumEmphasized,
+              ) ??
               headlineMediumEmphasized,
           headlineSmallEmphasized:
-              this.headlineSmallEmphasized?.merge(headlineSmallEmphasized) ??
+              this.headlineSmallEmphasized?.maybeMerge(
+                headlineSmallEmphasized,
+              ) ??
               headlineSmallEmphasized,
           titleLargeEmphasized:
-              this.titleLargeEmphasized?.merge(titleLargeEmphasized) ??
+              this.titleLargeEmphasized?.maybeMerge(titleLargeEmphasized) ??
               titleLargeEmphasized,
           titleMediumEmphasized:
-              this.titleMediumEmphasized?.merge(titleMediumEmphasized) ??
+              this.titleMediumEmphasized?.maybeMerge(titleMediumEmphasized) ??
               titleMediumEmphasized,
           titleSmallEmphasized:
-              this.titleSmallEmphasized?.merge(titleSmallEmphasized) ??
+              this.titleSmallEmphasized?.maybeMerge(titleSmallEmphasized) ??
               titleSmallEmphasized,
           bodyLargeEmphasized:
-              this.bodyLargeEmphasized?.merge(bodyLargeEmphasized) ??
+              this.bodyLargeEmphasized?.maybeMerge(bodyLargeEmphasized) ??
               bodyLargeEmphasized,
           bodyMediumEmphasized:
-              this.bodyMediumEmphasized?.merge(bodyMediumEmphasized) ??
+              this.bodyMediumEmphasized?.maybeMerge(bodyMediumEmphasized) ??
               bodyMediumEmphasized,
           bodySmallEmphasized:
-              this.bodySmallEmphasized?.merge(bodySmallEmphasized) ??
+              this.bodySmallEmphasized?.maybeMerge(bodySmallEmphasized) ??
               bodySmallEmphasized,
           labelLargeEmphasized:
-              this.labelLargeEmphasized?.merge(labelLargeEmphasized) ??
+              this.labelLargeEmphasized?.maybeMerge(labelLargeEmphasized) ??
               labelLargeEmphasized,
           labelMediumEmphasized:
-              this.labelMediumEmphasized?.merge(labelMediumEmphasized) ??
+              this.labelMediumEmphasized?.maybeMerge(labelMediumEmphasized) ??
               labelMediumEmphasized,
           labelSmallEmphasized:
-              this.labelSmallEmphasized?.merge(labelSmallEmphasized) ??
+              this.labelSmallEmphasized?.maybeMerge(labelSmallEmphasized) ??
               labelSmallEmphasized,
         )
       : this;
@@ -338,6 +502,42 @@ abstract class TypescaleThemeDataPartial with Diagnosticable {
   TypescaleThemeDataPartial merge(TypescaleThemeDataPartial? other) =>
       other != null
       ? mergeWith(
+          displayLarge: other.displayLarge,
+          displayMedium: other.displayMedium,
+          displaySmall: other.displaySmall,
+          headlineLarge: other.headlineLarge,
+          headlineMedium: other.headlineMedium,
+          headlineSmall: other.headlineSmall,
+          titleLarge: other.titleLarge,
+          titleMedium: other.titleMedium,
+          titleSmall: other.titleSmall,
+          bodyLarge: other.bodyLarge,
+          bodyMedium: other.bodyMedium,
+          bodySmall: other.bodySmall,
+          labelLarge: other.labelLarge,
+          labelMedium: other.labelMedium,
+          labelSmall: other.labelSmall,
+          displayLargeEmphasized: other.displayLargeEmphasized,
+          displayMediumEmphasized: other.displayMediumEmphasized,
+          displaySmallEmphasized: other.displaySmallEmphasized,
+          headlineLargeEmphasized: other.headlineLargeEmphasized,
+          headlineMediumEmphasized: other.headlineMediumEmphasized,
+          headlineSmallEmphasized: other.headlineSmallEmphasized,
+          titleLargeEmphasized: other.titleLargeEmphasized,
+          titleMediumEmphasized: other.titleMediumEmphasized,
+          titleSmallEmphasized: other.titleSmallEmphasized,
+          bodyLargeEmphasized: other.bodyLargeEmphasized,
+          bodyMediumEmphasized: other.bodyMediumEmphasized,
+          bodySmallEmphasized: other.bodySmallEmphasized,
+          labelLargeEmphasized: other.labelLargeEmphasized,
+          labelMediumEmphasized: other.labelMediumEmphasized,
+          labelSmallEmphasized: other.labelSmallEmphasized,
+        )
+      : copy();
+
+  TypescaleThemeDataPartial maybeMerge(TypescaleThemeDataPartial? other) =>
+      other != null
+      ? maybeMergeWith(
           displayLarge: other.displayLarge,
           displayMedium: other.displayMedium,
           displaySmall: other.displaySmall,
@@ -622,82 +822,9 @@ abstract class TypescaleThemeDataPartial with Diagnosticable {
         ),
       );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is TypescaleThemeDataPartial &&
-          displayLarge == other.displayLarge &&
-          displayMedium == other.displayMedium &&
-          displaySmall == other.displaySmall &&
-          headlineLarge == other.headlineLarge &&
-          headlineMedium == other.headlineMedium &&
-          headlineSmall == other.headlineSmall &&
-          titleLarge == other.titleLarge &&
-          titleMedium == other.titleMedium &&
-          titleSmall == other.titleSmall &&
-          bodyLarge == other.bodyLarge &&
-          bodyMedium == other.bodyMedium &&
-          bodySmall == other.bodySmall &&
-          labelLarge == other.labelLarge &&
-          labelMedium == other.labelMedium &&
-          labelSmall == other.labelSmall &&
-          displayLargeEmphasized == other.displayLargeEmphasized &&
-          displayMediumEmphasized == other.displayMediumEmphasized &&
-          displaySmallEmphasized == other.displaySmallEmphasized &&
-          headlineLargeEmphasized == other.headlineLargeEmphasized &&
-          headlineMediumEmphasized == other.headlineMediumEmphasized &&
-          headlineSmallEmphasized == other.headlineSmallEmphasized &&
-          titleLargeEmphasized == other.titleLargeEmphasized &&
-          titleMediumEmphasized == other.titleMediumEmphasized &&
-          titleSmallEmphasized == other.titleSmallEmphasized &&
-          bodyLargeEmphasized == other.bodyLargeEmphasized &&
-          bodyMediumEmphasized == other.bodyMediumEmphasized &&
-          bodySmallEmphasized == other.bodySmallEmphasized &&
-          labelLargeEmphasized == other.labelLargeEmphasized &&
-          labelMediumEmphasized == other.labelMediumEmphasized &&
-          labelSmallEmphasized == other.labelSmallEmphasized;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    displayLarge,
-    displayMedium,
-    displaySmall,
-    headlineLarge,
-    headlineMedium,
-    headlineSmall,
-    titleLarge,
-    titleMedium,
-    titleSmall,
-    bodyLarge,
-    bodyMedium,
-    bodySmall,
-    labelLarge,
-    labelMedium,
-    labelSmall,
-    displayLargeEmphasized,
-    displayMediumEmphasized,
-    displaySmallEmphasized,
-    Object.hash(
-      headlineLargeEmphasized,
-      headlineMediumEmphasized,
-      headlineSmallEmphasized,
-      titleLargeEmphasized,
-      titleMediumEmphasized,
-      titleSmallEmphasized,
-      bodyLargeEmphasized,
-      bodyMediumEmphasized,
-      bodySmallEmphasized,
-      labelLargeEmphasized,
-      labelMediumEmphasized,
-      labelSmallEmphasized,
-    ),
-  );
 }
 
-class _TypescaleThemeDataPartial extends TypescaleThemeDataPartial {
+final class _TypescaleThemeDataPartial extends TypescaleThemeDataPartial {
   const _TypescaleThemeDataPartial({
     this.displayLarge,
     this.displayMedium,
@@ -820,6 +947,77 @@ class _TypescaleThemeDataPartial extends TypescaleThemeDataPartial {
 
   @override
   final TextGeometryPartial? labelSmallEmphasized;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _TypescaleThemeDataPartial &&
+          displayLarge == other.displayLarge &&
+          displayMedium == other.displayMedium &&
+          displaySmall == other.displaySmall &&
+          headlineLarge == other.headlineLarge &&
+          headlineMedium == other.headlineMedium &&
+          headlineSmall == other.headlineSmall &&
+          titleLarge == other.titleLarge &&
+          titleMedium == other.titleMedium &&
+          titleSmall == other.titleSmall &&
+          bodyLarge == other.bodyLarge &&
+          bodyMedium == other.bodyMedium &&
+          bodySmall == other.bodySmall &&
+          labelLarge == other.labelLarge &&
+          labelMedium == other.labelMedium &&
+          labelSmall == other.labelSmall &&
+          displayLargeEmphasized == other.displayLargeEmphasized &&
+          displayMediumEmphasized == other.displayMediumEmphasized &&
+          displaySmallEmphasized == other.displaySmallEmphasized &&
+          headlineLargeEmphasized == other.headlineLargeEmphasized &&
+          headlineMediumEmphasized == other.headlineMediumEmphasized &&
+          headlineSmallEmphasized == other.headlineSmallEmphasized &&
+          titleLargeEmphasized == other.titleLargeEmphasized &&
+          titleMediumEmphasized == other.titleMediumEmphasized &&
+          titleSmallEmphasized == other.titleSmallEmphasized &&
+          bodyLargeEmphasized == other.bodyLargeEmphasized &&
+          bodyMediumEmphasized == other.bodyMediumEmphasized &&
+          bodySmallEmphasized == other.bodySmallEmphasized &&
+          labelLargeEmphasized == other.labelLargeEmphasized &&
+          labelMediumEmphasized == other.labelMediumEmphasized &&
+          labelSmallEmphasized == other.labelSmallEmphasized;
+
+  @override
+  int get hashCode => Object.hash(
+    displayLarge,
+    displayMedium,
+    displaySmall,
+    headlineLarge,
+    headlineMedium,
+    headlineSmall,
+    titleLarge,
+    titleMedium,
+    titleSmall,
+    bodyLarge,
+    bodyMedium,
+    bodySmall,
+    labelLarge,
+    labelMedium,
+    labelSmall,
+    displayLargeEmphasized,
+    displayMediumEmphasized,
+    displaySmallEmphasized,
+    headlineLargeEmphasized,
+    Object.hash(
+      headlineMediumEmphasized,
+      headlineSmallEmphasized,
+      titleLargeEmphasized,
+      titleMediumEmphasized,
+      titleSmallEmphasized,
+      bodyLargeEmphasized,
+      bodyMediumEmphasized,
+      bodySmallEmphasized,
+      labelLargeEmphasized,
+      labelMediumEmphasized,
+      labelSmallEmphasized,
+    ),
+  );
 }
 
 abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
@@ -858,9 +1056,10 @@ abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
     required TextGeometry labelSmallEmphasized,
   }) = _TypescaleThemeData;
 
-  const factory TypescaleThemeData.fallback({
+  const factory TypescaleThemeData.defaults({
     required TypefaceThemeData typefaceTheme,
-  }) = _TypescaleThemeDataFallback;
+    TypescaleThemeDataPartial? overrides,
+  }) = _TypescaleThemeDataDefaults;
 
   @override
   TextGeometry get displayLarge;
@@ -953,7 +1152,81 @@ abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
   TextGeometry get labelSmallEmphasized;
 
   @override
+  TypescaleThemeData copy() => copyWith();
+
+  @override
   TypescaleThemeData copyWith({
+    covariant TextGeometry? displayLarge,
+    covariant TextGeometry? displayMedium,
+    covariant TextGeometry? displaySmall,
+    covariant TextGeometry? headlineLarge,
+    covariant TextGeometry? headlineMedium,
+    covariant TextGeometry? headlineSmall,
+    covariant TextGeometry? titleLarge,
+    covariant TextGeometry? titleMedium,
+    covariant TextGeometry? titleSmall,
+    covariant TextGeometry? bodyLarge,
+    covariant TextGeometry? bodyMedium,
+    covariant TextGeometry? bodySmall,
+    covariant TextGeometry? labelLarge,
+    covariant TextGeometry? labelMedium,
+    covariant TextGeometry? labelSmall,
+    covariant TextGeometry? displayLargeEmphasized,
+    covariant TextGeometry? displayMediumEmphasized,
+    covariant TextGeometry? displaySmallEmphasized,
+    covariant TextGeometry? headlineLargeEmphasized,
+    covariant TextGeometry? headlineMediumEmphasized,
+    covariant TextGeometry? headlineSmallEmphasized,
+    covariant TextGeometry? titleLargeEmphasized,
+    covariant TextGeometry? titleMediumEmphasized,
+    covariant TextGeometry? titleSmallEmphasized,
+    covariant TextGeometry? bodyLargeEmphasized,
+    covariant TextGeometry? bodyMediumEmphasized,
+    covariant TextGeometry? bodySmallEmphasized,
+    covariant TextGeometry? labelLargeEmphasized,
+    covariant TextGeometry? labelMediumEmphasized,
+    covariant TextGeometry? labelSmallEmphasized,
+  }) => .from(
+    displayLarge: displayLarge ?? this.displayLarge,
+    displayMedium: displayMedium ?? this.displayMedium,
+    displaySmall: displaySmall ?? this.displaySmall,
+    headlineLarge: headlineLarge ?? this.headlineLarge,
+    headlineMedium: headlineMedium ?? this.headlineMedium,
+    headlineSmall: headlineSmall ?? this.headlineSmall,
+    titleLarge: titleLarge ?? this.titleLarge,
+    titleMedium: titleMedium ?? this.titleMedium,
+    titleSmall: titleSmall ?? this.titleSmall,
+    bodyLarge: bodyLarge ?? this.bodyLarge,
+    bodyMedium: bodyMedium ?? this.bodyMedium,
+    bodySmall: bodySmall ?? this.bodySmall,
+    labelLarge: labelLarge ?? this.labelLarge,
+    labelMedium: labelMedium ?? this.labelMedium,
+    labelSmall: labelSmall ?? this.labelSmall,
+    displayLargeEmphasized:
+        displayLargeEmphasized ?? this.displayLargeEmphasized,
+    displayMediumEmphasized:
+        displayMediumEmphasized ?? this.displayMediumEmphasized,
+    displaySmallEmphasized:
+        displaySmallEmphasized ?? this.displaySmallEmphasized,
+    headlineLargeEmphasized:
+        headlineLargeEmphasized ?? this.headlineLargeEmphasized,
+    headlineMediumEmphasized:
+        headlineMediumEmphasized ?? this.headlineMediumEmphasized,
+    headlineSmallEmphasized:
+        headlineSmallEmphasized ?? this.headlineSmallEmphasized,
+    titleLargeEmphasized: titleLargeEmphasized ?? this.titleLargeEmphasized,
+    titleMediumEmphasized: titleMediumEmphasized ?? this.titleMediumEmphasized,
+    titleSmallEmphasized: titleSmallEmphasized ?? this.titleSmallEmphasized,
+    bodyLargeEmphasized: bodyLargeEmphasized ?? this.bodyLargeEmphasized,
+    bodyMediumEmphasized: bodyMediumEmphasized ?? this.bodyMediumEmphasized,
+    bodySmallEmphasized: bodySmallEmphasized ?? this.bodySmallEmphasized,
+    labelLargeEmphasized: labelLargeEmphasized ?? this.labelLargeEmphasized,
+    labelMediumEmphasized: labelMediumEmphasized ?? this.labelMediumEmphasized,
+    labelSmallEmphasized: labelSmallEmphasized ?? this.labelSmallEmphasized,
+  );
+
+  @override
+  TypescaleThemeData maybeCopyWith({
     covariant TextGeometry? displayLarge,
     covariant TextGeometry? displayMedium,
     covariant TextGeometry? displaySmall,
@@ -1015,55 +1288,123 @@ abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
           labelLargeEmphasized != null ||
           labelMediumEmphasized != null ||
           labelSmallEmphasized != null
-      ? TypescaleThemeData.from(
-          displayLarge: displayLarge ?? this.displayLarge,
-          displayMedium: displayMedium ?? this.displayMedium,
-          displaySmall: displaySmall ?? this.displaySmall,
-          headlineLarge: headlineLarge ?? this.headlineLarge,
-          headlineMedium: headlineMedium ?? this.headlineMedium,
-          headlineSmall: headlineSmall ?? this.headlineSmall,
-          titleLarge: titleLarge ?? this.titleLarge,
-          titleMedium: titleMedium ?? this.titleMedium,
-          titleSmall: titleSmall ?? this.titleSmall,
-          bodyLarge: bodyLarge ?? this.bodyLarge,
-          bodyMedium: bodyMedium ?? this.bodyMedium,
-          bodySmall: bodySmall ?? this.bodySmall,
-          labelLarge: labelLarge ?? this.labelLarge,
-          labelMedium: labelMedium ?? this.labelMedium,
-          labelSmall: labelSmall ?? this.labelSmall,
-          displayLargeEmphasized:
-              displayLargeEmphasized ?? this.displayLargeEmphasized,
-          displayMediumEmphasized:
-              displayMediumEmphasized ?? this.displayMediumEmphasized,
-          displaySmallEmphasized:
-              displaySmallEmphasized ?? this.displaySmallEmphasized,
-          headlineLargeEmphasized:
-              headlineLargeEmphasized ?? this.headlineLargeEmphasized,
-          headlineMediumEmphasized:
-              headlineMediumEmphasized ?? this.headlineMediumEmphasized,
-          headlineSmallEmphasized:
-              headlineSmallEmphasized ?? this.headlineSmallEmphasized,
-          titleLargeEmphasized:
-              titleLargeEmphasized ?? this.titleLargeEmphasized,
-          titleMediumEmphasized:
-              titleMediumEmphasized ?? this.titleMediumEmphasized,
-          titleSmallEmphasized:
-              titleSmallEmphasized ?? this.titleSmallEmphasized,
-          bodyLargeEmphasized: bodyLargeEmphasized ?? this.bodyLargeEmphasized,
-          bodyMediumEmphasized:
-              bodyMediumEmphasized ?? this.bodyMediumEmphasized,
-          bodySmallEmphasized: bodySmallEmphasized ?? this.bodySmallEmphasized,
-          labelLargeEmphasized:
-              labelLargeEmphasized ?? this.labelLargeEmphasized,
-          labelMediumEmphasized:
-              labelMediumEmphasized ?? this.labelMediumEmphasized,
-          labelSmallEmphasized:
-              labelSmallEmphasized ?? this.labelSmallEmphasized,
+      ? copyWith(
+          displayLarge: displayLarge,
+          displayMedium: displayMedium,
+          displaySmall: displaySmall,
+          headlineLarge: headlineLarge,
+          headlineMedium: headlineMedium,
+          headlineSmall: headlineSmall,
+          titleLarge: titleLarge,
+          titleMedium: titleMedium,
+          titleSmall: titleSmall,
+          bodyLarge: bodyLarge,
+          bodyMedium: bodyMedium,
+          bodySmall: bodySmall,
+          labelLarge: labelLarge,
+          labelMedium: labelMedium,
+          labelSmall: labelSmall,
+          displayLargeEmphasized: displayLargeEmphasized,
+          displayMediumEmphasized: displayMediumEmphasized,
+          displaySmallEmphasized: displaySmallEmphasized,
+          headlineLargeEmphasized: headlineLargeEmphasized,
+          headlineMediumEmphasized: headlineMediumEmphasized,
+          headlineSmallEmphasized: headlineSmallEmphasized,
+          titleLargeEmphasized: titleLargeEmphasized,
+          titleMediumEmphasized: titleMediumEmphasized,
+          titleSmallEmphasized: titleSmallEmphasized,
+          bodyLargeEmphasized: bodyLargeEmphasized,
+          bodyMediumEmphasized: bodyMediumEmphasized,
+          bodySmallEmphasized: bodySmallEmphasized,
+          labelLargeEmphasized: labelLargeEmphasized,
+          labelMediumEmphasized: labelMediumEmphasized,
+          labelSmallEmphasized: labelSmallEmphasized,
         )
       : this;
 
   @override
   TypescaleThemeData mergeWith({
+    TextGeometryPartial? displayLarge,
+    TextGeometryPartial? displayMedium,
+    TextGeometryPartial? displaySmall,
+    TextGeometryPartial? headlineLarge,
+    TextGeometryPartial? headlineMedium,
+    TextGeometryPartial? headlineSmall,
+    TextGeometryPartial? titleLarge,
+    TextGeometryPartial? titleMedium,
+    TextGeometryPartial? titleSmall,
+    TextGeometryPartial? bodyLarge,
+    TextGeometryPartial? bodyMedium,
+    TextGeometryPartial? bodySmall,
+    TextGeometryPartial? labelLarge,
+    TextGeometryPartial? labelMedium,
+    TextGeometryPartial? labelSmall,
+    TextGeometryPartial? displayLargeEmphasized,
+    TextGeometryPartial? displayMediumEmphasized,
+    TextGeometryPartial? displaySmallEmphasized,
+    TextGeometryPartial? headlineLargeEmphasized,
+    TextGeometryPartial? headlineMediumEmphasized,
+    TextGeometryPartial? headlineSmallEmphasized,
+    TextGeometryPartial? titleLargeEmphasized,
+    TextGeometryPartial? titleMediumEmphasized,
+    TextGeometryPartial? titleSmallEmphasized,
+    TextGeometryPartial? bodyLargeEmphasized,
+    TextGeometryPartial? bodyMediumEmphasized,
+    TextGeometryPartial? bodySmallEmphasized,
+    TextGeometryPartial? labelLargeEmphasized,
+    TextGeometryPartial? labelMediumEmphasized,
+    TextGeometryPartial? labelSmallEmphasized,
+  }) => .from(
+    displayLarge: this.displayLarge.merge(displayLarge),
+    displayMedium: this.displayMedium.merge(displayMedium),
+    displaySmall: this.displaySmall.merge(displaySmall),
+    headlineLarge: this.headlineLarge.merge(headlineLarge),
+    headlineMedium: this.headlineMedium.merge(headlineMedium),
+    headlineSmall: this.headlineSmall.merge(headlineSmall),
+    titleLarge: this.titleLarge.merge(titleLarge),
+    titleMedium: this.titleMedium.merge(titleMedium),
+    titleSmall: this.titleSmall.merge(titleSmall),
+    bodyLarge: this.bodyLarge.merge(bodyLarge),
+    bodyMedium: this.bodyMedium.merge(bodyMedium),
+    bodySmall: this.bodySmall.merge(bodySmall),
+    labelLarge: this.labelLarge.merge(labelLarge),
+    labelMedium: this.labelMedium.merge(labelMedium),
+    labelSmall: this.labelSmall.merge(labelSmall),
+    displayLargeEmphasized: this.displayLargeEmphasized.merge(
+      displayLargeEmphasized,
+    ),
+    displayMediumEmphasized: this.displayMediumEmphasized.merge(
+      displayMediumEmphasized,
+    ),
+    displaySmallEmphasized: this.displaySmallEmphasized.merge(
+      displaySmallEmphasized,
+    ),
+    headlineLargeEmphasized: this.headlineLargeEmphasized.merge(
+      headlineLargeEmphasized,
+    ),
+    headlineMediumEmphasized: this.headlineMediumEmphasized.merge(
+      headlineMediumEmphasized,
+    ),
+    headlineSmallEmphasized: this.headlineSmallEmphasized.merge(
+      headlineSmallEmphasized,
+    ),
+    titleLargeEmphasized: this.titleLargeEmphasized.merge(titleLargeEmphasized),
+    titleMediumEmphasized: this.titleMediumEmphasized.merge(
+      titleMediumEmphasized,
+    ),
+    titleSmallEmphasized: this.titleSmallEmphasized.merge(titleSmallEmphasized),
+    bodyLargeEmphasized: this.bodyLargeEmphasized.merge(bodyLargeEmphasized),
+    bodyMediumEmphasized: this.bodyMediumEmphasized.merge(bodyMediumEmphasized),
+    bodySmallEmphasized: this.bodySmallEmphasized.merge(bodySmallEmphasized),
+    labelLargeEmphasized: this.labelLargeEmphasized.merge(labelLargeEmphasized),
+    labelMediumEmphasized: this.labelMediumEmphasized.merge(
+      labelMediumEmphasized,
+    ),
+    labelSmallEmphasized: this.labelSmallEmphasized.merge(labelSmallEmphasized),
+  );
+
+  @override
+  TypescaleThemeData maybeMergeWith({
     TextGeometryPartial? displayLarge,
     TextGeometryPartial? displayMedium,
     TextGeometryPartial? displaySmall,
@@ -1125,65 +1466,65 @@ abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
           labelLargeEmphasized != null ||
           labelMediumEmphasized != null ||
           labelSmallEmphasized != null
-      ? TypescaleThemeData.from(
-          displayLarge: this.displayLarge.merge(displayLarge),
-          displayMedium: this.displayMedium.merge(displayMedium),
-          displaySmall: this.displaySmall.merge(displaySmall),
-          headlineLarge: this.headlineLarge.merge(headlineLarge),
-          headlineMedium: this.headlineMedium.merge(headlineMedium),
-          headlineSmall: this.headlineSmall.merge(headlineSmall),
-          titleLarge: this.titleLarge.merge(titleLarge),
-          titleMedium: this.titleMedium.merge(titleMedium),
-          titleSmall: this.titleSmall.merge(titleSmall),
-          bodyLarge: this.bodyLarge.merge(bodyLarge),
-          bodyMedium: this.bodyMedium.merge(bodyMedium),
-          bodySmall: this.bodySmall.merge(bodySmall),
-          labelLarge: this.labelLarge.merge(labelLarge),
-          labelMedium: this.labelMedium.merge(labelMedium),
-          labelSmall: this.labelSmall.merge(labelSmall),
-          displayLargeEmphasized: this.displayLargeEmphasized.merge(
+      ? .from(
+          displayLarge: this.displayLarge.maybeMerge(displayLarge),
+          displayMedium: this.displayMedium.maybeMerge(displayMedium),
+          displaySmall: this.displaySmall.maybeMerge(displaySmall),
+          headlineLarge: this.headlineLarge.maybeMerge(headlineLarge),
+          headlineMedium: this.headlineMedium.maybeMerge(headlineMedium),
+          headlineSmall: this.headlineSmall.maybeMerge(headlineSmall),
+          titleLarge: this.titleLarge.maybeMerge(titleLarge),
+          titleMedium: this.titleMedium.maybeMerge(titleMedium),
+          titleSmall: this.titleSmall.maybeMerge(titleSmall),
+          bodyLarge: this.bodyLarge.maybeMerge(bodyLarge),
+          bodyMedium: this.bodyMedium.maybeMerge(bodyMedium),
+          bodySmall: this.bodySmall.maybeMerge(bodySmall),
+          labelLarge: this.labelLarge.maybeMerge(labelLarge),
+          labelMedium: this.labelMedium.maybeMerge(labelMedium),
+          labelSmall: this.labelSmall.maybeMerge(labelSmall),
+          displayLargeEmphasized: this.displayLargeEmphasized.maybeMerge(
             displayLargeEmphasized,
           ),
-          displayMediumEmphasized: this.displayMediumEmphasized.merge(
+          displayMediumEmphasized: this.displayMediumEmphasized.maybeMerge(
             displayMediumEmphasized,
           ),
-          displaySmallEmphasized: this.displaySmallEmphasized.merge(
+          displaySmallEmphasized: this.displaySmallEmphasized.maybeMerge(
             displaySmallEmphasized,
           ),
-          headlineLargeEmphasized: this.headlineLargeEmphasized.merge(
+          headlineLargeEmphasized: this.headlineLargeEmphasized.maybeMerge(
             headlineLargeEmphasized,
           ),
-          headlineMediumEmphasized: this.headlineMediumEmphasized.merge(
+          headlineMediumEmphasized: this.headlineMediumEmphasized.maybeMerge(
             headlineMediumEmphasized,
           ),
-          headlineSmallEmphasized: this.headlineSmallEmphasized.merge(
+          headlineSmallEmphasized: this.headlineSmallEmphasized.maybeMerge(
             headlineSmallEmphasized,
           ),
-          titleLargeEmphasized: this.titleLargeEmphasized.merge(
+          titleLargeEmphasized: this.titleLargeEmphasized.maybeMerge(
             titleLargeEmphasized,
           ),
-          titleMediumEmphasized: this.titleMediumEmphasized.merge(
+          titleMediumEmphasized: this.titleMediumEmphasized.maybeMerge(
             titleMediumEmphasized,
           ),
-          titleSmallEmphasized: this.titleSmallEmphasized.merge(
+          titleSmallEmphasized: this.titleSmallEmphasized.maybeMerge(
             titleSmallEmphasized,
           ),
-          bodyLargeEmphasized: this.bodyLargeEmphasized.merge(
+          bodyLargeEmphasized: this.bodyLargeEmphasized.maybeMerge(
             bodyLargeEmphasized,
           ),
-          bodyMediumEmphasized: this.bodyMediumEmphasized.merge(
+          bodyMediumEmphasized: this.bodyMediumEmphasized.maybeMerge(
             bodyMediumEmphasized,
           ),
-          bodySmallEmphasized: this.bodySmallEmphasized.merge(
+          bodySmallEmphasized: this.bodySmallEmphasized.maybeMerge(
             bodySmallEmphasized,
           ),
-          labelLargeEmphasized: this.labelLargeEmphasized.merge(
+          labelLargeEmphasized: this.labelLargeEmphasized.maybeMerge(
             labelLargeEmphasized,
           ),
-          labelMediumEmphasized: this.labelMediumEmphasized.merge(
+          labelMediumEmphasized: this.labelMediumEmphasized.maybeMerge(
             labelMediumEmphasized,
           ),
-          labelSmallEmphasized: this.labelSmallEmphasized.merge(
+          labelSmallEmphasized: this.labelSmallEmphasized.maybeMerge(
             labelSmallEmphasized,
           ),
         )
@@ -1192,6 +1533,43 @@ abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
   @override
   TypescaleThemeData merge(TypescaleThemeDataPartial? other) => other != null
       ? mergeWith(
+          displayLarge: other.displayLarge,
+          displayMedium: other.displayMedium,
+          displaySmall: other.displaySmall,
+          headlineLarge: other.headlineLarge,
+          headlineMedium: other.headlineMedium,
+          headlineSmall: other.headlineSmall,
+          titleLarge: other.titleLarge,
+          titleMedium: other.titleMedium,
+          titleSmall: other.titleSmall,
+          bodyLarge: other.bodyLarge,
+          bodyMedium: other.bodyMedium,
+          bodySmall: other.bodySmall,
+          labelLarge: other.labelLarge,
+          labelMedium: other.labelMedium,
+          labelSmall: other.labelSmall,
+          displayLargeEmphasized: other.displayLargeEmphasized,
+          displayMediumEmphasized: other.displayMediumEmphasized,
+          displaySmallEmphasized: other.displaySmallEmphasized,
+          headlineLargeEmphasized: other.headlineLargeEmphasized,
+          headlineMediumEmphasized: other.headlineMediumEmphasized,
+          headlineSmallEmphasized: other.headlineSmallEmphasized,
+          titleLargeEmphasized: other.titleLargeEmphasized,
+          titleMediumEmphasized: other.titleMediumEmphasized,
+          titleSmallEmphasized: other.titleSmallEmphasized,
+          bodyLargeEmphasized: other.bodyLargeEmphasized,
+          bodyMediumEmphasized: other.bodyMediumEmphasized,
+          bodySmallEmphasized: other.bodySmallEmphasized,
+          labelLargeEmphasized: other.labelLargeEmphasized,
+          labelMediumEmphasized: other.labelMediumEmphasized,
+          labelSmallEmphasized: other.labelSmallEmphasized,
+        )
+      : copy();
+
+  @override
+  TypescaleThemeData maybeMerge(TypescaleThemeDataPartial? other) =>
+      other != null
+      ? maybeMergeWith(
           displayLarge: other.displayLarge,
           displayMedium: other.displayMedium,
           displaySmall: other.displaySmall,
@@ -1335,82 +1713,9 @@ abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
         ),
       );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is TypescaleThemeData &&
-          displayLarge == other.displayLarge &&
-          displayMedium == other.displayMedium &&
-          displaySmall == other.displaySmall &&
-          headlineLarge == other.headlineLarge &&
-          headlineMedium == other.headlineMedium &&
-          headlineSmall == other.headlineSmall &&
-          titleLarge == other.titleLarge &&
-          titleMedium == other.titleMedium &&
-          titleSmall == other.titleSmall &&
-          bodyLarge == other.bodyLarge &&
-          bodyMedium == other.bodyMedium &&
-          bodySmall == other.bodySmall &&
-          labelLarge == other.labelLarge &&
-          labelMedium == other.labelMedium &&
-          labelSmall == other.labelSmall &&
-          displayLargeEmphasized == other.displayLargeEmphasized &&
-          displayMediumEmphasized == other.displayMediumEmphasized &&
-          displaySmallEmphasized == other.displaySmallEmphasized &&
-          headlineLargeEmphasized == other.headlineLargeEmphasized &&
-          headlineMediumEmphasized == other.headlineMediumEmphasized &&
-          headlineSmallEmphasized == other.headlineSmallEmphasized &&
-          titleLargeEmphasized == other.titleLargeEmphasized &&
-          titleMediumEmphasized == other.titleMediumEmphasized &&
-          titleSmallEmphasized == other.titleSmallEmphasized &&
-          bodyLargeEmphasized == other.bodyLargeEmphasized &&
-          bodyMediumEmphasized == other.bodyMediumEmphasized &&
-          bodySmallEmphasized == other.bodySmallEmphasized &&
-          labelLargeEmphasized == other.labelLargeEmphasized &&
-          labelMediumEmphasized == other.labelMediumEmphasized &&
-          labelSmallEmphasized == other.labelSmallEmphasized;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    displayLarge,
-    displayMedium,
-    displaySmall,
-    headlineLarge,
-    headlineMedium,
-    headlineSmall,
-    titleLarge,
-    titleMedium,
-    titleSmall,
-    bodyLarge,
-    bodyMedium,
-    bodySmall,
-    labelLarge,
-    labelMedium,
-    labelSmall,
-    displayLargeEmphasized,
-    displayMediumEmphasized,
-    displaySmallEmphasized,
-    Object.hash(
-      headlineLargeEmphasized,
-      headlineMediumEmphasized,
-      headlineSmallEmphasized,
-      titleLargeEmphasized,
-      titleMediumEmphasized,
-      titleSmallEmphasized,
-      bodyLargeEmphasized,
-      bodyMediumEmphasized,
-      bodySmallEmphasized,
-      labelLargeEmphasized,
-      labelMediumEmphasized,
-      labelSmallEmphasized,
-    ),
-  );
 }
 
-class _TypescaleThemeData extends TypescaleThemeData {
+final class _TypescaleThemeData extends TypescaleThemeData {
   const _TypescaleThemeData({
     required this.displayLarge,
     required this.displayMedium,
@@ -1533,13 +1838,89 @@ class _TypescaleThemeData extends TypescaleThemeData {
 
   @override
   final TextGeometry labelSmallEmphasized;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _TypescaleThemeData &&
+          displayLarge == other.displayLarge &&
+          displayMedium == other.displayMedium &&
+          displaySmall == other.displaySmall &&
+          headlineLarge == other.headlineLarge &&
+          headlineMedium == other.headlineMedium &&
+          headlineSmall == other.headlineSmall &&
+          titleLarge == other.titleLarge &&
+          titleMedium == other.titleMedium &&
+          titleSmall == other.titleSmall &&
+          bodyLarge == other.bodyLarge &&
+          bodyMedium == other.bodyMedium &&
+          bodySmall == other.bodySmall &&
+          labelLarge == other.labelLarge &&
+          labelMedium == other.labelMedium &&
+          labelSmall == other.labelSmall &&
+          displayLargeEmphasized == other.displayLargeEmphasized &&
+          displayMediumEmphasized == other.displayMediumEmphasized &&
+          displaySmallEmphasized == other.displaySmallEmphasized &&
+          headlineLargeEmphasized == other.headlineLargeEmphasized &&
+          headlineMediumEmphasized == other.headlineMediumEmphasized &&
+          headlineSmallEmphasized == other.headlineSmallEmphasized &&
+          titleLargeEmphasized == other.titleLargeEmphasized &&
+          titleMediumEmphasized == other.titleMediumEmphasized &&
+          titleSmallEmphasized == other.titleSmallEmphasized &&
+          bodyLargeEmphasized == other.bodyLargeEmphasized &&
+          bodyMediumEmphasized == other.bodyMediumEmphasized &&
+          bodySmallEmphasized == other.bodySmallEmphasized &&
+          labelLargeEmphasized == other.labelLargeEmphasized &&
+          labelMediumEmphasized == other.labelMediumEmphasized &&
+          labelSmallEmphasized == other.labelSmallEmphasized;
+
+  @override
+  int get hashCode => Object.hash(
+    displayLarge,
+    displayMedium,
+    displaySmall,
+    headlineLarge,
+    headlineMedium,
+    headlineSmall,
+    titleLarge,
+    titleMedium,
+    titleSmall,
+    bodyLarge,
+    bodyMedium,
+    bodySmall,
+    labelLarge,
+    labelMedium,
+    labelSmall,
+    displayLargeEmphasized,
+    displayMediumEmphasized,
+    displaySmallEmphasized,
+    headlineLargeEmphasized,
+    Object.hash(
+      headlineMediumEmphasized,
+      headlineSmallEmphasized,
+      titleLargeEmphasized,
+      titleMediumEmphasized,
+      titleSmallEmphasized,
+      bodyLargeEmphasized,
+      bodyMediumEmphasized,
+      bodySmallEmphasized,
+      labelLargeEmphasized,
+      labelMediumEmphasized,
+      labelSmallEmphasized,
+    ),
+  );
 }
 
-class _TypescaleThemeDataFallback extends TypescaleThemeData {
-  const _TypescaleThemeDataFallback({required TypefaceThemeData typefaceTheme})
-    : _typefaceTheme = typefaceTheme;
+final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
+  const _TypescaleThemeDataDefaults({
+    required TypefaceThemeData typefaceTheme,
+    TypescaleThemeDataPartial? overrides,
+  }) : _typefaceTheme = typefaceTheme,
+       _overrides = overrides ?? const .from();
 
   final TypefaceThemeData _typefaceTheme;
+
+  final TypescaleThemeDataPartial _overrides;
 
   @override
   TextGeometry get displayLarge => .from(
@@ -1557,7 +1938,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.displayLarge);
 
   @override
   TextGeometry get displayMedium => .from(
@@ -1575,7 +1956,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.displayMedium);
 
   @override
   TextGeometry get displaySmall => .from(
@@ -1593,7 +1974,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.displaySmall);
 
   @override
   TextGeometry get headlineLarge => .from(
@@ -1611,7 +1992,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.headlineLarge);
 
   @override
   TextGeometry get headlineMedium => .from(
@@ -1629,7 +2010,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.headlineMedium);
 
   @override
   TextGeometry get headlineSmall => .from(
@@ -1647,7 +2028,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.headlineSmall);
 
   @override
   TextGeometry get titleLarge => .from(
@@ -1665,7 +2046,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.titleLarge);
 
   @override
   TextGeometry get titleMedium => .from(
@@ -1683,7 +2064,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.titleMedium);
 
   @override
   TextGeometry get titleSmall => .from(
@@ -1701,7 +2082,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.titleSmall);
 
   @override
   TextGeometry get bodyLarge => .from(
@@ -1719,7 +2100,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.bodyLarge);
 
   @override
   TextGeometry get bodyMedium => .from(
@@ -1737,7 +2118,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.bodyMedium);
 
   @override
   TextGeometry get bodySmall => .from(
@@ -1755,7 +2136,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.bodySmall);
 
   @override
   TextGeometry get labelLarge => .from(
@@ -1773,7 +2154,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.labelLarge);
 
   @override
   TextGeometry get labelMedium => .from(
@@ -1791,7 +2172,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.labelMedium);
 
   @override
   TextGeometry get labelSmall => .from(
@@ -1809,7 +2190,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.labelSmall);
 
   @override
   TextGeometry get displayLargeEmphasized => .from(
@@ -1827,7 +2208,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.displayLargeEmphasized);
 
   @override
   TextGeometry get displayMediumEmphasized => .from(
@@ -1845,7 +2226,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.displayMediumEmphasized);
 
   @override
   TextGeometry get displaySmallEmphasized => .from(
@@ -1863,7 +2244,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.displaySmallEmphasized);
 
   @override
   TextGeometry get headlineLargeEmphasized => .from(
@@ -1881,7 +2262,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.headlineLargeEmphasized);
 
   @override
   TextGeometry get headlineMediumEmphasized => .from(
@@ -1899,7 +2280,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.headlineMediumEmphasized);
 
   @override
   TextGeometry get headlineSmallEmphasized => .from(
@@ -1917,7 +2298,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.headlineSmallEmphasized);
 
   @override
   TextGeometry get titleLargeEmphasized => .from(
@@ -1935,7 +2316,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.titleLargeEmphasized);
 
   @override
   TextGeometry get titleMediumEmphasized => .from(
@@ -1953,7 +2334,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.titleMediumEmphasized);
 
   @override
   TextGeometry get titleSmallEmphasized => .from(
@@ -1971,7 +2352,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.titleSmallEmphasized);
 
   @override
   TextGeometry get bodyLargeEmphasized => .from(
@@ -1989,7 +2370,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.bodyLargeEmphasized);
 
   @override
   TextGeometry get bodyMediumEmphasized => .from(
@@ -2007,7 +2388,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.bodyMediumEmphasized);
 
   @override
   TextGeometry get bodySmallEmphasized => .from(
@@ -2025,7 +2406,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.bodySmallEmphasized);
 
   @override
   TextGeometry get labelLargeEmphasized => .from(
@@ -2043,7 +2424,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.labelLargeEmphasized);
 
   @override
   TextGeometry get labelMediumEmphasized => .from(
@@ -2061,7 +2442,7 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
-  );
+  ).maybeMerge(_overrides.labelMediumEmphasized);
 
   @override
   TextGeometry get labelSmallEmphasized => .from(
@@ -2079,40 +2460,534 @@ class _TypescaleThemeDataFallback extends TypescaleThemeData {
     slnt: 0.0,
     fill: 0.0,
     hexp: 0.0,
+  ).maybeMerge(_overrides.labelSmallEmphasized);
+
+  @override
+  TypescaleThemeData copyWith({
+    covariant TextGeometry? displayLarge,
+    covariant TextGeometry? displayMedium,
+    covariant TextGeometry? displaySmall,
+    covariant TextGeometry? headlineLarge,
+    covariant TextGeometry? headlineMedium,
+    covariant TextGeometry? headlineSmall,
+    covariant TextGeometry? titleLarge,
+    covariant TextGeometry? titleMedium,
+    covariant TextGeometry? titleSmall,
+    covariant TextGeometry? bodyLarge,
+    covariant TextGeometry? bodyMedium,
+    covariant TextGeometry? bodySmall,
+    covariant TextGeometry? labelLarge,
+    covariant TextGeometry? labelMedium,
+    covariant TextGeometry? labelSmall,
+    covariant TextGeometry? displayLargeEmphasized,
+    covariant TextGeometry? displayMediumEmphasized,
+    covariant TextGeometry? displaySmallEmphasized,
+    covariant TextGeometry? headlineLargeEmphasized,
+    covariant TextGeometry? headlineMediumEmphasized,
+    covariant TextGeometry? headlineSmallEmphasized,
+    covariant TextGeometry? titleLargeEmphasized,
+    covariant TextGeometry? titleMediumEmphasized,
+    covariant TextGeometry? titleSmallEmphasized,
+    covariant TextGeometry? bodyLargeEmphasized,
+    covariant TextGeometry? bodyMediumEmphasized,
+    covariant TextGeometry? bodySmallEmphasized,
+    covariant TextGeometry? labelLargeEmphasized,
+    covariant TextGeometry? labelMediumEmphasized,
+    covariant TextGeometry? labelSmallEmphasized,
+  }) => _TypescaleThemeDataDefaults(
+    typefaceTheme: _typefaceTheme,
+    overrides: _overrides.copyWith(
+      displayLarge: displayLarge,
+      displayMedium: displayMedium,
+      displaySmall: displaySmall,
+      headlineLarge: headlineLarge,
+      headlineMedium: headlineMedium,
+      headlineSmall: headlineSmall,
+      titleLarge: titleLarge,
+      titleMedium: titleMedium,
+      titleSmall: titleSmall,
+      bodyLarge: bodyLarge,
+      bodyMedium: bodyMedium,
+      bodySmall: bodySmall,
+      labelLarge: labelLarge,
+      labelMedium: labelMedium,
+      labelSmall: labelSmall,
+      displayLargeEmphasized: displayLargeEmphasized,
+      displayMediumEmphasized: displayMediumEmphasized,
+      displaySmallEmphasized: displaySmallEmphasized,
+      headlineLargeEmphasized: headlineLargeEmphasized,
+      headlineMediumEmphasized: headlineMediumEmphasized,
+      headlineSmallEmphasized: headlineSmallEmphasized,
+      titleLargeEmphasized: titleLargeEmphasized,
+      titleMediumEmphasized: titleMediumEmphasized,
+      titleSmallEmphasized: titleSmallEmphasized,
+      bodyLargeEmphasized: bodyLargeEmphasized,
+      bodyMediumEmphasized: bodyMediumEmphasized,
+      bodySmallEmphasized: bodySmallEmphasized,
+      labelLargeEmphasized: labelLargeEmphasized,
+      labelMediumEmphasized: labelMediumEmphasized,
+      labelSmallEmphasized: labelSmallEmphasized,
+    ),
   );
+
+  @override
+  TypescaleThemeData maybeCopyWith({
+    TextGeometry? displayLarge,
+    TextGeometry? displayMedium,
+    TextGeometry? displaySmall,
+    TextGeometry? headlineLarge,
+    TextGeometry? headlineMedium,
+    TextGeometry? headlineSmall,
+    TextGeometry? titleLarge,
+    TextGeometry? titleMedium,
+    TextGeometry? titleSmall,
+    TextGeometry? bodyLarge,
+    TextGeometry? bodyMedium,
+    TextGeometry? bodySmall,
+    TextGeometry? labelLarge,
+    TextGeometry? labelMedium,
+    TextGeometry? labelSmall,
+    TextGeometry? displayLargeEmphasized,
+    TextGeometry? displayMediumEmphasized,
+    TextGeometry? displaySmallEmphasized,
+    TextGeometry? headlineLargeEmphasized,
+    TextGeometry? headlineMediumEmphasized,
+    TextGeometry? headlineSmallEmphasized,
+    TextGeometry? titleLargeEmphasized,
+    TextGeometry? titleMediumEmphasized,
+    TextGeometry? titleSmallEmphasized,
+    TextGeometry? bodyLargeEmphasized,
+    TextGeometry? bodyMediumEmphasized,
+    TextGeometry? bodySmallEmphasized,
+    TextGeometry? labelLargeEmphasized,
+    TextGeometry? labelMediumEmphasized,
+    TextGeometry? labelSmallEmphasized,
+  }) =>
+      displayLarge != null &&
+          displayMedium != null &&
+          displaySmall != null &&
+          headlineLarge != null &&
+          headlineMedium != null &&
+          headlineSmall != null &&
+          titleLarge != null &&
+          titleMedium != null &&
+          titleSmall != null &&
+          bodyLarge != null &&
+          bodyMedium != null &&
+          bodySmall != null &&
+          labelLarge != null &&
+          labelMedium != null &&
+          labelSmall != null &&
+          displayLargeEmphasized != null &&
+          displayMediumEmphasized != null &&
+          displaySmallEmphasized != null &&
+          headlineLargeEmphasized != null &&
+          headlineMediumEmphasized != null &&
+          headlineSmallEmphasized != null &&
+          titleLargeEmphasized != null &&
+          titleMediumEmphasized != null &&
+          titleSmallEmphasized != null &&
+          bodyLargeEmphasized != null &&
+          bodyMediumEmphasized != null &&
+          bodySmallEmphasized != null &&
+          labelLargeEmphasized != null &&
+          labelMediumEmphasized != null &&
+          labelSmallEmphasized != null
+      ? .from(
+          displayLarge: displayLarge,
+          displayMedium: displayMedium,
+          displaySmall: displaySmall,
+          headlineLarge: headlineLarge,
+          headlineMedium: headlineMedium,
+          headlineSmall: headlineSmall,
+          titleLarge: titleLarge,
+          titleMedium: titleMedium,
+          titleSmall: titleSmall,
+          bodyLarge: bodyLarge,
+          bodyMedium: bodyMedium,
+          bodySmall: bodySmall,
+          labelLarge: labelLarge,
+          labelMedium: labelMedium,
+          labelSmall: labelSmall,
+          displayLargeEmphasized: displayLargeEmphasized,
+          displayMediumEmphasized: displayMediumEmphasized,
+          displaySmallEmphasized: displaySmallEmphasized,
+          headlineLargeEmphasized: headlineLargeEmphasized,
+          headlineMediumEmphasized: headlineMediumEmphasized,
+          headlineSmallEmphasized: headlineSmallEmphasized,
+          titleLargeEmphasized: titleLargeEmphasized,
+          titleMediumEmphasized: titleMediumEmphasized,
+          titleSmallEmphasized: titleSmallEmphasized,
+          bodyLargeEmphasized: bodyLargeEmphasized,
+          bodyMediumEmphasized: bodyMediumEmphasized,
+          bodySmallEmphasized: bodySmallEmphasized,
+          labelLargeEmphasized: labelLargeEmphasized,
+          labelMediumEmphasized: labelMediumEmphasized,
+          labelSmallEmphasized: labelSmallEmphasized,
+        )
+      : displayLarge != null ||
+            displayMedium != null ||
+            displaySmall != null ||
+            headlineLarge != null ||
+            headlineMedium != null ||
+            headlineSmall != null ||
+            titleLarge != null ||
+            titleMedium != null ||
+            titleSmall != null ||
+            bodyLarge != null ||
+            bodyMedium != null ||
+            bodySmall != null ||
+            labelLarge != null ||
+            labelMedium != null ||
+            labelSmall != null ||
+            displayLargeEmphasized != null ||
+            displayMediumEmphasized != null ||
+            displaySmallEmphasized != null ||
+            headlineLargeEmphasized != null ||
+            headlineMediumEmphasized != null ||
+            headlineSmallEmphasized != null ||
+            titleLargeEmphasized != null ||
+            titleMediumEmphasized != null ||
+            titleSmallEmphasized != null ||
+            bodyLargeEmphasized != null ||
+            bodyMediumEmphasized != null ||
+            bodySmallEmphasized != null ||
+            labelLargeEmphasized != null ||
+            labelMediumEmphasized != null ||
+            labelSmallEmphasized != null
+      ? copyWith(
+          displayLarge: displayLarge,
+          displayMedium: displayMedium,
+          displaySmall: displaySmall,
+          headlineLarge: headlineLarge,
+          headlineMedium: headlineMedium,
+          headlineSmall: headlineSmall,
+          titleLarge: titleLarge,
+          titleMedium: titleMedium,
+          titleSmall: titleSmall,
+          bodyLarge: bodyLarge,
+          bodyMedium: bodyMedium,
+          bodySmall: bodySmall,
+          labelLarge: labelLarge,
+          labelMedium: labelMedium,
+          labelSmall: labelSmall,
+          displayLargeEmphasized: displayLargeEmphasized,
+          displayMediumEmphasized: displayMediumEmphasized,
+          displaySmallEmphasized: displaySmallEmphasized,
+          headlineLargeEmphasized: headlineLargeEmphasized,
+          headlineMediumEmphasized: headlineMediumEmphasized,
+          headlineSmallEmphasized: headlineSmallEmphasized,
+          titleLargeEmphasized: titleLargeEmphasized,
+          titleMediumEmphasized: titleMediumEmphasized,
+          titleSmallEmphasized: titleSmallEmphasized,
+          bodyLargeEmphasized: bodyLargeEmphasized,
+          bodyMediumEmphasized: bodyMediumEmphasized,
+          bodySmallEmphasized: bodySmallEmphasized,
+          labelLargeEmphasized: labelLargeEmphasized,
+          labelMediumEmphasized: labelMediumEmphasized,
+          labelSmallEmphasized: labelSmallEmphasized,
+        )
+      : this;
+
+  @override
+  TypescaleThemeData mergeWith({
+    TextGeometryPartial? displayLarge,
+    TextGeometryPartial? displayMedium,
+    TextGeometryPartial? displaySmall,
+    TextGeometryPartial? headlineLarge,
+    TextGeometryPartial? headlineMedium,
+    TextGeometryPartial? headlineSmall,
+    TextGeometryPartial? titleLarge,
+    TextGeometryPartial? titleMedium,
+    TextGeometryPartial? titleSmall,
+    TextGeometryPartial? bodyLarge,
+    TextGeometryPartial? bodyMedium,
+    TextGeometryPartial? bodySmall,
+    TextGeometryPartial? labelLarge,
+    TextGeometryPartial? labelMedium,
+    TextGeometryPartial? labelSmall,
+    TextGeometryPartial? displayLargeEmphasized,
+    TextGeometryPartial? displayMediumEmphasized,
+    TextGeometryPartial? displaySmallEmphasized,
+    TextGeometryPartial? headlineLargeEmphasized,
+    TextGeometryPartial? headlineMediumEmphasized,
+    TextGeometryPartial? headlineSmallEmphasized,
+    TextGeometryPartial? titleLargeEmphasized,
+    TextGeometryPartial? titleMediumEmphasized,
+    TextGeometryPartial? titleSmallEmphasized,
+    TextGeometryPartial? bodyLargeEmphasized,
+    TextGeometryPartial? bodyMediumEmphasized,
+    TextGeometryPartial? bodySmallEmphasized,
+    TextGeometryPartial? labelLargeEmphasized,
+    TextGeometryPartial? labelMediumEmphasized,
+    TextGeometryPartial? labelSmallEmphasized,
+  }) => _TypescaleThemeDataDefaults(
+    typefaceTheme: _typefaceTheme,
+    overrides: _overrides.mergeWith(
+      displayLarge: displayLarge,
+      displayMedium: displayMedium,
+      displaySmall: displaySmall,
+      headlineLarge: headlineLarge,
+      headlineMedium: headlineMedium,
+      headlineSmall: headlineSmall,
+      titleLarge: titleLarge,
+      titleMedium: titleMedium,
+      titleSmall: titleSmall,
+      bodyLarge: bodyLarge,
+      bodyMedium: bodyMedium,
+      bodySmall: bodySmall,
+      labelLarge: labelLarge,
+      labelMedium: labelMedium,
+      labelSmall: labelSmall,
+      displayLargeEmphasized: displayLargeEmphasized,
+      displayMediumEmphasized: displayMediumEmphasized,
+      displaySmallEmphasized: displaySmallEmphasized,
+      headlineLargeEmphasized: headlineLargeEmphasized,
+      headlineMediumEmphasized: headlineMediumEmphasized,
+      headlineSmallEmphasized: headlineSmallEmphasized,
+      titleLargeEmphasized: titleLargeEmphasized,
+      titleMediumEmphasized: titleMediumEmphasized,
+      titleSmallEmphasized: titleSmallEmphasized,
+      bodyLargeEmphasized: bodyLargeEmphasized,
+      bodyMediumEmphasized: bodyMediumEmphasized,
+      bodySmallEmphasized: bodySmallEmphasized,
+      labelLargeEmphasized: labelLargeEmphasized,
+      labelMediumEmphasized: labelMediumEmphasized,
+      labelSmallEmphasized: labelSmallEmphasized,
+    ),
+  );
+
+  @override
+  TypescaleThemeData maybeMergeWith({
+    TextGeometryPartial? displayLarge,
+    TextGeometryPartial? displayMedium,
+    TextGeometryPartial? displaySmall,
+    TextGeometryPartial? headlineLarge,
+    TextGeometryPartial? headlineMedium,
+    TextGeometryPartial? headlineSmall,
+    TextGeometryPartial? titleLarge,
+    TextGeometryPartial? titleMedium,
+    TextGeometryPartial? titleSmall,
+    TextGeometryPartial? bodyLarge,
+    TextGeometryPartial? bodyMedium,
+    TextGeometryPartial? bodySmall,
+    TextGeometryPartial? labelLarge,
+    TextGeometryPartial? labelMedium,
+    TextGeometryPartial? labelSmall,
+    TextGeometryPartial? displayLargeEmphasized,
+    TextGeometryPartial? displayMediumEmphasized,
+    TextGeometryPartial? displaySmallEmphasized,
+    TextGeometryPartial? headlineLargeEmphasized,
+    TextGeometryPartial? headlineMediumEmphasized,
+    TextGeometryPartial? headlineSmallEmphasized,
+    TextGeometryPartial? titleLargeEmphasized,
+    TextGeometryPartial? titleMediumEmphasized,
+    TextGeometryPartial? titleSmallEmphasized,
+    TextGeometryPartial? bodyLargeEmphasized,
+    TextGeometryPartial? bodyMediumEmphasized,
+    TextGeometryPartial? bodySmallEmphasized,
+    TextGeometryPartial? labelLargeEmphasized,
+    TextGeometryPartial? labelMediumEmphasized,
+    TextGeometryPartial? labelSmallEmphasized,
+  }) {
+    final overrides = _overrides.maybeMergeWith(
+      displayLarge: displayLarge,
+      displayMedium: displayMedium,
+      displaySmall: displaySmall,
+      headlineLarge: headlineLarge,
+      headlineMedium: headlineMedium,
+      headlineSmall: headlineSmall,
+      titleLarge: titleLarge,
+      titleMedium: titleMedium,
+      titleSmall: titleSmall,
+      bodyLarge: bodyLarge,
+      bodyMedium: bodyMedium,
+      bodySmall: bodySmall,
+      labelLarge: labelLarge,
+      labelMedium: labelMedium,
+      labelSmall: labelSmall,
+      displayLargeEmphasized: displayLargeEmphasized,
+      displayMediumEmphasized: displayMediumEmphasized,
+      displaySmallEmphasized: displaySmallEmphasized,
+      headlineLargeEmphasized: headlineLargeEmphasized,
+      headlineMediumEmphasized: headlineMediumEmphasized,
+      headlineSmallEmphasized: headlineSmallEmphasized,
+      titleLargeEmphasized: titleLargeEmphasized,
+      titleMediumEmphasized: titleMediumEmphasized,
+      titleSmallEmphasized: titleSmallEmphasized,
+      bodyLargeEmphasized: bodyLargeEmphasized,
+      bodyMediumEmphasized: bodyMediumEmphasized,
+      bodySmallEmphasized: bodySmallEmphasized,
+      labelLargeEmphasized: labelLargeEmphasized,
+      labelMediumEmphasized: labelMediumEmphasized,
+      labelSmallEmphasized: labelSmallEmphasized,
+    );
+    return identical(_overrides, overrides)
+        ? this
+        : _TypescaleThemeDataDefaults(
+            typefaceTheme: _typefaceTheme,
+            overrides: _overrides,
+          );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _TypescaleThemeDataDefaults &&
+          _typefaceTheme == other._typefaceTheme &&
+          _overrides == other._overrides;
+
+  @override
+  int get hashCode => Object.hash(_typefaceTheme, _overrides);
 }
 
-class TypescaleTheme extends InheritedTheme {
-  const TypescaleTheme({super.key, required this.data, required super.child});
+abstract class TypescaleTheme extends StatelessWidget implements ProxyWidget {
+  const TypescaleTheme._({super.key, required this.child});
 
-  final TypescaleThemeData data;
+  const factory TypescaleTheme.mergeWithResolver({
+    Key? key,
+    required ThemeResolver<TypescaleThemeDataPartial> resolver,
+    required Widget child,
+  }) = _TypescaleThemeWithResolver<TypescaleThemeDataPartial>;
+
+  const factory TypescaleTheme.mergeWithCallback({
+    Key? key,
+    required ThemeResolverCallback<TypescaleThemeDataPartial> callback,
+    required Widget child,
+  }) = _TypescaleThemeWithCallback<TypescaleThemeDataPartial>;
+
+  const factory TypescaleTheme.mergeWithData({
+    Key? key,
+    required TypescaleThemeDataPartial data,
+    required Widget child,
+  }) = _TypescaleThemeWithData<TypescaleThemeDataPartial>;
+
+  const factory TypescaleTheme.replaceWithResolver({
+    Key? key,
+    required ThemeResolver<TypescaleThemeData> resolver,
+    required Widget child,
+  }) = _TypescaleThemeWithResolver<TypescaleThemeData>;
+
+  const factory TypescaleTheme.replaceWithCallback({
+    Key? key,
+    required ThemeResolverCallback<TypescaleThemeData> callback,
+    required Widget child,
+  }) = _TypescaleThemeWithCallback<TypescaleThemeData>;
+
+  const factory TypescaleTheme.replaceWithData({
+    Key? key,
+    required TypescaleThemeData data,
+    required Widget child,
+  }) = _TypescaleThemeWithData<TypescaleThemeData>;
+
+  ThemeResolver<TypescaleThemeDataPartial> get resolver;
 
   @override
-  bool updateShouldNotify(TypescaleTheme oldWidget) => data != oldWidget.data;
+  final Widget child;
 
   @override
-  Widget wrap(BuildContext context, Widget child) =>
-      TypescaleTheme(data: data, child: child);
+  Widget build(BuildContext context) {
+    final inherited = _TypescaleTheme.maybeResolverOf(context);
+    return _TypescaleTheme(
+      resolver: inherited != null
+          ? .combine(inherited, resolver, _merge)
+          : resolver,
+      child: child,
+    );
+  }
+
+  static TypescaleThemeDataPartial _merge(
+    TypescaleThemeDataPartial a,
+    TypescaleThemeDataPartial b,
+  ) => a.maybeMerge(b);
+
+  static TypescaleThemeData of(BuildContext context) {
+    final resolver = _TypescaleTheme.maybeResolverOf(context);
+    return .defaults(
+      typefaceTheme: TypefaceTheme.of(context),
+      overrides: resolver?.resolve(context),
+    );
+  }
+}
+
+class _TypescaleThemeWithResolver<T extends TypescaleThemeDataPartial>
+    extends TypescaleTheme {
+  const _TypescaleThemeWithResolver({
+    super.key,
+    required this.resolver,
+    required super.child,
+  }) : super._();
+
+  @override
+  final ThemeResolver<T> resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<TypescaleThemeData>("data", data));
+    properties.add(DiagnosticsProperty<ThemeResolver<T>>("resolver", resolver));
   }
+}
 
-  static Widget merge({
-    Key? key,
-    required TypescaleThemeDataPartial data,
-    required Widget child,
-  }) => Builder(
-    builder: (context) =>
-        TypescaleTheme(key: key, data: of(context).merge(data), child: child),
-  );
+class _TypescaleThemeWithCallback<T extends TypescaleThemeDataPartial>
+    extends TypescaleTheme {
+  const _TypescaleThemeWithCallback({
+    super.key,
+    required this.callback,
+    required super.child,
+  }) : super._();
 
-  static TypescaleThemeData? maybeOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<TypescaleTheme>()?.data;
+  final ThemeResolverCallback<T> callback;
 
-  static TypescaleThemeData of(BuildContext context) =>
-      maybeOf(context) ??
-      TypescaleThemeData.fallback(typefaceTheme: TypefaceTheme.of(context));
+  @override
+  ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<ThemeResolverCallback<T>>("callback", callback),
+    );
+  }
+}
+
+class _TypescaleThemeWithData<T extends TypescaleThemeDataPartial>
+    extends TypescaleTheme {
+  const _TypescaleThemeWithData({
+    super.key,
+    required this.data,
+    required super.child,
+  }) : super._();
+
+  final T data;
+
+  @override
+  ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<T>("data", data));
+  }
+}
+
+class _TypescaleTheme extends InheritedTheme {
+  const _TypescaleTheme({
+    super.key,
+    required this.resolver,
+    required super.child,
+  });
+
+  final ThemeResolver<TypescaleThemeDataPartial> resolver;
+
+  @override
+  bool updateShouldNotify(_TypescaleTheme oldWidget) =>
+      resolver != oldWidget.resolver;
+
+  @override
+  Widget wrap(BuildContext context, Widget child) =>
+      _TypescaleTheme(resolver: resolver, child: child);
+
+  static ThemeResolver<TypescaleThemeDataPartial>? maybeResolverOf(
+    BuildContext context,
+  ) => context.dependOnInheritedWidgetOfExactType<_TypescaleTheme>()?.resolver;
 }

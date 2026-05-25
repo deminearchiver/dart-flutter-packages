@@ -360,7 +360,7 @@ class _RadioButtonState extends State<RadioButton>
     final oldSelected = oldWidget.selected;
     final newSelected = widget.selected;
     if (newSelected != oldSelected) {
-      const springTheme = SpringThemeData.expressive();
+      const springTheme = SpringThemeData.defaultsExpressive();
       final spring = springTheme.fastSpatial;
       final oldValue = _animationController.value;
       final newValue = newSelected ? 1.0 : 0.0;
@@ -434,7 +434,7 @@ class _RadioButtonState extends State<RadioButton>
         onPointerDown: !_states.isDisabled ? _onPointerDown : null,
         onPointerUp: !_states.isDisabled ? _onPointerUp : null,
         onPointerCancel: !_states.isDisabled ? _onPointerCancel : null,
-        child: Material.raw(
+        child: Surface.raw(
           child: InkWell(
             statesController: _statesController,
             customBorder: stateLayerShape,
@@ -473,10 +473,10 @@ class _RadioButtonState extends State<RadioButton>
             consumeOutsideTaps: false,
             onTapOutside: !_states.isDisabled ? _onTapOutside : null,
             onTapUpOutside: !_states.isDisabled ? _onTapOutside : null,
-            child: FocusRingTheme.merge(
+            child: FocusRingTheme.mergeWithData(
               data: .from(
                 shape: .all(
-                  CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
+                  _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
                 ),
               ),
               child: FocusRing(
@@ -738,8 +738,8 @@ class _RenderRadioButtonPaint extends RenderBox
 
     final dotRadius = lerpDouble(0.0, relativeDotRadius, animation.value);
 
-    // TODO(deminearchiver): remove scaling once the magic numbers are extracted into theme.
-    // TODO(deminearchiver): reconsider above statement as it seems wrong now
+    // TODO: remove scaling once the magic numbers are extracted into theme.
+    // TODO: reconsider above statement as it seems wrong now
     context.withCanvasTransform((context) {
       context.canvas.translate(center.dx, center.dy);
       context.canvas.scale(scale);

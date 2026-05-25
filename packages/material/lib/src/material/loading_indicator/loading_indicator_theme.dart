@@ -15,7 +15,21 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
 
   Color? get containedIndicatorColor;
 
+  LoadingIndicatorThemeDataPartial copy() => copyWith();
+
   LoadingIndicatorThemeDataPartial copyWith({
+    Color? indicatorColor,
+    Color? containedContainerColor,
+    Color? containedIndicatorColor,
+  }) => .from(
+    indicatorColor: indicatorColor ?? this.indicatorColor,
+    containedContainerColor:
+        containedContainerColor ?? this.containedContainerColor,
+    containedIndicatorColor:
+        containedIndicatorColor ?? this.containedIndicatorColor,
+  );
+
+  LoadingIndicatorThemeDataPartial maybeCopyWith({
     Color? indicatorColor,
     Color? containedContainerColor,
     Color? containedIndicatorColor,
@@ -23,12 +37,10 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
       indicatorColor != null ||
           containedIndicatorColor != null ||
           containedContainerColor != null
-      ? .from(
-          indicatorColor: indicatorColor ?? this.indicatorColor,
-          containedContainerColor:
-              containedContainerColor ?? this.containedContainerColor,
-          containedIndicatorColor:
-              containedIndicatorColor ?? this.containedIndicatorColor,
+      ? copyWith(
+          indicatorColor: indicatorColor,
+          containedContainerColor: containedContainerColor,
+          containedIndicatorColor: containedIndicatorColor,
         )
       : this;
 
@@ -36,6 +48,16 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
     LoadingIndicatorThemeDataPartial? other,
   ) => other != null
       ? copyWith(
+          indicatorColor: other.indicatorColor,
+          containedContainerColor: other.containedContainerColor,
+          containedIndicatorColor: other.containedIndicatorColor,
+        )
+      : copy();
+
+  LoadingIndicatorThemeDataPartial maybeMerge(
+    LoadingIndicatorThemeDataPartial? other,
+  ) => other != null
+      ? maybeCopyWith(
           indicatorColor: other.indicatorColor,
           containedContainerColor: other.containedContainerColor,
           containedIndicatorColor: other.containedIndicatorColor,
@@ -69,23 +91,6 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
       );
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is LoadingIndicatorThemeDataPartial &&
-          indicatorColor == other.indicatorColor &&
-          containedContainerColor == other.containedContainerColor &&
-          containedIndicatorColor == other.containedIndicatorColor;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    indicatorColor,
-    containedContainerColor,
-    containedIndicatorColor,
-  );
-
   static LoadingIndicatorThemeDataPartial? lerp(
     LoadingIndicatorThemeDataPartial? a,
     LoadingIndicatorThemeDataPartial? b,
@@ -108,7 +113,7 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
   }
 }
 
-class _LoadingIndicatorThemeDataPartial
+final class _LoadingIndicatorThemeDataPartial
     extends LoadingIndicatorThemeDataPartial {
   const _LoadingIndicatorThemeDataPartial.from({
     this.indicatorColor,
@@ -124,6 +129,21 @@ class _LoadingIndicatorThemeDataPartial
 
   @override
   final Color? containedIndicatorColor;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _LoadingIndicatorThemeDataPartial &&
+          indicatorColor == other.indicatorColor &&
+          containedContainerColor == other.containedContainerColor &&
+          containedIndicatorColor == other.containedIndicatorColor;
+
+  @override
+  int get hashCode => Object.hash(
+    indicatorColor,
+    containedContainerColor,
+    containedIndicatorColor,
+  );
 }
 
 abstract class LoadingIndicatorThemeData
@@ -136,6 +156,11 @@ abstract class LoadingIndicatorThemeData
     required Color containedIndicatorColor,
   }) = _LoadingIndicatorThemeData.from;
 
+  const factory LoadingIndicatorThemeData.defaults({
+    required ColorThemeData colorTheme,
+    LoadingIndicatorThemeDataPartial? overrides,
+  }) = _LoadingIndicatorThemeDataDefaults;
+
   @override
   Color get indicatorColor;
 
@@ -146,20 +171,34 @@ abstract class LoadingIndicatorThemeData
   Color get containedIndicatorColor;
 
   @override
+  LoadingIndicatorThemeData copy() => copyWith();
+
+  @override
   LoadingIndicatorThemeData copyWith({
+    Color? indicatorColor,
+    Color? containedContainerColor,
+    Color? containedIndicatorColor,
+  }) => .from(
+    indicatorColor: indicatorColor ?? this.indicatorColor,
+    containedContainerColor:
+        containedContainerColor ?? this.containedContainerColor,
+    containedIndicatorColor:
+        containedIndicatorColor ?? this.containedIndicatorColor,
+  );
+
+  @override
+  LoadingIndicatorThemeData maybeCopyWith({
     Color? indicatorColor,
     Color? containedContainerColor,
     Color? containedIndicatorColor,
   }) =>
       indicatorColor != null ||
-          containedContainerColor != null ||
-          containedIndicatorColor != null
-      ? LoadingIndicatorThemeData.from(
-          indicatorColor: indicatorColor ?? this.indicatorColor,
-          containedContainerColor:
-              containedContainerColor ?? this.containedContainerColor,
-          containedIndicatorColor:
-              containedIndicatorColor ?? this.containedIndicatorColor,
+          containedIndicatorColor != null ||
+          containedContainerColor != null
+      ? copyWith(
+          indicatorColor: indicatorColor,
+          containedContainerColor: containedContainerColor,
+          containedIndicatorColor: containedIndicatorColor,
         )
       : this;
 
@@ -167,6 +206,17 @@ abstract class LoadingIndicatorThemeData
   LoadingIndicatorThemeData merge(LoadingIndicatorThemeDataPartial? other) =>
       other != null
       ? copyWith(
+          indicatorColor: other.indicatorColor,
+          containedContainerColor: other.containedContainerColor,
+          containedIndicatorColor: other.containedIndicatorColor,
+        )
+      : copy();
+
+  @override
+  LoadingIndicatorThemeData maybeMerge(
+    LoadingIndicatorThemeDataPartial? other,
+  ) => other != null
+      ? maybeCopyWith(
           indicatorColor: other.indicatorColor,
           containedContainerColor: other.containedContainerColor,
           containedIndicatorColor: other.containedIndicatorColor,
@@ -181,23 +231,6 @@ abstract class LoadingIndicatorThemeData
       ..add(ColorProperty("containedContainerColor", containedContainerColor))
       ..add(ColorProperty("containedIndicatorColor", containedIndicatorColor));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is LoadingIndicatorThemeData &&
-          indicatorColor == other.indicatorColor &&
-          containedContainerColor == other.containedContainerColor &&
-          containedIndicatorColor == other.containedIndicatorColor;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    indicatorColor,
-    containedContainerColor,
-    containedIndicatorColor,
-  );
 
   static LoadingIndicatorThemeData lerp(
     LoadingIndicatorThemeData a,
@@ -221,7 +254,7 @@ abstract class LoadingIndicatorThemeData
   }
 }
 
-class _LoadingIndicatorThemeData extends LoadingIndicatorThemeData {
+final class _LoadingIndicatorThemeData extends LoadingIndicatorThemeData {
   const _LoadingIndicatorThemeData.from({
     required this.indicatorColor,
     required this.containedIndicatorColor,
@@ -236,65 +269,248 @@ class _LoadingIndicatorThemeData extends LoadingIndicatorThemeData {
 
   @override
   final Color containedIndicatorColor;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _LoadingIndicatorThemeData &&
+          indicatorColor == other.indicatorColor &&
+          containedContainerColor == other.containedContainerColor &&
+          containedIndicatorColor == other.containedIndicatorColor;
+
+  @override
+  int get hashCode => Object.hash(
+    indicatorColor,
+    containedContainerColor,
+    containedIndicatorColor,
+  );
 }
 
-class _LoadingIndicatorThemeDataDefaults extends LoadingIndicatorThemeData {
-  const _LoadingIndicatorThemeDataDefaults({required ColorThemeData colorTheme})
-    : _colorTheme = colorTheme;
+final class _LoadingIndicatorThemeDataDefaults
+    extends LoadingIndicatorThemeData {
+  const _LoadingIndicatorThemeDataDefaults({
+    required ColorThemeData colorTheme,
+    LoadingIndicatorThemeDataPartial? overrides,
+  }) : _colorTheme = colorTheme,
+       _overrides = overrides ?? const .from();
 
   final ColorThemeData _colorTheme;
+  final LoadingIndicatorThemeDataPartial _overrides;
 
   @override
-  Color get indicatorColor => _colorTheme.primary;
+  Color get indicatorColor => _overrides.indicatorColor ?? _colorTheme.primary;
 
   @override
-  Color get containedContainerColor => _colorTheme.primaryContainer;
+  Color get containedContainerColor =>
+      _overrides.containedContainerColor ?? _colorTheme.primaryContainer;
 
   @override
-  Color get containedIndicatorColor => _colorTheme.onPrimaryContainer;
+  Color get containedIndicatorColor =>
+      _overrides.containedIndicatorColor ?? _colorTheme.onPrimaryContainer;
+
+  @override
+  LoadingIndicatorThemeData copyWith({
+    Color? indicatorColor,
+    Color? containedContainerColor,
+    Color? containedIndicatorColor,
+  }) => _LoadingIndicatorThemeDataDefaults(
+    colorTheme: _colorTheme,
+    overrides: _overrides.copyWith(
+      indicatorColor: indicatorColor,
+      containedContainerColor: containedContainerColor,
+      containedIndicatorColor: containedIndicatorColor,
+    ),
+  );
+
+  @override
+  LoadingIndicatorThemeData maybeCopyWith({
+    Color? indicatorColor,
+    Color? containedContainerColor,
+    Color? containedIndicatorColor,
+  }) =>
+      indicatorColor != null &&
+          containedIndicatorColor != null &&
+          containedContainerColor != null
+      ? .from(
+          indicatorColor: indicatorColor,
+          containedContainerColor: containedContainerColor,
+          containedIndicatorColor: containedIndicatorColor,
+        )
+      : indicatorColor != null ||
+            containedIndicatorColor != null ||
+            containedContainerColor != null
+      ? copyWith(
+          indicatorColor: indicatorColor,
+          containedContainerColor: containedContainerColor,
+          containedIndicatorColor: containedIndicatorColor,
+        )
+      : this;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _LoadingIndicatorThemeDataDefaults &&
+          _colorTheme == other._colorTheme &&
+          _overrides == other._overrides;
+
+  @override
+  int get hashCode => Object.hash(_colorTheme, _overrides);
 }
 
-class LoadingIndicatorTheme extends InheritedTheme {
-  const LoadingIndicatorTheme({
+abstract class LoadingIndicatorTheme extends StatelessWidget
+    implements ProxyWidget {
+  const LoadingIndicatorTheme._({super.key, required this.child});
+
+  const factory LoadingIndicatorTheme.mergeWithResolver({
+    Key? key,
+    required ThemeResolver<LoadingIndicatorThemeDataPartial> resolver,
+    required Widget child,
+  }) = _LoadingIndicatorThemeWithResolver<LoadingIndicatorThemeDataPartial>;
+
+  const factory LoadingIndicatorTheme.mergeWithCallback({
+    Key? key,
+    required ThemeResolverCallback<LoadingIndicatorThemeDataPartial> callback,
+    required Widget child,
+  }) = _LoadingIndicatorThemeWithCallback<LoadingIndicatorThemeDataPartial>;
+
+  const factory LoadingIndicatorTheme.mergeWithData({
+    Key? key,
+    required LoadingIndicatorThemeDataPartial data,
+    required Widget child,
+  }) = _LoadingIndicatorThemeWithData<LoadingIndicatorThemeDataPartial>;
+
+  const factory LoadingIndicatorTheme.replaceWithResolver({
+    Key? key,
+    required ThemeResolver<LoadingIndicatorThemeData> resolver,
+    required Widget child,
+  }) = _LoadingIndicatorThemeWithResolver<LoadingIndicatorThemeData>;
+
+  const factory LoadingIndicatorTheme.replaceWithCallback({
+    Key? key,
+    required ThemeResolverCallback<LoadingIndicatorThemeData> callback,
+    required Widget child,
+  }) = _LoadingIndicatorThemeWithCallback<LoadingIndicatorThemeData>;
+
+  const factory LoadingIndicatorTheme.replaceWithData({
+    Key? key,
+    required LoadingIndicatorThemeData data,
+    required Widget child,
+  }) = _LoadingIndicatorThemeWithData<LoadingIndicatorThemeData>;
+
+  ThemeResolver<LoadingIndicatorThemeDataPartial> get resolver;
+
+  @override
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final inherited = _LoadingIndicatorTheme.maybeResolverOf(context);
+    return _LoadingIndicatorTheme(
+      resolver: inherited != null
+          ? .combine(inherited, resolver, _merge)
+          : resolver,
+      child: child,
+    );
+  }
+
+  static LoadingIndicatorThemeDataPartial _merge(
+    LoadingIndicatorThemeDataPartial a,
+    LoadingIndicatorThemeDataPartial b,
+  ) => a.maybeMerge(b);
+
+  static LoadingIndicatorThemeData of(BuildContext context) {
+    final resolver = _LoadingIndicatorTheme.maybeResolverOf(context);
+    return .defaults(
+      colorTheme: ColorTheme.of(context),
+      overrides: resolver?.resolve(context),
+    );
+  }
+}
+
+class _LoadingIndicatorThemeWithResolver<
+  T extends LoadingIndicatorThemeDataPartial
+>
+    extends LoadingIndicatorTheme {
+  const _LoadingIndicatorThemeWithResolver({
     super.key,
-    required this.data,
+    required this.resolver,
     required super.child,
-  });
-
-  final LoadingIndicatorThemeData data;
+  }) : super._();
 
   @override
-  bool updateShouldNotify(LoadingIndicatorTheme oldWidget) =>
-      data != oldWidget.data;
+  final ThemeResolver<T> resolver;
 
   @override
-  Widget wrap(BuildContext context, Widget child) =>
-      LoadingIndicatorTheme(data: data, child: child);
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<ThemeResolver<T>>("resolver", resolver));
+  }
+}
+
+class _LoadingIndicatorThemeWithCallback<
+  T extends LoadingIndicatorThemeDataPartial
+>
+    extends LoadingIndicatorTheme {
+  const _LoadingIndicatorThemeWithCallback({
+    super.key,
+    required this.callback,
+    required super.child,
+  }) : super._();
+
+  final ThemeResolverCallback<T> callback;
+
+  @override
+  ThemeResolver<T> get resolver => .callback(callback);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      DiagnosticsProperty<LoadingIndicatorThemeData>("data", data),
+      DiagnosticsProperty<ThemeResolverCallback<T>>("callback", callback),
     );
   }
+}
 
-  static Widget merge({
-    Key? key,
-    required LoadingIndicatorThemeDataPartial data,
-    required Widget child,
-  }) => Builder(
-    builder: (context) => LoadingIndicatorTheme(
-      key: key,
-      data: of(context).merge(data),
-      child: child,
-    ),
-  );
+class _LoadingIndicatorThemeWithData<T extends LoadingIndicatorThemeDataPartial>
+    extends LoadingIndicatorTheme {
+  const _LoadingIndicatorThemeWithData({
+    super.key,
+    required this.data,
+    required super.child,
+  }) : super._();
 
-  static LoadingIndicatorThemeData? maybeOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<LoadingIndicatorTheme>()?.data;
+  final T data;
 
-  static LoadingIndicatorThemeData of(BuildContext context) =>
-      maybeOf(context) ??
-      _LoadingIndicatorThemeDataDefaults(colorTheme: ColorTheme.of(context));
+  @override
+  ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<T>("data", data));
+  }
+}
+
+class _LoadingIndicatorTheme extends InheritedTheme {
+  const _LoadingIndicatorTheme({
+    super.key,
+    required this.resolver,
+    required super.child,
+  });
+
+  final ThemeResolver<LoadingIndicatorThemeDataPartial> resolver;
+
+  @override
+  bool updateShouldNotify(_LoadingIndicatorTheme oldWidget) =>
+      resolver != oldWidget.resolver;
+
+  @override
+  Widget wrap(BuildContext context, Widget child) =>
+      _LoadingIndicatorTheme(resolver: resolver, child: child);
+
+  static ThemeResolver<LoadingIndicatorThemeDataPartial>? maybeResolverOf(
+    BuildContext context,
+  ) => context
+      .dependOnInheritedWidgetOfExactType<_LoadingIndicatorTheme>()
+      ?.resolver;
 }

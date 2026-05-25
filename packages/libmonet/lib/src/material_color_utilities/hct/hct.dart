@@ -41,7 +41,9 @@ final class Hct {
   int toInt() => _argb;
 
   Hct copyWith({double? hue, double? chroma, double? tone}) =>
-      .from(hue ?? this.hue, chroma ?? this.chroma, tone ?? this.tone);
+      hue != null || chroma != null || tone != null
+      ? .from(hue ?? this.hue, chroma ?? this.chroma, tone ?? this.tone)
+      : this;
 
   Hct inViewingConditions(ViewingConditions viewingConditions) {
     // 1. Use CAM16 to find XYZ coordinates of color in specified VC.

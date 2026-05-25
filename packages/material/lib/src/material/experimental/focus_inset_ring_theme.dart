@@ -1,53 +1,5 @@
 import 'package:material/src/material/flutter.dart';
 
-typedef ThemeResolverCallback<T extends Object?> =
-    T Function(BuildContext context);
-
-abstract class ThemeResolver<T extends Object?> {
-  const ThemeResolver();
-
-  const factory ThemeResolver.callback(ThemeResolverCallback<T> callback) =
-      _CallbackThemeResolver;
-
-  const factory ThemeResolver.value(T value) = _ValueThemeResolver;
-
-  T resolve(BuildContext context);
-}
-
-class _CallbackThemeResolver<T extends Object?> extends ThemeResolver<T> {
-  const _CallbackThemeResolver(this._callback);
-
-  final ThemeResolverCallback<T> _callback;
-
-  @override
-  T resolve(BuildContext context) => _callback(context);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _CallbackThemeResolver<T> && _callback == other._callback;
-
-  @override
-  int get hashCode => _callback.hashCode;
-}
-
-class _ValueThemeResolver<T extends Object?> extends ThemeResolver<T> {
-  const _ValueThemeResolver(this._value);
-
-  final T _value;
-
-  @override
-  T resolve(BuildContext context) => _value;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _ValueThemeResolver<T> && _value == other._value;
-
-  @override
-  int get hashCode => _value.hashCode;
-}
-
 abstract class FocusInsetRingThemeDataPartial with Diagnosticable {
   const FocusInsetRingThemeDataPartial();
 
@@ -67,7 +19,7 @@ abstract class FocusInsetRingThemeDataPartial with Diagnosticable {
   double? get innerStrokeWidth;
   Color? get innerStrokeColor;
 
-  FocusInsetRingThemeDataPartial copyWith({
+  FocusInsetRingThemeDataPartial maybeCopyWith({
     double? outerStrokeInset,
     double? outerStrokeWidth,
     Color? outerStrokeColor,
@@ -91,9 +43,10 @@ abstract class FocusInsetRingThemeDataPartial with Diagnosticable {
         )
       : this;
 
-  FocusInsetRingThemeDataPartial merge(FocusInsetRingThemeDataPartial? other) =>
-      other != null
-      ? copyWith(
+  FocusInsetRingThemeDataPartial maybeMerge(
+    FocusInsetRingThemeDataPartial? other,
+  ) => other != null
+      ? maybeCopyWith(
           outerStrokeInset: other.outerStrokeInset,
           outerStrokeWidth: other.outerStrokeWidth,
           outerStrokeColor: other.outerStrokeColor,
@@ -142,32 +95,10 @@ abstract class FocusInsetRingThemeDataPartial with Diagnosticable {
         ColorProperty("innerStrokeColor", innerStrokeColor, defaultValue: null),
       );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is FocusInsetRingThemeDataPartial &&
-          outerStrokeInset == other.outerStrokeInset &&
-          outerStrokeWidth == other.outerStrokeWidth &&
-          outerStrokeColor == other.outerStrokeColor &&
-          innerStrokeInset == other.innerStrokeInset &&
-          innerStrokeWidth == other.innerStrokeWidth &&
-          innerStrokeColor == other.innerStrokeColor;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    outerStrokeInset,
-    outerStrokeWidth,
-    outerStrokeColor,
-    innerStrokeInset,
-    innerStrokeWidth,
-    innerStrokeColor,
-  );
 }
 
-class _FocusInsetRingThemeDataPartial extends FocusInsetRingThemeDataPartial {
+final class _FocusInsetRingThemeDataPartial
+    extends FocusInsetRingThemeDataPartial {
   const _FocusInsetRingThemeDataPartial({
     this.outerStrokeInset,
     this.outerStrokeWidth,
@@ -194,6 +125,27 @@ class _FocusInsetRingThemeDataPartial extends FocusInsetRingThemeDataPartial {
 
   @override
   final Color? innerStrokeColor;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _FocusInsetRingThemeDataPartial &&
+          outerStrokeInset == other.outerStrokeInset &&
+          outerStrokeWidth == other.outerStrokeWidth &&
+          outerStrokeColor == other.outerStrokeColor &&
+          innerStrokeInset == other.innerStrokeInset &&
+          innerStrokeWidth == other.innerStrokeWidth &&
+          innerStrokeColor == other.innerStrokeColor;
+
+  @override
+  int get hashCode => Object.hash(
+    outerStrokeInset,
+    outerStrokeWidth,
+    outerStrokeColor,
+    innerStrokeInset,
+    innerStrokeWidth,
+    innerStrokeColor,
+  );
 }
 
 abstract class FocusInsetRingThemeData extends FocusInsetRingThemeDataPartial {
@@ -241,7 +193,7 @@ abstract class FocusInsetRingThemeData extends FocusInsetRingThemeDataPartial {
   Color get innerStrokeColor;
 
   @override
-  FocusInsetRingThemeData copyWith({
+  FocusInsetRingThemeData maybeCopyWith({
     double? outerStrokeInset,
     double? outerStrokeWidth,
     Color? outerStrokeColor,
@@ -266,9 +218,9 @@ abstract class FocusInsetRingThemeData extends FocusInsetRingThemeDataPartial {
       : this;
 
   @override
-  FocusInsetRingThemeData merge(FocusInsetRingThemeDataPartial? other) =>
+  FocusInsetRingThemeData maybeMerge(FocusInsetRingThemeDataPartial? other) =>
       other != null
-      ? copyWith(
+      ? maybeCopyWith(
           outerStrokeInset: other.outerStrokeInset,
           outerStrokeWidth: other.outerStrokeWidth,
           outerStrokeColor: other.outerStrokeColor,
@@ -289,32 +241,9 @@ abstract class FocusInsetRingThemeData extends FocusInsetRingThemeDataPartial {
       ..add(DoubleProperty("innerStrokeWidth", innerStrokeWidth))
       ..add(ColorProperty("innerStrokeColor", innerStrokeColor));
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is FocusInsetRingThemeData &&
-          outerStrokeInset == other.outerStrokeInset &&
-          outerStrokeWidth == other.outerStrokeWidth &&
-          outerStrokeColor == other.outerStrokeColor &&
-          innerStrokeInset == other.innerStrokeInset &&
-          innerStrokeWidth == other.innerStrokeWidth &&
-          innerStrokeColor == other.innerStrokeColor;
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    outerStrokeInset,
-    outerStrokeWidth,
-    outerStrokeColor,
-    innerStrokeInset,
-    innerStrokeWidth,
-    innerStrokeColor,
-  );
 }
 
-class _FocusInsetRingThemeData extends FocusInsetRingThemeData {
+final class _FocusInsetRingThemeData extends FocusInsetRingThemeData {
   const _FocusInsetRingThemeData({
     required this.outerStrokeInset,
     required this.outerStrokeWidth,
@@ -341,9 +270,30 @@ class _FocusInsetRingThemeData extends FocusInsetRingThemeData {
 
   @override
   final Color innerStrokeColor;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _FocusInsetRingThemeData &&
+          outerStrokeInset == other.outerStrokeInset &&
+          outerStrokeWidth == other.outerStrokeWidth &&
+          outerStrokeColor == other.outerStrokeColor &&
+          innerStrokeInset == other.innerStrokeInset &&
+          innerStrokeWidth == other.innerStrokeWidth &&
+          innerStrokeColor == other.innerStrokeColor;
+
+  @override
+  int get hashCode => Object.hash(
+    outerStrokeInset,
+    outerStrokeWidth,
+    outerStrokeColor,
+    innerStrokeInset,
+    innerStrokeWidth,
+    innerStrokeColor,
+  );
 }
 
-class _FocusInsetRingThemeDataDefaults extends FocusInsetRingThemeData {
+final class _FocusInsetRingThemeDataDefaults extends FocusInsetRingThemeData {
   const _FocusInsetRingThemeDataDefaults({
     required ColorThemeData colorTheme,
     double? outerStrokeInset,
@@ -388,7 +338,7 @@ class _FocusInsetRingThemeDataDefaults extends FocusInsetRingThemeData {
   Color get innerStrokeColor => _innerStrokeColor ?? _colorTheme.onSecondary;
 
   @override
-  FocusInsetRingThemeData copyWith({
+  FocusInsetRingThemeData maybeCopyWith({
     double? outerStrokeInset,
     double? outerStrokeWidth,
     Color? outerStrokeColor,
@@ -423,8 +373,7 @@ class _FocusInsetRingThemeDataDefaults extends FocusInsetRingThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _FocusInsetRingThemeDataDefaults &&
+      other is _FocusInsetRingThemeDataDefaults &&
           _colorTheme == other._colorTheme &&
           _outerStrokeInset == other._outerStrokeInset &&
           _outerStrokeWidth == other._outerStrokeWidth &&
@@ -435,7 +384,6 @@ class _FocusInsetRingThemeDataDefaults extends FocusInsetRingThemeData {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
     _colorTheme,
     _outerStrokeInset,
     _outerStrokeWidth,
@@ -452,38 +400,34 @@ typedef FocusInsetRingThemeResolver =
 typedef FocusInsetRingThemeResolverCallback =
     ThemeResolverCallback<FocusInsetRingThemeDataPartial>;
 
-class _FocusInsetRingThemeResolver extends FocusInsetRingThemeResolver {
-  const _FocusInsetRingThemeResolver(this._inherited, this._local);
-
-  final FocusInsetRingThemeResolver _inherited;
-  final FocusInsetRingThemeResolver _local;
+class _FocusInsetRingThemeResolver
+    extends CombiningThemeResolver<FocusInsetRingThemeDataPartial> {
+  const _FocusInsetRingThemeResolver(super.a, super.b);
 
   @override
-  FocusInsetRingThemeDataPartial resolve(BuildContext context) =>
-      _inherited.resolve(context).merge(_local.resolve(context));
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _FocusInsetRingThemeResolver &&
-          _inherited == other._inherited &&
-          _local == other._local;
-
-  @override
-  int get hashCode => Object.hash(_inherited, _local);
+  FocusInsetRingThemeDataPartial combine(
+    FocusInsetRingThemeDataPartial a,
+    FocusInsetRingThemeDataPartial b,
+  ) => a.maybeMerge(b);
 }
 
-sealed class FocusInsetRingTheme extends StatelessWidget
+abstract class FocusInsetRingTheme extends StatelessWidget
     implements ProxyWidget {
   const FocusInsetRingTheme._({super.key, required this.child});
 
-  const factory FocusInsetRingTheme.resolved({
+  const factory FocusInsetRingTheme.withResolver({
     Key? key,
     required FocusInsetRingThemeResolver resolver,
     required Widget child,
   }) = _FocusInsetRingThemeWithResolver;
 
-  const factory FocusInsetRingTheme.value({
+  const factory FocusInsetRingTheme.withCallback({
+    Key? key,
+    required FocusInsetRingThemeResolverCallback callback,
+    required Widget child,
+  }) = _FocusInsetRingThemeWithCallback;
+
+  const factory FocusInsetRingTheme.withData({
     Key? key,
     required FocusInsetRingThemeDataPartial data,
     required Widget child,
@@ -542,7 +486,7 @@ class _FocusInsetRingThemeWithResolver extends FocusInsetRingTheme {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      ObjectFlagProperty<FocusInsetRingThemeResolver>("resolver", resolver),
+      DiagnosticsProperty<FocusInsetRingThemeResolver>("resolver", resolver),
     );
   }
 }
@@ -563,7 +507,7 @@ class _FocusInsetRingThemeWithCallback extends FocusInsetRingTheme {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      ObjectFlagProperty<FocusInsetRingThemeResolverCallback>(
+      DiagnosticsProperty<FocusInsetRingThemeResolverCallback>(
         "callback",
         callback,
       ),

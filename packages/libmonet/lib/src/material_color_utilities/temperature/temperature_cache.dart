@@ -94,7 +94,7 @@ final class TemperatureCache {
     }
 
     var hueAddend = 1;
-    final tempStep = absoluteTotalTempDelta / divisions.toDouble();
+    final tempStep = absoluteTotalTempDelta / divisions;
     var totalTempDelta = 0.0;
     lastTemp = getRelativeTemperature(startHct);
     while (allColors.length < divisions) {
@@ -135,7 +135,7 @@ final class TemperatureCache {
 
     final answers = <Hct>[input];
 
-    final ccwCount = ((count.toDouble() - 1.0) / 2.0).floor();
+    final ccwCount = ((count - 1.0) / 2.0).floor();
     for (var i = 1; i < (ccwCount + 1); i++) {
       var index = 0 - i;
       while (index < 0) {

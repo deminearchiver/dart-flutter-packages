@@ -558,7 +558,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     _handleShape = _switchTheme.handleShape.resolve(_states);
     _handleColor = _switchTheme.handleColor.resolve(_states);
     _handleOutline = _switchTheme.handleOutline.resolve(_states);
-    _resolvedIconTheme = _iconTheme.merge(
+    _resolvedIconTheme = _iconTheme.maybeMerge(
       _switchTheme.iconTheme.resolve(_states),
     );
 
@@ -601,7 +601,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
         onPointerDown: !_states.isDisabled ? _onPointerDown : null,
         onPointerUp: !_states.isDisabled ? _onPointerUp : null,
         onPointerCancel: !_states.isDisabled ? _onPointerCancel : null,
-        child: Material.raw(
+        child: Surface.raw(
           child: InkWell(
             statesController: _statesController,
             customBorder: stateLayerShape,
@@ -662,15 +662,15 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
             alignment: .center,
             children: [
               if (unselectedIconOpacity > 0.0)
-                IconTheme(
-                  data: animatedIconTheme.copyWith(
+                IconTheme.replaceWithData(
+                  data: animatedIconTheme.maybeCopyWith(
                     opacity: animatedIconTheme.opacity * unselectedIconOpacity,
                   ),
                   child: unselectedIcon,
                 ),
               if (selectedIconOpacity > 0.0)
-                IconTheme(
-                  data: animatedIconTheme.copyWith(
+                IconTheme.replaceWithData(
+                  data: animatedIconTheme.maybeCopyWith(
                     opacity: animatedIconTheme.opacity * selectedIconOpacity,
                   ),
                   child: selectedIcon,
@@ -711,7 +711,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
             onTapUpOutside: !_states.isDisabled ? _onTapOutside : null,
             child: AnimatedBuilder(
               animation: _effectsController,
-              builder: (context, child) => FocusRingTheme.merge(
+              builder: (context, child) => FocusRingTheme.mergeWithData(
                 data: .from(
                   // Don't use _resolvedTrackShapeAnimation because it has border.
                   shape: .all(_trackShapeAnimation.value ?? _trackShape),

@@ -284,9 +284,8 @@ final class QuantizerWu implements Quantizer {
         continue;
       }
 
-      var tempNumerator = (halfR * halfR + halfG * halfG + halfB * halfB)
-          .toDouble();
-      var tempDenominator = halfW.toDouble();
+      var tempNumerator = halfR * halfR + halfG * halfG + halfB * halfB;
+      var tempDenominator = halfW;
       var temp = tempNumerator / tempDenominator;
 
       halfR = wholeR - halfR;
@@ -297,9 +296,8 @@ final class QuantizerWu implements Quantizer {
         continue;
       }
 
-      tempNumerator = (halfR * halfR + halfG * halfG + halfB * halfB)
-          .toDouble();
-      tempDenominator = halfW.toDouble();
+      tempNumerator = halfR * halfR + halfG * halfG + halfB * halfB;
+      tempDenominator = halfW;
       temp += tempNumerator / tempDenominator;
 
       if (temp > max) {

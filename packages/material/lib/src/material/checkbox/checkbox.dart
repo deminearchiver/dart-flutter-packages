@@ -436,7 +436,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
           ? 0.0
           : _checkFractionController.value;
       final newCheckFraction = _checkedFraction;
-      const springTheme = SpringThemeData.expressive();
+      const springTheme = SpringThemeData.defaultsExpressive();
       final spring = springTheme.defaultSpatial.toSpringDescription();
       final checkFractionSimulation = SpringSimulation(
         spring,
@@ -584,7 +584,7 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
         onPointerDown: !_states.isDisabled ? _onPointerDown : null,
         onPointerUp: !_states.isDisabled ? _onPointerUp : null,
         onPointerCancel: !_states.isDisabled ? _onPointerCancel : null,
-        child: Material.raw(
+        child: Surface.raw(
           child: InkWell(
             statesController: _statesController,
             customBorder: stateLayerShape,
@@ -630,10 +630,10 @@ class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
             consumeOutsideTaps: false,
             onTapOutside: !_states.isDisabled ? _onTapOutside : null,
             onTapUpOutside: !_states.isDisabled ? _onTapOutside : null,
-            child: FocusRingTheme.merge(
+            child: FocusRingTheme.mergeWithData(
               data: .from(
                 shape: .all(
-                  CornersBorder.rounded(corners: .all(_shapeTheme.corner.full)),
+                  _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
                 ),
               ),
               child: FocusRing(

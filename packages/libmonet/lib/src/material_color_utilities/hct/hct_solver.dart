@@ -309,13 +309,13 @@ abstract final class HctSolver {
     final normalized = rgbComponent / 100.0;
     final delinearized = normalized <= 0.0031308
         ? normalized * 12.92
-        : 1.055 * math.pow(normalized, 1.0 / 2.4).toDouble() - 0.055;
+        : 1.055 * math.pow(normalized, 1.0 / 2.4) - 0.055;
     return delinearized * 255.0;
   }
 
   @internal
   static double chromaticAdaptation(double component) {
-    final af = math.pow(component.abs(), 0.42).toDouble();
+    final af = math.pow(component.abs(), 0.42) as double;
     return component.sign * 400.0 * af / (af + 27.13);
   }
 
@@ -520,7 +520,7 @@ abstract final class HctSolver {
   static double inverseChromaticAdaptation(double adapted) {
     final adaptedAbs = adapted.abs();
     final base = math.max(0.0, 27.13 * adaptedAbs / (400.0 - adaptedAbs));
-    return adapted.sign * math.pow(base, 1.0 / 0.42).toDouble();
+    return adapted.sign * math.pow(base, 1.0 / 0.42);
   }
 
   /// Finds a color with the given hue, chroma, and Y.
@@ -533,10 +533,7 @@ abstract final class HctSolver {
     // ===========================================================
     final viewingConditions = ViewingConditions.srgb;
     final tInnerCoeff =
-        1.0 /
-        math
-            .pow(1.64 - math.pow(0.29, viewingConditions.n).toDouble(), 0.73)
-            .toDouble();
+        1.0 / math.pow(1.64 - math.pow(0.29, viewingConditions.n), 0.73);
     final eHue = 0.25 * (math.cos(hueRadians + 2.0) + 3.8);
     final p1 =
         eHue * (50000.0 / 13.0) * viewingConditions.nc * viewingConditions.ncb;
@@ -550,7 +547,7 @@ abstract final class HctSolver {
       final alpha = chroma == 0.0 || j == 0.0
           ? 0.0
           : chroma / math.sqrt(jNormalized);
-      final t = math.pow(alpha * tInnerCoeff, 1.0 / 0.9).toDouble();
+      final t = math.pow(alpha * tInnerCoeff, 1.0 / 0.9) as double;
       final ac =
           viewingConditions.aw *
           math.pow(
