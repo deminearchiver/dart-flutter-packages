@@ -80,7 +80,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
                   Wrap(
                     direction: .horizontal,
                     alignment: .center,
-                    spacing: 0.0,
+                    spacing: 12.0,
                     children: [
                       // SizedTouchTarget(
                       //   behavior: .overflow,
@@ -139,7 +139,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
                       // ),
                       SizedTouchTarget(
                         behavior: .overflow,
-                        minimumSize: const .square(56.0),
+                        minimumSize: const .square(48.0),
                         child: SizedBox(
                           width: 32.0,
                           height: 40.0,
@@ -168,7 +168,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
                       ),
                       SizedTouchTarget(
                         behavior: .overflow,
-                        minimumSize: const .square(56.0),
+                        minimumSize: const .square(48.0),
                         child: SizedBox(
                           width: 32.0,
                           height: 40.0,
@@ -197,7 +197,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
                       ),
                       SizedTouchTarget(
                         behavior: .overflow,
-                        minimumSize: const .square(56.0),
+                        minimumSize: const .square(48.0),
                         child: SizedBox(
                           width: 32.0,
                           height: 40.0,
