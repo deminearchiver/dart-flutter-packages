@@ -75,6 +75,7 @@ export 'package:material/material.dart';
 export 'package:material/material_symbols.dart';
 export 'package:motor/motor.dart';
 export 'package:linked_layouts/linked_layouts.dart';
+export 'package:touch_targets/touch_targets.dart';
 
 // Adjacent libraries
 

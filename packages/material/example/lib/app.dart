@@ -48,12 +48,12 @@ class _AppState extends State<App> {
       specVersion: _specVersion,
     );
     return ColorTheme.replaceWithData(
-      data: colorTheme,
-      // data: .fromPalette(
-      //   palette: const .defaults(),
-      //   brightness: brightness,
-      //   contrastLevel: contrastLevel,
-      // ),
+      // data: colorTheme,
+      data: .fromPalette(
+        palette: const .defaults(),
+        brightness: brightness,
+        contrastLevel: contrastLevel,
+      ),
       child: StaticColors(data: staticColors, child: child),
     );
   }
@@ -123,7 +123,7 @@ class _AppState extends State<App> {
     final typescaleTheme = TypescaleTheme.of(context);
     return DefaultTextGeometry(
       style: typescaleTheme.bodyLarge.toTextStyle(color: colorTheme.onSurface),
-      child: child,
+      child: TouchGroup(child: child),
     );
   }
 
@@ -154,8 +154,8 @@ class _AppState extends State<App> {
     return _buildThemes(context, appBuilder);
   }
 
-  static const _themeMode = ThemeMode.system;
-  static const _variant = DynamicSchemeVariant.expressive;
+  static const _themeMode = ThemeMode.light;
+  static const _variant = DynamicSchemeVariant.tonalSpot;
   static const _platform = DynamicSchemePlatform.phone;
   static const _specVersion = DynamicSchemeSpecVersion.spec2026;
   static const _typography = TypographyDefaults.material3Expressive2026;

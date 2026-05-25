@@ -31,7 +31,7 @@ dependencies:
   material_symbols_icons: ^4.2928.1
   meta: ^1.17.0
   motor: ^1.1.0
-  touch_targets: any
+  touch_targets: ^0.1.0
 
 dev_dependencies:
   # SDK dependencies

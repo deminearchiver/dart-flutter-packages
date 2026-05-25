@@ -37,6 +37,7 @@ dependencies:
   collection: ^1.19.1
   cue: ^0.2.1
   fic: ^1.0.0-dev.6
+  touch_targets: ^0.1.0
 
 dev_dependencies:
   # SDK dependencies
