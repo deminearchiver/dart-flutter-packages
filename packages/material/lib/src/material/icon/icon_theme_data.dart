@@ -120,7 +120,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
       : this;
 
   @override
-  IconThemeDataPartial merge(IconThemeDataPartial? other) => other != null
+  IconThemeData merge(IconThemeDataPartial? other) => other != null
       ? copyWith(
           roundness: other.roundness,
           fill: other.fill,
