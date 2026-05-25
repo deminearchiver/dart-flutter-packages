@@ -1,4 +1,3 @@
-import 'package:fic/fic.dart';
 import 'package:material/src/material/flutter.dart';
 import 'package:flutter/material.dart' as flutter;
 

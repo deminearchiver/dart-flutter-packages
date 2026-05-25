@@ -67,8 +67,8 @@ abstract class TypographyThemeDataPartial with Diagnosticable {
   static const material3Expressive2025 = TypographyThemeDataPartial.from(
     typeface: .from(
       // Material 3 Expressive introduced variable font support
-      brand: .literal([_robotoFlex, _roboto]),
-      plain: .literal([_robotoFlex, _roboto]),
+      brand: [_robotoFlex, _roboto],
+      plain: [_robotoFlex, _roboto],
     ),
   );
 
@@ -83,8 +83,8 @@ abstract class TypographyThemeDataPartial with Diagnosticable {
       // This particular information was ripped from a file
       // located at the path "/product/etc/fonts_customization.xml"
       // on a Google Pixel with Android 16 QPR1 (Material 3 Expressive).
-      brand: .literal([_googleSansFlex, _googleSans, _robotoFlex, _roboto]),
-      plain: .literal([_googleSansFlex, _googleSans, _robotoFlex, _roboto]),
+      brand: [_googleSansFlex, _googleSans, _robotoFlex, _roboto],
+      plain: [_googleSansFlex, _googleSans, _robotoFlex, _roboto],
     ),
     typescale: .from(
       displayLarge: .from(rond: 0.0),
@@ -329,8 +329,8 @@ class TypographyDefaults with Diagnosticable {
   static const material3Expressive2025 = TypographyDefaults.from(
     typeface: .from(
       // Material 3 Expressive introduced variable font support
-      brand: .literal([_robotoFlex, _roboto]),
-      plain: .literal([_robotoFlex, _roboto]),
+      brand: [_robotoFlex, _roboto],
+      plain: [_robotoFlex, _roboto],
     ),
   );
 
@@ -345,8 +345,8 @@ class TypographyDefaults with Diagnosticable {
       // This particular information was ripped from a file
       // located at the path "/product/etc/fonts_customization.xml"
       // on a Google Pixel with Android 16 QPR1 (Material 3 Expressive).
-      brand: .literal([_googleSansFlex, _googleSans, _robotoFlex, _roboto]),
-      plain: .literal([_googleSansFlex, _googleSans, _robotoFlex, _roboto]),
+      brand: [_googleSansFlex, _googleSans, _robotoFlex, _roboto],
+      plain: [_googleSansFlex, _googleSans, _robotoFlex, _roboto],
     ),
     typescale: .from(
       displayLarge: .from(rond: 0.0),

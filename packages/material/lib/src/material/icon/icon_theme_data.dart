@@ -12,7 +12,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
     required double size,
     required Color color,
     required double opacity,
-    required ImmutableList<Shadow> shadows,
+    required List<Shadow> shadows,
     required bool applyTextScaling,
   }) = _IconThemeData;
 
@@ -49,7 +49,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
   double get opacity;
 
   @override
-  ImmutableList<Shadow> get shadows;
+  List<Shadow> get shadows;
 
   @override
   bool get applyTextScaling;
@@ -67,7 +67,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
     double? size,
     Color? color,
     double? opacity,
-    ImmutableList<Shadow>? shadows,
+    List<Shadow>? shadows,
     bool? applyTextScaling,
   }) => .from(
     roundness: roundness ?? this.roundness,
@@ -92,7 +92,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
     double? size,
     Color? color,
     double? opacity,
-    ImmutableList<Shadow>? shadows,
+    List<Shadow>? shadows,
     bool? applyTextScaling,
   }) =>
       roundness != null ||
@@ -203,11 +203,7 @@ abstract class IconThemeData extends IconThemeDataPartial {
           size: lerpDouble(a.size, b.size, t),
           color: Color.lerp(a.color, b.color, t)!,
           opacity: lerpDouble(a.opacity, b.opacity, t),
-          shadows: Shadow.lerpList(
-            a.shadows.unlockView(),
-            b.shadows.unlockView(),
-            t,
-          )!.lock(),
+          shadows: Shadow.lerpList(a.shadows, b.shadows, t)!,
           applyTextScaling: t < 0.5 ? a.applyTextScaling : b.applyTextScaling,
         );
 }
@@ -255,7 +251,7 @@ final class _IconThemeData extends IconThemeData {
   final double opacity;
 
   @override
-  final ImmutableList<Shadow> shadows;
+  final List<Shadow> shadows;
 
   @override
   final bool applyTextScaling;
@@ -326,8 +322,7 @@ final class _IconThemeDataDefaults extends IconThemeData {
   double get opacity => _overrides.opacity ?? 1.0;
 
   @override
-  ImmutableList<Shadow> get shadows =>
-      _overrides.shadows ?? const .emptyLiteral();
+  List<Shadow> get shadows => _overrides.shadows ?? const [];
 
   @override
   bool get applyTextScaling => _overrides.applyTextScaling ?? false;
@@ -342,7 +337,7 @@ final class _IconThemeDataDefaults extends IconThemeData {
     double? size,
     Color? color,
     double? opacity,
-    ImmutableList<Shadow>? shadows,
+    List<Shadow>? shadows,
     bool? applyTextScaling,
   }) => _IconThemeDataDefaults(
     colorTheme: _colorTheme,
@@ -370,7 +365,7 @@ final class _IconThemeDataDefaults extends IconThemeData {
     double? size,
     Color? color,
     double? opacity,
-    ImmutableList<Shadow>? shadows,
+    List<Shadow>? shadows,
     bool? applyTextScaling,
   }) =>
       roundness != null &&
@@ -447,11 +442,7 @@ class IconThemeDataTween extends Tween<IconThemeData?> {
       size: lerpDoubleNullable(a?.size, b?.size, t)!,
       color: Color.lerp(a?.color, b?.color, t)!,
       opacity: lerpDoubleNullable(a?.opacity, b?.opacity, t)!,
-      shadows: Shadow.lerpList(
-        a?.shadows.unlockView(),
-        b?.shadows.unlockView(),
-        t,
-      )!.lock(),
+      shadows: Shadow.lerpList(a?.shadows, b?.shadows, t)!,
       applyTextScaling: t < 0.5 ? a!.applyTextScaling : b!.applyTextScaling,
     );
   }

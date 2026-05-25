@@ -28,7 +28,7 @@ abstract class TextGeometryPartial with Diagnosticable {
   const TextGeometryPartial();
 
   const factory TextGeometryPartial.from({
-    ImmutableList<String>? font,
+    List<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -44,7 +44,7 @@ abstract class TextGeometryPartial with Diagnosticable {
     double? hexp,
   }) = _TextGeometryPartial;
 
-  ImmutableList<String>? get font;
+  List<String>? get font;
 
   double? get weight;
 
@@ -75,7 +75,7 @@ abstract class TextGeometryPartial with Diagnosticable {
   TextGeometryPartial copy() => copyWith();
 
   TextGeometryPartial copyWith({
-    ImmutableList<String>? font,
+    List<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -107,7 +107,7 @@ abstract class TextGeometryPartial with Diagnosticable {
   );
 
   TextGeometryPartial maybeCopyWith({
-    ImmutableList<String>? font,
+    List<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -155,7 +155,7 @@ abstract class TextGeometryPartial with Diagnosticable {
       : this;
 
   TextGeometryPartial mergeWith({
-    ImmutableList<String>? font,
+    List<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -187,7 +187,7 @@ abstract class TextGeometryPartial with Diagnosticable {
   );
 
   TextGeometryPartial maybeMergeWith({
-    ImmutableList<String>? font,
+    List<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -418,7 +418,7 @@ final class _TextGeometryPartial extends TextGeometryPartial {
   });
 
   @override
-  final ImmutableList<String>? font;
+  final List<String>? font;
 
   @override
   final double? weight;
@@ -501,7 +501,7 @@ abstract class TextGeometry extends TextGeometryPartial {
   const TextGeometry();
 
   const factory TextGeometry.from({
-    required ImmutableList<String> font,
+    required List<String> font,
     required double weight,
     required double size,
     required double tracking,
@@ -518,7 +518,7 @@ abstract class TextGeometry extends TextGeometryPartial {
   }) = _TextGeometry;
 
   @override
-  ImmutableList<String> get font;
+  List<String> get font;
 
   @override
   double get weight;
@@ -564,7 +564,7 @@ abstract class TextGeometry extends TextGeometryPartial {
 
   @override
   TextGeometry copyWith({
-    ImmutableList<String>? font,
+    List<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -597,7 +597,7 @@ abstract class TextGeometry extends TextGeometryPartial {
 
   @override
   TextGeometry maybeCopyWith({
-    ImmutableList<String>? font,
+    List<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -646,7 +646,7 @@ abstract class TextGeometry extends TextGeometryPartial {
 
   @override
   TextGeometry mergeWith({
-    ImmutableList<String>? font,
+    List<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -679,7 +679,7 @@ abstract class TextGeometry extends TextGeometryPartial {
 
   @override
   TextGeometry maybeMergeWith({
-    ImmutableList<String>? font,
+    List<String>? font,
     double? weight,
     double? size,
     double? tracking,
@@ -908,7 +908,7 @@ final class _TextGeometry extends TextGeometry {
   }) : assert(font.length > 0, "TextGeometry.font must be non-empty.");
 
   @override
-  final ImmutableList<String> font;
+  final List<String> font;
 
   @override
   final double weight;

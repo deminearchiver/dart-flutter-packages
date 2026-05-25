@@ -242,7 +242,7 @@ class Icon extends IconLegacy {
     final grade = this.grade ?? iconTheme.grade;
     final opticalSize = this.opticalSize ?? iconTheme.opticalSize;
     var size = this.size ?? iconTheme.size;
-    final shadows = this.shadows ?? iconTheme.shadows.unlockView();
+    final shadows = this.shadows ?? iconTheme.shadows;
     final applyTextScaling =
         this.applyTextScaling ?? iconTheme.applyTextScaling;
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fic/fic.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart' as flutter;
 import 'package:material/src/material/flutter.dart';
 
@@ -230,11 +230,7 @@ class _StatePropertyLerp<T extends Object, S extends Object?>
 
 class StatePropertyTween<T extends Object, S extends Object?>
     extends Tween<StateProperty<T?, S>?> {
-  StatePropertyTween({
-    required LerpFunction<T> lerpFunction,
-    super.begin,
-    super.end,
-  }) : _lerpFunction = lerpFunction;
+  StatePropertyTween({required this._lerpFunction, super.begin, super.end});
 
   final LerpFunction<T> _lerpFunction;
 
@@ -247,14 +243,13 @@ class StateMapper<T extends Object?, S extends Object?>
     implements StateProperty<T, S> {
   /// Creates a [WidgetStateProperty] object that can resolve
   /// to a value of type [T] using the provided [map].
-  StateMapper(StateMap<T, S> map)
-    : _map = map.lock(),
-      _keys = map.keys.toList(growable: false),
-      _values = map.values.toList(growable: false);
+  StateMapper(StateMap<T, S> map) : _map = map;
 
-  final ImmutableMap<StatesConstraint<S>, T> _map;
-  final List<StatesConstraint<S>> _keys;
-  final List<T> _values;
+  final StateMap<T, S> _map;
+
+  late final _keys = _map.keys.toList(growable: false);
+
+  late final _values = _map.values.toList(growable: false);
 
   @override
   T resolve(S states) {
@@ -289,9 +284,7 @@ class StateMapper<T extends Object?, S extends Object?>
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<StateMap<T, S>>("map", _map.unlockView()),
-    );
+    properties.add(DiagnosticsProperty<StateMap<T, S>>("map", _map));
   }
 
   @override
@@ -303,10 +296,10 @@ class StateMapper<T extends Object?, S extends Object?>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is StateMapper<T, S> &&
-          _map == other._map;
+          const MapEquality<Object?, Object?>().equals(_map, other._map);
 
   @override
-  int get hashCode => _map.hashCode;
+  int get hashCode => const MapEquality<Object?, Object?>().hash(_map);
 }
 
 class _StatePropertyWith<T extends Object?, S extends Object?>

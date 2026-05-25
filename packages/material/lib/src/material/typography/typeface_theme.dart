@@ -4,18 +4,18 @@ abstract class TypefaceThemeDataPartial with Diagnosticable {
   const TypefaceThemeDataPartial();
 
   const factory TypefaceThemeDataPartial.from({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
   }) = _TypefaceThemeDataPartial;
 
   /// `md.ref.typeface.plain`
-  ImmutableList<String>? get plain;
+  List<String>? get plain;
 
   /// `md.ref.typeface.brand`
-  ImmutableList<String>? get brand;
+  List<String>? get brand;
 
   /// `md.ref.typeface.weight-regular`
   double? get weightRegular;
@@ -29,8 +29,8 @@ abstract class TypefaceThemeDataPartial with Diagnosticable {
   TypefaceThemeDataPartial copy() => copyWith();
 
   TypefaceThemeDataPartial copyWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -43,8 +43,8 @@ abstract class TypefaceThemeDataPartial with Diagnosticable {
   );
 
   TypefaceThemeDataPartial maybeCopyWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -64,8 +64,8 @@ abstract class TypefaceThemeDataPartial with Diagnosticable {
       : this;
 
   TypefaceThemeDataPartial mergeWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -78,8 +78,8 @@ abstract class TypefaceThemeDataPartial with Diagnosticable {
   );
 
   TypefaceThemeDataPartial maybeMergeWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -161,10 +161,10 @@ final class _TypefaceThemeDataPartial extends TypefaceThemeDataPartial {
   });
 
   @override
-  final ImmutableList<String>? plain;
+  final List<String>? plain;
 
   @override
-  final ImmutableList<String>? brand;
+  final List<String>? brand;
 
   @override
   final double? weightRegular;
@@ -198,10 +198,10 @@ final class _TypefaceThemeDataPartialAsConcrete extends TypefaceThemeData {
   final TypefaceThemeDataPartial _value;
 
   @override
-  ImmutableList<String> get plain => _value.plain!;
+  List<String> get plain => _value.plain!;
 
   @override
-  ImmutableList<String> get brand => _value.brand!;
+  List<String> get brand => _value.brand!;
 
   @override
   double get weightRegular => _value.weightRegular!;
@@ -214,8 +214,8 @@ final class _TypefaceThemeDataPartialAsConcrete extends TypefaceThemeData {
 
   @override
   TypefaceThemeData copyWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -231,8 +231,8 @@ final class _TypefaceThemeDataPartialAsConcrete extends TypefaceThemeData {
 
   @override
   TypefaceThemeData maybeCopyWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -265,8 +265,8 @@ final class _TypefaceThemeDataPartialAsConcrete extends TypefaceThemeData {
 
   @override
   TypefaceThemeData mergeWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -282,8 +282,8 @@ final class _TypefaceThemeDataPartialAsConcrete extends TypefaceThemeData {
 
   @override
   TypefaceThemeData maybeMergeWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -313,8 +313,8 @@ abstract class TypefaceThemeData extends TypefaceThemeDataPartial {
   const TypefaceThemeData();
 
   const factory TypefaceThemeData.from({
-    required ImmutableList<String> plain,
-    required ImmutableList<String> brand,
+    required List<String> plain,
+    required List<String> brand,
     required double weightRegular,
     required double weightMedium,
     required double weightBold,
@@ -325,10 +325,10 @@ abstract class TypefaceThemeData extends TypefaceThemeDataPartial {
   }) = _TypefaceThemeDataDefaults;
 
   @override
-  ImmutableList<String> get plain;
+  List<String> get plain;
 
   @override
-  ImmutableList<String> get brand;
+  List<String> get brand;
 
   @override
   double get weightRegular;
@@ -344,8 +344,8 @@ abstract class TypefaceThemeData extends TypefaceThemeDataPartial {
 
   @override
   TypefaceThemeData copyWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -359,8 +359,8 @@ abstract class TypefaceThemeData extends TypefaceThemeDataPartial {
 
   @override
   TypefaceThemeData maybeCopyWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -381,8 +381,8 @@ abstract class TypefaceThemeData extends TypefaceThemeDataPartial {
 
   @override
   TypefaceThemeData mergeWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -396,8 +396,8 @@ abstract class TypefaceThemeData extends TypefaceThemeDataPartial {
 
   @override
   TypefaceThemeData maybeMergeWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -473,10 +473,10 @@ final class _TypefaceThemeData extends TypefaceThemeData {
        assert(brand.length > 0, "TypefaceThemeData.brand must not be empty.");
 
   @override
-  final ImmutableList<String> plain;
+  final List<String> plain;
 
   @override
-  final ImmutableList<String> brand;
+  final List<String> brand;
 
   @override
   final double weightRegular;
@@ -509,12 +509,10 @@ final class _TypefaceThemeDataDefaults extends TypefaceThemeData {
   final TypefaceThemeDataPartial _overrides;
 
   @override
-  ImmutableList<String> get plain =>
-      _mergeFonts(const .literal(["Roboto"]), _overrides.plain);
+  List<String> get plain => _mergeFonts(const ["Roboto"], _overrides.plain);
 
   @override
-  ImmutableList<String> get brand =>
-      _mergeFonts(const .literal(["Roboto"]), _overrides.brand);
+  List<String> get brand => _mergeFonts(const ["Roboto"], _overrides.brand);
 
   @override
   double get weightRegular => _overrides.weightRegular ?? 400.0;
@@ -527,8 +525,8 @@ final class _TypefaceThemeDataDefaults extends TypefaceThemeData {
 
   @override
   TypefaceThemeData copyWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -544,8 +542,8 @@ final class _TypefaceThemeDataDefaults extends TypefaceThemeData {
 
   @override
   TypefaceThemeData maybeCopyWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -578,8 +576,8 @@ final class _TypefaceThemeDataDefaults extends TypefaceThemeData {
 
   @override
   TypefaceThemeData mergeWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,
@@ -595,8 +593,8 @@ final class _TypefaceThemeDataDefaults extends TypefaceThemeData {
 
   @override
   TypefaceThemeData maybeMergeWith({
-    ImmutableList<String>? plain,
-    ImmutableList<String>? brand,
+    List<String>? plain,
+    List<String>? brand,
     double? weightRegular,
     double? weightMedium,
     double? weightBold,

@@ -66,7 +66,6 @@ export 'package:flutter/material.dart'
         SwitchTheme,
         SwitchThemeData;
 
-export 'package:fic/fic.dart';
 export 'package:meta/meta.dart';
 export 'package:layout/layout.dart';
 export 'package:motor/motor.dart';

@@ -12,7 +12,7 @@ abstract class IconThemeDataPartial with Diagnosticable {
     double? size,
     Color? color,
     double? opacity,
-    ImmutableList<Shadow>? shadows,
+    List<Shadow>? shadows,
     bool? applyTextScaling,
   }) = _IconThemeDataPartial;
 
@@ -24,7 +24,7 @@ abstract class IconThemeDataPartial with Diagnosticable {
     size: legacy.size,
     color: legacy.color,
     opacity: legacy.opacity,
-    shadows: legacy.shadows?.lock(),
+    shadows: legacy.shadows,
     applyTextScaling: legacy.applyTextScaling,
   );
 
@@ -44,7 +44,7 @@ abstract class IconThemeDataPartial with Diagnosticable {
 
   double? get opacity;
 
-  ImmutableList<Shadow>? get shadows;
+  List<Shadow>? get shadows;
 
   bool? get applyTextScaling;
 
@@ -59,7 +59,7 @@ abstract class IconThemeDataPartial with Diagnosticable {
     double? size,
     Color? color,
     double? opacity,
-    ImmutableList<Shadow>? shadows,
+    List<Shadow>? shadows,
     bool? applyTextScaling,
   }) => .from(
     roundness: roundness ?? this.roundness,
@@ -83,7 +83,7 @@ abstract class IconThemeDataPartial with Diagnosticable {
     double? size,
     Color? color,
     double? opacity,
-    ImmutableList<Shadow>? shadows,
+    List<Shadow>? shadows,
     bool? applyTextScaling,
   }) =>
       roundness != null ||
@@ -177,7 +177,7 @@ abstract class IconThemeDataPartial with Diagnosticable {
     size: size,
     color: color,
     opacity: opacity,
-    shadows: shadows?.unlockLazy(),
+    shadows: shadows,
     applyTextScaling: applyTextScaling,
   );
 
@@ -218,11 +218,7 @@ abstract class IconThemeDataPartial with Diagnosticable {
           size: lerpDoubleNullable(a?.size, b?.size, t),
           color: Color.lerp(a?.color, b?.color, t),
           opacity: lerpDoubleNullable(a?.opacity, b?.opacity, t),
-          shadows: Shadow.lerpList(
-            a?.shadows?.unlockView(),
-            b?.shadows?.unlockView(),
-            t,
-          )?.lock(),
+          shadows: Shadow.lerpList(a?.shadows, b?.shadows, t),
           applyTextScaling: t < 0.5 ? a?.applyTextScaling : b?.applyTextScaling,
         );
 }
@@ -270,7 +266,7 @@ final class _IconThemeDataPartial extends IconThemeDataPartial {
   final double? opacity;
 
   @override
-  final ImmutableList<Shadow>? shadows;
+  final List<Shadow>? shadows;
 
   @override
   final bool? applyTextScaling;
@@ -337,7 +333,7 @@ final class _IconThemeDataPartialAsConcrete extends IconThemeData {
   double get opacity => _value.opacity!;
 
   @override
-  ImmutableList<Shadow> get shadows => _value.shadows!;
+  List<Shadow> get shadows => _value.shadows!;
 
   @override
   bool get applyTextScaling => _value.applyTextScaling!;
@@ -352,7 +348,7 @@ final class _IconThemeDataPartialAsConcrete extends IconThemeData {
     double? size,
     Color? color,
     double? opacity,
-    ImmutableList<Shadow>? shadows,
+    List<Shadow>? shadows,
     bool? applyTextScaling,
   }) => _IconThemeDataPartialAsConcrete(
     _value.copyWith(
@@ -379,7 +375,7 @@ final class _IconThemeDataPartialAsConcrete extends IconThemeData {
     double? size,
     Color? color,
     double? opacity,
-    ImmutableList<Shadow>? shadows,
+    List<Shadow>? shadows,
     bool? applyTextScaling,
   }) =>
       roundness != null &&
