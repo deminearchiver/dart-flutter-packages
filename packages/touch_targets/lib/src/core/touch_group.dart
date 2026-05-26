@@ -5,12 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:touch_targets/touch_targets.dart';
 
-abstract class TouchGroupRegistry {
-  void registerClient(TouchClient client);
-
-  void unregisterClient(TouchClient client);
-}
-
 bool debugCheckHasTouchGroup(BuildContext context) {
   assert(() {
     if (context.widget is! _TouchGroupStateScope &&
@@ -35,32 +29,6 @@ bool debugCheckHasTouchGroup(BuildContext context) {
           "No TouchGroup ancestor could be found starting from the context "
           "that was passed to TouchGroup.of(). This can happen because the "
           "context used is not a descendant of a TouchGroup widget.",
-        ),
-      ]);
-    }
-    return true;
-  }());
-  return true;
-}
-
-bool debugCheckHasTouchGroupRegistry(
-  TouchGroupRegistry? registry,
-  String target,
-) {
-  assert(() {
-    if (registry == null) {
-      throw FlutterError.fromParts([
-        ErrorSummary("No TouchGroupRegistry found."),
-        ErrorDescription(
-          "$target requires a TouchGroupRegistry to function properly.",
-        ),
-        ErrorHint(
-          "This error usually occurs when $target is used without an explicit "
-          "TouchTargetRegistry or a TouchGroup ancestor.",
-        ),
-        ErrorHint(
-          "Typically, a TouchGroup widget should placed at the top of"
-          "your application widget tree.",
         ),
       ]);
     }
@@ -219,7 +187,7 @@ class _RenderTouchTheatre extends RenderProxyBox {
       if (targetRect.contains(position)) {
         // Weight is proportional to child's size.
         final distanceToEdge = client.getDistanceToEdgeIn(this, position);
-        final childSize = client.childSize;
+        final childSize = client.innerSize;
         final childDiagonal = math.sqrt(
           childSize.width * childSize.width +
               childSize.height * childSize.height,
@@ -247,8 +215,11 @@ class _RenderTouchTheatre extends RenderProxyBox {
         }
       }
 
-      if (topmostObject == null || resolvedClient.isRelatedTo(topmostObject)) {
-        return resolvedClient.hitTestFrom(this, result, position);
+      // If the target was hit directly or the object hit has a lineal relation
+      // with target, force hit test redirection to target's inner contents.
+      if (topmostObject == null ||
+          resolvedClient.hasLinealRelationWith(topmostObject)) {
+        return resolvedClient.hitTestInnerFrom(this, result, position);
       }
     }
 

@@ -108,7 +108,7 @@ class _OverlayExampleViewState extends State<OverlayExampleView> {
                 ? colorScheme.onSecondary
                 : colorScheme.onSecondaryContainer;
             return SizedTouchTarget(
-              behavior: .overflow,
+              fit: .overflow,
               // For demo purposes only. In production, the issue occurs because
               // there are more than one button next to each other.
               minimumSize: const .square(48.0),

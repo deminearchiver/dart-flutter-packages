@@ -138,7 +138,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
                       //   ),
                       // ),
                       SizedTouchTarget(
-                        behavior: .overflow,
+                        fit: .overflow,
                         minimumSize: const .square(48.0),
                         child: SizedBox(
                           width: 32.0,
@@ -167,7 +167,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
                         ),
                       ),
                       SizedTouchTarget(
-                        behavior: .overflow,
+                        fit: .overflow,
                         minimumSize: const .square(48.0),
                         child: SizedBox(
                           width: 32.0,
@@ -196,7 +196,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
                         ),
                       ),
                       SizedTouchTarget(
-                        behavior: .overflow,
+                        fit: .overflow,
                         minimumSize: const .square(48.0),
                         child: SizedBox(
                           width: 32.0,

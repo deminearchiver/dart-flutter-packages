@@ -1,3 +1,16 @@
+## 0.3.0
+
+- Performed element renames:
+  - `TouchClient.childSize` → `TouchClient.innerSize`;
+  - `TouchClient.hitTestFrom()` → `TouchClient.hitTestInnerFrom()`;
+  - `TouchTargetBehavior` → `TouchTargetFit` (`behavior` → `fit`).
+
+- Refactored `RenderTouchTargetMixin` into three mixins: base `TouchClientRenderObjectBaseMixin`, optional `TouchClientRenderObjectOptionalMixin` and required `TouchClientRenderObjectRequiredMixin`.
+
+- Added documentation comments to some elements.
+
+- Minor internal changes.
+
 ## 0.2.1
 
 - Updated example app.
