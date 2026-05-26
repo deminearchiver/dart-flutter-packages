@@ -141,7 +141,7 @@ class _TouchGroupState extends State<TouchGroup> implements TouchGroupRegistry {
 
 class _TouchGroupStateScope extends InheritedWidget {
   const _TouchGroupStateScope({
-    super.key,
+    // super.key,
     required this.state,
     required super.child,
   });
@@ -159,7 +159,7 @@ class _TouchGroupStateScope extends InheritedWidget {
 
 class _TouchTheatre extends SingleChildRenderObjectWidget {
   const _TouchTheatre({
-    super.key,
+    // super.key,
     required this.registry,
     required this.clients,
     super.child,
