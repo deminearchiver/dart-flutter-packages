@@ -1,5 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:touch_targets/touch_targets.dart';
 
 void main() {
@@ -25,8 +26,10 @@ class _AppState extends State<App> {
       title: "Touch Targets Example",
       builder: _buildNavigatorWrapper,
       theme: ThemeData(
-        splashFactory: InkSparkle.splashFactory,
-        iconTheme: IconThemeData(
+        splashFactory: kIsWeb
+            ? InkRipple.splashFactory
+            : InkSparkle.splashFactory,
+        iconTheme: const IconThemeData(
           fill: 0.0,
           weight: 400.0,
           grade: 0.0,
@@ -65,21 +68,11 @@ class _DefaultWidgetStateLayerOpacity implements WidgetStateProperty<double> {
 
   @override
   double resolve(Set<WidgetState> states) {
-    if (states.contains(WidgetState.disabled)) {
-      return 0.0;
-    }
-    if (states.contains(WidgetState.dragged)) {
-      return 0.16;
-    }
-    if (states.contains(WidgetState.pressed)) {
-      return 0.1;
-    }
-    if (states.contains(WidgetState.focused)) {
-      return 0.1;
-    }
-    if (states.contains(WidgetState.hovered)) {
-      return 0.08;
-    }
+    if (states.contains(WidgetState.disabled)) return 0.0;
+    if (states.contains(WidgetState.dragged)) return 0.16;
+    if (states.contains(WidgetState.pressed)) return 0.1;
+    if (states.contains(WidgetState.focused)) return 0.1;
+    if (states.contains(WidgetState.hovered)) return 0.08;
     return 0.0;
   }
 }
@@ -101,6 +94,8 @@ class _OverlayExampleViewState extends State<OverlayExampleView> {
       body: Center(
         child: MenuAnchor(
           controller: _controller,
+          consumeOutsideTap: false,
+          animated: true,
           builder: (context, controller, child) => SizedTouchTarget(
             behavior: .overflow,
             // For demo purposes only. In production, the issue occurs because
@@ -118,14 +113,15 @@ class _OverlayExampleViewState extends State<OverlayExampleView> {
                   overlayColor: WidgetStateLayerColor.fromColor(
                     WidgetStatePropertyAll(colorScheme.onPrimary),
                   ),
-                  // 1. The user clicks the button or the touch target.
-                  // 2. Menu opens.
-                  // 3. The user clicks a menu item. (tap down)
-                  // 4. Touch target intercepts the hit test (!).
-                  // 5. Menu closes.
-                  // 6. User lets go (tap up).
-                  // 7. Menu opens.
-                  onTap: () => controller.open(),
+
+                  onTap: () {
+                    if (controller.isOpen) {
+                      controller.close();
+                    } else {
+                      controller.open();
+                    }
+                    setState(() {});
+                  },
                   child: Icon(
                     Symbols.more_vert_rounded,
                     color: colorScheme.onPrimary,

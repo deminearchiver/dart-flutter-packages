@@ -16,4 +16,6 @@ mixin TouchClient {
     BoxHitTestResult result,
     Offset position,
   );
+
+  bool isRelatedTo(RenderObject hit);
 }

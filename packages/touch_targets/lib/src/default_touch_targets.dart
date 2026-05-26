@@ -198,6 +198,30 @@ class _DefaultTouchTargetClient implements TouchClient {
       },
     );
   }
+
+  @override
+  bool isRelatedTo(RenderObject hit) {
+    // Direct hit.
+    if (hit == _renderObject) return true;
+    // TODO: evaluate if using depth is safe here
+    if (hit.depth < _renderObject.depth) {
+      // Check if hit is an ancestor.
+      var current = _renderObject.parent;
+      while (current != null && current.depth >= hit.depth) {
+        if (current == hit) return true;
+        current = current.parent;
+      }
+    } else if (hit.depth > _renderObject.depth) {
+      // Check if hit is a descendant.
+      var current = hit.parent;
+      while (current != null && current.depth >= _renderObject.depth) {
+        if (current == _renderObject) return true;
+        current = current.parent;
+      }
+    }
+    // Completely unrelated.
+    return false;
+  }
 }
 
 class SizedTouchTarget extends SingleChildRenderObjectWidget {

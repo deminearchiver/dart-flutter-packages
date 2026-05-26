@@ -131,7 +131,7 @@ class _TouchGroupState extends State<TouchGroup> implements TouchGroupRegistry {
 
   @override
   Widget build(BuildContext context) {
-    return _TouchGroupRenderObjectWidget(
+    return _TouchTheatre(
       registry: this,
       clients: _clients,
       child: _TouchGroupStateScope(state: this, child: widget.child),
@@ -157,8 +157,8 @@ class _TouchGroupStateScope extends InheritedWidget {
       ?.state;
 }
 
-class _TouchGroupRenderObjectWidget extends SingleChildRenderObjectWidget {
-  const _TouchGroupRenderObjectWidget({
+class _TouchTheatre extends SingleChildRenderObjectWidget {
+  const _TouchTheatre({
     super.key,
     required this.registry,
     required this.clients,
@@ -169,13 +169,13 @@ class _TouchGroupRenderObjectWidget extends SingleChildRenderObjectWidget {
   final Iterable<TouchClient> clients;
 
   @override
-  _RenderTouchGroup createRenderObject(BuildContext context) =>
-      _RenderTouchGroup(registry: registry, clients: clients);
+  _RenderTouchTheatre createRenderObject(BuildContext context) =>
+      _RenderTouchTheatre(registry: registry, clients: clients);
 
   @override
   void updateRenderObject(
     BuildContext context,
-    _RenderTouchGroup renderObject,
+    _RenderTouchTheatre renderObject,
   ) {
     renderObject
       ..registry = registry
@@ -183,14 +183,14 @@ class _TouchGroupRenderObjectWidget extends SingleChildRenderObjectWidget {
   }
 }
 
-class _RenderTouchGroup extends RenderProxyBox {
-  _RenderTouchGroup({
+class _RenderTouchTheatre extends RenderProxyBox {
+  _RenderTouchTheatre({
     required this._registry,
     required this._clients,
     RenderBox? child,
   }) : super(child);
 
-  // TODO: implement debug paint
+  // TODO: implement debug paint (don't forget to add markNeedsPaint EVERYWHERE)
 
   TouchGroupRegistry _registry;
 
@@ -199,7 +199,6 @@ class _RenderTouchGroup extends RenderProxyBox {
   set registry(TouchGroupRegistry value) {
     if (_registry == value) return;
     _registry = value;
-    markNeedsPaint();
   }
 
   Iterable<TouchClient> _clients;
@@ -207,11 +206,11 @@ class _RenderTouchGroup extends RenderProxyBox {
   set clients(Iterable<TouchClient> value) {
     if (_clients == value) return;
     _clients = value;
-    markNeedsPaint();
   }
 
   @override
   bool hitTest(BoxHitTestResult result, {required Offset position}) {
+    // Find the best candidate for hit testing.
     TouchClient? resolvedClient;
     double minimumWeightedDistance = .infinity;
     for (final client in _clients) {
@@ -233,8 +232,26 @@ class _RenderTouchGroup extends RenderProxyBox {
         }
       }
     }
-    return resolvedClient != null
-        ? resolvedClient.hitTestFrom(this, result, position)
-        : super.hitTest(result, position: position);
+
+    if (resolvedClient != null) {
+      // Find the render object which was actually hit if it's not the target.
+      final dryResult = BoxHitTestResult();
+      final dryHit = super.hitTest(dryResult, position: position);
+      RenderObject? topmostObject;
+      if (dryHit) {
+        for (final HitTestEntry(:target) in dryResult.path) {
+          if (target is RenderObject) {
+            topmostObject = target;
+            break;
+          }
+        }
+      }
+
+      if (topmostObject == null || resolvedClient.isRelatedTo(topmostObject)) {
+        return resolvedClient.hitTestFrom(this, result, position);
+      }
+    }
+
+    return super.hitTest(result, position: position);
   }
 }
