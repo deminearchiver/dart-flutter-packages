@@ -1,3 +1,7 @@
+## 0.3.1
+
+- Added `operator==` and `hashCode` overrides to the `TouchClient` implementation of `SizedTouchTarget` and `PaddedTouchTarget`.
+
 ## 0.3.0
 
 - Performed element renames:

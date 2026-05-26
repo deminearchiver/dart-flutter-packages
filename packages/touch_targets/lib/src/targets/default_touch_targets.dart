@@ -175,6 +175,15 @@ class _DefaultTouchTargetClient implements TouchClient {
     // Completely unrelated.
     return false;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _DefaultTouchTargetClient &&
+          _renderObject == other._renderObject;
+
+  @override
+  int get hashCode => _renderObject.hashCode;
 }
 
 class SizedTouchTarget extends SingleChildRenderObjectWidget {

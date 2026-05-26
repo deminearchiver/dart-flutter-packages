@@ -36,7 +36,7 @@ dependencies:
   vector_math: ^2.2.0
   collection: ^1.19.1
   cue: ^0.2.1
-  touch_targets: ^0.3.0
+  touch_targets: ^0.3.1
 
 dev_dependencies:
   # SDK dependencies
