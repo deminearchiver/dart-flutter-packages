@@ -783,14 +783,11 @@ final class _SwitchThemeData extends SwitchThemeData {
 
 final class _SwitchThemeDataDefaults extends SwitchThemeData {
   const _SwitchThemeDataDefaults({
-    required ColorThemeData colorTheme,
-    required ShapeThemeData shapeTheme,
-    required StateThemeData stateTheme,
+    required this._colorTheme,
+    required this._shapeTheme,
+    required this._stateTheme,
     SwitchThemeDataPartial? overrides,
-  }) : _colorTheme = colorTheme,
-       _shapeTheme = shapeTheme,
-       _stateTheme = stateTheme,
-       _overrides = overrides ?? const .from();
+  }) : _overrides = overrides ?? const .from();
 
   final ColorThemeData _colorTheme;
   final ShapeThemeData _shapeTheme;

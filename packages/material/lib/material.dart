@@ -46,7 +46,7 @@ export 'src/material/radio_button/radio_button_theme.dart';
 export 'src/material/switch/switch.dart';
 export 'src/material/switch/switch_theme.dart';
 
-export 'src/material/list/list_theme.dart';
+export 'src/material/lists/list_item_theme.dart';
 
 export 'src/material/loading_indicator/loading_indicator.dart';
 export 'src/material/loading_indicator/loading_indicator_theme.dart';

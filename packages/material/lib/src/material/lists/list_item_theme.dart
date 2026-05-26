@@ -64,6 +64,34 @@ abstract class ListItemThemeDataPartial with Diagnosticable {
 
   ListItemStateProperty<IconThemeDataPartial?>? get trailingIconTheme;
 
+  ListItemThemeDataPartial copy() => copyWith();
+
+  ListItemThemeDataPartial copyWith({
+    covariant ListItemStateProperty<ShapeBorder?>? containerShape,
+    covariant ListItemStateProperty<Color?>? containerColor,
+    covariant ListItemStateProperty<Color?>? stateLayerColor,
+    covariant ListItemStateProperty<double?>? stateLayerOpacity,
+    covariant ListItemStateProperty<IconThemeDataPartial?>? leadingIconTheme,
+    covariant ListItemStateProperty<TextStyle?>? leadingTextStyle,
+    covariant ListItemStateProperty<TextStyle?>? overlineTextStyle,
+    covariant ListItemStateProperty<TextStyle?>? headlineTextStyle,
+    covariant ListItemStateProperty<TextStyle?>? supportingTextStyle,
+    covariant ListItemStateProperty<TextStyle?>? trailingTextStyle,
+    covariant ListItemStateProperty<IconThemeDataPartial?>? trailingIconTheme,
+  }) => .from(
+    containerShape: containerShape ?? this.containerShape,
+    stateLayerColor: stateLayerColor ?? this.stateLayerColor,
+    stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
+    containerColor: containerColor ?? this.containerColor,
+    leadingIconTheme: leadingIconTheme ?? this.leadingIconTheme,
+    leadingTextStyle: leadingTextStyle ?? this.leadingTextStyle,
+    overlineTextStyle: overlineTextStyle ?? this.overlineTextStyle,
+    headlineTextStyle: headlineTextStyle ?? this.headlineTextStyle,
+    supportingTextStyle: supportingTextStyle ?? this.supportingTextStyle,
+    trailingTextStyle: trailingTextStyle ?? this.trailingTextStyle,
+    trailingIconTheme: trailingIconTheme ?? this.trailingIconTheme,
+  );
+
   ListItemThemeDataPartial maybeCopyWith({
     covariant ListItemStateProperty<ShapeBorder?>? containerShape,
     covariant ListItemStateProperty<Color?>? containerColor,
@@ -88,20 +116,69 @@ abstract class ListItemThemeDataPartial with Diagnosticable {
           supportingTextStyle != null ||
           trailingTextStyle != null ||
           trailingIconTheme != null
-      ? .from(
-          containerShape: containerShape ?? this.containerShape,
-          stateLayerColor: stateLayerColor ?? this.stateLayerColor,
-          stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
-          containerColor: containerColor ?? this.containerColor,
-          leadingIconTheme: leadingIconTheme ?? this.leadingIconTheme,
-          leadingTextStyle: leadingTextStyle ?? this.leadingTextStyle,
-          overlineTextStyle: overlineTextStyle ?? this.overlineTextStyle,
-          headlineTextStyle: headlineTextStyle ?? this.headlineTextStyle,
-          supportingTextStyle: supportingTextStyle ?? this.supportingTextStyle,
-          trailingTextStyle: trailingTextStyle ?? this.trailingTextStyle,
-          trailingIconTheme: trailingIconTheme ?? this.trailingIconTheme,
+      ? copyWith(
+          containerShape: containerShape,
+          stateLayerColor: stateLayerColor,
+          stateLayerOpacity: stateLayerOpacity,
+          containerColor: containerColor,
+          leadingIconTheme: leadingIconTheme,
+          leadingTextStyle: leadingTextStyle,
+          overlineTextStyle: overlineTextStyle,
+          headlineTextStyle: headlineTextStyle,
+          supportingTextStyle: supportingTextStyle,
+          trailingTextStyle: trailingTextStyle,
+          trailingIconTheme: trailingIconTheme,
         )
       : this;
+
+  ListItemThemeDataPartial mergeWith({
+    ListItemStateProperty<ShapeBorder?>? containerShape,
+    ListItemStateProperty<Color?>? containerColor,
+    ListItemStateProperty<Color?>? stateLayerColor,
+    ListItemStateProperty<double?>? stateLayerOpacity,
+    ListItemStateProperty<IconThemeDataPartial?>? leadingIconTheme,
+    ListItemStateProperty<TextStyle?>? leadingTextStyle,
+    ListItemStateProperty<TextStyle?>? overlineTextStyle,
+    ListItemStateProperty<TextStyle?>? headlineTextStyle,
+    ListItemStateProperty<TextStyle?>? supportingTextStyle,
+    ListItemStateProperty<TextStyle?>? trailingTextStyle,
+    ListItemStateProperty<IconThemeDataPartial?>? trailingIconTheme,
+  }) => .from(
+    containerShape: this.containerShape.maybeMergeNullable(containerShape),
+    containerColor: this.containerColor.maybeMergeNullable(containerColor),
+    stateLayerColor: this.stateLayerColor.maybeMergeNullable(stateLayerColor),
+    stateLayerOpacity: this.stateLayerOpacity.maybeMergeNullable(
+      stateLayerOpacity,
+    ),
+    leadingIconTheme: this.leadingIconTheme.maybeCombineNullable(
+      leadingIconTheme,
+      (a, b) => a.merge(b),
+    ),
+    leadingTextStyle: this.leadingTextStyle.maybeCombineNullable(
+      leadingTextStyle,
+      (a, b) => a.merge(b),
+    ),
+    overlineTextStyle: this.overlineTextStyle.maybeCombineNullable(
+      overlineTextStyle,
+      (a, b) => a.merge(b),
+    ),
+    headlineTextStyle: this.headlineTextStyle.maybeCombineNullable(
+      headlineTextStyle,
+      (a, b) => a.merge(b),
+    ),
+    supportingTextStyle: this.supportingTextStyle.maybeCombineNullable(
+      supportingTextStyle,
+      (a, b) => a.merge(b),
+    ),
+    trailingTextStyle: this.trailingTextStyle.maybeCombineNullable(
+      trailingTextStyle,
+      (a, b) => a.merge(b),
+    ),
+    trailingIconTheme: this.trailingIconTheme.maybeCombineNullable(
+      trailingIconTheme,
+      (a, b) => a.merge(b),
+    ),
+  );
 
   ListItemThemeDataPartial maybeMergeWith({
     ListItemStateProperty<ShapeBorder?>? containerShape,
@@ -125,89 +202,65 @@ abstract class ListItemThemeDataPartial with Diagnosticable {
           trailingTextStyle != null ||
           trailingIconTheme != null
       ? .from(
-          containerShape:
-              containerShape?.orElseMaybe(this.containerShape?.resolve) ??
-              this.containerShape,
-          containerColor:
-              containerColor?.orElseMaybe(this.containerColor?.resolve) ??
-              this.containerColor,
-          stateLayerColor:
-              stateLayerColor?.orElseMaybe(this.stateLayerColor?.resolve) ??
-              this.stateLayerColor,
-          stateLayerOpacity:
-              stateLayerOpacity?.orElseMaybe(this.stateLayerOpacity?.resolve) ??
-              this.stateLayerOpacity,
-          leadingIconTheme:
-              leadingIconTheme
-                  ?.orElseMaybe(this.leadingIconTheme?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.leadingIconTheme
-                            ?.resolve(states)
-                            ?.maybeMerge(value) ??
-                        value,
-                  ) ??
-              this.leadingIconTheme,
-          leadingTextStyle:
-              leadingTextStyle
-                  ?.orElseMaybe(this.leadingTextStyle?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.leadingTextStyle?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              this.leadingTextStyle,
-          overlineTextStyle:
-              overlineTextStyle
-                  ?.orElseMaybe(this.overlineTextStyle?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.overlineTextStyle?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              this.overlineTextStyle,
-          headlineTextStyle:
-              headlineTextStyle
-                  ?.orElseMaybe(this.headlineTextStyle?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.headlineTextStyle?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              this.headlineTextStyle,
-          supportingTextStyle:
-              supportingTextStyle
-                  ?.orElseMaybe(this.supportingTextStyle?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.supportingTextStyle
-                            ?.resolve(states)
-                            ?.merge(value) ??
-                        value,
-                  ) ??
-              this.supportingTextStyle,
-          trailingTextStyle:
-              trailingTextStyle
-                  ?.orElseMaybe(this.trailingTextStyle?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.trailingTextStyle?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              this.trailingTextStyle,
-          trailingIconTheme:
-              trailingIconTheme
-                  ?.orElseMaybe(this.trailingIconTheme?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.trailingIconTheme
-                            ?.resolve(states)
-                            ?.maybeMerge(value) ??
-                        value,
-                  ) ??
-              this.trailingIconTheme,
+          containerShape: this.containerShape.maybeMergeNullable(
+            containerShape,
+          ),
+          containerColor: this.containerColor.maybeMergeNullable(
+            containerColor,
+          ),
+          stateLayerColor: this.stateLayerColor.maybeMergeNullable(
+            stateLayerColor,
+          ),
+          stateLayerOpacity: this.stateLayerOpacity.maybeMergeNullable(
+            stateLayerOpacity,
+          ),
+          leadingIconTheme: this.leadingIconTheme.maybeCombineNullable(
+            leadingIconTheme,
+            (a, b) => a.maybeMerge(b),
+          ),
+          leadingTextStyle: this.leadingTextStyle.maybeCombineNullable(
+            leadingTextStyle,
+            (a, b) => a.merge(b),
+          ),
+          overlineTextStyle: this.overlineTextStyle.maybeCombineNullable(
+            overlineTextStyle,
+            (a, b) => a.merge(b),
+          ),
+          headlineTextStyle: this.headlineTextStyle.maybeCombineNullable(
+            headlineTextStyle,
+            (a, b) => a.merge(b),
+          ),
+          supportingTextStyle: this.supportingTextStyle.maybeCombineNullable(
+            supportingTextStyle,
+            (a, b) => a.merge(b),
+          ),
+          trailingTextStyle: this.trailingTextStyle.maybeCombineNullable(
+            trailingTextStyle,
+            (a, b) => a.merge(b),
+          ),
+          trailingIconTheme: this.trailingIconTheme.maybeCombineNullable(
+            trailingIconTheme,
+            (a, b) => a.maybeMerge(b),
+          ),
         )
       : this;
+
+  ListItemThemeDataPartial merge(ListItemThemeDataPartial? other) =>
+      other != null
+      ? mergeWith(
+          containerShape: other.containerShape,
+          containerColor: other.containerColor,
+          stateLayerColor: other.stateLayerColor,
+          stateLayerOpacity: other.stateLayerOpacity,
+          leadingIconTheme: other.leadingIconTheme,
+          leadingTextStyle: other.leadingTextStyle,
+          overlineTextStyle: other.overlineTextStyle,
+          headlineTextStyle: other.headlineTextStyle,
+          supportingTextStyle: other.supportingTextStyle,
+          trailingTextStyle: other.trailingTextStyle,
+          trailingIconTheme: other.trailingIconTheme,
+        )
+      : copy();
 
   ListItemThemeDataPartial maybeMerge(ListItemThemeDataPartial? other) =>
       other != null
@@ -329,180 +382,8 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial {
     required ShapeThemeData shapeTheme,
     required StateThemeData stateTheme,
     required TypescaleThemeData typescaleTheme,
+    ListItemThemeDataPartial? overrides,
   }) = _ListItemThemeDataDefaults;
-
-  const factory ListItemThemeData._defaults({
-    required ColorThemeData colorTheme,
-    required ShapeThemeData shapeTheme,
-    required StateThemeData stateTheme,
-    required TypescaleThemeData typescaleTheme,
-    ListItemStateProperty<ShapeBorder?>? containerShape,
-    ListItemStateProperty<Color?>? containerColor,
-    ListItemStateProperty<Color?>? stateLayerColor,
-    ListItemStateProperty<double?>? stateLayerOpacity,
-    ListItemStateProperty<IconThemeDataPartial?>? leadingIconTheme,
-    ListItemStateProperty<TextStyle?>? leadingTextStyle,
-    ListItemStateProperty<TextStyle?>? overlineTextStyle,
-    ListItemStateProperty<TextStyle?>? headlineTextStyle,
-    ListItemStateProperty<TextStyle?>? supportingTextStyle,
-    ListItemStateProperty<TextStyle?>? trailingTextStyle,
-    ListItemStateProperty<IconThemeDataPartial?>? trailingIconTheme,
-  }) = _ListItemThemeDataDefaults;
-
-  @override
-  ListItemThemeData maybeCopyWith({
-    covariant ListItemStateProperty<ShapeBorder>? containerShape,
-    covariant ListItemStateProperty<Color>? containerColor,
-    covariant ListItemStateProperty<Color>? stateLayerColor,
-    covariant ListItemStateProperty<double>? stateLayerOpacity,
-    covariant ListItemStateProperty<IconThemeDataPartial>? leadingIconTheme,
-    covariant ListItemStateProperty<TextStyle>? leadingTextStyle,
-    covariant ListItemStateProperty<TextStyle>? overlineTextStyle,
-    covariant ListItemStateProperty<TextStyle>? headlineTextStyle,
-    covariant ListItemStateProperty<TextStyle>? supportingTextStyle,
-    covariant ListItemStateProperty<TextStyle>? trailingTextStyle,
-    covariant ListItemStateProperty<IconThemeDataPartial>? trailingIconTheme,
-  }) =>
-      containerShape != null ||
-          containerColor != null ||
-          stateLayerColor != null ||
-          stateLayerOpacity != null ||
-          leadingIconTheme != null ||
-          leadingTextStyle != null ||
-          overlineTextStyle != null ||
-          headlineTextStyle != null ||
-          supportingTextStyle != null ||
-          trailingTextStyle != null ||
-          trailingIconTheme != null
-      ? .from(
-          containerShape: containerShape ?? this.containerShape,
-          containerColor: containerColor ?? this.containerColor,
-          stateLayerColor: stateLayerColor ?? this.stateLayerColor,
-          stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
-          leadingIconTheme: leadingIconTheme ?? this.leadingIconTheme,
-          leadingTextStyle: leadingTextStyle ?? this.leadingTextStyle,
-          overlineTextStyle: overlineTextStyle ?? this.overlineTextStyle,
-          headlineTextStyle: headlineTextStyle ?? this.headlineTextStyle,
-          supportingTextStyle: supportingTextStyle ?? this.supportingTextStyle,
-          trailingTextStyle: trailingTextStyle ?? this.trailingTextStyle,
-          trailingIconTheme: trailingIconTheme ?? this.trailingIconTheme,
-        )
-      : this;
-
-  @override
-  ListItemThemeData maybeMergeWith({
-    ListItemStateProperty<ShapeBorder?>? containerShape,
-    ListItemStateProperty<Color?>? containerColor,
-    ListItemStateProperty<Color?>? stateLayerColor,
-    ListItemStateProperty<double?>? stateLayerOpacity,
-    ListItemStateProperty<IconThemeDataPartial?>? leadingIconTheme,
-    ListItemStateProperty<TextStyle?>? leadingTextStyle,
-    ListItemStateProperty<TextStyle?>? overlineTextStyle,
-    ListItemStateProperty<TextStyle?>? headlineTextStyle,
-    ListItemStateProperty<TextStyle?>? supportingTextStyle,
-    ListItemStateProperty<TextStyle?>? trailingTextStyle,
-    ListItemStateProperty<IconThemeDataPartial?>? trailingIconTheme,
-  }) =>
-      containerShape != null ||
-          containerColor != null ||
-          stateLayerColor != null ||
-          stateLayerOpacity != null ||
-          leadingIconTheme != null ||
-          leadingTextStyle != null ||
-          overlineTextStyle != null ||
-          headlineTextStyle != null ||
-          supportingTextStyle != null ||
-          trailingTextStyle != null ||
-          trailingIconTheme != null
-      ? .from(
-          containerShape:
-              containerShape?.orElse(this.containerShape.resolve) ??
-              this.containerShape,
-          containerColor:
-              containerColor?.orElse(this.containerColor.resolve) ??
-              this.containerColor,
-          stateLayerColor:
-              stateLayerColor?.orElse(this.stateLayerColor.resolve) ??
-              this.stateLayerColor,
-          stateLayerOpacity:
-              stateLayerOpacity?.orElse(this.stateLayerOpacity.resolve) ??
-              this.stateLayerOpacity,
-          leadingIconTheme:
-              leadingIconTheme
-                  ?.orElse(this.leadingIconTheme.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.leadingIconTheme.resolve(states).maybeMerge(value),
-                  ) ??
-              this.leadingIconTheme,
-          leadingTextStyle:
-              leadingTextStyle
-                  ?.orElse(this.leadingTextStyle.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.leadingTextStyle.resolve(states).merge(value),
-                  ) ??
-              this.leadingTextStyle,
-          overlineTextStyle:
-              overlineTextStyle
-                  ?.orElse(this.overlineTextStyle.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.overlineTextStyle.resolve(states).merge(value),
-                  ) ??
-              this.overlineTextStyle,
-          headlineTextStyle:
-              headlineTextStyle
-                  ?.orElse(this.headlineTextStyle.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.headlineTextStyle.resolve(states).merge(value),
-                  ) ??
-              this.headlineTextStyle,
-          supportingTextStyle:
-              supportingTextStyle
-                  ?.orElse(this.supportingTextStyle.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.supportingTextStyle.resolve(states).merge(value),
-                  ) ??
-              this.supportingTextStyle,
-          trailingTextStyle:
-              trailingTextStyle
-                  ?.orElse(this.trailingTextStyle.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        this.trailingTextStyle.resolve(states).merge(value),
-                  ) ??
-              this.trailingTextStyle,
-          trailingIconTheme:
-              trailingIconTheme
-                  ?.orElse(this.trailingIconTheme.resolve)
-                  .mapValue(
-                    (states, value) => this.trailingIconTheme
-                        .resolve(states)
-                        .maybeMerge(value),
-                  ) ??
-              this.trailingIconTheme,
-        )
-      : this;
-
-  @override
-  ListItemThemeData maybeMerge(ListItemThemeDataPartial? other) => other != null
-      ? maybeMergeWith(
-          containerShape: other.containerShape,
-          containerColor: other.containerColor,
-          stateLayerColor: other.stateLayerColor,
-          stateLayerOpacity: other.stateLayerOpacity,
-          leadingIconTheme: other.leadingIconTheme,
-          leadingTextStyle: other.leadingTextStyle,
-          overlineTextStyle: other.overlineTextStyle,
-          headlineTextStyle: other.headlineTextStyle,
-          supportingTextStyle: other.supportingTextStyle,
-          trailingTextStyle: other.trailingTextStyle,
-          trailingIconTheme: other.trailingIconTheme,
-        )
-      : this;
 
   @override
   ListItemStateProperty<ShapeBorder> get containerShape;
@@ -536,6 +417,218 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial {
 
   @override
   ListItemStateProperty<IconThemeDataPartial> get trailingIconTheme;
+
+  @override
+  ListItemThemeData copy() => copyWith();
+
+  @override
+  ListItemThemeData copyWith({
+    covariant ListItemStateProperty<ShapeBorder>? containerShape,
+    covariant ListItemStateProperty<Color>? containerColor,
+    covariant ListItemStateProperty<Color>? stateLayerColor,
+    covariant ListItemStateProperty<double>? stateLayerOpacity,
+    covariant ListItemStateProperty<IconThemeDataPartial>? leadingIconTheme,
+    covariant ListItemStateProperty<TextStyle>? leadingTextStyle,
+    covariant ListItemStateProperty<TextStyle>? overlineTextStyle,
+    covariant ListItemStateProperty<TextStyle>? headlineTextStyle,
+    covariant ListItemStateProperty<TextStyle>? supportingTextStyle,
+    covariant ListItemStateProperty<TextStyle>? trailingTextStyle,
+    covariant ListItemStateProperty<IconThemeDataPartial>? trailingIconTheme,
+  }) => .from(
+    containerShape: containerShape ?? this.containerShape,
+    stateLayerColor: stateLayerColor ?? this.stateLayerColor,
+    stateLayerOpacity: stateLayerOpacity ?? this.stateLayerOpacity,
+    containerColor: containerColor ?? this.containerColor,
+    leadingIconTheme: leadingIconTheme ?? this.leadingIconTheme,
+    leadingTextStyle: leadingTextStyle ?? this.leadingTextStyle,
+    overlineTextStyle: overlineTextStyle ?? this.overlineTextStyle,
+    headlineTextStyle: headlineTextStyle ?? this.headlineTextStyle,
+    supportingTextStyle: supportingTextStyle ?? this.supportingTextStyle,
+    trailingTextStyle: trailingTextStyle ?? this.trailingTextStyle,
+    trailingIconTheme: trailingIconTheme ?? this.trailingIconTheme,
+  );
+
+  @override
+  ListItemThemeData maybeCopyWith({
+    covariant ListItemStateProperty<ShapeBorder>? containerShape,
+    covariant ListItemStateProperty<Color>? containerColor,
+    covariant ListItemStateProperty<Color>? stateLayerColor,
+    covariant ListItemStateProperty<double>? stateLayerOpacity,
+    covariant ListItemStateProperty<IconThemeDataPartial>? leadingIconTheme,
+    covariant ListItemStateProperty<TextStyle>? leadingTextStyle,
+    covariant ListItemStateProperty<TextStyle>? overlineTextStyle,
+    covariant ListItemStateProperty<TextStyle>? headlineTextStyle,
+    covariant ListItemStateProperty<TextStyle>? supportingTextStyle,
+    covariant ListItemStateProperty<TextStyle>? trailingTextStyle,
+    covariant ListItemStateProperty<IconThemeDataPartial>? trailingIconTheme,
+  }) =>
+      containerShape != null ||
+          containerColor != null ||
+          stateLayerColor != null ||
+          stateLayerOpacity != null ||
+          leadingIconTheme != null ||
+          leadingTextStyle != null ||
+          overlineTextStyle != null ||
+          headlineTextStyle != null ||
+          supportingTextStyle != null ||
+          trailingTextStyle != null ||
+          trailingIconTheme != null
+      ? copyWith(
+          containerShape: containerShape,
+          stateLayerColor: stateLayerColor,
+          stateLayerOpacity: stateLayerOpacity,
+          containerColor: containerColor,
+          leadingIconTheme: leadingIconTheme,
+          leadingTextStyle: leadingTextStyle,
+          overlineTextStyle: overlineTextStyle,
+          headlineTextStyle: headlineTextStyle,
+          supportingTextStyle: supportingTextStyle,
+          trailingTextStyle: trailingTextStyle,
+          trailingIconTheme: trailingIconTheme,
+        )
+      : this;
+
+  @override
+  ListItemThemeData mergeWith({
+    ListItemStateProperty<ShapeBorder?>? containerShape,
+    ListItemStateProperty<Color?>? containerColor,
+    ListItemStateProperty<Color?>? stateLayerColor,
+    ListItemStateProperty<double?>? stateLayerOpacity,
+    ListItemStateProperty<IconThemeDataPartial?>? leadingIconTheme,
+    ListItemStateProperty<TextStyle?>? leadingTextStyle,
+    ListItemStateProperty<TextStyle?>? overlineTextStyle,
+    ListItemStateProperty<TextStyle?>? headlineTextStyle,
+    ListItemStateProperty<TextStyle?>? supportingTextStyle,
+    ListItemStateProperty<TextStyle?>? trailingTextStyle,
+    ListItemStateProperty<IconThemeDataPartial?>? trailingIconTheme,
+  }) => .from(
+    containerShape: this.containerShape.maybeMerge(containerShape),
+    containerColor: this.containerColor.maybeMerge(containerColor),
+    stateLayerColor: this.stateLayerColor.maybeMerge(stateLayerColor),
+    stateLayerOpacity: this.stateLayerOpacity.maybeMerge(stateLayerOpacity),
+    leadingIconTheme: this.leadingIconTheme.maybeCombine(
+      leadingIconTheme,
+      (a, b) => a.merge(b),
+    ),
+    leadingTextStyle: this.leadingTextStyle.maybeCombine(
+      leadingTextStyle,
+      (a, b) => a.merge(b),
+    ),
+    overlineTextStyle: this.overlineTextStyle.maybeCombine(
+      overlineTextStyle,
+      (a, b) => a.merge(b),
+    ),
+    headlineTextStyle: this.headlineTextStyle.maybeCombine(
+      headlineTextStyle,
+      (a, b) => a.merge(b),
+    ),
+    supportingTextStyle: this.supportingTextStyle.maybeCombine(
+      supportingTextStyle,
+      (a, b) => a.merge(b),
+    ),
+    trailingTextStyle: this.trailingTextStyle.maybeCombine(
+      trailingTextStyle,
+      (a, b) => a.merge(b),
+    ),
+    trailingIconTheme: this.trailingIconTheme.maybeCombine(
+      trailingIconTheme,
+      (a, b) => a.merge(b),
+    ),
+  );
+
+  @override
+  ListItemThemeData maybeMergeWith({
+    ListItemStateProperty<ShapeBorder?>? containerShape,
+    ListItemStateProperty<Color?>? containerColor,
+    ListItemStateProperty<Color?>? stateLayerColor,
+    ListItemStateProperty<double?>? stateLayerOpacity,
+    ListItemStateProperty<IconThemeDataPartial?>? leadingIconTheme,
+    ListItemStateProperty<TextStyle?>? leadingTextStyle,
+    ListItemStateProperty<TextStyle?>? overlineTextStyle,
+    ListItemStateProperty<TextStyle?>? headlineTextStyle,
+    ListItemStateProperty<TextStyle?>? supportingTextStyle,
+    ListItemStateProperty<TextStyle?>? trailingTextStyle,
+    ListItemStateProperty<IconThemeDataPartial?>? trailingIconTheme,
+  }) =>
+      containerShape != null ||
+          containerColor != null ||
+          leadingIconTheme != null ||
+          overlineTextStyle != null ||
+          headlineTextStyle != null ||
+          supportingTextStyle != null ||
+          trailingTextStyle != null ||
+          trailingIconTheme != null
+      ? .from(
+          containerShape: this.containerShape.maybeMerge(containerShape),
+          containerColor: this.containerColor.maybeMerge(containerColor),
+          stateLayerColor: this.stateLayerColor.maybeMerge(stateLayerColor),
+          stateLayerOpacity: this.stateLayerOpacity.maybeMerge(
+            stateLayerOpacity,
+          ),
+          leadingIconTheme: this.leadingIconTheme.maybeCombine(
+            leadingIconTheme,
+            (a, b) => a.maybeMerge(b),
+          ),
+          leadingTextStyle: this.leadingTextStyle.maybeCombine(
+            leadingTextStyle,
+            (a, b) => a.merge(b),
+          ),
+          overlineTextStyle: this.overlineTextStyle.maybeCombine(
+            overlineTextStyle,
+            (a, b) => a.merge(b),
+          ),
+          headlineTextStyle: this.headlineTextStyle.maybeCombine(
+            headlineTextStyle,
+            (a, b) => a.merge(b),
+          ),
+          supportingTextStyle: this.supportingTextStyle.maybeCombine(
+            supportingTextStyle,
+            (a, b) => a.merge(b),
+          ),
+          trailingTextStyle: this.trailingTextStyle.maybeCombine(
+            trailingTextStyle,
+            (a, b) => a.merge(b),
+          ),
+          trailingIconTheme: this.trailingIconTheme.maybeCombine(
+            trailingIconTheme,
+            (a, b) => a.maybeMerge(b),
+          ),
+        )
+      : this;
+
+  @override
+  ListItemThemeData merge(ListItemThemeDataPartial? other) => other != null
+      ? mergeWith(
+          containerShape: other.containerShape,
+          containerColor: other.containerColor,
+          stateLayerColor: other.stateLayerColor,
+          stateLayerOpacity: other.stateLayerOpacity,
+          leadingIconTheme: other.leadingIconTheme,
+          leadingTextStyle: other.leadingTextStyle,
+          overlineTextStyle: other.overlineTextStyle,
+          headlineTextStyle: other.headlineTextStyle,
+          supportingTextStyle: other.supportingTextStyle,
+          trailingTextStyle: other.trailingTextStyle,
+          trailingIconTheme: other.trailingIconTheme,
+        )
+      : copy();
+
+  @override
+  ListItemThemeData maybeMerge(ListItemThemeDataPartial? other) => other != null
+      ? maybeMergeWith(
+          containerShape: other.containerShape,
+          containerColor: other.containerColor,
+          stateLayerColor: other.stateLayerColor,
+          stateLayerOpacity: other.stateLayerOpacity,
+          leadingIconTheme: other.leadingIconTheme,
+          leadingTextStyle: other.leadingTextStyle,
+          overlineTextStyle: other.overlineTextStyle,
+          headlineTextStyle: other.headlineTextStyle,
+          supportingTextStyle: other.supportingTextStyle,
+          trailingTextStyle: other.trailingTextStyle,
+          trailingIconTheme: other.trailingIconTheme,
+        )
+      : this;
 }
 
 final class _ListItemThemeData extends ListItemThemeData {
@@ -620,58 +713,23 @@ final class _ListItemThemeData extends ListItemThemeData {
 
 final class _ListItemThemeDataDefaults extends ListItemThemeData {
   const _ListItemThemeDataDefaults({
-    required ColorThemeData colorTheme,
-    required ShapeThemeData shapeTheme,
-    required StateThemeData stateTheme,
-    required TypescaleThemeData typescaleTheme,
-    ListItemStateProperty<ShapeBorder?>? containerShape,
-    ListItemStateProperty<Color?>? containerColor,
-    ListItemStateProperty<Color?>? stateLayerColor,
-    ListItemStateProperty<double?>? stateLayerOpacity,
-    ListItemStateProperty<IconThemeDataPartial?>? leadingIconTheme,
-    ListItemStateProperty<TextStyle?>? leadingTextStyle,
-    ListItemStateProperty<TextStyle?>? overlineTextStyle,
-    ListItemStateProperty<TextStyle?>? headlineTextStyle,
-    ListItemStateProperty<TextStyle?>? supportingTextStyle,
-    ListItemStateProperty<TextStyle?>? trailingTextStyle,
-    ListItemStateProperty<IconThemeDataPartial?>? trailingIconTheme,
-  }) : _colorTheme = colorTheme,
-       _shapeTheme = shapeTheme,
-       _stateTheme = stateTheme,
-       _typescaleTheme = typescaleTheme,
-       _containerShape = containerShape,
-       _containerColor = containerColor,
-       _stateLayerColor = stateLayerColor,
-       _stateLayerOpacity = stateLayerOpacity,
-       _leadingIconTheme = leadingIconTheme,
-       _leadingTextStyle = leadingTextStyle,
-       _overlineTextStyle = overlineTextStyle,
-       _headlineTextStyle = headlineTextStyle,
-       _supportingTextStyle = supportingTextStyle,
-       _trailingTextStyle = trailingTextStyle,
-       _trailingIconTheme = trailingIconTheme;
+    required this._colorTheme,
+    required this._shapeTheme,
+    required this._stateTheme,
+    required this._typescaleTheme,
+    ListItemThemeDataPartial? overrides,
+  }) : _overrides = overrides ?? const .from();
 
   final ColorThemeData _colorTheme;
   final ShapeThemeData _shapeTheme;
   final StateThemeData _stateTheme;
   final TypescaleThemeData _typescaleTheme;
-
-  final ListItemStateProperty<ShapeBorder?>? _containerShape;
-  final ListItemStateProperty<Color?>? _containerColor;
-  final ListItemStateProperty<Color?>? _stateLayerColor;
-  final ListItemStateProperty<double?>? _stateLayerOpacity;
-  final ListItemStateProperty<IconThemeDataPartial?>? _leadingIconTheme;
-  final ListItemStateProperty<TextStyle?>? _leadingTextStyle;
-  final ListItemStateProperty<TextStyle?>? _overlineTextStyle;
-  final ListItemStateProperty<TextStyle?>? _headlineTextStyle;
-  final ListItemStateProperty<TextStyle?>? _supportingTextStyle;
-  final ListItemStateProperty<TextStyle?>? _trailingTextStyle;
-  final ListItemStateProperty<IconThemeDataPartial?>? _trailingIconTheme;
+  final ListItemThemeDataPartial _overrides;
 
   @override
   ListItemStateProperty<ShapeBorder> get containerShape =>
       .resolveWith((states) {
-        final resolved = _containerShape?.resolve(states);
+        final resolved = _overrides.containerShape?.resolve(states);
         if (resolved != null) return resolved;
         final outerCorner = _shapeTheme.cornerLarge;
         final innerCorner = _shapeTheme.cornerExtraSmall;
@@ -694,7 +752,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
   @override
   ListItemStateProperty<Color> get containerColor => .resolveWith(
     (states) =>
-        _containerColor?.resolve(states) ??
+        _overrides.containerColor?.resolve(states) ??
         switch (states) {
           InteractiveListItemDisabledStates() =>
             _colorTheme.onSurface.withValues(alpha: 0.10),
@@ -709,7 +767,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
   @override
   ListItemStateProperty<Color> get stateLayerColor => .resolveWith(
     (states) =>
-        _stateLayerColor?.resolve(states) ??
+        _overrides.stateLayerColor?.resolve(states) ??
         switch (states) {
           DraggableListItemStates(isDragged: true) =>
             _colorTheme.onTertiaryContainer,
@@ -722,7 +780,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
   @override
   ListItemStateProperty<double> get stateLayerOpacity => .resolveWith(
     (states) =>
-        _stateLayerOpacity?.resolve(states) ??
+        _overrides.stateLayerOpacity?.resolve(states) ??
         switch (states) {
           InteractiveListItemDisabledStates() => 0.0,
           DraggableListItemStates(isDragged: true) =>
@@ -753,7 +811,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
           opticalSize: 24.0,
           color: color,
         );
-        return result.maybeMerge(_leadingIconTheme?.resolve(states));
+        return result.maybeMerge(_overrides.leadingIconTheme?.resolve(states));
       });
 
   @override
@@ -769,7 +827,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
           _ => _colorTheme.onSurfaceVariant,
         };
         final result = _typescaleTheme.labelLarge.toTextStyle(color: color);
-        return result.merge(_leadingTextStyle?.resolve(states));
+        return result.merge(_overrides.leadingTextStyle?.resolve(states));
       });
 
   @override
@@ -785,7 +843,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
           _ => _colorTheme.onSurfaceVariant,
         };
         final result = _typescaleTheme.labelMedium.toTextStyle(color: color);
-        return result.merge(_overlineTextStyle?.resolve(states));
+        return result.merge(_overrides.overlineTextStyle?.resolve(states));
       });
 
   @override
@@ -801,7 +859,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
           _ => _colorTheme.onSurface,
         };
         final result = _typescaleTheme.bodyLarge.toTextStyle(color: color);
-        return result.merge(_headlineTextStyle?.resolve(states));
+        return result.merge(_overrides.headlineTextStyle?.resolve(states));
       });
 
   @override
@@ -817,7 +875,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
           _ => _colorTheme.onSurfaceVariant,
         };
         final result = _typescaleTheme.bodyMedium.toTextStyle(color: color);
-        return result.merge(_supportingTextStyle?.resolve(states));
+        return result.merge(_overrides.supportingTextStyle?.resolve(states));
       });
 
   @override
@@ -833,7 +891,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
           _ => _colorTheme.onSurfaceVariant,
         };
         final result = _typescaleTheme.labelLarge.toTextStyle(color: color);
-        return result.merge(_trailingTextStyle?.resolve(states));
+        return result.merge(_overrides.trailingTextStyle?.resolve(states));
       });
 
   @override
@@ -853,21 +911,55 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
           opticalSize: 24.0,
           color: color,
         );
-        return result.maybeMerge(_trailingIconTheme?.resolve(states));
+        return result.maybeMerge(_overrides.trailingIconTheme?.resolve(states));
       });
+
+  @override
+  ListItemThemeData copyWith({
+    covariant ListItemStateProperty<ShapeBorder>? containerShape,
+    covariant ListItemStateProperty<Color>? containerColor,
+    covariant ListItemStateProperty<Color>? stateLayerColor,
+    covariant ListItemStateProperty<double>? stateLayerOpacity,
+    covariant ListItemStateProperty<IconThemeDataPartial>? leadingIconTheme,
+    covariant ListItemStateProperty<TextStyle>? leadingTextStyle,
+    covariant ListItemStateProperty<TextStyle>? overlineTextStyle,
+    covariant ListItemStateProperty<TextStyle>? headlineTextStyle,
+    covariant ListItemStateProperty<TextStyle>? supportingTextStyle,
+    covariant ListItemStateProperty<TextStyle>? trailingTextStyle,
+    covariant ListItemStateProperty<IconThemeDataPartial>? trailingIconTheme,
+  }) => _ListItemThemeDataDefaults(
+    colorTheme: _colorTheme,
+    shapeTheme: _shapeTheme,
+    stateTheme: _stateTheme,
+    typescaleTheme: _typescaleTheme,
+    overrides: _overrides.copyWith(
+      containerShape: containerShape,
+      stateLayerColor: stateLayerColor,
+      stateLayerOpacity: stateLayerOpacity,
+      containerColor: containerColor,
+      leadingIconTheme: leadingIconTheme,
+      leadingTextStyle: leadingTextStyle,
+      overlineTextStyle: overlineTextStyle,
+      headlineTextStyle: headlineTextStyle,
+      supportingTextStyle: supportingTextStyle,
+      trailingTextStyle: trailingTextStyle,
+      trailingIconTheme: trailingIconTheme,
+    ),
+  );
+
   @override
   ListItemThemeData maybeCopyWith({
-    ListItemStateProperty<ShapeBorder>? containerShape,
-    ListItemStateProperty<Color>? containerColor,
-    ListItemStateProperty<Color>? stateLayerColor,
-    ListItemStateProperty<double>? stateLayerOpacity,
-    ListItemStateProperty<IconThemeDataPartial>? leadingIconTheme,
-    ListItemStateProperty<TextStyle>? leadingTextStyle,
-    ListItemStateProperty<TextStyle>? overlineTextStyle,
-    ListItemStateProperty<TextStyle>? headlineTextStyle,
-    ListItemStateProperty<TextStyle>? supportingTextStyle,
-    ListItemStateProperty<TextStyle>? trailingTextStyle,
-    ListItemStateProperty<IconThemeDataPartial>? trailingIconTheme,
+    covariant ListItemStateProperty<ShapeBorder>? containerShape,
+    covariant ListItemStateProperty<Color>? containerColor,
+    covariant ListItemStateProperty<Color>? stateLayerColor,
+    covariant ListItemStateProperty<double>? stateLayerOpacity,
+    covariant ListItemStateProperty<IconThemeDataPartial>? leadingIconTheme,
+    covariant ListItemStateProperty<TextStyle>? leadingTextStyle,
+    covariant ListItemStateProperty<TextStyle>? overlineTextStyle,
+    covariant ListItemStateProperty<TextStyle>? headlineTextStyle,
+    covariant ListItemStateProperty<TextStyle>? supportingTextStyle,
+    covariant ListItemStateProperty<TextStyle>? trailingTextStyle,
+    covariant ListItemStateProperty<IconThemeDataPartial>? trailingIconTheme,
   }) =>
       containerShape != null &&
           containerColor != null &&
@@ -893,23 +985,64 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
           trailingTextStyle: trailingTextStyle,
           trailingIconTheme: trailingIconTheme,
         )
-      : _ListItemThemeDataDefaults(
-          colorTheme: _colorTheme,
-          shapeTheme: _shapeTheme,
-          stateTheme: _stateTheme,
-          typescaleTheme: _typescaleTheme,
-          containerShape: containerShape ?? _containerShape,
-          containerColor: containerColor ?? _containerColor,
-          stateLayerColor: stateLayerColor ?? _stateLayerColor,
-          stateLayerOpacity: stateLayerOpacity ?? _stateLayerOpacity,
-          leadingIconTheme: leadingIconTheme ?? _leadingIconTheme,
-          leadingTextStyle: leadingTextStyle ?? _leadingTextStyle,
-          overlineTextStyle: overlineTextStyle ?? _overlineTextStyle,
-          headlineTextStyle: headlineTextStyle ?? _headlineTextStyle,
-          supportingTextStyle: supportingTextStyle ?? _supportingTextStyle,
-          trailingTextStyle: trailingTextStyle ?? _trailingTextStyle,
-          trailingIconTheme: trailingIconTheme ?? _trailingIconTheme,
-        );
+      : containerShape != null ||
+            containerColor != null ||
+            stateLayerColor != null ||
+            stateLayerOpacity != null ||
+            leadingIconTheme != null ||
+            leadingTextStyle != null ||
+            overlineTextStyle != null ||
+            headlineTextStyle != null ||
+            supportingTextStyle != null ||
+            trailingTextStyle != null ||
+            trailingIconTheme != null
+      ? copyWith(
+          containerShape: containerShape,
+          stateLayerColor: stateLayerColor,
+          stateLayerOpacity: stateLayerOpacity,
+          containerColor: containerColor,
+          leadingIconTheme: leadingIconTheme,
+          leadingTextStyle: leadingTextStyle,
+          overlineTextStyle: overlineTextStyle,
+          headlineTextStyle: headlineTextStyle,
+          supportingTextStyle: supportingTextStyle,
+          trailingTextStyle: trailingTextStyle,
+          trailingIconTheme: trailingIconTheme,
+        )
+      : this;
+
+  @override
+  ListItemThemeData mergeWith({
+    ListItemStateProperty<ShapeBorder?>? containerShape,
+    ListItemStateProperty<Color?>? containerColor,
+    ListItemStateProperty<Color?>? stateLayerColor,
+    ListItemStateProperty<double?>? stateLayerOpacity,
+    ListItemStateProperty<IconThemeDataPartial?>? leadingIconTheme,
+    ListItemStateProperty<TextStyle?>? leadingTextStyle,
+    ListItemStateProperty<TextStyle?>? overlineTextStyle,
+    ListItemStateProperty<TextStyle?>? headlineTextStyle,
+    ListItemStateProperty<TextStyle?>? supportingTextStyle,
+    ListItemStateProperty<TextStyle?>? trailingTextStyle,
+    ListItemStateProperty<IconThemeDataPartial?>? trailingIconTheme,
+  }) => _ListItemThemeDataDefaults(
+    colorTheme: _colorTheme,
+    shapeTheme: _shapeTheme,
+    stateTheme: _stateTheme,
+    typescaleTheme: _typescaleTheme,
+    overrides: _overrides.mergeWith(
+      containerShape: containerShape,
+      stateLayerColor: stateLayerColor,
+      stateLayerOpacity: stateLayerOpacity,
+      containerColor: containerColor,
+      leadingIconTheme: leadingIconTheme,
+      leadingTextStyle: leadingTextStyle,
+      overlineTextStyle: overlineTextStyle,
+      headlineTextStyle: headlineTextStyle,
+      supportingTextStyle: supportingTextStyle,
+      trailingTextStyle: trailingTextStyle,
+      trailingIconTheme: trailingIconTheme,
+    ),
+  );
 
   @override
   ListItemThemeData maybeMergeWith({
@@ -924,102 +1057,30 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
     ListItemStateProperty<TextStyle?>? supportingTextStyle,
     ListItemStateProperty<TextStyle?>? trailingTextStyle,
     ListItemStateProperty<IconThemeDataPartial?>? trailingIconTheme,
-  }) =>
-      containerShape != null ||
-          containerColor != null ||
-          stateLayerColor != null ||
-          stateLayerOpacity != null ||
-          leadingIconTheme != null ||
-          leadingTextStyle != null ||
-          overlineTextStyle != null ||
-          headlineTextStyle != null ||
-          supportingTextStyle != null ||
-          trailingTextStyle != null ||
-          trailingIconTheme != null
-      ? _ListItemThemeDataDefaults(
-          colorTheme: _colorTheme,
-          shapeTheme: _shapeTheme,
-          stateTheme: _stateTheme,
-          typescaleTheme: _typescaleTheme,
-          containerShape:
-              containerShape?.orElseMaybe(_containerShape?.resolve) ??
-              _containerShape,
-          containerColor:
-              containerColor?.orElseMaybe(_containerColor?.resolve) ??
-              _containerColor,
-          stateLayerColor:
-              stateLayerColor?.orElseMaybe(_stateLayerColor?.resolve) ??
-              _stateLayerColor,
-          stateLayerOpacity:
-              stateLayerOpacity?.orElseMaybe(_stateLayerOpacity?.resolve) ??
-              _stateLayerOpacity,
-          leadingIconTheme:
-              leadingIconTheme
-                  ?.orElseMaybe(_leadingIconTheme?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        _leadingIconTheme?.resolve(states)?.maybeMerge(value) ??
-                        value,
-                  ) ??
-              _leadingIconTheme,
-          leadingTextStyle:
-              leadingTextStyle
-                  ?.orElseMaybe(_leadingTextStyle?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        _leadingTextStyle?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              _leadingTextStyle,
-          overlineTextStyle:
-              overlineTextStyle
-                  ?.orElseMaybe(_overlineTextStyle?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        _overlineTextStyle?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              _overlineTextStyle,
-          headlineTextStyle:
-              headlineTextStyle
-                  ?.orElseMaybe(_headlineTextStyle?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        _headlineTextStyle?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              _headlineTextStyle,
-          supportingTextStyle:
-              supportingTextStyle
-                  ?.orElseMaybe(_supportingTextStyle?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        _supportingTextStyle?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              _supportingTextStyle,
-          trailingTextStyle:
-              trailingTextStyle
-                  ?.orElseMaybe(_trailingTextStyle?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        _trailingTextStyle?.resolve(states)?.merge(value) ??
-                        value,
-                  ) ??
-              _trailingTextStyle,
-          trailingIconTheme:
-              trailingIconTheme
-                  ?.orElseMaybe(_trailingIconTheme?.resolve)
-                  .mapValue(
-                    (states, value) =>
-                        _trailingIconTheme
-                            ?.resolve(states)
-                            ?.maybeMerge(value) ??
-                        value,
-                  ) ??
-              _trailingIconTheme,
-        )
-      : this;
+  }) {
+    final overrides = _overrides.maybeMergeWith(
+      containerShape: containerShape,
+      stateLayerColor: stateLayerColor,
+      stateLayerOpacity: stateLayerOpacity,
+      containerColor: containerColor,
+      leadingIconTheme: leadingIconTheme,
+      leadingTextStyle: leadingTextStyle,
+      overlineTextStyle: overlineTextStyle,
+      headlineTextStyle: headlineTextStyle,
+      supportingTextStyle: supportingTextStyle,
+      trailingTextStyle: trailingTextStyle,
+      trailingIconTheme: trailingIconTheme,
+    );
+    return identical(_overrides, overrides)
+        ? this
+        : _ListItemThemeDataDefaults(
+            colorTheme: _colorTheme,
+            shapeTheme: _shapeTheme,
+            stateTheme: _stateTheme,
+            typescaleTheme: _typescaleTheme,
+            overrides: overrides,
+          );
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -1029,17 +1090,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
           _shapeTheme == other._shapeTheme &&
           _stateTheme == other._stateTheme &&
           _typescaleTheme == other._typescaleTheme &&
-          _containerShape == other._containerShape &&
-          _containerColor == other._containerColor &&
-          _stateLayerColor == other._stateLayerColor &&
-          _stateLayerOpacity == other._stateLayerOpacity &&
-          _leadingIconTheme == other._leadingIconTheme &&
-          _leadingTextStyle == other._leadingTextStyle &&
-          _overlineTextStyle == other._overlineTextStyle &&
-          _headlineTextStyle == other._headlineTextStyle &&
-          _supportingTextStyle == other._supportingTextStyle &&
-          _trailingTextStyle == other._trailingTextStyle &&
-          _trailingIconTheme == other._trailingIconTheme;
+          _overrides == other._overrides;
 
   @override
   int get hashCode => Object.hash(
@@ -1047,58 +1098,50 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
     _shapeTheme,
     _stateTheme,
     _typescaleTheme,
-    _containerShape,
-    _containerColor,
-    _stateLayerColor,
-    _stateLayerOpacity,
-    _leadingIconTheme,
-    _leadingTextStyle,
-    _overlineTextStyle,
-    _headlineTextStyle,
-    _supportingTextStyle,
-    _trailingTextStyle,
-    _trailingIconTheme,
+    _overrides,
   );
-}
-
-typedef ListItemThemeResolver = ThemeResolver<ListItemThemeDataPartial>;
-
-typedef ListItemThemeResolverCallback =
-    ThemeResolverCallback<ListItemThemeDataPartial>;
-
-class _ListItemThemeResolver
-    extends CombiningThemeResolver<ListItemThemeDataPartial> {
-  const _ListItemThemeResolver(super.a, super.b);
-
-  @override
-  ListItemThemeDataPartial combine(
-    ListItemThemeDataPartial a,
-    ListItemThemeDataPartial b,
-  ) => a.maybeMerge(b);
 }
 
 abstract class ListItemTheme extends StatelessWidget implements ProxyWidget {
   const ListItemTheme._({super.key, required this.child});
 
-  const factory ListItemTheme.withResolver({
+  const factory ListItemTheme.mergeWithResolver({
     Key? key,
-    required ListItemThemeResolver resolver,
+    required ThemeResolver<ListItemThemeDataPartial> resolver,
     required Widget child,
-  }) = _ListItemThemeWithResolver;
+  }) = _ListItemThemeWithResolver<ListItemThemeDataPartial>;
 
-  const factory ListItemTheme.withCallback({
+  const factory ListItemTheme.mergeWithCallback({
     Key? key,
-    required ListItemThemeResolverCallback callback,
+    required ThemeResolverCallback<ListItemThemeDataPartial> callback,
     required Widget child,
-  }) = _ListItemThemeWithCallback;
+  }) = _ListItemThemeWithCallback<ListItemThemeDataPartial>;
 
-  const factory ListItemTheme.withData({
+  const factory ListItemTheme.mergeWithData({
     Key? key,
     required ListItemThemeDataPartial data,
     required Widget child,
-  }) = _ListItemThemeWithData;
+  }) = _ListItemThemeWithData<ListItemThemeDataPartial>;
 
-  ListItemThemeResolver get resolver;
+  const factory ListItemTheme.replaceWithResolver({
+    Key? key,
+    required ThemeResolver<ListItemThemeData> resolver,
+    required Widget child,
+  }) = _ListItemThemeWithResolver<ListItemThemeData>;
+
+  const factory ListItemTheme.replaceWithCallback({
+    Key? key,
+    required ThemeResolverCallback<ListItemThemeData> callback,
+    required Widget child,
+  }) = _ListItemThemeWithCallback<ListItemThemeData>;
+
+  const factory ListItemTheme.replaceWithData({
+    Key? key,
+    required ListItemThemeData data,
+    required Widget child,
+  }) = _ListItemThemeWithData<ListItemThemeData>;
+
+  ThemeResolver<ListItemThemeDataPartial> get resolver;
 
   @override
   final Widget child;
@@ -1108,48 +1151,31 @@ abstract class ListItemTheme extends StatelessWidget implements ProxyWidget {
     final inherited = _ListItemTheme.maybeResolverOf(context);
     return _ListItemTheme(
       resolver: inherited != null
-          ? _ListItemThemeResolver(inherited, resolver)
+          ? .combine(inherited, resolver, _merge)
           : resolver,
       child: child,
     );
   }
 
+  static ListItemThemeDataPartial _merge(
+    ListItemThemeDataPartial a,
+    ListItemThemeDataPartial b,
+  ) => a.maybeMerge(b);
+
   static ListItemThemeData of(BuildContext context) {
     final resolver = _ListItemTheme.maybeResolverOf(context);
-    final colorTheme = ColorTheme.of(context);
-    final shapeTheme = ShapeTheme.of(context);
-    final stateTheme = StateTheme.of(context);
-    final typescaleTheme = TypescaleTheme.of(context);
-    if (resolver != null) {
-      final data = resolver.resolve(context);
-      return ._defaults(
-        colorTheme: colorTheme,
-        shapeTheme: shapeTheme,
-        stateTheme: stateTheme,
-        typescaleTheme: typescaleTheme,
-        containerShape: data.containerShape,
-        containerColor: data.containerColor,
-        stateLayerColor: data.stateLayerColor,
-        stateLayerOpacity: data.stateLayerOpacity,
-        leadingIconTheme: data.leadingIconTheme,
-        leadingTextStyle: data.leadingTextStyle,
-        overlineTextStyle: data.overlineTextStyle,
-        headlineTextStyle: data.headlineTextStyle,
-        supportingTextStyle: data.supportingTextStyle,
-        trailingTextStyle: data.trailingTextStyle,
-        trailingIconTheme: data.trailingIconTheme,
-      );
-    }
     return .defaults(
-      colorTheme: colorTheme,
-      shapeTheme: shapeTheme,
-      stateTheme: stateTheme,
-      typescaleTheme: typescaleTheme,
+      colorTheme: ColorTheme.of(context),
+      shapeTheme: ShapeTheme.of(context),
+      stateTheme: StateTheme.of(context),
+      typescaleTheme: TypescaleTheme.of(context),
+      overrides: resolver?.resolve(context),
     );
   }
 }
 
-class _ListItemThemeWithResolver extends ListItemTheme {
+class _ListItemThemeWithResolver<T extends ListItemThemeDataPartial>
+    extends ListItemTheme {
   const _ListItemThemeWithResolver({
     super.key,
     required this.resolver,
@@ -1157,54 +1183,54 @@ class _ListItemThemeWithResolver extends ListItemTheme {
   }) : super._();
 
   @override
-  final ListItemThemeResolver resolver;
+  final ThemeResolver<T> resolver;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<ListItemThemeResolver>("resolver", resolver),
-    );
+    properties.add(DiagnosticsProperty<ThemeResolver<T>>("resolver", resolver));
   }
 }
 
-class _ListItemThemeWithCallback extends ListItemTheme {
+class _ListItemThemeWithCallback<T extends ListItemThemeDataPartial>
+    extends ListItemTheme {
   const _ListItemThemeWithCallback({
     super.key,
     required this.callback,
     required super.child,
   }) : super._();
 
-  final ListItemThemeResolverCallback callback;
+  final ThemeResolverCallback<T> callback;
 
   @override
-  ListItemThemeResolver get resolver => .callback(callback);
+  ThemeResolver<T> get resolver => .callback(callback);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      DiagnosticsProperty<ListItemThemeResolverCallback>("callback", callback),
+      DiagnosticsProperty<ThemeResolverCallback<T>>("callback", callback),
     );
   }
 }
 
-class _ListItemThemeWithData extends ListItemTheme {
+class _ListItemThemeWithData<T extends ListItemThemeDataPartial>
+    extends ListItemTheme {
   const _ListItemThemeWithData({
     super.key,
     required this.data,
     required super.child,
   }) : super._();
 
-  final ListItemThemeDataPartial data;
+  final T data;
 
   @override
-  ListItemThemeResolver get resolver => .value(data);
+  ThemeResolver<T> get resolver => .value(data);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ListItemThemeDataPartial>("data", data));
+    properties.add(DiagnosticsProperty<T>("data", data));
   }
 }
 
@@ -1215,7 +1241,7 @@ class _ListItemTheme extends InheritedTheme {
     required super.child,
   });
 
-  final ListItemThemeResolver resolver;
+  final ThemeResolver<ListItemThemeDataPartial> resolver;
 
   @override
   bool updateShouldNotify(_ListItemTheme oldWidget) =>
@@ -1225,6 +1251,7 @@ class _ListItemTheme extends InheritedTheme {
   Widget wrap(BuildContext context, Widget child) =>
       _ListItemTheme(resolver: resolver, child: child);
 
-  static ListItemThemeResolver? maybeResolverOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_ListItemTheme>()?.resolver;
+  static ThemeResolver<ListItemThemeDataPartial>? maybeResolverOf(
+    BuildContext context,
+  ) => context.dependOnInheritedWidgetOfExactType<_ListItemTheme>()?.resolver;
 }

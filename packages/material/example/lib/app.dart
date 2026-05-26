@@ -86,7 +86,9 @@ class _AppState extends State<App> {
         child: child,
       );
 
-  Widget _buildComponentThemes(BuildContext context, Widget child) => child;
+  Widget _buildComponentThemes(BuildContext context, Widget child) {
+    return child;
+  }
 
   Widget _buildLegacyThemes(BuildContext context, Widget child) {
     final colorTheme = ColorTheme.of(context);
