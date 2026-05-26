@@ -85,51 +85,64 @@ class OverlayExampleView extends StatefulWidget {
 }
 
 class _OverlayExampleViewState extends State<OverlayExampleView> {
-  final _controller = MenuController();
-
   @override
   Widget build(BuildContext context) {
     final colorScheme = ColorScheme.of(context);
+
     return Scaffold(
       body: Center(
         child: MenuAnchor(
-          controller: _controller,
-          consumeOutsideTap: false,
+          consumeOutsideTap: true,
           animated: true,
-          builder: (context, controller, child) => SizedTouchTarget(
-            behavior: .overflow,
-            // For demo purposes only. In production, the issue occurs because
-            // there are more than one button next to each other.
-            minimumSize: const .square(100.0),
-            child: SizedBox(
-              width: 32,
-              height: 40.0,
-              child: Material(
-                animationDuration: .zero,
-                clipBehavior: .antiAlias,
-                color: colorScheme.primary,
-                borderRadius: .circular(12.0),
-                child: InkWell(
-                  overlayColor: WidgetStateLayerColor.fromColor(
-                    WidgetStatePropertyAll(colorScheme.onPrimary),
-                  ),
-
-                  onTap: () {
-                    if (controller.isOpen) {
-                      controller.close();
-                    } else {
-                      controller.open();
-                    }
-                    setState(() {});
-                  },
-                  child: Icon(
-                    Symbols.more_vert_rounded,
-                    color: colorScheme.onPrimary,
+          builder: (context, controller, child) {
+            final isSelected = controller.isOpen;
+            final containerShape = isSelected
+                ? const RoundedRectangleBorder(
+                    borderRadius: .all(.circular(12.0)),
+                  )
+                : const StadiumBorder();
+            final containerColor = isSelected
+                ? colorScheme.secondary
+                : colorScheme.secondaryContainer;
+            final contentColor = isSelected
+                ? colorScheme.onSecondary
+                : colorScheme.onSecondaryContainer;
+            return SizedTouchTarget(
+              behavior: .overflow,
+              // For demo purposes only. In production, the issue occurs because
+              // there are more than one button next to each other.
+              minimumSize: const .square(48.0),
+              child: SizedBox(
+                width: 32.0,
+                height: 40.0,
+                child: Material(
+                  animationDuration: .zero,
+                  clipBehavior: .antiAlias,
+                  shape: containerShape,
+                  color: containerColor,
+                  child: InkWell(
+                    overlayColor: WidgetStateLayerColor.fromColor(
+                      WidgetStatePropertyAll(contentColor),
+                    ),
+                    onTap: () {
+                      if (controller.isOpen) {
+                        controller.close();
+                      } else {
+                        controller.open();
+                      }
+                      setState(() {});
+                    },
+                    child: Icon(
+                      Symbols.more_vert_rounded,
+                      opticalSize: 24.0,
+                      size: 24.0,
+                      color: contentColor,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
           menuChildren: [
             MenuItemButton(onPressed: () {}, child: Text("Option A")),
             MenuItemButton(onPressed: () {}, child: Text("Option B")),
