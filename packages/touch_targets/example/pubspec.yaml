@@ -1,0 +1,26 @@
+name: touch_targets_example
+description: Example for the touch_targets package.
+version: 0.1.0+1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.12.0
+  flutter: ">=3.44.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  touch_targets:
+    path: ../
+  collection: ^1.19.1
+  material_symbols_icons: ^4.2928.1
+  meta: ^1.17.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  deminearchiver_lints: ^2.1.2
+
+flutter:
+  uses-material-design: true
