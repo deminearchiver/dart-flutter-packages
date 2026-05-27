@@ -59,6 +59,8 @@ export 'src/material/measurement/measurement_theme.dart';
 
 import 'package:material/src/material/flutter.dart';
 
+export 'src/material/keyed_persistent_hash_map.dart';
+
 /// Same as [num.clamp] but optimized for a non-null [int].
 ///
 /// This is faster because it avoids polymorphism, boxing,

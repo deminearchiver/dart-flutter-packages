@@ -736,7 +736,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
 
 enum _SwitchSlot { trackChild, handleChild }
 
-enum SwitchChildPosition { bottom, middle, top }
+enum _SwitchChildPosition { bottom, middle, top }
 
 enum _SwitchChildrenPaintOrder { trackChildIsTop, handleChildIsTop }
 
@@ -770,9 +770,9 @@ class _SwitchPaint
   final ValueListenable<Color> handleColor;
 
   final _SwitchChildrenPaintOrder childrenPaintOrder;
-  final SwitchChildPosition trackChildPosition;
+  final _SwitchChildPosition trackChildPosition;
   final Widget? trackChild;
-  final SwitchChildPosition handleChildPosition;
+  final _SwitchChildPosition handleChildPosition;
   final Widget? handleChild;
 
   @override
@@ -825,34 +825,22 @@ class _SwitchPaint
 class _RenderSwitchPaint extends RenderBox
     with SlottedContainerRenderObjectMixin<_SwitchSlot, RenderBox> {
   _RenderSwitchPaint({
-    required ValueListenable<double> handlePosition,
-    required Size minTapTargetSize,
+    required this._handlePosition,
+    required this._minTapTargetSize,
     // Track
-    required Size trackSize,
-    required ValueListenable<OutlinedBorder> trackShape,
-    required ValueListenable<Color> trackColor,
+    required this._trackSize,
+    required this._trackShape,
+    required this._trackColor,
     // Handle
-    required ValueListenable<Size> handleSize,
-    required ValueListenable<ShapeBorder> handleShape,
-    required ValueListenable<Color> handleColor,
+    required this._handleSize,
+    required this._handleShape,
+    required this._handleColor,
     // Children
-    required _SwitchChildrenPaintOrder childrenPaintOrder,
-    required SwitchChildPosition trackChildPosition,
-    required SwitchChildPosition handleChildPosition,
-    // Context
-    TextDirection? textDirection,
-  }) : _handlePosition = handlePosition,
-       _minTapTargetSize = minTapTargetSize,
-       _trackSize = trackSize,
-       _trackShape = trackShape,
-       _trackColor = trackColor,
-       _handleSize = handleSize,
-       _handleShape = handleShape,
-       _handleColor = handleColor,
-       _textDirection = textDirection,
-       _childrenPaintOrder = childrenPaintOrder,
-       _trackChildPosition = trackChildPosition,
-       _handleChildPosition = handleChildPosition;
+    required this._childrenPaintOrder,
+    required this._trackChildPosition,
+    required this._handleChildPosition,
+    this._textDirection,
+  });
 
   ValueListenable<double> _handlePosition;
   ValueListenable<double> get handlePosition => _handlePosition;
@@ -938,17 +926,17 @@ class _RenderSwitchPaint extends RenderBox
     markNeedsPaint();
   }
 
-  SwitchChildPosition _trackChildPosition;
-  SwitchChildPosition get trackChildPosition => _trackChildPosition;
-  set trackChildPosition(SwitchChildPosition value) {
+  _SwitchChildPosition _trackChildPosition;
+  _SwitchChildPosition get trackChildPosition => _trackChildPosition;
+  set trackChildPosition(_SwitchChildPosition value) {
     if (_trackChildPosition == value) return;
     _trackChildPosition = value;
     markNeedsPaint();
   }
 
-  SwitchChildPosition _handleChildPosition;
-  SwitchChildPosition get handleChildPosition => _handleChildPosition;
-  set handleChildPosition(SwitchChildPosition value) {
+  _SwitchChildPosition _handleChildPosition;
+  _SwitchChildPosition get handleChildPosition => _handleChildPosition;
+  set handleChildPosition(_SwitchChildPosition value) {
     if (_handleChildPosition == value) return;
     _handleChildPosition = value;
     markNeedsPaint();
@@ -1179,7 +1167,7 @@ class _RenderSwitchPaint extends RenderBox
     }
   }
 
-  void _paintChildFor(PaintingContext context, SwitchChildPosition position) {
+  void _paintChildFor(PaintingContext context, _SwitchChildPosition position) {
     if (trackChildPosition == position && handleChildPosition == position) {
       switch (childrenPaintOrder) {
         case .trackChildIsTop:

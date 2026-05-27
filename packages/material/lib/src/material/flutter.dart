@@ -69,5 +69,6 @@ export 'package:flutter/material.dart'
 export 'package:meta/meta.dart';
 export 'package:layout/layout.dart';
 export 'package:motor/motor.dart';
+export 'package:touch_targets/touch_targets.dart';
 export 'package:material/material.dart';
 export 'package:material/material_symbols.dart';

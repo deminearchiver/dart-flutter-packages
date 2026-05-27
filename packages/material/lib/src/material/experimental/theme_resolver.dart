@@ -104,3 +104,80 @@ final class _ThemeResolverCombine<T extends Object>
   @override
   int get hashCode => Object.hash(a, b, _combine);
 }
+
+// mixin ThemeDataPartialCopyMixin<PartialType extends Object?> {
+//   PartialType copy();
+// }
+
+// mixin ThemeDataConcreteCopyMixin<
+//   PartialType extends Object?,
+//   ConcreteType extends PartialType
+// >
+//     implements ThemeDataPartialCopyMixin<PartialType> {
+//   @override
+//   ConcreteType copy();
+// }
+
+// mixin ThemeDataPartialCopyWithMixin<PartialType extends Object?> {
+//   PartialType copyWith();
+
+//   PartialType maybeCopyWith();
+// }
+
+// mixin ThemeDataConcreteCopyWithMixin<
+//   PartialType extends Object?,
+//   ConcreteType extends PartialType
+// >
+//     implements ThemeDataPartialCopyWithMixin<PartialType> {
+//   @override
+//   ConcreteType copyWith();
+
+//   @override
+//   ConcreteType maybeCopyWith();
+// }
+
+// mixin ThemeDataPartialMergeWithMixin<PartialType extends Object?> {
+//   PartialType mergeWith();
+
+//   PartialType maybeMergeWith();
+// }
+
+// mixin ThemeDataConcreteMergeWithMixin<
+//   PartialType extends Object?,
+//   ConcreteType extends PartialType
+// >
+//     implements ThemeDataPartialMergeWithMixin<PartialType> {
+//   @override
+//   ConcreteType mergeWith();
+
+//   @override
+//   ConcreteType maybeMergeWith();
+// }
+
+// mixin ThemeDataPartialMergeMixin<PartialType extends Object?> {
+//   PartialType merge(PartialType? other);
+
+//   PartialType maybeMerge(PartialType? other);
+// }
+
+// mixin ThemeDataConcreteMergeMixin<
+//   PartialType extends Object?,
+//   ConcreteType extends PartialType
+// >
+//     implements ThemeDataPartialMergeMixin<PartialType> {
+//   @override
+//   ConcreteType merge(PartialType? other);
+
+//   @override
+//   ConcreteType maybeMerge(PartialType? other);
+// }
+
+// mixin ThemeDataChecksMixin<ConcreteType extends Object?> {
+//   bool get isEmpty;
+
+//   bool get isNotEmpty;
+
+//   bool get isConcrete;
+
+//   ConcreteType get asConcrete;
+// }

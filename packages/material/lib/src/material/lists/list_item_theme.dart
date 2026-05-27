@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:material/src/material/flutter.dart';
 
 abstract interface class ListItemStates {}
@@ -25,7 +27,13 @@ abstract interface class DraggableListItemStates
 typedef ListItemStateProperty<T extends Object?> =
     StateProperty<T, ListItemStates>;
 
-abstract class ListItemThemeDataPartial with Diagnosticable {
+abstract class ListItemThemeDataPartial with Diagnosticable
+// implements
+//     ThemeDataPartialCopyMixin<ListItemThemeDataPartial>,
+//     ThemeDataPartialCopyWithMixin<ListItemThemeDataPartial>,
+//     ThemeDataPartialMergeWithMixin<ListItemThemeDataPartial>,
+//     ThemeDataPartialMergeMixin<ListItemThemeDataPartial>
+{
   const ListItemThemeDataPartial();
 
   const factory ListItemThemeDataPartial.from({
@@ -360,7 +368,22 @@ final class _ListItemThemeDataPartial extends ListItemThemeDataPartial {
   );
 }
 
-abstract class ListItemThemeData extends ListItemThemeDataPartial {
+abstract class ListItemThemeData extends ListItemThemeDataPartial
+// implements
+//     ThemeDataConcreteCopyMixin<ListItemThemeDataPartial, ListItemThemeData>,
+//     ThemeDataConcreteCopyWithMixin<
+//       ListItemThemeDataPartial,
+//       ListItemThemeData
+//     >,
+//     ThemeDataConcreteMergeWithMixin<
+//       ListItemThemeDataPartial,
+//       ListItemThemeData
+//     >,
+//     ThemeDataConcreteMergeMixin<
+//       ListItemThemeDataPartial,
+//       ListItemThemeData
+//     >
+{
   const ListItemThemeData();
 
   const factory ListItemThemeData.from({
@@ -1147,29 +1170,57 @@ abstract class ListItemTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _ListItemTheme.maybeResolverOf(context);
-    return _ListItemTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _ListItemTheme(resolver: resolver, child: child);
+
+  // TODO: is this stupid and pointless and should be removed?
+  static ListItemThemeData? maybeOf(BuildContext context) {
+    final element =
+        context.getElementForInheritedWidgetOfExactType<_ListItemTheme>()
+            as _ListItemThemeElement?;
+    if (element != null) {
+      context.dependOnInheritedWidgetOfExactType<_ListItemTheme>();
+      final colorTheme = ColorTheme.of(context);
+      final shapeTheme = ShapeTheme.of(context);
+      final stateTheme = StateTheme.of(context);
+      final typescaleTheme = TypescaleTheme.of(context);
+      return .defaults(
+        colorTheme: colorTheme,
+        shapeTheme: shapeTheme,
+        stateTheme: stateTheme,
+        typescaleTheme: typescaleTheme,
+        overrides: element._resolveOverrides(context),
+      );
+    }
+    return null;
   }
 
-  static ListItemThemeDataPartial _merge(
-    ListItemThemeDataPartial a,
-    ListItemThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
   static ListItemThemeData of(BuildContext context) {
-    final resolver = _ListItemTheme.maybeResolverOf(context);
+    final colorTheme = ColorTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    final typescaleTheme = TypescaleTheme.of(context);
+
+    final element =
+        context.getElementForInheritedWidgetOfExactType<_ListItemTheme>()
+            as _ListItemThemeElement?;
+
+    if (element != null) {
+      context.dependOnInheritedWidgetOfExactType<_ListItemTheme>();
+      return .defaults(
+        colorTheme: colorTheme,
+        shapeTheme: shapeTheme,
+        stateTheme: stateTheme,
+        typescaleTheme: typescaleTheme,
+        overrides: element._resolveOverrides(context),
+      );
+    }
+
     return .defaults(
-      colorTheme: ColorTheme.of(context),
-      shapeTheme: ShapeTheme.of(context),
-      stateTheme: StateTheme.of(context),
-      typescaleTheme: TypescaleTheme.of(context),
-      overrides: resolver?.resolve(context),
+      colorTheme: colorTheme,
+      shapeTheme: shapeTheme,
+      stateTheme: stateTheme,
+      typescaleTheme: typescaleTheme,
     );
   }
 }
@@ -1234,7 +1285,7 @@ class _ListItemThemeWithData<T extends ListItemThemeDataPartial>
   }
 }
 
-class _ListItemTheme extends InheritedTheme {
+final class _ListItemTheme extends InheritedTheme {
   const _ListItemTheme({
     super.key,
     required this.resolver,
@@ -1244,14 +1295,110 @@ class _ListItemTheme extends InheritedTheme {
   final ThemeResolver<ListItemThemeDataPartial> resolver;
 
   @override
+  InheritedElement createElement() => _ListItemThemeElement(this);
+
+  @override
   bool updateShouldNotify(_ListItemTheme oldWidget) =>
       resolver != oldWidget.resolver;
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
       _ListItemTheme(resolver: resolver, child: child);
+}
 
-  static ThemeResolver<ListItemThemeDataPartial>? maybeResolverOf(
-    BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_ListItemTheme>()?.resolver;
+final class _ListItemThemeCacheKey {
+  const _ListItemThemeCacheKey(this._dependencies);
+
+  final KeyedPersistentHashMap<Type, InheritedWidget> _dependencies;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _ListItemThemeCacheKey &&
+          const KeyedPersistentHashMapEquality<Type, InheritedWidget>().equals(
+            _dependencies,
+            other._dependencies,
+          );
+
+  @override
+  int get hashCode =>
+      const KeyedPersistentHashMapEquality<Type, InheritedWidget>().hash(
+        _dependencies,
+      );
+}
+
+class _ListItemThemeElement extends InheritedElement {
+  _ListItemThemeElement(_ListItemTheme super.widget);
+
+  _ListItemTheme get _widget => super.widget as _ListItemTheme;
+
+  final Map<_ListItemThemeCacheKey, ListItemThemeDataPartial> _cache =
+      HashMap();
+
+  _ListItemThemeElement? _findAncestorElementOfSameType() {
+    _ListItemThemeElement? ancestor;
+    visitAncestorElements((element) {
+      // Should be faster than pattern matching.
+      if (element is _ListItemThemeElement) {
+        ancestor = element;
+        return false;
+      }
+      return true;
+    });
+    return ancestor;
+  }
+
+  _ListItemThemeCacheKey _buildCacheKey(BuildContext context) {
+    var dependencies = KeyedPersistentHashMap<Type, InheritedWidget>.empty();
+    context.visitAncestorElements((element) {
+      if (element == this) return false;
+      // Should be faster than pattern matching (widget type asserted).
+      if (element is InheritedElement) {
+        assert(element.widget is InheritedWidget);
+        dependencies = dependencies.put(
+          element.widget.runtimeType,
+          element.widget as InheritedWidget,
+        );
+      }
+      return true;
+    });
+    return _ListItemThemeCacheKey(dependencies);
+  }
+
+  ListItemThemeDataPartial _resolveOverrides(BuildContext context) {
+    // Resolve the cache key for the given context.
+    final key = _buildCacheKey(context);
+
+    // Try returning cached overrides for the computed key.
+    if (_cache[key] case final cached?) return cached;
+
+    // Resolve own overrides.
+    final resolved = _widget.resolver.resolve(context);
+
+    // If found nearest ancestor of same type, merge with its overrides.
+    final ancestor = _findAncestorElementOfSameType();
+    final result = ancestor != null
+        ? ancestor._resolveOverrides(context).maybeMerge(resolved)
+        : resolved;
+
+    // Don't forget to update the cache.
+    return _cache[key] = result;
+  }
+
+  @override
+  void updated(covariant _ListItemTheme oldWidget) {
+    // Clear cache before rebuild.
+    if (_widget.updateShouldNotify(oldWidget)) {
+      _cache.clear();
+    }
+    super.updated(oldWidget);
+  }
+
+  @override
+  void didChangeDependencies() {
+    // Clear cache before rebuild.
+    _cache.clear();
+    super.didChangeDependencies();
+    notifyClients(_widget);
+  }
 }

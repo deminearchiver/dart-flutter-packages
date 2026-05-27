@@ -1,5 +1,73 @@
 import 'package:material_example/flutter.dart';
 
+// import 'package:material/src/material/switch/switch2.dart';
+
+// class CustomSwitch extends StatefulWidget {
+//   const CustomSwitch({super.key, required this.value});
+
+//   final bool value;
+
+//   @override
+//   State<CustomSwitch> createState() => _CustomSwitchState();
+// }
+
+// class _CustomSwitchState extends State<CustomSwitch> {
+//   @override
+//   Widget build(BuildContext context) {
+//     final colorTheme = ColorTheme.of(context);
+//     final elevationTheme = ElevationTheme.of(context);
+//     final measurementTheme = MeasurementTheme.of(context);
+//     final shapeTheme = ShapeTheme.of(context);
+//     final stateTheme = StateTheme.of(context);
+//     final typescaleTheme = TypescaleTheme.of(context);
+//     return SwitchLayout(
+//       children: [
+//         SwitchLayoutItem(
+//           slot: .track,
+//           child: SizedBox(
+//             width: 52.0,
+//             height: 32.0,
+//             child: Surface(
+//               clipBehavior: .none,
+//               shape: shapeTheme.applyCorner(
+//                 corner: shapeTheme.cornerFull,
+//                 side: BorderSide(width: 2.0, color: colorTheme.outline),
+//               ),
+//               color: colorTheme.surfaceContainerHighest,
+//             ),
+//           ),
+//         ),
+//         SwitchLayoutItem(
+//           slot: .handle,
+//           forcePointer: true,
+//           child: SizedBox.square(
+//             dimension: 40.0,
+//             child: Surface.raw(
+//               child: InkWell(
+//                 customBorder: shapeTheme.applyCorner(
+//                   corner: shapeTheme.cornerFull,
+//                 ),
+//                 onTap: () {},
+//               ),
+//             ),
+//           ),
+//         ),
+//         SwitchLayoutItem(
+//           slot: .handle,
+//           child: SizedBox.square(
+//             dimension: 24.0,
+//             child: Surface(
+//               clipBehavior: .antiAlias,
+//               shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
+//               color: colorTheme.outline,
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
 class Experiment6View extends StatefulWidget {
   const Experiment6View({super.key});
 
@@ -8,7 +76,14 @@ class Experiment6View extends StatefulWidget {
 }
 
 class _Experiment6ViewState extends State<Experiment6View> {
+  var _customSwitchChecked = false;
   final _selected = <int>{};
+
+  ListItemThemeDataPartial _listItemThemeOf(BuildContext context) => .from(
+    containerColor: .resolveWith(
+      (states) => ColorTheme.of(context).surfaceBright,
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +91,14 @@ class _Experiment6ViewState extends State<Experiment6View> {
     final elevationTheme = ElevationTheme.of(context);
     final measurementTheme = MeasurementTheme.of(context);
     final shapeTheme = ShapeTheme.of(context);
-    final stateTheme = StateTheme.of(
-      context,
-    ).copyWith(hoverStateLayerOpacity: 0.32, pressedStateLayerOpacity: 0.32);
+    final stateTheme = StateTheme.of(context);
+    // .copyWith(hoverStateLayerOpacity: 0.32, pressedStateLayerOpacity: 0.32);
     final typescaleTheme = TypescaleTheme.of(context);
 
     final focusInsetRingTheme = FocusInsetRingTheme.of(context);
+
+    // final listItemTheme = material_experimental.ListItemTheme.of(context);
+    // print(listItemTheme);
 
     // Widget buildConnectedButtonGroupButton({
     //   required ButtonSize size,
@@ -62,7 +139,6 @@ class _Experiment6ViewState extends State<Experiment6View> {
     //     child: child,
     //   );
     // }
-
     return Scaffold(
       backgroundColor: colorTheme.surfaceContainer,
       // body: Align.center(child: _Layer1(child: _Layer2())),
@@ -71,242 +147,290 @@ class _Experiment6ViewState extends State<Experiment6View> {
         bottom: false,
         child: CustomScrollView(
           slivers: [
-            SliverFillRemaining(
-              fillOverscroll: false,
-              hasScrollBody: false,
-              child: Flex.vertical(
-                mainAxisAlignment: .center,
-                children: [
-                  Wrap(
-                    direction: .horizontal,
-                    alignment: .center,
-                    spacing: 12.0,
-                    children: [
-                      // SizedTouchTarget(
-                      //   behavior: .overflow,
-                      //   minimumSize: .square(48.0),
-                      //   child: ConstrainedBox(
-                      //     constraints: BoxConstraints(
-                      //       minWidth: 48.0,
-                      //       minHeight: 24.0,
-                      //     ),
-                      //     child: Surface(
-                      //       clipBehavior: .antiAlias,
-                      //       color: colorTheme.primary,
-                      //       shape: shapeTheme.applyCorners(
-                      //         corners: .all(shapeTheme.cornerSmall),
-                      //       ),
-                      //       child: InkWell(
-                      //         overlayColor: WidgetStateLayerColor(
-                      //           color: .all(colorTheme.onPrimary),
-                      //           opacity: stateTheme.asWidgetStateLayerOpacity,
-                      //         ),
-                      //         onTap: () {},
-                      //         child: Align.center(
-                      //           widthFactor: 1.0,
-                      //           heightFactor: 1.0,
-                      //           child: Padding(
-                      //             padding: .symmetric(
-                      //               horizontal: measurementTheme.space100,
-                      //               vertical: measurementTheme.space50,
-                      //             ),
-                      //             child: Flex.horizontal(
-                      //               mainAxisSize: .min,
-                      //               spacing: 4.0,
-                      //               children: [
-                      //                 Icon(
-                      //                   Symbols.add_2_rounded,
-                      //                   opticalSize: 24.0,
-                      //                   size: 16.0,
-                      //                   color: colorTheme.onPrimary,
-                      //                 ),
-                      //                 Flexible.loose(
-                      //                   child: Text(
-                      //                     "Option A",
-                      //                     style: typescaleTheme.labelMedium
-                      //                         .toTextStyle(
-                      //                           color: colorTheme.onPrimary,
-                      //                         ),
-                      //                   ),
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      SizedTouchTarget(
-                        fit: .overflow,
-                        minimumSize: const .square(48.0),
-                        child: SizedBox(
-                          width: 32.0,
-                          height: 40.0,
-                          child: Surface(
-                            clipBehavior: .antiAlias,
-                            color: colorTheme.primary,
-                            shape: shapeTheme.applyCorners(
-                              corners: .all(shapeTheme.cornerFull),
-                            ),
-                            child: InkWell(
-                              overlayColor: WidgetStateLayerColor(
-                                color: .all(colorTheme.onPrimary),
-                                opacity: stateTheme.asWidgetStateLayerOpacity,
-                              ),
-                              onTap: () {},
-                              child: Icon(
-                                Symbols.add_rounded,
-                                fill: 1.0,
-                                opticalSize: 24.0,
-                                size: 24.0,
-                                color: colorTheme.onPrimary,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedTouchTarget(
-                        fit: .overflow,
-                        minimumSize: const .square(48.0),
-                        child: SizedBox(
-                          width: 32.0,
-                          height: 40.0,
-                          child: Surface(
-                            clipBehavior: .antiAlias,
-                            color: colorTheme.secondaryContainer,
-                            shape: shapeTheme.applyCorners(
-                              corners: .all(shapeTheme.cornerFull),
-                            ),
-                            child: InkWell(
-                              overlayColor: WidgetStateLayerColor(
-                                color: .all(colorTheme.onSecondaryContainer),
-                                opacity: stateTheme.asWidgetStateLayerOpacity,
-                              ),
-                              onTap: () {},
-                              child: Icon(
-                                Symbols.share_rounded,
-                                fill: 1.0,
-                                opticalSize: 24.0,
-                                size: 24.0,
-                                color: colorTheme.onSecondaryContainer,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedTouchTarget(
-                        fit: .overflow,
-                        minimumSize: const .square(48.0),
-                        child: SizedBox(
-                          width: 32.0,
-                          height: 40.0,
-                          child: Surface(
-                            clipBehavior: .antiAlias,
-                            shape: shapeTheme.applyCorners(
-                              corners: .all(shapeTheme.cornerFull),
-                            ),
-                            child: InkWell(
-                              overlayColor: WidgetStateLayerColor(
-                                color: .all(colorTheme.onSurfaceVariant),
-                                opacity: stateTheme.asWidgetStateLayerOpacity,
-                              ),
-                              onTap: () {},
-                              child: Icon(
-                                Symbols.more_vert_rounded,
-                                fill: 1.0,
-                                opticalSize: 24.0,
-                                size: 24.0,
-                                color: colorTheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            // SliverToBoxAdapter(
-            //   child: Padding(
-            //     padding: const .symmetric(horizontal: 8.0, vertical: 64.0),
-            //     child: Flex.vertical(
-            //       spacing: 2.0,
-            //       children: List.generate(
-            //         100,
-            //         (index) => ListItemContainer(
-            //           isFirst: index == 0,
-            //           isLast: index == 100 - 1,
-            //           child: ListItemInteraction(
-            //             onTap: () {
-            //               if (_selected.contains(index)) {
-            //                 setState(() {
-            //                   _selected.remove(index);
-            //                 });
-            //               } else {
-            //                 setState(() {
-            //                   _selected.add(index);
-            //                 });
-            //               }
-            //             },
-            //             child: ListItemLayout(
-            //               padding: .fromSTEB(16.0 - 4.0, 0.0, 16.0, 0.0),
-            //               leadingPadding: const .symmetric(
-            //                 vertical: 10.0 - (48.0 - 40.0) / 2.0,
-            //               ),
-            //               leading: ExcludeFocus(
-            //                 // child: Checkbox.bistate(
-            //                 //   onCheckedChanged: (value) {
-            //                 //     if (value) {
-            //                 //       setState(() {
-            //                 //         _selected.add(index);
-            //                 //       });
-            //                 //     } else {
-            //                 //       setState(() {
-            //                 //         _selected.remove(index);
-            //                 //       });
-            //                 //     }
-            //                 //   },
-            //                 //   checked: _selected.contains(index),
-            //                 // ),
-            //                 child: Switch(
-            //                   onCheckedChanged: (value) {
-            //                     if (value) {
-            //                       setState(() {
-            //                         _selected.add(index);
-            //                       });
-            //                     } else {
-            //                       setState(() {
-            //                         _selected.remove(index);
-            //                       });
-            //                     }
-            //                   },
-            //                   checked: _selected.contains(index),
+            // SliverFillRemaining(
+            //   fillOverscroll: false,
+            //   hasScrollBody: false,
+            //   child: Flex.vertical(
+            //     mainAxisAlignment: .center,
+            //     children: [
+            //       // SizedBox.square(
+            //       //   dimension: 100.0,
+            //       //   child: SwitchTheme.mergeWithData(
+            //       //     // data: const .from(),
+            //       //     data: const .from(minTapTargetSize: .all(.square(100.0))),
+            //       //     child: Switch(
+            //       //       onCheckedChanged: (value) {},
+            //       //       checked: false,
+            //       //     ),
+            //       //   ),
+            //       // ),
+            //       // Switch(onCheckedChanged: (value) {}, checked: false),
+            //       // Wrap(
+            //       //   children: [
+            //       //     SizedBox.square(
+            //       //       dimension: 100.0,
+            //       //       child: Surface(
+            //       //         shape: shapeTheme.applyCorner(
+            //       //           corner: shapeTheme.cornerLarge,
+            //       //         ),
+            //       //         color: colorTheme.surface,
+            //       //         child: Align.center(
+            //       //           child: CustomSwitch(value: _customSwitchChecked),
+            //       //         ),
+            //       //       ),
+            //       //     ),
+            //       //     SizedBox.square(
+            //       //       dimension: 100.0,
+            //       //       child: Surface(
+            //       //         shape: shapeTheme.applyCorner(
+            //       //           corner: shapeTheme.cornerLarge,
+            //       //         ),
+            //       //         color: colorTheme.surface,
+            //       //         child: CustomSwitch(value: _customSwitchChecked),
+            //       //       ),
+            //       //     ),
+            //       //   ],
+            //       // ),
+            //       Wrap(
+            //         direction: .horizontal,
+            //         alignment: .center,
+            //         spacing: 12.0,
+            //         children: [
+            //           // SizedTouchTarget(
+            //           //   behavior: .overflow,
+            //           //   minimumSize: .square(48.0),
+            //           //   child: ConstrainedBox(
+            //           //     constraints: BoxConstraints(
+            //           //       minWidth: 48.0,
+            //           //       minHeight: 24.0,
+            //           //     ),
+            //           //     child: Surface(
+            //           //       clipBehavior: .antiAlias,
+            //           //       color: colorTheme.primary,
+            //           //       shape: shapeTheme.applyCorners(
+            //           //         corners: .all(shapeTheme.cornerSmall),
+            //           //       ),
+            //           //       child: InkWell(
+            //           //         overlayColor: WidgetStateLayerColor(
+            //           //           color: .all(colorTheme.onPrimary),
+            //           //           opacity: stateTheme.asWidgetStateLayerOpacity,
+            //           //         ),
+            //           //         onTap: () {},
+            //           //         child: Align.center(
+            //           //           widthFactor: 1.0,
+            //           //           heightFactor: 1.0,
+            //           //           child: Padding(
+            //           //             padding: .symmetric(
+            //           //               horizontal: measurementTheme.space100,
+            //           //               vertical: measurementTheme.space50,
+            //           //             ),
+            //           //             child: Flex.horizontal(
+            //           //               mainAxisSize: .min,
+            //           //               spacing: 4.0,
+            //           //               children: [
+            //           //                 Icon(
+            //           //                   Symbols.add_2_rounded,
+            //           //                   opticalSize: 24.0,
+            //           //                   size: 16.0,
+            //           //                   color: colorTheme.onPrimary,
+            //           //                 ),
+            //           //                 Flexible.loose(
+            //           //                   child: Text(
+            //           //                     "Option A",
+            //           //                     style: typescaleTheme.labelMedium
+            //           //                         .toTextStyle(
+            //           //                           color: colorTheme.onPrimary,
+            //           //                         ),
+            //           //                   ),
+            //           //                 ),
+            //           //               ],
+            //           //             ),
+            //           //           ),
+            //           //         ),
+            //           //       ),
+            //           //     ),
+            //           //   ),
+            //           // ),
+            //           SizedTouchTarget(
+            //             fit: .overflow,
+            //             minimumSize: const .square(48.0),
+            //             child: SizedBox(
+            //               width: 32.0,
+            //               height: 40.0,
+            //               child: Surface(
+            //                 clipBehavior: .antiAlias,
+            //                 color: colorTheme.primary,
+            //                 shape: shapeTheme.applyCorners(
+            //                   corners: .all(shapeTheme.cornerFull),
             //                 ),
-            //                 // child: RadioButton(
-            //                 //   onTap: () {
-            //                 //     if (_selected.contains(index)) {
-            //                 //       setState(() {
-            //                 //         _selected.remove(index);
-            //                 //       });
-            //                 //     } else {
-            //                 //       setState(() {
-            //                 //         _selected.add(index);
-            //                 //       });
-            //                 //     }
-            //                 //   },
-            //                 //   selected: _selected.contains(index),
-            //                 // ),
+            //                 child: InkWell(
+            //                   overlayColor: WidgetStateLayerColor(
+            //                     color: .all(colorTheme.onPrimary),
+            //                     opacity: stateTheme.asWidgetStateLayerOpacity,
+            //                   ),
+            //                   onTap: () {},
+            //                   child: Icon(
+            //                     Symbols.add_rounded,
+            //                     fill: 1.0,
+            //                     opticalSize: 24.0,
+            //                     size: 24.0,
+            //                     color: colorTheme.onPrimary,
+            //                   ),
+            //                 ),
             //               ),
-            //               headline: Text("Item ${index + 1}"),
             //             ),
             //           ),
-            //         ),
+            //           SizedTouchTarget(
+            //             fit: .overflow,
+            //             minimumSize: const .square(48.0),
+            //             child: SizedBox(
+            //               width: 32.0,
+            //               height: 40.0,
+            //               child: Surface(
+            //                 clipBehavior: .antiAlias,
+            //                 color: colorTheme.secondaryContainer,
+            //                 shape: shapeTheme.applyCorners(
+            //                   corners: .all(shapeTheme.cornerFull),
+            //                 ),
+            //                 child: InkWell(
+            //                   overlayColor: WidgetStateLayerColor(
+            //                     color: .all(colorTheme.onSecondaryContainer),
+            //                     opacity: stateTheme.asWidgetStateLayerOpacity,
+            //                   ),
+            //                   onTap: () {},
+            //                   child: Icon(
+            //                     Symbols.share_rounded,
+            //                     fill: 1.0,
+            //                     opticalSize: 24.0,
+            //                     size: 24.0,
+            //                     color: colorTheme.onSecondaryContainer,
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //           SizedTouchTarget(
+            //             fit: .overflow,
+            //             minimumSize: const .square(48.0),
+            //             child: SizedBox(
+            //               width: 32.0,
+            //               height: 40.0,
+            //               child: Surface(
+            //                 clipBehavior: .antiAlias,
+            //                 shape: shapeTheme.applyCorners(
+            //                   corners: .all(shapeTheme.cornerFull),
+            //                 ),
+            //                 child: InkWell(
+            //                   overlayColor: WidgetStateLayerColor(
+            //                     color: .all(colorTheme.onSurfaceVariant),
+            //                     opacity: stateTheme.asWidgetStateLayerOpacity,
+            //                   ),
+            //                   onTap: () {},
+            //                   child: Icon(
+            //                     Symbols.more_vert_rounded,
+            //                     fill: 1.0,
+            //                     opticalSize: 24.0,
+            //                     size: 24.0,
+            //                     color: colorTheme.onSurfaceVariant,
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //         ],
             //       ),
-            //     ),
+            //     ],
             //   ),
             // ),
+            ListItemTheme.mergeWithCallback(
+              callback: _listItemThemeOf,
+              child: ColorTheme.mergeWithData(
+                data: .from(),
+                // data: .from(surfaceBright: Colors.red),
+                child: SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const .symmetric(horizontal: 8.0, vertical: 64.0),
+                    child: Flex.vertical(
+                      // itemCount: 100,
+                      // separatorBuilder: (context, index) =>
+                      //     const SizedBox(height: 2.0),
+                      // itemBuilder: (context, index) {
+                      spacing: 2.0,
+                      children: List.generate(100, (index) {
+                        return ListItemContainer(
+                          isFirst: index == 0,
+                          isLast: index == 100 - 1,
+                          child: ListItemInteraction(
+                            onTap: () {
+                              if (_selected.contains(index)) {
+                                setState(() {
+                                  _selected.remove(index);
+                                });
+                              } else {
+                                setState(() {
+                                  _selected.add(index);
+                                });
+                              }
+                            },
+                            child: ListItemLayout(
+                              padding: .fromSTEB(16.0 - 4.0, 0.0, 16.0, 0.0),
+                              leadingPadding: const .symmetric(
+                                vertical: 10.0 - (48.0 - 40.0) / 2.0,
+                              ),
+                              leading: ExcludeFocus(
+                                // child: Checkbox.bistate(
+                                //   onCheckedChanged: (value) {
+                                //     if (value) {
+                                //       setState(() {
+                                //         _selected.add(index);
+                                //       });
+                                //     } else {
+                                //       setState(() {
+                                //         _selected.remove(index);
+                                //       });
+                                //     }
+                                //   },
+                                //   checked: _selected.contains(index),
+                                // ),
+                                child: Switch(
+                                  onCheckedChanged: (value) {
+                                    if (value) {
+                                      setState(() {
+                                        _selected.add(index);
+                                      });
+                                    } else {
+                                      setState(() {
+                                        _selected.remove(index);
+                                      });
+                                    }
+                                  },
+                                  checked: _selected.contains(index),
+                                ),
+                                // child: RadioButton(
+                                //   onTap: () {
+                                //     if (_selected.contains(index)) {
+                                //       setState(() {
+                                //         _selected.remove(index);
+                                //       });
+                                //     } else {
+                                //       setState(() {
+                                //         _selected.add(index);
+                                //       });
+                                //     }
+                                //   },
+                                //   selected: _selected.contains(index),
+                                // ),
+                              ),
+                              headline: Text("Item ${index + 1}"),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
