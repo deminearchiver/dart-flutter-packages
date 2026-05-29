@@ -79,11 +79,25 @@ class _Experiment6ViewState extends State<Experiment6View> {
   var _customSwitchChecked = false;
   final _selected = <int>{};
 
-  ListItemThemeDataPartial _listItemThemeOf(BuildContext context) => .from(
-    containerColor: .resolveWith(
-      (states) => ColorTheme.of(context).surfaceBright,
-    ),
-  );
+  ListItemThemeDataPartial _listItemTheme1(BuildContext context) {
+    final colorTheme = ColorTheme.of(context);
+    return .from(
+      containerColor: .resolveWith(
+        (states) => _selected.contains(1)
+            ? colorTheme.secondaryContainer
+            : colorTheme.surfaceContainerLow,
+      ),
+    );
+  }
+
+  ListItemThemeDataPartial _listItemTheme2(BuildContext context) {
+    final colorTheme = ColorTheme.of(context);
+    return .from(
+      containerColor: .resolveWith(
+        (states) => _selected.contains(2) ? colorTheme.tertiaryContainer : null,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -343,89 +357,103 @@ class _Experiment6ViewState extends State<Experiment6View> {
             //   ),
             // ),
             ListItemTheme.mergeWithCallback(
-              callback: _listItemThemeOf,
-              child: ColorTheme.mergeWithData(
-                data: .from(),
-                // data: .from(surfaceBright: Colors.red),
-                child: SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const .symmetric(horizontal: 8.0, vertical: 64.0),
-                    child: Flex.vertical(
-                      // itemCount: 100,
-                      // separatorBuilder: (context, index) =>
-                      //     const SizedBox(height: 2.0),
-                      // itemBuilder: (context, index) {
-                      spacing: 2.0,
-                      children: List.generate(100, (index) {
-                        return ListItemContainer(
-                          isFirst: index == 0,
-                          isLast: index == 100 - 1,
-                          child: ListItemInteraction(
-                            onTap: () {
-                              if (_selected.contains(index)) {
-                                setState(() {
-                                  _selected.remove(index);
-                                });
-                              } else {
-                                setState(() {
-                                  _selected.add(index);
-                                });
-                              }
-                            },
-                            child: ListItemLayout(
-                              padding: .fromSTEB(16.0 - 4.0, 0.0, 16.0, 0.0),
-                              leadingPadding: const .symmetric(
-                                vertical: 10.0 - (48.0 - 40.0) / 2.0,
-                              ),
-                              leading: ExcludeFocus(
-                                // child: Checkbox.bistate(
-                                //   onCheckedChanged: (value) {
-                                //     if (value) {
-                                //       setState(() {
-                                //         _selected.add(index);
-                                //       });
-                                //     } else {
-                                //       setState(() {
-                                //         _selected.remove(index);
-                                //       });
-                                //     }
-                                //   },
-                                //   checked: _selected.contains(index),
-                                // ),
-                                child: Switch(
-                                  onCheckedChanged: (value) {
-                                    if (value) {
-                                      setState(() {
-                                        _selected.add(index);
-                                      });
-                                    } else {
-                                      setState(() {
-                                        _selected.remove(index);
-                                      });
-                                    }
-                                  },
-                                  checked: _selected.contains(index),
+              callback: _listItemTheme1,
+              // ListItemTheme.mergeWithData(
+              // data: .from(
+              //   containerColor: .all(
+              //     _selected.contains(2)
+              //         ? colorTheme.tertiaryContainer
+              //         : colorTheme.surface,
+              //   ),
+              // ),
+              child: ListItemTheme.mergeWithCallback(
+                callback: _listItemTheme2,
+                child: ColorTheme.mergeWithData(
+                  data: .from(),
+                  // data: .from(surfaceBright: Colors.red),
+                  child: SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const .symmetric(
+                        horizontal: 8.0,
+                        vertical: 64.0,
+                      ),
+                      child: Flex.vertical(
+                        // itemCount: 100,
+                        // separatorBuilder: (context, index) =>
+                        //     const SizedBox(height: 2.0),
+                        // itemBuilder: (context, index) {
+                        spacing: 2.0,
+                        children: List.generate(100, (index) {
+                          return ListItemContainer(
+                            isFirst: index == 0,
+                            isLast: index == 100 - 1,
+                            child: ListItemInteraction(
+                              onTap: () {
+                                if (_selected.contains(index)) {
+                                  setState(() {
+                                    _selected.remove(index);
+                                  });
+                                } else {
+                                  setState(() {
+                                    _selected.add(index);
+                                  });
+                                }
+                              },
+                              child: ListItemLayout(
+                                padding: .fromSTEB(16.0 - 4.0, 0.0, 16.0, 0.0),
+                                leadingPadding: const .symmetric(
+                                  vertical: 10.0 - (48.0 - 40.0) / 2.0,
                                 ),
-                                // child: RadioButton(
-                                //   onTap: () {
-                                //     if (_selected.contains(index)) {
-                                //       setState(() {
-                                //         _selected.remove(index);
-                                //       });
-                                //     } else {
-                                //       setState(() {
-                                //         _selected.add(index);
-                                //       });
-                                //     }
-                                //   },
-                                //   selected: _selected.contains(index),
-                                // ),
+                                leading: ExcludeFocus(
+                                  // child: Checkbox.bistate(
+                                  //   onCheckedChanged: (value) {
+                                  //     if (value) {
+                                  //       setState(() {
+                                  //         _selected.add(index);
+                                  //       });
+                                  //     } else {
+                                  //       setState(() {
+                                  //         _selected.remove(index);
+                                  //       });
+                                  //     }
+                                  //   },
+                                  //   checked: _selected.contains(index),
+                                  // ),
+                                  child: Switch(
+                                    onCheckedChanged: (value) {
+                                      if (value) {
+                                        setState(() {
+                                          _selected.add(index);
+                                        });
+                                      } else {
+                                        setState(() {
+                                          _selected.remove(index);
+                                        });
+                                      }
+                                    },
+                                    checked: _selected.contains(index),
+                                  ),
+                                  // child: RadioButton(
+                                  //   onTap: () {
+                                  //     if (_selected.contains(index)) {
+                                  //       setState(() {
+                                  //         _selected.remove(index);
+                                  //       });
+                                  //     } else {
+                                  //       setState(() {
+                                  //         _selected.add(index);
+                                  //       });
+                                  //     }
+                                  //   },
+                                  //   selected: _selected.contains(index),
+                                  // ),
+                                ),
+                                headline: Text("Item ${index + 1}"),
                               ),
-                              headline: Text("Item ${index + 1}"),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                      ),
                     ),
                   ),
                 ),
