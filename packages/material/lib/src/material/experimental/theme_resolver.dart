@@ -184,6 +184,22 @@ final class _ThemeResolverCombine<T extends Object>
 //   ConcreteType get asConcrete;
 // }
 
+typedef PartialDataMergeCallback<PartialType extends Object?> =
+    ConcreteDataMergeCallback<PartialType, PartialType>;
+
+typedef ConcreteDataMergeCallback<
+  PartialType extends Object?,
+  ConcreteType extends PartialType
+> = ConcreteType Function(PartialType? other);
+
+typedef PartialDataCombineCallback<PartialType extends Object?> =
+    ConcreteDataCombineCallback<PartialType, PartialType>;
+
+typedef ConcreteDataCombineCallback<
+  PartialType extends Object?,
+  ConcreteType extends PartialType
+> = ConcreteType Function(ConcreteType fallback, PartialType? overrides);
+
 extension type const _InheritedSnapshot._(
   ({InheritedElement element, InheritedWidget widget}) _
 ) implements Object {

@@ -173,8 +173,14 @@ abstract class TemplateThemeData extends TemplateThemeDataPartial {
   }) = _TemplateThemeData;
 
   const factory TemplateThemeData.defaults({
+    required ColorThemeData colorTheme,
     TemplateThemeDataPartial? overrides,
   }) = _TemplateThemeDataDefaults;
+
+  factory TemplateThemeData.defaultsOf(
+    BuildContext context, {
+    TemplateThemeDataPartial? overrides,
+  }) => .defaults(colorTheme: ColorTheme.of(context), overrides: overrides);
 
   @override
   int get i;
@@ -278,9 +284,12 @@ final class _TemplateThemeData extends TemplateThemeData {
 }
 
 final class _TemplateThemeDataDefaults extends TemplateThemeData {
-  const _TemplateThemeDataDefaults({TemplateThemeDataPartial? overrides})
-    : _overrides = overrides ?? const .from();
+  const _TemplateThemeDataDefaults({
+    required this._colorTheme,
+    TemplateThemeDataPartial? overrides,
+  }) : _overrides = overrides ?? const .from();
 
+  final ColorThemeData _colorTheme;
   final TemplateThemeDataPartial _overrides;
 
   @override
@@ -293,11 +302,12 @@ final class _TemplateThemeDataDefaults extends TemplateThemeData {
   String get s => _overrides.s ?? "a";
 
   @override
-  Color get c => _overrides.c ?? const Color(0xFFFF0000);
+  Color get c => _overrides.c ?? _colorTheme.error;
 
   @override
   TemplateThemeData copyWith({int? i, double? d, String? s, Color? c}) =>
       _TemplateThemeDataDefaults(
+        colorTheme: _colorTheme,
         overrides: _overrides.copyWith(i: i, d: d, s: s, c: c),
       );
 
@@ -312,10 +322,12 @@ final class _TemplateThemeDataDefaults extends TemplateThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _TemplateThemeDataDefaults && _overrides == other._overrides;
+      other is _TemplateThemeDataDefaults &&
+          _colorTheme == other._colorTheme &&
+          _overrides == other._overrides;
 
   @override
-  int get hashCode => _overrides.hashCode;
+  int get hashCode => Object.hash(_colorTheme, _overrides);
 }
 
 // ////////////////////////////////////////////////////////////////
@@ -367,25 +379,17 @@ abstract class TemplateTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _TemplateTheme.maybeResolverOf(context);
-    return _TemplateTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _TemplateTheme(resolver: resolver, child: child);
+
+  static TemplateThemeData? maybeOf(BuildContext context) {
+    final overrides = _TemplateTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaultsOf(context, overrides: overrides);
   }
 
-  static TemplateThemeDataPartial _merge(
-    TemplateThemeDataPartial a,
-    TemplateThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static TemplateThemeData of(BuildContext context) {
-    final resolver = _TemplateTheme.maybeResolverOf(context);
-    return .defaults(overrides: resolver?.resolve(context));
-  }
+  static TemplateThemeData of(BuildContext context) =>
+      .defaultsOf(context, overrides: _TemplateTheme.maybeOverridesOf(context));
 }
 
 class _TemplateThemeWithResolver<T extends TemplateThemeDataPartial>
@@ -448,18 +452,28 @@ class _TemplateThemeWithData<T extends TemplateThemeDataPartial>
   }
 }
 
-class _TemplateTheme extends InheritedTheme {
+final class _TemplateTheme
+    extends
+        InheritedThemeResolverWidget<
+          TemplateThemeDataPartial,
+          _TemplateTheme,
+          _TemplateThemeElement
+        >
+    implements InheritedTheme {
   const _TemplateTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<TemplateThemeDataPartial> resolver;
+  @override
+  TemplateThemeDataPartial merge(
+    TemplateThemeDataPartial fallback,
+    TemplateThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_TemplateTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _TemplateThemeElement createElement() => _TemplateThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -467,5 +481,27 @@ class _TemplateTheme extends InheritedTheme {
 
   static ThemeResolver<TemplateThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_TemplateTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        TemplateThemeDataPartial,
+        _TemplateTheme,
+        _TemplateThemeElement
+      >(context);
+
+  static TemplateThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        TemplateThemeDataPartial,
+        _TemplateTheme,
+        _TemplateThemeElement
+      >(context);
+}
+
+final class _TemplateThemeElement
+    extends
+        InheritedThemeResolverElement<
+          TemplateThemeDataPartial,
+          _TemplateTheme,
+          _TemplateThemeElement
+        > {
+  _TemplateThemeElement(super.widget);
 }
