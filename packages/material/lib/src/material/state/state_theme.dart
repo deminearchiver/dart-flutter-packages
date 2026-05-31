@@ -657,25 +657,17 @@ abstract class StateTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _StateTheme.maybeResolverOf(context);
-    return _StateTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _StateTheme(resolver: resolver, child: child);
+
+  static StateThemeData? maybeOf(BuildContext context) {
+    final overrides = _StateTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaults(overrides: overrides);
   }
 
-  static StateThemeDataPartial _merge(
-    StateThemeDataPartial a,
-    StateThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static StateThemeData of(BuildContext context) {
-    final resolver = _StateTheme.maybeResolverOf(context);
-    return .defaults(overrides: resolver?.resolve(context));
-  }
+  static StateThemeData of(BuildContext context) =>
+      .defaults(overrides: _StateTheme.maybeOverridesOf(context));
 }
 
 class _StateThemeWithResolver<T extends StateThemeDataPartial>
@@ -737,14 +729,24 @@ class _StateThemeWithData<T extends StateThemeDataPartial> extends StateTheme {
   }
 }
 
-class _StateTheme extends InheritedTheme {
-  const _StateTheme({super.key, required this.resolver, required super.child});
-
-  final ThemeResolver<StateThemeDataPartial> resolver;
+final class _StateTheme
+    extends
+        InheritedThemeResolverWidget<
+          StateThemeDataPartial,
+          _StateTheme,
+          _StateThemeElement
+        >
+    implements InheritedTheme {
+  const _StateTheme({super.key, required super.resolver, required super.child});
 
   @override
-  bool updateShouldNotify(_StateTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  StateThemeDataPartial merge(
+    StateThemeDataPartial fallback,
+    StateThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
+
+  @override
+  _StateThemeElement createElement() => _StateThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -752,5 +754,27 @@ class _StateTheme extends InheritedTheme {
 
   static ThemeResolver<StateThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_StateTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        StateThemeDataPartial,
+        _StateTheme,
+        _StateThemeElement
+      >(context);
+
+  static StateThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        StateThemeDataPartial,
+        _StateTheme,
+        _StateThemeElement
+      >(context);
+}
+
+final class _StateThemeElement
+    extends
+        InheritedThemeResolverElement<
+          StateThemeDataPartial,
+          _StateTheme,
+          _StateThemeElement
+        > {
+  _StateThemeElement(super.widget);
 }

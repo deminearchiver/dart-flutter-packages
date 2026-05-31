@@ -1186,25 +1186,17 @@ abstract class DurationTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _DurationTheme.maybeResolverOf(context);
-    return _DurationTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _DurationTheme(resolver: resolver, child: child);
+
+  static DurationThemeData? maybeOf(BuildContext context) {
+    final overrides = _DurationTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaults(overrides: overrides);
   }
 
-  static DurationThemeDataPartial _merge(
-    DurationThemeDataPartial a,
-    DurationThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static DurationThemeData of(BuildContext context) {
-    final resolver = _DurationTheme.maybeResolverOf(context);
-    return .defaults(overrides: resolver?.resolve(context));
-  }
+  static DurationThemeData of(BuildContext context) =>
+      .defaults(overrides: _DurationTheme.maybeOverridesOf(context));
 }
 
 class _DurationThemeWithResolver<T extends DurationThemeDataPartial>
@@ -1267,18 +1259,28 @@ class _DurationThemeWithData<T extends DurationThemeDataPartial>
   }
 }
 
-class _DurationTheme extends InheritedTheme {
+final class _DurationTheme
+    extends
+        InheritedThemeResolverWidget<
+          DurationThemeDataPartial,
+          _DurationTheme,
+          _DurationThemeElement
+        >
+    implements InheritedTheme {
   const _DurationTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<DurationThemeDataPartial> resolver;
+  @override
+  DurationThemeDataPartial merge(
+    DurationThemeDataPartial fallback,
+    DurationThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_DurationTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _DurationThemeElement createElement() => _DurationThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -1286,5 +1288,27 @@ class _DurationTheme extends InheritedTheme {
 
   static ThemeResolver<DurationThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_DurationTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        DurationThemeDataPartial,
+        _DurationTheme,
+        _DurationThemeElement
+      >(context);
+
+  static DurationThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        DurationThemeDataPartial,
+        _DurationTheme,
+        _DurationThemeElement
+      >(context);
+}
+
+final class _DurationThemeElement
+    extends
+        InheritedThemeResolverElement<
+          DurationThemeDataPartial,
+          _DurationTheme,
+          _DurationThemeElement
+        > {
+  _DurationThemeElement(super.widget);
 }

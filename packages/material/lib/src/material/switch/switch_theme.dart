@@ -420,6 +420,16 @@ abstract class SwitchThemeData extends SwitchThemeDataPartial {
     SwitchThemeDataPartial? overrides,
   }) = _SwitchThemeDataDefaults;
 
+  factory SwitchThemeData.defaultsOf(
+    BuildContext context, {
+    SwitchThemeDataPartial? overrides,
+  }) => .defaults(
+    colorTheme: ColorTheme.of(context),
+    shapeTheme: ShapeTheme.of(context),
+    stateTheme: StateTheme.of(context),
+    overrides: overrides,
+  );
+
   @override
   SwitchStateProperty<Size> get minTapTargetSize;
 
@@ -1200,30 +1210,17 @@ abstract class SwitchTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _SwitchTheme.maybeResolverOf(context);
-    return _SwitchTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _SwitchTheme(resolver: resolver, child: child);
+
+  static SwitchThemeData? maybeOf(BuildContext context) {
+    final overrides = _SwitchTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaultsOf(context, overrides: overrides);
   }
 
-  static SwitchThemeDataPartial _merge(
-    SwitchThemeDataPartial a,
-    SwitchThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static SwitchThemeData of(BuildContext context) {
-    final resolver = _SwitchTheme.maybeResolverOf(context);
-    return .defaults(
-      colorTheme: ColorTheme.of(context),
-      shapeTheme: ShapeTheme.of(context),
-      stateTheme: StateTheme.of(context),
-      overrides: resolver?.resolve(context),
-    );
-  }
+  static SwitchThemeData of(BuildContext context) =>
+      .defaultsOf(context, overrides: _SwitchTheme.maybeOverridesOf(context));
 }
 
 class _SwitchThemeWithResolver<T extends SwitchThemeDataPartial>
@@ -1286,14 +1283,28 @@ class _SwitchThemeWithData<T extends SwitchThemeDataPartial>
   }
 }
 
-class _SwitchTheme extends InheritedTheme {
-  const _SwitchTheme({super.key, required this.resolver, required super.child});
-
-  final ThemeResolver<SwitchThemeDataPartial> resolver;
+final class _SwitchTheme
+    extends
+        InheritedThemeResolverWidget<
+          SwitchThemeDataPartial,
+          _SwitchTheme,
+          _SwitchThemeElement
+        >
+    implements InheritedTheme {
+  const _SwitchTheme({
+    super.key,
+    required super.resolver,
+    required super.child,
+  });
 
   @override
-  bool updateShouldNotify(_SwitchTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  SwitchThemeDataPartial merge(
+    SwitchThemeDataPartial fallback,
+    SwitchThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
+
+  @override
+  _SwitchThemeElement createElement() => _SwitchThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -1301,5 +1312,27 @@ class _SwitchTheme extends InheritedTheme {
 
   static ThemeResolver<SwitchThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_SwitchTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        SwitchThemeDataPartial,
+        _SwitchTheme,
+        _SwitchThemeElement
+      >(context);
+
+  static SwitchThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        SwitchThemeDataPartial,
+        _SwitchTheme,
+        _SwitchThemeElement
+      >(context);
+}
+
+final class _SwitchThemeElement
+    extends
+        InheritedThemeResolverElement<
+          SwitchThemeDataPartial,
+          _SwitchTheme,
+          _SwitchThemeElement
+        > {
+  _SwitchThemeElement(super.widget);
 }

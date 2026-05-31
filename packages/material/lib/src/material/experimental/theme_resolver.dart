@@ -655,3 +655,79 @@ abstract class InheritedThemeResolverElement<
     notifyClients(_widget);
   }
 }
+
+// abstract class ResolvableTheme<T extends Object?> extends StatelessWidget
+//     implements ProxyWidget {
+//   const ResolvableTheme({super.key, required this.child});
+
+//   ThemeResolver<T> get resolver;
+
+//   /// The widget below this widget in the tree.
+//   ///
+//   /// {@macro flutter.widgets.ProxyWidget.child}
+//   @override
+//   final Widget child;
+
+//   @override
+//   Widget build(BuildContext context);
+// }
+
+// abstract class ResolvableThemeWithResolver<T extends Object?>
+//     extends ResolvableTheme<T> {
+//   const ResolvableThemeWithResolver({
+//     super.key,
+//     required this.resolver,
+//     required super.child,
+//   });
+
+//   @override
+//   final ThemeResolver<T> resolver;
+
+//   @override
+//   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+//     super.debugFillProperties(properties);
+//     properties.add(DiagnosticsProperty<ThemeResolver<T>>("resolver", resolver));
+//   }
+// }
+
+// abstract class ResolvableThemeWithCallback<T extends Object?>
+//     extends ResolvableTheme<T> {
+//   const ResolvableThemeWithCallback({
+//     super.key,
+//     required this.callback,
+//     required super.child,
+//   });
+
+//   final ThemeResolverCallback<T> callback;
+
+//   @override
+//   ThemeResolver<T> get resolver => .callback(callback);
+
+//   @override
+//   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+//     super.debugFillProperties(properties);
+//     properties.add(
+//       DiagnosticsProperty<ThemeResolverCallback<T>>("callback", callback),
+//     );
+//   }
+// }
+
+// abstract class ResolvableThemeWithData<T extends Object?>
+//     extends ResolvableTheme<T> {
+//   const ResolvableThemeWithData({
+//     super.key,
+//     required this.data,
+//     required super.child,
+//   });
+
+//   final T data;
+
+//   @override
+//   ThemeResolver<T> get resolver => .value(data);
+
+//   @override
+//   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+//     super.debugFillProperties(properties);
+//     properties.add(DiagnosticsProperty<T>("data", data));
+//   }
+// }

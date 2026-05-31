@@ -1061,6 +1061,12 @@ abstract class TypescaleThemeData extends TypescaleThemeDataPartial {
     TypescaleThemeDataPartial? overrides,
   }) = _TypescaleThemeDataDefaults;
 
+  factory TypescaleThemeData.defaultsOf(
+    BuildContext context, {
+    TypescaleThemeDataPartial? overrides,
+  }) =>
+      .defaults(typefaceTheme: TypefaceTheme.of(context), overrides: overrides);
+
   @override
   TextGeometry get displayLarge;
 
@@ -2886,28 +2892,19 @@ abstract class TypescaleTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _TypescaleTheme.maybeResolverOf(context);
-    return _TypescaleTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _TypescaleTheme(resolver: resolver, child: child);
+
+  static TypescaleThemeData? maybeOf(BuildContext context) {
+    final overrides = _TypescaleTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaultsOf(context, overrides: overrides);
   }
 
-  static TypescaleThemeDataPartial _merge(
-    TypescaleThemeDataPartial a,
-    TypescaleThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static TypescaleThemeData of(BuildContext context) {
-    final resolver = _TypescaleTheme.maybeResolverOf(context);
-    return .defaults(
-      typefaceTheme: TypefaceTheme.of(context),
-      overrides: resolver?.resolve(context),
-    );
-  }
+  static TypescaleThemeData of(BuildContext context) => .defaultsOf(
+    context,
+    overrides: _TypescaleTheme.maybeOverridesOf(context),
+  );
 }
 
 class _TypescaleThemeWithResolver<T extends TypescaleThemeDataPartial>
@@ -2970,18 +2967,28 @@ class _TypescaleThemeWithData<T extends TypescaleThemeDataPartial>
   }
 }
 
-class _TypescaleTheme extends InheritedTheme {
+final class _TypescaleTheme
+    extends
+        InheritedThemeResolverWidget<
+          TypescaleThemeDataPartial,
+          _TypescaleTheme,
+          _TypescaleThemeElement
+        >
+    implements InheritedTheme {
   const _TypescaleTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<TypescaleThemeDataPartial> resolver;
+  @override
+  TypescaleThemeDataPartial merge(
+    TypescaleThemeDataPartial fallback,
+    TypescaleThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_TypescaleTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _TypescaleThemeElement createElement() => _TypescaleThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -2989,5 +2996,27 @@ class _TypescaleTheme extends InheritedTheme {
 
   static ThemeResolver<TypescaleThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_TypescaleTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        TypescaleThemeDataPartial,
+        _TypescaleTheme,
+        _TypescaleThemeElement
+      >(context);
+
+  static TypescaleThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        TypescaleThemeDataPartial,
+        _TypescaleTheme,
+        _TypescaleThemeElement
+      >(context);
+}
+
+final class _TypescaleThemeElement
+    extends
+        InheritedThemeResolverElement<
+          TypescaleThemeDataPartial,
+          _TypescaleTheme,
+          _TypescaleThemeElement
+        > {
+  _TypescaleThemeElement(super.widget);
 }

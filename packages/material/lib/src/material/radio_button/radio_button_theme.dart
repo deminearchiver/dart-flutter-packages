@@ -274,6 +274,16 @@ abstract class RadioButtonThemeData extends RadioButtonThemeDataPartial {
     RadioButtonThemeDataPartial? overrides,
   }) = _RadioButtonThemeDataDefaults;
 
+  factory RadioButtonThemeData.defaultsOf(
+    BuildContext context, {
+    RadioButtonThemeDataPartial? overrides,
+  }) => .defaults(
+    colorTheme: ColorTheme.of(context),
+    shapeTheme: ShapeTheme.of(context),
+    stateTheme: StateTheme.of(context),
+    overrides: overrides,
+  );
+
   @override
   RadioButtonStateProperty<Size> get stateLayerSize;
 
@@ -794,30 +804,19 @@ abstract class RadioButtonTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _RadioButtonTheme.maybeResolverOf(context);
-    return _RadioButtonTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _RadioButtonTheme(resolver: resolver, child: child);
+
+  static RadioButtonThemeData? maybeOf(BuildContext context) {
+    final overrides = _RadioButtonTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaultsOf(context, overrides: overrides);
   }
 
-  static RadioButtonThemeDataPartial _merge(
-    RadioButtonThemeDataPartial a,
-    RadioButtonThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static RadioButtonThemeData of(BuildContext context) {
-    final resolver = _RadioButtonTheme.maybeResolverOf(context);
-    return .defaults(
-      colorTheme: ColorTheme.of(context),
-      shapeTheme: ShapeTheme.of(context),
-      stateTheme: StateTheme.of(context),
-      overrides: resolver?.resolve(context),
-    );
-  }
+  static RadioButtonThemeData of(BuildContext context) => .defaultsOf(
+    context,
+    overrides: _RadioButtonTheme.maybeOverridesOf(context),
+  );
 }
 
 class _RadioButtonThemeWithResolver<T extends RadioButtonThemeDataPartial>
@@ -880,18 +879,28 @@ class _RadioButtonThemeWithData<T extends RadioButtonThemeDataPartial>
   }
 }
 
-class _RadioButtonTheme extends InheritedTheme {
+final class _RadioButtonTheme
+    extends
+        InheritedThemeResolverWidget<
+          RadioButtonThemeDataPartial,
+          _RadioButtonTheme,
+          _RadioButtonThemeElement
+        >
+    implements InheritedTheme {
   const _RadioButtonTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<RadioButtonThemeDataPartial> resolver;
+  @override
+  RadioButtonThemeDataPartial merge(
+    RadioButtonThemeDataPartial fallback,
+    RadioButtonThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_RadioButtonTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _RadioButtonThemeElement createElement() => _RadioButtonThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -900,5 +909,26 @@ class _RadioButtonTheme extends InheritedTheme {
   static ThemeResolver<RadioButtonThemeDataPartial>? maybeResolverOf(
     BuildContext context,
   ) =>
-      context.dependOnInheritedWidgetOfExactType<_RadioButtonTheme>()?.resolver;
+      InheritedThemeResolverWidget.maybeResolverOf<
+        RadioButtonThemeDataPartial,
+        _RadioButtonTheme,
+        _RadioButtonThemeElement
+      >(context);
+
+  static RadioButtonThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        RadioButtonThemeDataPartial,
+        _RadioButtonTheme,
+        _RadioButtonThemeElement
+      >(context);
+}
+
+final class _RadioButtonThemeElement
+    extends
+        InheritedThemeResolverElement<
+          RadioButtonThemeDataPartial,
+          _RadioButtonTheme,
+          _RadioButtonThemeElement
+        > {
+  _RadioButtonThemeElement(super.widget);
 }

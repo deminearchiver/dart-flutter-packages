@@ -906,25 +906,17 @@ abstract class EasingTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _EasingTheme.maybeResolverOf(context);
-    return _EasingTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _EasingTheme(resolver: resolver, child: child);
+
+  static EasingThemeData? maybeOf(BuildContext context) {
+    final overrides = _EasingTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaults(overrides: overrides);
   }
 
-  static EasingThemeDataPartial _merge(
-    EasingThemeDataPartial a,
-    EasingThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static EasingThemeData of(BuildContext context) {
-    final resolver = _EasingTheme.maybeResolverOf(context);
-    return .defaults(overrides: resolver?.resolve(context));
-  }
+  static EasingThemeData of(BuildContext context) =>
+      .defaults(overrides: _EasingTheme.maybeOverridesOf(context));
 }
 
 class _EasingThemeWithResolver<T extends EasingThemeDataPartial>
@@ -987,14 +979,28 @@ class _EasingThemeWithData<T extends EasingThemeDataPartial>
   }
 }
 
-class _EasingTheme extends InheritedTheme {
-  const _EasingTheme({super.key, required this.resolver, required super.child});
-
-  final ThemeResolver<EasingThemeDataPartial> resolver;
+final class _EasingTheme
+    extends
+        InheritedThemeResolverWidget<
+          EasingThemeDataPartial,
+          _EasingTheme,
+          _EasingThemeElement
+        >
+    implements InheritedTheme {
+  const _EasingTheme({
+    super.key,
+    required super.resolver,
+    required super.child,
+  });
 
   @override
-  bool updateShouldNotify(_EasingTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  EasingThemeDataPartial merge(
+    EasingThemeDataPartial fallback,
+    EasingThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
+
+  @override
+  _EasingThemeElement createElement() => _EasingThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -1002,5 +1008,27 @@ class _EasingTheme extends InheritedTheme {
 
   static ThemeResolver<EasingThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_EasingTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        EasingThemeDataPartial,
+        _EasingTheme,
+        _EasingThemeElement
+      >(context);
+
+  static EasingThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        EasingThemeDataPartial,
+        _EasingTheme,
+        _EasingThemeElement
+      >(context);
+}
+
+final class _EasingThemeElement
+    extends
+        InheritedThemeResolverElement<
+          EasingThemeDataPartial,
+          _EasingTheme,
+          _EasingThemeElement
+        > {
+  _EasingThemeElement(super.widget);
 }

@@ -665,25 +665,17 @@ abstract class TypefaceTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _TypefaceTheme.maybeResolverOf(context);
-    return _TypefaceTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _TypefaceTheme(resolver: resolver, child: child);
+
+  static TypefaceThemeData? maybeOf(BuildContext context) {
+    final overrides = _TypefaceTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaults(overrides: overrides);
   }
 
-  static TypefaceThemeDataPartial _merge(
-    TypefaceThemeDataPartial a,
-    TypefaceThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static TypefaceThemeData of(BuildContext context) {
-    final resolver = _TypefaceTheme.maybeResolverOf(context);
-    return .defaults(overrides: resolver?.resolve(context));
-  }
+  static TypefaceThemeData of(BuildContext context) =>
+      .defaults(overrides: _TypefaceTheme.maybeOverridesOf(context));
 }
 
 class _TypefaceThemeWithResolver<T extends TypefaceThemeDataPartial>
@@ -746,18 +738,28 @@ class _TypefaceThemeWithData<T extends TypefaceThemeDataPartial>
   }
 }
 
-class _TypefaceTheme extends InheritedTheme {
+final class _TypefaceTheme
+    extends
+        InheritedThemeResolverWidget<
+          TypefaceThemeDataPartial,
+          _TypefaceTheme,
+          _TypefaceThemeElement
+        >
+    implements InheritedTheme {
   const _TypefaceTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<TypefaceThemeDataPartial> resolver;
+  @override
+  TypefaceThemeDataPartial merge(
+    TypefaceThemeDataPartial fallback,
+    TypefaceThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_TypefaceTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _TypefaceThemeElement createElement() => _TypefaceThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -765,5 +767,27 @@ class _TypefaceTheme extends InheritedTheme {
 
   static ThemeResolver<TypefaceThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_TypefaceTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        TypefaceThemeDataPartial,
+        _TypefaceTheme,
+        _TypefaceThemeElement
+      >(context);
+
+  static TypefaceThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        TypefaceThemeDataPartial,
+        _TypefaceTheme,
+        _TypefaceThemeElement
+      >(context);
+}
+
+final class _TypefaceThemeElement
+    extends
+        InheritedThemeResolverElement<
+          TypefaceThemeDataPartial,
+          _TypefaceTheme,
+          _TypefaceThemeElement
+        > {
+  _TypefaceThemeElement(super.widget);
 }

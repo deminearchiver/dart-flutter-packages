@@ -403,25 +403,17 @@ abstract class StateFocusIndicatorTheme extends StatelessWidget
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _StateFocusIndicatorTheme.maybeResolverOf(context);
-    return _StateFocusIndicatorTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _StateFocusIndicatorTheme(resolver: resolver, child: child);
+
+  static StateFocusIndicatorThemeData? maybeOf(BuildContext context) {
+    final overrides = _StateFocusIndicatorTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaults(overrides: overrides);
   }
 
-  static StateFocusIndicatorThemeDataPartial _merge(
-    StateFocusIndicatorThemeDataPartial a,
-    StateFocusIndicatorThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static StateFocusIndicatorThemeData of(BuildContext context) {
-    final resolver = _StateFocusIndicatorTheme.maybeResolverOf(context);
-    return .defaults(overrides: resolver?.resolve(context));
-  }
+  static StateFocusIndicatorThemeData of(BuildContext context) =>
+      .defaults(overrides: _StateFocusIndicatorTheme.maybeOverridesOf(context));
 }
 
 class _StateFocusIndicatorThemeWithResolver<
@@ -490,18 +482,29 @@ class _StateFocusIndicatorThemeWithData<
   }
 }
 
-class _StateFocusIndicatorTheme extends InheritedTheme {
+final class _StateFocusIndicatorTheme
+    extends
+        InheritedThemeResolverWidget<
+          StateFocusIndicatorThemeDataPartial,
+          _StateFocusIndicatorTheme,
+          _StateFocusIndicatorThemeElement
+        >
+    implements InheritedTheme {
   const _StateFocusIndicatorTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<StateFocusIndicatorThemeDataPartial> resolver;
+  @override
+  StateFocusIndicatorThemeDataPartial merge(
+    StateFocusIndicatorThemeDataPartial fallback,
+    StateFocusIndicatorThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_StateFocusIndicatorTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _StateFocusIndicatorThemeElement createElement() =>
+      _StateFocusIndicatorThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -509,7 +512,29 @@ class _StateFocusIndicatorTheme extends InheritedTheme {
 
   static ThemeResolver<StateFocusIndicatorThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context
-      .dependOnInheritedWidgetOfExactType<_StateFocusIndicatorTheme>()
-      ?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        StateFocusIndicatorThemeDataPartial,
+        _StateFocusIndicatorTheme,
+        _StateFocusIndicatorThemeElement
+      >(context);
+
+  static StateFocusIndicatorThemeDataPartial? maybeOverridesOf(
+    BuildContext context,
+  ) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        StateFocusIndicatorThemeDataPartial,
+        _StateFocusIndicatorTheme,
+        _StateFocusIndicatorThemeElement
+      >(context);
+}
+
+final class _StateFocusIndicatorThemeElement
+    extends
+        InheritedThemeResolverElement<
+          StateFocusIndicatorThemeDataPartial,
+          _StateFocusIndicatorTheme,
+          _StateFocusIndicatorThemeElement
+        > {
+  _StateFocusIndicatorThemeElement(super.widget);
 }

@@ -161,6 +161,11 @@ abstract class LoadingIndicatorThemeData
     LoadingIndicatorThemeDataPartial? overrides,
   }) = _LoadingIndicatorThemeDataDefaults;
 
+  factory LoadingIndicatorThemeData.defaultsOf(
+    BuildContext context, {
+    LoadingIndicatorThemeDataPartial? overrides,
+  }) => .defaults(colorTheme: ColorTheme.of(context), overrides: overrides);
+
   @override
   Color get indicatorColor;
 
@@ -403,28 +408,19 @@ abstract class LoadingIndicatorTheme extends StatelessWidget
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _LoadingIndicatorTheme.maybeResolverOf(context);
-    return _LoadingIndicatorTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _LoadingIndicatorTheme(resolver: resolver, child: child);
+
+  static LoadingIndicatorThemeData? maybeOf(BuildContext context) {
+    final overrides = _LoadingIndicatorTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaultsOf(context, overrides: overrides);
   }
 
-  static LoadingIndicatorThemeDataPartial _merge(
-    LoadingIndicatorThemeDataPartial a,
-    LoadingIndicatorThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static LoadingIndicatorThemeData of(BuildContext context) {
-    final resolver = _LoadingIndicatorTheme.maybeResolverOf(context);
-    return .defaults(
-      colorTheme: ColorTheme.of(context),
-      overrides: resolver?.resolve(context),
-    );
-  }
+  static LoadingIndicatorThemeData of(BuildContext context) => .defaultsOf(
+    context,
+    overrides: _LoadingIndicatorTheme.maybeOverridesOf(context),
+  );
 }
 
 class _LoadingIndicatorThemeWithResolver<
@@ -491,18 +487,29 @@ class _LoadingIndicatorThemeWithData<T extends LoadingIndicatorThemeDataPartial>
   }
 }
 
-class _LoadingIndicatorTheme extends InheritedTheme {
+final class _LoadingIndicatorTheme
+    extends
+        InheritedThemeResolverWidget<
+          LoadingIndicatorThemeDataPartial,
+          _LoadingIndicatorTheme,
+          _LoadingIndicatorThemeElement
+        >
+    implements InheritedTheme {
   const _LoadingIndicatorTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<LoadingIndicatorThemeDataPartial> resolver;
+  @override
+  LoadingIndicatorThemeDataPartial merge(
+    LoadingIndicatorThemeDataPartial fallback,
+    LoadingIndicatorThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_LoadingIndicatorTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _LoadingIndicatorThemeElement createElement() =>
+      _LoadingIndicatorThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -510,7 +517,29 @@ class _LoadingIndicatorTheme extends InheritedTheme {
 
   static ThemeResolver<LoadingIndicatorThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context
-      .dependOnInheritedWidgetOfExactType<_LoadingIndicatorTheme>()
-      ?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        LoadingIndicatorThemeDataPartial,
+        _LoadingIndicatorTheme,
+        _LoadingIndicatorThemeElement
+      >(context);
+
+  static LoadingIndicatorThemeDataPartial? maybeOverridesOf(
+    BuildContext context,
+  ) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        LoadingIndicatorThemeDataPartial,
+        _LoadingIndicatorTheme,
+        _LoadingIndicatorThemeElement
+      >(context);
+}
+
+final class _LoadingIndicatorThemeElement
+    extends
+        InheritedThemeResolverElement<
+          LoadingIndicatorThemeDataPartial,
+          _LoadingIndicatorTheme,
+          _LoadingIndicatorThemeElement
+        > {
+  _LoadingIndicatorThemeElement(super.widget);
 }

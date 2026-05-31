@@ -156,6 +156,17 @@ abstract class FocusRingThemeData extends FocusRingThemeDataPartial {
     FocusRingThemeDataPartial? overrides,
   }) = _FocusRingThemeDataDefaults;
 
+  factory FocusRingThemeData.defaultsOf(
+    BuildContext context, {
+    FocusRingThemeDataPartial? overrides,
+  }) => .defaults(
+    colorTheme: ColorTheme.of(context),
+    durationTheme: DurationTheme.of(context),
+    shapeTheme: ShapeTheme.of(context),
+    stateFocusIndicatorTheme: StateFocusIndicatorTheme.of(context),
+    overrides: overrides,
+  );
+
   @override
   Duration get duration;
 
@@ -492,31 +503,19 @@ abstract class FocusRingTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _FocusRingTheme.maybeResolverOf(context);
-    return _FocusRingTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _FocusRingTheme(resolver: resolver, child: child);
+
+  static FocusRingThemeData? maybeOf(BuildContext context) {
+    final overrides = _FocusRingTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaultsOf(context, overrides: overrides);
   }
 
-  static FocusRingThemeDataPartial _merge(
-    FocusRingThemeDataPartial a,
-    FocusRingThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static FocusRingThemeData of(BuildContext context) {
-    final resolver = _FocusRingTheme.maybeResolverOf(context);
-    return .defaults(
-      colorTheme: ColorTheme.of(context),
-      durationTheme: DurationTheme.of(context),
-      shapeTheme: ShapeTheme.of(context),
-      stateFocusIndicatorTheme: StateFocusIndicatorTheme.of(context),
-      overrides: resolver?.resolve(context),
-    );
-  }
+  static FocusRingThemeData of(BuildContext context) => .defaultsOf(
+    context,
+    overrides: _FocusRingTheme.maybeOverridesOf(context),
+  );
 }
 
 class _FocusRingThemeWithResolver<T extends FocusRingThemeDataPartial>
@@ -579,18 +578,28 @@ class _FocusRingThemeWithData<T extends FocusRingThemeDataPartial>
   }
 }
 
-class _FocusRingTheme extends InheritedTheme {
+final class _FocusRingTheme
+    extends
+        InheritedThemeResolverWidget<
+          FocusRingThemeDataPartial,
+          _FocusRingTheme,
+          _FocusRingThemeElement
+        >
+    implements InheritedTheme {
   const _FocusRingTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<FocusRingThemeDataPartial> resolver;
+  @override
+  FocusRingThemeDataPartial merge(
+    FocusRingThemeDataPartial fallback,
+    FocusRingThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_FocusRingTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _FocusRingThemeElement createElement() => _FocusRingThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -598,5 +607,27 @@ class _FocusRingTheme extends InheritedTheme {
 
   static ThemeResolver<FocusRingThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_FocusRingTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        FocusRingThemeDataPartial,
+        _FocusRingTheme,
+        _FocusRingThemeElement
+      >(context);
+
+  static FocusRingThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        FocusRingThemeDataPartial,
+        _FocusRingTheme,
+        _FocusRingThemeElement
+      >(context);
+}
+
+final class _FocusRingThemeElement
+    extends
+        InheritedThemeResolverElement<
+          FocusRingThemeDataPartial,
+          _FocusRingTheme,
+          _FocusRingThemeElement
+        > {
+  _FocusRingThemeElement(super.widget);
 }

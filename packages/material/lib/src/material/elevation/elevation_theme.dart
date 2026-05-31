@@ -48,25 +48,17 @@ abstract class ElevationTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _ElevationTheme.maybeResolverOf(context);
-    return _ElevationTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _ElevationTheme(resolver: resolver, child: child);
+
+  static ElevationThemeData? maybeOf(BuildContext context) {
+    final overrides = _ElevationTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaults(overrides: overrides);
   }
 
-  static ElevationThemeDataPartial _merge(
-    ElevationThemeDataPartial a,
-    ElevationThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static ElevationThemeData of(BuildContext context) {
-    final resolver = _ElevationTheme.maybeResolverOf(context);
-    return ._defaults(overrides: resolver?.resolve(context));
-  }
+  static ElevationThemeData of(BuildContext context) =>
+      .defaults(overrides: _ElevationTheme.maybeOverridesOf(context));
 }
 
 class _ElevationThemeWithResolver<T extends ElevationThemeDataPartial>
@@ -129,18 +121,28 @@ class _ElevationThemeWithData<T extends ElevationThemeDataPartial>
   }
 }
 
-class _ElevationTheme extends InheritedTheme {
+final class _ElevationTheme
+    extends
+        InheritedThemeResolverWidget<
+          ElevationThemeDataPartial,
+          _ElevationTheme,
+          _ElevationThemeElement
+        >
+    implements InheritedTheme {
   const _ElevationTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<ElevationThemeDataPartial> resolver;
+  @override
+  ElevationThemeDataPartial merge(
+    ElevationThemeDataPartial fallback,
+    ElevationThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_ElevationTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _ElevationThemeElement createElement() => _ElevationThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -148,5 +150,27 @@ class _ElevationTheme extends InheritedTheme {
 
   static ThemeResolver<ElevationThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_ElevationTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        ElevationThemeDataPartial,
+        _ElevationTheme,
+        _ElevationThemeElement
+      >(context);
+
+  static ElevationThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        ElevationThemeDataPartial,
+        _ElevationTheme,
+        _ElevationThemeElement
+      >(context);
+}
+
+final class _ElevationThemeElement
+    extends
+        InheritedThemeResolverElement<
+          ElevationThemeDataPartial,
+          _ElevationTheme,
+          _ElevationThemeElement
+        > {
+  _ElevationThemeElement(super.widget);
 }

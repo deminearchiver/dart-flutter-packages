@@ -4476,25 +4476,17 @@ abstract class BaselinePaletteTheme extends StatelessWidget
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _BaselinePaletteTheme.maybeResolverOf(context);
-    return _BaselinePaletteTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _BaselinePaletteTheme(resolver: resolver, child: child);
+
+  static BaselinePalette? maybeOf(BuildContext context) {
+    final overrides = _BaselinePaletteTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaults(overrides: overrides);
   }
 
-  static BaselinePalettePartial _merge(
-    BaselinePalettePartial a,
-    BaselinePalettePartial b,
-  ) => a.maybeMerge(b);
-
-  static BaselinePalette of(BuildContext context) {
-    final resolver = _BaselinePaletteTheme.maybeResolverOf(context);
-    return .defaults(overrides: resolver?.resolve(context));
-  }
+  static BaselinePalette of(BuildContext context) =>
+      .defaults(overrides: _BaselinePaletteTheme.maybeOverridesOf(context));
 }
 
 class _BaselinePaletteThemeWithResolver<T extends BaselinePalettePartial>
@@ -4557,18 +4549,29 @@ class _BaselinePaletteThemeWithData<T extends BaselinePalettePartial>
   }
 }
 
-class _BaselinePaletteTheme extends InheritedTheme {
+final class _BaselinePaletteTheme
+    extends
+        InheritedThemeResolverWidget<
+          BaselinePalettePartial,
+          _BaselinePaletteTheme,
+          _BaselinePaletteThemeElement
+        >
+    implements InheritedTheme {
   const _BaselinePaletteTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<BaselinePalettePartial> resolver;
+  @override
+  BaselinePalettePartial merge(
+    BaselinePalettePartial fallback,
+    BaselinePalettePartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_BaselinePaletteTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _BaselinePaletteThemeElement createElement() =>
+      _BaselinePaletteThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -4576,7 +4579,27 @@ class _BaselinePaletteTheme extends InheritedTheme {
 
   static ThemeResolver<BaselinePalettePartial>? maybeResolverOf(
     BuildContext context,
-  ) => context
-      .dependOnInheritedWidgetOfExactType<_BaselinePaletteTheme>()
-      ?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        BaselinePalettePartial,
+        _BaselinePaletteTheme,
+        _BaselinePaletteThemeElement
+      >(context);
+
+  static BaselinePalettePartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        BaselinePalettePartial,
+        _BaselinePaletteTheme,
+        _BaselinePaletteThemeElement
+      >(context);
+}
+
+final class _BaselinePaletteThemeElement
+    extends
+        InheritedThemeResolverElement<
+          BaselinePalettePartial,
+          _BaselinePaletteTheme,
+          _BaselinePaletteThemeElement
+        > {
+  _BaselinePaletteThemeElement(super.widget);
 }

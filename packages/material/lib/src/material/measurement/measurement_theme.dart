@@ -48,25 +48,17 @@ abstract class MeasurementTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _MeasurementTheme.maybeResolverOf(context);
-    return _MeasurementTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _MeasurementTheme(resolver: resolver, child: child);
+
+  static MeasurementThemeData? maybeOf(BuildContext context) {
+    final overrides = _MeasurementTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaults(overrides: overrides);
   }
 
-  static MeasurementThemeDataPartial _merge(
-    MeasurementThemeDataPartial a,
-    MeasurementThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static MeasurementThemeData of(BuildContext context) {
-    final resolver = _MeasurementTheme.maybeResolverOf(context);
-    return .defaults(overrides: resolver?.resolve(context));
-  }
+  static MeasurementThemeData of(BuildContext context) =>
+      .defaults(overrides: _MeasurementTheme.maybeOverridesOf(context));
 }
 
 class _MeasurementThemeWithResolver<T extends MeasurementThemeDataPartial>
@@ -129,18 +121,28 @@ class _MeasurementThemeWithData<T extends MeasurementThemeDataPartial>
   }
 }
 
-class _MeasurementTheme extends InheritedTheme {
+final class _MeasurementTheme
+    extends
+        InheritedThemeResolverWidget<
+          MeasurementThemeDataPartial,
+          _MeasurementTheme,
+          _MeasurementThemeElement
+        >
+    implements InheritedTheme {
   const _MeasurementTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<MeasurementThemeDataPartial> resolver;
+  @override
+  MeasurementThemeDataPartial merge(
+    MeasurementThemeDataPartial fallback,
+    MeasurementThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_MeasurementTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _MeasurementThemeElement createElement() => _MeasurementThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -149,5 +151,26 @@ class _MeasurementTheme extends InheritedTheme {
   static ThemeResolver<MeasurementThemeDataPartial>? maybeResolverOf(
     BuildContext context,
   ) =>
-      context.dependOnInheritedWidgetOfExactType<_MeasurementTheme>()?.resolver;
+      InheritedThemeResolverWidget.maybeResolverOf<
+        MeasurementThemeDataPartial,
+        _MeasurementTheme,
+        _MeasurementThemeElement
+      >(context);
+
+  static MeasurementThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        MeasurementThemeDataPartial,
+        _MeasurementTheme,
+        _MeasurementThemeElement
+      >(context);
+}
+
+final class _MeasurementThemeElement
+    extends
+        InheritedThemeResolverElement<
+          MeasurementThemeDataPartial,
+          _MeasurementTheme,
+          _MeasurementThemeElement
+        > {
+  _MeasurementThemeElement(super.widget);
 }

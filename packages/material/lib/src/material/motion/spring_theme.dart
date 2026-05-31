@@ -1051,25 +1051,17 @@ abstract class SpringTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _SpringTheme.maybeResolverOf(context);
-    return _SpringTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _SpringTheme(resolver: resolver, child: child);
+
+  static SpringThemeData? maybeOf(BuildContext context) {
+    final overrides = _SpringTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaultsStandard(overrides: overrides);
   }
 
-  static SpringThemeDataPartial _merge(
-    SpringThemeDataPartial a,
-    SpringThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static SpringThemeData of(BuildContext context) {
-    final resolver = _SpringTheme.maybeResolverOf(context);
-    return .defaultsStandard(overrides: resolver?.resolve(context));
-  }
+  static SpringThemeData of(BuildContext context) =>
+      .defaultsStandard(overrides: _SpringTheme.maybeOverridesOf(context));
 }
 
 class _SpringThemeWithResolver<T extends SpringThemeDataPartial>
@@ -1132,14 +1124,28 @@ class _SpringThemeWithData<T extends SpringThemeDataPartial>
   }
 }
 
-class _SpringTheme extends InheritedTheme {
-  const _SpringTheme({super.key, required this.resolver, required super.child});
-
-  final ThemeResolver<SpringThemeDataPartial> resolver;
+final class _SpringTheme
+    extends
+        InheritedThemeResolverWidget<
+          SpringThemeDataPartial,
+          _SpringTheme,
+          _SpringThemeElement
+        >
+    implements InheritedTheme {
+  const _SpringTheme({
+    super.key,
+    required super.resolver,
+    required super.child,
+  });
 
   @override
-  bool updateShouldNotify(_SpringTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  SpringThemeDataPartial merge(
+    SpringThemeDataPartial fallback,
+    SpringThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
+
+  @override
+  _SpringThemeElement createElement() => _SpringThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -1147,5 +1153,27 @@ class _SpringTheme extends InheritedTheme {
 
   static ThemeResolver<SpringThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_SpringTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        SpringThemeDataPartial,
+        _SpringTheme,
+        _SpringThemeElement
+      >(context);
+
+  static SpringThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        SpringThemeDataPartial,
+        _SpringTheme,
+        _SpringThemeElement
+      >(context);
+}
+
+final class _SpringThemeElement
+    extends
+        InheritedThemeResolverElement<
+          SpringThemeDataPartial,
+          _SpringTheme,
+          _SpringThemeElement
+        > {
+  _SpringThemeElement(super.widget);
 }

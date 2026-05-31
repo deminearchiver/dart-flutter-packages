@@ -101,35 +101,30 @@ abstract class ColorTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _ColorTheme.maybeResolverOf(context);
-    return _ColorTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      _ColorTheme(resolver: resolver, child: child);
 
-  static ColorThemeDataPartial _merge(
-    ColorThemeDataPartial a,
-    ColorThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static ColorThemeData of(BuildContext context) {
-    final resolver = _ColorTheme.maybeResolverOf(context);
-    final brightness =
-        Theme.maybeBrightnessOf(context) ??
-        MediaQuery.maybePlatformBrightnessOf(context) ??
-        .light;
-    final highContrast = MediaQuery.maybeHighContrastOf(context) ?? false;
+  static ColorThemeData? maybeOf(BuildContext context) {
+    final overrides = _ColorTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
     return .fromPalette(
       palette: BaselinePaletteTheme.of(context),
-      brightness: brightness,
-      contrastLevel: highContrast ? 1.0 : 0.0,
-      overrides: resolver?.resolve(context),
+      brightness:
+          Theme.maybeBrightnessOf(context) ??
+          MediaQuery.platformBrightnessOf(context),
+      contrastLevel: MediaQuery.highContrastOf(context) ? 1.0 : 0.0,
+      overrides: overrides,
     );
   }
+
+  static ColorThemeData of(BuildContext context) => .fromPalette(
+    palette: BaselinePaletteTheme.of(context),
+    brightness:
+        Theme.maybeBrightnessOf(context) ??
+        MediaQuery.platformBrightnessOf(context),
+    contrastLevel: MediaQuery.highContrastOf(context) ? 1.0 : 0.0,
+    overrides: _ColorTheme.maybeOverridesOf(context),
+  );
 }
 
 class _ColorThemeWithResolver<T extends ColorThemeDataPartial>
@@ -191,14 +186,24 @@ class _ColorThemeWithData<T extends ColorThemeDataPartial> extends ColorTheme {
   }
 }
 
-class _ColorTheme extends InheritedTheme {
-  const _ColorTheme({super.key, required this.resolver, required super.child});
-
-  final ThemeResolver<ColorThemeDataPartial> resolver;
+final class _ColorTheme
+    extends
+        InheritedThemeResolverWidget<
+          ColorThemeDataPartial,
+          _ColorTheme,
+          _ColorThemeElement
+        >
+    implements InheritedTheme {
+  const _ColorTheme({super.key, required super.resolver, required super.child});
 
   @override
-  bool updateShouldNotify(_ColorTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  ColorThemeDataPartial merge(
+    ColorThemeDataPartial fallback,
+    ColorThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
+
+  @override
+  _ColorThemeElement createElement() => _ColorThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -206,5 +211,27 @@ class _ColorTheme extends InheritedTheme {
 
   static ThemeResolver<ColorThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_ColorTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        ColorThemeDataPartial,
+        _ColorTheme,
+        _ColorThemeElement
+      >(context);
+
+  static ColorThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        ColorThemeDataPartial,
+        _ColorTheme,
+        _ColorThemeElement
+      >(context);
+}
+
+final class _ColorThemeElement
+    extends
+        InheritedThemeResolverElement<
+          ColorThemeDataPartial,
+          _ColorTheme,
+          _ColorThemeElement
+        > {
+  _ColorThemeElement(super.widget);
 }

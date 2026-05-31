@@ -54,34 +54,20 @@ abstract class IconTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _IconTheme.maybeResolverOf(context);
-    return _IconTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
-  }
-
-  static IconThemeDataPartial _merge(
-    IconThemeDataPartial a,
-    IconThemeDataPartial b,
-  ) => a.maybeMerge(b);
+  Widget build(BuildContext context) =>
+      _IconTheme(resolver: resolver, child: child);
 
   static IconThemeData _fallbackOf(BuildContext context) =>
       .defaults(colorTheme: ColorTheme.of(context));
 
   static _ValueAtDepth<IconThemeData>? _modernDataOf(BuildContext context) {
-    final element = context
-        .getElementForInheritedWidgetOfExactType<_IconTheme>();
-    final widget = context.dependOnInheritedWidgetOfExactType<_IconTheme>();
-    if (element == null || widget == null) return null;
+    final overrides = _IconTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    final element =
+        context.getElementForInheritedWidgetOfExactType<_IconTheme>()!
+            as _IconThemeElement;
     return _ValueAtDepth(
-      value: ._defaults(
-        colorTheme: ColorTheme.of(context),
-        overrides: widget.resolver.resolve(context),
-      ),
+      value: .defaultsOf(context, overrides: overrides),
       depth: element.depth,
     );
   }
@@ -191,14 +177,24 @@ class _IconThemeWithData<T extends IconThemeDataPartial> extends IconTheme {
   }
 }
 
-class _IconTheme extends InheritedTheme {
-  const _IconTheme({super.key, required this.resolver, required super.child});
-
-  final ThemeResolver<IconThemeDataPartial> resolver;
+final class _IconTheme
+    extends
+        InheritedThemeResolverWidget<
+          IconThemeDataPartial,
+          _IconTheme,
+          _IconThemeElement
+        >
+    implements InheritedTheme {
+  const _IconTheme({super.key, required super.resolver, required super.child});
 
   @override
-  bool updateShouldNotify(_IconTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  IconThemeDataPartial merge(
+    IconThemeDataPartial fallback,
+    IconThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
+
+  @override
+  _IconThemeElement createElement() => _IconThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -206,7 +202,29 @@ class _IconTheme extends InheritedTheme {
 
   static ThemeResolver<IconThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_IconTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        IconThemeDataPartial,
+        _IconTheme,
+        _IconThemeElement
+      >(context);
+
+  static IconThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        IconThemeDataPartial,
+        _IconTheme,
+        _IconThemeElement
+      >(context);
+}
+
+final class _IconThemeElement
+    extends
+        InheritedThemeResolverElement<
+          IconThemeDataPartial,
+          _IconTheme,
+          _IconThemeElement
+        > {
+  _IconThemeElement(super.widget);
 }
 
 extension type const _ValueAtDepth<T extends Object?>._((T value, int depth) _)

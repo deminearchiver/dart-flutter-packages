@@ -16,13 +16,15 @@ abstract class IconThemeData extends IconThemeDataPartial {
     required bool applyTextScaling,
   }) = _IconThemeData;
 
-  const factory IconThemeData.defaults({required ColorThemeData colorTheme}) =
-      _IconThemeDataDefaults;
-
-  const factory IconThemeData._defaults({
+  const factory IconThemeData.defaults({
     required ColorThemeData colorTheme,
     IconThemeDataPartial? overrides,
   }) = _IconThemeDataDefaults;
+
+  factory IconThemeData.defaultsOf(
+    BuildContext context, {
+    IconThemeDataPartial? overrides,
+  }) => .defaults(colorTheme: ColorTheme.of(context), overrides: overrides);
 
   @override
   double get roundness;

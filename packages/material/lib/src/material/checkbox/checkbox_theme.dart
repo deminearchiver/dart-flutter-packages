@@ -320,6 +320,16 @@ abstract class CheckboxThemeData extends CheckboxThemeDataPartial {
     CheckboxThemeDataPartial? overrides,
   }) = _CheckboxThemeDataDefaults;
 
+  factory CheckboxThemeData.defaultsOf(
+    BuildContext context, {
+    CheckboxThemeDataPartial? overrides,
+  }) => .defaults(
+    colorTheme: ColorTheme.of(context),
+    shapeTheme: ShapeTheme.of(context),
+    stateTheme: StateTheme.of(context),
+    overrides: overrides,
+  );
+
   @override
   CheckboxStateProperty<Size> get stateLayerSize;
 
@@ -925,30 +935,17 @@ abstract class CheckboxTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _CheckboxTheme.maybeResolverOf(context);
-    return _CheckboxTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _CheckboxTheme(resolver: resolver, child: child);
+
+  static CheckboxThemeData? maybeOf(BuildContext context) {
+    final overrides = _CheckboxTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaultsOf(context, overrides: overrides);
   }
 
-  static CheckboxThemeDataPartial _merge(
-    CheckboxThemeDataPartial a,
-    CheckboxThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static CheckboxThemeData of(BuildContext context) {
-    final resolver = _CheckboxTheme.maybeResolverOf(context);
-    return .defaults(
-      colorTheme: ColorTheme.of(context),
-      shapeTheme: ShapeTheme.of(context),
-      stateTheme: StateTheme.of(context),
-      overrides: resolver?.resolve(context),
-    );
-  }
+  static CheckboxThemeData of(BuildContext context) =>
+      .defaultsOf(context, overrides: _CheckboxTheme.maybeOverridesOf(context));
 }
 
 class _CheckboxThemeWithResolver<T extends CheckboxThemeDataPartial>
@@ -1011,18 +1008,28 @@ class _CheckboxThemeWithData<T extends CheckboxThemeDataPartial>
   }
 }
 
-class _CheckboxTheme extends InheritedTheme {
+final class _CheckboxTheme
+    extends
+        InheritedThemeResolverWidget<
+          CheckboxThemeDataPartial,
+          _CheckboxTheme,
+          _CheckboxThemeElement
+        >
+    implements InheritedTheme {
   const _CheckboxTheme({
     super.key,
-    required this.resolver,
+    required super.resolver,
     required super.child,
   });
 
-  final ThemeResolver<CheckboxThemeDataPartial> resolver;
+  @override
+  CheckboxThemeDataPartial merge(
+    CheckboxThemeDataPartial fallback,
+    CheckboxThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
 
   @override
-  bool updateShouldNotify(_CheckboxTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  _CheckboxThemeElement createElement() => _CheckboxThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -1030,5 +1037,27 @@ class _CheckboxTheme extends InheritedTheme {
 
   static ThemeResolver<CheckboxThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_CheckboxTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        CheckboxThemeDataPartial,
+        _CheckboxTheme,
+        _CheckboxThemeElement
+      >(context);
+
+  static CheckboxThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        CheckboxThemeDataPartial,
+        _CheckboxTheme,
+        _CheckboxThemeElement
+      >(context);
+}
+
+final class _CheckboxThemeElement
+    extends
+        InheritedThemeResolverElement<
+          CheckboxThemeDataPartial,
+          _CheckboxTheme,
+          _CheckboxThemeElement
+        > {
+  _CheckboxThemeElement(super.widget);
 }

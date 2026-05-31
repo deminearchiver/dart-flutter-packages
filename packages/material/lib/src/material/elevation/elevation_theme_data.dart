@@ -12,9 +12,7 @@ abstract class ElevationThemeData extends ElevationThemeDataPartial {
     required double level5,
   }) = _ElevationThemeData;
 
-  const factory ElevationThemeData.defaults() = _ElevationThemeDataDefaults;
-
-  const factory ElevationThemeData._defaults({
+  const factory ElevationThemeData.defaults({
     ElevationThemeDataPartial? overrides,
   }) = _ElevationThemeDataDefaults;
 

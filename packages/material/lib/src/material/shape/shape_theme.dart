@@ -1577,25 +1577,17 @@ abstract class ShapeTheme extends StatelessWidget implements ProxyWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    final inherited = _ShapeTheme.maybeResolverOf(context);
-    return _ShapeTheme(
-      resolver: inherited != null
-          ? .combine(inherited, resolver, _merge)
-          : resolver,
-      child: child,
-    );
+  Widget build(BuildContext context) =>
+      _ShapeTheme(resolver: resolver, child: child);
+
+  static ShapeThemeData? maybeOf(BuildContext context) {
+    final overrides = _ShapeTheme.maybeOverridesOf(context);
+    if (overrides == null) return null;
+    return .defaults(overrides: overrides);
   }
 
-  static ShapeThemeDataPartial _merge(
-    ShapeThemeDataPartial a,
-    ShapeThemeDataPartial b,
-  ) => a.maybeMerge(b);
-
-  static ShapeThemeData of(BuildContext context) {
-    final resolver = _ShapeTheme.maybeResolverOf(context);
-    return .defaults(overrides: resolver?.resolve(context));
-  }
+  static ShapeThemeData of(BuildContext context) =>
+      .defaults(overrides: _ShapeTheme.maybeOverridesOf(context));
 }
 
 class _ShapeThemeWithResolver<T extends ShapeThemeDataPartial>
@@ -1657,14 +1649,24 @@ class _ShapeThemeWithData<T extends ShapeThemeDataPartial> extends ShapeTheme {
   }
 }
 
-class _ShapeTheme extends InheritedTheme {
-  const _ShapeTheme({super.key, required this.resolver, required super.child});
-
-  final ThemeResolver<ShapeThemeDataPartial> resolver;
+final class _ShapeTheme
+    extends
+        InheritedThemeResolverWidget<
+          ShapeThemeDataPartial,
+          _ShapeTheme,
+          _ShapeThemeElement
+        >
+    implements InheritedTheme {
+  const _ShapeTheme({super.key, required super.resolver, required super.child});
 
   @override
-  bool updateShouldNotify(_ShapeTheme oldWidget) =>
-      resolver != oldWidget.resolver;
+  ShapeThemeDataPartial merge(
+    ShapeThemeDataPartial fallback,
+    ShapeThemeDataPartial? overrides,
+  ) => fallback.maybeMerge(overrides);
+
+  @override
+  _ShapeThemeElement createElement() => _ShapeThemeElement(this);
 
   @override
   Widget wrap(BuildContext context, Widget child) =>
@@ -1672,5 +1674,27 @@ class _ShapeTheme extends InheritedTheme {
 
   static ThemeResolver<ShapeThemeDataPartial>? maybeResolverOf(
     BuildContext context,
-  ) => context.dependOnInheritedWidgetOfExactType<_ShapeTheme>()?.resolver;
+  ) =>
+      InheritedThemeResolverWidget.maybeResolverOf<
+        ShapeThemeDataPartial,
+        _ShapeTheme,
+        _ShapeThemeElement
+      >(context);
+
+  static ShapeThemeDataPartial? maybeOverridesOf(BuildContext context) =>
+      InheritedThemeResolverWidget.maybeOverridesOf<
+        ShapeThemeDataPartial,
+        _ShapeTheme,
+        _ShapeThemeElement
+      >(context);
+}
+
+final class _ShapeThemeElement
+    extends
+        InheritedThemeResolverElement<
+          ShapeThemeDataPartial,
+          _ShapeTheme,
+          _ShapeThemeElement
+        > {
+  _ShapeThemeElement(super.widget);
 }
