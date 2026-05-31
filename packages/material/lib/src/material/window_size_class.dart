@@ -1,5 +1,8 @@
 import 'package:material/src/material/flutter.dart';
 
+// TODO: improve deprecation messages
+
+@Deprecated("Use Breakpoint instead.")
 class WindowSizeClass with Diagnosticable {
   const WindowSizeClass({
     required this.windowWidthSizeClass,
@@ -42,15 +45,18 @@ class WindowSizeClass with Diagnosticable {
   @override
   int get hashCode => Object.hash(windowWidthSizeClass, windowHeightSizeClass);
 
+  @Deprecated("Use BreakpointSelector or BreakpointResolver instead.")
   static WindowSizeClass? maybeOf(BuildContext context) {
     final size = MediaQuery.maybeSizeOf(context);
     return size != null ? .fromSize(size) : null;
   }
 
+  @Deprecated("Use BreakpointSelector or BreakpointResolver instead.")
   static WindowSizeClass of(BuildContext context) =>
       .fromSize(MediaQuery.sizeOf(context));
 }
 
+@Deprecated("Use Breakpoint instead.")
 enum WindowWidthSizeClass implements Comparable<WindowWidthSizeClass> {
   compact(_compactLowerBound),
   medium(_mediumLowerBound),
@@ -58,8 +64,10 @@ enum WindowWidthSizeClass implements Comparable<WindowWidthSizeClass> {
   large(_largeLowerBound),
   extraLarge(_extraLargeLowerBound);
 
+  @Deprecated("Use Breakpoint instead.")
   const WindowWidthSizeClass(this.breakpoint);
 
+  @Deprecated("Use BreakpointSelector or BreakpointResolver instead.")
   factory WindowWidthSizeClass.fromWidth(double width) {
     assert(width >= 0.0);
     return switch (width) {
@@ -93,22 +101,27 @@ enum WindowWidthSizeClass implements Comparable<WindowWidthSizeClass> {
   static const _largeLowerBound = 1200.0;
   static const _extraLargeLowerBound = 1600.0;
 
+  @Deprecated("Use BreakpointSelector or BreakpointResolver instead.")
   static WindowWidthSizeClass? maybeOf(BuildContext context) {
     final width = MediaQuery.maybeWidthOf(context);
     return width != null ? .fromWidth(width) : null;
   }
 
+  @Deprecated("Use BreakpointSelector or BreakpointResolver instead.")
   static WindowWidthSizeClass of(BuildContext context) =>
       .fromWidth(MediaQuery.widthOf(context));
 }
 
+@Deprecated("Use Breakpoint instead.")
 enum WindowHeightSizeClass implements Comparable<WindowHeightSizeClass> {
   compact(_compactLowerBound),
   medium(_mediumLowerBound),
   expanded(_expandedLowerBound);
 
+  @Deprecated("Use Breakpoint instead.")
   const WindowHeightSizeClass(this.breakpoint);
 
+  @Deprecated("Use BreakpointSelector or BreakpointResolver instead.")
   factory WindowHeightSizeClass.fromHeight(double height) {
     assert(height >= 0.0);
     return switch (height) {
@@ -138,11 +151,13 @@ enum WindowHeightSizeClass implements Comparable<WindowHeightSizeClass> {
   static const _mediumLowerBound = 480.0;
   static const _expandedLowerBound = 900.0;
 
+  @Deprecated("Use BreakpointSelector or BreakpointResolver instead.")
   static WindowHeightSizeClass? maybeOf(BuildContext context) {
     final height = MediaQuery.maybeHeightOf(context);
     return height != null ? .fromHeight(height) : null;
   }
 
+  @Deprecated("Use BreakpointSelector or BreakpointResolver instead.")
   static WindowHeightSizeClass of(BuildContext context) =>
       .fromHeight(MediaQuery.heightOf(context));
 }
