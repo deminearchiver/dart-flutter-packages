@@ -109,7 +109,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
     // .copyWith(hoverStateLayerOpacity: 0.32, pressedStateLayerOpacity: 0.32);
     final typescaleTheme = TypescaleTheme.of(context);
 
-    final focusInsetRingTheme = FocusInsetRingTheme.of(context);
+    // final focusInsetRingTheme = FocusInsetRingTheme.of(context);
 
     // final listItemTheme = material_experimental.ListItemTheme.of(context);
     // print(listItemTheme);
@@ -466,161 +466,161 @@ class _Experiment6ViewState extends State<Experiment6View> {
   }
 }
 
-class _Layer1 extends StatelessWidget implements ProxyWidget {
-  const _Layer1({super.key, required this.child});
+// class _Layer1 extends StatelessWidget implements ProxyWidget {
+//   const _Layer1({super.key, required this.child});
 
-  @override
-  final Widget child;
+//   @override
+//   final Widget child;
 
-  @override
-  Widget build(BuildContext context) {
-    return FocusInsetRingTheme.withCallback(
-      callback: (context) {
-        final colorTheme = ColorTheme.of(context);
-        return .from(
-          outerStrokeInset: 0.0,
-          outerStrokeWidth: 10.0,
-          outerStrokeColor: colorTheme.tertiary,
-          innerStrokeInset: 10.0,
-          innerStrokeWidth: 10.0,
-          innerStrokeColor: colorTheme.onTertiary,
-        );
-      },
-      child: child,
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return FocusInsetRingTheme.withCallback(
+//       callback: (context) {
+//         final colorTheme = ColorTheme.of(context);
+//         return .from(
+//           outerStrokeInset: 0.0,
+//           outerStrokeWidth: 10.0,
+//           outerStrokeColor: colorTheme.tertiary,
+//           innerStrokeInset: 10.0,
+//           innerStrokeWidth: 10.0,
+//           innerStrokeColor: colorTheme.onTertiary,
+//         );
+//       },
+//       child: child,
+//     );
+//   }
+// }
 
-class _Layer2 extends StatefulWidget {
-  const _Layer2({super.key});
+// class _Layer2 extends StatefulWidget {
+//   const _Layer2({super.key});
 
-  @override
-  State<_Layer2> createState() => _Layer2State();
-}
+//   @override
+//   State<_Layer2> createState() => _Layer2State();
+// }
 
-class _Layer2State extends State<_Layer2> {
-  var _showDebugVisuals = false;
+// class _Layer2State extends State<_Layer2> {
+//   var _showDebugVisuals = false;
 
-  @override
-  Widget build(BuildContext context) {
-    final colorTheme = ColorTheme.of(context);
-    final shapeTheme = ShapeTheme.of(context);
-    final focusInsetRingTheme = FocusInsetRingTheme.of(context);
+//   @override
+//   Widget build(BuildContext context) {
+//     final colorTheme = ColorTheme.of(context);
+//     final shapeTheme = ShapeTheme.of(context);
+//     final focusInsetRingTheme = FocusInsetRingTheme.of(context);
 
-    const delegate = CornersBorderDelegate.smooth;
-    final corners = Corners.all(.fractional(0.5));
+//     const delegate = CornersBorderDelegate.smooth;
+//     final corners = Corners.all(.fractional(0.5));
 
-    return SizedBox(
-      width: .infinity,
-      height: 136.0,
-      child: Padding(
-        padding: .symmetric(horizontal: 24.0),
-        child: Surface(
-          shape: CornersBorder(delegate: delegate, corners: corners),
-          color: colorTheme.onPrimary,
-          child: Stack(
-            fit: .expand,
-            children: [
-              Positioned(
-                left: focusInsetRingTheme.outerStrokeInset,
-                top: focusInsetRingTheme.outerStrokeInset,
-                right: focusInsetRingTheme.outerStrokeInset,
-                bottom: focusInsetRingTheme.outerStrokeInset,
-                child: DecoratedBox(
-                  decoration: ShapeDecoration(
-                    shape: CornersBorder(
-                      delegate: delegate,
-                      corners: delegate.deflateCorners(
-                        corners,
-                        focusInsetRingTheme.outerStrokeInset,
-                      ),
-                      side: BorderSide(
-                        strokeAlign: BorderSide.strokeAlignInside,
-                        width: focusInsetRingTheme.outerStrokeWidth,
-                        color: focusInsetRingTheme.outerStrokeColor,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: focusInsetRingTheme.innerStrokeInset,
-                top: focusInsetRingTheme.innerStrokeInset,
-                right: focusInsetRingTheme.innerStrokeInset,
-                bottom: focusInsetRingTheme.innerStrokeInset,
-                child: DecoratedBox(
-                  decoration: ShapeDecoration(
-                    shape: CornersBorder(
-                      delegate: delegate,
-                      // corners: corners,
-                      corners: delegate.deflateCorners(
-                        corners,
-                        focusInsetRingTheme.innerStrokeInset,
-                      ),
-                      side: BorderSide(
-                        strokeAlign: BorderSide.strokeAlignInside,
-                        width: focusInsetRingTheme.innerStrokeWidth,
-                        color: _showDebugVisuals
-                            ? focusInsetRingTheme.innerStrokeColor.withValues(
-                                alpha: 0.75,
-                              )
-                            : focusInsetRingTheme.innerStrokeColor,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                child: Visibility(
-                  visible: _showDebugVisuals,
-                  child: Padding(
-                    padding: .all(focusInsetRingTheme.outerStrokeInset),
-                    child: DecoratedBox(
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            width: focusInsetRingTheme.outerStrokeWidth,
-                            color: focusInsetRingTheme.innerStrokeColor
-                                .withValues(alpha: 0.1),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                child: Visibility(
-                  visible: _showDebugVisuals,
-                  child: Padding(
-                    padding: .all(focusInsetRingTheme.innerStrokeInset),
-                    child: DecoratedBox(
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            width: focusInsetRingTheme.innerStrokeInset,
-                            color: focusInsetRingTheme.outerStrokeColor
-                                .withValues(alpha: 0.1),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned.fill(
-                child: Align.center(
-                  child: Switch(
-                    checked: _showDebugVisuals,
-                    onCheckedChanged: (value) =>
-                        setState(() => _showDebugVisuals = value),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//     return SizedBox(
+//       width: .infinity,
+//       height: 136.0,
+//       child: Padding(
+//         padding: .symmetric(horizontal: 24.0),
+//         child: Surface(
+//           shape: CornersBorder(delegate: delegate, corners: corners),
+//           color: colorTheme.onPrimary,
+//           child: Stack(
+//             fit: .expand,
+//             children: [
+//               Positioned(
+//                 left: focusInsetRingTheme.outerStrokeInset,
+//                 top: focusInsetRingTheme.outerStrokeInset,
+//                 right: focusInsetRingTheme.outerStrokeInset,
+//                 bottom: focusInsetRingTheme.outerStrokeInset,
+//                 child: DecoratedBox(
+//                   decoration: ShapeDecoration(
+//                     shape: CornersBorder(
+//                       delegate: delegate,
+//                       corners: delegate.deflateCorners(
+//                         corners,
+//                         focusInsetRingTheme.outerStrokeInset,
+//                       ),
+//                       side: BorderSide(
+//                         strokeAlign: BorderSide.strokeAlignInside,
+//                         width: focusInsetRingTheme.outerStrokeWidth,
+//                         color: focusInsetRingTheme.outerStrokeColor,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//               Positioned(
+//                 left: focusInsetRingTheme.innerStrokeInset,
+//                 top: focusInsetRingTheme.innerStrokeInset,
+//                 right: focusInsetRingTheme.innerStrokeInset,
+//                 bottom: focusInsetRingTheme.innerStrokeInset,
+//                 child: DecoratedBox(
+//                   decoration: ShapeDecoration(
+//                     shape: CornersBorder(
+//                       delegate: delegate,
+//                       // corners: corners,
+//                       corners: delegate.deflateCorners(
+//                         corners,
+//                         focusInsetRingTheme.innerStrokeInset,
+//                       ),
+//                       side: BorderSide(
+//                         strokeAlign: BorderSide.strokeAlignInside,
+//                         width: focusInsetRingTheme.innerStrokeWidth,
+//                         color: _showDebugVisuals
+//                             ? focusInsetRingTheme.innerStrokeColor.withValues(
+//                                 alpha: 0.75,
+//                               )
+//                             : focusInsetRingTheme.innerStrokeColor,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//               Positioned(
+//                 child: Visibility(
+//                   visible: _showDebugVisuals,
+//                   child: Padding(
+//                     padding: .all(focusInsetRingTheme.outerStrokeInset),
+//                     child: DecoratedBox(
+//                       decoration: ShapeDecoration(
+//                         shape: RoundedRectangleBorder(
+//                           side: BorderSide(
+//                             width: focusInsetRingTheme.outerStrokeWidth,
+//                             color: focusInsetRingTheme.innerStrokeColor
+//                                 .withValues(alpha: 0.1),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//               Positioned(
+//                 child: Visibility(
+//                   visible: _showDebugVisuals,
+//                   child: Padding(
+//                     padding: .all(focusInsetRingTheme.innerStrokeInset),
+//                     child: DecoratedBox(
+//                       decoration: ShapeDecoration(
+//                         shape: RoundedRectangleBorder(
+//                           side: BorderSide(
+//                             width: focusInsetRingTheme.innerStrokeInset,
+//                             color: focusInsetRingTheme.outerStrokeColor
+//                                 .withValues(alpha: 0.1),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//               Positioned.fill(
+//                 child: Align.center(
+//                   child: Switch(
+//                     checked: _showDebugVisuals,
+//                     onCheckedChanged: (value) =>
+//                         setState(() => _showDebugVisuals = value),
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

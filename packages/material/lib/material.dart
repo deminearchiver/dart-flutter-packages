@@ -53,7 +53,6 @@ export 'src/material/loading_indicator/loading_indicator_theme.dart';
 
 export 'src/material/raw_material_app.dart';
 
-export 'src/material/experimental/focus_inset_ring_theme.dart';
 export 'src/material/experimental/theme_resolver.dart';
 export 'src/material/measurement/measurement_theme.dart';
 
