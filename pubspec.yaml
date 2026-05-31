@@ -17,9 +17,9 @@ workspace:
   - packages/dynamic_color_ffi/example
   - packages/google_symbols
   - packages/google_symbols_icons
-  - packages/harfbuzz
-  - packages/harfbuzz_ffi
-  - packages/harfbuzz_rs
+  - packages/harfbuzz/harfbuzz
+  - packages/harfbuzz/harfbuzz_ffi
+  - packages/harfbuzz/harfbuzz_rs
   - packages/layout
   - packages/libmonet
   - packages/linked_layouts

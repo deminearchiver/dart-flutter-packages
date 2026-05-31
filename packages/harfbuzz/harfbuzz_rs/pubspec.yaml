@@ -1,8 +1,8 @@
 name: harfbuzz_rs
 description: Placeholder package for HarfRust FFI bindings.
-version: 0.0.0
+version: 0.0.0+1
 homepage: https://github.com/deminearchiver/dart-flutter-packages
-repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/harfbuzz_rs
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/harfbuzz/harfbuzz_rs
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
 resolution: workspace
 

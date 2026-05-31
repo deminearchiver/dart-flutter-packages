@@ -1,8 +1,8 @@
 name: harfbuzz_ffi
 description: FFI bindings for the HarfBuzz text shaping engine.
-version: 0.2.0
+version: 0.2.0+1
 homepage: https://github.com/deminearchiver/dart-flutter-packages
-repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/harfbuzz_ffi
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/harfbuzz/harfbuzz_ffi
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
 resolution: workspace
 

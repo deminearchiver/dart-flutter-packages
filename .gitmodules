@@ -2,5 +2,5 @@
 	path = packages/lz4_ffi/third_party/liblz4
 	url = git@github.com:lz4/lz4.git
 [submodule "packages/harfbuzz_ffi/third_party/harfbuzz"]
-	path = packages/harfbuzz_ffi/third_party/harfbuzz
+	path = packages/harfbuzz/harfbuzz_ffi/third_party/harfbuzz
 	url = git@github.com:harfbuzz/harfbuzz
