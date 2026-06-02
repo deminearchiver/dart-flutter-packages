@@ -1,0 +1,21 @@
+name: figmadev
+description: Tooling for Figma Plugin and Widget development.
+version: 0.0.0
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  cli_tools: ^0.13.0
+  collection: ^1.19.1
+  config: ^0.9.0
+  meta: ^1.18.0
+
+dev_dependencies:
+  deminearchiver_lints: ^2.1.2
+  test: ^1.31.0
+
+executables:
+  figmadev:
