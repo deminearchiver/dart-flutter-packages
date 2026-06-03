@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'dart:math' as math;
+
+import 'package:material_example/flutter.dart';
 
 class Experiment7View extends StatefulWidget {
   const Experiment7View({super.key});
@@ -10,50 +12,620 @@ class Experiment7View extends StatefulWidget {
 class _Experiment7ViewState extends State<Experiment7View> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final colorTheme = ColorTheme.of(context);
+    final elevationTheme = ElevationTheme.of(context);
+    final measurementTheme = MeasurementTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    final typescaleTheme = TypescaleTheme.of(context);
+
+    return Scaffold(
+      backgroundColor: colorTheme.surfaceContainer,
+      body: CustomScrollView(
+        slivers: [
+          _SliverHeader(
+            expandedPadding: .all(24.0),
+            collapsedPadding: .all(16.0),
+          ),
+          SliverList.builder(
+            itemBuilder: (context, index) =>
+                ListItemLayout(headline: Text("List item")),
+          ),
+        ],
+      ),
+    );
   }
 }
 
-class _GeminiFillPainter extends CustomPainter {
+class _SliverHeader extends StatefulWidget {
+  const _SliverHeader({
+    super.key,
+    this.expandedPadding = .zero,
+    this.collapsedPadding = .zero,
+  });
+
+  final EdgeInsetsGeometry expandedPadding;
+  final EdgeInsetsGeometry collapsedPadding;
+
   @override
-  void paint(Canvas canvas, Size size) {
-    final aPath = Path()
-      ..moveTo(18.62, 30.94)
-      ..relativeCubicTo(7.314, 0, 13.243, -4.778, 13.243, -10.672)
-      ..relativeCubicTo(0, -5.893, -5.93, -10.67, -13.243, -10.67)
-      ..cubicTo(11.306999999999995, 9.598, 5.376, 14.374, 5.376, 20.267)
-      ..relativeCubicTo(0, 5.894, 5.93, 10.672, 13.244, 10.672);
-    final bPath = Path()
-      ..moveTo(9.87, 24.698)
-      ..relativeCubicTo(2.556, 0, 4.628, -2.178, 4.628, -4.866)
-      ..relativeCubicTo(0, -2.687999999999999, -2.072, -4.866, -4.628, -4.866)
-      ..relativeCubicTo(-2.555999999999999, 0, -4.629, 2.179, -4.629, 4.866)
-      ..relativeCubicTo(0, 2.688, 2.073, 4.866, 4.629, 4.866);
-    final cPath = Path()
-      ..moveTo(8.924, 25.1)
-      ..relativeCubicTo(2.556, 0, 4.628, -2.178, 4.628, -4.865)
-      ..relativeCubicTo(0, -2.687000000000001, -2.072, -4.866, -4.628, -4.866)
-      ..relativeCubicTo(-2.556000000000001, 0, -4.629, 2.179, -4.629, 4.866)
-      ..cubicTo(4.295, 22.922, 6.368, 25.1, 8.924, 25.1);
-    final dPath = Path()
-      ..moveTo(20.714, 10.973)
-      ..relativeCubicTo(-1.486, 4.832, -8.682, 8.311, -11.588, 8.356)
-      ..relativeLineTo(8.21, -13.49)
-      ..close();
-    final ePath = Path()
-      ..moveTo(20.478, 9.43)
-      ..relativeCubicTo(-1.487, 4.832, -8.683, 8.31, -11.588, 8.355)
-      ..relativeLineTo(8.21, -13.49)
-      ..close();
-    final fPath = Path()
-      ..moveTo(20.883, 31.779)
-      ..relativeCubicTo(-1.486, -4.833, -8.682, -8.311, -11.588, -8.356)
-      ..relativeLineTo(8.21, 13.49)
-      ..close();
+  State<_SliverHeader> createState() => __SliverHeaderState();
+}
+
+class __SliverHeaderState extends State<_SliverHeader> {
+  var _selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorTheme = ColorTheme.of(context);
+    final elevationTheme = ElevationTheme.of(context);
+    final measurementTheme = MeasurementTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    final typescaleTheme = TypescaleTheme.of(context);
+
+    final expandedPadding = widget.expandedPadding;
+    final collapsedPadding = widget.collapsedPadding;
+    const minHeight = 48.0;
+    const maxHeight = 64.0;
+    final minExtent = minHeight + collapsedPadding.vertical;
+    final maxExtent = maxHeight + expandedPadding.vertical;
+    return SliverHeader(
+      minExtent: minExtent,
+      maxExtent: maxExtent,
+      pinned: true,
+      builder: (context, shrinkOffset, overlapsContent) {
+        final extent = math.max(minExtent, maxExtent - shrinkOffset);
+        final fraction = clampDouble(
+          1.0 - (extent - minExtent) / (maxExtent - minExtent),
+          0.0,
+          1.0,
+        );
+        final height = lerpDouble(maxHeight, minHeight, fraction);
+        final padding = EdgeInsetsGeometry.lerp(
+          expandedPadding,
+          collapsedPadding,
+          fraction,
+        )!;
+        final elevation = lerpDouble(
+          elevationTheme.level0,
+          elevationTheme.level3,
+          fraction,
+        );
+        final color = Color.lerp(
+          colorTheme.surfaceContainerHigh,
+          colorTheme.surfaceContainerHighest,
+          fraction,
+        )!;
+
+        final unselectedContainerWidth = lerpDouble(40.0, 32.0, fraction);
+        final selectedContainerWidth = lerpDouble(52.0, 40.0, fraction);
+        final containerHeight = lerpDouble(40.0, 32.0, fraction);
+        final iconSize = lerpDouble(24.0, 20.0, fraction);
+        final margin = lerpDouble(
+          measurementTheme.space150,
+          measurementTheme.space100,
+          fraction,
+        );
+
+        return Surface(
+          color: colorTheme.surfaceContainer,
+          child: Padding(
+            padding: padding,
+            child: SizedBox(
+              width: .infinity,
+              height: height,
+              child: _HeaderLayout(
+                start: SizedBox(
+                  height: height,
+                  child: Surface(
+                    clipBehavior: .antiAlias,
+                    shape: shapeTheme.applyCorner(
+                      corner: shapeTheme.cornerFull,
+                    ),
+                    color: color,
+                    elevation: elevation,
+                    child: Padding(
+                      padding: .fromSTEB(
+                        margin,
+                        0.0,
+                        lerpDouble(
+                          measurementTheme.space300,
+                          measurementTheme.space200,
+                          fraction,
+                        ),
+                        0.0,
+                      ),
+                      child: Flex.horizontal(
+                        mainAxisSize: .min,
+                        spacing: lerpDouble(
+                          measurementTheme.space100,
+                          measurementTheme.space75,
+                          fraction,
+                        ),
+                        children: [
+                          SizedBox.square(
+                            dimension: containerHeight,
+                            child: Surface(
+                              clipBehavior: .antiAlias,
+                              shape: shapeTheme.applyCorner(
+                                corner: shapeTheme.cornerFull,
+                              ),
+                              color: colorTheme.surfaceContainerLowest,
+                              child: Align.center(
+                                child: Text(
+                                  "A",
+                                  style: typescaleTheme.titleMediumEmphasized
+                                      .toTextStyle(color: colorTheme.primary),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "headline",
+                            style: TextGeometry.lerp(
+                              typescaleTheme.titleLargeEmphasized,
+                              typescaleTheme.titleMediumEmphasized,
+                              fraction,
+                            ).toTextStyle(color: colorTheme.onSurface),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                center: SizedBox(
+                  height: height,
+                  child: Surface(
+                    clipBehavior: .antiAlias,
+                    shape: shapeTheme.applyCorner(
+                      corner: shapeTheme.cornerFull,
+                    ),
+                    color: color,
+                    elevation: elevation,
+                    child: Padding(
+                      padding: .symmetric(horizontal: margin),
+                      child: Flex.horizontal(
+                        mainAxisSize: .min,
+                        spacing: margin,
+                        children: [
+                          _NavigationDestination(
+                            unselectedContainerWidth: unselectedContainerWidth,
+                            selectedContainerWidth: selectedContainerWidth,
+                            containerHeight: containerHeight,
+                            iconSize: iconSize,
+                            isSelected: _selectedIndex == 0,
+                            onTap: () => setState(() => _selectedIndex = 0),
+                            icon: const Icon(Symbols.home_rounded),
+                          ),
+                          _NavigationDestination(
+                            unselectedContainerWidth: unselectedContainerWidth,
+                            selectedContainerWidth: selectedContainerWidth,
+                            containerHeight: containerHeight,
+                            iconSize: iconSize,
+                            isSelected: _selectedIndex == 1,
+                            onTap: () => setState(() => _selectedIndex = 1),
+                            icon: const Icon(Symbols.info_rounded),
+                          ),
+                          _NavigationDestination(
+                            unselectedContainerWidth: unselectedContainerWidth,
+                            selectedContainerWidth: selectedContainerWidth,
+                            containerHeight: containerHeight,
+                            iconSize: iconSize,
+                            isSelected: _selectedIndex == 2,
+                            onTap: () => setState(() => _selectedIndex = 2),
+                            icon: const Icon(Symbols.work_rounded),
+                          ),
+                          _NavigationDestination(
+                            unselectedContainerWidth: unselectedContainerWidth,
+                            selectedContainerWidth: selectedContainerWidth,
+                            containerHeight: containerHeight,
+                            iconSize: iconSize,
+                            isSelected: _selectedIndex == 3,
+                            onTap: () => setState(() => _selectedIndex = 3),
+                            icon: const Icon(Symbols.docs_rounded),
+                          ),
+                          _NavigationDestination(
+                            unselectedContainerWidth: unselectedContainerWidth,
+                            selectedContainerWidth: selectedContainerWidth,
+                            containerHeight: containerHeight,
+                            iconSize: iconSize,
+                            isSelected: _selectedIndex == 4,
+                            onTap: () => setState(() => _selectedIndex = 4),
+                            icon: const Icon(Symbols.mail_rounded),
+                          ),
+                          SizedBox(
+                            width: 1.0,
+                            height: lerpDouble(24.0, 16.0, fraction),
+                            child: Surface(
+                              shape: shapeTheme.applyCorner(
+                                corner: shapeTheme.cornerFull,
+                              ),
+                              color: colorTheme.outline,
+                            ),
+                          ),
+                          SizedBox.square(
+                            dimension: containerHeight,
+                            child: Surface(
+                              clipBehavior: .antiAlias,
+                              shape: shapeTheme.applyCorner(
+                                corner: shapeTheme.cornerFull,
+                              ),
+                              color: colorTheme.tertiaryContainer,
+                              child: InkWell(
+                                overlayColor: WidgetStateLayerColor(
+                                  color: .all(colorTheme.onSurfaceVariant),
+                                  opacity: stateTheme.asWidgetStateLayerOpacity,
+                                ),
+                                onTap: () {},
+                                child: Icon(
+                                  Symbols.search_rounded,
+                                  fill: 1.0,
+                                  opticalSize: iconSize,
+                                  size: iconSize,
+                                  color: colorTheme.onTertiaryContainer,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                end: SizedBox(
+                  height: height,
+                  child: Surface(
+                    clipBehavior: .antiAlias,
+                    shape: shapeTheme.applyCorner(
+                      corner: shapeTheme.cornerFull,
+                    ),
+                    color: color,
+                    elevation: elevation,
+                    child: Padding(
+                      padding: .symmetric(horizontal: margin),
+                      child: Flex.horizontal(
+                        mainAxisSize: .min,
+                        spacing: margin,
+                        children: [
+                          SizedBox.square(
+                            dimension: containerHeight,
+                            child: Surface(
+                              clipBehavior: .antiAlias,
+                              shape: shapeTheme.applyCorner(
+                                corner: shapeTheme.cornerFull,
+                              ),
+                              child: InkWell(
+                                overlayColor: WidgetStateLayerColor(
+                                  color: .all(colorTheme.onSurfaceVariant),
+                                  opacity: stateTheme.asWidgetStateLayerOpacity,
+                                ),
+                                onTap: () {},
+                                child: Icon(
+                                  Symbols.link_2_rounded,
+                                  fill: 0.0,
+                                  opticalSize: iconSize,
+                                  size: iconSize,
+                                  color: colorTheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox.square(
+                            dimension: containerHeight,
+                            child: Surface(
+                              clipBehavior: .antiAlias,
+                              shape: shapeTheme.applyCorner(
+                                corner: shapeTheme.cornerFull,
+                              ),
+                              child: InkWell(
+                                overlayColor: WidgetStateLayerColor(
+                                  color: .all(colorTheme.onSurfaceVariant),
+                                  opacity: stateTheme.asWidgetStateLayerOpacity,
+                                ),
+                                onTap: () {},
+                                child: Icon(
+                                  Symbols.link_2_rounded,
+                                  fill: 0.0,
+                                  opticalSize: iconSize,
+                                  size: iconSize,
+                                  color: colorTheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox.square(
+                            dimension: containerHeight,
+                            child: Surface(
+                              clipBehavior: .antiAlias,
+                              shape: shapeTheme.applyCorner(
+                                corner: shapeTheme.cornerFull,
+                              ),
+                              child: InkWell(
+                                overlayColor: WidgetStateLayerColor(
+                                  color: .all(colorTheme.onSurfaceVariant),
+                                  opacity: stateTheme.asWidgetStateLayerOpacity,
+                                ),
+                                onTap: () {},
+                                child: Icon(
+                                  Symbols.link_2_rounded,
+                                  fill: 0.0,
+                                  opticalSize: iconSize,
+                                  size: iconSize,
+                                  color: colorTheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _NavigationDestination extends StatefulWidget {
+  const _NavigationDestination({
+    super.key,
+    required this.unselectedContainerWidth,
+    required this.selectedContainerWidth,
+    required this.containerHeight,
+    required this.iconSize,
+    required this.isSelected,
+    required this.onTap,
+    required this.icon,
+  });
+
+  final double unselectedContainerWidth;
+  final double selectedContainerWidth;
+  final double containerHeight;
+  final double iconSize;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final Widget icon;
+
+  @override
+  State<_NavigationDestination> createState() => _NavigationDestinationState();
+}
+
+class _NavigationDestinationState extends State<_NavigationDestination> {
+  @override
+  Widget build(BuildContext context) {
+    final colorTheme = ColorTheme.of(context);
+    final elevationTheme = ElevationTheme.of(context);
+    final measurementTheme = MeasurementTheme.of(context);
+    final shapeTheme = ShapeTheme.of(context);
+    final springTheme = SpringTheme.of(context);
+    final stateTheme = StateTheme.of(context);
+    final typescaleTheme = TypescaleTheme.of(context);
+
+    final isSelected = widget.isSelected;
+    return SizedTouchTarget(
+      fit: .overflow,
+      minimumSize: const .square(48.0),
+      child: SingleMotionBuilder(
+        value: isSelected ? 1.0 : 0.0,
+        motion: springTheme.fastSpatial.toMotion(),
+        builder: (context, value, child) {
+          final containerWidth = lerpDouble(
+            widget.unselectedContainerWidth,
+            widget.selectedContainerWidth,
+            value,
+          );
+          final containerColor = Color.lerp(
+            colorTheme.primaryContainer.withValues(alpha: 0.0),
+            colorTheme.primaryContainer,
+            value,
+          )!;
+          final contentColor = Color.lerp(
+            colorTheme.onSurfaceVariant,
+            colorTheme.onPrimaryContainer,
+            value,
+          )!;
+          return SizedBox(
+            width: containerWidth,
+            height: widget.containerHeight,
+            child: Surface(
+              clipBehavior: .antiAlias,
+              shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
+              color: containerColor,
+              child: InkWell(
+                overlayColor: WidgetStateLayerColor(
+                  color: .all(contentColor),
+                  opacity: stateTheme.asWidgetStateLayerOpacity,
+                ),
+                onTap: widget.onTap,
+                child: IconTheme.mergeWithData(
+                  data: .from(
+                    fill: clampDouble(value, 0.0, 1.0),
+                    opticalSize: widget.iconSize,
+                    size: widget.iconSize,
+                    color: contentColor,
+                  ),
+                  child: child!,
+                ),
+              ),
+            ),
+          );
+        },
+        child: widget.icon,
+      ),
+    );
+  }
+}
+
+enum _HeaderLayoutSlot { start, center, end }
+
+class _HeaderLayout
+    extends SlottedMultiChildRenderObjectWidget<_HeaderLayoutSlot, RenderBox> {
+  const _HeaderLayout({super.key, this.start, this.center, this.end});
+
+  final Widget? start;
+  final Widget? center;
+  final Widget? end;
+
+  @override
+  Iterable<_HeaderLayoutSlot> get slots => [.start, .center, .end];
+
+  @override
+  Widget? childForSlot(_HeaderLayoutSlot slot) => switch (slot) {
+    .start => start,
+    .center => center,
+    .end => end,
+  };
+
+  @override
+  _RenderHeaderLayout createRenderObject(BuildContext context) =>
+      _RenderHeaderLayout();
+
+  @override
+  void updateRenderObject(
+    BuildContext context,
+    _RenderHeaderLayout renderObject,
+  ) {}
+}
+
+class _RenderHeaderLayout extends RenderBox
+    with SlottedContainerRenderObjectMixin<_HeaderLayoutSlot, RenderBox> {
+  _RenderHeaderLayout();
+
+  RenderBox? get _start => childForSlot(.start);
+  RenderBox? get _center => childForSlot(.center);
+  RenderBox? get _end => childForSlot(.end);
+
+  Size _computeLayout(
+    BoxChildLayoutStrategy strategy,
+    BoxConstraints constraints,
+  ) {
+    final start = _start;
+    final center = _center;
+    final end = _end;
+
+    final width = constraints.maxWidth;
+    var height = constraints.minHeight;
+    Size startSize = .zero;
+    var startX = 0.0;
+    if (start != null) {
+      final startConstraints = constraints.loosen();
+      startSize = strategy.layoutChildForSize(start, startConstraints);
+      if (startSize.height > height) {
+        height = clampDouble(
+          startSize.height,
+          constraints.minHeight,
+          constraints.maxHeight,
+        );
+      }
+      startX = 0.0;
+    }
+    Size endSize = .zero;
+    var endX = width;
+    if (end != null) {
+      final endConstraints = constraints.loosen();
+      endSize = strategy.layoutChildForSize(end, endConstraints);
+      if (endSize.height > height) {
+        height = clampDouble(
+          endSize.height,
+          constraints.minHeight,
+          constraints.maxHeight,
+        );
+      }
+      endX = width - endSize.width;
+    }
+    Size centerSize = .zero;
+    var centerX = 0.0;
+    if (center != null) {
+      final centerConstraints = BoxConstraints(
+        minWidth: 0.0,
+        maxWidth: math.max(
+          0.0,
+          constraints.maxWidth - 2.0 * math.max(startSize.width, endSize.width),
+        ),
+        minHeight: constraints.minHeight,
+        maxHeight: constraints.maxHeight,
+      );
+      centerSize = strategy.layoutChildForSize(center, centerConstraints);
+      if (centerSize.height > height) {
+        height = clampDouble(
+          centerSize.height,
+          constraints.minHeight,
+          constraints.maxHeight,
+        );
+      }
+      centerX = (width - centerSize.width) / 2.0;
+    }
+
+    if (strategy.affectsLayoutState) {
+      if (start != null) {
+        strategy.positionChild(
+          start,
+          Offset(startX, (height - startSize.height) / 2.0),
+        );
+      }
+      if (center != null) {
+        strategy.positionChild(
+          center,
+          Offset(centerX, (height - centerSize.height) / 2.0),
+        );
+      }
+      if (end != null) {
+        strategy.positionChild(
+          end,
+          Offset(endX, (height - centerSize.height) / 2.0),
+        );
+      }
+    }
+    return Size(width, height);
   }
 
   @override
-  bool shouldRepaint(_GeminiFillPainter oldDelegate) {
+  Size computeDryLayout(covariant BoxConstraints constraints) =>
+      _computeLayout(.dry, constraints);
+
+  @override
+  void performLayout() {
+    size = _computeLayout(.wet, constraints);
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    void paintChild(RenderBox? child) {
+      if (child != null) {
+        final childParentData = child.parentData! as BoxParentData;
+        context.paintChild(child, childParentData.offset + offset);
+      }
+    }
+
+    paintChild(_start);
+    paintChild(_center);
+    paintChild(_end);
+  }
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
+    bool hitTestChild(RenderBox? child) {
+      if (child == null) return false;
+      final childParentData = child.parentData! as BoxParentData;
+      final offset = childParentData.offset;
+      return result.addWithPaintOffset(
+        offset: offset,
+        position: position,
+        hitTest: (result, transformed) {
+          assert(transformed == position - offset);
+          return child.hitTest(result, position: transformed);
+        },
+      );
+    }
+
+    if (hitTestChild(_start)) return true;
+    if (hitTestChild(_center)) return true;
+    if (hitTestChild(_end)) return true;
+
     return false;
   }
 }

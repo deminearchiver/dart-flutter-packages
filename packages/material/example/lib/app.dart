@@ -6,6 +6,8 @@ import 'package:material_example/experiment3.dart' show Experiment3View;
 import 'package:material_example/experiment4.dart' show Experiment4View;
 import 'package:material_example/experiment5.dart' show Experiment5View;
 import 'package:material_example/experiment6.dart' show Experiment6View;
+import 'package:material_example/experiment7.dart' show Experiment7View;
+import 'package:material_example/experiment8.dart' show Experiment8View;
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -156,8 +158,8 @@ class _AppState extends State<App> {
     return _buildThemes(context, appBuilder);
   }
 
-  static const _themeMode = ThemeMode.system;
-  static const _variant = DynamicSchemeVariant.expressive;
+  static const _themeMode = ThemeMode.light;
+  static const _variant = DynamicSchemeVariant.vibrant;
   static const _platform = DynamicSchemePlatform.phone;
   static const _specVersion = DynamicSchemeSpecVersion.spec2026;
   static const _typography = TypographyDefaults.material3Expressive2026;
@@ -198,6 +200,8 @@ class _NavigationViewState extends State<NavigationView> {
             4 => const Experiment4View(),
             5 => const Experiment5View(),
             6 => const Experiment6View(),
+            7 => const Experiment7View(),
+            8 => const Experiment8View(),
             _ => Scaffold(
               backgroundColor: colorTheme.surfaceContainer,
               body: const Placeholder(),
@@ -241,7 +245,7 @@ class _NavigationViewState extends State<NavigationView> {
   }
 
   static const _firstIndex = 1;
-  static const _lastIndex = 6;
+  static const _lastIndex = 8;
 }
 
 class Navigation2View extends StatefulWidget {
