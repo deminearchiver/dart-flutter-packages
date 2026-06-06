@@ -66,9 +66,15 @@ export 'package:flutter/material.dart'
         SwitchTheme,
         SwitchThemeData;
 
-export 'package:meta/meta.dart';
+// Synchronized packages
+export 'package:animation/animation.dart';
 export 'package:layout/layout.dart';
+
+// Third-party packages
+export 'package:meta/meta.dart';
 export 'package:motor/motor.dart';
 export 'package:touch_targets/touch_targets.dart';
+
+// Own exports
 export 'package:material/material.dart';
 export 'package:material/material_symbols.dart';

@@ -20,6 +20,8 @@ dependencies:
     sdk: flutter
 
   # Path dependencies
+  animation:
+    path: ../animation
   layout:
     path: ../layout
 
