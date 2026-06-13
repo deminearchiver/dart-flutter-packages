@@ -14,7 +14,7 @@ dependencies:
   androidx_graphics_shapes:
     path: ../
   collection: ^1.19.1
-  libmonet: 2.0.0-dev.15
+  libmonet: 2.0.0-dev.16
   material_symbols_icons: ^4.2928.1
   meta: ^1.17.0
 

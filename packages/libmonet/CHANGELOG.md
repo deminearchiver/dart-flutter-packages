@@ -25,6 +25,7 @@
 - Renamed `TemperatureCache.getComplement` to `TemperatureCache.complement` and made it a getter.
 - Changed `Score.score` positional parameters to be named instead.
 - Added a default `libmonet` library which exports all members from the other libraries.
+- Added generated example schemes in CSS and Figma formats.
 - Refactored internal file structure (breaks source code imports).
 - Other minor changes.
 
