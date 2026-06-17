@@ -67,30 +67,76 @@ mixin _RenderDefaultTouchTargetMixin
 
   @override
   bool hitTest(BoxHitTestResult result, {required Offset position}) {
-    final child = this.child;
-    if (child != null && enabled) {
-      switch (fit) {
-        case .wrap:
-          if (size.contains(position)) {
-            final childCenter = child.size.center(.zero);
-            final childParentData = child.parentData! as BoxParentData;
-            final childOffset = childParentData.offset;
-            final forcedPosition = childOffset + childCenter;
-            return result.addWithRawTransform(
-              transform: MatrixUtils.forceToPoint(forcedPosition),
-              position: position,
-              hitTest: (result, position) {
-                assert(position == forcedPosition);
-                return child.hitTest(result, position: childCenter);
-              },
-            );
-          }
-        case .overflow:
-          return super.hitTest(result, position: position);
-      }
+    if (super.hitTest(result, position: position)) {
+      return true;
     }
-    return super.hitTest(result, position: position);
+    final child = this.child;
+    if (child == null || !enabled) return false;
+    switch (fit) {
+      case .wrap:
+        if (!size.contains(position)) return false;
+        final childCenter = child.size.center(.zero);
+        final isHit = result.addWithRawTransform(
+          transform: MatrixUtils.forceToPoint(childCenter),
+          position: childCenter,
+          hitTest: (result, position) {
+            assert(position == childCenter);
+            return child.hitTest(result, position: childCenter);
+          },
+        );
+        if (isHit) {
+          result.add(BoxHitTestEntry(this, position));
+        }
+        return isHit;
+      case .overflow:
+        return false;
+    }
   }
+
+  // static bool _debugAssertCanHitTest(RenderBox box) {
+  //   assert(() {
+  //     if (!box.hasSize) {
+  //       if (box.debugNeedsLayout) {
+  //         throw FlutterError.fromParts([
+  //           ErrorSummary(
+  //             "Cannot hit test a render box that has never been laid out.",
+  //           ),
+  //           box.describeForError(
+  //             "The hitTest() method was called on this RenderBox",
+  //           ),
+  //           ErrorDescription(
+  //             "Unfortunately, this object's geometry is not known at this time, "
+  //             "probably because it has never been laid out. "
+  //             "This means it cannot be accurately hit-tested.",
+  //           ),
+  //           ErrorHint(
+  //             "If you are trying "
+  //             "to perform a hit test during the layout phase itself, make sure "
+  //             "you only hit test nodes that have completed layout (e.g. the node's "
+  //             "children, after their layout() method has been called).",
+  //           ),
+  //         ]);
+  //       }
+  //       throw FlutterError.fromParts([
+  //         ErrorSummary("Cannot hit test a render box with no size."),
+  //         box.describeForError(
+  //           "The hitTest() method was called on this RenderBox",
+  //         ),
+  //         ErrorDescription(
+  //           "Although this node is not marked as needing layout, "
+  //           "its size is not set.",
+  //         ),
+  //         ErrorHint(
+  //           "A RenderBox object must have an "
+  //           "explicit size before it can be hit-tested. Make sure "
+  //           "that the RenderBox in question sets its size during layout.",
+  //         ),
+  //       ]);
+  //     }
+  //     return true;
+  //   }());
+  //   return true;
+  // }
 }
 
 class _DefaultTouchTargetClient implements TouchClient {
@@ -99,7 +145,10 @@ class _DefaultTouchTargetClient implements TouchClient {
   final _RenderDefaultTouchTargetMixin _renderObject;
 
   @override
-  bool get isActive => _renderObject.attached && _renderObject.enabled;
+  bool get isActive =>
+      _renderObject.attached &&
+      _renderObject.enabled &&
+      _renderObject.fit == .overflow;
 
   @override
   Size get innerSize {
@@ -131,48 +180,84 @@ class _DefaultTouchTargetClient implements TouchClient {
     BoxHitTestResult result,
     Offset position,
   ) {
+    // final child = _renderObject.child;
+    // if (child == null) return false;
+
+    // final transform = _renderObject.getTransformTo(ancestor);
+    // final inverseTransform = Matrix4.tryInvert(
+    //   PointerEvent.removePerspectiveTransform(transform),
+    // );
+    // if (inverseTransform == null) return false;
+
+    // final childCenter = child.size.center(Offset.zero);
+    // final childParentData = child.parentData! as BoxParentData;
+    // final childOffset = childParentData.offset;
+
+    // final forcedPosition = childOffset + childCenter;
+    // final forcedTransform = MatrixUtils.forceToPoint(forcedPosition);
+
+    // final resultTransform = forcedTransform.multiplied(inverseTransform);
+    // return result.addWithRawTransform(
+    //   transform: resultTransform,
+    //   position: position,
+    //   hitTest: (result, position) {
+    //     assert(position == childCenter);
+    //     return child.hitTest(result, position: position);
+    //   },
+    // );
+
+    final child = _renderObject.child;
+    if (child == null) return false;
+
     final transform = _renderObject.getTransformTo(ancestor);
-    final childCenter = _renderObject.child!.size.center(Offset.zero);
-    final childParentData = _renderObject.child!.parentData! as BoxParentData;
-    final childOffset = childParentData.offset;
-    return result.addWithPaintTransform(
+    final childCenter = child.size.center(Offset.zero);
+
+    final isHit = result.addWithPaintTransform(
       transform: transform,
       position: position,
       hitTest: (result, localPosition) {
-        final forcedPosition = childOffset + childCenter;
         return result.addWithRawTransform(
-          transform: MatrixUtils.forceToPoint(forcedPosition),
-          position: localPosition,
-          hitTest: (result, hitPosition) {
-            assert(hitPosition == forcedPosition);
-            return _renderObject.child!.hitTest(result, position: childCenter);
+          transform: MatrixUtils.forceToPoint(childCenter),
+          position: childCenter,
+          hitTest: (result, position) {
+            assert(position == childCenter);
+            return child.hitTest(result, position: childCenter);
           },
         );
       },
     );
+    if (isHit) {
+      result.add(BoxHitTestEntry(_renderObject, position));
+    }
+    return isHit;
   }
 
   @override
-  bool hasLinealRelationWith(RenderObject hit) {
-    // Direct hit.
-    if (hit == _renderObject) return true;
-    // TODO: evaluate if using depth is safe here
-    if (hit.depth < _renderObject.depth) {
-      // Check if hit is an ancestor.
-      var current = _renderObject.parent;
-      while (current != null && current.depth >= hit.depth) {
-        if (current == hit) return true;
-        current = current.parent;
-      }
-    } else if (hit.depth > _renderObject.depth) {
-      // Check if hit is a descendant.
-      var current = hit.parent;
-      while (current != null && current.depth >= _renderObject.depth) {
-        if (current == _renderObject) return true;
-        current = current.parent;
-      }
+  bool hasOwn(RenderObject renderObject) => renderObject == _renderObject;
+
+  @override
+  bool hasDescendant(RenderObject renderObject) {
+    if (renderObject == _renderObject) return false;
+    if (renderObject.depth <= _renderObject.depth) return false;
+    var current = renderObject.parent;
+    while (current != null) {
+      if (current == _renderObject) return true;
+      if (current.depth < _renderObject.depth) break;
+      current = current.parent;
     }
-    // Completely unrelated.
+    return false;
+  }
+
+  @override
+  bool hasAncestor(RenderObject renderObject) {
+    if (renderObject == _renderObject) return false;
+    if (renderObject.depth >= _renderObject.depth) return false;
+    var current = _renderObject.parent;
+    while (current != null) {
+      if (current == renderObject) return true;
+      if (current.depth < renderObject.depth) break;
+      current = current.parent;
+    }
     return false;
   }
 

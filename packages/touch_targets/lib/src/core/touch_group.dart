@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:math' as math;
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:touch_targets/touch_targets.dart';
@@ -176,9 +177,7 @@ class _RenderTouchTheatre extends RenderProxyBox {
     _clients = value;
   }
 
-  @override
-  bool hitTest(BoxHitTestResult result, {required Offset position}) {
-    // Find the best candidate for hit testing.
+  TouchClient? _clientForPosition(Offset position) {
     TouchClient? resolvedClient;
     double minimumWeightedDistance = .infinity;
     for (final client in _clients) {
@@ -200,29 +199,98 @@ class _RenderTouchTheatre extends RenderProxyBox {
         }
       }
     }
+    return resolvedClient;
+  }
 
-    if (resolvedClient != null) {
-      // Find the render object which was actually hit if it's not the target.
-      final dryResult = BoxHitTestResult();
-      final dryHit = super.hitTest(dryResult, position: position);
-      RenderObject? topmostObject;
-      if (dryHit) {
-        for (final HitTestEntry(:target) in dryResult.path) {
-          if (target is RenderObject) {
-            topmostObject = target;
-            break;
-          }
+  T? _firstHitTestTargetOfType<T extends HitTestTarget>(Offset position) {
+    final result = BoxHitTestResult();
+    if (!super.hitTest(result, position: position)) return null;
+    for (final HitTestEntry(:target) in result.path) {
+      if (target is T) return target;
+    }
+    return null;
+  }
+
+  @override
+  bool hitTest(BoxHitTestResult result, {required Offset position}) {
+    // Find the best candidate for hit testing.
+    final client = _clientForPosition(position);
+
+    if (client != null) {
+      final leaf = _firstHitTestTargetOfType<RenderObject>(position);
+
+      if (leaf == null ||
+          client.hasOwn(leaf) ||
+          client.hasDescendant(leaf) ||
+          client.hasAncestor(leaf)) {
+        if (leaf != null &&
+            (client.hasOwn(leaf) || client.hasDescendant(leaf))) {
+          return super.hitTest(result, position: position);
         }
-      }
 
-      // If the target was hit directly or the object hit has a lineal relation
-      // with target, force hit test redirection to target's inner contents.
-      if (topmostObject == null ||
-          resolvedClient.hasLinealRelationWith(topmostObject)) {
-        return resolvedClient.hitTestInnerFrom(this, result, position);
+        // Important: always make sure both hit tests are run
+        // (don't inline logical OR).
+        var isHit = false;
+        if (client.hitTestInnerFrom(this, result, position)) {
+          isHit = true;
+        }
+        if (super.hitTest(result, position: position)) {
+          isHit = true;
+        }
+        // assert(_debugPrintResultPath(result));
+        return isHit;
       }
     }
-
     return super.hitTest(result, position: position);
   }
 }
+
+// To quickly check if the hit test result has a correct path during debugging,
+// is to make sure that the path contains both
+// _RenderTheatre (Overlay) and _RenderTouchTheatre (TouchGroup),
+// these objects are easily distinguishable from the rest,
+// but _RenderTheatre is between the touch group and the touch target,
+// meaning it has a chance of not being included. Any further changes to the
+// hit testing logic must ensure that the result has a correct path
+// (until automated testing is implemented).
+
+// bool _debugPrintResultPath(HitTestResult result) {
+//   assert(() {
+//     final buffer = StringBuffer()
+//       ..writeln("---")
+//       ..write("${describeIdentity(result)}.path: START");
+//     final seen = HashSet<HitTestTarget>();
+//     final duplicates = <HitTestTarget>{};
+//     RenderObject? previous;
+//     for (final entry in result.path) {
+//       final target = entry.target;
+//       if (!seen.add(target)) {
+//         duplicates.add(target);
+//       }
+//       if (target is RenderObject &&
+//           previous?.parent != null &&
+//           target != previous?.parent) {
+//         buffer.write(" -> ${describeIdentity(previous?.parent)}");
+//       }
+//       buffer.write("\n${describeIdentity(target)}");
+//       if (target is RenderObject) {
+//         previous = target;
+//       } else {
+//         previous = null;
+//       }
+//     }
+//     buffer.writeln("\n${describeIdentity(result)}.path: END");
+//     if (duplicates.isNotEmpty) {
+//       buffer.writeln(
+//         "${describeIdentity(result)}.path DUPLICATES (original order)",
+//       );
+//       for (final target in duplicates) {
+//         buffer.writeln(describeIdentity(target));
+//       }
+//     }
+//     buffer.writeln("---");
+//     debugPrint(buffer.toString());
+//     return true;
+//   }());
+//   return true;
+// }

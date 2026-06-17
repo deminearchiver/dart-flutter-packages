@@ -33,11 +33,22 @@ mixin TouchClient {
     Offset position,
   );
 
-  /// Whether a given [hit] [RenderObject] has a lineal relation with this
+  /// Whether this client owns a given [hit] [RenderObject].
+  ///
+  /// For clients not associated with a [RenderObject],
+  /// the implementation of this method must always return `false`.
+  bool hasOwn(RenderObject renderObject);
+
+  /// Whether a given [hit] [RenderObject] is a direct descendant of this
   /// client.
   ///
-  /// A relation between two [RenderObject]s is considered to be lineal when
-  /// one is a direct ancestor or a direct descendant of the other in the
-  /// render tree.
-  bool hasLinealRelationWith(RenderObject hit);
+  /// If [renderObject] is this client's own [RenderObject], the implementation must
+  /// return `false`.
+  bool hasDescendant(RenderObject renderObject);
+
+  /// Whether a given [hit] [RenderObject] is a direct ancestor of this client.
+  ///
+  /// If [renderObject] is this client's own [RenderObject], the implementation must
+  /// return `false`.
+  bool hasAncestor(RenderObject renderObject);
 }

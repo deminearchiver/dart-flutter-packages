@@ -158,7 +158,7 @@ class _AppState extends State<App> {
     return _buildThemes(context, appBuilder);
   }
 
-  static const _themeMode = ThemeMode.light;
+  static const _themeMode = ThemeMode.system;
   static const _variant = DynamicSchemeVariant.vibrant;
   static const _platform = DynamicSchemePlatform.phone;
   static const _specVersion = DynamicSchemeSpecVersion.spec2026;

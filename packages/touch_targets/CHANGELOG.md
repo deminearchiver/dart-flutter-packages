@@ -1,3 +1,11 @@
+## 0.4.0
+
+- Fixed hit test result from `TouchGroup` not being populated properly, preventing gestures from reaching arenas such as in a scroll views.
+
+- Fixed potential issues with legacy wrap hit testing.
+
+- Removed `TouchClient.hasLinealRelationWith()` and replaced it with `TouchClient.hasOwn()`, `TouchClient.hasDescendant()`, `TouchClient.hasAncestor()`.
+
 ## 0.3.1
 
 - Added `operator==` and `hashCode` overrides to the `TouchClient` implementation of `SizedTouchTarget` and `PaddedTouchTarget`.
