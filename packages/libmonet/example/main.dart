@@ -83,14 +83,13 @@ extension type _SeedColors._(
 
 final seedColorsByName = <String, _SeedColors>{
   "baseline": .new(sourceColor: .fromArgb(0xFF6750A4)),
-  "nowinandroid": .new(
-    sourceColor: .fromArgb(0xFF8C4190),
-    primaryPaletteKeyColor: .fromArgb(0xFF8C4190),
-    secondaryPaletteKeyColor: .fromArgb(0xFFFF8456),
-    tertiaryPaletteKeyColor: .fromArgb(0xFFB3E9FF),
-    neutralPaletteKeyColor: .fromArgb(0xFF201A1B),
-  ),
-  "obtainium": .new(sourceColor: .fromArgb(0xFF6438B5)),
+  // "nowinandroid": .new(
+  //   sourceColor: .fromArgb(0xFF8C4190),
+  //   primaryPaletteKeyColor: .fromArgb(0xFF8C4190),
+  //   secondaryPaletteKeyColor: .fromArgb(0xFFFF8456),
+  //   tertiaryPaletteKeyColor: .fromArgb(0xFFB3E9FF),
+  //   neutralPaletteKeyColor: .fromArgb(0xFF201A1B),
+  // ),
 };
 
 final _mdc = MaterialDynamicColors();
@@ -192,6 +191,11 @@ final _androidCustomDynamicColors = <DynamicColor>{
   _adc.onShadeInactiveVariant,
   _adc.shadeDisabled,
   _adc.overviewBackground,
+  _adc.surfaceEffect0,
+  _adc.surfaceEffect1,
+  _adc.surfaceEffect2,
+  _adc.surfaceEffect3,
+  _adc.surfaceEffect0Fallback,
 };
 
 final _allDynamicColors = <DynamicColor>{
@@ -214,6 +218,15 @@ extension type const _DynamicSchemeConfiguration._(
   Platform get platform => _.platform;
 
   SpecVersion get specVersion => _.specVersion;
+}
+String _cssHexFromArgb(int argb) {
+  final rgbHex =
+      "${ColorUtils.redFromArgb(argb).toRadixString(16).toUpperCase().padLeft(2, "0")}"
+      "${ColorUtils.greenFromArgb(argb).toRadixString(16).toUpperCase().padLeft(2, "0")}"
+      "${ColorUtils.blueFromArgb(argb).toRadixString(16).toUpperCase().padLeft(2, "0")}";
+  return ColorUtils.isOpaque(argb)
+      ? "#$rgbHex"
+      : "#$rgbHex${ColorUtils.alphaFromArgb(argb).toRadixString(16).toUpperCase().padLeft(2, "0")}";
 }
 
 void main() {
@@ -341,7 +354,7 @@ void main() {
                 final variableName =
                     "md-sys-color-${dynamicColor.name.toKebabCase()}";
                 final variableProperty = "--$variableName";
-                final variableValue = StringUtils.hexFromArgb(
+                final variableValue = _cssHexFromArgb(
                   dynamicColor.getArgb(scheme),
                 );
                 css.writeln("  $variableProperty: $variableValue;");

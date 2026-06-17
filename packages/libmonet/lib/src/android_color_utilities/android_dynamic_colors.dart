@@ -300,6 +300,45 @@ final class AndroidDynamicColors {
     isBackground: true,
   );
 
+  DynamicColor get surfaceEffect0 => DynamicColor(
+    name: "surface_effect_0",
+    palette: (s) => s.primaryPalette,
+    tone: (s) => s.isDark ? 20.0 : 90.0,
+    isBackground: true,
+    opacity: (s) => .5,
+  );
+
+  DynamicColor get surfaceEffect1 => DynamicColor(
+    name: "surface_effect_1",
+    palette: (s) => s.neutralPalette,
+    tone: (s) => s.isDark ? 6.0 : 98.0,
+    isBackground: true,
+    opacity: (s) => .54,
+  );
+
+  DynamicColor get surfaceEffect2 => DynamicColor(
+    name: "surface_effect_2",
+    palette: (s) => s.primaryPalette,
+    tone: (s) => s.isDark ? 90.0 : 100.0,
+    isBackground: true,
+    opacity: (s) => s.isDark ? .15 : .32,
+  );
+
+  DynamicColor get surfaceEffect3 => DynamicColor(
+    name: "surface_effect_3",
+    palette: (s) => s.primaryPalette,
+    tone: (s) => s.isDark ? 90.0 : 40.0,
+    isBackground: true,
+    opacity: (s) => s.isDark ? .10 : .15,
+  );
+
+  DynamicColor get surfaceEffect0Fallback => DynamicColor(
+    name: "surface_effect_0_fallback",
+    palette: (s) => s.secondaryPalette,
+    tone: (s) => s.isDark ? 20.0 : 80.0,
+    isBackground: true,
+  );
+
   /// All dynamic colors in Android Design system.
   ///
   /// A list containing getters for all dynamic colors of this class.
@@ -328,6 +367,11 @@ final class AndroidDynamicColors {
     () => onShadeInactiveVariant,
     () => shadeDisabled,
     () => overviewBackground,
+    () => surfaceEffect0,
+    () => surfaceEffect1,
+    () => surfaceEffect2,
+    () => surfaceEffect3,
+    () => surfaceEffect0Fallback,
   ]);
 
   static double _findBestToneForChroma(

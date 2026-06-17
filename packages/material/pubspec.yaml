@@ -28,11 +28,14 @@ dependencies:
   # Hosted dependencies
   androidx_graphics_shapes: ^1.5.0
   collection: ^1.19.1
-  libmonet: 2.0.0-dev.16
+  libmonet: 2.0.0-dev.17
   material_symbols_icons: ^4.2928.1
   meta: ^1.17.0
   motor: ^1.1.0
-  touch_targets: ^0.3.1
+  touch_targets: ^0.4.0
+  build: ^4.0.6
+  source_gen: ^4.2.3
+  analyzer: ^10.2.0
 
 dev_dependencies:
   # SDK dependencies
@@ -41,3 +44,6 @@ dev_dependencies:
 
   # Hosted dependencies
   deminearchiver_lints: ^2.1.2
+  dart_style: ^3.1.7
+  code_builder: ^4.11.1
+  build_runner: ^2.15.0
