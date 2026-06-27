@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Fixed error when building for non-web targets.
+
 ## 2.0.0
 
 - Bumped `win32` to `6.0.0`.
