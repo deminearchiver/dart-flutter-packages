@@ -503,6 +503,10 @@ final class _StateFocusIndicatorTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(StateFocusIndicatorThemeDataPartial data) =>
+      data is StateFocusIndicatorThemeData;
+
+  @override
   _StateFocusIndicatorThemeElement createElement() =>
       _StateFocusIndicatorThemeElement(this);
 

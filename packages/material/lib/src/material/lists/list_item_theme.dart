@@ -1535,6 +1535,9 @@ final class _ListItemTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(ListItemThemeDataPartial data) => data is ListItemThemeData;
+
+  @override
   _ListItemThemeElement createElement() => _ListItemThemeElement(this);
 
   @override

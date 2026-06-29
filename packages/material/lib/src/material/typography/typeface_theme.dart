@@ -759,6 +759,9 @@ final class _TypefaceTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(TypefaceThemeDataPartial data) => data.isConcrete;
+
+  @override
   _TypefaceThemeElement createElement() => _TypefaceThemeElement(this);
 
   @override

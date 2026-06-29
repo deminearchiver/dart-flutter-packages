@@ -508,6 +508,10 @@ final class _LoadingIndicatorTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(LoadingIndicatorThemeDataPartial data) =>
+      data is LoadingIndicatorThemeData;
+
+  @override
   _LoadingIndicatorThemeElement createElement() =>
       _LoadingIndicatorThemeElement(this);
 

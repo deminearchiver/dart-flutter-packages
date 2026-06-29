@@ -2988,6 +2988,9 @@ final class _TypescaleTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(TypescaleThemeDataPartial data) => data is TypescaleThemeData;
+
+  @override
   _TypescaleThemeElement createElement() => _TypescaleThemeElement(this);
 
   @override

@@ -1666,6 +1666,9 @@ final class _ShapeTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(ShapeThemeDataPartial data) => data is ShapeThemeData;
+
+  @override
   _ShapeThemeElement createElement() => _ShapeThemeElement(this);
 
   @override

@@ -1000,6 +1000,9 @@ final class _EasingTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(EasingThemeDataPartial data) => data.isConcrete;
+
+  @override
   _EasingThemeElement createElement() => _EasingThemeElement(this);
 
   @override

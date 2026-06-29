@@ -746,6 +746,9 @@ final class _StateTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(StateThemeDataPartial data) => data.isConcrete;
+
+  @override
   _StateThemeElement createElement() => _StateThemeElement(this);
 
   @override

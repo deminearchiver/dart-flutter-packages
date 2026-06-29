@@ -993,11 +993,6 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
     return SpringSimulation(
       const SpringThemeData.defaultsExpressive().fastSpatial
           .toSpringDescription(),
-      // SpringDescription.withDampingRatio(
-      //   mass: 1.0,
-      //   stiffness: 800.0,
-      //   ratio: 0.5,
-      // ),
       value ?? (forward ? 0.0 : 1.0),
       forward ? 1.0 : 0.0,
       velocity,

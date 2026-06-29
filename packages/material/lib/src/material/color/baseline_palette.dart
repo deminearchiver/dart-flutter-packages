@@ -4570,6 +4570,9 @@ final class _BaselinePaletteTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(BaselinePalettePartial data) => data is BaselinePalette;
+
+  @override
   _BaselinePaletteThemeElement createElement() =>
       _BaselinePaletteThemeElement(this);
 

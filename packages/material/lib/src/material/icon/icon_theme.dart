@@ -194,6 +194,9 @@ final class _IconTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(IconThemeDataPartial data) => data.isConcrete;
+
+  @override
   _IconThemeElement createElement() => _IconThemeElement(this);
 
   @override

@@ -142,6 +142,9 @@ final class _ElevationTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(ElevationThemeDataPartial data) => data.isConcrete;
+
+  @override
   _ElevationThemeElement createElement() => _ElevationThemeElement(this);
 
   @override

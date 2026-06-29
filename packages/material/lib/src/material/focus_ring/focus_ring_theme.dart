@@ -599,6 +599,9 @@ final class _FocusRingTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(FocusRingThemeDataPartial data) => data is FocusRingThemeData;
+
+  @override
   _FocusRingThemeElement createElement() => _FocusRingThemeElement(this);
 
   @override

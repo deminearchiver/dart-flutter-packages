@@ -142,6 +142,9 @@ final class _MeasurementTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(MeasurementThemeDataPartial data) => data.isConcrete;
+
+  @override
   _MeasurementThemeElement createElement() => _MeasurementThemeElement(this);
 
   @override

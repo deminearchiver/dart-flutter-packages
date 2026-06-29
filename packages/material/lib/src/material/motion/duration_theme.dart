@@ -1280,6 +1280,9 @@ final class _DurationTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(DurationThemeDataPartial data) => data.isConcrete;
+
+  @override
   _DurationThemeElement createElement() => _DurationThemeElement(this);
 
   @override

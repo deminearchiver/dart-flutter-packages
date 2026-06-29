@@ -203,6 +203,9 @@ final class _ColorTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(ColorThemeDataPartial data) => data.isConcrete;
+
+  @override
   _ColorThemeElement createElement() => _ColorThemeElement(this);
 
   @override

@@ -1145,6 +1145,9 @@ final class _SpringTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
+  bool isConcrete(SpringThemeDataPartial data) => data.isConcrete;
+
+  @override
   _SpringThemeElement createElement() => _SpringThemeElement(this);
 
   @override
