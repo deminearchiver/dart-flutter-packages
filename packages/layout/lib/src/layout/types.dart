@@ -187,7 +187,7 @@ abstract class BoxChildLayoutStrategy {
   static const BoxChildLayoutStrategy wet = _BoxChildWetLayoutStrategy();
 }
 
-class _BoxChildDryLayoutStrategy extends BoxChildLayoutStrategy {
+final class _BoxChildDryLayoutStrategy extends BoxChildLayoutStrategy {
   const _BoxChildDryLayoutStrategy();
 
   @override
@@ -218,7 +218,7 @@ class _BoxChildDryLayoutStrategy extends BoxChildLayoutStrategy {
   String toString() => "BoxChildLayoutStrategy.dry";
 }
 
-class _BoxChildWetLayoutStrategy extends BoxChildLayoutStrategy {
+final class _BoxChildWetLayoutStrategy extends BoxChildLayoutStrategy {
   const _BoxChildWetLayoutStrategy();
 
   @override
@@ -253,4 +253,45 @@ class _BoxChildWetLayoutStrategy extends BoxChildLayoutStrategy {
 
   @override
   String toString() => "BoxChildLayoutStrategy.wet";
+}
+
+abstract class SliverChildLayoutStrategy {
+  const SliverChildLayoutStrategy();
+
+  bool get affectsLayoutState;
+
+  void layoutChild(RenderSliver child, SliverConstraints constraints);
+
+  SliverGeometry layoutChildForGeometry(
+    RenderSliver child,
+    SliverConstraints constraints,
+  );
+
+  static const SliverChildLayoutStrategy wet = _SliverChildWetLayoutStrategy();
+}
+
+final class _SliverChildWetLayoutStrategy extends SliverChildLayoutStrategy {
+  const _SliverChildWetLayoutStrategy();
+
+  @override
+  bool get affectsLayoutState => true;
+
+  @override
+  void layoutChild(RenderSliver child, SliverConstraints constraints) {
+    child.layout(constraints, parentUsesSize: false);
+  }
+
+  @override
+  SliverGeometry layoutChildForGeometry(
+    RenderSliver child,
+    SliverConstraints constraints,
+  ) {
+    child.layout(constraints, parentUsesSize: true);
+    final geometry = child.geometry;
+    assert(geometry != null);
+    return geometry!;
+  }
+
+  @override
+  String toString() => "SliverChildLayoutStrategy.wet";
 }
