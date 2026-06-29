@@ -636,9 +636,9 @@ abstract class InheritedThemeResolverElement<
       // print("merge cache hit");
       merged = mergeCached.merged;
     } else {
-      print(
-        "merge cache miss ${_mergeCache?.fallback} ${ancestor} ${_mergeCache?.overrides} ${resolved}",
-      );
+      // print(
+      //   "merge cache miss ${_mergeCache?.fallback} ${ancestor} ${_mergeCache?.overrides} ${resolved}",
+      // );
       merged = _widget.merge(ancestor, resolved);
       _mergeCache = _MergeCache(
         fallback: ancestor,
