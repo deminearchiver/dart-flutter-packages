@@ -310,6 +310,14 @@ class _StatePropertyWith<T extends Object?, S extends Object?>
 
   @override
   T resolve(S states) => _resolve(states);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _StatePropertyWith<T, S> && _resolve == other._resolve;
+
+  @override
+  int get hashCode => _resolve.hashCode;
 }
 
 class _StatePropertyOnce<T extends Object?, S extends Object?>
@@ -321,9 +329,6 @@ class _StatePropertyOnce<T extends Object?, S extends Object?>
 
   @override
   T resolve(S _) => _value ??= _resolve();
-
-  @override
-  String toString() => "CustomStateProperty.resolveOnce<$T, $S>()";
 }
 
 class _StatePropertyAll<T extends Object?, S extends Object?>
@@ -336,7 +341,7 @@ class _StatePropertyAll<T extends Object?, S extends Object?>
   T resolve(S _) => value;
 
   @override
-  String toString() => "CustomStateProperty.all($value)";
+  String toString() => "StateProperty<$T, $S>.all($value)";
 
   @override
   bool operator ==(Object other) =>

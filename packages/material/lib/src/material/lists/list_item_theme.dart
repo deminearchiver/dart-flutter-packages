@@ -284,6 +284,89 @@ abstract class ListItemThemeDataPartial with Diagnosticable
           trailingIconTheme: other.trailingIconTheme,
         )
       : this;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<ShapeBorder?>>(
+          "containerShape",
+          containerShape,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<Color?>>(
+          "containerColor",
+          containerColor,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<Color?>>(
+          "stateLayerColor",
+          stateLayerColor,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<double?>>(
+          "stateLayerOpacity",
+          stateLayerOpacity,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<IconThemeDataPartial?>>(
+          "leadingIconTheme",
+          leadingIconTheme,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<TextStyle?>>(
+          "leadingTextStyle",
+          leadingTextStyle,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<TextStyle?>>(
+          "overlineTextStyle",
+          overlineTextStyle,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<TextStyle?>>(
+          "headlineTextStyle",
+          headlineTextStyle,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<TextStyle?>>(
+          "supportingTextStyle",
+          supportingTextStyle,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<TextStyle?>>(
+          "trailingTextStyle",
+          trailingTextStyle,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<IconThemeDataPartial?>>(
+          "trailingIconTheme",
+          trailingIconTheme,
+          defaultValue: null,
+        ),
+      );
+  }
 }
 
 final class _ListItemThemeDataPartial extends ListItemThemeDataPartial {
@@ -661,6 +744,78 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial
           trailingIconTheme: other.trailingIconTheme,
         )
       : this;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<ShapeBorder>>(
+          "containerShape",
+          containerShape,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<Color>>(
+          "containerColor",
+          containerColor,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<Color>>(
+          "stateLayerColor",
+          stateLayerColor,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<double>>(
+          "stateLayerOpacity",
+          stateLayerOpacity,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<IconThemeDataPartial>>(
+          "leadingIconTheme",
+          leadingIconTheme,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<TextStyle>>(
+          "leadingTextStyle",
+          leadingTextStyle,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<TextStyle>>(
+          "overlineTextStyle",
+          overlineTextStyle,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<TextStyle>>(
+          "headlineTextStyle",
+          headlineTextStyle,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<TextStyle>>(
+          "supportingTextStyle",
+          supportingTextStyle,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<TextStyle>>(
+          "trailingTextStyle",
+          trailingTextStyle,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ListItemStateProperty<IconThemeDataPartial>>(
+          "trailingIconTheme",
+          trailingIconTheme,
+        ),
+      );
+  }
 }
 
 final class _ListItemThemeData extends ListItemThemeData {
@@ -760,191 +915,257 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
 
   @override
   ListItemStateProperty<ShapeBorder> get containerShape =>
-      .resolveWith((states) {
-        final resolved = _overrides.containerShape?.resolve(states);
-        if (resolved != null) return resolved;
-        final outerCorner = _shapeTheme.cornerLarge;
-        final innerCorner = _shapeTheme.cornerExtraSmall;
-        final CornersGeometry corners = switch (states) {
-          SegmentedListItemStates(isFirst: true, isLast: true) ||
-          SelectableListItemStates(isSelected: true) => .all(outerCorner),
-          SegmentedListItemStates(isFirst: true) => .vertical(
-            top: outerCorner,
-            bottom: innerCorner,
-          ),
-          SegmentedListItemStates(isLast: true) => .vertical(
-            top: innerCorner,
-            bottom: outerCorner,
-          ),
-          _ => .all(innerCorner),
-        };
-        return _shapeTheme.applyCorners(corners: corners);
-      });
+      _ListItemStateProperty(this, _resolveContainerShape);
+
+  static ShapeBorder _resolveContainerShape(
+    ListItemStates states,
+    _ListItemThemeDataDefaults defaults,
+  ) {
+    final resolved = defaults._overrides.containerShape?.resolve(states);
+    if (resolved != null) return resolved;
+    final outerCorner = defaults._shapeTheme.cornerLarge;
+    final innerCorner = defaults._shapeTheme.cornerExtraSmall;
+    final CornersGeometry corners = switch (states) {
+      SegmentedListItemStates(isFirst: true, isLast: true) ||
+      SelectableListItemStates(isSelected: true) => .all(outerCorner),
+      SegmentedListItemStates(isFirst: true) => .vertical(
+        top: outerCorner,
+        bottom: innerCorner,
+      ),
+      SegmentedListItemStates(isLast: true) => .vertical(
+        top: innerCorner,
+        bottom: outerCorner,
+      ),
+      _ => .all(innerCorner),
+    };
+    return defaults._shapeTheme.applyCorners(corners: corners);
+  }
 
   @override
-  ListItemStateProperty<Color> get containerColor => .resolveWith(
-    (states) =>
-        _overrides.containerColor?.resolve(states) ??
-        switch (states) {
-          InteractiveListItemDisabledStates() =>
-            _colorTheme.onSurface.withValues(alpha: 0.10),
-          DraggableListItemStates(isDragged: true) =>
-            _colorTheme.tertiaryContainer,
-          SelectableListItemStates(isSelected: true) =>
-            _colorTheme.secondaryContainer,
-          _ => _colorTheme.surface,
-        },
-  );
+  ListItemStateProperty<Color> get containerColor =>
+      _ListItemStateProperty(this, _resolveContainerColor);
+
+  static Color _resolveContainerColor(
+    ListItemStates states,
+    _ListItemThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.containerColor?.resolve(states) ??
+      switch (states) {
+        InteractiveListItemDisabledStates() =>
+          defaults._colorTheme.onSurface.withValues(alpha: 0.10),
+        DraggableListItemStates(isDragged: true) =>
+          defaults._colorTheme.tertiaryContainer,
+        SelectableListItemStates(isSelected: true) =>
+          defaults._colorTheme.secondaryContainer,
+        _ => defaults._colorTheme.surface,
+      };
 
   @override
-  ListItemStateProperty<Color> get stateLayerColor => .resolveWith(
-    (states) =>
-        _overrides.stateLayerColor?.resolve(states) ??
-        switch (states) {
-          DraggableListItemStates(isDragged: true) =>
-            _colorTheme.onTertiaryContainer,
-          SelectableListItemStates(isSelected: true) =>
-            _colorTheme.onSecondaryContainer,
-          _ => _colorTheme.onSurface,
-        },
-  );
+  ListItemStateProperty<Color> get stateLayerColor =>
+      _ListItemStateProperty(this, _resolveStateLayerColor);
+
+  static Color _resolveStateLayerColor(
+    ListItemStates states,
+    _ListItemThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.stateLayerColor?.resolve(states) ??
+      switch (states) {
+        DraggableListItemStates(isDragged: true) =>
+          defaults._colorTheme.onTertiaryContainer,
+        SelectableListItemStates(isSelected: true) =>
+          defaults._colorTheme.onSecondaryContainer,
+        _ => defaults._colorTheme.onSurface,
+      };
 
   @override
-  ListItemStateProperty<double> get stateLayerOpacity => .resolveWith(
-    (states) =>
-        _overrides.stateLayerOpacity?.resolve(states) ??
-        switch (states) {
-          InteractiveListItemDisabledStates() => 0.0,
-          DraggableListItemStates(isDragged: true) =>
-            _stateTheme.draggedStateLayerOpacity,
-          InteractiveListItemEnabledStates(isPressed: true) =>
-            _stateTheme.pressedStateLayerOpacity,
-          InteractiveListItemEnabledStates(isHovered: true) =>
-            _stateTheme.hoverStateLayerOpacity,
-          InteractiveListItemEnabledStates(isFocused: true) => 0.0,
-          _ => 0.0,
-        },
-  );
+  ListItemStateProperty<double> get stateLayerOpacity =>
+      _ListItemStateProperty(this, _resolveStateLayerOpacity);
+
+  static double _resolveStateLayerOpacity(
+    ListItemStates states,
+    _ListItemThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.stateLayerOpacity?.resolve(states) ??
+      switch (states) {
+        InteractiveListItemDisabledStates() => 0.0,
+        DraggableListItemStates(isDragged: true) =>
+          defaults._stateTheme.draggedStateLayerOpacity,
+        InteractiveListItemEnabledStates(isPressed: true) =>
+          defaults._stateTheme.pressedStateLayerOpacity,
+        InteractiveListItemEnabledStates(isHovered: true) =>
+          defaults._stateTheme.hoverStateLayerOpacity,
+        InteractiveListItemEnabledStates(isFocused: true) => 0.0,
+        _ => 0.0,
+      };
 
   @override
   ListItemStateProperty<IconThemeDataPartial> get leadingIconTheme =>
-      .resolveWith((states) {
-        final color = switch (states) {
-          InteractiveListItemDisabledStates() =>
-            _colorTheme.onSurface.withValues(alpha: 0.38),
-          DraggableListItemStates(isDragged: true) =>
-            _colorTheme.onTertiaryContainer,
-          SelectableListItemStates(isSelected: true) =>
-            _colorTheme.onSecondaryContainer,
-          _ => _colorTheme.onSurfaceVariant,
-        };
-        final result = IconThemeDataPartial.from(
-          size: 24.0,
-          opticalSize: 24.0,
-          color: color,
-        );
-        return result.maybeMerge(_overrides.leadingIconTheme?.resolve(states));
-      });
+      _ListItemStateProperty(this, _resolveLeadingIconTheme);
+
+  static IconThemeDataPartial _resolveLeadingIconTheme(
+    ListItemStates states,
+    _ListItemThemeDataDefaults defaults,
+  ) {
+    final color = switch (states) {
+      InteractiveListItemDisabledStates() =>
+        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+      DraggableListItemStates(isDragged: true) =>
+        defaults._colorTheme.onTertiaryContainer,
+      SelectableListItemStates(isSelected: true) =>
+        defaults._colorTheme.onSecondaryContainer,
+      _ => defaults._colorTheme.onSurfaceVariant,
+    };
+    final result = IconThemeDataPartial.from(
+      size: 24.0,
+      opticalSize: 24.0,
+      color: color,
+    );
+    return result.maybeMerge(
+      defaults._overrides.leadingIconTheme?.resolve(states),
+    );
+  }
 
   @override
   ListItemStateProperty<TextStyle> get leadingTextStyle =>
-      .resolveWith((states) {
-        final color = switch (states) {
-          InteractiveListItemDisabledStates() =>
-            _colorTheme.onSurface.withValues(alpha: 0.38),
-          DraggableListItemStates(isDragged: true) =>
-            _colorTheme.onTertiaryContainer,
-          SelectableListItemStates(isSelected: true) =>
-            _colorTheme.onSecondaryContainer,
-          _ => _colorTheme.onSurfaceVariant,
-        };
-        final result = _typescaleTheme.labelLarge.toTextStyle(color: color);
-        return result.merge(_overrides.leadingTextStyle?.resolve(states));
-      });
+      _ListItemStateProperty(this, _resolveLeadingTextStyle);
+
+  static TextStyle _resolveLeadingTextStyle(
+    ListItemStates states,
+    _ListItemThemeDataDefaults defaults,
+  ) {
+    final color = switch (states) {
+      InteractiveListItemDisabledStates() =>
+        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+      DraggableListItemStates(isDragged: true) =>
+        defaults._colorTheme.onTertiaryContainer,
+      SelectableListItemStates(isSelected: true) =>
+        defaults._colorTheme.onSecondaryContainer,
+      _ => defaults._colorTheme.onSurfaceVariant,
+    };
+    final result = defaults._typescaleTheme.labelLarge.toTextStyle(
+      color: color,
+    );
+    return result.merge(defaults._overrides.leadingTextStyle?.resolve(states));
+  }
 
   @override
   ListItemStateProperty<TextStyle> get overlineTextStyle =>
-      .resolveWith((states) {
-        final color = switch (states) {
-          InteractiveListItemDisabledStates() =>
-            _colorTheme.onSurface.withValues(alpha: 0.38),
-          DraggableListItemStates(isDragged: true) =>
-            _colorTheme.onTertiaryContainer,
-          SelectableListItemStates(isSelected: true) =>
-            _colorTheme.onSecondaryContainer,
-          _ => _colorTheme.onSurfaceVariant,
-        };
-        final result = _typescaleTheme.labelMedium.toTextStyle(color: color);
-        return result.merge(_overrides.overlineTextStyle?.resolve(states));
-      });
+      _ListItemStateProperty(this, _resolveOverlineTextStyle);
+
+  static TextStyle _resolveOverlineTextStyle(
+    ListItemStates states,
+    _ListItemThemeDataDefaults defaults,
+  ) {
+    final color = switch (states) {
+      InteractiveListItemDisabledStates() =>
+        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+      DraggableListItemStates(isDragged: true) =>
+        defaults._colorTheme.onTertiaryContainer,
+      SelectableListItemStates(isSelected: true) =>
+        defaults._colorTheme.onSecondaryContainer,
+      _ => defaults._colorTheme.onSurfaceVariant,
+    };
+    final result = defaults._typescaleTheme.labelMedium.toTextStyle(
+      color: color,
+    );
+    return result.merge(defaults._overrides.overlineTextStyle?.resolve(states));
+  }
 
   @override
   ListItemStateProperty<TextStyle> get headlineTextStyle =>
-      .resolveWith((states) {
-        final color = switch (states) {
-          InteractiveListItemDisabledStates() =>
-            _colorTheme.onSurface.withValues(alpha: 0.38),
-          DraggableListItemStates(isDragged: true) =>
-            _colorTheme.onTertiaryContainer,
-          SelectableListItemStates(isSelected: true) =>
-            _colorTheme.onSecondaryContainer,
-          _ => _colorTheme.onSurface,
-        };
-        final result = _typescaleTheme.bodyLarge.toTextStyle(color: color);
-        return result.merge(_overrides.headlineTextStyle?.resolve(states));
-      });
+      _ListItemStateProperty(this, _resolveHeadlineTextStyle);
+
+  static TextStyle _resolveHeadlineTextStyle(
+    ListItemStates states,
+    _ListItemThemeDataDefaults defaults,
+  ) {
+    final color = switch (states) {
+      InteractiveListItemDisabledStates() =>
+        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+      DraggableListItemStates(isDragged: true) =>
+        defaults._colorTheme.onTertiaryContainer,
+      SelectableListItemStates(isSelected: true) =>
+        defaults._colorTheme.onSecondaryContainer,
+      _ => defaults._colorTheme.onSurface,
+    };
+    final result = defaults._typescaleTheme.bodyLarge.toTextStyle(color: color);
+    return result.merge(defaults._overrides.headlineTextStyle?.resolve(states));
+  }
 
   @override
   ListItemStateProperty<TextStyle> get supportingTextStyle =>
-      .resolveWith((states) {
-        final color = switch (states) {
-          InteractiveListItemDisabledStates() =>
-            _colorTheme.onSurface.withValues(alpha: 0.38),
-          DraggableListItemStates(isDragged: true) =>
-            _colorTheme.onTertiaryContainer,
-          SelectableListItemStates(isSelected: true) =>
-            _colorTheme.onSecondaryContainer,
-          _ => _colorTheme.onSurfaceVariant,
-        };
-        final result = _typescaleTheme.bodyMedium.toTextStyle(color: color);
-        return result.merge(_overrides.supportingTextStyle?.resolve(states));
-      });
+      _ListItemStateProperty(this, _resolveSupportingTextStyle);
+
+  static TextStyle _resolveSupportingTextStyle(
+    ListItemStates states,
+    _ListItemThemeDataDefaults defaults,
+  ) {
+    final color = switch (states) {
+      InteractiveListItemDisabledStates() =>
+        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+      DraggableListItemStates(isDragged: true) =>
+        defaults._colorTheme.onTertiaryContainer,
+      SelectableListItemStates(isSelected: true) =>
+        defaults._colorTheme.onSecondaryContainer,
+      _ => defaults._colorTheme.onSurfaceVariant,
+    };
+    final result = defaults._typescaleTheme.bodyMedium.toTextStyle(
+      color: color,
+    );
+    return result.merge(
+      defaults._overrides.supportingTextStyle?.resolve(states),
+    );
+  }
 
   @override
   ListItemStateProperty<TextStyle> get trailingTextStyle =>
-      .resolveWith((states) {
-        final color = switch (states) {
-          InteractiveListItemDisabledStates() =>
-            _colorTheme.onSurface.withValues(alpha: 0.38),
-          DraggableListItemStates(isDragged: true) =>
-            _colorTheme.onTertiaryContainer,
-          SelectableListItemStates(isSelected: true) =>
-            _colorTheme.onSecondaryContainer,
-          _ => _colorTheme.onSurfaceVariant,
-        };
-        final result = _typescaleTheme.labelLarge.toTextStyle(color: color);
-        return result.merge(_overrides.trailingTextStyle?.resolve(states));
-      });
+      _ListItemStateProperty(this, _resolveTrailingTextStyle);
+
+  static TextStyle _resolveTrailingTextStyle(
+    ListItemStates states,
+    _ListItemThemeDataDefaults defaults,
+  ) {
+    final color = switch (states) {
+      InteractiveListItemDisabledStates() =>
+        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+      DraggableListItemStates(isDragged: true) =>
+        defaults._colorTheme.onTertiaryContainer,
+      SelectableListItemStates(isSelected: true) =>
+        defaults._colorTheme.onSecondaryContainer,
+      _ => defaults._colorTheme.onSurfaceVariant,
+    };
+    final result = defaults._typescaleTheme.labelLarge.toTextStyle(
+      color: color,
+    );
+    return result.merge(defaults._overrides.trailingTextStyle?.resolve(states));
+  }
 
   @override
   ListItemStateProperty<IconThemeDataPartial> get trailingIconTheme =>
-      .resolveWith((states) {
-        final color = switch (states) {
-          InteractiveListItemDisabledStates() =>
-            _colorTheme.onSurface.withValues(alpha: 0.38),
-          DraggableListItemStates(isDragged: true) =>
-            _colorTheme.onTertiaryContainer,
-          SelectableListItemStates(isSelected: true) =>
-            _colorTheme.onSecondaryContainer,
-          _ => _colorTheme.onSurfaceVariant,
-        };
-        final result = IconThemeDataPartial.from(
-          size: 24.0,
-          opticalSize: 24.0,
-          color: color,
-        );
-        return result.maybeMerge(_overrides.trailingIconTheme?.resolve(states));
-      });
+      _ListItemStateProperty(this, _resolveTrailingIconTheme);
+
+  static IconThemeDataPartial _resolveTrailingIconTheme(
+    ListItemStates states,
+    _ListItemThemeDataDefaults defaults,
+  ) {
+    final color = switch (states) {
+      InteractiveListItemDisabledStates() =>
+        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+      DraggableListItemStates(isDragged: true) =>
+        defaults._colorTheme.onTertiaryContainer,
+      SelectableListItemStates(isSelected: true) =>
+        defaults._colorTheme.onSecondaryContainer,
+      _ => defaults._colorTheme.onSurfaceVariant,
+    };
+    final result = IconThemeDataPartial.from(
+      size: 24.0,
+      opticalSize: 24.0,
+      color: color,
+    );
+    return result.maybeMerge(
+      defaults._overrides.trailingIconTheme?.resolve(states),
+    );
+  }
 
   @override
   ListItemThemeData copyWith({
@@ -1132,6 +1353,28 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
     _typescaleTheme,
     _overrides,
   );
+}
+
+final class _ListItemStateProperty<T extends Object?>
+    implements ListItemStateProperty<T> {
+  const _ListItemStateProperty(this._defaults, this._resolve);
+
+  final _ListItemThemeDataDefaults _defaults;
+  final T Function(ListItemStates states, _ListItemThemeDataDefaults defaults)
+  _resolve;
+
+  @override
+  T resolve(ListItemStates states) => _resolve(states, _defaults);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _ListItemStateProperty<T> &&
+          _defaults == other._defaults &&
+          _resolve == other._resolve;
+
+  @override
+  int get hashCode => Object.hash(_defaults, _resolve);
 }
 
 abstract class ListItemTheme extends StatelessWidget implements ProxyWidget {

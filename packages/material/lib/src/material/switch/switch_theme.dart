@@ -805,142 +805,201 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
   final SwitchThemeDataPartial _overrides;
 
   @override
-  SwitchStateProperty<Size> get minTapTargetSize => .resolveWith(
-    (states) =>
-        _overrides.minTapTargetSize?.resolve(states) ?? const .square(48.0),
-  );
+  SwitchStateProperty<Size> get minTapTargetSize =>
+      _SwitchStateProperty(this, _resolveMinTapTargetSize);
+
+  static Size _resolveMinTapTargetSize(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.minTapTargetSize?.resolve(states) ??
+      const .square(48.0);
 
   @override
-  SwitchStateProperty<Size> get trackSize => .resolveWith(
-    (states) => _overrides.trackSize?.resolve(states) ?? const Size(52.0, 32.0),
-  );
+  SwitchStateProperty<Size> get trackSize =>
+      _SwitchStateProperty(this, _resolveTrackSize);
+
+  static Size _resolveTrackSize(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) => defaults._overrides.trackSize?.resolve(states) ?? const Size(52.0, 32.0);
 
   @override
-  SwitchStateProperty<OutlinedBorder> get trackShape => .resolveWith(
-    (states) =>
-        _overrides.trackShape?.resolve(states) ??
-        _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
-  );
+  SwitchStateProperty<OutlinedBorder> get trackShape =>
+      _SwitchStateProperty(this, _resolveTrackShape);
+
+  static OutlinedBorder _resolveTrackShape(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.trackShape?.resolve(states) ??
+      defaults._shapeTheme.applyCorner(corner: defaults._shapeTheme.cornerFull);
 
   @override
-  SwitchStateProperty<Color> get trackColor => .resolveWith(
-    (states) =>
-        _overrides.trackColor?.resolve(states) ??
-        switch (states) {
-          SwitchDisabledStates(isSelected: false) =>
-            _colorTheme.surfaceContainerHighest.withValues(alpha: 0.1),
-          SwitchDisabledStates(isSelected: true) =>
-            _colorTheme.onSurface.withValues(alpha: 0.1),
-          SwitchStates(isSelected: false) =>
-            _colorTheme.surfaceContainerHighest,
-          SwitchStates(isSelected: true) => _colorTheme.primary,
-        },
-  );
+  SwitchStateProperty<Color> get trackColor =>
+      _SwitchStateProperty(this, _resolveTrackColor);
 
-  @override
-  SwitchStateProperty<Outline> get trackOutline => .resolveWith(
-    (states) => .from(
-      width: 2.0,
-      alignment: Outline.alignmentInside,
-      color: switch (states) {
+  static Color _resolveTrackColor(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.trackColor?.resolve(states) ??
+      switch (states) {
         SwitchDisabledStates(isSelected: false) =>
-          _colorTheme.onSurface.withValues(alpha: 0.1),
+          defaults._colorTheme.surfaceContainerHighest.withValues(alpha: 0.1),
         SwitchDisabledStates(isSelected: true) =>
-          _colorTheme.primary.withValues(alpha: 0.0),
-        SwitchStates(isSelected: false) => _colorTheme.outline,
-        SwitchStates(isSelected: true) => _colorTheme.primary.withValues(
-          alpha: 0.0,
-        ),
-      },
-    ).maybeMerge(_overrides.trackOutline?.resolve(states)),
-  );
+          defaults._colorTheme.onSurface.withValues(alpha: 0.1),
+        SwitchStates(isSelected: false) =>
+          defaults._colorTheme.surfaceContainerHighest,
+        SwitchStates(isSelected: true) => defaults._colorTheme.primary,
+      };
 
   @override
-  SwitchStateProperty<Size> get stateLayerSize => .resolveWith(
-    (states) =>
-        _overrides.stateLayerSize?.resolve(states) ?? const .square(40.0),
-  );
+  SwitchStateProperty<Outline> get trackOutline =>
+      _SwitchStateProperty(this, _resolveTrackOutline);
+
+  static Outline _resolveTrackOutline(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) => .from(
+    width: 2.0,
+    alignment: Outline.alignmentInside,
+    color: switch (states) {
+      SwitchDisabledStates(isSelected: false) =>
+        defaults._colorTheme.onSurface.withValues(alpha: 0.1),
+      SwitchDisabledStates(isSelected: true) =>
+        defaults._colorTheme.primary.withValues(alpha: 0.0),
+      SwitchStates(isSelected: false) => defaults._colorTheme.outline,
+      SwitchStates(isSelected: true) => defaults._colorTheme.primary.withValues(
+        alpha: 0.0,
+      ),
+    },
+  ).maybeMerge(defaults._overrides.trackOutline?.resolve(states));
 
   @override
-  SwitchStateProperty<ShapeBorder> get stateLayerShape => .resolveWith(
-    (states) =>
-        _overrides.stateLayerShape?.resolve(states) ??
-        _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
-  );
+  SwitchStateProperty<Size> get stateLayerSize =>
+      _SwitchStateProperty(this, _resolveStateLayerSize);
+
+  static Size _resolveStateLayerSize(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.stateLayerSize?.resolve(states) ??
+      const .square(40.0);
 
   @override
-  SwitchStateProperty<Color> get stateLayerColor => .resolveWith(
-    (states) =>
-        _overrides.stateLayerColor?.resolve(states) ??
-        (states.isSelected ? _colorTheme.primary : _colorTheme.onSurface),
-  );
+  SwitchStateProperty<ShapeBorder> get stateLayerShape =>
+      _SwitchStateProperty(this, _resolveStateLayerShape);
+
+  static ShapeBorder _resolveStateLayerShape(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.stateLayerShape?.resolve(states) ??
+      defaults._shapeTheme.applyCorner(corner: defaults._shapeTheme.cornerFull);
 
   @override
-  SwitchStateProperty<double> get stateLayerOpacity => .resolveWith(
-    (states) =>
-        _overrides.stateLayerOpacity?.resolve(states) ??
-        switch (states) {
-          SwitchEnabledStates(isPressed: true) =>
-            _stateTheme.pressedStateLayerOpacity,
-          SwitchEnabledStates(isHovered: true) =>
-            _stateTheme.hoverStateLayerOpacity,
-          SwitchEnabledStates(isFocused: true) => 0.0,
-          SwitchStates() => 0.0,
-        },
-  );
+  SwitchStateProperty<Color> get stateLayerColor =>
+      _SwitchStateProperty(this, _resolveStateLayerColor);
+
+  static Color _resolveStateLayerColor(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.stateLayerColor?.resolve(states) ??
+      (states.isSelected
+          ? defaults._colorTheme.primary
+          : defaults._colorTheme.onSurface);
 
   @override
-  SwitchStateProperty<Size> get handleSize => .resolveWith(
-    (states) =>
-        _overrides.handleSize?.resolve(states) ??
-        switch (states) {
-          SwitchEnabledStates(isPressed: true) => const .square(28.0),
-          SwitchStates(hasIcon: true) ||
-          SwitchStates(isSelected: true) => const .square(24.0),
-          SwitchStates() => const .square(16.0),
-        },
-  );
+  SwitchStateProperty<double> get stateLayerOpacity =>
+      _SwitchStateProperty(this, _resolveStateLayerOpacity);
+
+  static double _resolveStateLayerOpacity(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.stateLayerOpacity?.resolve(states) ??
+      switch (states) {
+        SwitchEnabledStates(isPressed: true) =>
+          defaults._stateTheme.pressedStateLayerOpacity,
+        SwitchEnabledStates(isHovered: true) =>
+          defaults._stateTheme.hoverStateLayerOpacity,
+        SwitchEnabledStates(isFocused: true) => 0.0,
+        SwitchStates() => 0.0,
+      };
 
   @override
-  SwitchStateProperty<OutlinedBorder> get handleShape => .resolveWith(
-    (states) =>
-        _overrides.handleShape?.resolve(states) ??
-        _shapeTheme.applyCorner(corner: _shapeTheme.cornerFull),
-  );
+  SwitchStateProperty<Size> get handleSize =>
+      _SwitchStateProperty(this, _resolveHandleSize);
+
+  static Size _resolveHandleSize(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.handleSize?.resolve(states) ??
+      switch (states) {
+        SwitchEnabledStates(isPressed: true) => const .square(28.0),
+        SwitchStates(hasIcon: true) ||
+        SwitchStates(isSelected: true) => const .square(24.0),
+        SwitchStates() => const .square(16.0),
+      };
 
   @override
-  SwitchStateProperty<Color> get handleColor => .resolveWith(
-    (states) =>
-        _overrides.handleColor?.resolve(states) ??
-        switch (states) {
-          SwitchDisabledStates(isSelected: false) =>
-            _colorTheme.onSurface.withValues(alpha: 0.38),
-          SwitchDisabledStates(isSelected: true) => _colorTheme.surface,
-          SwitchStates(isSelected: false) => _colorTheme.outline,
-          SwitchStates(isSelected: true) => _colorTheme.onPrimary,
-        },
-  );
+  SwitchStateProperty<OutlinedBorder> get handleShape =>
+      _SwitchStateProperty(this, _resolveHandleShape);
+
+  static OutlinedBorder _resolveHandleShape(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.handleShape?.resolve(states) ??
+      defaults._shapeTheme.applyCorner(corner: defaults._shapeTheme.cornerFull);
 
   @override
-  SwitchStateProperty<Outline> get handleOutline => .resolveWith(
-    (states) => const Outline.from(
-      width: 0.0,
-      alignment: Outline.alignmentInside,
-      color: Colors.transparent,
-    ).maybeMerge(_overrides.handleOutline?.resolve(states)),
-  );
+  SwitchStateProperty<Color> get handleColor =>
+      _SwitchStateProperty(this, _resolveHandleColor);
+  static Color _resolveHandleColor(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) =>
+      defaults._overrides.handleColor?.resolve(states) ??
+      switch (states) {
+        SwitchDisabledStates(isSelected: false) =>
+          defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+        SwitchDisabledStates(isSelected: true) => defaults._colorTheme.surface,
+        SwitchStates(isSelected: false) => defaults._colorTheme.outline,
+        SwitchStates(isSelected: true) => defaults._colorTheme.onPrimary,
+      };
 
   @override
-  SwitchStateProperty<IconThemeDataPartial> get iconTheme => .resolveWith((
-    states,
+  SwitchStateProperty<Outline> get handleOutline =>
+      _SwitchStateProperty(this, _resolveHandleOutline);
+  static Outline _resolveHandleOutline(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
+  ) => const Outline.from(
+    width: 0.0,
+    alignment: Outline.alignmentInside,
+    color: Colors.transparent,
+  ).maybeMerge(defaults._overrides.handleOutline?.resolve(states));
+
+  @override
+  SwitchStateProperty<IconThemeDataPartial> get iconTheme =>
+      _SwitchStateProperty(this, _resolveIconTheme);
+
+  static IconThemeDataPartial _resolveIconTheme(
+    SwitchStates states,
+    _SwitchThemeDataDefaults defaults,
   ) {
     final color = switch (states) {
       SwitchDisabledStates(isSelected: false) =>
-        _colorTheme.surfaceContainerHighest.withValues(alpha: 0.38),
+        defaults._colorTheme.surfaceContainerHighest.withValues(alpha: 0.38),
       SwitchDisabledStates(isSelected: true) =>
-        _colorTheme.onSurface.withValues(alpha: 0.38),
-      SwitchStates(isSelected: false) => _colorTheme.surfaceContainerHighest,
-      SwitchStates(isSelected: true) => _colorTheme.primary,
+        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+      SwitchStates(isSelected: false) =>
+        defaults._colorTheme.surfaceContainerHighest,
+      SwitchStates(isSelected: true) => defaults._colorTheme.primary,
     };
     final result = IconThemeDataPartial.from(
       fill: 1.0,
@@ -950,8 +1009,8 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
       size: 16.0,
       color: color,
     );
-    return result.maybeMerge(_overrides.iconTheme?.resolve(states));
-  });
+    return result.maybeMerge(defaults._overrides.iconTheme?.resolve(states));
+  }
 
   @override
   SwitchThemeData copyWith({
@@ -1163,6 +1222,28 @@ final class _SwitchThemeDataDefaults extends SwitchThemeData {
   @override
   int get hashCode =>
       Object.hash(_colorTheme, _shapeTheme, _stateTheme, _overrides);
+}
+
+final class _SwitchStateProperty<T extends Object?>
+    implements SwitchStateProperty<T> {
+  const _SwitchStateProperty(this._defaults, this._resolve);
+
+  final _SwitchThemeDataDefaults _defaults;
+  final T Function(SwitchStates states, _SwitchThemeDataDefaults defaults)
+  _resolve;
+
+  @override
+  T resolve(SwitchStates states) => _resolve(states, _defaults);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _SwitchStateProperty<T> &&
+          _defaults == other._defaults &&
+          _resolve == other._resolve;
+
+  @override
+  int get hashCode => Object.hash(_defaults, _resolve);
 }
 
 abstract class SwitchTheme extends StatelessWidget implements ProxyWidget {
