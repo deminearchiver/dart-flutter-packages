@@ -14,12 +14,6 @@ abstract class ThemeResolver<T extends Object?> {
   const factory ThemeResolver.value(T value) = _ValueThemeResolver;
 
   T resolve(BuildContext context);
-
-  static CombiningThemeResolver<T> combine<T extends Object>(
-    ThemeResolver<T> a,
-    ThemeResolver<T> b,
-    ThemeResolverCombineCallback<T> combine,
-  ) => _ThemeResolverCombine(a, b, combine);
 }
 
 final class _CallbackThemeResolver<T extends Object?> extends ThemeResolver<T> {
@@ -75,34 +69,6 @@ abstract class CombiningThemeResolver<T extends Object?>
   @override
   T resolve(BuildContext context) =>
       combine(a.resolve(context), b.resolve(context));
-}
-
-final class _ThemeResolverCombine<T extends Object>
-    extends CombiningThemeResolver<T> {
-  const _ThemeResolverCombine(
-    super.a,
-    super.b,
-    ThemeResolverCombineCallback<T> combine,
-  ) : _combine = combine;
-
-  final ThemeResolverCombineCallback<T> _combine;
-
-  @override
-  T combine(T a, T b) => _combine(a, b);
-
-  @override
-  String toString() => "ThemeResolver.combine<$T>($a, $b, $_combine)";
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _ThemeResolverCombine<T> &&
-          a == other.a &&
-          b == other.b &&
-          _combine == other._combine;
-
-  @override
-  int get hashCode => Object.hash(a, b, _combine);
 }
 
 // mixin ThemeDataPartialCopyMixin<PartialType extends Object?> {
