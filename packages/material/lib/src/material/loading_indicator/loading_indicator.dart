@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:flutter/scheduler.dart';
 import 'package:material/material_shapes.dart';
 import 'package:material/src/material/flutter.dart';
 
@@ -10,16 +11,11 @@ const _kIndicatorSize = 38.0;
 final _kActiveIndicatorScale =
     _kIndicatorSize / math.min(_kContainerWidth, _kContainerHeight);
 
-const _kFullRotationAngle = math.pi * 2.0;
-const _kSingleRotationAngle = math.pi * 3.0 / 4.0;
-const _kLinearRotationAngle = math.pi / 4.0;
-const _kMorphRotationAngle = _kSingleRotationAngle - _kLinearRotationAngle;
-
 // The following constants are used in the Compose implementation:
-// const _kGlobalRotationDurationMs = 4666;
-// const _kMorphIntervalMs = 650;
-// const _kFullRotation = 2.0 * math.pi;
-// const _kQuarterRotation = _kFullRotation / 4.0;
+const _kGlobalRotationDurationMs = 4666;
+const _kMorphIntervalMs = 650;
+const _kFullRotation = 2.0 * math.pi;
+const _kQuarterRotation = _kFullRotation / 4.0;
 
 final _indeterminateIndicatorPolygons = <RoundedPolygon>[
   MaterialShapes.softBurst,
@@ -88,14 +84,14 @@ class _DeterminateLoadingIndicatorState
 
   void _updateMorphScaleFactor(List<RoundedPolygon> indicatorPolygons) {
     _morphScaleFactor =
-        LoadingIndicatorUtils.calculateScaleFactor(widget._indicatorPolygons) *
+        LoadingIndicatorHelper.calculateScaleFactor(widget._indicatorPolygons) *
         _kActiveIndicatorScale;
   }
 
   @override
   void initState() {
     super.initState();
-    _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
+    _morphSequence = LoadingIndicatorHelper.updateMorphSequence(
       polygons: widget._indicatorPolygons,
       circularSequence: false,
       forEachPolygon: widget.forEachPolygon,
@@ -108,7 +104,7 @@ class _DeterminateLoadingIndicatorState
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget._indicatorPolygons, oldWidget._indicatorPolygons) ||
         widget.forEachPolygon != oldWidget.forEachPolygon) {
-      _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
+      _morphSequence = LoadingIndicatorHelper.updateMorphSequence(
         morphSequence: _morphSequence,
         polygons: widget._indicatorPolygons,
         circularSequence: false,
@@ -121,7 +117,7 @@ class _DeterminateLoadingIndicatorState
   @override
   void reassemble() {
     super.reassemble();
-    _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
+    _morphSequence = LoadingIndicatorHelper.updateMorphSequence(
       morphSequence: _morphSequence,
       polygons: widget._indicatorPolygons,
       circularSequence: false,
@@ -134,7 +130,6 @@ class _DeterminateLoadingIndicatorState
   Widget build(BuildContext context) {
     final colorTheme = ColorTheme.of(context);
     final elevationTheme = ElevationTheme.of(context);
-    final shapeTheme = ShapeTheme.of(context);
 
     final loadingIndicatorTheme = LoadingIndicatorTheme.of(context);
 
@@ -223,7 +218,7 @@ class _DeterminateLoadingIndicatorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    LoadingIndicatorUtils.paintPathWithTransform(
+    LoadingIndicatorHelper.paintPathWithTransform(
       canvas: canvas,
       size: size,
       path: currentMorph.toPath(
@@ -255,7 +250,7 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
     this.indicatorColor,
     this.containerColor,
     this.semanticsLabel,
-    this.forEachPolygon = LoadingIndicatorUtils.defaultForEachPolygon,
+    this.forEachPolygon = LoadingIndicatorHelper.defaultForEachPolygon,
   }) : assert(
          indicatorPolygons == null || indicatorPolygons.length >= 2,
          "indicatorPolygons should have, at least, two RoundedPolygons",
@@ -283,83 +278,31 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
 
 class _IndeterminateLoadingIndicatorState
     extends State<IndeterminateLoadingIndicator>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final _matrix = Matrix4.zero();
-
-  final _globalAngle = ValueNotifier<double>(0.0);
-  final _morphIndex = ValueNotifier<int>(0);
 
   late List<Morph> _morphSequence;
   late double _morphScaleFactor;
 
-  late AnimationController _controller;
-
-  late Animation<double> _rotation;
-
-  late Animation<double> _scale;
-
-  late Animation<double> _morphProgress;
+  late _IndeterminateLoadingIndicatorAnimationController _controller;
 
   void _updateMorphScaleFactor(List<RoundedPolygon> indicatorPolygons) {
     _morphScaleFactor =
-        LoadingIndicatorUtils.calculateScaleFactor(widget._indicatorPolygons) *
+        LoadingIndicatorHelper.calculateScaleFactor(widget._indicatorPolygons) *
         _kActiveIndicatorScale;
-  }
-
-  void _statusListener(AnimationStatus status) {
-    if (status != .completed) return;
-    _globalAngle.value =
-        (_globalAngle.value + _kSingleRotationAngle) % _kFullRotationAngle;
-    _morphIndex.value = (_morphIndex.value + 1) % _morphSequence.length;
-    unawaited(_controller.forward(from: 0.0));
   }
 
   @override
   void initState() {
     super.initState();
-
-    _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
+    _morphSequence = LoadingIndicatorHelper.updateMorphSequence(
       polygons: widget._indicatorPolygons,
       circularSequence: true,
       forEachPolygon: widget.forEachPolygon,
     );
     _updateMorphScaleFactor(widget._indicatorPolygons);
-
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 650),
-    )..addStatusListener(_statusListener);
-    unawaited(_controller.forward());
-
-    _rotation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
-
-    _scale =
-        TweenSequence<double>([
-              TweenSequenceItem(
-                tween: Tween<double>(begin: 1.0, end: 1.125),
-                weight: 200.0 / 350.0,
-              ),
-              TweenSequenceItem(
-                tween: Tween<double>(begin: 1.125, end: 1.0),
-                weight: 150.0 / 350.0,
-              ),
-            ])
-            .chain(
-              CurveTween(curve: const Interval(300.0 / 650.0, 650.0 / 650.0)),
-            )
-            .animate(_controller);
-
-    _morphProgress = Tween<double>(begin: 0.0, end: 1.0)
-        .chain(
-          CurveTween(
-            curve: const Interval(
-              300.0 / 650.0,
-              550.0 / 650.0,
-              curve: Curves.easeOut,
-            ),
-          ),
-        )
-        .animate(_controller);
+    _controller = .new(vsync: this, morphSequenceLength: _morphSequence.length);
+    unawaited(_controller.start());
   }
 
   @override
@@ -367,43 +310,40 @@ class _IndeterminateLoadingIndicatorState
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget.indicatorPolygons, oldWidget.indicatorPolygons) ||
         widget.forEachPolygon != oldWidget.forEachPolygon) {
-      _morphIndex.value = 0;
-      _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
+      _morphSequence = LoadingIndicatorHelper.updateMorphSequence(
         morphSequence: _morphSequence,
         polygons: widget._indicatorPolygons,
         circularSequence: true,
         forEachPolygon: widget.forEachPolygon,
       );
       _updateMorphScaleFactor(widget._indicatorPolygons);
+      _controller.morphSequenceLength = _morphSequence.length;
     }
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _globalAngle.dispose();
-    _morphIndex.dispose();
     super.dispose();
   }
 
   @override
   void reassemble() {
     super.reassemble();
-    _morphIndex.value = 0;
-    _morphSequence = LoadingIndicatorUtils.updateMorphSequence(
+    _morphSequence = LoadingIndicatorHelper.updateMorphSequence(
       morphSequence: _morphSequence,
       polygons: widget._indicatorPolygons,
       circularSequence: true,
       forEachPolygon: widget.forEachPolygon,
     );
     _updateMorphScaleFactor(widget._indicatorPolygons);
+    _controller.morphSequenceLength = _morphSequence.length;
   }
 
   @override
   Widget build(BuildContext context) {
     final colorTheme = ColorTheme.of(context);
     final elevationTheme = ElevationTheme.of(context);
-    final shapeTheme = ShapeTheme.of(context);
 
     final loadingIndicatorTheme = LoadingIndicatorTheme.of(context);
 
@@ -437,15 +377,10 @@ class _IndeterminateLoadingIndicatorState
             child: CustomPaint(
               willChange: true,
               painter: _IndeterminateLoadingIndicatorPainter(
-                repaint: _controller,
                 indicatorColor: indicatorColor,
                 morphScaleFactor: _morphScaleFactor,
                 morphs: _morphSequence,
-                morphIndex: _morphIndex,
-                globalAngle: _globalAngle,
-                rotation: _rotation,
-                scale: _scale,
-                morphProgress: _morphProgress,
+                controller: _controller,
                 matrix: _matrix,
               ),
             ),
@@ -456,19 +391,139 @@ class _IndeterminateLoadingIndicatorState
   }
 }
 
+class _IndeterminateLoadingIndicatorAnimationController extends ChangeNotifier {
+  _IndeterminateLoadingIndicatorAnimationController({
+    required TickerProvider vsync,
+    required this._morphSequenceLength,
+    this.debugLabel,
+  }) {
+    _ticker = vsync.createTicker(_tick);
+  }
+
+  Ticker? _ticker;
+
+  void resync(TickerProvider vsync) {
+    _ticker = vsync.createTicker(_tick)..absorbTicker(_ticker!);
+  }
+
+  int _morphSequenceLength;
+
+  int get morphSequenceLength => _morphSequenceLength;
+
+  set morphSequenceLength(int value) {
+    if (_morphSequenceLength == value) return;
+    _morphSequenceLength = value;
+    _morphIndex = 0;
+    _morphRotationTargetAngle = _kQuarterRotation;
+    notifyListeners();
+  }
+
+  int _morphIndex = 0;
+
+  int get morphIndex => _morphIndex;
+
+  double _morphRotationTargetAngle = _kQuarterRotation;
+
+  double get morphRotationTargetAngle => _morphRotationTargetAngle;
+
+  double _morphProgress = 0.0;
+
+  double get morphProgress => _morphProgress;
+
+  double _globalRotation = 0.0;
+
+  double get globalRotation => _globalRotation;
+
+  final String? debugLabel;
+
+  Duration _currentSpringStart = .zero;
+
+  Duration _nextSpringStart = .zero;
+
+  SpringSimulation? _simulation;
+
+  SpringSimulation _createSimulation() {
+    final spring = SpringDescription.withDampingRatio(
+      mass: 1.0,
+      stiffness: 200.0,
+      ratio: 0.6,
+    );
+    // Ignoring tolerance from Compose fixes the snapping issue.
+    // const tolerance = Tolerance(distance: 0.1, velocity: .infinity);
+    return .new(spring, 0.0, 1.0, 0.0, snapToEnd: true);
+  }
+
+  void _tick(Duration elapsed) {
+    const kGlobalRotationDurationUs =
+        _kGlobalRotationDurationMs * Duration.microsecondsPerMillisecond;
+    _globalRotation =
+        (elapsed.inMicroseconds % kGlobalRotationDurationUs) /
+        kGlobalRotationDurationUs;
+
+    while (elapsed >= _nextSpringStart) {
+      if (_simulation != null) _snap();
+      _currentSpringStart = _nextSpringStart;
+      _nextSpringStart += const .new(milliseconds: _kMorphIntervalMs);
+      _simulation = _createSimulation();
+    }
+
+    if (_simulation case final simulation?) {
+      final timeInSeconds =
+          (elapsed - _currentSpringStart).inMicroseconds /
+          Duration.microsecondsPerSecond;
+      _morphProgress = simulation.x(timeInSeconds);
+      if (simulation.isDone(timeInSeconds)) _snap();
+    }
+
+    notifyListeners();
+  }
+
+  void _snap() {
+    _morphIndex = (morphIndex + 1) % morphSequenceLength;
+    _morphRotationTargetAngle =
+        (morphRotationTargetAngle + _kQuarterRotation) % _kFullRotation;
+    _morphProgress = 0.0;
+    _simulation = null;
+  }
+
+  TickerFuture start() {
+    _morphIndex = 0;
+    _morphRotationTargetAngle = _kQuarterRotation;
+    _morphProgress = 0.0;
+    _globalRotation = 0.0;
+    _currentSpringStart = .zero;
+    _nextSpringStart = .zero;
+    _simulation = null;
+    return _ticker!.start();
+  }
+
+  // TODO: decide if this should pause or cancel the animation
+  void stop({bool canceled = true}) {
+    _currentSpringStart = .zero;
+    _nextSpringStart = .zero;
+    _simulation = null;
+
+    _ticker!.stop(canceled: canceled);
+  }
+
+  @mustCallSuper
+  @override
+  void dispose() {
+    _simulation = null;
+    _ticker!.dispose();
+    _ticker = null;
+    super.dispose();
+  }
+}
+
 class _IndeterminateLoadingIndicatorPainter extends CustomPainter {
   _IndeterminateLoadingIndicatorPainter({
-    required super.repaint,
     required this.indicatorColor,
     required this.morphScaleFactor,
     required this.morphs,
-    required this.morphIndex,
-    required this.globalAngle,
-    required this.rotation,
-    required this.scale,
-    required this.morphProgress,
+    required this.controller,
     this.matrix,
-  });
+  }) : super(repaint: controller);
 
   final Color indicatorColor;
 
@@ -476,29 +531,25 @@ class _IndeterminateLoadingIndicatorPainter extends CustomPainter {
 
   final List<Morph> morphs;
 
-  final ValueListenable<int> morphIndex;
-
-  final ValueListenable<double> globalAngle;
-
-  final ValueListenable<double> rotation;
-
-  final ValueListenable<double> scale;
-
-  final ValueListenable<double> morphProgress;
+  final _IndeterminateLoadingIndicatorAnimationController controller;
 
   final Matrix4? matrix;
 
   @override
   void paint(Canvas canvas, Size size) {
-    LoadingIndicatorUtils.paintPathWithTransform(
+    final morphIndex = controller.morphIndex;
+    final morphRotationTargetAngle = controller.morphRotationTargetAngle;
+    final morphProgress = controller.morphProgress;
+    final globalRotation = controller.globalRotation * _kFullRotation;
+    LoadingIndicatorHelper.paintPathWithTransform(
       canvas: canvas,
       size: size,
-      path: morphs[morphIndex.value].toPath(progress: morphProgress.value),
-      scale: morphScaleFactor * scale.value,
+      path: morphs[morphIndex].toPath(progress: morphProgress),
+      scale: morphScaleFactor,
       rotation:
-          globalAngle.value +
-          _kLinearRotationAngle * rotation.value +
-          _kMorphRotationAngle * morphProgress.value,
+          morphProgress * _kQuarterRotation +
+          morphRotationTargetAngle +
+          globalRotation,
       matrix: matrix,
       paint: Paint()..color = indicatorColor,
     );
@@ -509,15 +560,11 @@ class _IndeterminateLoadingIndicatorPainter extends CustomPainter {
       indicatorColor != oldDelegate.indicatorColor ||
       morphScaleFactor != oldDelegate.morphScaleFactor ||
       !listEquals(morphs, oldDelegate.morphs) ||
-      morphIndex != oldDelegate.morphIndex ||
-      globalAngle != oldDelegate.globalAngle ||
-      rotation != oldDelegate.rotation ||
-      scale != oldDelegate.scale ||
-      morphProgress != oldDelegate.morphProgress ||
+      controller != oldDelegate.controller ||
       matrix != oldDelegate.matrix;
 }
 
-abstract final class LoadingIndicatorUtils {
+abstract final class LoadingIndicatorHelper {
   static RoundedPolygon defaultForEachPolygon(RoundedPolygon polygon) =>
       polygon.normalized();
 
