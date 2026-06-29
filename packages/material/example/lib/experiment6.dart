@@ -82,20 +82,28 @@ class _Experiment6ViewState extends State<Experiment6View> {
   ListItemThemeDataPartial _listItemTheme1(BuildContext context) {
     final colorTheme = ColorTheme.of(context);
     return .from(
-      containerColor: .resolveWith(
-        (states) => _selected.contains(1)
+      containerColor: .all(
+        _selected.contains(1)
             ? colorTheme.secondaryContainer
             : colorTheme.surfaceContainerLow,
       ),
+      // containerColor: .resolveWith(
+      //   (states) => _selected.contains(1)
+      //       ? colorTheme.secondaryContainer
+      //       : colorTheme.surfaceContainerLow,
+      // ),
     );
   }
 
   ListItemThemeDataPartial _listItemTheme2(BuildContext context) {
     final colorTheme = ColorTheme.of(context);
     return .from(
-      containerColor: .resolveWith(
-        (states) => _selected.contains(2) ? colorTheme.tertiaryContainer : null,
+      containerColor: .all(
+        _selected.contains(2) ? colorTheme.tertiaryContainer : null,
       ),
+      // containerColor: .resolveWith(
+      //   (states) => _selected.contains(2) ? colorTheme.tertiaryContainer : null,
+      // ),
     );
   }
 

@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:material/src/material/flutter.dart';
 
 typedef ThemeResolverCallback<T extends Object?> =
@@ -217,23 +215,33 @@ extension type const _InheritedSnapshot._(
 
   InheritedWidget get widget => _.widget;
 
-  bool get isValid => element.mounted && identical(element.widget, widget);
+  bool get isValid {
+    if (!element.mounted) return false;
+    final cachedWidget = widget;
+    final currentWidget = element.widget;
+    if (identical(currentWidget, cachedWidget)) return true;
+    if (currentWidget is InheritedThemeResolverWidget &&
+        cachedWidget is InheritedThemeResolverWidget) {
+      return currentWidget.resolver == cachedWidget.resolver;
+    }
+    return currentWidget == widget;
+  }
 }
 
 extension type const _DependencyCacheEntry<T extends Object?>._(
-  ({T data, Map<Type, _InheritedSnapshot> dependencies}) _
+  ({T data, List<_InheritedSnapshot> dependencies}) _
 ) implements Object {
   const _DependencyCacheEntry({
     required T data,
-    required Map<Type, _InheritedSnapshot> dependencies,
+    required List<_InheritedSnapshot> dependencies,
   }) : _ = (data: data, dependencies: dependencies);
 
   T get data => _.data;
 
-  Map<Type, _InheritedSnapshot> get dependencies => _.dependencies;
+  List<_InheritedSnapshot> get dependencies => _.dependencies;
 
   bool get isValid {
-    for (final snapshot in dependencies.values) {
+    for (final snapshot in dependencies) {
       if (!snapshot.isValid) return false;
     }
     return true;
@@ -243,8 +251,6 @@ extension type const _DependencyCacheEntry<T extends Object?>._(
 typedef _MatcherVerifyCallback = bool Function(BuildContext context);
 
 typedef _MatcherRegisterCallback = void Function(BuildContext context);
-
-// TODO: can matchers be Map<Type, _Matcher> instead of list?
 
 extension type const _Matcher._(
   ({_MatcherVerifyCallback verify, _MatcherRegisterCallback register}) _
@@ -260,22 +266,17 @@ extension type const _Matcher._(
 }
 
 extension type const _ResolutionCache<T extends Object?>._(
-  ({
-    T data,
-    Map<Type, _InheritedSnapshot> dependencies,
-    List<_Matcher> matchers,
-  })
-  _
+  ({T data, List<_InheritedSnapshot> dependencies, List<_Matcher> matchers}) _
 ) implements Object {
   const _ResolutionCache({
     required T data,
-    required Map<Type, _InheritedSnapshot> dependencies,
+    required List<_InheritedSnapshot> dependencies,
     required List<_Matcher> matchers,
   }) : _ = (data: data, dependencies: dependencies, matchers: matchers);
 
   T get data => _.data;
 
-  Map<Type, _InheritedSnapshot> get dependencies => _.dependencies;
+  List<_InheritedSnapshot> get dependencies => _.dependencies;
 
   List<_Matcher> get matchers => _.matchers;
 
@@ -312,10 +313,8 @@ final class _ResolutionContext implements BuildContext {
 
   final BuildContext _context;
   final Element? _element;
-  final Map<Type, _InheritedSnapshot> _dependencies = HashMap();
-  final List<_Matcher> _matchers = [];
-
-  // final Map<Type, _InheritedSnapshot> _dependencies = HashMap();
+  final _dependencies = <_InheritedSnapshot>[];
+  final _matchers = <_Matcher>[];
 
   @override
   Widget get widget => _context.widget;
@@ -345,19 +344,26 @@ final class _ResolutionContext implements BuildContext {
     assert(identical(ancestor.widget, widget));
 
     // Update dependencies.
-    _dependencies[widget.runtimeType] = _InheritedSnapshot.fromElementAndWidget(
-      element: ancestor,
-      widget: widget,
-    );
+    _dependencies.add(.fromElementAndWidget(element: ancestor, widget: widget));
 
     // Add matcher.
-    final matcher = _Matcher(
-      verify: (context) =>
-          ancestor.mounted && identical(ancestor.widget, widget),
-      register: (context) =>
-          context.dependOnInheritedElement(ancestor, aspect: aspect),
+    _matchers.add(
+      .new(
+        verify: (context) {
+          if (!ancestor.mounted) return false;
+          final currentWidget = ancestor.widget;
+          final cachedWidget = widget;
+          if (identical(currentWidget, cachedWidget)) return true;
+          if (currentWidget is InheritedThemeResolverWidget &&
+              cachedWidget is InheritedThemeResolverWidget) {
+            return currentWidget.resolver == cachedWidget.resolver;
+          }
+          return currentWidget == widget;
+        },
+        register: (context) =>
+            context.dependOnInheritedElement(ancestor, aspect: aspect),
+      ),
     );
-    _matchers.add(matcher);
 
     // Return original result.
     return widget;
@@ -368,26 +374,40 @@ final class _ResolutionContext implements BuildContext {
     Object? aspect,
   }) {
     // Original result should be preserved.
-    final widget = _context.dependOnInheritedWidgetOfExactType<T>();
+    final widget = _context.dependOnInheritedWidgetOfExactType<T>(
+      aspect: aspect,
+    );
     final ancestor = _context.getElementForInheritedWidgetOfExactType<T>();
     assert(identical(ancestor?.widget, widget));
 
     if (ancestor != null) {
       assert(widget != null);
-      _dependencies[T] = .fromElementAndWidget(
-        element: ancestor,
-        widget: widget!,
+
+      // Update dependencies.
+      _dependencies.add(
+        .fromElementAndWidget(element: ancestor, widget: widget!),
       );
+
       // Add matcher.
-      final matcher = _Matcher(
-        verify: (context) {
-          final element = context.getElementForInheritedWidgetOfExactType<T>();
-          return element == ancestor && identical(element?.widget, widget);
-        },
-        register: (context) =>
-            context.dependOnInheritedElement(ancestor, aspect: aspect),
+      _matchers.add(
+        .new(
+          verify: (context) {
+            final element = context
+                .getElementForInheritedWidgetOfExactType<T>();
+            if (element != ancestor) return false;
+            final currentWidget = element!.widget;
+            final cachedWidget = widget;
+            if (identical(currentWidget, cachedWidget)) return true;
+            if (currentWidget is InheritedThemeResolverWidget &&
+                cachedWidget is InheritedThemeResolverWidget) {
+              return currentWidget.resolver == cachedWidget.resolver;
+            }
+            return currentWidget == widget;
+          },
+          register: (context) =>
+              context.dependOnInheritedElement(ancestor, aspect: aspect),
+        ),
       );
-      _matchers.add(matcher);
     }
 
     // Return original result.
@@ -573,7 +593,7 @@ abstract class InheritedThemeResolverElement<
       if (_dependencyCache[element] case final dependencyCached?
           when dependencyCached.isValid) {
         // print("dependency cache hit");
-        for (final snapshot in dependencyCached.dependencies.values) {
+        for (final snapshot in dependencyCached.dependencies) {
           context.dependOnInheritedElement(snapshot.element);
         }
         return dependencyCached.data;
@@ -581,7 +601,7 @@ abstract class InheritedThemeResolverElement<
     }
 
     final PartialType resolved;
-    final Map<Type, _InheritedSnapshot> dependencies;
+    final List<_InheritedSnapshot> dependencies;
 
     if (_resolutionCache case final resolutionCached?
         when resolutionCached.verifyAll(context)) {
@@ -590,7 +610,6 @@ abstract class InheritedThemeResolverElement<
       dependencies = resolutionCached.dependencies;
       resolutionCached.registerAll(context);
     } else {
-      // print("resolution cache miss");
       final resolutionContext = _ResolutionContext(context);
       resolved = _widget.resolver.resolve(resolutionContext);
       dependencies = resolutionContext._dependencies;
@@ -611,13 +630,15 @@ abstract class InheritedThemeResolverElement<
 
     final PartialType merged;
     if (_mergeCache case final mergeCached?
-        // TODO: should this be replaced with equality?
-        when identical(mergeCached.fallback, ancestor) &&
-            identical(mergeCached.overrides, resolved)) {
+        // TODO: allow customizing this equality
+        when mergeCached.fallback == ancestor &&
+            mergeCached.overrides == resolved) {
       // print("merge cache hit");
       merged = mergeCached.merged;
     } else {
-      // print("merge cache miss");
+      print(
+        "merge cache miss ${_mergeCache?.fallback} ${ancestor} ${_mergeCache?.overrides} ${resolved}",
+      );
       merged = _widget.merge(ancestor, resolved);
       _mergeCache = _MergeCache(
         fallback: ancestor,
@@ -627,7 +648,7 @@ abstract class InheritedThemeResolverElement<
     }
 
     if (element != null) {
-      _dependencyCache[element] = _DependencyCacheEntry(
+      _dependencyCache[element] = .new(
         data: merged,
         dependencies: dependencies,
       );
