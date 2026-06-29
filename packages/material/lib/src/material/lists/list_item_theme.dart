@@ -925,9 +925,14 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
     if (resolved != null) return resolved;
     final outerCorner = defaults._shapeTheme.cornerLarge;
     final innerCorner = defaults._shapeTheme.cornerExtraSmall;
+    final hoveredCorner = defaults._shapeTheme.cornerMedium;
     final CornersGeometry corners = switch (states) {
-      SegmentedListItemStates(isFirst: true, isLast: true) ||
-      SelectableListItemStates(isSelected: true) => .all(outerCorner),
+      SelectableListItemStates(isSelected: true) ||
+      DraggableListItemStates(isDragged: true) ||
+      InteractiveListItemEnabledStates(isPressed: true) ||
+      InteractiveListItemEnabledStates(isFocused: true) => .all(outerCorner),
+      InteractiveListItemEnabledStates(isHovered: true) => .all(hoveredCorner),
+      SegmentedListItemStates(isFirst: true, isLast: true) => .all(outerCorner),
       SegmentedListItemStates(isFirst: true) => .vertical(
         top: outerCorner,
         bottom: innerCorner,
@@ -1008,7 +1013,9 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
   ) {
     final color = switch (states) {
       InteractiveListItemDisabledStates() =>
-        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+        defaults._colorTheme.onSurface.withValues(
+          alpha: defaults._stateTheme.disabledStateLayerOpacity,
+        ),
       DraggableListItemStates(isDragged: true) =>
         defaults._colorTheme.onTertiaryContainer,
       SelectableListItemStates(isSelected: true) =>
@@ -1016,8 +1023,8 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
       _ => defaults._colorTheme.onSurfaceVariant,
     };
     final result = IconThemeDataPartial.from(
-      size: 24.0,
-      opticalSize: 24.0,
+      size: 20.0,
+      opticalSize: 20.0,
       color: color,
     );
     return result.maybeMerge(
@@ -1035,14 +1042,16 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
   ) {
     final color = switch (states) {
       InteractiveListItemDisabledStates() =>
-        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+        defaults._colorTheme.onSurface.withValues(
+          alpha: defaults._stateTheme.disabledStateLayerOpacity,
+        ),
       DraggableListItemStates(isDragged: true) =>
         defaults._colorTheme.onTertiaryContainer,
       SelectableListItemStates(isSelected: true) =>
         defaults._colorTheme.onSecondaryContainer,
       _ => defaults._colorTheme.onSurfaceVariant,
     };
-    final result = defaults._typescaleTheme.labelLarge.toTextStyle(
+    final result = defaults._typescaleTheme.labelSmall.toTextStyle(
       color: color,
     );
     return result.merge(defaults._overrides.leadingTextStyle?.resolve(states));
@@ -1058,14 +1067,16 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
   ) {
     final color = switch (states) {
       InteractiveListItemDisabledStates() =>
-        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+        defaults._colorTheme.onSurface.withValues(
+          alpha: defaults._stateTheme.disabledStateLayerOpacity,
+        ),
       DraggableListItemStates(isDragged: true) =>
         defaults._colorTheme.onTertiaryContainer,
       SelectableListItemStates(isSelected: true) =>
         defaults._colorTheme.onSecondaryContainer,
       _ => defaults._colorTheme.onSurfaceVariant,
     };
-    final result = defaults._typescaleTheme.labelMedium.toTextStyle(
+    final result = defaults._typescaleTheme.labelSmall.toTextStyle(
       color: color,
     );
     return result.merge(defaults._overrides.overlineTextStyle?.resolve(states));
@@ -1081,7 +1092,9 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
   ) {
     final color = switch (states) {
       InteractiveListItemDisabledStates() =>
-        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+        defaults._colorTheme.onSurface.withValues(
+          alpha: defaults._stateTheme.disabledStateLayerOpacity,
+        ),
       DraggableListItemStates(isDragged: true) =>
         defaults._colorTheme.onTertiaryContainer,
       SelectableListItemStates(isSelected: true) =>
@@ -1102,7 +1115,9 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
   ) {
     final color = switch (states) {
       InteractiveListItemDisabledStates() =>
-        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+        defaults._colorTheme.onSurface.withValues(
+          alpha: defaults._stateTheme.disabledStateLayerOpacity,
+        ),
       DraggableListItemStates(isDragged: true) =>
         defaults._colorTheme.onTertiaryContainer,
       SelectableListItemStates(isSelected: true) =>
@@ -1127,14 +1142,16 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
   ) {
     final color = switch (states) {
       InteractiveListItemDisabledStates() =>
-        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+        defaults._colorTheme.onSurface.withValues(
+          alpha: defaults._stateTheme.disabledStateLayerOpacity,
+        ),
       DraggableListItemStates(isDragged: true) =>
         defaults._colorTheme.onTertiaryContainer,
       SelectableListItemStates(isSelected: true) =>
         defaults._colorTheme.onSecondaryContainer,
       _ => defaults._colorTheme.onSurfaceVariant,
     };
-    final result = defaults._typescaleTheme.labelLarge.toTextStyle(
+    final result = defaults._typescaleTheme.labelSmall.toTextStyle(
       color: color,
     );
     return result.merge(defaults._overrides.trailingTextStyle?.resolve(states));
@@ -1150,7 +1167,9 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
   ) {
     final color = switch (states) {
       InteractiveListItemDisabledStates() =>
-        defaults._colorTheme.onSurface.withValues(alpha: 0.38),
+        defaults._colorTheme.onSurface.withValues(
+          alpha: defaults._stateTheme.disabledStateLayerOpacity,
+        ),
       DraggableListItemStates(isDragged: true) =>
         defaults._colorTheme.onTertiaryContainer,
       SelectableListItemStates(isSelected: true) =>
@@ -1158,8 +1177,8 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
       _ => defaults._colorTheme.onSurfaceVariant,
     };
     final result = IconThemeDataPartial.from(
-      size: 24.0,
-      opticalSize: 24.0,
+      size: 20.0,
+      opticalSize: 20.0,
       color: color,
     );
     return result.maybeMerge(
