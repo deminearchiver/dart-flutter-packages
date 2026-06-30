@@ -96,12 +96,6 @@ final class Breakpoint {
 abstract class BreakpointSelector {
   const BreakpointSelector();
 
-  const factory BreakpointSelector.preferWidth() =
-      _BreakpointSelectorPreferWidth;
-
-  const factory BreakpointSelector.preferHeight() =
-      _BreakpointSelectorPreferHeight;
-
   Breakpoint fromDimensions(
     Iterable<Breakpoint> breakpoints,
     double width,
@@ -111,13 +105,24 @@ abstract class BreakpointSelector {
   Breakpoint fromSize(Iterable<Breakpoint> breakpoints, Size size) =>
       fromDimensions(breakpoints, size.width, size.height);
 
-  Breakpoint? maybeOf(Iterable<Breakpoint> breakpoints, BuildContext context) {
+  Breakpoint? fromContextOrNull(
+    Iterable<Breakpoint> breakpoints,
+    BuildContext context,
+  ) {
     final size = MediaQuery.maybeSizeOf(context);
     return size != null ? fromSize(breakpoints, size) : null;
   }
 
-  Breakpoint of(Iterable<Breakpoint> breakpoints, BuildContext context) =>
-      fromSize(breakpoints, MediaQuery.sizeOf(context));
+  Breakpoint fromContext(
+    Iterable<Breakpoint> breakpoints,
+    BuildContext context,
+  ) => fromSize(breakpoints, MediaQuery.sizeOf(context));
+
+  static const BreakpointSelector preferWidth =
+      _BreakpointSelectorPreferWidth();
+
+  static const BreakpointSelector preferHeight =
+      _BreakpointSelectorPreferHeight();
 }
 
 final class _BreakpointSelectorPreferWidth extends BreakpointSelector {
@@ -147,7 +152,7 @@ final class _BreakpointSelectorPreferWidth extends BreakpointSelector {
   }
 
   @override
-  String toString() => "BreakpointSelector.preferWidth()";
+  String toString() => "BreakpointSelector.preferWidth";
 }
 
 final class _BreakpointSelectorPreferHeight extends BreakpointSelector {
@@ -169,7 +174,7 @@ final class _BreakpointSelectorPreferHeight extends BreakpointSelector {
     for (final bucket in breakpoints) {
       if (bucket.minHeight == maxHeight &&
           bucket.minWidth <= width &&
-          bucket.minWidth >= bucket.minWidth) {
+          bucket.minWidth >= match.minWidth) {
         match = bucket;
       }
     }
@@ -177,17 +182,17 @@ final class _BreakpointSelectorPreferHeight extends BreakpointSelector {
   }
 
   @override
-  String toString() => "BreakpointSelector.preferHeight()";
+  String toString() => "BreakpointSelector.preferHeight";
 }
 
 final class BreakpointResolver {
   const BreakpointResolver(this.selector, this.breakpoints);
 
   const BreakpointResolver.preferWidth(this.breakpoints)
-    : selector = const .preferWidth();
+    : selector = .preferWidth;
 
   const BreakpointResolver.preferHeight(this.breakpoints)
-    : selector = const .preferHeight();
+    : selector = .preferHeight;
 
   final BreakpointSelector selector;
   final Iterable<Breakpoint> breakpoints;
@@ -197,10 +202,11 @@ final class BreakpointResolver {
 
   Breakpoint fromSize(Size size) => selector.fromSize(breakpoints, size);
 
-  Breakpoint? maybeOf(BuildContext context) =>
-      selector.maybeOf(breakpoints, context);
+  Breakpoint? fromContextOrNull(BuildContext context) =>
+      selector.fromContextOrNull(breakpoints, context);
 
-  Breakpoint of(BuildContext context) => selector.of(breakpoints, context);
+  Breakpoint fromContext(BuildContext context) =>
+      selector.fromContext(breakpoints, context);
 
   @override
   bool operator ==(Object other) =>
