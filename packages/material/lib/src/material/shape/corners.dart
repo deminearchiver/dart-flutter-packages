@@ -10,6 +10,7 @@ import 'package:material/src/material/flutter.dart';
 ///
 /// To convert a [CornersGeometry] object of indeterminate type into a
 /// [Corners] object, call the [resolve] method.
+@immutable
 abstract class CornersGeometry {
   const CornersGeometry();
 
@@ -861,6 +862,7 @@ final class _MixedCorners extends _CornersGeometry {
 //   _ZeroCorners operator %(double operand) => this;
 // }
 
+@immutable
 abstract class Corners extends _CornersGeometry {
   const Corners();
 
@@ -1111,6 +1113,7 @@ final class _CornersFromBorderRadius extends Corners {
   BorderRadius toBorderRadius(Size size) => _borderRadius;
 }
 
+@immutable
 abstract class CornersDirectional extends _CornersGeometry {
   const CornersDirectional();
 

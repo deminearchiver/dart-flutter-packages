@@ -6,6 +6,7 @@ import 'package:material/src/material/flutter.dart';
 // Compound corner (flexible API and high customizability) //
 // ////////////////////////////////////////////////////////////////
 
+@immutable
 abstract class Corner {
   const Corner();
 
@@ -596,6 +597,7 @@ final class _MixedCorner extends _Corner {
 //   _ZeroCorner operator %(double operand) => this;
 // }
 
+@immutable
 abstract class FixedCorner extends _Corner {
   const FixedCorner();
 
@@ -725,6 +727,7 @@ final class _FixedCornerFromRadius extends FixedCorner {
   Radius toRadius(Size size) => _radius;
 }
 
+@immutable
 abstract class FractionalCorner extends _Corner {
   const FractionalCorner();
 
