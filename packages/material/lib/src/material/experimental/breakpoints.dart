@@ -87,7 +87,7 @@ final class Breakpoint {
     heightExpandedLowerBound,
   ];
 
-  static final standardBreakpoints = _createBreakpointSet(
+  static final defaultBreakpoints = _createBreakpointSet(
     _defaultWidthBreakpoints,
     _defaultHeightBreakpoints,
   );
