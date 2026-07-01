@@ -1,0 +1,80 @@
+version: 1
+transforms:
+  - title: "Replace Center with Align.center"
+    date: 2025-12-11
+    bulkApply: true
+    element:
+      uris: ["src/material/flutter.dart"]
+      constructor: ""
+      inClass: "Center"
+    changes:
+      - kind: replacedBy
+        newElement:
+          uris: ["src/material/flutter.dart"]
+          constructor: "center"
+          inClass: "Align"
+  - title: "Replace Row with Flex.horizontal"
+    date: 2025-12-11
+    bulkApply: true
+    element:
+      uris: ["src/material/flutter.dart"]
+      constructor: ""
+      inClass: "Row"
+    changes:
+      - kind: replacedBy
+        newElement:
+          uris: ["src/material/flutter.dart"]
+          constructor: "horizontal"
+          inClass: "Flex"
+  - title: "Replace Column with Flex.vertical"
+    date: 2025-12-11
+    bulkApply: true
+    element:
+      uris: ["src/material/flutter.dart"]
+      constructor: ""
+      inClass: "Column"
+    changes:
+      - kind: replacedBy
+        newElement:
+          uris: ["src/material/flutter.dart"]
+          constructor: "vertical"
+          inClass: "Flex"
+  - title: "Replace Spacer with Flexible.space"
+    date: 2025-12-11
+    bulkApply: true
+    element:
+      uris: ["src/material/flutter.dart"]
+      constructor: ""
+      inClass: "Spacer"
+    changes:
+      - kind: replacedBy
+        newElement:
+          uris: ["src/material/flutter.dart"]
+          constructor: "space"
+          inClass: "Flexible"
+  - title: "Replace Flexible with Flexible.loose"
+    date: 2025-12-11
+    bulkApply: true
+    element:
+      uris: ["src/material/flutter.dart"]
+      constructor: ""
+      inClass: "Flexible"
+    changes:
+      - kind: replacedBy
+        newElement:
+          uris: ["src/material/flutter.dart"]
+          constructor: "loose"
+          inClass: "Flexible"
+  - title: "Replace Expanded with Flexible.tight"
+    date: 2025-12-11
+    bulkApply: true
+    element:
+      uris: ["src/material/flutter.dart"]
+      constructor: ""
+      inClass: "Expanded"
+    changes:
+      - kind: replacedBy
+        newElement:
+          uris: ["src/material/flutter.dart"]
+          constructor: "tight"
+          inClass: "Flexible"
