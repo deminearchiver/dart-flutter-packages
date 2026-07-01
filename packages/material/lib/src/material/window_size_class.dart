@@ -4,11 +4,13 @@ import 'package:material/src/material/flutter.dart';
 
 @Deprecated("Use Breakpoint instead.")
 class WindowSizeClass with Diagnosticable {
+  @Deprecated("Use Breakpoint instead.")
   const WindowSizeClass({
     required this.windowWidthSizeClass,
     required this.windowHeightSizeClass,
   });
 
+  @Deprecated("Use Breakpoint instead.")
   WindowSizeClass.fromSize(Size size)
     : windowWidthSizeClass = .fromWidth(size.width),
       windowHeightSizeClass = .fromHeight(size.height);
