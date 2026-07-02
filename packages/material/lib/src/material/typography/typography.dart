@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:material/src/material/flutter.dart';
 
+part 'default_localized_text_style.dart';
 part 'text_geometry.dart';
 part 'typeface_theme.dart';
 part 'typescale_theme.dart';
