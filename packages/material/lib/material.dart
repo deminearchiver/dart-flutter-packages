@@ -56,10 +56,11 @@ export 'src/material/raw_material_app.dart';
 export 'src/material/experimental/theme_resolver.dart';
 export 'src/material/measurement/measurement_theme.dart';
 export 'src/material/experimental/breakpoints.dart';
-
-import 'package:material/src/material/flutter.dart';
+export 'src/material/experimental/stateful_custom_painter.dart';
 
 export 'src/material/keyed_persistent_hash_map.dart';
+
+import 'package:material/src/material/flutter.dart';
 
 /// Same as [num.clamp] but optimized for a non-null [int].
 ///
