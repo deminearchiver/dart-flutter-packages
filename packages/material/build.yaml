@@ -1,0 +1,14 @@
+targets:
+  $default:
+    builders:
+      material|theme_data:
+        enabled: true
+
+builders:
+  theme_data:
+    import: "package:material/src/generator/builders.dart"
+    builder_factories: ["themeBuilder"]
+    build_extensions: { ".dart": [".theme.g.part"] }
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
