@@ -162,7 +162,7 @@ class _AppState extends State<App> {
   static const _variant = DynamicSchemeVariant.vibrant;
   static const _platform = DynamicSchemePlatform.phone;
   static const _specVersion = DynamicSchemeSpecVersion.spec2026;
-  static const _typography = TypographyDefaults.material3Expressive2026;
+  static const _typography = TypographyDefaults.expressive2026;
 }
 
 class NavigationView extends StatefulWidget {

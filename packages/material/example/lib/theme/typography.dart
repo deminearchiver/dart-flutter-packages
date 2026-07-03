@@ -64,7 +64,7 @@ abstract class TypographyThemeDataPartial with Diagnosticable {
   }
 
   /// A Material 3 Expressive type scale which uses Roboto Flex.
-  static const material3Expressive2025 = TypographyThemeDataPartial.from(
+  static const expressive2025 = TypographyThemeDataPartial.from(
     typeface: .from(
       // Material 3 Expressive introduced variable font support
       brand: [_robotoFlex, _roboto],
@@ -76,7 +76,7 @@ abstract class TypographyThemeDataPartial with Diagnosticable {
   /// a previously restricted but freshly opened Google brand font.
   ///
   /// It falls back to using Roboto Flex, then Roboto.
-  static const material3Expressive2026 = TypographyThemeDataPartial.from(
+  static const expressive2026 = TypographyThemeDataPartial.from(
     typeface: .from(
       // The ROND axis is currently only available for Google Sans Flex,
       // making it a no-op for most of the other possibly installed fonts.
@@ -326,7 +326,7 @@ class TypographyDefaults with Diagnosticable {
   int get hashCode => Object.hash(typeface, typescale);
 
   /// A Material 3 Expressive type scale which uses Roboto Flex.
-  static const material3Expressive2025 = TypographyDefaults.from(
+  static const expressive2025 = TypographyDefaults.from(
     typeface: .from(
       // Material 3 Expressive introduced variable font support
       brand: [_robotoFlex, _roboto],
@@ -338,7 +338,7 @@ class TypographyDefaults with Diagnosticable {
   /// a previously restricted but freshly opened Google brand font.
   ///
   /// It falls back to using Roboto Flex, then Roboto.
-  static const material3Expressive2026 = TypographyDefaults.from(
+  static const expressive2026 = TypographyDefaults.from(
     typeface: .from(
       // The ROND axis is currently only available for Google Sans Flex,
       // making it a no-op for most of the other possibly installed fonts.
