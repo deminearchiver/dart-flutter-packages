@@ -35,13 +35,38 @@ final _determinateIndicatorPolygons = <RoundedPolygon>[
 typedef LoadingIndicatorForEachPolygon =
     RoundedPolygon Function(RoundedPolygon polygon);
 
+final class _LoadingIndicatorStates
+    with Diagnosticable
+    implements LoadingIndicatorStates {
+  const _LoadingIndicatorStates({required this.isContained});
+
+  @override
+  final bool isContained;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<bool>("isContained", isContained));
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _LoadingIndicatorStates && isContained == other.isContained;
+
+  @override
+  int get hashCode => isContained.hashCode;
+}
+
 class DeterminateLoadingIndicator extends StatefulWidget {
   const DeterminateLoadingIndicator({
     super.key,
     this.contained = false,
     required this.progress,
     this.indicatorPolygons,
+    this.containerShape,
     this.containerColor,
+    this.containerOutline,
     this.activeIndicatorColor,
     this.activeIndicatorOutline,
     this.forEachPolygon = defaultForEachPolygon,
@@ -57,11 +82,15 @@ class DeterminateLoadingIndicator extends StatefulWidget {
 
   final List<RoundedPolygon>? indicatorPolygons;
 
-  final Color? containerColor;
+  final LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape;
 
-  final Color? activeIndicatorColor;
+  final LoadingIndicatorStateProperty<Color?>? containerColor;
 
-  final OutlinePartial? activeIndicatorOutline;
+  final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline;
+
+  final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor;
+
+  final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline;
 
   final LoadingIndicatorForEachPolygon forEachPolygon;
 
@@ -131,20 +160,28 @@ class _DeterminateLoadingIndicatorState
   Widget build(BuildContext context) {
     final loadingIndicatorTheme = LoadingIndicatorTheme.of(context);
 
-    final containerColor =
-        widget.containerColor ?? loadingIndicatorTheme.containedContainerColor;
+    final states = _LoadingIndicatorStates(isContained: widget.contained);
 
-    final indicatorColor =
-        widget.activeIndicatorColor ??
-        (widget.contained
-            ? loadingIndicatorTheme.containedActiveIndicatorColor
-            : loadingIndicatorTheme.activeIndicatorColor);
+    final resolvedContainerShape =
+        widget.containerShape?.resolve(states) ??
+        loadingIndicatorTheme.containerShape.resolve(states);
 
-    final indicatorOutline =
-        (widget.contained
-                ? loadingIndicatorTheme.containedActiveIndicatorOutline
-                : loadingIndicatorTheme.activeIndicatorOutline)
-            .maybeMerge(widget.activeIndicatorOutline);
+    final resolvedContainerColor =
+        widget.containerColor?.resolve(states) ??
+        loadingIndicatorTheme.containerColor.resolve(states);
+
+    final resolvedContainerOutline = loadingIndicatorTheme.containerOutline
+        .resolve(states)
+        .maybeMerge(widget.containerOutline?.resolve(states));
+
+    final resolvedActiveIndicatorColor =
+        widget.activeIndicatorColor?.resolve(states) ??
+        loadingIndicatorTheme.activeIndicatorColor.resolve(states);
+
+    final resolvedActiveIndicatorOutline = loadingIndicatorTheme
+        .activeIndicatorOutline
+        .resolve(states)
+        .maybeMerge(widget.activeIndicatorOutline?.resolve(states));
 
     // Adjust the active morph index according to the progress.
     final activeMorphIndex = math.min(
@@ -175,17 +212,13 @@ class _DeterminateLoadingIndicatorState
             minHeight: _kContainerHeight,
           ),
           child: Surface(
-            clipBehavior: widget.contained ? .antiAlias : .none,
-            shape: widget.contained
-                ? const CircleBorder()
-                : const RoundedRectangleBorder(),
-            color: widget.contained ? containerColor : null,
-            elevation: widget.contained ? null : 0.0,
-            shadowColor: widget.contained ? null : Colors.transparent,
+            clipBehavior: .antiAlias,
+            shape: resolvedContainerOutline.apply(resolvedContainerShape),
+            color: resolvedContainerColor,
             child: CustomPaint(
               painter: _DeterminateLoadingIndicatorPainter(
-                color: indicatorColor,
-                outline: indicatorOutline,
+                color: resolvedActiveIndicatorColor,
+                outline: resolvedActiveIndicatorOutline,
                 currentMorph: currentMorph,
                 morphScaleFactor: _morphScaleFactor,
                 adjustedProgressValue: adjustedProgressValue,
@@ -274,7 +307,9 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
     super.key,
     this.contained = false,
     this.indicatorPolygons,
+    this.containerShape,
     this.containerColor,
+    this.containerOutline,
     this.activeIndicatorColor,
     this.activeIndicatorOutline,
     this.semanticsLabel,
@@ -288,11 +323,15 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
 
   final List<RoundedPolygon>? indicatorPolygons;
 
-  final Color? containerColor;
+  final LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape;
 
-  final Color? activeIndicatorColor;
+  final LoadingIndicatorStateProperty<Color?>? containerColor;
 
-  final OutlinePartial? activeIndicatorOutline;
+  final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline;
+
+  final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor;
+
+  final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline;
 
   final String? semanticsLabel;
 
@@ -384,19 +423,32 @@ class _IndeterminateLoadingIndicatorState
   Widget build(BuildContext context) {
     final loadingIndicatorTheme = LoadingIndicatorTheme.of(context);
 
-    final containerColor =
-        widget.containerColor ?? loadingIndicatorTheme.containedContainerColor;
+    final states = _LoadingIndicatorStates(isContained: widget.contained);
 
-    _painter.color =
-        widget.activeIndicatorColor ??
-        (widget.contained
-            ? loadingIndicatorTheme.containedActiveIndicatorColor
-            : loadingIndicatorTheme.activeIndicatorColor);
-    _painter.outline =
-        (widget.contained
-                ? loadingIndicatorTheme.containedActiveIndicatorOutline
-                : loadingIndicatorTheme.activeIndicatorOutline)
-            .maybeMerge(widget.activeIndicatorOutline);
+    final resolvedContainerShape =
+        widget.containerShape?.resolve(states) ??
+        loadingIndicatorTheme.containerShape.resolve(states);
+
+    final resolvedContainerColor =
+        widget.containerColor?.resolve(states) ??
+        loadingIndicatorTheme.containerColor.resolve(states);
+
+    final resolvedContainerOutline = loadingIndicatorTheme.containerOutline
+        .resolve(states)
+        .maybeMerge(widget.containerOutline?.resolve(states));
+
+    final resolvedActiveIndicatorColor =
+        widget.activeIndicatorColor?.resolve(states) ??
+        loadingIndicatorTheme.activeIndicatorColor.resolve(states);
+
+    final resolvedActiveIndicatorOutline = loadingIndicatorTheme
+        .activeIndicatorOutline
+        .resolve(states)
+        .maybeMerge(widget.activeIndicatorOutline?.resolve(states));
+
+    _painter
+      ..color = resolvedActiveIndicatorColor
+      ..outline = resolvedActiveIndicatorOutline;
 
     return RepaintBoundary(
       child: Semantics(
@@ -407,13 +459,9 @@ class _IndeterminateLoadingIndicatorState
             minHeight: _kContainerHeight,
           ),
           child: Surface(
-            clipBehavior: widget.contained ? .antiAlias : .none,
-            shape: widget.contained
-                ? const CircleBorder()
-                : const RoundedRectangleBorder(),
-            color: widget.contained ? containerColor : null,
-            elevation: widget.contained ? null : 0.0,
-            shadowColor: widget.contained ? null : Colors.transparent,
+            clipBehavior: .antiAlias,
+            shape: resolvedContainerOutline.apply(resolvedContainerShape),
+            color: resolvedContainerColor,
             child: CustomPaint(painter: _painter, willChange: true),
           ),
         ),

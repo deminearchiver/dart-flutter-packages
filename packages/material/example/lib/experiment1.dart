@@ -51,12 +51,16 @@ class _Experiment1ViewState extends State<Experiment1View> {
                 child: LayoutFittedBox(
                   fit: .cover,
                   child: IndeterminateLoadingIndicator(
-                    contained: false,
-                    activeIndicatorColor: colorTheme.surfaceContainerHighest,
-                    activeIndicatorOutline: .from(
-                      width: 8.0,
-                      color: colorTheme.secondaryContainer,
-                      alignment: 0,
+                    containerColor: const .all(Colors.transparent),
+                    activeIndicatorColor: .all(
+                      colorTheme.surfaceContainerHighest,
+                    ),
+                    activeIndicatorOutline: .all(
+                      .from(
+                        width: 8.0,
+                        color: colorTheme.secondaryContainer,
+                        alignment: 0,
+                      ),
                     ),
                     // indicatorPolygons: _geminiPolygons,
                   ),

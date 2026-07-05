@@ -1,117 +1,126 @@
 import 'package:material/src/material/flutter.dart';
 
+mixin LoadingIndicatorStates {
+  bool get isContained;
+}
+
+typedef LoadingIndicatorStateProperty<T extends Object?> =
+    StateProperty<T, LoadingIndicatorStates>;
+
 abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
   const LoadingIndicatorThemeDataPartial();
 
   const factory LoadingIndicatorThemeDataPartial.from({
-    Color? activeIndicatorColor,
-    OutlinePartial? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    OutlinePartial? containedActiveIndicatorOutline,
+    LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+    LoadingIndicatorStateProperty<Color?>? containerColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+    LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
   }) = _LoadingIndicatorThemeDataPartial;
 
-  Color? get activeIndicatorColor;
+  LoadingIndicatorStateProperty<OutlinedBorder?>? get containerShape;
 
-  OutlinePartial? get activeIndicatorOutline;
+  LoadingIndicatorStateProperty<Color?>? get containerColor;
 
-  Color? get containedContainerColor;
+  LoadingIndicatorStateProperty<OutlinePartial?>? get containerOutline;
 
-  Color? get containedActiveIndicatorColor;
+  LoadingIndicatorStateProperty<Color?>? get activeIndicatorColor;
 
-  OutlinePartial? get containedActiveIndicatorOutline;
+  LoadingIndicatorStateProperty<OutlinePartial?>? get activeIndicatorOutline;
 
   LoadingIndicatorThemeDataPartial copy() => copyWith();
 
   LoadingIndicatorThemeDataPartial copyWith({
-    Color? activeIndicatorColor,
-    covariant OutlinePartial? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    covariant OutlinePartial? containedActiveIndicatorOutline,
+    covariant LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+    covariant LoadingIndicatorStateProperty<Color?>? containerColor,
+    covariant LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+    covariant LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+    covariant LoadingIndicatorStateProperty<OutlinePartial?>?
+    activeIndicatorOutline,
   }) => .from(
+    containerShape: containerShape ?? this.containerShape,
+    containerColor: containerColor ?? this.containerColor,
+    containerOutline: containerOutline ?? this.containerOutline,
     activeIndicatorColor: activeIndicatorColor ?? this.activeIndicatorColor,
     activeIndicatorOutline:
         activeIndicatorOutline ?? this.activeIndicatorOutline,
-    containedContainerColor:
-        containedContainerColor ?? this.containedContainerColor,
-    containedActiveIndicatorColor:
-        containedActiveIndicatorColor ?? this.containedActiveIndicatorColor,
-    containedActiveIndicatorOutline:
-        containedActiveIndicatorOutline ?? this.containedActiveIndicatorOutline,
   );
 
   LoadingIndicatorThemeDataPartial maybeCopyWith({
-    Color? activeIndicatorColor,
-    covariant OutlinePartial? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    covariant OutlinePartial? containedActiveIndicatorOutline,
+    covariant LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+    covariant LoadingIndicatorStateProperty<Color?>? containerColor,
+    covariant LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+    covariant LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+    covariant LoadingIndicatorStateProperty<OutlinePartial?>?
+    activeIndicatorOutline,
   }) =>
-      activeIndicatorColor != null ||
-          activeIndicatorOutline != null ||
-          containedContainerColor != null ||
-          containedActiveIndicatorColor != null ||
-          containedActiveIndicatorOutline != null
+      containerShape != null ||
+          containerColor != null ||
+          containerOutline != null ||
+          activeIndicatorColor != null ||
+          activeIndicatorOutline != null
       ? copyWith(
+          containerShape: containerShape,
+          containerColor: containerColor,
+          containerOutline: containerOutline,
           activeIndicatorColor: activeIndicatorColor,
           activeIndicatorOutline: activeIndicatorOutline,
-          containedContainerColor: containedContainerColor,
-          containedActiveIndicatorColor: containedActiveIndicatorColor,
-          containedActiveIndicatorOutline: containedActiveIndicatorOutline,
         )
       : this;
 
   LoadingIndicatorThemeDataPartial mergeWith({
-    Color? activeIndicatorColor,
-    OutlinePartial? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    OutlinePartial? containedActiveIndicatorOutline,
+    LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+    LoadingIndicatorStateProperty<Color?>? containerColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+    LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
   }) => .from(
-    activeIndicatorColor: activeIndicatorColor ?? this.activeIndicatorColor,
-    activeIndicatorOutline:
-        this.activeIndicatorOutline?.merge(activeIndicatorOutline) ??
-        activeIndicatorOutline,
-    containedContainerColor:
-        containedContainerColor ?? this.containedContainerColor,
-    containedActiveIndicatorColor:
-        containedActiveIndicatorColor ?? this.containedActiveIndicatorColor,
-    containedActiveIndicatorOutline:
-        this.containedActiveIndicatorOutline?.merge(
-          containedActiveIndicatorOutline,
-        ) ??
-        containedActiveIndicatorOutline,
+    containerShape: this.containerShape.maybeMergeNullable(containerShape),
+    containerColor: this.containerColor.maybeMergeNullable(containerColor),
+    containerOutline: this.containerOutline.maybeCombineNullable(
+      containerOutline,
+      OutlinePartial.combine,
+    ),
+    activeIndicatorColor: this.activeIndicatorColor.maybeMergeNullable(
+      activeIndicatorColor,
+    ),
+    activeIndicatorOutline: this.activeIndicatorOutline.maybeCombineNullable(
+      activeIndicatorOutline,
+      OutlinePartial.combine,
+    ),
   );
 
   LoadingIndicatorThemeDataPartial maybeMergeWith({
-    Color? activeIndicatorColor,
-    OutlinePartial? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    OutlinePartial? containedActiveIndicatorOutline,
+    LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+    LoadingIndicatorStateProperty<Color?>? containerColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+    LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
   }) =>
-      activeIndicatorColor != null ||
-          activeIndicatorOutline != null ||
-          containedContainerColor != null ||
-          containedActiveIndicatorColor != null ||
-          containedActiveIndicatorOutline != null
+      containerShape != null ||
+          containerColor != null ||
+          containerOutline != null ||
+          activeIndicatorColor != null ||
+          activeIndicatorOutline != null
       ? .from(
-          activeIndicatorColor:
-              activeIndicatorColor ?? this.activeIndicatorColor,
-          activeIndicatorOutline:
-              this.activeIndicatorOutline?.maybeMerge(activeIndicatorOutline) ??
-              activeIndicatorOutline,
-          containedContainerColor:
-              containedContainerColor ?? this.containedContainerColor,
-          containedActiveIndicatorColor:
-              containedActiveIndicatorColor ??
-              this.containedActiveIndicatorColor,
-          containedActiveIndicatorOutline:
-              this.containedActiveIndicatorOutline?.maybeMerge(
-                containedActiveIndicatorOutline,
-              ) ??
-              containedActiveIndicatorOutline,
+          containerShape: this.containerShape.maybeMergeNullable(
+            containerShape,
+          ),
+          containerColor: this.containerColor.maybeMergeNullable(
+            containerColor,
+          ),
+          containerOutline: this.containerOutline.maybeCombineNullable(
+            containerOutline,
+            OutlinePartial.maybeCombine,
+          ),
+          activeIndicatorColor: this.activeIndicatorColor.maybeMergeNullable(
+            activeIndicatorColor,
+          ),
+          activeIndicatorOutline: this.activeIndicatorOutline
+              .maybeCombineNullable(
+                activeIndicatorOutline,
+                OutlinePartial.maybeCombine,
+              ),
         )
       : this;
 
@@ -119,12 +128,11 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
     LoadingIndicatorThemeDataPartial? other,
   ) => other != null
       ? mergeWith(
+          containerShape: other.containerShape,
+          containerColor: other.containerColor,
+          containerOutline: other.containerOutline,
           activeIndicatorColor: other.activeIndicatorColor,
           activeIndicatorOutline: other.activeIndicatorOutline,
-          containedContainerColor: other.containedContainerColor,
-          containedActiveIndicatorColor: other.containedActiveIndicatorColor,
-          containedActiveIndicatorOutline:
-              other.containedActiveIndicatorOutline,
         )
       : copy();
 
@@ -132,51 +140,63 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
     LoadingIndicatorThemeDataPartial? other,
   ) => other != null
       ? maybeMergeWith(
+          containerShape: other.containerShape,
+          containerColor: other.containerColor,
+          containerOutline: other.containerOutline,
           activeIndicatorColor: other.activeIndicatorColor,
           activeIndicatorOutline: other.activeIndicatorOutline,
-          containedContainerColor: other.containedContainerColor,
-          containedActiveIndicatorColor: other.containedActiveIndicatorColor,
-          containedActiveIndicatorOutline:
-              other.containedActiveIndicatorOutline,
         )
       : this;
+
+  bool get isEmpty =>
+      containerShape == null &&
+      containerColor == null &&
+      containerOutline == null &&
+      activeIndicatorColor == null &&
+      activeIndicatorOutline == null;
+
+  bool get isNotEmpty => !isEmpty;
+
+  bool get isConcrete => false;
+
+  LoadingIndicatorThemeData? get asConcrete => null;
 
   @override
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
       ..add(
-        ColorProperty(
+        DiagnosticsProperty<LoadingIndicatorStateProperty<OutlinedBorder?>>(
+          "containerShape",
+          containerShape,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<LoadingIndicatorStateProperty<Color?>>(
+          "containerColor",
+          containerColor,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<LoadingIndicatorStateProperty<OutlinePartial?>>(
+          "containerOutline",
+          containerOutline,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<LoadingIndicatorStateProperty<Color?>>(
           "activeIndicatorColor",
           activeIndicatorColor,
           defaultValue: null,
         ),
       )
       ..add(
-        DiagnosticsProperty<OutlinePartial>(
+        DiagnosticsProperty<LoadingIndicatorStateProperty<OutlinePartial?>>(
           "activeIndicatorOutline",
           activeIndicatorOutline,
-          defaultValue: null,
-        ),
-      )
-      ..add(
-        ColorProperty(
-          "containedContainerColor",
-          containedContainerColor,
-          defaultValue: null,
-        ),
-      )
-      ..add(
-        ColorProperty(
-          "containedActiveIndicatorColor",
-          containedActiveIndicatorColor,
-          defaultValue: null,
-        ),
-      )
-      ..add(
-        DiagnosticsProperty<OutlinePartial>(
-          "containedActiveIndicatorOutline",
-          containedActiveIndicatorOutline,
           defaultValue: null,
         ),
       );
@@ -186,47 +206,45 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
 final class _LoadingIndicatorThemeDataPartial
     extends LoadingIndicatorThemeDataPartial {
   const _LoadingIndicatorThemeDataPartial({
+    this.containerShape,
+    this.containerColor,
+    this.containerOutline,
     this.activeIndicatorColor,
     this.activeIndicatorOutline,
-    this.containedContainerColor,
-    this.containedActiveIndicatorColor,
-    this.containedActiveIndicatorOutline,
   });
 
   @override
-  final Color? activeIndicatorColor;
+  final LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape;
 
   @override
-  final OutlinePartial? activeIndicatorOutline;
+  final LoadingIndicatorStateProperty<Color?>? containerColor;
 
   @override
-  final Color? containedContainerColor;
+  final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline;
 
   @override
-  final Color? containedActiveIndicatorColor;
+  final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor;
 
   @override
-  final OutlinePartial? containedActiveIndicatorOutline;
+  final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _LoadingIndicatorThemeDataPartial &&
+          containerShape == other.containerShape &&
+          containerColor == other.containerColor &&
+          containerOutline == other.containerOutline &&
           activeIndicatorColor == other.activeIndicatorColor &&
-          activeIndicatorOutline == other.activeIndicatorOutline &&
-          containedContainerColor == other.containedContainerColor &&
-          containedActiveIndicatorColor ==
-              other.containedActiveIndicatorColor &&
-          containedActiveIndicatorOutline ==
-              other.containedActiveIndicatorOutline;
+          activeIndicatorOutline == other.activeIndicatorOutline;
 
   @override
   int get hashCode => Object.hash(
+    containerShape,
+    containerColor,
+    containerOutline,
     activeIndicatorColor,
     activeIndicatorOutline,
-    containedContainerColor,
-    containedActiveIndicatorColor,
-    containedActiveIndicatorOutline,
   );
 }
 
@@ -235,129 +253,134 @@ abstract class LoadingIndicatorThemeData
   const LoadingIndicatorThemeData();
 
   const factory LoadingIndicatorThemeData.from({
-    required Color activeIndicatorColor,
-    required Outline activeIndicatorOutline,
-    required Color containedContainerColor,
-    required Color containedActiveIndicatorColor,
-    required Outline containedActiveIndicatorOutline,
+    required LoadingIndicatorStateProperty<OutlinedBorder> containerShape,
+    required LoadingIndicatorStateProperty<Color> containerColor,
+    required LoadingIndicatorStateProperty<Outline> containerOutline,
+    required LoadingIndicatorStateProperty<Color> activeIndicatorColor,
+    required LoadingIndicatorStateProperty<Outline> activeIndicatorOutline,
   }) = _LoadingIndicatorThemeData;
 
-  factory LoadingIndicatorThemeData.defaults({
+  const factory LoadingIndicatorThemeData.defaults({
     required ColorThemeData colorTheme,
+    required ShapeThemeData shapeTheme,
     LoadingIndicatorThemeDataPartial? overrides,
   }) = _LoadingIndicatorThemeDataDefaults;
 
   factory LoadingIndicatorThemeData.defaultsOf(
     BuildContext context, {
     LoadingIndicatorThemeDataPartial? overrides,
-  }) => .defaults(colorTheme: ColorTheme.of(context), overrides: overrides);
+  }) => .defaults(
+    colorTheme: ColorTheme.of(context),
+    shapeTheme: ShapeTheme.of(context),
+    overrides: overrides,
+  );
 
   @override
-  Color get activeIndicatorColor;
+  LoadingIndicatorStateProperty<OutlinedBorder> get containerShape;
 
   @override
-  Outline get activeIndicatorOutline;
+  LoadingIndicatorStateProperty<Color> get containerColor;
 
   @override
-  Color get containedContainerColor;
+  LoadingIndicatorStateProperty<Outline> get containerOutline;
 
   @override
-  Color get containedActiveIndicatorColor;
+  LoadingIndicatorStateProperty<Color> get activeIndicatorColor;
 
   @override
-  Outline get containedActiveIndicatorOutline;
+  LoadingIndicatorStateProperty<Outline> get activeIndicatorOutline;
 
   @override
   LoadingIndicatorThemeData copy() => copyWith();
 
   @override
   LoadingIndicatorThemeData copyWith({
-    Color? activeIndicatorColor,
-    covariant Outline? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    covariant Outline? containedActiveIndicatorOutline,
+    covariant LoadingIndicatorStateProperty<OutlinedBorder>? containerShape,
+    covariant LoadingIndicatorStateProperty<Color>? containerColor,
+    covariant LoadingIndicatorStateProperty<Outline>? containerOutline,
+    covariant LoadingIndicatorStateProperty<Color>? activeIndicatorColor,
+    covariant LoadingIndicatorStateProperty<Outline>? activeIndicatorOutline,
   }) => .from(
+    containerShape: containerShape ?? this.containerShape,
+    containerColor: containerColor ?? this.containerColor,
+    containerOutline: containerOutline ?? this.containerOutline,
     activeIndicatorColor: activeIndicatorColor ?? this.activeIndicatorColor,
     activeIndicatorOutline:
         activeIndicatorOutline ?? this.activeIndicatorOutline,
-    containedContainerColor:
-        containedContainerColor ?? this.containedContainerColor,
-    containedActiveIndicatorColor:
-        containedActiveIndicatorColor ?? this.containedActiveIndicatorColor,
-    containedActiveIndicatorOutline:
-        containedActiveIndicatorOutline ?? this.containedActiveIndicatorOutline,
   );
 
   @override
   LoadingIndicatorThemeData maybeCopyWith({
-    Color? activeIndicatorColor,
-    covariant Outline? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    covariant Outline? containedActiveIndicatorOutline,
+    covariant LoadingIndicatorStateProperty<OutlinedBorder>? containerShape,
+    covariant LoadingIndicatorStateProperty<Color>? containerColor,
+    covariant LoadingIndicatorStateProperty<Outline>? containerOutline,
+    covariant LoadingIndicatorStateProperty<Color>? activeIndicatorColor,
+    covariant LoadingIndicatorStateProperty<Outline>? activeIndicatorOutline,
   }) =>
-      activeIndicatorColor != null ||
-          activeIndicatorOutline != null ||
-          containedContainerColor != null ||
-          containedActiveIndicatorColor != null ||
-          containedActiveIndicatorOutline != null
+      containerShape != null ||
+          containerColor != null ||
+          containerOutline != null ||
+          activeIndicatorColor != null ||
+          activeIndicatorOutline != null
       ? copyWith(
+          containerShape: containerShape,
+          containerColor: containerColor,
+          containerOutline: containerOutline,
           activeIndicatorColor: activeIndicatorColor,
           activeIndicatorOutline: activeIndicatorOutline,
-          containedContainerColor: containedContainerColor,
-          containedActiveIndicatorColor: containedActiveIndicatorColor,
-          containedActiveIndicatorOutline: containedActiveIndicatorOutline,
         )
       : this;
 
   @override
   LoadingIndicatorThemeData mergeWith({
-    Color? activeIndicatorColor,
-    OutlinePartial? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    OutlinePartial? containedActiveIndicatorOutline,
+    LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+    LoadingIndicatorStateProperty<Color?>? containerColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+    LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
   }) => .from(
-    activeIndicatorColor: activeIndicatorColor ?? this.activeIndicatorColor,
-    activeIndicatorOutline: this.activeIndicatorOutline.merge(
-      activeIndicatorOutline,
+    containerShape: this.containerShape.maybeMerge(containerShape),
+    containerColor: this.containerColor.maybeMerge(containerColor),
+    containerOutline: this.containerOutline.maybeCombine(
+      containerOutline,
+      Outline.combine,
     ),
-    containedContainerColor:
-        containedContainerColor ?? this.containedContainerColor,
-    containedActiveIndicatorColor:
-        containedActiveIndicatorColor ?? this.containedActiveIndicatorColor,
-    containedActiveIndicatorOutline: this.containedActiveIndicatorOutline.merge(
-      containedActiveIndicatorOutline,
+    activeIndicatorColor: this.activeIndicatorColor.maybeMerge(
+      activeIndicatorColor,
+    ),
+    activeIndicatorOutline: this.activeIndicatorOutline.maybeCombine(
+      activeIndicatorOutline,
+      Outline.combine,
     ),
   );
 
   @override
   LoadingIndicatorThemeData maybeMergeWith({
-    Color? activeIndicatorColor,
-    OutlinePartial? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    OutlinePartial? containedActiveIndicatorOutline,
+    LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+    LoadingIndicatorStateProperty<Color?>? containerColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+    LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
   }) =>
-      activeIndicatorColor != null ||
-          activeIndicatorOutline != null ||
-          containedContainerColor != null ||
-          containedActiveIndicatorColor != null ||
-          containedActiveIndicatorOutline != null
+      containerShape != null ||
+          containerColor != null ||
+          containerOutline != null ||
+          activeIndicatorColor != null ||
+          activeIndicatorOutline != null
       ? .from(
-          activeIndicatorColor:
-              activeIndicatorColor ?? this.activeIndicatorColor,
-          activeIndicatorOutline: this.activeIndicatorOutline.maybeMerge(
-            activeIndicatorOutline,
+          containerShape: this.containerShape.maybeMerge(containerShape),
+          containerColor: this.containerColor.maybeMerge(containerColor),
+          containerOutline: this.containerOutline.maybeCombine(
+            containerOutline,
+            Outline.maybeCombine,
           ),
-          containedContainerColor:
-              containedContainerColor ?? this.containedContainerColor,
-          containedActiveIndicatorColor:
-              containedActiveIndicatorColor ??
-              this.containedActiveIndicatorColor,
-          containedActiveIndicatorOutline: this.containedActiveIndicatorOutline
-              .maybeMerge(containedActiveIndicatorOutline),
+          activeIndicatorColor: this.activeIndicatorColor.maybeMerge(
+            activeIndicatorColor,
+          ),
+          activeIndicatorOutline: this.activeIndicatorOutline.maybeCombine(
+            activeIndicatorOutline,
+            Outline.maybeCombine,
+          ),
         )
       : this;
 
@@ -365,12 +388,11 @@ abstract class LoadingIndicatorThemeData
   LoadingIndicatorThemeData merge(LoadingIndicatorThemeDataPartial? other) =>
       other != null
       ? mergeWith(
+          containerShape: other.containerShape,
+          containerColor: other.containerColor,
+          containerOutline: other.containerOutline,
           activeIndicatorColor: other.activeIndicatorColor,
           activeIndicatorOutline: other.activeIndicatorOutline,
-          containedContainerColor: other.containedContainerColor,
-          containedActiveIndicatorColor: other.containedActiveIndicatorColor,
-          containedActiveIndicatorOutline:
-              other.containedActiveIndicatorOutline,
         )
       : copy();
 
@@ -379,37 +401,58 @@ abstract class LoadingIndicatorThemeData
     LoadingIndicatorThemeDataPartial? other,
   ) => other != null
       ? maybeMergeWith(
+          containerShape: other.containerShape,
+          containerColor: other.containerColor,
+          containerOutline: other.containerOutline,
           activeIndicatorColor: other.activeIndicatorColor,
           activeIndicatorOutline: other.activeIndicatorOutline,
-          containedContainerColor: other.containedContainerColor,
-          containedActiveIndicatorColor: other.containedActiveIndicatorColor,
-          containedActiveIndicatorOutline:
-              other.containedActiveIndicatorOutline,
         )
       : this;
+
+  @override
+  bool get isEmpty => false;
+
+  @override
+  bool get isNotEmpty => true;
+
+  @override
+  bool get isConcrete => true;
+
+  @override
+  LoadingIndicatorThemeData get asConcrete => this;
 
   @override
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
-      ..add(ColorProperty("activeIndicatorColor", activeIndicatorColor))
       ..add(
-        DiagnosticsProperty<OutlinePartial>(
+        DiagnosticsProperty<LoadingIndicatorStateProperty<OutlinedBorder>>(
+          "containerShape",
+          containerShape,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<LoadingIndicatorStateProperty<Color>>(
+          "containerColor",
+          containerColor,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<LoadingIndicatorStateProperty<Outline>>(
+          "containerOutline",
+          containerOutline,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<LoadingIndicatorStateProperty<Color>>(
+          "activeIndicatorColor",
+          activeIndicatorColor,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<LoadingIndicatorStateProperty<Outline>>(
           "activeIndicatorOutline",
           activeIndicatorOutline,
-        ),
-      )
-      ..add(ColorProperty("containedContainerColor", containedContainerColor))
-      ..add(
-        ColorProperty(
-          "containedActiveIndicatorColor",
-          containedActiveIndicatorColor,
-        ),
-      )
-      ..add(
-        DiagnosticsProperty<OutlinePartial>(
-          "containedActiveIndicatorOutline",
-          containedActiveIndicatorOutline,
         ),
       );
   }
@@ -417,47 +460,45 @@ abstract class LoadingIndicatorThemeData
 
 final class _LoadingIndicatorThemeData extends LoadingIndicatorThemeData {
   const _LoadingIndicatorThemeData({
+    required this.containerShape,
+    required this.containerColor,
+    required this.containerOutline,
     required this.activeIndicatorColor,
     required this.activeIndicatorOutline,
-    required this.containedContainerColor,
-    required this.containedActiveIndicatorColor,
-    required this.containedActiveIndicatorOutline,
   });
 
   @override
-  final Color activeIndicatorColor;
+  final LoadingIndicatorStateProperty<OutlinedBorder> containerShape;
 
   @override
-  final Outline activeIndicatorOutline;
+  final LoadingIndicatorStateProperty<Color> containerColor;
 
   @override
-  final Color containedContainerColor;
+  final LoadingIndicatorStateProperty<Outline> containerOutline;
 
   @override
-  final Color containedActiveIndicatorColor;
+  final LoadingIndicatorStateProperty<Color> activeIndicatorColor;
 
   @override
-  final Outline containedActiveIndicatorOutline;
+  final LoadingIndicatorStateProperty<Outline> activeIndicatorOutline;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _LoadingIndicatorThemeData &&
+          containerShape == other.containerShape &&
+          containerColor == other.containerColor &&
+          containerOutline == other.containerOutline &&
           activeIndicatorColor == other.activeIndicatorColor &&
-          activeIndicatorOutline == other.activeIndicatorOutline &&
-          containedContainerColor == other.containedContainerColor &&
-          containedActiveIndicatorColor ==
-              other.containedActiveIndicatorColor &&
-          containedActiveIndicatorOutline ==
-              other.containedActiveIndicatorOutline;
+          activeIndicatorOutline == other.activeIndicatorOutline;
 
   @override
   int get hashCode => Object.hash(
+    containerShape,
+    containerColor,
+    containerOutline,
     activeIndicatorColor,
     activeIndicatorOutline,
-    containedContainerColor,
-    containedActiveIndicatorColor,
-    containedActiveIndicatorOutline,
   );
 }
 
@@ -465,120 +506,146 @@ final class _LoadingIndicatorThemeDataDefaults
     extends LoadingIndicatorThemeData {
   const _LoadingIndicatorThemeDataDefaults({
     required this._colorTheme,
+    required this._shapeTheme,
     LoadingIndicatorThemeDataPartial? overrides,
   }) : _overrides = overrides ?? const .from();
 
   final ColorThemeData _colorTheme;
+  final ShapeThemeData _shapeTheme;
   final LoadingIndicatorThemeDataPartial _overrides;
 
   @override
-  Color get activeIndicatorColor =>
-      _overrides.activeIndicatorColor ?? _colorTheme.primary;
+  LoadingIndicatorStateProperty<OutlinedBorder> get containerShape =>
+      _LoadingIndicatorStateProperty(this, _resolveContainerShape);
+
+  static OutlinedBorder _resolveContainerShape(
+    LoadingIndicatorStates states,
+    _LoadingIndicatorThemeDataDefaults defaults,
+  ) =>
+      defaults._shapeTheme.applyCorner(corner: defaults._shapeTheme.cornerFull);
 
   @override
-  Outline get activeIndicatorOutline => const .from();
+  LoadingIndicatorStateProperty<Color> get containerColor =>
+      _LoadingIndicatorStateProperty(this, _resolveContainerColor);
+
+  static Color _resolveContainerColor(
+    LoadingIndicatorStates states,
+    _LoadingIndicatorThemeDataDefaults defaults,
+  ) => states.isContained
+      ? defaults._colorTheme.primaryContainer
+      : Colors.transparent;
 
   @override
-  Color get containedContainerColor =>
-      _overrides.containedContainerColor ?? _colorTheme.primaryContainer;
+  LoadingIndicatorStateProperty<Outline> get containerOutline =>
+      const .all(.from());
 
   @override
-  Color get containedActiveIndicatorColor =>
-      _overrides.containedActiveIndicatorColor ??
-      _colorTheme.onPrimaryContainer;
+  LoadingIndicatorStateProperty<Color> get activeIndicatorColor =>
+      _LoadingIndicatorStateProperty(this, _resolveActiveIndicatorColor);
+
+  static Color _resolveActiveIndicatorColor(
+    LoadingIndicatorStates states,
+    _LoadingIndicatorThemeDataDefaults defaults,
+  ) => states.isContained
+      ? defaults._colorTheme.onPrimaryContainer
+      : defaults._colorTheme.primary;
 
   @override
-  Outline get containedActiveIndicatorOutline => const .from();
+  LoadingIndicatorStateProperty<Outline> get activeIndicatorOutline =>
+      const .all(.from());
 
   @override
   LoadingIndicatorThemeData copyWith({
-    Color? activeIndicatorColor,
-    covariant Outline? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    covariant Outline? containedActiveIndicatorOutline,
+    covariant LoadingIndicatorStateProperty<OutlinedBorder>? containerShape,
+    covariant LoadingIndicatorStateProperty<Color>? containerColor,
+    covariant LoadingIndicatorStateProperty<Outline>? containerOutline,
+    covariant LoadingIndicatorStateProperty<Color>? activeIndicatorColor,
+    covariant LoadingIndicatorStateProperty<Outline>? activeIndicatorOutline,
   }) => _LoadingIndicatorThemeDataDefaults(
     colorTheme: _colorTheme,
+    shapeTheme: _shapeTheme,
     overrides: _overrides.copyWith(
+      containerShape: containerShape,
+      containerColor: containerColor,
+      containerOutline: containerOutline,
       activeIndicatorColor: activeIndicatorColor,
       activeIndicatorOutline: activeIndicatorOutline,
-      containedContainerColor: containedContainerColor,
-      containedActiveIndicatorColor: containedActiveIndicatorColor,
-      containedActiveIndicatorOutline: containedActiveIndicatorOutline,
     ),
   );
 
   @override
   LoadingIndicatorThemeData maybeCopyWith({
-    Color? activeIndicatorColor,
-    covariant Outline? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    covariant Outline? containedActiveIndicatorOutline,
+    covariant LoadingIndicatorStateProperty<OutlinedBorder>? containerShape,
+    covariant LoadingIndicatorStateProperty<Color>? containerColor,
+    covariant LoadingIndicatorStateProperty<Outline>? containerOutline,
+    covariant LoadingIndicatorStateProperty<Color>? activeIndicatorColor,
+    covariant LoadingIndicatorStateProperty<Outline>? activeIndicatorOutline,
   }) =>
-      activeIndicatorColor != null &&
-          activeIndicatorOutline != null &&
-          containedContainerColor != null &&
-          containedActiveIndicatorColor != null &&
-          containedActiveIndicatorOutline != null
+      containerShape != null &&
+          containerColor != null &&
+          containerOutline != null &&
+          activeIndicatorColor != null &&
+          activeIndicatorOutline != null
       ? .from(
+          containerShape: containerShape,
+          containerColor: containerColor,
+          containerOutline: containerOutline,
           activeIndicatorColor: activeIndicatorColor,
           activeIndicatorOutline: activeIndicatorOutline,
-          containedContainerColor: containedContainerColor,
-          containedActiveIndicatorColor: containedActiveIndicatorColor,
-          containedActiveIndicatorOutline: containedActiveIndicatorOutline,
         )
-      : activeIndicatorColor != null ||
-            activeIndicatorOutline != null ||
-            containedContainerColor != null ||
-            containedActiveIndicatorColor != null ||
-            containedActiveIndicatorOutline != null
+      : containerShape != null ||
+            containerColor != null ||
+            containerOutline != null ||
+            activeIndicatorColor != null ||
+            activeIndicatorOutline != null
       ? copyWith(
+          containerShape: containerShape,
+          containerColor: containerColor,
+          containerOutline: containerOutline,
           activeIndicatorColor: activeIndicatorColor,
           activeIndicatorOutline: activeIndicatorOutline,
-          containedContainerColor: containedContainerColor,
-          containedActiveIndicatorColor: containedActiveIndicatorColor,
-          containedActiveIndicatorOutline: containedActiveIndicatorOutline,
         )
       : this;
 
   @override
   LoadingIndicatorThemeData mergeWith({
-    Color? activeIndicatorColor,
-    OutlinePartial? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    OutlinePartial? containedActiveIndicatorOutline,
+    LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+    LoadingIndicatorStateProperty<Color?>? containerColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+    LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
   }) => _LoadingIndicatorThemeDataDefaults(
     colorTheme: _colorTheme,
+    shapeTheme: _shapeTheme,
     overrides: _overrides.mergeWith(
+      containerShape: containerShape,
+      containerColor: containerColor,
+      containerOutline: containerOutline,
       activeIndicatorColor: activeIndicatorColor,
       activeIndicatorOutline: activeIndicatorOutline,
-      containedContainerColor: containedContainerColor,
-      containedActiveIndicatorColor: containedActiveIndicatorColor,
-      containedActiveIndicatorOutline: containedActiveIndicatorOutline,
     ),
   );
 
   @override
   LoadingIndicatorThemeData maybeMergeWith({
-    Color? activeIndicatorColor,
-    OutlinePartial? activeIndicatorOutline,
-    Color? containedContainerColor,
-    Color? containedActiveIndicatorColor,
-    OutlinePartial? containedActiveIndicatorOutline,
+    LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+    LoadingIndicatorStateProperty<Color?>? containerColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+    LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+    LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
   }) {
     final overrides = _overrides.maybeMergeWith(
+      containerShape: containerShape,
+      containerColor: containerColor,
+      containerOutline: containerOutline,
       activeIndicatorColor: activeIndicatorColor,
       activeIndicatorOutline: activeIndicatorOutline,
-      containedContainerColor: containedContainerColor,
-      containedActiveIndicatorColor: containedActiveIndicatorColor,
-      containedActiveIndicatorOutline: containedActiveIndicatorOutline,
     );
     return identical(_overrides, overrides)
         ? this
         : _LoadingIndicatorThemeDataDefaults(
             colorTheme: _colorTheme,
+            shapeTheme: _shapeTheme,
             overrides: overrides,
           );
   }
@@ -588,10 +655,36 @@ final class _LoadingIndicatorThemeDataDefaults
       identical(this, other) ||
       other is _LoadingIndicatorThemeDataDefaults &&
           _colorTheme == other._colorTheme &&
+          _shapeTheme == other._shapeTheme &&
           _overrides == other._overrides;
 
   @override
-  int get hashCode => Object.hash(_colorTheme, _overrides);
+  int get hashCode => Object.hash(_colorTheme, _shapeTheme, _overrides);
+}
+
+final class _LoadingIndicatorStateProperty<T extends Object?>
+    implements LoadingIndicatorStateProperty<T> {
+  const _LoadingIndicatorStateProperty(this._defaults, this._resolve);
+
+  final _LoadingIndicatorThemeDataDefaults _defaults;
+  final T Function(
+    LoadingIndicatorStates states,
+    _LoadingIndicatorThemeDataDefaults defaults,
+  )
+  _resolve;
+
+  @override
+  T resolve(LoadingIndicatorStates states) => _resolve(states, _defaults);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _LoadingIndicatorStateProperty<T> &&
+          _defaults == other._defaults &&
+          _resolve == other._resolve;
+
+  @override
+  int get hashCode => Object.hash(_defaults, _resolve);
 }
 
 abstract class LoadingIndicatorTheme extends StatelessWidget
@@ -740,8 +833,7 @@ final class _LoadingIndicatorTheme
   ) => fallback.maybeMerge(overrides);
 
   @override
-  bool isConcrete(LoadingIndicatorThemeDataPartial data) =>
-      data is LoadingIndicatorThemeData;
+  bool isConcrete(LoadingIndicatorThemeDataPartial data) => data.isConcrete;
 
   @override
   _LoadingIndicatorThemeElement createElement() =>
