@@ -43,6 +43,7 @@ class DeterminateLoadingIndicator extends StatefulWidget {
     this.indicatorPolygons,
     this.containerColor,
     this.indicatorColor,
+    this.indicatorOutline = const .from(),
     this.forEachPolygon = defaultForEachPolygon,
   }) : assert(progress >= 0.0 && progress <= 1.0),
        assert(
@@ -59,6 +60,8 @@ class DeterminateLoadingIndicator extends StatefulWidget {
   final Color? containerColor;
 
   final Color? indicatorColor;
+
+  final Outline indicatorOutline;
 
   final LoadingIndicatorForEachPolygon forEachPolygon;
 
@@ -128,14 +131,16 @@ class _DeterminateLoadingIndicatorState
   Widget build(BuildContext context) {
     final loadingIndicatorTheme = LoadingIndicatorTheme.of(context);
 
+    final containerColor =
+        widget.containerColor ?? loadingIndicatorTheme.containedContainerColor;
+
     final indicatorColor =
         widget.indicatorColor ??
         (widget.contained
             ? loadingIndicatorTheme.containedIndicatorColor
             : loadingIndicatorTheme.indicatorColor);
 
-    final containerColor =
-        widget.containerColor ?? loadingIndicatorTheme.containedContainerColor;
+    final indicatorOutline = widget.indicatorOutline;
 
     // Adjust the active morph index according to the progress.
     final activeMorphIndex = math.min(
@@ -175,11 +180,12 @@ class _DeterminateLoadingIndicatorState
             shadowColor: widget.contained ? null : Colors.transparent,
             child: CustomPaint(
               painter: _DeterminateLoadingIndicatorPainter(
+                color: indicatorColor,
+                outline: indicatorOutline,
                 currentMorph: currentMorph,
                 morphScaleFactor: _morphScaleFactor,
                 adjustedProgressValue: adjustedProgressValue,
                 rotation: rotation,
-                indicatorColor: indicatorColor,
                 matrix: _matrix,
               ),
               isComplex: true,
@@ -194,25 +200,32 @@ class _DeterminateLoadingIndicatorState
 
 class _DeterminateLoadingIndicatorPainter extends CustomPainter {
   _DeterminateLoadingIndicatorPainter({
+    required this.color,
+    required this.outline,
     required this.currentMorph,
     required this.morphScaleFactor,
     required this.adjustedProgressValue,
     required this.rotation,
-    required this.indicatorColor,
     this.matrix,
   });
 
+  final Color color;
+
+  final Outline outline;
+
   final Morph currentMorph;
+
   final double morphScaleFactor;
+
   final double adjustedProgressValue;
+
   final double rotation;
-  final Color indicatorColor;
+
   final Matrix4? matrix;
 
   @override
   void paint(Canvas canvas, Size size) {
-    LoadingIndicatorHelper.paintPathWithTransform(
-      canvas: canvas,
+    final path = LoadingIndicatorHelper.transformPath(
       size: size,
       path: currentMorph.toPath(
         progress: adjustedProgressValue,
@@ -221,17 +234,34 @@ class _DeterminateLoadingIndicatorPainter extends CustomPainter {
       scale: morphScaleFactor,
       rotation: rotation,
       matrix: matrix,
-      paint: Paint()..color = indicatorColor,
     );
+
+    final paint = Paint()
+      ..style = .fill
+      ..color = color;
+    canvas.drawPath(path, paint);
+
+    if (outline.width > 0.0 && outline.color.a > 0.0) {
+      DynamicPathBorder.paintPathStroke(
+        canvas,
+        path,
+        outline.color,
+        strokeWidth: outline.width,
+        strokeAlign: outline.alignment,
+        strokeCap: .round,
+        strokeJoin: .round,
+      );
+    }
   }
 
   @override
   bool shouldRepaint(_DeterminateLoadingIndicatorPainter oldDelegate) =>
+      color != oldDelegate.color ||
+      outline != oldDelegate.outline ||
       currentMorph != oldDelegate.currentMorph ||
       morphScaleFactor != oldDelegate.morphScaleFactor ||
       adjustedProgressValue != oldDelegate.adjustedProgressValue ||
       rotation != oldDelegate.rotation ||
-      indicatorColor != oldDelegate.indicatorColor ||
       matrix != oldDelegate.matrix;
 }
 
@@ -240,8 +270,9 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
     super.key,
     required this.contained,
     this.indicatorPolygons,
-    this.indicatorColor,
     this.containerColor,
+    this.indicatorColor,
+    this.indicatorOutline = const .from(),
     this.semanticsLabel,
     this.forEachPolygon = LoadingIndicatorHelper.defaultForEachPolygon,
   }) : assert(
@@ -253,9 +284,11 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
 
   final List<RoundedPolygon>? indicatorPolygons;
 
+  final Color? containerColor;
+
   final Color? indicatorColor;
 
-  final Color? containerColor;
+  final Outline indicatorOutline;
 
   final String? semanticsLabel;
 
@@ -292,7 +325,8 @@ class _IndeterminateLoadingIndicatorState
     );
     _controller = .new(vsync: this, morphSequenceLength: morphSequence.length);
     _painter = .new(
-      indicatorColor: Colors.transparent,
+      color: Colors.transparent,
+      outline: const .from(),
       morphSequence: morphSequence,
       morphScaleFactor: morphScaleFactor,
       controller: _controller,
@@ -346,14 +380,15 @@ class _IndeterminateLoadingIndicatorState
   Widget build(BuildContext context) {
     final loadingIndicatorTheme = LoadingIndicatorTheme.of(context);
 
-    _painter.indicatorColor =
+    final containerColor =
+        widget.containerColor ?? loadingIndicatorTheme.containedContainerColor;
+
+    _painter.color =
         widget.indicatorColor ??
         (widget.contained
             ? loadingIndicatorTheme.containedIndicatorColor
             : loadingIndicatorTheme.indicatorColor);
-
-    final containerColor =
-        widget.containerColor ?? loadingIndicatorTheme.containedContainerColor;
+    _painter.outline = widget.indicatorOutline;
 
     return RepaintBoundary(
       child: Semantics(
@@ -507,7 +542,8 @@ class _IndeterminateLoadingIndicatorAnimationController extends ChangeNotifier {
 class _IndeterminateLoadingIndicatorPainter
     extends StatefulCustomPainter<_IndeterminateLoadingIndicatorPainter> {
   _IndeterminateLoadingIndicatorPainter({
-    required this._indicatorColor,
+    required this._color,
+    required this._outline,
     required this._morphSequence,
     required this._morphScaleFactor,
     required this._controller,
@@ -515,13 +551,23 @@ class _IndeterminateLoadingIndicatorPainter
     _controller.addListener(notifyListeners);
   }
 
-  Color _indicatorColor;
+  Color _color;
 
-  Color get indicatorColor => _indicatorColor;
+  Color get color => _color;
 
-  set indicatorColor(Color value) {
-    if (_indicatorColor == value) return;
-    _indicatorColor = value;
+  set color(Color value) {
+    if (_color == value) return;
+    _color = value;
+    notifyListeners();
+  }
+
+  Outline _outline;
+
+  Outline get outline => _outline;
+
+  set outline(Outline value) {
+    if (_outline == value) return;
+    _outline = value;
     notifyListeners();
   }
 
@@ -566,8 +612,7 @@ class _IndeterminateLoadingIndicatorPainter
     final morphRotationTargetAngle = controller.morphRotationTargetAngle;
     final morphProgress = controller.morphProgress;
     final globalRotation = controller.globalRotation * _kFullRotation;
-    LoadingIndicatorHelper.paintPathWithTransform(
-      canvas: canvas,
+    final path = LoadingIndicatorHelper.transformPath(
       size: size,
       path: morphSequence[morphIndex].toPath(progress: morphProgress),
       scale: morphScaleFactor,
@@ -576,8 +621,24 @@ class _IndeterminateLoadingIndicatorPainter
           morphRotationTargetAngle +
           globalRotation,
       matrix: _matrix,
-      paint: Paint()..color = indicatorColor,
     );
+
+    final paint = Paint()
+      ..style = .fill
+      ..color = color;
+    canvas.drawPath(path, paint);
+
+    if (outline.width > 0.0 && outline.color.a > 0.0) {
+      DynamicPathBorder.paintPathStroke(
+        canvas,
+        path,
+        outline.color,
+        strokeWidth: outline.width,
+        strokeAlign: outline.alignment,
+        strokeCap: .round,
+        strokeJoin: .round,
+      );
+    }
   }
 }
 

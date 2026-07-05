@@ -48,11 +48,16 @@ class _Experiment1ViewState extends State<Experiment1View> {
             alignment: .center,
             children: [
               Positioned.fill(
-                child: FittedBox(
+                child: LayoutFittedBox(
                   fit: .cover,
                   child: IndeterminateLoadingIndicator(
                     contained: false,
                     indicatorColor: colorTheme.surfaceContainerHighest,
+                    indicatorOutline: .from(
+                      width: 8.0,
+                      color: colorTheme.secondaryContainer,
+                      alignment: 0,
+                    ),
                     // indicatorPolygons: _geminiPolygons,
                   ),
                   // child: DeterminateLoadingIndicator(
