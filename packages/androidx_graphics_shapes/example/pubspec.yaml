@@ -15,8 +15,8 @@ dependencies:
     path: ../
   collection: ^1.19.1
   libmonet: 2.0.0-dev.17
-  material_symbols_icons: ^4.2928.1
-  meta: ^1.17.0
+  material_symbols_icons: ^4.2951.0
+  meta: ^1.18.0
 
 dev_dependencies:
   flutter_test:

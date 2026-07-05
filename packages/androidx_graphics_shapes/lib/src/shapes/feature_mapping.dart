@@ -45,8 +45,7 @@ DoubleMapper featureMapper(
 @internal
 extension type const DistanceVertex._(
   (double distance, ProgressableFeature f1, ProgressableFeature f2) _
-)
-    implements Object {
+) implements Object {
   const DistanceVertex(
     double distance,
     ProgressableFeature f1,
