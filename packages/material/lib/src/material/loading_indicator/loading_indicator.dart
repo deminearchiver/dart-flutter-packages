@@ -38,12 +38,12 @@ typedef LoadingIndicatorForEachPolygon =
 class DeterminateLoadingIndicator extends StatefulWidget {
   const DeterminateLoadingIndicator({
     super.key,
-    required this.contained,
+    this.contained = false,
     required this.progress,
     this.indicatorPolygons,
     this.containerColor,
-    this.indicatorColor,
-    this.indicatorOutline = const .from(),
+    this.activeIndicatorColor,
+    this.activeIndicatorOutline,
     this.forEachPolygon = defaultForEachPolygon,
   }) : assert(progress >= 0.0 && progress <= 1.0),
        assert(
@@ -59,9 +59,9 @@ class DeterminateLoadingIndicator extends StatefulWidget {
 
   final Color? containerColor;
 
-  final Color? indicatorColor;
+  final Color? activeIndicatorColor;
 
-  final Outline indicatorOutline;
+  final OutlinePartial? activeIndicatorOutline;
 
   final LoadingIndicatorForEachPolygon forEachPolygon;
 
@@ -135,12 +135,16 @@ class _DeterminateLoadingIndicatorState
         widget.containerColor ?? loadingIndicatorTheme.containedContainerColor;
 
     final indicatorColor =
-        widget.indicatorColor ??
+        widget.activeIndicatorColor ??
         (widget.contained
-            ? loadingIndicatorTheme.containedIndicatorColor
-            : loadingIndicatorTheme.indicatorColor);
+            ? loadingIndicatorTheme.containedActiveIndicatorColor
+            : loadingIndicatorTheme.activeIndicatorColor);
 
-    final indicatorOutline = widget.indicatorOutline;
+    final indicatorOutline =
+        (widget.contained
+                ? loadingIndicatorTheme.containedActiveIndicatorOutline
+                : loadingIndicatorTheme.activeIndicatorOutline)
+            .maybeMerge(widget.activeIndicatorOutline);
 
     // Adjust the active morph index according to the progress.
     final activeMorphIndex = math.min(
@@ -268,11 +272,11 @@ class _DeterminateLoadingIndicatorPainter extends CustomPainter {
 class IndeterminateLoadingIndicator extends StatefulWidget {
   const IndeterminateLoadingIndicator({
     super.key,
-    required this.contained,
+    this.contained = false,
     this.indicatorPolygons,
     this.containerColor,
-    this.indicatorColor,
-    this.indicatorOutline = const .from(),
+    this.activeIndicatorColor,
+    this.activeIndicatorOutline,
     this.semanticsLabel,
     this.forEachPolygon = LoadingIndicatorHelper.defaultForEachPolygon,
   }) : assert(
@@ -286,9 +290,9 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
 
   final Color? containerColor;
 
-  final Color? indicatorColor;
+  final Color? activeIndicatorColor;
 
-  final Outline indicatorOutline;
+  final OutlinePartial? activeIndicatorOutline;
 
   final String? semanticsLabel;
 
@@ -384,11 +388,15 @@ class _IndeterminateLoadingIndicatorState
         widget.containerColor ?? loadingIndicatorTheme.containedContainerColor;
 
     _painter.color =
-        widget.indicatorColor ??
+        widget.activeIndicatorColor ??
         (widget.contained
-            ? loadingIndicatorTheme.containedIndicatorColor
-            : loadingIndicatorTheme.indicatorColor);
-    _painter.outline = widget.indicatorOutline;
+            ? loadingIndicatorTheme.containedActiveIndicatorColor
+            : loadingIndicatorTheme.activeIndicatorColor);
+    _painter.outline =
+        (widget.contained
+                ? loadingIndicatorTheme.containedActiveIndicatorOutline
+                : loadingIndicatorTheme.activeIndicatorOutline)
+            .maybeMerge(widget.activeIndicatorOutline);
 
     return RepaintBoundary(
       child: Semantics(

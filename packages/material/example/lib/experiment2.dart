@@ -292,7 +292,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                                     child:
                                                         DeterminateLoadingIndicator(
                                                           contained: false,
-                                                          indicatorColor:
+                                                          activeIndicatorColor:
                                                               colorTheme
                                                                   .primary,
                                                           progress: progress,
