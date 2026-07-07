@@ -23,6 +23,7 @@ workspace:
   - packages/harfbuzz/harfbuzz_ffi
   - packages/harfbuzz/harfbuzz_rs
   - packages/layout
+  - packages/leonardo
   - packages/libmonet
   - packages/linked_layouts
   - packages/lz4_ffi
