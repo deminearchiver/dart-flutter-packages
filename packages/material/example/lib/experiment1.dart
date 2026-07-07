@@ -1,5 +1,13 @@
+import 'dart:math' as math;
+
 import 'package:material/material_shapes.dart'
-    show MaterialShapes, RoundedPolygon;
+    show
+        MaterialShapes,
+        Morph,
+        MorphBorder,
+        RoundedPolygon,
+        RoundedPolygonBorder,
+        RoundedPolygonExtension;
 import 'package:material_example/flutter.dart';
 
 class Experiment1View extends StatefulWidget {
@@ -40,10 +48,42 @@ class _Experiment1ViewState extends State<Experiment1View> {
     final shapeTheme = ShapeTheme.of(context);
     final stateTheme = StateTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
+    final shape = MorphBorder(
+      side: BorderSide(
+        color: colorTheme.onSecondaryContainer,
+        width: 16.0,
+        strokeAlign: 0,
+      ),
+      morph: Morph(MaterialShapes.puffyDiamond, MaterialShapes.puffy),
+      progress: _progress,
+      strokeCap: .round,
+      strokeJoin: .round,
+      strokeMiterLimit: 0.0,
+    );
     return Scaffold(
       body: Padding(
         padding: const .all(24.0),
         child: Align.center(
+          // child: Flex.vertical(
+          //   mainAxisSize: .min,
+          //   children: [
+          //     SizedBox.square(
+          //       dimension: 300.0,
+          //       child: Surface(
+          //         shape: shape,
+          //         color: colorTheme.secondaryContainer,
+          //         child: InkWell(customBorder: shape, onTap: () {}),
+          //       ),
+          //     ),
+          //     const SizedBox(height: 16.0),
+          //     Slider(
+          //       value: _progress,
+          //       onChanged: (value) => setState(() => _progress = value),
+          //       min: 0.0,
+          //       max: 1.0,
+          //     ),
+          //   ],
+          // ),
           child: Stack(
             alignment: .center,
             children: [

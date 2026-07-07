@@ -466,16 +466,14 @@ class _SearchBarPaintState extends State<SearchBarPaint> {
       color: widget.containerColor,
       child: _SearchBarLayout(
         centerAlignmentFraction: widget.centerAlignmentFraction,
-        tapRegion: Surface.raw(
-          child: InkWell(
-            overlayColor: WidgetStateLayerColor(
-              // TODO: tokens say onSurface, but might it be onSurfaceVariant?
-              color: .all(colorTheme.onSurface),
-              opacity: stateTheme.asWidgetStateLayerOpacity,
-            ),
-            focusNode: _tapRegionFocusNode,
-            onTap: widget.onTap,
+        tapRegion: InkWell(
+          overlayColor: WidgetStateLayerColor(
+            // TODO: tokens say onSurface, but might it be onSurfaceVariant?
+            color: .all(colorTheme.onSurface),
+            opacity: stateTheme.asWidgetStateLayerOpacity,
           ),
+          focusNode: _tapRegionFocusNode,
+          onTap: widget.onTap,
         ),
         supportingText: DefaultTextStyle(
           textAlign: .start,
@@ -499,6 +497,12 @@ class _SearchBarPaintState extends State<SearchBarPaint> {
           keyboardType: .text,
           decoration: InputDecoration(
             border: .none,
+            constraints: BoxConstraints(
+              minWidth: .infinity,
+              maxWidth: .infinity,
+              minHeight: containerHeight,
+              maxHeight: containerHeight,
+            ),
             contentPadding: .symmetric(
               vertical: (containerHeight - inputTextLineHeight) / 2.0,
             ),
