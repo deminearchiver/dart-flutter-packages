@@ -35,9 +35,10 @@ class DefaultLocalizedTextStyle extends SingleChildStatelessWidget {
   Widget buildWithChild(BuildContext context, Widget? child) {
     if (child == null) return const SizedBox.shrink();
     final scriptCategory = this.scriptCategory;
-    final resolvedStyle = scriptCategory != null
+    final localizedStyle = scriptCategory != null
         ? localizedStyleFor(scriptCategory)
         : localizedStyleOf(context);
+    final resolvedStyle = localizedStyle.merge(style);
     return DefaultTextStyle.merge(style: resolvedStyle, child: child);
   }
 
