@@ -407,7 +407,6 @@ class _NavigationDestinationState extends State<_NavigationDestination> {
 
     final isSelected = widget.isSelected;
     return SizedTouchTarget(
-      fit: .overflow,
       minimumSize: const .square(48.0),
       child: SingleMotionBuilder(
         value: isSelected ? 1.0 : 0.0,

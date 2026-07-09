@@ -32,7 +32,7 @@ dependencies:
   material_symbols_icons: ^4.2951.0
   meta: ^1.18.0
   motor: ^1.1.0
-  touch_targets: ^0.4.0
+  touch_targets: ^0.5.0
   nested: ^1.0.0
 
 dev_dependencies:

@@ -1,3 +1,21 @@
+## 0.5.0
+
+- Removed `TouchTargetFit` from default touch targets.
+  - Overflow touch targets are now the only option.
+
+- Removed `TouchClient.getRectIn()`.
+  - Partially replaced by a new `TouchClient.containsIn()` method.
+
+- Added `TouchClient.dryHitTestFrom()` and integrated with `TouchGroup`.
+  - This prevents touch targets from intercepting events despite having an active `IgnorePointer` or `AbsorbPointer` ancestor.
+
+- Optimized `TouchClient` weighted scoring in `TouchGroup`.
+  - This helps avoid unnecessary dry hit testing
+
+- Fixed default touch targets preventing hit tests from reaching the child when disabled.
+
+- Internal code style and quality improvements.
+
 ## 0.4.0
 
 - Fixed hit test result from `TouchGroup` not being populated properly, preventing gestures from reaching arenas such as in a scroll views.
@@ -12,7 +30,7 @@
 
 ## 0.3.0
 
-- Performed element renames:
+- Renamed the following elements:
   - `TouchClient.childSize` → `TouchClient.innerSize`;
   - `TouchClient.hitTestFrom()` → `TouchClient.hitTestInnerFrom()`;
   - `TouchTargetBehavior` → `TouchTargetFit` (`behavior` → `fit`).

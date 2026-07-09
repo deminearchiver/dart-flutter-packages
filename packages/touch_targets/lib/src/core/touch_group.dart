@@ -178,12 +178,12 @@ class _RenderTouchTheatre extends RenderProxyBox {
   }
 
   TouchClient? _clientForPosition(Offset position) {
-    TouchClient? resolvedClient;
-    double minimumWeightedDistance = .infinity;
+    final weightedClients = <_WeightedTouchClient>[];
+
     for (final client in _clients) {
       if (!client.isActive) continue;
-      final targetRect = client.getRectIn(this);
-      if (targetRect.contains(position)) {
+
+      if (client.containsIn(this, position)) {
         // Weight is proportional to child's size.
         final distanceToEdge = client.getDistanceToEdgeIn(this, position);
         final childSize = client.innerSize;
@@ -191,15 +191,27 @@ class _RenderTouchTheatre extends RenderProxyBox {
           childSize.width * childSize.width +
               childSize.height * childSize.height,
         );
+
         // Smaller targets receive higher priority.
-        final weightedDistance = distanceToEdge * (childDiagonal + 1.0);
-        if (weightedDistance < minimumWeightedDistance) {
-          minimumWeightedDistance = weightedDistance;
-          resolvedClient = client;
-        }
+        final weight = distanceToEdge * (childDiagonal + 1.0);
+
+        // Add weighted client for scoring.
+        weightedClients.add(.new(client, weight));
       }
     }
-    return resolvedClient;
+
+    // Score clients by weight.
+    weightedClients.sort((a, b) => a.weight.compareTo(b.weight));
+
+    // Choose the first reachable candidate.
+    for (var i = 0; i < weightedClients.length; i++) {
+      final client = weightedClients[i].client;
+      if (client.dryHitTestFrom(this)) {
+        return client;
+      }
+    }
+
+    return null;
   }
 
   T? _firstHitTestTargetOfType<T extends HitTestTarget>(Offset position) {
@@ -211,10 +223,20 @@ class _RenderTouchTheatre extends RenderProxyBox {
     return null;
   }
 
+  var _doingDryHitTest = false;
+
   @override
   bool hitTest(BoxHitTestResult result, {required Offset position}) {
+    if (_doingDryHitTest) return super.hitTest(result, position: position);
+
     // Find the best candidate for hit testing.
-    final client = _clientForPosition(position);
+    TouchClient? client;
+    _doingDryHitTest = true;
+    try {
+      client = _clientForPosition(position);
+    } finally {
+      _doingDryHitTest = false;
+    }
 
     if (client != null) {
       final leaf = _firstHitTestTargetOfType<RenderObject>(position);
@@ -243,6 +265,17 @@ class _RenderTouchTheatre extends RenderProxyBox {
     }
     return super.hitTest(result, position: position);
   }
+}
+
+extension type const _WeightedTouchClient._(
+  ({TouchClient client, double weight}) _
+) implements Object {
+  const _WeightedTouchClient(TouchClient client, double weight)
+    : _ = (client: client, weight: weight);
+
+  TouchClient get client => _.client;
+
+  double get weight => _.weight;
 }
 
 // To quickly check if the hit test result has a correct path during debugging,

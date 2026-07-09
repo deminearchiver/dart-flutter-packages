@@ -18,9 +18,13 @@ mixin TouchClient {
   /// The size of inner contents of this client.
   Size get innerSize;
 
-  /// Compute the bounding [Rect] of the client's touch area
-  /// relative to the specified [ancestor].
-  Rect getRectIn(RenderBox ancestor);
+  /// Whether the touch area contains the given [position] in [ancestor]'s
+  /// space.
+  bool containsIn(RenderBox ancestor, Offset position);
+
+  /// Performs a dry hit test to check if this client is reachable from
+  /// [ancestor], respecting interceptors or occlusions.
+  bool dryHitTestFrom(RenderBox ancestor);
 
   /// Compute the minimum distance from a given [position] in [ancestor]'s
   /// space to the edge of this client's touch area bounding rectangle.

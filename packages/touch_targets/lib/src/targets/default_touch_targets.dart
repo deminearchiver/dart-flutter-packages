@@ -35,17 +35,6 @@ mixin _RenderDefaultTouchTargetMixin
     markNeedsLayout();
   }
 
-  TouchTargetFit get _fit;
-  set _fit(TouchTargetFit value);
-
-  TouchTargetFit get fit => _fit;
-
-  set fit(TouchTargetFit value) {
-    if (_fit == value) return;
-    _fit = value;
-    markNeedsLayout();
-  }
-
   @override
   TouchClient createTouchClient() => _DefaultTouchTargetClient(this);
 
@@ -67,30 +56,11 @@ mixin _RenderDefaultTouchTargetMixin
 
   @override
   bool hitTest(BoxHitTestResult result, {required Offset position}) {
-    if (super.hitTest(result, position: position)) {
-      return true;
+    if (!enabled) {
+      return size.contains(position) &&
+          hitTestChildren(result, position: position);
     }
-    final child = this.child;
-    if (child == null || !enabled) return false;
-    switch (fit) {
-      case .wrap:
-        if (!size.contains(position)) return false;
-        final childCenter = child.size.center(.zero);
-        final isHit = result.addWithRawTransform(
-          transform: MatrixUtils.forceToPoint(childCenter),
-          position: childCenter,
-          hitTest: (result, position) {
-            assert(position == childCenter);
-            return child.hitTest(result, position: childCenter);
-          },
-        );
-        if (isHit) {
-          result.add(BoxHitTestEntry(this, position));
-        }
-        return isHit;
-      case .overflow:
-        return false;
-    }
+    return super.hitTest(result, position: position);
   }
 
   // static bool _debugAssertCanHitTest(RenderBox box) {
@@ -145,10 +115,7 @@ class _DefaultTouchTargetClient implements TouchClient {
   final _RenderDefaultTouchTargetMixin _renderObject;
 
   @override
-  bool get isActive =>
-      _renderObject.attached &&
-      _renderObject.enabled &&
-      _renderObject.fit == .overflow;
+  bool get isActive => _renderObject.attached && _renderObject.enabled;
 
   @override
   Size get innerSize {
@@ -159,10 +126,38 @@ class _DefaultTouchTargetClient implements TouchClient {
   }
 
   @override
-  Rect getRectIn(RenderBox ancestor) {
+  bool containsIn(RenderBox ancestor, Offset position) {
     final transform = _renderObject.getTransformTo(ancestor);
-    final localRect = _renderObject._getLocalRect();
-    return MatrixUtils.transformRect(transform, localRect);
+    final inverse = Matrix4.tryInvert(transform);
+    if (inverse == null) return false;
+    final localPosition = MatrixUtils.transformPoint(inverse, position);
+    return _renderObject._getLocalRect().contains(localPosition);
+  }
+
+  @override
+  bool dryHitTestFrom(RenderBox ancestor) {
+    final child = _renderObject.child;
+    if (child == null) return false;
+
+    final childParentData = child.parentData as BoxParentData?;
+    final childOffset = childParentData?.offset ?? .zero;
+    final childCenter = child.size.center(Offset.zero);
+    final centerInLocal = childOffset + childCenter;
+
+    final transform = _renderObject.getTransformTo(ancestor);
+    final centerInAncestor = MatrixUtils.transformPoint(
+      transform,
+      centerInLocal,
+    );
+
+    final result = BoxHitTestResult();
+    ancestor.hitTest(result, position: centerInAncestor);
+    for (final HitTestEntry(:target) in result.path) {
+      if (target is RenderObject && (hasOwn(target) || hasDescendant(target))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @override
@@ -180,32 +175,6 @@ class _DefaultTouchTargetClient implements TouchClient {
     BoxHitTestResult result,
     Offset position,
   ) {
-    // final child = _renderObject.child;
-    // if (child == null) return false;
-
-    // final transform = _renderObject.getTransformTo(ancestor);
-    // final inverseTransform = Matrix4.tryInvert(
-    //   PointerEvent.removePerspectiveTransform(transform),
-    // );
-    // if (inverseTransform == null) return false;
-
-    // final childCenter = child.size.center(Offset.zero);
-    // final childParentData = child.parentData! as BoxParentData;
-    // final childOffset = childParentData.offset;
-
-    // final forcedPosition = childOffset + childCenter;
-    // final forcedTransform = MatrixUtils.forceToPoint(forcedPosition);
-
-    // final resultTransform = forcedTransform.multiplied(inverseTransform);
-    // return result.addWithRawTransform(
-    //   transform: resultTransform,
-    //   position: position,
-    //   hitTest: (result, position) {
-    //     assert(position == childCenter);
-    //     return child.hitTest(result, position: position);
-    //   },
-    // );
-
     final child = _renderObject.child;
     if (child == null) return false;
 
@@ -216,11 +185,12 @@ class _DefaultTouchTargetClient implements TouchClient {
       transform: transform,
       position: position,
       hitTest: (result, localPosition) {
+        final offset = localPosition - childCenter;
         return result.addWithRawTransform(
-          transform: MatrixUtils.forceToPoint(childCenter),
+          transform: .translationValues(offset.dx, offset.dy, 0.0),
           position: childCenter,
           hitTest: (result, position) {
-            assert(position == childCenter);
+            assert(position == localPosition);
             return child.hitTest(result, position: childCenter);
           },
         );
@@ -276,7 +246,6 @@ class SizedTouchTarget extends SingleChildRenderObjectWidget {
     super.key,
     this.registry,
     this.enabled = true,
-    required this.fit,
     required this.minimumSize,
     this.alignment = .center,
     this.textDirection,
@@ -285,7 +254,6 @@ class SizedTouchTarget extends SingleChildRenderObjectWidget {
 
   final TouchGroupRegistry? registry;
   final bool enabled;
-  final TouchTargetFit fit;
   final Size minimumSize;
   final AlignmentGeometry alignment;
   final TextDirection? textDirection;
@@ -295,7 +263,6 @@ class SizedTouchTarget extends SingleChildRenderObjectWidget {
       RenderSizedTouchTarget(
         registry: registry ?? TouchGroup.of(context),
         enabled: enabled,
-        fit: fit,
         minimumSize: minimumSize,
         alignment: alignment,
         textDirection: textDirection ?? Directionality.maybeOf(context),
@@ -309,7 +276,6 @@ class SizedTouchTarget extends SingleChildRenderObjectWidget {
     renderObject
       ..registry = registry ?? TouchGroup.of(context)
       ..enabled = enabled
-      ..fit = fit
       ..minimumSize = minimumSize
       ..alignment = alignment
       ..textDirection = textDirection ?? Directionality.maybeOf(context);
@@ -327,7 +293,6 @@ class SizedTouchTarget extends SingleChildRenderObjectWidget {
           ifFalse: "disabled",
         ),
       )
-      ..add(EnumProperty<TouchTargetFit>("fit", fit))
       ..add(DiagnosticsProperty<Size>("minimumSize", minimumSize))
       ..add(DiagnosticsProperty<AlignmentGeometry>("alignment", alignment))
       ..add(
@@ -345,7 +310,6 @@ class RenderSizedTouchTarget extends RenderShiftedBox
   RenderSizedTouchTarget({
     required TouchGroupRegistry registry,
     required this._enabled,
-    required this._fit,
     required this._minimumSize,
     this._alignment = .center,
     this._textDirection,
@@ -356,9 +320,6 @@ class RenderSizedTouchTarget extends RenderShiftedBox
 
   @override
   bool _enabled;
-
-  @override
-  TouchTargetFit _fit;
 
   Size _minimumSize;
 
@@ -420,37 +381,29 @@ class RenderSizedTouchTarget extends RenderShiftedBox
   @override
   Rect _getLocalRect() {
     if (!enabled) return Offset.zero & size;
-    switch (fit) {
-      case .wrap:
-        return Offset.zero & size;
-      case .overflow:
-        final targetWidth = math.max(size.width, minimumSize.width);
-        final targetHeight = math.max(size.height, minimumSize.height);
-        final alignment = _resolvedAlignment;
-        final childRelativeX =
-            (targetWidth - size.width) * (alignment.x + 1.0) / 2.0;
-        final childRelativeY =
-            (targetHeight - size.height) * (alignment.y + 1.0) / 2.0;
-        return .fromLTWH(
-          -childRelativeX,
-          -childRelativeY,
-          targetWidth,
-          targetHeight,
-        );
-    }
+
+    final alignment = _resolvedAlignment;
+
+    final targetWidth = math.max(size.width, minimumSize.width);
+    final targetHeight = math.max(size.height, minimumSize.height);
+
+    final childRelativeX =
+        (targetWidth - size.width) * (alignment.x + 1.0) / 2.0;
+    final childRelativeY =
+        (targetHeight - size.height) * (alignment.y + 1.0) / 2.0;
+
+    return .fromLTWH(
+      -childRelativeX,
+      -childRelativeY,
+      targetWidth,
+      targetHeight,
+    );
   }
 
   @override
   double computeMinIntrinsicWidth(double height) {
     if (child case final child?) {
-      final childWidth = child.getMinIntrinsicWidth(height);
-      if (!enabled) return childWidth;
-      switch (fit) {
-        case .wrap:
-          return math.max(childWidth, minimumSize.width);
-        case .overflow:
-          return childWidth;
-      }
+      return child.getMinIntrinsicWidth(height);
     }
     return 0.0;
   }
@@ -458,14 +411,7 @@ class RenderSizedTouchTarget extends RenderShiftedBox
   @override
   double computeMaxIntrinsicWidth(double height) {
     if (child case final child?) {
-      final childWidth = child.getMaxIntrinsicWidth(height);
-      if (!enabled) return childWidth;
-      switch (fit) {
-        case .wrap:
-          return math.max(childWidth, minimumSize.width);
-        case .overflow:
-          return childWidth;
-      }
+      return child.getMaxIntrinsicWidth(height);
     }
     return 0.0;
   }
@@ -473,14 +419,7 @@ class RenderSizedTouchTarget extends RenderShiftedBox
   @override
   double computeMinIntrinsicHeight(double width) {
     if (child case final child?) {
-      final childHeight = child.getMinIntrinsicHeight(width);
-      if (!enabled) return childHeight;
-      switch (fit) {
-        case .wrap:
-          return math.max(childHeight, minimumSize.height);
-        case .overflow:
-          return childHeight;
-      }
+      return child.getMinIntrinsicHeight(width);
     }
     return 0.0;
   }
@@ -488,32 +427,14 @@ class RenderSizedTouchTarget extends RenderShiftedBox
   @override
   double computeMaxIntrinsicHeight(double width) {
     if (child case final child?) {
-      final childHeight = child.getMaxIntrinsicHeight(width);
-      if (!enabled) return childHeight;
-      switch (fit) {
-        case .wrap:
-          return math.max(childHeight, minimumSize.height);
-        case .overflow:
-          return childHeight;
-      }
+      return child.getMaxIntrinsicHeight(width);
     }
     return 0.0;
   }
 
   Size _computeLayout(BoxConstraints constraints, ChildLayouter layoutChild) {
-    if (child != null) {
-      final childSizeValue = layoutChild(child!, constraints);
-      if (enabled) {
-        switch (fit) {
-          case .wrap:
-            final width = math.max(childSizeValue.width, minimumSize.width);
-            final height = math.max(childSizeValue.height, minimumSize.height);
-            return constraints.constrain(Size(width, height));
-          case .overflow:
-            return childSizeValue;
-        }
-      }
-      return childSizeValue;
+    if (child case final child?) {
+      return layoutChild(child, constraints);
     }
     return .zero;
   }
@@ -525,28 +446,9 @@ class RenderSizedTouchTarget extends RenderShiftedBox
   @override
   void performLayout() {
     if (child case final child?) {
-      final childParentData = child.parentData! as BoxParentData;
-      if (enabled) {
-        switch (fit) {
-          case .wrap:
-            child.layout(constraints, parentUsesSize: true);
-            final width = math.max(child.size.width, minimumSize.width);
-            final height = math.max(child.size.height, minimumSize.height);
-            size = constraints.constrain(Size(width, height));
-            final alignment = _resolvedAlignment;
-            childParentData.offset = alignment.alongOffset(
-              size - child.size as Offset,
-            );
-          case .overflow:
-            child.layout(constraints, parentUsesSize: true);
-            size = child.size;
-            childParentData.offset = .zero;
-        }
-      } else {
-        child.layout(constraints, parentUsesSize: true);
-        size = child.size;
-        childParentData.offset = .zero;
-      }
+      child.layout(constraints, parentUsesSize: true);
+      size = child.size;
+      (child.parentData! as BoxParentData).offset = .zero;
     } else {
       size = constraints.constrain(.zero);
     }
@@ -564,7 +466,6 @@ class RenderSizedTouchTarget extends RenderShiftedBox
           ifFalse: "disabled",
         ),
       )
-      ..add(EnumProperty<TouchTargetFit>("fit", fit))
       ..add(DiagnosticsProperty<Size>("minimumSize", minimumSize))
       ..add(DiagnosticsProperty<AlignmentGeometry>("alignment", alignment))
       ..add(
@@ -582,16 +483,17 @@ class PaddedTouchTarget extends SingleChildRenderObjectWidget {
     super.key,
     this.registry,
     this.enabled = true,
-    required this.fit,
     this.padding = .zero,
     this.textDirection,
     required Widget super.child,
   });
 
   final TouchGroupRegistry? registry;
+
   final bool enabled;
-  final TouchTargetFit fit;
+
   final EdgeInsetsGeometry padding;
+
   final TextDirection? textDirection;
 
   @override
@@ -599,7 +501,6 @@ class PaddedTouchTarget extends SingleChildRenderObjectWidget {
       RenderPaddedTouchTarget(
         registry: registry ?? TouchGroup.of(context),
         enabled: enabled,
-        fit: fit,
         padding: padding,
         textDirection: textDirection ?? Directionality.maybeOf(context),
       );
@@ -612,7 +513,6 @@ class PaddedTouchTarget extends SingleChildRenderObjectWidget {
     renderObject
       ..registry = registry ?? TouchGroup.of(context)
       ..enabled = enabled
-      ..fit = fit
       ..padding = padding
       ..textDirection = textDirection ?? Directionality.maybeOf(context);
   }
@@ -629,7 +529,6 @@ class PaddedTouchTarget extends SingleChildRenderObjectWidget {
           ifFalse: "disabled",
         ),
       )
-      ..add(EnumProperty<TouchTargetFit>("fit", fit))
       ..add(DiagnosticsProperty<EdgeInsetsGeometry>("padding", padding))
       ..add(
         EnumProperty<TextDirection>(
@@ -647,7 +546,6 @@ class RenderPaddedTouchTarget extends RenderShiftedBox
   RenderPaddedTouchTarget({
     required TouchGroupRegistry registry,
     required this._enabled,
-    required this._fit,
     required this._padding,
     this._textDirection,
     RenderBox? child,
@@ -657,9 +555,6 @@ class RenderPaddedTouchTarget extends RenderShiftedBox
 
   @override
   bool _enabled;
-
-  @override
-  TouchTargetFit _fit;
 
   EdgeInsetsGeometry _padding;
 
@@ -712,32 +607,21 @@ class RenderPaddedTouchTarget extends RenderShiftedBox
   @override
   Rect _getLocalRect() {
     if (!enabled) return Offset.zero & size;
-    switch (fit) {
-      case .wrap:
-        return Offset.zero & size;
-      case .overflow:
-        final padding = _resolvedPadding;
-        return .fromLTRB(
-          -padding.left,
-          -padding.top,
-          size.width + padding.right,
-          size.height + padding.bottom,
-        );
-    }
+
+    final padding = _resolvedPadding;
+
+    return .fromLTRB(
+      -padding.left,
+      -padding.top,
+      size.width + padding.right,
+      size.height + padding.bottom,
+    );
   }
 
   @override
   double computeMinIntrinsicWidth(double height) {
     if (child case final child?) {
-      final childWidth = child.getMinIntrinsicWidth(height);
-      if (!enabled) return childWidth;
-      switch (fit) {
-        case .wrap:
-          final padding = _resolvedPadding;
-          return childWidth + padding.horizontal;
-        case .overflow:
-          return childWidth;
-      }
+      return child.getMinIntrinsicWidth(height);
     }
     return 0.0;
   }
@@ -745,15 +629,7 @@ class RenderPaddedTouchTarget extends RenderShiftedBox
   @override
   double computeMaxIntrinsicWidth(double height) {
     if (child case final child?) {
-      final childWidth = child.getMaxIntrinsicWidth(height);
-      if (!enabled) return childWidth;
-      switch (fit) {
-        case .wrap:
-          final padding = _resolvedPadding;
-          return childWidth + padding.horizontal;
-        case .overflow:
-          return childWidth;
-      }
+      return child.getMaxIntrinsicWidth(height);
     }
     return 0.0;
   }
@@ -761,15 +637,7 @@ class RenderPaddedTouchTarget extends RenderShiftedBox
   @override
   double computeMinIntrinsicHeight(double width) {
     if (child case final child?) {
-      final childHeight = child.getMinIntrinsicHeight(width);
-      if (!enabled) return childHeight;
-      switch (fit) {
-        case .wrap:
-          final padding = _resolvedPadding;
-          return childHeight + padding.vertical;
-        case .overflow:
-          return childHeight;
-      }
+      return child.getMinIntrinsicHeight(width);
     }
     return 0.0;
   }
@@ -777,34 +645,14 @@ class RenderPaddedTouchTarget extends RenderShiftedBox
   @override
   double computeMaxIntrinsicHeight(double width) {
     if (child case final child?) {
-      final childHeight = child.getMaxIntrinsicHeight(width);
-      if (!enabled) return childHeight;
-      switch (fit) {
-        case .wrap:
-          final padding = _resolvedPadding;
-          return childHeight + padding.vertical;
-        case .overflow:
-          return childHeight;
-      }
+      return child.getMaxIntrinsicHeight(width);
     }
     return 0.0;
   }
 
   Size _computeLayout(BoxConstraints constraints, ChildLayouter layoutChild) {
     if (child case final child?) {
-      final chilSize = layoutChild(child, constraints);
-      if (enabled) {
-        switch (fit) {
-          case .wrap:
-            final padding = _resolvedPadding;
-            final width = chilSize.width + padding.horizontal;
-            final height = chilSize.height + padding.vertical;
-            return constraints.constrain(Size(width, height));
-          case .overflow:
-            return chilSize;
-        }
-      }
-      return chilSize;
+      return layoutChild(child, constraints);
     }
     return .zero;
   }
@@ -816,26 +664,9 @@ class RenderPaddedTouchTarget extends RenderShiftedBox
   @override
   void performLayout() {
     if (child case final child?) {
-      final childParentData = child.parentData! as BoxParentData;
-      if (enabled) {
-        switch (fit) {
-          case .wrap:
-            child.layout(constraints, parentUsesSize: true);
-            final padding = _resolvedPadding;
-            final width = child.size.width + padding.horizontal;
-            final height = child.size.height + padding.vertical;
-            size = constraints.constrain(Size(width, height));
-            childParentData.offset = Offset(padding.left, padding.top);
-          case .overflow:
-            child.layout(constraints, parentUsesSize: true);
-            size = child.size;
-            childParentData.offset = .zero;
-        }
-      } else {
-        child.layout(constraints, parentUsesSize: true);
-        size = child.size;
-        childParentData.offset = .zero;
-      }
+      child.layout(constraints, parentUsesSize: true);
+      size = child.size;
+      (child.parentData! as BoxParentData).offset = .zero;
     } else {
       size = constraints.constrain(.zero);
     }
@@ -853,7 +684,6 @@ class RenderPaddedTouchTarget extends RenderShiftedBox
           ifFalse: "disabled",
         ),
       )
-      ..add(EnumProperty<TouchTargetFit>("fit", fit))
       ..add(DiagnosticsProperty<EdgeInsetsGeometry>("padding", padding))
       ..add(
         EnumProperty<TextDirection>(
