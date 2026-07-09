@@ -29,6 +29,7 @@ workspace:
   - packages/lz4_ffi
   - packages/material/example
   - packages/material
+  - packages/material_3p
   - packages/named_colors
   - packages/package_info_ffi
   - packages/package_info_ffi/example

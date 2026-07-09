@@ -1,0 +1,35 @@
+name: material_3p
+description: 3P (third-party) version of the Material 3 Expressive package.
+version: 0.1.0
+homepage: https://github.com/deminearchiver/dart-flutter-packages
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/material_3p
+issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
+topics: [ui, widgets, material]
+resolution: workspace
+
+environment:
+  sdk: ^3.12.0
+  flutter: ">=3.44.0"
+
+dependencies:
+  # SDK dependencies
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Hosted dependencies
+  androidx_graphics_shapes: ^1.6.0
+  collection: ^1.19.1
+  libmonet: 2.0.0-dev.17
+  material_symbols_icons: ^4.2951.0
+  meta: ^1.18.0
+
+dev_dependencies:
+  # SDK dependencies
+  flutter_test:
+    sdk: flutter
+
+  # Hosted dependencies
+  deminearchiver_lints: ^2.1.2
+  build_runner: ^2.15.0
