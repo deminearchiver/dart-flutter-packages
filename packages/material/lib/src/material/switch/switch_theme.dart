@@ -1246,53 +1246,51 @@ final class _SwitchStateProperty<T extends Object?>
   int get hashCode => Object.hash(_defaults, _resolve);
 }
 
-abstract class SwitchTheme extends StatelessWidget implements ProxyWidget {
-  const SwitchTheme._({super.key, required this.child});
+abstract class SwitchTheme extends SingleChildStatelessWidget {
+  const SwitchTheme._({super.key, super.child});
 
   const factory SwitchTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<SwitchThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _SwitchThemeWithResolver<SwitchThemeDataPartial>;
 
   const factory SwitchTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<SwitchThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _SwitchThemeWithCallback<SwitchThemeDataPartial>;
 
   const factory SwitchTheme.mergeWithData({
     Key? key,
     required SwitchThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _SwitchThemeWithData<SwitchThemeDataPartial>;
 
   const factory SwitchTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<SwitchThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _SwitchThemeWithResolver<SwitchThemeData>;
 
   const factory SwitchTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<SwitchThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _SwitchThemeWithCallback<SwitchThemeData>;
 
   const factory SwitchTheme.replaceWithData({
     Key? key,
     required SwitchThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _SwitchThemeWithData<SwitchThemeData>;
 
   ThemeResolver<SwitchThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _SwitchTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _SwitchTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static SwitchThemeData? maybeOf(BuildContext context) {
     final overrides = _SwitchTheme.maybeOverridesOf(context);
@@ -1309,11 +1307,15 @@ class _SwitchThemeWithResolver<T extends SwitchThemeDataPartial>
   const _SwitchThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _SwitchThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1327,13 +1329,17 @@ class _SwitchThemeWithCallback<T extends SwitchThemeDataPartial>
   const _SwitchThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _SwitchThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1346,16 +1352,17 @@ class _SwitchThemeWithCallback<T extends SwitchThemeDataPartial>
 
 class _SwitchThemeWithData<T extends SwitchThemeDataPartial>
     extends SwitchTheme {
-  const _SwitchThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _SwitchThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _SwitchThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

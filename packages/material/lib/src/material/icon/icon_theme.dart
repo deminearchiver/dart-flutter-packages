@@ -9,53 +9,51 @@ typedef IconThemeDataLegacy = flutter.IconThemeData;
 
 // TODO: come back to add legacy / modern resolution logic to the build method
 
-abstract class IconTheme extends StatelessWidget implements ProxyWidget {
-  const IconTheme._({super.key, required this.child});
+abstract class IconTheme extends SingleChildStatelessWidget {
+  const IconTheme._({super.key, super.child});
 
   const factory IconTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<IconThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _IconThemeWithResolver<IconThemeDataPartial>;
 
   const factory IconTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<IconThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _IconThemeWithCallback<IconThemeDataPartial>;
 
   const factory IconTheme.mergeWithData({
     Key? key,
     required IconThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _IconThemeWithData<IconThemeDataPartial>;
 
   const factory IconTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<IconThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _IconThemeWithResolver<IconThemeData>;
 
   const factory IconTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<IconThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _IconThemeWithCallback<IconThemeData>;
 
   const factory IconTheme.replaceWithData({
     Key? key,
     required IconThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _IconThemeWithData<IconThemeData>;
 
   ThemeResolver<IconThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _IconTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _IconTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static IconThemeData _fallbackOf(BuildContext context) =>
       .defaults(colorTheme: ColorTheme.of(context));
@@ -121,14 +119,15 @@ abstract class IconTheme extends StatelessWidget implements ProxyWidget {
 }
 
 class _IconThemeWithResolver<T extends IconThemeDataPartial> extends IconTheme {
-  const _IconThemeWithResolver({
-    super.key,
-    required this.resolver,
-    required super.child,
-  }) : super._();
+  const _IconThemeWithResolver({super.key, required this.resolver, super.child})
+    : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _IconThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -138,16 +137,17 @@ class _IconThemeWithResolver<T extends IconThemeDataPartial> extends IconTheme {
 }
 
 class _IconThemeWithCallback<T extends IconThemeDataPartial> extends IconTheme {
-  const _IconThemeWithCallback({
-    super.key,
-    required this.callback,
-    required super.child,
-  }) : super._();
+  const _IconThemeWithCallback({super.key, required this.callback, super.child})
+    : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _IconThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -159,16 +159,17 @@ class _IconThemeWithCallback<T extends IconThemeDataPartial> extends IconTheme {
 }
 
 class _IconThemeWithData<T extends IconThemeDataPartial> extends IconTheme {
-  const _IconThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _IconThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _IconThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

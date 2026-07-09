@@ -1532,53 +1532,51 @@ final class _ShapeThemeDataDefaults extends ShapeThemeData {
   int get hashCode => _overrides.hashCode;
 }
 
-abstract class ShapeTheme extends StatelessWidget implements ProxyWidget {
-  const ShapeTheme._({super.key, required this.child});
+abstract class ShapeTheme extends SingleChildStatelessWidget {
+  const ShapeTheme._({super.key, super.child});
 
   const factory ShapeTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<ShapeThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _ShapeThemeWithResolver<ShapeThemeDataPartial>;
 
   const factory ShapeTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<ShapeThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _ShapeThemeWithCallback<ShapeThemeDataPartial>;
 
   const factory ShapeTheme.mergeWithData({
     Key? key,
     required ShapeThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _ShapeThemeWithData<ShapeThemeDataPartial>;
 
   const factory ShapeTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<ShapeThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _ShapeThemeWithResolver<ShapeThemeData>;
 
   const factory ShapeTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<ShapeThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _ShapeThemeWithCallback<ShapeThemeData>;
 
   const factory ShapeTheme.replaceWithData({
     Key? key,
     required ShapeThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _ShapeThemeWithData<ShapeThemeData>;
 
   ThemeResolver<ShapeThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _ShapeTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _ShapeTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static ShapeThemeData? maybeOf(BuildContext context) {
     final overrides = _ShapeTheme.maybeOverridesOf(context);
@@ -1595,11 +1593,15 @@ class _ShapeThemeWithResolver<T extends ShapeThemeDataPartial>
   const _ShapeThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _ShapeThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1613,13 +1615,17 @@ class _ShapeThemeWithCallback<T extends ShapeThemeDataPartial>
   const _ShapeThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _ShapeThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1631,16 +1637,17 @@ class _ShapeThemeWithCallback<T extends ShapeThemeDataPartial>
 }
 
 class _ShapeThemeWithData<T extends ShapeThemeDataPartial> extends ShapeTheme {
-  const _ShapeThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _ShapeThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _ShapeThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

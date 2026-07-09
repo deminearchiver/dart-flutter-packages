@@ -1006,53 +1006,51 @@ final class _SpringThemeDataExpressiveDefaults extends SpringThemeData
   }) => .new(overrides: overrides);
 }
 
-abstract class SpringTheme extends StatelessWidget implements ProxyWidget {
-  const SpringTheme._({super.key, required this.child});
+abstract class SpringTheme extends SingleChildStatelessWidget {
+  const SpringTheme._({super.key, super.child});
 
   const factory SpringTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<SpringThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _SpringThemeWithResolver<SpringThemeDataPartial>;
 
   const factory SpringTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<SpringThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _SpringThemeWithCallback<SpringThemeDataPartial>;
 
   const factory SpringTheme.mergeWithData({
     Key? key,
     required SpringThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _SpringThemeWithData<SpringThemeDataPartial>;
 
   const factory SpringTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<SpringThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _SpringThemeWithResolver<SpringThemeData>;
 
   const factory SpringTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<SpringThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _SpringThemeWithCallback<SpringThemeData>;
 
   const factory SpringTheme.replaceWithData({
     Key? key,
     required SpringThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _SpringThemeWithData<SpringThemeData>;
 
   ThemeResolver<SpringThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _SpringTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _SpringTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static SpringThemeData? maybeOf(BuildContext context) {
     final overrides = _SpringTheme.maybeOverridesOf(context);
@@ -1069,11 +1067,15 @@ class _SpringThemeWithResolver<T extends SpringThemeDataPartial>
   const _SpringThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _SpringThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1087,13 +1089,17 @@ class _SpringThemeWithCallback<T extends SpringThemeDataPartial>
   const _SpringThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _SpringThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1106,16 +1112,17 @@ class _SpringThemeWithCallback<T extends SpringThemeDataPartial>
 
 class _SpringThemeWithData<T extends SpringThemeDataPartial>
     extends SpringTheme {
-  const _SpringThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _SpringThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _SpringThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

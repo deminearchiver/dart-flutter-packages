@@ -17,17 +17,14 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  Widget _buildTypefaceTheme(BuildContext context, Widget child) =>
-      TypefaceTheme.mergeWithData(data: _typography.typeface, child: child);
+  SingleChildWidget _buildTypefaceTheme(BuildContext context) =>
+      TypefaceTheme.mergeWithData(data: _typography.typeface);
 
-  Widget _buildReferenceThemes(BuildContext context, Widget child) =>
-      CombiningBuilder(
-        useOuterContext: true,
-        builders: [_buildTypefaceTheme],
-        child: child,
-      );
+  List<SingleChildWidget> _buildReferenceThemes(BuildContext context) => [
+    _buildTypefaceTheme(context),
+  ];
 
-  Widget _buildColorThemes(BuildContext context, Widget child) {
+  List<SingleChildWidget> _buildColorThemes(BuildContext context) {
     final Brightness brightness = switch (_themeMode) {
       .system => MediaQuery.platformBrightnessOf(context),
       .light => .light,
@@ -49,77 +46,74 @@ class _AppState extends State<App> {
       platform: _platform,
       specVersion: _specVersion,
     );
-    return ColorTheme.replaceWithData(
-      data: colorTheme,
-      // data: .fromPalette(
-      //   palette: const .defaults(),
-      //   brightness: brightness,
-      //   contrastLevel: contrastLevel,
-      // ),
-      child: StaticColors(data: staticColors, child: child),
-    );
+    return [
+      ColorTheme.replaceWithData(data: colorTheme),
+      SingleChildBuilder(
+        builder: (context, child) => StaticColors(
+          data: staticColors,
+          child: child ?? const SizedBox.shrink(),
+        ),
+      ),
+    ];
   }
 
-  Widget _buildSpringTheme(BuildContext context, Widget child) =>
-      SpringTheme.replaceWithData(
-        data: const SpringThemeData.defaultsExpressive(),
-        child: child,
-      );
+  SingleChildWidget _buildSpringTheme(BuildContext context) =>
+      const SpringTheme.replaceWithData(data: .defaultsExpressive());
 
-  Widget _buildTypescaleTheme(BuildContext context, Widget child) =>
-      TypescaleTheme.mergeWithData(data: _typography.typescale, child: child);
+  SingleChildWidget _buildTypescaleTheme(BuildContext context) =>
+      TypescaleTheme.mergeWithData(data: _typography.typescale);
 
-  Widget _buildSystemThemes(BuildContext context, Widget child) =>
-      CombiningBuilder(
-        useOuterContext: true,
-        builders: [
-          _buildColorThemes,
-          _buildSpringTheme,
-          _buildTypescaleTheme,
-          // (context, child) => MeasurementTheme.mergeWithData(
-          //   data: const .from(space100: 8.0),
-          //   child: child,
-          // ),
-          // (context, child) => ShapeTheme.mergeWithData(
-          //   data: .from(cornerFamily: .cut),
-          //   child: child,
-          // ),
-        ],
-        child: child,
-      );
+  List<SingleChildWidget> _buildSystemThemes(BuildContext context) => [
+    ..._buildColorThemes(context),
+    _buildSpringTheme(context),
+    _buildTypescaleTheme(context),
+    // const MeasurementTheme.mergeWithData(data: .from(space100: 4.0)),
+    // const ShapeTheme.mergeWithData(data: .from(cornerFamily: .cut)),
+  ];
 
-  Widget _buildComponentThemes(BuildContext context, Widget child) {
-    return child;
-  }
+  List<SingleChildWidget> _buildComponentThemes(BuildContext context) => [];
 
-  Widget _buildLegacyThemes(BuildContext context, Widget child) {
+  List<SingleChildWidget> _buildLegacyThemes(BuildContext context) {
     final colorTheme = ColorTheme.of(context);
     final elevationTheme = ElevationTheme.of(context);
     final shapeTheme = ShapeTheme.of(context);
     final stateTheme = StateTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
-    return Theme(
-      data: LegacyThemeFactory.createTheme(
-        colorTheme: colorTheme,
-        elevationTheme: elevationTheme,
-        shapeTheme: shapeTheme,
-        stateTheme: stateTheme,
-        typescaleTheme: typescaleTheme,
-        scaffoldBackgroundColor: colorTheme.surfaceContainer,
+    return [
+      SingleChildBuilder(
+        builder: (context, child) => Theme(
+          data: LegacyThemeFactory.createTheme(
+            colorTheme: colorTheme,
+            elevationTheme: elevationTheme,
+            shapeTheme: shapeTheme,
+            stateTheme: stateTheme,
+            typescaleTheme: typescaleTheme,
+            scaffoldBackgroundColor: colorTheme.surfaceContainer,
+          ),
+          child: child ?? const SizedBox.shrink(),
+        ),
       ),
-      child: child,
-    );
+    ];
   }
 
-  Widget _buildThemes(BuildContext context, Widget child) => CombiningBuilder(
-    builders: [
+  Widget _buildThemes(BuildContext context, Widget child) {
+    final builders = <List<SingleChildWidget> Function(BuildContext context)>[
       _buildReferenceThemes,
       _buildSystemThemes,
       _buildComponentThemes,
       _buildLegacyThemes,
-    ],
-    child: child,
-  );
+    ];
+    return Nested(
+      children: [
+        for (final builder in builders)
+          SingleChildBuilder(
+            builder: (context, child) =>
+                Nested(children: builder(context), child: child),
+          ),
+      ],
+      child: child,
+    );
+  }
 
   Widget _buildNavigatorWrapper(BuildContext context, Widget? child) {
     if (child == null) return const SizedBox.shrink();

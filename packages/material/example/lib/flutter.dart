@@ -90,7 +90,6 @@ export 'theme/extended_color.dart';
 export 'theme/legacy.dart';
 export 'theme/static_colors.dart';
 export 'theme/typography.dart';
-export 'utils/combining_builder.dart';
 export 'utils/extensions.dart';
 export 'utils/inverse_center_optically.dart';
 export 'utils/simulation_controller.dart';

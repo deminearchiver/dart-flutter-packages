@@ -2847,53 +2847,51 @@ final class _TypescaleThemeDataDefaults extends TypescaleThemeData {
   int get hashCode => Object.hash(_typefaceTheme, _overrides);
 }
 
-abstract class TypescaleTheme extends StatelessWidget implements ProxyWidget {
-  const TypescaleTheme._({super.key, required this.child});
+abstract class TypescaleTheme extends SingleChildStatelessWidget {
+  const TypescaleTheme._({super.key, super.child});
 
   const factory TypescaleTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<TypescaleThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _TypescaleThemeWithResolver<TypescaleThemeDataPartial>;
 
   const factory TypescaleTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<TypescaleThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _TypescaleThemeWithCallback<TypescaleThemeDataPartial>;
 
   const factory TypescaleTheme.mergeWithData({
     Key? key,
     required TypescaleThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _TypescaleThemeWithData<TypescaleThemeDataPartial>;
 
   const factory TypescaleTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<TypescaleThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _TypescaleThemeWithResolver<TypescaleThemeData>;
 
   const factory TypescaleTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<TypescaleThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _TypescaleThemeWithCallback<TypescaleThemeData>;
 
   const factory TypescaleTheme.replaceWithData({
     Key? key,
     required TypescaleThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _TypescaleThemeWithData<TypescaleThemeData>;
 
   ThemeResolver<TypescaleThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _TypescaleTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _TypescaleTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static TypescaleThemeData? maybeOf(BuildContext context) {
     final overrides = _TypescaleTheme.maybeOverridesOf(context);
@@ -2912,11 +2910,15 @@ class _TypescaleThemeWithResolver<T extends TypescaleThemeDataPartial>
   const _TypescaleThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _TypescaleThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -2930,13 +2932,17 @@ class _TypescaleThemeWithCallback<T extends TypescaleThemeDataPartial>
   const _TypescaleThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _TypescaleThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -2949,16 +2955,17 @@ class _TypescaleThemeWithCallback<T extends TypescaleThemeDataPartial>
 
 class _TypescaleThemeWithData<T extends TypescaleThemeDataPartial>
     extends TypescaleTheme {
-  const _TypescaleThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _TypescaleThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _TypescaleThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

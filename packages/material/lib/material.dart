@@ -58,6 +58,8 @@ export 'src/material/measurement/measurement_theme.dart';
 export 'src/material/experimental/breakpoints.dart';
 export 'src/material/experimental/stateful_custom_painter.dart';
 export 'src/material/experimental/shape_borders.dart';
+export 'src/material/experimental/nested_new.dart';
+export 'src/material/experimental/combining_builder.dart';
 
 export 'src/material/keyed_persistent_hash_map.dart';
 

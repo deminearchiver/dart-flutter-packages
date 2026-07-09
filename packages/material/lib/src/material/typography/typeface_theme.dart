@@ -620,53 +620,51 @@ final class _TypefaceThemeDataDefaults extends TypefaceThemeData {
   int get hashCode => _overrides.hashCode;
 }
 
-abstract class TypefaceTheme extends StatelessWidget implements ProxyWidget {
-  const TypefaceTheme._({super.key, required this.child});
+abstract class TypefaceTheme extends SingleChildStatelessWidget {
+  const TypefaceTheme._({super.key, super.child});
 
   const factory TypefaceTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<TypefaceThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _TypefaceThemeWithResolver<TypefaceThemeDataPartial>;
 
   const factory TypefaceTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<TypefaceThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _TypefaceThemeWithCallback<TypefaceThemeDataPartial>;
 
   const factory TypefaceTheme.mergeWithData({
     Key? key,
     required TypefaceThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _TypefaceThemeWithData<TypefaceThemeDataPartial>;
 
   const factory TypefaceTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<TypefaceThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _TypefaceThemeWithResolver<TypefaceThemeData>;
 
   const factory TypefaceTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<TypefaceThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _TypefaceThemeWithCallback<TypefaceThemeData>;
 
   const factory TypefaceTheme.replaceWithData({
     Key? key,
     required TypefaceThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _TypefaceThemeWithData<TypefaceThemeData>;
 
   ThemeResolver<TypefaceThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _TypefaceTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _TypefaceTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static TypefaceThemeData? maybeOf(BuildContext context) {
     final overrides = _TypefaceTheme.maybeOverridesOf(context);
@@ -683,11 +681,15 @@ class _TypefaceThemeWithResolver<T extends TypefaceThemeDataPartial>
   const _TypefaceThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _TypefaceThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -701,13 +703,17 @@ class _TypefaceThemeWithCallback<T extends TypefaceThemeDataPartial>
   const _TypefaceThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _TypefaceThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -720,16 +726,17 @@ class _TypefaceThemeWithCallback<T extends TypefaceThemeDataPartial>
 
 class _TypefaceThemeWithData<T extends TypefaceThemeDataPartial>
     extends TypefaceTheme {
-  const _TypefaceThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _TypefaceThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _TypefaceThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

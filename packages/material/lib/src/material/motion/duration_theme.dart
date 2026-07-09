@@ -1141,53 +1141,51 @@ final class _DurationThemeDataDefaults extends DurationThemeData {
   int get hashCode => _overrides.hashCode;
 }
 
-abstract class DurationTheme extends StatelessWidget implements ProxyWidget {
-  const DurationTheme._({super.key, required this.child});
+abstract class DurationTheme extends SingleChildStatelessWidget {
+  const DurationTheme._({super.key, super.child});
 
   const factory DurationTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<DurationThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _DurationThemeWithResolver<DurationThemeDataPartial>;
 
   const factory DurationTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<DurationThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _DurationThemeWithCallback<DurationThemeDataPartial>;
 
   const factory DurationTheme.mergeWithData({
     Key? key,
     required DurationThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _DurationThemeWithData<DurationThemeDataPartial>;
 
   const factory DurationTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<DurationThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _DurationThemeWithResolver<DurationThemeData>;
 
   const factory DurationTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<DurationThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _DurationThemeWithCallback<DurationThemeData>;
 
   const factory DurationTheme.replaceWithData({
     Key? key,
     required DurationThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _DurationThemeWithData<DurationThemeData>;
 
   ThemeResolver<DurationThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _DurationTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _DurationTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static DurationThemeData? maybeOf(BuildContext context) {
     final overrides = _DurationTheme.maybeOverridesOf(context);
@@ -1204,11 +1202,15 @@ class _DurationThemeWithResolver<T extends DurationThemeDataPartial>
   const _DurationThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _DurationThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1222,13 +1224,17 @@ class _DurationThemeWithCallback<T extends DurationThemeDataPartial>
   const _DurationThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _DurationThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1241,16 +1247,17 @@ class _DurationThemeWithCallback<T extends DurationThemeDataPartial>
 
 class _DurationThemeWithData<T extends DurationThemeDataPartial>
     extends DurationTheme {
-  const _DurationThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _DurationThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _DurationThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

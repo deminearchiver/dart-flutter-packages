@@ -458,53 +458,51 @@ final class _FocusRingThemeDataDefaults extends FocusRingThemeData {
   );
 }
 
-abstract class FocusRingTheme extends StatelessWidget implements ProxyWidget {
-  const FocusRingTheme._({super.key, required this.child});
+abstract class FocusRingTheme extends SingleChildStatelessWidget {
+  const FocusRingTheme._({super.key, super.child});
 
   const factory FocusRingTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<FocusRingThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _FocusRingThemeWithResolver<FocusRingThemeDataPartial>;
 
   const factory FocusRingTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<FocusRingThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _FocusRingThemeWithCallback<FocusRingThemeDataPartial>;
 
   const factory FocusRingTheme.mergeWithData({
     Key? key,
     required FocusRingThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _FocusRingThemeWithData<FocusRingThemeDataPartial>;
 
   const factory FocusRingTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<FocusRingThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _FocusRingThemeWithResolver<FocusRingThemeData>;
 
   const factory FocusRingTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<FocusRingThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _FocusRingThemeWithCallback<FocusRingThemeData>;
 
   const factory FocusRingTheme.replaceWithData({
     Key? key,
     required FocusRingThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _FocusRingThemeWithData<FocusRingThemeData>;
 
   ThemeResolver<FocusRingThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _FocusRingTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _FocusRingTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static FocusRingThemeData? maybeOf(BuildContext context) {
     final overrides = _FocusRingTheme.maybeOverridesOf(context);
@@ -523,11 +521,15 @@ class _FocusRingThemeWithResolver<T extends FocusRingThemeDataPartial>
   const _FocusRingThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _FocusRingThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -541,13 +543,17 @@ class _FocusRingThemeWithCallback<T extends FocusRingThemeDataPartial>
   const _FocusRingThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _FocusRingThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -560,16 +566,17 @@ class _FocusRingThemeWithCallback<T extends FocusRingThemeDataPartial>
 
 class _FocusRingThemeWithData<T extends FocusRingThemeDataPartial>
     extends FocusRingTheme {
-  const _FocusRingThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _FocusRingThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _FocusRingThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

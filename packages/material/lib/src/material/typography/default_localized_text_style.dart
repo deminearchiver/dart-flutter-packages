@@ -1,12 +1,12 @@
 part of 'typography.dart';
 
 /// A widget that provides localized text style defaults to its descendants.
-class DefaultLocalizedTextStyle extends StatelessWidget implements ProxyWidget {
+class DefaultLocalizedTextStyle extends SingleChildStatelessWidget {
   const DefaultLocalizedTextStyle({
     super.key,
     this.scriptCategory,
     required this.style,
-    required this.child,
+    super.child,
   });
 
   /// The [ScriptCategory] used to determine the localized properties of the
@@ -22,14 +22,18 @@ class DefaultLocalizedTextStyle extends StatelessWidget implements ProxyWidget {
   /// Localized defaults will be provided for this text style.
   final TextStyle style;
 
-  /// The widget below this widget in the tree.
-  ///
-  /// {@macro flutter.widgets.ProxyWidget.child}
   @override
-  final Widget child;
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      DefaultLocalizedTextStyle(
+        key: key,
+        scriptCategory: scriptCategory,
+        style: style,
+        child: child,
+      );
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildWithChild(BuildContext context, Widget? child) {
+    if (child == null) return const SizedBox.shrink();
     final scriptCategory = this.scriptCategory;
     final resolvedStyle = scriptCategory != null
         ? localizedStyleFor(scriptCategory)

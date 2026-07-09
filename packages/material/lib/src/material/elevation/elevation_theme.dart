@@ -3,53 +3,51 @@ import 'package:material/src/material/flutter.dart';
 part 'elevation_theme_data_partial.dart';
 part 'elevation_theme_data.dart';
 
-abstract class ElevationTheme extends StatelessWidget implements ProxyWidget {
-  const ElevationTheme._({super.key, required this.child});
+abstract class ElevationTheme extends SingleChildStatelessWidget {
+  const ElevationTheme._({super.key, super.child});
 
   const factory ElevationTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<ElevationThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _ElevationThemeWithResolver<ElevationThemeDataPartial>;
 
   const factory ElevationTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<ElevationThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _ElevationThemeWithCallback<ElevationThemeDataPartial>;
 
   const factory ElevationTheme.mergeWithData({
     Key? key,
     required ElevationThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _ElevationThemeWithData<ElevationThemeDataPartial>;
 
   const factory ElevationTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<ElevationThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _ElevationThemeWithResolver<ElevationThemeData>;
 
   const factory ElevationTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<ElevationThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _ElevationThemeWithCallback<ElevationThemeData>;
 
   const factory ElevationTheme.replaceWithData({
     Key? key,
     required ElevationThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _ElevationThemeWithData<ElevationThemeData>;
 
   ThemeResolver<ElevationThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _ElevationTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _ElevationTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static ElevationThemeData? maybeOf(BuildContext context) {
     final overrides = _ElevationTheme.maybeOverridesOf(context);
@@ -66,11 +64,15 @@ class _ElevationThemeWithResolver<T extends ElevationThemeDataPartial>
   const _ElevationThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _ElevationThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -84,13 +86,17 @@ class _ElevationThemeWithCallback<T extends ElevationThemeDataPartial>
   const _ElevationThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _ElevationThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -103,16 +109,17 @@ class _ElevationThemeWithCallback<T extends ElevationThemeDataPartial>
 
 class _ElevationThemeWithData<T extends ElevationThemeDataPartial>
     extends ElevationTheme {
-  const _ElevationThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _ElevationThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _ElevationThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

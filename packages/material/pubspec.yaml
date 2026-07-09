@@ -33,6 +33,7 @@ dependencies:
   meta: ^1.18.0
   motor: ^1.1.0
   touch_targets: ^0.4.0
+  nested: ^1.0.0
 
 dev_dependencies:
   # SDK dependencies

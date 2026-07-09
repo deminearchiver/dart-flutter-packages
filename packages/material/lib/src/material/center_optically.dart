@@ -63,16 +63,12 @@ class CenterOptically extends SingleChildRenderObjectWidget {
 
 class RenderCenterOptically extends RenderShiftedBox {
   RenderCenterOptically({
-    bool enabled = true,
-    CornersGeometry corners = .zero,
-    EdgeInsetsGeometry maxOffsets = .zero,
-    TextDirection? textDirection,
+    this._enabled = true,
+    this._corners = .zero,
+    this._maxOffsets = .zero,
+    this._textDirection,
     RenderBox? child,
-  }) : _enabled = enabled,
-       _corners = corners,
-       _maxOffsets = maxOffsets,
-       _textDirection = textDirection,
-       super(child);
+  }) : super(child);
 
   Corners? _resolvedCornersCache;
   Corners get _resolvedCorners =>

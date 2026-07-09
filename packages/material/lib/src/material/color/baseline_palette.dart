@@ -4430,54 +4430,51 @@ final class _BaselinePaletteDefaults extends BaselinePalette {
   int get hashCode => _overrides.hashCode;
 }
 
-abstract class BaselinePaletteTheme extends StatelessWidget
-    implements ProxyWidget {
-  const BaselinePaletteTheme._({super.key, required this.child});
+abstract class BaselinePaletteTheme extends SingleChildStatelessWidget {
+  const BaselinePaletteTheme._({super.key, super.child});
 
   const factory BaselinePaletteTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<BaselinePalettePartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _BaselinePaletteThemeWithResolver<BaselinePalettePartial>;
 
   const factory BaselinePaletteTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<BaselinePalettePartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _BaselinePaletteThemeWithCallback<BaselinePalettePartial>;
 
   const factory BaselinePaletteTheme.mergeWithData({
     Key? key,
     required BaselinePalettePartial data,
-    required Widget child,
+    Widget? child,
   }) = _BaselinePaletteThemeWithData<BaselinePalettePartial>;
 
   const factory BaselinePaletteTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<BaselinePalette> resolver,
-    required Widget child,
+    Widget? child,
   }) = _BaselinePaletteThemeWithResolver<BaselinePalette>;
 
   const factory BaselinePaletteTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<BaselinePalette> callback,
-    required Widget child,
+    Widget? child,
   }) = _BaselinePaletteThemeWithCallback<BaselinePalette>;
 
   const factory BaselinePaletteTheme.replaceWithData({
     Key? key,
     required BaselinePalette data,
-    required Widget child,
+    Widget? child,
   }) = _BaselinePaletteThemeWithData<BaselinePalette>;
 
   ThemeResolver<BaselinePalettePartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _BaselinePaletteTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _BaselinePaletteTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static BaselinePalette? maybeOf(BuildContext context) {
     final overrides = _BaselinePaletteTheme.maybeOverridesOf(context);
@@ -4494,11 +4491,19 @@ class _BaselinePaletteThemeWithResolver<T extends BaselinePalettePartial>
   const _BaselinePaletteThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _BaselinePaletteThemeWithResolver(
+        key: key,
+        resolver: resolver,
+        child: child,
+      );
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -4512,13 +4517,21 @@ class _BaselinePaletteThemeWithCallback<T extends BaselinePalettePartial>
   const _BaselinePaletteThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _BaselinePaletteThemeWithCallback(
+        key: key,
+        callback: callback,
+        child: child,
+      );
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -4534,13 +4547,17 @@ class _BaselinePaletteThemeWithData<T extends BaselinePalettePartial>
   const _BaselinePaletteThemeWithData({
     super.key,
     required this.data,
-    required super.child,
+    super.child,
   }) : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _BaselinePaletteThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

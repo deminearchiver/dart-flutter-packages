@@ -759,53 +759,51 @@ final class _RadioButtonThemeDataDefaults extends RadioButtonThemeData {
       Object.hash(_colorTheme, _shapeTheme, _stateTheme, _overrides);
 }
 
-abstract class RadioButtonTheme extends StatelessWidget implements ProxyWidget {
-  const RadioButtonTheme._({super.key, required this.child});
+abstract class RadioButtonTheme extends SingleChildStatelessWidget {
+  const RadioButtonTheme._({super.key, super.child});
 
   const factory RadioButtonTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<RadioButtonThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _RadioButtonThemeWithResolver<RadioButtonThemeDataPartial>;
 
   const factory RadioButtonTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<RadioButtonThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _RadioButtonThemeWithCallback<RadioButtonThemeDataPartial>;
 
   const factory RadioButtonTheme.mergeWithData({
     Key? key,
     required RadioButtonThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _RadioButtonThemeWithData<RadioButtonThemeDataPartial>;
 
   const factory RadioButtonTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<RadioButtonThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _RadioButtonThemeWithResolver<RadioButtonThemeData>;
 
   const factory RadioButtonTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<RadioButtonThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _RadioButtonThemeWithCallback<RadioButtonThemeData>;
 
   const factory RadioButtonTheme.replaceWithData({
     Key? key,
     required RadioButtonThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _RadioButtonThemeWithData<RadioButtonThemeData>;
 
   ThemeResolver<RadioButtonThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _RadioButtonTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _RadioButtonTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static RadioButtonThemeData? maybeOf(BuildContext context) {
     final overrides = _RadioButtonTheme.maybeOverridesOf(context);
@@ -824,11 +822,15 @@ class _RadioButtonThemeWithResolver<T extends RadioButtonThemeDataPartial>
   const _RadioButtonThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _RadioButtonThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -842,13 +844,17 @@ class _RadioButtonThemeWithCallback<T extends RadioButtonThemeDataPartial>
   const _RadioButtonThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _RadioButtonThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -861,16 +867,17 @@ class _RadioButtonThemeWithCallback<T extends RadioButtonThemeDataPartial>
 
 class _RadioButtonThemeWithData<T extends RadioButtonThemeDataPartial>
     extends RadioButtonTheme {
-  const _RadioButtonThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _RadioButtonThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _RadioButtonThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

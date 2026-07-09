@@ -3,53 +3,51 @@ import 'package:material/src/material/flutter.dart';
 part 'measurement_theme_data_partial.dart';
 part 'measurement_theme_data.dart';
 
-abstract class MeasurementTheme extends StatelessWidget implements ProxyWidget {
-  const MeasurementTheme._({super.key, required this.child});
+abstract class MeasurementTheme extends SingleChildStatelessWidget {
+  const MeasurementTheme._({super.key, super.child});
 
   const factory MeasurementTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<MeasurementThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _MeasurementThemeWithResolver<MeasurementThemeDataPartial>;
 
   const factory MeasurementTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<MeasurementThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _MeasurementThemeWithCallback<MeasurementThemeDataPartial>;
 
   const factory MeasurementTheme.mergeWithData({
     Key? key,
     required MeasurementThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _MeasurementThemeWithData<MeasurementThemeDataPartial>;
 
   const factory MeasurementTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<MeasurementThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _MeasurementThemeWithResolver<MeasurementThemeData>;
 
   const factory MeasurementTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<MeasurementThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _MeasurementThemeWithCallback<MeasurementThemeData>;
 
   const factory MeasurementTheme.replaceWithData({
     Key? key,
     required MeasurementThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _MeasurementThemeWithData<MeasurementThemeData>;
 
   ThemeResolver<MeasurementThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _MeasurementTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _MeasurementTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static MeasurementThemeData? maybeOf(BuildContext context) {
     final overrides = _MeasurementTheme.maybeOverridesOf(context);
@@ -66,11 +64,15 @@ class _MeasurementThemeWithResolver<T extends MeasurementThemeDataPartial>
   const _MeasurementThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _MeasurementThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -84,13 +86,17 @@ class _MeasurementThemeWithCallback<T extends MeasurementThemeDataPartial>
   const _MeasurementThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _MeasurementThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -103,16 +109,17 @@ class _MeasurementThemeWithCallback<T extends MeasurementThemeDataPartial>
 
 class _MeasurementThemeWithData<T extends MeasurementThemeDataPartial>
     extends MeasurementTheme {
-  const _MeasurementThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _MeasurementThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _MeasurementThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

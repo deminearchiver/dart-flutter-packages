@@ -1396,53 +1396,51 @@ final class _ListItemStateProperty<T extends Object?>
   int get hashCode => Object.hash(_defaults, _resolve);
 }
 
-abstract class ListItemTheme extends StatelessWidget implements ProxyWidget {
-  const ListItemTheme._({super.key, required this.child});
+abstract class ListItemTheme extends SingleChildStatelessWidget {
+  const ListItemTheme._({super.key, required super.child});
 
   const factory ListItemTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<ListItemThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _ListItemThemeWithResolver<ListItemThemeDataPartial>;
 
   const factory ListItemTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<ListItemThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _ListItemThemeWithCallback<ListItemThemeDataPartial>;
 
   const factory ListItemTheme.mergeWithData({
     Key? key,
     required ListItemThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _ListItemThemeWithData<ListItemThemeDataPartial>;
 
   const factory ListItemTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<ListItemThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _ListItemThemeWithResolver<ListItemThemeData>;
 
   const factory ListItemTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<ListItemThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _ListItemThemeWithCallback<ListItemThemeData>;
 
   const factory ListItemTheme.replaceWithData({
     Key? key,
     required ListItemThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _ListItemThemeWithData<ListItemThemeData>;
 
   ThemeResolver<ListItemThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _ListItemTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _ListItemTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static ListItemThemeData? maybeOf(BuildContext context) {
     final overrides = _ListItemTheme.maybeOverridesOf(context);
@@ -1459,11 +1457,15 @@ class _ListItemThemeWithResolver<T extends ListItemThemeDataPartial>
   const _ListItemThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _ListItemThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1477,13 +1479,17 @@ class _ListItemThemeWithCallback<T extends ListItemThemeDataPartial>
   const _ListItemThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _ListItemThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1496,16 +1502,17 @@ class _ListItemThemeWithCallback<T extends ListItemThemeDataPartial>
 
 class _ListItemThemeWithData<T extends ListItemThemeDataPartial>
     extends ListItemTheme {
-  const _ListItemThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _ListItemThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _ListItemThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

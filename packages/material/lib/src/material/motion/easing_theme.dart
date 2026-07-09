@@ -861,53 +861,51 @@ final class _EasingThemeDataDefaults extends EasingThemeData {
   int get hashCode => _overrides.hashCode;
 }
 
-abstract class EasingTheme extends StatelessWidget implements ProxyWidget {
-  const EasingTheme._({super.key, required this.child});
+abstract class EasingTheme extends SingleChildStatelessWidget {
+  const EasingTheme._({super.key, super.child});
 
   const factory EasingTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<EasingThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _EasingThemeWithResolver<EasingThemeDataPartial>;
 
   const factory EasingTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<EasingThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _EasingThemeWithCallback<EasingThemeDataPartial>;
 
   const factory EasingTheme.mergeWithData({
     Key? key,
     required EasingThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _EasingThemeWithData<EasingThemeDataPartial>;
 
   const factory EasingTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<EasingThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _EasingThemeWithResolver<EasingThemeData>;
 
   const factory EasingTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<EasingThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _EasingThemeWithCallback<EasingThemeData>;
 
   const factory EasingTheme.replaceWithData({
     Key? key,
     required EasingThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _EasingThemeWithData<EasingThemeData>;
 
   ThemeResolver<EasingThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _EasingTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _EasingTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static EasingThemeData? maybeOf(BuildContext context) {
     final overrides = _EasingTheme.maybeOverridesOf(context);
@@ -924,11 +922,15 @@ class _EasingThemeWithResolver<T extends EasingThemeDataPartial>
   const _EasingThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _EasingThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -942,13 +944,17 @@ class _EasingThemeWithCallback<T extends EasingThemeDataPartial>
   const _EasingThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _EasingThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -961,16 +967,17 @@ class _EasingThemeWithCallback<T extends EasingThemeDataPartial>
 
 class _EasingThemeWithData<T extends EasingThemeDataPartial>
     extends EasingTheme {
-  const _EasingThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _EasingThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _EasingThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

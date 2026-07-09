@@ -350,14 +350,13 @@ final class _StateFocusIndicatorThemeDataDefaults
   int get hashCode => _overrides.hashCode;
 }
 
-abstract class StateFocusIndicatorTheme extends StatelessWidget
-    implements ProxyWidget {
-  const StateFocusIndicatorTheme._({super.key, required this.child});
+abstract class StateFocusIndicatorTheme extends SingleChildStatelessWidget {
+  const StateFocusIndicatorTheme._({super.key, super.child});
 
   const factory StateFocusIndicatorTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<StateFocusIndicatorThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) =
       _StateFocusIndicatorThemeWithResolver<
         StateFocusIndicatorThemeDataPartial
@@ -367,7 +366,7 @@ abstract class StateFocusIndicatorTheme extends StatelessWidget
     Key? key,
     required ThemeResolverCallback<StateFocusIndicatorThemeDataPartial>
     callback,
-    required Widget child,
+    Widget? child,
   }) =
       _StateFocusIndicatorThemeWithCallback<
         StateFocusIndicatorThemeDataPartial
@@ -376,35 +375,33 @@ abstract class StateFocusIndicatorTheme extends StatelessWidget
   const factory StateFocusIndicatorTheme.mergeWithData({
     Key? key,
     required StateFocusIndicatorThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _StateFocusIndicatorThemeWithData<StateFocusIndicatorThemeDataPartial>;
 
   const factory StateFocusIndicatorTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<StateFocusIndicatorThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _StateFocusIndicatorThemeWithResolver<StateFocusIndicatorThemeData>;
 
   const factory StateFocusIndicatorTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<StateFocusIndicatorThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _StateFocusIndicatorThemeWithCallback<StateFocusIndicatorThemeData>;
 
   const factory StateFocusIndicatorTheme.replaceWithData({
     Key? key,
     required StateFocusIndicatorThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _StateFocusIndicatorThemeWithData<StateFocusIndicatorThemeData>;
 
   ThemeResolver<StateFocusIndicatorThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _StateFocusIndicatorTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _StateFocusIndicatorTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static StateFocusIndicatorThemeData? maybeOf(BuildContext context) {
     final overrides = _StateFocusIndicatorTheme.maybeOverridesOf(context);
@@ -423,11 +420,19 @@ class _StateFocusIndicatorThemeWithResolver<
   const _StateFocusIndicatorThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _StateFocusIndicatorThemeWithResolver(
+        key: key,
+        resolver: resolver,
+        child: child,
+      );
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -443,13 +448,21 @@ class _StateFocusIndicatorThemeWithCallback<
   const _StateFocusIndicatorThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _StateFocusIndicatorThemeWithCallback(
+        key: key,
+        callback: callback,
+        child: child,
+      );
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -467,13 +480,17 @@ class _StateFocusIndicatorThemeWithData<
   const _StateFocusIndicatorThemeWithData({
     super.key,
     required this.data,
-    required super.child,
+    super.child,
   }) : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _StateFocusIndicatorThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

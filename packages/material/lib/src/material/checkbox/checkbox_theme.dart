@@ -890,53 +890,51 @@ final class _CheckboxThemeDataDefaults extends CheckboxThemeData {
       Object.hash(_colorTheme, _shapeTheme, _stateTheme, _overrides);
 }
 
-abstract class CheckboxTheme extends StatelessWidget implements ProxyWidget {
-  const CheckboxTheme._({super.key, required this.child});
+abstract class CheckboxTheme extends SingleChildStatelessWidget {
+  const CheckboxTheme._({super.key, super.child});
 
   const factory CheckboxTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<CheckboxThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _CheckboxThemeWithResolver<CheckboxThemeDataPartial>;
 
   const factory CheckboxTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<CheckboxThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _CheckboxThemeWithCallback<CheckboxThemeDataPartial>;
 
   const factory CheckboxTheme.mergeWithData({
     Key? key,
     required CheckboxThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _CheckboxThemeWithData<CheckboxThemeDataPartial>;
 
   const factory CheckboxTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<CheckboxThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _CheckboxThemeWithResolver<CheckboxThemeData>;
 
   const factory CheckboxTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<CheckboxThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _CheckboxThemeWithCallback<CheckboxThemeData>;
 
   const factory CheckboxTheme.replaceWithData({
     Key? key,
     required CheckboxThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _CheckboxThemeWithData<CheckboxThemeData>;
 
   ThemeResolver<CheckboxThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _CheckboxTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _CheckboxTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static CheckboxThemeData? maybeOf(BuildContext context) {
     final overrides = _CheckboxTheme.maybeOverridesOf(context);
@@ -953,11 +951,15 @@ class _CheckboxThemeWithResolver<T extends CheckboxThemeDataPartial>
   const _CheckboxThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _CheckboxThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -971,13 +973,17 @@ class _CheckboxThemeWithCallback<T extends CheckboxThemeDataPartial>
   const _CheckboxThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _CheckboxThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -990,16 +996,17 @@ class _CheckboxThemeWithCallback<T extends CheckboxThemeDataPartial>
 
 class _CheckboxThemeWithData<T extends CheckboxThemeDataPartial>
     extends CheckboxTheme {
-  const _CheckboxThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _CheckboxThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _CheckboxThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

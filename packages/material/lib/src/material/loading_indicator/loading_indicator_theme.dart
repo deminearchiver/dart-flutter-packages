@@ -687,54 +687,51 @@ final class _LoadingIndicatorStateProperty<T extends Object?>
   int get hashCode => Object.hash(_defaults, _resolve);
 }
 
-abstract class LoadingIndicatorTheme extends StatelessWidget
-    implements ProxyWidget {
-  const LoadingIndicatorTheme._({super.key, required this.child});
+abstract class LoadingIndicatorTheme extends SingleChildStatelessWidget {
+  const LoadingIndicatorTheme._({super.key, super.child});
 
   const factory LoadingIndicatorTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<LoadingIndicatorThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _LoadingIndicatorThemeWithResolver<LoadingIndicatorThemeDataPartial>;
 
   const factory LoadingIndicatorTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<LoadingIndicatorThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _LoadingIndicatorThemeWithCallback<LoadingIndicatorThemeDataPartial>;
 
   const factory LoadingIndicatorTheme.mergeWithData({
     Key? key,
     required LoadingIndicatorThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _LoadingIndicatorThemeWithData<LoadingIndicatorThemeDataPartial>;
 
   const factory LoadingIndicatorTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<LoadingIndicatorThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _LoadingIndicatorThemeWithResolver<LoadingIndicatorThemeData>;
 
   const factory LoadingIndicatorTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<LoadingIndicatorThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _LoadingIndicatorThemeWithCallback<LoadingIndicatorThemeData>;
 
   const factory LoadingIndicatorTheme.replaceWithData({
     Key? key,
     required LoadingIndicatorThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _LoadingIndicatorThemeWithData<LoadingIndicatorThemeData>;
 
   ThemeResolver<LoadingIndicatorThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _LoadingIndicatorTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _LoadingIndicatorTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static LoadingIndicatorThemeData? maybeOf(BuildContext context) {
     final overrides = _LoadingIndicatorTheme.maybeOverridesOf(context);
@@ -755,11 +752,19 @@ class _LoadingIndicatorThemeWithResolver<
   const _LoadingIndicatorThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _LoadingIndicatorThemeWithResolver(
+        key: key,
+        resolver: resolver,
+        child: child,
+      );
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -775,13 +780,21 @@ class _LoadingIndicatorThemeWithCallback<
   const _LoadingIndicatorThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _LoadingIndicatorThemeWithCallback(
+        key: key,
+        callback: callback,
+        child: child,
+      );
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -797,13 +810,17 @@ class _LoadingIndicatorThemeWithData<T extends LoadingIndicatorThemeDataPartial>
   const _LoadingIndicatorThemeWithData({
     super.key,
     required this.data,
-    required super.child,
+    super.child,
   }) : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _LoadingIndicatorThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

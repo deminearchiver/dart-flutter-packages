@@ -612,53 +612,51 @@ final class _WidgetStateLayerOpacityFromStateThemeData
   }
 }
 
-abstract class StateTheme extends StatelessWidget implements ProxyWidget {
-  const StateTheme._({super.key, required this.child});
+abstract class StateTheme extends SingleChildStatelessWidget {
+  const StateTheme._({super.key, super.child});
 
   const factory StateTheme.mergeWithResolver({
     Key? key,
     required ThemeResolver<StateThemeDataPartial> resolver,
-    required Widget child,
+    Widget? child,
   }) = _StateThemeWithResolver<StateThemeDataPartial>;
 
   const factory StateTheme.mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<StateThemeDataPartial> callback,
-    required Widget child,
+    Widget? child,
   }) = _StateThemeWithCallback<StateThemeDataPartial>;
 
   const factory StateTheme.mergeWithData({
     Key? key,
     required StateThemeDataPartial data,
-    required Widget child,
+    Widget? child,
   }) = _StateThemeWithData<StateThemeDataPartial>;
 
   const factory StateTheme.replaceWithResolver({
     Key? key,
     required ThemeResolver<StateThemeData> resolver,
-    required Widget child,
+    Widget? child,
   }) = _StateThemeWithResolver<StateThemeData>;
 
   const factory StateTheme.replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<StateThemeData> callback,
-    required Widget child,
+    Widget? child,
   }) = _StateThemeWithCallback<StateThemeData>;
 
   const factory StateTheme.replaceWithData({
     Key? key,
     required StateThemeData data,
-    required Widget child,
+    Widget? child,
   }) = _StateThemeWithData<StateThemeData>;
 
   ThemeResolver<StateThemeDataPartial> get resolver;
 
   @override
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) =>
-      _StateTheme(resolver: resolver, child: child);
+  Widget buildWithChild(BuildContext context, Widget? child) => child != null
+      ? _StateTheme(resolver: resolver, child: child)
+      : const SizedBox.shrink();
 
   static StateThemeData? maybeOf(BuildContext context) {
     final overrides = _StateTheme.maybeOverridesOf(context);
@@ -675,11 +673,15 @@ class _StateThemeWithResolver<T extends StateThemeDataPartial>
   const _StateThemeWithResolver({
     super.key,
     required this.resolver,
-    required super.child,
+    super.child,
   }) : super._();
 
   @override
   final ThemeResolver<T> resolver;
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _StateThemeWithResolver(key: key, resolver: resolver, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -693,13 +695,17 @@ class _StateThemeWithCallback<T extends StateThemeDataPartial>
   const _StateThemeWithCallback({
     super.key,
     required this.callback,
-    required super.child,
+    super.child,
   }) : super._();
 
   final ThemeResolverCallback<T> callback;
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _StateThemeWithCallback(key: key, callback: callback, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -711,16 +717,17 @@ class _StateThemeWithCallback<T extends StateThemeDataPartial>
 }
 
 class _StateThemeWithData<T extends StateThemeDataPartial> extends StateTheme {
-  const _StateThemeWithData({
-    super.key,
-    required this.data,
-    required super.child,
-  }) : super._();
+  const _StateThemeWithData({super.key, required this.data, super.child})
+    : super._();
 
   final T data;
 
   @override
   ThemeResolver<T> get resolver => .value(data);
+
+  @override
+  SingleChildWidget wrap(BuildContext context, Widget? child) =>
+      _StateThemeWithData(key: key, data: data, child: child);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
