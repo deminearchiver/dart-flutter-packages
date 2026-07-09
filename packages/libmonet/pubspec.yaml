@@ -1,6 +1,6 @@
 name: libmonet
 description: Algorithms and utilities that power the Material Design 3 (M3) color system, including choosing theme colors from images and creating tones of colors; all in a new color space.
-version: 2.0.0-dev.17
+version: 2.0.0-dev.18
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/libmonet
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
@@ -8,7 +8,7 @@ topics: [color, hct, material, android, utility]
 resolution: workspace
 
 environment:
-  sdk: ^3.11.0
+  sdk: ^3.12.0
 
 dependencies:
   collection: ^1.19.1

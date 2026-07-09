@@ -1,17 +1,23 @@
 ## 2.0.0
 
-- Bumped minimum SDK versions to Dart 3.11 and Flutter 3.41 stable.
-- Ported upstream commits:
-  - [`19ad665`](https://github.com/material-foundation/material-color-utilities/commit/19ad665aff08662e949f6759d34d65ba8acc1b83): *"Added CMF Scheme in 2026 spec."*
-  - [`4578d0a`](https://github.com/material-foundation/material-color-utilities/commit/4578d0a1d40f1d17f1ca6f34cc9c484bea8f0a9d): *"Refactor DynamicScheme to accept a list of source colors."*
-  - [`91da30d`](https://github.com/material-foundation/material-color-utilities/commit/91da30d89e70c3dc9575ec71a1ebe8874d881f29): *"Updated background for on-fixed colors in ColorSpec2026."*
-  - [`1a34bd2`](https://github.com/material-foundation/material-color-utilities/commit/1a34bd2d696a5dd669beca679546ad72209d0937): *"Adjust chroma calculation in ColorSpec2025 for yellow hues at tone 99."*
-- Added support for energy color generation via the new `EnergyColors` utility.
-  - Implementation is experimental as it comes from an unreleased version of the upstream library.
-- Added "surface effect" colors to `AndroidDynamicColors`.
-- Made `Hct` immutable to avoid issues with value equality in collections:
-  - Removed `hue`, `chroma` and `tone` setters.
-  - Added a new `copyWith` method.
+- Bumped minimum SDK version to Dart 3.12.
+
+- Ported from upstream Material Color Utilities:
+  - Added CMF Scheme in 2026 spec. ([`19ad665`](https://github.com/material-foundation/material-color-utilities/commit/19ad665aff08662e949f6759d34d65ba8acc1b83))
+  - Refactor DynamicScheme to accept a list of source colors. ([`4578d0a`](https://github.com/material-foundation/material-color-utilities/commit/4578d0a1d40f1d17f1ca6f34cc9c484bea8f0a9d))
+  - Updated background for on-fixed colors in ColorSpec2026. ([`91da30d`](https://github.com/material-foundation/material-color-utilities/commit/91da30d89e70c3dc9575ec71a1ebe8874d881f29))
+  - Adjust chroma calculation in ColorSpec2025 for yellow hues at tone 99. ([`1a34bd2`](https://github.com/material-foundation/material-color-utilities/commit/1a34bd2d696a5dd669beca679546ad72209d0937))
+  - Added support for energy color generation via the new `EnergyColors` utility. Implementation is experimental as it comes from an unreleased version of the upstream library.
+
+- Renamed `android_dynamic_colors` library to `android_color_utilities`.
+
+- Fixed an upstream issue of `AndroidDynamicColors.clockSecond` and `AndroidDynamicColors.weatherTemp` having a medium contrast of `70`, when it should've been `7`.
+
+- Ported from upstream Android source code:
+  - Added `surfaceEffect0`, `surfaceEffect1`, `surfaceEffect2`, `surfaceEffect3`,`surfaceEffect0Fallback` color roles representing translucent surfaces with background effects to `AndroidDynamicColors`.
+  - Added `SchemeClock` and `SchemeClockVibrant` to the `android_color_utilities` library.
+  - Added `Cam16.getInt` and `Cam16.getIntInViewingConditions` to the `material_color_utilities` library.
+
 - Massively refactored `DynamicScheme` (including deviations from upstream):
   - Removed custom palette key colors support from `DynamicScheme`.
   - Replaced `sourceColorHct` with `sourceColor` of type `TonalPaletteSourceColor`.
@@ -19,25 +25,31 @@
   - All `DynamicScheme.withDefaults` and `Scheme*` constructor parameters are now optional (`isDark` defaults to `false` as per `md.sys.color` token defaults).
   - Implemented complex fallback logic for `isDark`, `platform` and `specVersion`.
   - Added `DynamicScheme.raw` for creating potentially logically impossible scheme configurations.
-- Added `year` property to `SpecVersion` and implemented `Comparable<SpecVersion>` in order to make spec versions orderable.
-- Ported `Cam16.getInt` and `Cam16.getIntInViewingConditions` from Android source code.
-- Color generation algorithms from Android:
-  - Renamed `android_dynamic_colors` library to `android_color_utilities`.
-  - Added `SchemeClock` and `SchemeClockVibrant` to the `android_color_utilities` library.
-  - Fixed an upstream issue of `AndroidDynamicColors.clockSecond` and `AndroidDynamicColors.weatherTemp` having a medium contrast of `70`, when it should've been `7`.
-- Renamed `TemperatureCache.getComplement` to `TemperatureCache.complement` and made it a getter.
-- Changed `Score.score` positional parameters to be named instead.
+
+- Aligning the library with Dart best practices:
+  - Renamed `TemperatureCache.getComplement` to `TemperatureCache.complement` and made it a getter.
+  - Changed `Score.score` positional parameters to be named instead.
+  - Made `Hct` immutable to avoid issues with value equality in collections: removed `hue`, `chroma` and `tone` setters and added a new `copyWith` method.
+  - Added `year` property to `SpecVersion` and implemented `Comparable<SpecVersion>` in order to make spec versions orderable.
+
 - Added a default `libmonet` library which exports all members from the other libraries.
+
 - Added generated example schemes in CSS and Figma formats.
+
 - Refactored internal file structure (breaks source code imports).
+
 - Other minor changes.
 
 ## 1.2.0
 
 - Inlined more utility functions.
+
 - Removed `MathUtils.signum` in favor of `num.sign`.
+
 - Addressed linter feedback.
+
 - Code style updates.
+
 - Upgraded dependencies.
 
 ## 1.1.2
@@ -51,12 +63,19 @@
 ## 1.1.0
 
 - Added caching to `MaterialDynamicColors` which prevents the class from being const-constructable.
+
 - Removed redundant libraries which were partials of `material_color_utilities`.
+
 - Publicly exposed `ColorSpec2021` and `ColorSpec2025` classes.
+
 - Introduced a new library `android_dynamic_colors` which contains a `AndroidDynamicColors` class which is a port of [`com.android.systemui.monet.CustomDynamicColors`](https://cs.android.com/android/_/android/platform/frameworks/libs/systemui/+/ca0ae237ed2d67f5b05f2572ddbcc6e10b550b92:monet/src/com/android/systemui/monet/CustomDynamicColors.java).
+
 - Fixed incorrect Dart class delegation by replacing it with plain inheritance in `ColorSpec2025`.
+
 - Refactored the library internally to improve code style and readability.
+
 - Updated `analysis_options.yaml` to ensure correct lint rules are being used during development.
+
 - Updated `.gitignore` to match other workspace packages.
 
 ## 1.0.0

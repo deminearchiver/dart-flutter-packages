@@ -21,7 +21,7 @@ dependencies:
   # Hosted dependencies
   androidx_graphics_shapes: ^1.6.0
   collection: ^1.19.1
-  libmonet: 2.0.0-dev.17
+  libmonet: 2.0.0-dev.18
   material_symbols_icons: ^4.2951.0
 
 dev_dependencies:
