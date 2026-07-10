@@ -1,1 +1,0 @@
-# System Colors Platform Interface

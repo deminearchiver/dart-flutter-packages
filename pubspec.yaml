@@ -37,15 +37,6 @@ workspace:
   - packages/permissions_ffi/example
   - packages/screen_corners_ffi
   - packages/screen_corners_ffi/example
-  - packages/system_colors/system_colors
-  - packages/system_colors/system_colors_android
-  - packages/system_colors/system_colors_android/example
-  - packages/system_colors/system_colors_ios
-  - packages/system_colors/system_colors_linux
-  - packages/system_colors/system_colors_macos
-  - packages/system_colors/system_colors_platform_interface
-  - packages/system_colors/system_colors_web
-  - packages/system_colors/system_colors_windows
   - packages/touch_targets
   - packages/touch_targets/example
 

@@ -56,33 +56,6 @@
       "program": "lib/main.dart"
     },
     {
-      "name": "system_colors/example (debug mode)",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "debug",
-      "args": [],
-      "cwd": "packages/system_colors/system_colors/example",
-      "program": "lib/main.dart"
-    },
-    {
-      "name": "system_colors/example (profile mode)",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "profile",
-      "args": [],
-      "cwd": "packages/system_colors/system_colors/example",
-      "program": "lib/main.dart"
-    },
-    {
-      "name": "system_colors/example (release mode)",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "release",
-      "args": [],
-      "cwd": "packages/system_colors/system_colors/example",
-      "program": "lib/main.dart"
-    },
-    {
       "name": "touch_targets/example (debug mode)",
       "request": "launch",
       "type": "dart",

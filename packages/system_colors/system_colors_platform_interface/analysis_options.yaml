@@ -1,3 +1,0 @@
-include:
-  - package:deminearchiver_lints/base.yaml
-  - package:deminearchiver_lints/package_loose.yaml
