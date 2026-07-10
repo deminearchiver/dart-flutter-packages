@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Error -->
+  <color name="android_ref_palette_error_0">@android:color/system_error_1000</color>
+  <color name="android_ref_palette_error_10">@android:color/system_error_900</color>
+  <color name="android_ref_palette_error_20">@android:color/system_error_800</color>
+  <color name="android_ref_palette_error_30">@android:color/system_error_700</color>
+  <color name="android_ref_palette_error_40">@android:color/system_error_600</color>
+  <color name="android_ref_palette_error_50">@android:color/system_error_500</color>
+  <color name="android_ref_palette_error_60">@android:color/system_error_400</color>
+  <color name="android_ref_palette_error_70">@android:color/system_error_300</color>
+  <color name="android_ref_palette_error_80">@android:color/system_error_200</color>
+  <color name="android_ref_palette_error_90">@android:color/system_error_100</color>
+  <color name="android_ref_palette_error_95">@android:color/system_error_50</color>
+  <color name="android_ref_palette_error_99">@android:color/system_error_10</color>
+  <color name="android_ref_palette_error_100">@android:color/system_error_0</color>
+</resources>

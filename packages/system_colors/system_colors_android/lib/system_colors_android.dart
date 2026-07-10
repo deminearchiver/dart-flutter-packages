@@ -1,9 +1,3 @@
 library;
 
-import 'package:system_colors_platform_interface/system_colors_platform_interface.dart';
-
-class SystemColorsAndroid extends SystemColorsPlatform {
-  static void registerWith() {
-    SystemColorsPlatform.instance = SystemColorsAndroid();
-  }
-}
+export 'src/system_colors_android.dart' show SystemColorsAndroid;
