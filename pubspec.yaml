@@ -22,6 +22,7 @@ workspace:
   - packages/harfbuzz/harfbuzz
   - packages/harfbuzz/harfbuzz_ffi
   - packages/harfbuzz/harfbuzz_rs
+  - packages/icongen
   - packages/layout
   - packages/leonardo
   - packages/libmonet
