@@ -18,10 +18,32 @@ void main() {
       // compilerOptions: ["-DHB_HAS_SUBSET"],
     ),
     functions: .new(
-      include: (declaration) => declaration.originalName.startsWith("hb_"),
+      include: (declaration) =>
+          declaration.originalName.toLowerCase().startsWith("hb_"),
     ),
     enums: .new(
-      include: (declaration) => declaration.originalName.startsWith("hb_"),
+      include: (declaration) =>
+          declaration.originalName.toLowerCase().startsWith("hb_"),
+    ),
+    structs: .new(
+      include: (declaration) =>
+          declaration.originalName.toLowerCase().startsWith("hb_"),
+    ),
+    globals: .new(
+      include: (declaration) =>
+          declaration.originalName.toLowerCase().startsWith("hb_"),
+    ),
+    macros: .new(
+      include: (declaration) =>
+          declaration.originalName.toLowerCase().startsWith("hb_"),
+    ),
+    typedefs: .new(
+      include: (declaration) =>
+          declaration.originalName.toLowerCase().startsWith("hb_"),
+    ),
+    unions: .new(
+      include: (declaration) =>
+          declaration.originalName.toLowerCase().startsWith("hb_"),
     ),
   ).generate();
 }

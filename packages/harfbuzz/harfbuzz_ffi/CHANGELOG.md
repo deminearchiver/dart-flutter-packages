@@ -1,3 +1,9 @@
+## 0.3.0
+
+- Included more declarations from the HarfBuzz C++ library into the generated bindings.
+  - Now structs, enums, unions, typedefs and constants (macros) can be used.
+  - Improved HarfBuzz identifier prefix matching by ignoring letter casing.
+
 ## 0.2.1
 
 - Bumped native HarfBuzz dependency to [`14.2.1`](https://github.com/harfbuzz/harfbuzz/releases/tag/14.2.1).

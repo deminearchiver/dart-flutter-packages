@@ -5,11 +5,11 @@
 import 'dart:ffi' as ffi;
 
 /// len=-1 means str is NUL-terminated.
-@ffi.Native<ffi.Uint32 Function(ffi.Pointer<ffi.Char>, ffi.Int)>()
+@ffi.Native<hb_tag_t Function(ffi.Pointer<ffi.Char>, ffi.Int)>()
 external int hb_tag_from_string(ffi.Pointer<ffi.Char> str, int len);
 
 /// buf should have 4 bytes.
-@ffi.Native<ffi.Void Function(ffi.Uint32, ffi.Pointer<ffi.Char>)>()
+@ffi.Native<ffi.Void Function(hb_tag_t, ffi.Pointer<ffi.Char>)>()
 external void hb_tag_to_string(int tag, ffi.Pointer<ffi.Char> buf);
 
 /// len=-1 means str is NUL-terminated
@@ -29,40 +29,31 @@ external ffi.Pointer<ffi.Char> _hb_direction_to_string(int direction);
 ffi.Pointer<ffi.Char> hb_direction_to_string(hb_direction_t direction) =>
     _hb_direction_to_string(direction.value);
 
-@ffi.Native<
-  ffi.Pointer<hb_language_impl_t> Function(ffi.Pointer<ffi.Char>, ffi.Int)
->()
-external ffi.Pointer<hb_language_impl_t> hb_language_from_string(
+@ffi.Native<hb_language_t Function(ffi.Pointer<ffi.Char>, ffi.Int)>()
+external hb_language_t hb_language_from_string(
   ffi.Pointer<ffi.Char> str,
   int len,
 );
 
-@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Pointer<hb_language_impl_t>)>()
-external ffi.Pointer<ffi.Char> hb_language_to_string(
-  ffi.Pointer<hb_language_impl_t> language,
-);
+@ffi.Native<ffi.Pointer<ffi.Char> Function(hb_language_t)>()
+external ffi.Pointer<ffi.Char> hb_language_to_string(hb_language_t language);
 
-@ffi.Native<ffi.Pointer<hb_language_impl_t> Function()>()
-external ffi.Pointer<hb_language_impl_t> hb_language_get_default();
+@ffi.Native<hb_language_t Function()>()
+external hb_language_t hb_language_get_default();
 
-@ffi.Native<
-  ffi.Int Function(
-    ffi.Pointer<hb_language_impl_t>,
-    ffi.Pointer<hb_language_impl_t>,
-  )
->()
+@ffi.Native<hb_bool_t Function(hb_language_t, hb_language_t)>()
 external int hb_language_matches(
-  ffi.Pointer<hb_language_impl_t> language,
-  ffi.Pointer<hb_language_impl_t> specific,
+  hb_language_t language,
+  hb_language_t specific,
 );
 
 /// Script functions
-@ffi.Native<ffi.UnsignedInt Function(ffi.Uint32)>(
+@ffi.Native<ffi.UnsignedInt Function(hb_tag_t)>(
   symbol: 'hb_script_from_iso15924_tag',
 )
 external int _hb_script_from_iso15924_tag(int tag);
 
-hb_script_t hb_script_from_iso15924_tag(int tag) =>
+hb_script_t hb_script_from_iso15924_tag(Darthb_tag_t tag) =>
     hb_script_t.fromValue(_hb_script_from_iso15924_tag(tag));
 
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<ffi.Char>, ffi.Int)>(
@@ -73,12 +64,12 @@ external int _hb_script_from_string(ffi.Pointer<ffi.Char> str, int len);
 hb_script_t hb_script_from_string(ffi.Pointer<ffi.Char> str, int len) =>
     hb_script_t.fromValue(_hb_script_from_string(str, len));
 
-@ffi.Native<ffi.Uint32 Function(ffi.UnsignedInt)>(
+@ffi.Native<hb_tag_t Function(ffi.UnsignedInt)>(
   symbol: 'hb_script_to_iso15924_tag',
 )
 external int _hb_script_to_iso15924_tag(int script);
 
-int hb_script_to_iso15924_tag(hb_script_t script) =>
+Darthb_tag_t hb_script_to_iso15924_tag(hb_script_t script) =>
     _hb_script_to_iso15924_tag(script.value);
 
 @ffi.Native<ffi.UnsignedInt Function(ffi.UnsignedInt)>(
@@ -90,7 +81,7 @@ hb_direction_t hb_script_get_horizontal_direction(hb_script_t script) =>
     hb_direction_t.fromValue(_hb_script_get_horizontal_direction(script.value));
 
 @ffi.Native<
-  ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Int, ffi.Pointer<hb_feature_t>)
+  hb_bool_t Function(ffi.Pointer<ffi.Char>, ffi.Int, ffi.Pointer<hb_feature_t>)
 >()
 external int hb_feature_from_string(
   ffi.Pointer<ffi.Char> str,
@@ -112,7 +103,11 @@ external void hb_feature_to_string(
 );
 
 @ffi.Native<
-  ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Int, ffi.Pointer<hb_variation_t>)
+  hb_bool_t Function(
+    ffi.Pointer<ffi.Char>,
+    ffi.Int,
+    ffi.Pointer<hb_variation_t>,
+  )
 >()
 external int hb_variation_from_string(
   ffi.Pointer<ffi.Char> str,
@@ -133,16 +128,16 @@ external void hb_variation_to_string(
   int size,
 );
 
-@ffi.Native<ffi.Uint8 Function(ffi.Uint32)>()
+@ffi.Native<ffi.Uint8 Function(hb_color_t)>()
 external int hb_color_get_alpha(int color);
 
-@ffi.Native<ffi.Uint8 Function(ffi.Uint32)>()
+@ffi.Native<ffi.Uint8 Function(hb_color_t)>()
 external int hb_color_get_red(int color);
 
-@ffi.Native<ffi.Uint8 Function(ffi.Uint32)>()
+@ffi.Native<ffi.Uint8 Function(hb_color_t)>()
 external int hb_color_get_green(int color);
 
-@ffi.Native<ffi.Uint8 Function(ffi.Uint32)>()
+@ffi.Native<ffi.Uint8 Function(hb_color_t)>()
 external int hb_color_get_blue(int color);
 
 /// Not of much use to clients.
@@ -164,9 +159,7 @@ external void hb_free(ffi.Pointer<ffi.Void> ptr);
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >(symbol: 'hb_blob_create')
 external ffi.Pointer<hb_blob_t> _hb_blob_create(
@@ -174,10 +167,7 @@ external ffi.Pointer<hb_blob_t> _hb_blob_create(
   int length,
   int mode,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 ffi.Pointer<hb_blob_t> hb_blob_create(
@@ -185,10 +175,7 @@ ffi.Pointer<hb_blob_t> hb_blob_create(
   int length,
   hb_memory_mode_t mode,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 ) => _hb_blob_create(data, length, mode.value, user_data, destroy);
 
 @ffi.Native<
@@ -197,9 +184,7 @@ ffi.Pointer<hb_blob_t> hb_blob_create(
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >(symbol: 'hb_blob_create_or_fail')
 external ffi.Pointer<hb_blob_t> _hb_blob_create_or_fail(
@@ -207,10 +192,7 @@ external ffi.Pointer<hb_blob_t> _hb_blob_create_or_fail(
   int length,
   int mode,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 ffi.Pointer<hb_blob_t> hb_blob_create_or_fail(
@@ -218,10 +200,7 @@ ffi.Pointer<hb_blob_t> hb_blob_create_or_fail(
   int length,
   hb_memory_mode_t mode,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 ) => _hb_blob_create_or_fail(data, length, mode.value, user_data, destroy);
 
 @ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<ffi.Char>)>()
@@ -267,24 +246,19 @@ external ffi.Pointer<hb_blob_t> hb_blob_reference(ffi.Pointer<hb_blob_t> blob);
 external void hb_blob_destroy(ffi.Pointer<hb_blob_t> blob);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_blob_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_blob_set_user_data(
   ffi.Pointer<hb_blob_t> blob,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -302,7 +276,7 @@ external ffi.Pointer<ffi.Void> hb_blob_get_user_data(
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_blob_t>)>()
 external void hb_blob_make_immutable(ffi.Pointer<hb_blob_t> blob);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_blob_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_blob_t>)>()
 external int hb_blob_is_immutable(ffi.Pointer<hb_blob_t> blob);
 
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_blob_t>)>()
@@ -355,24 +329,19 @@ external ffi.Pointer<hb_unicode_funcs_t> hb_unicode_funcs_reference(
 external void hb_unicode_funcs_destroy(ffi.Pointer<hb_unicode_funcs_t> ufuncs);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_unicode_funcs_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_unicode_funcs_set_user_data(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -392,7 +361,7 @@ external void hb_unicode_funcs_make_immutable(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
 );
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_unicode_funcs_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_unicode_funcs_t>)>()
 external int hb_unicode_funcs_is_immutable(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
 );
@@ -416,38 +385,16 @@ external ffi.Pointer<hb_unicode_funcs_t> hb_unicode_funcs_get_parent(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.UnsignedInt Function(
-          ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-          ffi.Uint32 unicode,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_unicode_combining_class_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_unicode_funcs_set_combining_class_func(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.UnsignedInt Function(
-        ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-        ffi.Uint32 unicode,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_unicode_combining_class_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_unicode_funcs_set_general_category_func:
@@ -462,38 +409,16 @@ external void hb_unicode_funcs_set_combining_class_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.UnsignedInt Function(
-          ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-          ffi.Uint32 unicode,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_unicode_general_category_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_unicode_funcs_set_general_category_func(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.UnsignedInt Function(
-        ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-        ffi.Uint32 unicode,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_unicode_general_category_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_unicode_funcs_set_mirroring_func:
@@ -508,38 +433,16 @@ external void hb_unicode_funcs_set_general_category_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Uint32 Function(
-          ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-          ffi.Uint32 unicode,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_unicode_mirroring_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_unicode_funcs_set_mirroring_func(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Uint32 Function(
-        ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-        ffi.Uint32 unicode,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_unicode_mirroring_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_unicode_funcs_set_script_func:
@@ -554,38 +457,16 @@ external void hb_unicode_funcs_set_mirroring_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.UnsignedInt Function(
-          ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-          ffi.Uint32 unicode,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_unicode_script_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_unicode_funcs_set_script_func(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.UnsignedInt Function(
-        ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-        ffi.Uint32 unicode,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_unicode_script_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_unicode_funcs_set_compose_func:
@@ -600,42 +481,16 @@ external void hb_unicode_funcs_set_script_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-          ffi.Uint32 a,
-          ffi.Uint32 b,
-          ffi.Pointer<ffi.Uint32> ab,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_unicode_compose_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_unicode_funcs_set_compose_func(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-        ffi.Uint32 a,
-        ffi.Uint32 b,
-        ffi.Pointer<ffi.Uint32> ab,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_unicode_compose_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_unicode_funcs_set_decompose_func:
@@ -650,42 +505,16 @@ external void hb_unicode_funcs_set_compose_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-          ffi.Uint32 ab,
-          ffi.Pointer<ffi.Uint32> a,
-          ffi.Pointer<ffi.Uint32> b,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_unicode_decompose_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_unicode_funcs_set_decompose_func(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-        ffi.Uint32 ab,
-        ffi.Pointer<ffi.Uint32> a,
-        ffi.Pointer<ffi.Uint32> b,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_unicode_decompose_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_unicode_combining_class:
@@ -699,7 +528,7 @@ external void hb_unicode_funcs_set_decompose_func(
 ///
 /// Since: 0.9.2
 @ffi.Native<
-  ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, ffi.Uint32)
+  ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, hb_codepoint_t)
 >(symbol: 'hb_unicode_combining_class')
 external int _hb_unicode_combining_class(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
@@ -708,7 +537,7 @@ external int _hb_unicode_combining_class(
 
 hb_unicode_combining_class_t hb_unicode_combining_class(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-  int unicode,
+  Darthb_codepoint_t unicode,
 ) => hb_unicode_combining_class_t.fromValue(
   _hb_unicode_combining_class(ufuncs, unicode),
 );
@@ -724,7 +553,7 @@ hb_unicode_combining_class_t hb_unicode_combining_class(
 ///
 /// Since: 0.9.2
 @ffi.Native<
-  ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, ffi.Uint32)
+  ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, hb_codepoint_t)
 >(symbol: 'hb_unicode_general_category')
 external int _hb_unicode_general_category(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
@@ -733,7 +562,7 @@ external int _hb_unicode_general_category(
 
 hb_unicode_general_category_t hb_unicode_general_category(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-  int unicode,
+  Darthb_codepoint_t unicode,
 ) => hb_unicode_general_category_t.fromValue(
   _hb_unicode_general_category(ufuncs, unicode),
 );
@@ -748,7 +577,9 @@ hb_unicode_general_category_t hb_unicode_general_category(
 /// Return value: The #hb_codepoint_t of the Mirroring Glyph for @unicode
 ///
 /// Since: 0.9.2
-@ffi.Native<ffi.Uint32 Function(ffi.Pointer<hb_unicode_funcs_t>, ffi.Uint32)>()
+@ffi.Native<
+  hb_codepoint_t Function(ffi.Pointer<hb_unicode_funcs_t>, hb_codepoint_t)
+>()
 external int hb_unicode_mirroring(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
   int unicode,
@@ -765,7 +596,7 @@ external int hb_unicode_mirroring(
 ///
 /// Since: 0.9.2
 @ffi.Native<
-  ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, ffi.Uint32)
+  ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, hb_codepoint_t)
 >(symbol: 'hb_unicode_script')
 external int _hb_unicode_script(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
@@ -774,37 +605,37 @@ external int _hb_unicode_script(
 
 hb_script_t hb_unicode_script(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-  int unicode,
+  Darthb_codepoint_t unicode,
 ) => hb_script_t.fromValue(_hb_unicode_script(ufuncs, unicode));
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_unicode_funcs_t>,
-    ffi.Uint32,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Uint32>,
+    hb_codepoint_t,
+    hb_codepoint_t,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_unicode_compose(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
   int a,
   int b,
-  ffi.Pointer<ffi.Uint32> ab,
+  ffi.Pointer<hb_codepoint_t> ab,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_unicode_funcs_t>,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Uint32>,
-    ffi.Pointer<ffi.Uint32>,
+    hb_codepoint_t,
+    ffi.Pointer<hb_codepoint_t>,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_unicode_decompose(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
   int ab,
-  ffi.Pointer<ffi.Uint32> a,
-  ffi.Pointer<ffi.Uint32> b,
+  ffi.Pointer<hb_codepoint_t> a,
+  ffi.Pointer<hb_codepoint_t> b,
 );
 
 @ffi.Native<ffi.Pointer<hb_set_t> Function()>()
@@ -820,24 +651,19 @@ external ffi.Pointer<hb_set_t> hb_set_reference(ffi.Pointer<hb_set_t> set);
 external void hb_set_destroy(ffi.Pointer<hb_set_t> set);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_set_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_set_set_user_data(
   ffi.Pointer<hb_set_t> set,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -853,7 +679,7 @@ external ffi.Pointer<ffi.Void> hb_set_get_user_data(
 );
 
 /// Returns false if allocation has failed before
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_set_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_allocation_successful(ffi.Pointer<hb_set_t> set);
 
 @ffi.Native<ffi.Pointer<hb_set_t> Function(ffi.Pointer<hb_set_t>)>()
@@ -862,44 +688,48 @@ external ffi.Pointer<hb_set_t> hb_set_copy(ffi.Pointer<hb_set_t> set);
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>)>()
 external void hb_set_clear(ffi.Pointer<hb_set_t> set);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_set_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_is_empty(ffi.Pointer<hb_set_t> set);
 
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>)>()
 external void hb_set_invert(ffi.Pointer<hb_set_t> set);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_set_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_is_inverted(ffi.Pointer<hb_set_t> set);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_set_t>, ffi.Uint32)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>, hb_codepoint_t)>()
 external int hb_set_has(ffi.Pointer<hb_set_t> set, int codepoint);
 
-@ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, ffi.Uint32)>()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, hb_codepoint_t)>()
 external void hb_set_add(ffi.Pointer<hb_set_t> set, int codepoint);
 
-@ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, ffi.Uint32, ffi.Uint32)>()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_set_t>, hb_codepoint_t, hb_codepoint_t)
+>()
 external void hb_set_add_range(ffi.Pointer<hb_set_t> set, int first, int last);
 
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_set_t>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
     ffi.UnsignedInt,
   )
 >()
 external void hb_set_add_sorted_array(
   ffi.Pointer<hb_set_t> set,
-  ffi.Pointer<ffi.Uint32> sorted_codepoints,
+  ffi.Pointer<hb_codepoint_t> sorted_codepoints,
   int num_codepoints,
 );
 
-@ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, ffi.Uint32)>()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, hb_codepoint_t)>()
 external void hb_set_del(ffi.Pointer<hb_set_t> set, int codepoint);
 
-@ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, ffi.Uint32, ffi.Uint32)>()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_set_t>, hb_codepoint_t, hb_codepoint_t)
+>()
 external void hb_set_del_range(ffi.Pointer<hb_set_t> set, int first, int last);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
 external int hb_set_is_equal(
   ffi.Pointer<hb_set_t> set,
   ffi.Pointer<hb_set_t> other,
@@ -908,7 +738,7 @@ external int hb_set_is_equal(
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_hash(ffi.Pointer<hb_set_t> set);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
 external int hb_set_is_subset(
   ffi.Pointer<hb_set_t> set,
   ffi.Pointer<hb_set_t> larger_set,
@@ -948,68 +778,72 @@ external void hb_set_symmetric_difference(
 external int hb_set_get_population(ffi.Pointer<hb_set_t> set);
 
 /// Returns HB_SET_VALUE_INVALID if set empty.
-@ffi.Native<ffi.Uint32 Function(ffi.Pointer<hb_set_t>)>()
+@ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_get_min(ffi.Pointer<hb_set_t> set);
 
 /// Returns HB_SET_VALUE_INVALID if set empty.
-@ffi.Native<ffi.Uint32 Function(ffi.Pointer<hb_set_t>)>()
+@ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_get_max(ffi.Pointer<hb_set_t> set);
 
 /// Pass HB_SET_VALUE_INVALID in to get started.
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_set_t>, ffi.Pointer<ffi.Uint32>)>()
+@ffi.Native<
+  hb_bool_t Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_codepoint_t>)
+>()
 external int hb_set_next(
   ffi.Pointer<hb_set_t> set,
-  ffi.Pointer<ffi.Uint32> codepoint,
+  ffi.Pointer<hb_codepoint_t> codepoint,
 );
 
 /// Pass HB_SET_VALUE_INVALID in to get started.
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_set_t>, ffi.Pointer<ffi.Uint32>)>()
+@ffi.Native<
+  hb_bool_t Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_codepoint_t>)
+>()
 external int hb_set_previous(
   ffi.Pointer<hb_set_t> set,
-  ffi.Pointer<ffi.Uint32> codepoint,
+  ffi.Pointer<hb_codepoint_t> codepoint,
 );
 
 /// Pass HB_SET_VALUE_INVALID for first and last to get started.
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_set_t>,
-    ffi.Pointer<ffi.Uint32>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_set_next_range(
   ffi.Pointer<hb_set_t> set,
-  ffi.Pointer<ffi.Uint32> first,
-  ffi.Pointer<ffi.Uint32> last,
+  ffi.Pointer<hb_codepoint_t> first,
+  ffi.Pointer<hb_codepoint_t> last,
 );
 
 /// Pass HB_SET_VALUE_INVALID for first and last to get started.
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_set_t>,
-    ffi.Pointer<ffi.Uint32>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_set_previous_range(
   ffi.Pointer<hb_set_t> set,
-  ffi.Pointer<ffi.Uint32> first,
-  ffi.Pointer<ffi.Uint32> last,
+  ffi.Pointer<hb_codepoint_t> first,
+  ffi.Pointer<hb_codepoint_t> last,
 );
 
 /// Pass HB_SET_VALUE_INVALID in to get started.
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_set_t>,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Uint32>,
+    hb_codepoint_t,
+    ffi.Pointer<hb_codepoint_t>,
     ffi.UnsignedInt,
   )
 >()
 external int hb_set_next_many(
   ffi.Pointer<hb_set_t> set,
   int codepoint,
-  ffi.Pointer<ffi.Uint32> out,
+  ffi.Pointer<hb_codepoint_t> out,
   int size,
 );
 
@@ -1026,24 +860,19 @@ external ffi.Pointer<hb_map_t> hb_map_reference(ffi.Pointer<hb_map_t> map);
 external void hb_map_destroy(ffi.Pointer<hb_map_t> map);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_map_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_map_set_user_data(
   ffi.Pointer<hb_map_t> map,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -1059,7 +888,7 @@ external ffi.Pointer<ffi.Void> hb_map_get_user_data(
 );
 
 /// Returns false if allocation has failed before
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_map_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_map_t>)>()
 external int hb_map_allocation_successful(ffi.Pointer<hb_map_t> map);
 
 @ffi.Native<ffi.Pointer<hb_map_t> Function(ffi.Pointer<hb_map_t>)>()
@@ -1068,13 +897,13 @@ external ffi.Pointer<hb_map_t> hb_map_copy(ffi.Pointer<hb_map_t> map);
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>)>()
 external void hb_map_clear(ffi.Pointer<hb_map_t> map);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_map_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_map_t>)>()
 external int hb_map_is_empty(ffi.Pointer<hb_map_t> map);
 
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_map_t>)>()
 external int hb_map_get_population(ffi.Pointer<hb_map_t> map);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_map_t>, ffi.Pointer<hb_map_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_map_t>, ffi.Pointer<hb_map_t>)>()
 external int hb_map_is_equal(
   ffi.Pointer<hb_map_t> map,
   ffi.Pointer<hb_map_t> other,
@@ -1083,16 +912,18 @@ external int hb_map_is_equal(
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_map_t>)>()
 external int hb_map_hash(ffi.Pointer<hb_map_t> map);
 
-@ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>, ffi.Uint32, ffi.Uint32)>()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_map_t>, hb_codepoint_t, hb_codepoint_t)
+>()
 external void hb_map_set(ffi.Pointer<hb_map_t> map, int key, int value);
 
-@ffi.Native<ffi.Uint32 Function(ffi.Pointer<hb_map_t>, ffi.Uint32)>()
+@ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_map_t>, hb_codepoint_t)>()
 external int hb_map_get(ffi.Pointer<hb_map_t> map, int key);
 
-@ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>, ffi.Uint32)>()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>, hb_codepoint_t)>()
 external void hb_map_del(ffi.Pointer<hb_map_t> map, int key);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_map_t>, ffi.Uint32)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_map_t>, hb_codepoint_t)>()
 external int hb_map_has(ffi.Pointer<hb_map_t> map, int key);
 
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>, ffi.Pointer<hb_map_t>)>()
@@ -1103,18 +934,18 @@ external void hb_map_update(
 
 /// Pass -1 in for idx to get started.
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_map_t>,
     ffi.Pointer<ffi.Int>,
-    ffi.Pointer<ffi.Uint32>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_map_next(
   ffi.Pointer<hb_map_t> map,
   ffi.Pointer<ffi.Int> idx,
-  ffi.Pointer<ffi.Uint32> key,
-  ffi.Pointer<ffi.Uint32> value,
+  ffi.Pointer<hb_codepoint_t> key,
+  ffi.Pointer<hb_codepoint_t> value,
 );
 
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>, ffi.Pointer<hb_set_t>)>()
@@ -1188,37 +1019,15 @@ external ffi.Pointer<ffi.Pointer<ffi.Char>> hb_face_list_loaders();
 /// calls destroy() when not needing user_data anymore
 @ffi.Native<
   ffi.Pointer<hb_face_t> Function(
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Pointer<hb_blob_t> Function(
-          ffi.Pointer<hb_face_t> face,
-          ffi.Uint32 tag,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_reference_table_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external ffi.Pointer<hb_face_t> hb_face_create_for_tables(
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Pointer<hb_blob_t> Function(
-        ffi.Pointer<hb_face_t> face,
-        ffi.Uint32 tag,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  reference_table_func,
+  hb_reference_table_func_t reference_table_func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 @ffi.Native<ffi.Pointer<hb_face_t> Function()>()
@@ -1231,24 +1040,19 @@ external ffi.Pointer<hb_face_t> hb_face_reference(ffi.Pointer<hb_face_t> face);
 external void hb_face_destroy(ffi.Pointer<hb_face_t> face);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_face_set_user_data(
   ffi.Pointer<hb_face_t> face,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -1266,12 +1070,10 @@ external ffi.Pointer<ffi.Void> hb_face_get_user_data(
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_face_t>)>()
 external void hb_face_make_immutable(ffi.Pointer<hb_face_t> face);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_face_is_immutable(ffi.Pointer<hb_face_t> face);
 
-@ffi.Native<
-  ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>, ffi.Uint32)
->()
+@ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>, hb_tag_t)>()
 external ffi.Pointer<hb_blob_t> hb_face_reference_table(
   ffi.Pointer<hb_face_t> face,
   int tag,
@@ -1306,42 +1108,16 @@ external int hb_face_get_glyph_count(ffi.Pointer<hb_face_t> face);
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.UnsignedInt Function(
-          ffi.Pointer<hb_face_t> face,
-          ffi.UnsignedInt start_offset,
-          ffi.Pointer<ffi.UnsignedInt> table_count,
-          ffi.Pointer<ffi.Uint32> table_tags,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_get_table_tags_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_face_set_get_table_tags_func(
   ffi.Pointer<hb_face_t> face,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.UnsignedInt Function(
-        ffi.Pointer<hb_face_t> face,
-        ffi.UnsignedInt start_offset,
-        ffi.Pointer<ffi.UnsignedInt> table_count,
-        ffi.Pointer<ffi.Uint32> table_tags,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_get_table_tags_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 @ffi.Native<
@@ -1349,14 +1125,14 @@ external void hb_face_set_get_table_tags_func(
     ffi.Pointer<hb_face_t>,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
   )
 >()
 external int hb_face_get_table_tags(
   ffi.Pointer<hb_face_t> face,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> table_count,
-  ffi.Pointer<ffi.Uint32> table_tags,
+  ffi.Pointer<hb_tag_t> table_tags,
 );
 
 /// Character set.
@@ -1386,7 +1162,11 @@ external void hb_face_collect_variation_selectors(
 );
 
 @ffi.Native<
-  ffi.Void Function(ffi.Pointer<hb_face_t>, ffi.Uint32, ffi.Pointer<hb_set_t>)
+  ffi.Void Function(
+    ffi.Pointer<hb_face_t>,
+    hb_codepoint_t,
+    ffi.Pointer<hb_set_t>,
+  )
 >()
 external void hb_face_collect_variation_unicodes(
   ffi.Pointer<hb_face_t> face,
@@ -1399,7 +1179,7 @@ external void hb_face_collect_variation_unicodes(
 external ffi.Pointer<hb_face_t> hb_face_builder_create();
 
 @ffi.Native<
-  ffi.Int Function(ffi.Pointer<hb_face_t>, ffi.Uint32, ffi.Pointer<hb_blob_t>)
+  hb_bool_t Function(ffi.Pointer<hb_face_t>, hb_tag_t, ffi.Pointer<hb_blob_t>)
 >()
 external int hb_face_builder_add_table(
   ffi.Pointer<hb_face_t> face,
@@ -1407,12 +1187,10 @@ external int hb_face_builder_add_table(
   ffi.Pointer<hb_blob_t> blob,
 );
 
-@ffi.Native<
-  ffi.Void Function(ffi.Pointer<hb_face_t>, ffi.Pointer<ffi.Uint32>)
->()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_face_t>, ffi.Pointer<hb_tag_t>)>()
 external void hb_face_builder_sort_tables(
   ffi.Pointer<hb_face_t> face,
-  ffi.Pointer<ffi.Uint32> tags,
+  ffi.Pointer<hb_tag_t> tags,
 );
 
 /// hb_draw_funcs_set_move_to_func:
@@ -1427,44 +1205,16 @@ external void hb_face_builder_sort_tables(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_draw_funcs_t> dfuncs,
-          ffi.Pointer<ffi.Void> draw_data,
-          ffi.Pointer<hb_draw_state_t> st,
-          ffi.Float to_x,
-          ffi.Float to_y,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_draw_move_to_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_draw_funcs_set_move_to_func(
   ffi.Pointer<hb_draw_funcs_t> dfuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_draw_funcs_t> dfuncs,
-        ffi.Pointer<ffi.Void> draw_data,
-        ffi.Pointer<hb_draw_state_t> st,
-        ffi.Float to_x,
-        ffi.Float to_y,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_draw_move_to_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_draw_funcs_set_line_to_func:
@@ -1479,44 +1229,16 @@ external void hb_draw_funcs_set_move_to_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_draw_funcs_t> dfuncs,
-          ffi.Pointer<ffi.Void> draw_data,
-          ffi.Pointer<hb_draw_state_t> st,
-          ffi.Float to_x,
-          ffi.Float to_y,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_draw_line_to_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_draw_funcs_set_line_to_func(
   ffi.Pointer<hb_draw_funcs_t> dfuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_draw_funcs_t> dfuncs,
-        ffi.Pointer<ffi.Void> draw_data,
-        ffi.Pointer<hb_draw_state_t> st,
-        ffi.Float to_x,
-        ffi.Float to_y,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_draw_line_to_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_draw_funcs_set_quadratic_to_func:
@@ -1531,48 +1253,16 @@ external void hb_draw_funcs_set_line_to_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_draw_funcs_t> dfuncs,
-          ffi.Pointer<ffi.Void> draw_data,
-          ffi.Pointer<hb_draw_state_t> st,
-          ffi.Float control_x,
-          ffi.Float control_y,
-          ffi.Float to_x,
-          ffi.Float to_y,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_draw_quadratic_to_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_draw_funcs_set_quadratic_to_func(
   ffi.Pointer<hb_draw_funcs_t> dfuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_draw_funcs_t> dfuncs,
-        ffi.Pointer<ffi.Void> draw_data,
-        ffi.Pointer<hb_draw_state_t> st,
-        ffi.Float control_x,
-        ffi.Float control_y,
-        ffi.Float to_x,
-        ffi.Float to_y,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_draw_quadratic_to_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_draw_funcs_set_cubic_to_func:
@@ -1587,52 +1277,16 @@ external void hb_draw_funcs_set_quadratic_to_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_draw_funcs_t> dfuncs,
-          ffi.Pointer<ffi.Void> draw_data,
-          ffi.Pointer<hb_draw_state_t> st,
-          ffi.Float control1_x,
-          ffi.Float control1_y,
-          ffi.Float control2_x,
-          ffi.Float control2_y,
-          ffi.Float to_x,
-          ffi.Float to_y,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_draw_cubic_to_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_draw_funcs_set_cubic_to_func(
   ffi.Pointer<hb_draw_funcs_t> dfuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_draw_funcs_t> dfuncs,
-        ffi.Pointer<ffi.Void> draw_data,
-        ffi.Pointer<hb_draw_state_t> st,
-        ffi.Float control1_x,
-        ffi.Float control1_y,
-        ffi.Float control2_x,
-        ffi.Float control2_y,
-        ffi.Float to_x,
-        ffi.Float to_y,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_draw_cubic_to_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_draw_funcs_set_close_path_func:
@@ -1647,40 +1301,16 @@ external void hb_draw_funcs_set_cubic_to_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_draw_funcs_t> dfuncs,
-          ffi.Pointer<ffi.Void> draw_data,
-          ffi.Pointer<hb_draw_state_t> st,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_draw_close_path_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_draw_funcs_set_close_path_func(
   ffi.Pointer<hb_draw_funcs_t> dfuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_draw_funcs_t> dfuncs,
-        ffi.Pointer<ffi.Void> draw_data,
-        ffi.Pointer<hb_draw_state_t> st,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_draw_close_path_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 @ffi.Native<ffi.Pointer<hb_draw_funcs_t> Function()>()
@@ -1700,24 +1330,19 @@ external ffi.Pointer<hb_draw_funcs_t> hb_draw_funcs_reference(
 external void hb_draw_funcs_destroy(ffi.Pointer<hb_draw_funcs_t> dfuncs);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_draw_funcs_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_draw_funcs_set_user_data(
   ffi.Pointer<hb_draw_funcs_t> dfuncs,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -1735,7 +1360,7 @@ external ffi.Pointer<ffi.Void> hb_draw_funcs_get_user_data(
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_draw_funcs_t>)>()
 external void hb_draw_funcs_make_immutable(ffi.Pointer<hb_draw_funcs_t> dfuncs);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_draw_funcs_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_draw_funcs_t>)>()
 external int hb_draw_funcs_is_immutable(ffi.Pointer<hb_draw_funcs_t> dfuncs);
 
 @ffi.Native<
@@ -1932,24 +1557,19 @@ external ffi.Pointer<hb_paint_funcs_t> hb_paint_funcs_reference(
 external void hb_paint_funcs_destroy(ffi.Pointer<hb_paint_funcs_t> funcs);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_paint_funcs_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_paint_funcs_set_user_data(
   ffi.Pointer<hb_paint_funcs_t> funcs,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -1969,7 +1589,7 @@ external void hb_paint_funcs_make_immutable(
   ffi.Pointer<hb_paint_funcs_t> funcs,
 );
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_paint_funcs_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_paint_funcs_t>)>()
 external int hb_paint_funcs_is_immutable(ffi.Pointer<hb_paint_funcs_t> funcs);
 
 @ffi.Native<
@@ -2008,50 +1628,16 @@ hb_paint_extend_t hb_color_line_get_extend(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Float xx,
-          ffi.Float yx,
-          ffi.Float xy,
-          ffi.Float yy,
-          ffi.Float dx,
-          ffi.Float dy,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_push_transform_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_push_transform_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Float xx,
-        ffi.Float yx,
-        ffi.Float xy,
-        ffi.Float yy,
-        ffi.Float dx,
-        ffi.Float dy,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_push_transform_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_pop_transform_func:
@@ -2066,38 +1652,16 @@ external void hb_paint_funcs_set_push_transform_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_pop_transform_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_pop_transform_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_pop_transform_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_color_glyph_func:
@@ -2112,42 +1676,16 @@ external void hb_paint_funcs_set_pop_transform_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_color_glyph_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_color_glyph_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_color_glyph_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_push_clip_glyph_func:
@@ -2162,42 +1700,16 @@ external void hb_paint_funcs_set_color_glyph_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_push_clip_glyph_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_push_clip_glyph_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_push_clip_glyph_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_push_clip_rectangle_func:
@@ -2212,46 +1724,16 @@ external void hb_paint_funcs_set_push_clip_glyph_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Float xmin,
-          ffi.Float ymin,
-          ffi.Float xmax,
-          ffi.Float ymax,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_push_clip_rectangle_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_push_clip_rectangle_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Float xmin,
-        ffi.Float ymin,
-        ffi.Float xmax,
-        ffi.Float ymax,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_push_clip_rectangle_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_push_clip_path_start_func:
@@ -2266,40 +1748,16 @@ external void hb_paint_funcs_set_push_clip_rectangle_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Pointer<hb_draw_funcs_t> Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Pointer<ffi.Pointer<ffi.Void>> draw_data,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_push_clip_path_start_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_push_clip_path_start_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Pointer<hb_draw_funcs_t> Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Pointer<ffi.Pointer<ffi.Void>> draw_data,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_push_clip_path_start_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_push_clip_path_end_func:
@@ -2314,38 +1772,16 @@ external void hb_paint_funcs_set_push_clip_path_start_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_push_clip_path_end_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_push_clip_path_end_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_push_clip_path_end_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_pop_clip_func:
@@ -2360,38 +1796,16 @@ external void hb_paint_funcs_set_push_clip_path_end_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_pop_clip_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_pop_clip_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_pop_clip_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_color_func:
@@ -2406,42 +1820,16 @@ external void hb_paint_funcs_set_pop_clip_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Int is_foreground,
-          ffi.Uint32 color,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_color_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_color_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Int is_foreground,
-        ffi.Uint32 color,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_color_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_image_func:
@@ -2456,50 +1844,16 @@ external void hb_paint_funcs_set_color_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Pointer<hb_blob_t> image,
-          ffi.UnsignedInt width,
-          ffi.UnsignedInt height,
-          ffi.Uint32 format,
-          ffi.Float slant,
-          ffi.Pointer<hb_glyph_extents_t> extents,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_image_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_image_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Pointer<hb_blob_t> image,
-        ffi.UnsignedInt width,
-        ffi.UnsignedInt height,
-        ffi.Uint32 format,
-        ffi.Float slant,
-        ffi.Pointer<hb_glyph_extents_t> extents,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_image_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_linear_gradient_func:
@@ -2514,52 +1868,16 @@ external void hb_paint_funcs_set_image_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Pointer<hb_color_line_t> color_line,
-          ffi.Float x0,
-          ffi.Float y0,
-          ffi.Float x1,
-          ffi.Float y1,
-          ffi.Float x2,
-          ffi.Float y2,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_linear_gradient_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_linear_gradient_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Pointer<hb_color_line_t> color_line,
-        ffi.Float x0,
-        ffi.Float y0,
-        ffi.Float x1,
-        ffi.Float y1,
-        ffi.Float x2,
-        ffi.Float y2,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_linear_gradient_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_radial_gradient_func:
@@ -2574,52 +1892,16 @@ external void hb_paint_funcs_set_linear_gradient_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Pointer<hb_color_line_t> color_line,
-          ffi.Float x0,
-          ffi.Float y0,
-          ffi.Float r0,
-          ffi.Float x1,
-          ffi.Float y1,
-          ffi.Float r1,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_radial_gradient_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_radial_gradient_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Pointer<hb_color_line_t> color_line,
-        ffi.Float x0,
-        ffi.Float y0,
-        ffi.Float r0,
-        ffi.Float x1,
-        ffi.Float y1,
-        ffi.Float r1,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_radial_gradient_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_sweep_gradient_func:
@@ -2634,48 +1916,16 @@ external void hb_paint_funcs_set_radial_gradient_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Pointer<hb_color_line_t> color_line,
-          ffi.Float x0,
-          ffi.Float y0,
-          ffi.Float start_angle,
-          ffi.Float end_angle,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_sweep_gradient_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_sweep_gradient_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Pointer<hb_color_line_t> color_line,
-        ffi.Float x0,
-        ffi.Float y0,
-        ffi.Float start_angle,
-        ffi.Float end_angle,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_sweep_gradient_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_push_group_func:
@@ -2690,38 +1940,16 @@ external void hb_paint_funcs_set_sweep_gradient_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_push_group_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_push_group_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_push_group_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_push_group_for_func:
@@ -2736,40 +1964,16 @@ external void hb_paint_funcs_set_push_group_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.UnsignedInt mode,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_push_group_for_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_push_group_for_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.UnsignedInt mode,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_push_group_for_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_pop_group_func:
@@ -2784,40 +1988,16 @@ external void hb_paint_funcs_set_push_group_for_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.UnsignedInt mode,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_pop_group_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_pop_group_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.UnsignedInt mode,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_pop_group_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_paint_funcs_set_custom_palette_color_func:
@@ -2832,42 +2012,16 @@ external void hb_paint_funcs_set_pop_group_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_paint_funcs_t> funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.UnsignedInt color_index,
-          ffi.Pointer<ffi.Uint32> color,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_custom_palette_color_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_paint_funcs_set_custom_palette_color_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_paint_funcs_t> funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.UnsignedInt color_index,
-        ffi.Pointer<ffi.Uint32> color,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_paint_custom_palette_color_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// Manual API
@@ -2929,10 +2083,10 @@ external void hb_paint_pop_transform(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_paint_funcs_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.Pointer<hb_font_t>,
   )
 >()
@@ -2947,7 +2101,7 @@ external int hb_paint_color_glyph(
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.Pointer<hb_font_t>,
   )
 >()
@@ -3010,8 +2164,8 @@ external void hb_paint_pop_clip(
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Int,
-    ffi.Uint32,
+    hb_bool_t,
+    hb_color_t,
   )
 >()
 external void hb_paint_color(
@@ -3028,7 +2182,7 @@ external void hb_paint_color(
     ffi.Pointer<hb_blob_t>,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.Float,
     ffi.Pointer<hb_glyph_extents_t>,
   )
@@ -3162,18 +2316,18 @@ void hb_paint_pop_group(
 ) => _hb_paint_pop_group(funcs, paint_data, mode.value);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_paint_funcs_t>,
     ffi.Pointer<ffi.Void>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_color_t>,
   )
 >()
 external int hb_paint_custom_palette_color(
   ffi.Pointer<hb_paint_funcs_t> funcs,
   ffi.Pointer<ffi.Void> paint_data,
   int color_index,
-  ffi.Pointer<ffi.Uint32> color,
+  ffi.Pointer<hb_color_t> color,
 );
 
 /// Gradient helpers for paint backends.
@@ -3231,17 +2385,7 @@ external void hb_paint_normalize_color_line(
     ffi.UnsignedInt,
     ffi.Float,
     ffi.Float,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Float a0,
-          ffi.Uint32 c0,
-          ffi.Float a1,
-          ffi.Uint32 c1,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_paint_sweep_gradient_tile_func_t,
     ffi.Pointer<ffi.Void>,
   )
 >(symbol: 'hb_paint_sweep_gradient_tiles')
@@ -3251,18 +2395,7 @@ external void _hb_paint_sweep_gradient_tiles(
   int extend,
   double start_angle,
   double end_angle,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Float a0,
-        ffi.Uint32 c0,
-        ffi.Float a1,
-        ffi.Uint32 c1,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  emit_patch,
+  hb_paint_sweep_gradient_tile_func_t emit_patch,
   ffi.Pointer<ffi.Void> user_data,
 );
 
@@ -3272,18 +2405,7 @@ void hb_paint_sweep_gradient_tiles(
   hb_paint_extend_t extend,
   double start_angle,
   double end_angle,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Float a0,
-        ffi.Uint32 c0,
-        ffi.Float a1,
-        ffi.Uint32 c1,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  emit_patch,
+  hb_paint_sweep_gradient_tile_func_t emit_patch,
   ffi.Pointer<ffi.Void> user_data,
 ) => _hb_paint_sweep_gradient_tiles(
   stops,
@@ -3312,24 +2434,19 @@ external ffi.Pointer<hb_font_funcs_t> hb_font_funcs_reference(
 external void hb_font_funcs_destroy(ffi.Pointer<hb_font_funcs_t> ffuncs);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_funcs_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_font_funcs_set_user_data(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -3347,7 +2464,7 @@ external ffi.Pointer<ffi.Void> hb_font_funcs_get_user_data(
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_funcs_t>)>()
 external void hb_font_funcs_make_immutable(ffi.Pointer<hb_font_funcs_t> ffuncs);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_font_funcs_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_font_funcs_t>)>()
 external int hb_font_funcs_is_immutable(ffi.Pointer<hb_font_funcs_t> ffuncs);
 
 /// hb_font_funcs_set_font_h_extents_func:
@@ -3362,40 +2479,16 @@ external int hb_font_funcs_is_immutable(ffi.Pointer<hb_font_funcs_t> ffuncs);
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Pointer<hb_font_extents_t> extents,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_font_h_extents_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_font_h_extents_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Pointer<hb_font_extents_t> extents,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_font_h_extents_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_font_v_extents_func:
@@ -3410,40 +2503,16 @@ external void hb_font_funcs_set_font_h_extents_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Pointer<hb_font_extents_t> extents,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_font_v_extents_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_font_v_extents_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Pointer<hb_font_extents_t> extents,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_font_v_extents_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_nominal_glyph_func:
@@ -3458,42 +2527,16 @@ external void hb_font_funcs_set_font_v_extents_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 unicode,
-          ffi.Pointer<ffi.Uint32> glyph,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_nominal_glyph_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_nominal_glyph_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 unicode,
-        ffi.Pointer<ffi.Uint32> glyph,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_nominal_glyph_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_nominal_glyphs_func:
@@ -3508,48 +2551,16 @@ external void hb_font_funcs_set_nominal_glyph_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.UnsignedInt Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.UnsignedInt count,
-          ffi.Pointer<ffi.Uint32> first_unicode,
-          ffi.UnsignedInt unicode_stride,
-          ffi.Pointer<ffi.Uint32> first_glyph,
-          ffi.UnsignedInt glyph_stride,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_nominal_glyphs_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_nominal_glyphs_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.UnsignedInt Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.UnsignedInt count,
-        ffi.Pointer<ffi.Uint32> first_unicode,
-        ffi.UnsignedInt unicode_stride,
-        ffi.Pointer<ffi.Uint32> first_glyph,
-        ffi.UnsignedInt glyph_stride,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_nominal_glyphs_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_variation_glyph_func:
@@ -3564,44 +2575,16 @@ external void hb_font_funcs_set_nominal_glyphs_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 unicode,
-          ffi.Uint32 variation_selector,
-          ffi.Pointer<ffi.Uint32> glyph,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_variation_glyph_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_variation_glyph_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 unicode,
-        ffi.Uint32 variation_selector,
-        ffi.Pointer<ffi.Uint32> glyph,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_variation_glyph_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_h_advance_func:
@@ -3616,40 +2599,16 @@ external void hb_font_funcs_set_variation_glyph_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int32 Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_h_advance_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_h_advance_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int32 Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_h_advance_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_v_advance_func:
@@ -3664,40 +2623,16 @@ external void hb_font_funcs_set_glyph_h_advance_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int32 Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_v_advance_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_v_advance_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int32 Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_v_advance_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_h_advances_func:
@@ -3712,48 +2647,16 @@ external void hb_font_funcs_set_glyph_v_advance_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.UnsignedInt count,
-          ffi.Pointer<ffi.Uint32> first_glyph,
-          ffi.UnsignedInt glyph_stride,
-          ffi.Pointer<ffi.Int32> first_advance,
-          ffi.UnsignedInt advance_stride,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_h_advances_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_h_advances_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.UnsignedInt count,
-        ffi.Pointer<ffi.Uint32> first_glyph,
-        ffi.UnsignedInt glyph_stride,
-        ffi.Pointer<ffi.Int32> first_advance,
-        ffi.UnsignedInt advance_stride,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_h_advances_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_v_advances_func:
@@ -3768,48 +2671,16 @@ external void hb_font_funcs_set_glyph_h_advances_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.UnsignedInt count,
-          ffi.Pointer<ffi.Uint32> first_glyph,
-          ffi.UnsignedInt glyph_stride,
-          ffi.Pointer<ffi.Int32> first_advance,
-          ffi.UnsignedInt advance_stride,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_v_advances_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_v_advances_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.UnsignedInt count,
-        ffi.Pointer<ffi.Uint32> first_glyph,
-        ffi.UnsignedInt glyph_stride,
-        ffi.Pointer<ffi.Int32> first_advance,
-        ffi.UnsignedInt advance_stride,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_v_advances_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_h_origin_func:
@@ -3824,44 +2695,16 @@ external void hb_font_funcs_set_glyph_v_advances_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<ffi.Int32> x,
-          ffi.Pointer<ffi.Int32> y,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_h_origin_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_h_origin_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<ffi.Int32> x,
-        ffi.Pointer<ffi.Int32> y,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_h_origin_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_v_origin_func:
@@ -3876,44 +2719,16 @@ external void hb_font_funcs_set_glyph_h_origin_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<ffi.Int32> x,
-          ffi.Pointer<ffi.Int32> y,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_v_origin_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_v_origin_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<ffi.Int32> x,
-        ffi.Pointer<ffi.Int32> y,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_v_origin_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_h_origins_func:
@@ -3928,52 +2743,16 @@ external void hb_font_funcs_set_glyph_v_origin_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.UnsignedInt count,
-          ffi.Pointer<ffi.Uint32> first_glyph,
-          ffi.UnsignedInt glyph_stride,
-          ffi.Pointer<ffi.Int32> first_x,
-          ffi.UnsignedInt x_stride,
-          ffi.Pointer<ffi.Int32> first_y,
-          ffi.UnsignedInt y_stride,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_h_origins_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_h_origins_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.UnsignedInt count,
-        ffi.Pointer<ffi.Uint32> first_glyph,
-        ffi.UnsignedInt glyph_stride,
-        ffi.Pointer<ffi.Int32> first_x,
-        ffi.UnsignedInt x_stride,
-        ffi.Pointer<ffi.Int32> first_y,
-        ffi.UnsignedInt y_stride,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_h_origins_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_v_origins_func:
@@ -3988,52 +2767,16 @@ external void hb_font_funcs_set_glyph_h_origins_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.UnsignedInt count,
-          ffi.Pointer<ffi.Uint32> first_glyph,
-          ffi.UnsignedInt glyph_stride,
-          ffi.Pointer<ffi.Int32> first_x,
-          ffi.UnsignedInt x_stride,
-          ffi.Pointer<ffi.Int32> first_y,
-          ffi.UnsignedInt y_stride,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_v_origins_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_v_origins_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.UnsignedInt count,
-        ffi.Pointer<ffi.Uint32> first_glyph,
-        ffi.UnsignedInt glyph_stride,
-        ffi.Pointer<ffi.Int32> first_x,
-        ffi.UnsignedInt x_stride,
-        ffi.Pointer<ffi.Int32> first_y,
-        ffi.UnsignedInt y_stride,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_v_origins_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_h_kerning_func:
@@ -4048,42 +2791,16 @@ external void hb_font_funcs_set_glyph_v_origins_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int32 Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 first_glyph,
-          ffi.Uint32 second_glyph,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_h_kerning_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_h_kerning_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int32 Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 first_glyph,
-        ffi.Uint32 second_glyph,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_h_kerning_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_extents_func:
@@ -4098,42 +2815,16 @@ external void hb_font_funcs_set_glyph_h_kerning_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<hb_glyph_extents_t> extents,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_extents_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_extents_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<hb_glyph_extents_t> extents,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_extents_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_contour_point_func:
@@ -4148,46 +2839,16 @@ external void hb_font_funcs_set_glyph_extents_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.UnsignedInt point_index,
-          ffi.Pointer<ffi.Int32> x,
-          ffi.Pointer<ffi.Int32> y,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_contour_point_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_contour_point_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.UnsignedInt point_index,
-        ffi.Pointer<ffi.Int32> x,
-        ffi.Pointer<ffi.Int32> y,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_contour_point_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_name_func:
@@ -4202,44 +2863,16 @@ external void hb_font_funcs_set_glyph_contour_point_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<ffi.Char> name,
-          ffi.UnsignedInt size,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_name_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_name_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<ffi.Char> name,
-        ffi.UnsignedInt size,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_name_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_glyph_from_name_func:
@@ -4254,44 +2887,16 @@ external void hb_font_funcs_set_glyph_name_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Pointer<ffi.Char> name,
-          ffi.Int len,
-          ffi.Pointer<ffi.Uint32> glyph,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_from_name_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_from_name_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Pointer<ffi.Char> name,
-        ffi.Int len,
-        ffi.Pointer<ffi.Uint32> glyph,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_from_name_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_draw_glyph_or_fail_func:
@@ -4306,44 +2911,16 @@ external void hb_font_funcs_set_glyph_from_name_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<hb_draw_funcs_t> draw_funcs,
-          ffi.Pointer<ffi.Void> draw_data,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_draw_glyph_or_fail_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_draw_glyph_or_fail_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<hb_draw_funcs_t> draw_funcs,
-        ffi.Pointer<ffi.Void> draw_data,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_draw_glyph_or_fail_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_paint_glyph_or_fail_func:
@@ -4358,53 +2935,21 @@ external void hb_font_funcs_set_draw_glyph_or_fail_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<hb_paint_funcs_t> paint_funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.UnsignedInt palette_index,
-          ffi.Uint32 foreground,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_paint_glyph_or_fail_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_paint_glyph_or_fail_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<hb_paint_funcs_t> paint_funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.UnsignedInt palette_index,
-        ffi.Uint32 foreground,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_paint_glyph_or_fail_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// func dispatch
 @ffi.Native<
-  ffi.Int Function(ffi.Pointer<hb_font_t>, ffi.Pointer<hb_font_extents_t>)
+  hb_bool_t Function(ffi.Pointer<hb_font_t>, ffi.Pointer<hb_font_extents_t>)
 >()
 external int hb_font_get_h_extents(
   ffi.Pointer<hb_font_t> font,
@@ -4412,7 +2957,7 @@ external int hb_font_get_h_extents(
 );
 
 @ffi.Native<
-  ffi.Int Function(ffi.Pointer<hb_font_t>, ffi.Pointer<hb_font_extents_t>)
+  hb_bool_t Function(ffi.Pointer<hb_font_t>, ffi.Pointer<hb_font_extents_t>)
 >()
 external int hb_font_get_v_extents(
   ffi.Pointer<hb_font_t> font,
@@ -4420,55 +2965,59 @@ external int hb_font_get_v_extents(
 );
 
 @ffi.Native<
-  ffi.Int Function(ffi.Pointer<hb_font_t>, ffi.Uint32, ffi.Pointer<ffi.Uint32>)
+  hb_bool_t Function(
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+    ffi.Pointer<hb_codepoint_t>,
+  )
 >()
 external int hb_font_get_nominal_glyph(
   ffi.Pointer<hb_font_t> font,
   int unicode,
-  ffi.Pointer<ffi.Uint32> glyph,
+  ffi.Pointer<hb_codepoint_t> glyph,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Uint32>,
+    hb_codepoint_t,
+    hb_codepoint_t,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_font_get_variation_glyph(
   ffi.Pointer<hb_font_t> font,
   int unicode,
   int variation_selector,
-  ffi.Pointer<ffi.Uint32> glyph,
+  ffi.Pointer<hb_codepoint_t> glyph,
 );
 
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
     ffi.UnsignedInt,
   )
 >()
 external int hb_font_get_nominal_glyphs(
   ffi.Pointer<hb_font_t> font,
   int count,
-  ffi.Pointer<ffi.Uint32> first_unicode,
+  ffi.Pointer<hb_codepoint_t> first_unicode,
   int unicode_stride,
-  ffi.Pointer<ffi.Uint32> first_glyph,
+  ffi.Pointer<hb_codepoint_t> first_glyph,
   int glyph_stride,
 );
 
-@ffi.Native<ffi.Int32 Function(ffi.Pointer<hb_font_t>, ffi.Uint32)>()
+@ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t)>()
 external int hb_font_get_glyph_h_advance(
   ffi.Pointer<hb_font_t> font,
   int glyph,
 );
 
-@ffi.Native<ffi.Int32 Function(ffi.Pointer<hb_font_t>, ffi.Uint32)>()
+@ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t)>()
 external int hb_font_get_glyph_v_advance(
   ffi.Pointer<hb_font_t> font,
   int glyph,
@@ -4478,18 +3027,18 @@ external int hb_font_get_glyph_v_advance(
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
     ffi.UnsignedInt,
   )
 >()
 external void hb_font_get_glyph_h_advances(
   ffi.Pointer<hb_font_t> font,
   int count,
-  ffi.Pointer<ffi.Uint32> first_glyph,
+  ffi.Pointer<hb_codepoint_t> first_glyph,
   int glyph_stride,
-  ffi.Pointer<ffi.Int32> first_advance,
+  ffi.Pointer<hb_position_t> first_advance,
   int advance_stride,
 );
 
@@ -4497,99 +3046,99 @@ external void hb_font_get_glyph_h_advances(
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
     ffi.UnsignedInt,
   )
 >()
 external void hb_font_get_glyph_v_advances(
   ffi.Pointer<hb_font_t> font,
   int count,
-  ffi.Pointer<ffi.Uint32> first_glyph,
+  ffi.Pointer<hb_codepoint_t> first_glyph,
   int glyph_stride,
-  ffi.Pointer<ffi.Int32> first_advance,
+  ffi.Pointer<hb_position_t> first_advance,
   int advance_stride,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Int32>,
-    ffi.Pointer<ffi.Int32>,
+    hb_codepoint_t,
+    ffi.Pointer<hb_position_t>,
+    ffi.Pointer<hb_position_t>,
   )
 >()
 external int hb_font_get_glyph_h_origin(
   ffi.Pointer<hb_font_t> font,
   int glyph,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Int32>,
-    ffi.Pointer<ffi.Int32>,
+    hb_codepoint_t,
+    ffi.Pointer<hb_position_t>,
+    ffi.Pointer<hb_position_t>,
   )
 >()
 external int hb_font_get_glyph_v_origin(
   ffi.Pointer<hb_font_t> font,
   int glyph,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
     ffi.UnsignedInt,
   )
 >()
 external int hb_font_get_glyph_h_origins(
   ffi.Pointer<hb_font_t> font,
   int count,
-  ffi.Pointer<ffi.Uint32> first_glyph,
+  ffi.Pointer<hb_codepoint_t> first_glyph,
   int glyph_stride,
-  ffi.Pointer<ffi.Int32> first_x,
+  ffi.Pointer<hb_position_t> first_x,
   int x_stride,
-  ffi.Pointer<ffi.Int32> first_y,
+  ffi.Pointer<hb_position_t> first_y,
   int y_stride,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
     ffi.UnsignedInt,
   )
 >()
 external int hb_font_get_glyph_v_origins(
   ffi.Pointer<hb_font_t> font,
   int count,
-  ffi.Pointer<ffi.Uint32> first_glyph,
+  ffi.Pointer<hb_codepoint_t> first_glyph,
   int glyph_stride,
-  ffi.Pointer<ffi.Int32> first_x,
+  ffi.Pointer<hb_position_t> first_x,
   int x_stride,
-  ffi.Pointer<ffi.Int32> first_y,
+  ffi.Pointer<hb_position_t> first_y,
   int y_stride,
 );
 
 @ffi.Native<
-  ffi.Int32 Function(ffi.Pointer<hb_font_t>, ffi.Uint32, ffi.Uint32)
+  hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t, hb_codepoint_t)
 >()
 external int hb_font_get_glyph_h_kerning(
   ffi.Pointer<hb_font_t> font,
@@ -4598,9 +3147,9 @@ external int hb_font_get_glyph_h_kerning(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.Pointer<hb_glyph_extents_t>,
   )
 >()
@@ -4611,26 +3160,26 @@ external int hb_font_get_glyph_extents(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
+    ffi.Pointer<hb_position_t>,
   )
 >()
 external int hb_font_get_glyph_contour_point(
   ffi.Pointer<hb_font_t> font,
   int glyph,
   int point_index,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.Pointer<ffi.Char>,
     ffi.UnsignedInt,
   )
@@ -4643,24 +3192,24 @@ external int hb_font_get_glyph_name(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.Pointer<ffi.Char>,
     ffi.Int,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_font_get_glyph_from_name(
   ffi.Pointer<hb_font_t> font,
   ffi.Pointer<ffi.Char> name,
   int len,
-  ffi.Pointer<ffi.Uint32> glyph,
+  ffi.Pointer<hb_codepoint_t> glyph,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.Pointer<hb_draw_funcs_t>,
     ffi.Pointer<ffi.Void>,
   )
@@ -4673,13 +3222,13 @@ external int hb_font_draw_glyph_or_fail(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.Pointer<hb_paint_funcs_t>,
     ffi.Pointer<ffi.Void>,
     ffi.UnsignedInt,
-    ffi.Uint32,
+    hb_color_t,
   )
 >()
 external int hb_font_paint_glyph_or_fail(
@@ -4694,18 +3243,18 @@ external int hb_font_paint_glyph_or_fail(
 /// Calls either hb_font_get_nominal_glyph() if variation_selector is 0,
 /// otherwise calls hb_font_get_variation_glyph().
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Uint32>,
+    hb_codepoint_t,
+    hb_codepoint_t,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_font_get_glyph(
   ffi.Pointer<hb_font_t> font,
   int unicode,
   int variation_selector,
-  ffi.Pointer<ffi.Uint32> glyph,
+  ffi.Pointer<hb_codepoint_t> glyph,
 );
 
 @ffi.Native<
@@ -4730,26 +3279,26 @@ void hb_font_get_extents_for_direction(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_font_get_glyph_advance_for_direction')
 external void _hb_font_get_glyph_advance_for_direction(
   ffi.Pointer<hb_font_t> font,
   int glyph,
   int direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 );
 
 void hb_font_get_glyph_advance_for_direction(
   ffi.Pointer<hb_font_t> font,
-  int glyph,
+  Darthb_codepoint_t glyph,
   hb_direction_t direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 ) => _hb_font_get_glyph_advance_for_direction(
   font,
   glyph,
@@ -4763,9 +3312,9 @@ void hb_font_get_glyph_advance_for_direction(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
     ffi.UnsignedInt,
   )
 >(symbol: 'hb_font_get_glyph_advances_for_direction')
@@ -4773,9 +3322,9 @@ external void _hb_font_get_glyph_advances_for_direction(
   ffi.Pointer<hb_font_t> font,
   int direction,
   int count,
-  ffi.Pointer<ffi.Uint32> first_glyph,
+  ffi.Pointer<hb_codepoint_t> first_glyph,
   int glyph_stride,
-  ffi.Pointer<ffi.Int32> first_advance,
+  ffi.Pointer<hb_position_t> first_advance,
   int advance_stride,
 );
 
@@ -4783,9 +3332,9 @@ void hb_font_get_glyph_advances_for_direction(
   ffi.Pointer<hb_font_t> font,
   hb_direction_t direction,
   int count,
-  ffi.Pointer<ffi.Uint32> first_glyph,
+  ffi.Pointer<hb_codepoint_t> first_glyph,
   int glyph_stride,
-  ffi.Pointer<ffi.Int32> first_advance,
+  ffi.Pointer<hb_position_t> first_advance,
   int advance_stride,
 ) => _hb_font_get_glyph_advances_for_direction(
   font,
@@ -4800,78 +3349,78 @@ void hb_font_get_glyph_advances_for_direction(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_font_get_glyph_origin_for_direction')
 external void _hb_font_get_glyph_origin_for_direction(
   ffi.Pointer<hb_font_t> font,
   int glyph,
   int direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 );
 
 void hb_font_get_glyph_origin_for_direction(
   ffi.Pointer<hb_font_t> font,
-  int glyph,
+  Darthb_codepoint_t glyph,
   hb_direction_t direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 ) =>
     _hb_font_get_glyph_origin_for_direction(font, glyph, direction.value, x, y);
 
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_font_add_glyph_origin_for_direction')
 external void _hb_font_add_glyph_origin_for_direction(
   ffi.Pointer<hb_font_t> font,
   int glyph,
   int direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 );
 
 void hb_font_add_glyph_origin_for_direction(
   ffi.Pointer<hb_font_t> font,
-  int glyph,
+  Darthb_codepoint_t glyph,
   hb_direction_t direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 ) =>
     _hb_font_add_glyph_origin_for_direction(font, glyph, direction.value, x, y);
 
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_font_subtract_glyph_origin_for_direction')
 external void _hb_font_subtract_glyph_origin_for_direction(
   ffi.Pointer<hb_font_t> font,
   int glyph,
   int direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 );
 
 void hb_font_subtract_glyph_origin_for_direction(
   ffi.Pointer<hb_font_t> font,
-  int glyph,
+  Darthb_codepoint_t glyph,
   hb_direction_t direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 ) => _hb_font_subtract_glyph_origin_for_direction(
   font,
   glyph,
@@ -4883,11 +3432,11 @@ void hb_font_subtract_glyph_origin_for_direction(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
-    ffi.Uint32,
+    hb_codepoint_t,
+    hb_codepoint_t,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_font_get_glyph_kerning_for_direction')
 external void _hb_font_get_glyph_kerning_for_direction(
@@ -4895,17 +3444,17 @@ external void _hb_font_get_glyph_kerning_for_direction(
   int first_glyph,
   int second_glyph,
   int direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 );
 
 void hb_font_get_glyph_kerning_for_direction(
   ffi.Pointer<hb_font_t> font,
-  int first_glyph,
-  int second_glyph,
+  Darthb_codepoint_t first_glyph,
+  Darthb_codepoint_t second_glyph,
   hb_direction_t direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 ) => _hb_font_get_glyph_kerning_for_direction(
   font,
   first_glyph,
@@ -4916,9 +3465,9 @@ void hb_font_get_glyph_kerning_for_direction(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
     ffi.Pointer<hb_glyph_extents_t>,
   )
@@ -4930,9 +3479,9 @@ external int _hb_font_get_glyph_extents_for_origin(
   ffi.Pointer<hb_glyph_extents_t> extents,
 );
 
-int hb_font_get_glyph_extents_for_origin(
+Darthb_bool_t hb_font_get_glyph_extents_for_origin(
   ffi.Pointer<hb_font_t> font,
-  int glyph,
+  Darthb_codepoint_t glyph,
   hb_direction_t direction,
   ffi.Pointer<hb_glyph_extents_t> extents,
 ) => _hb_font_get_glyph_extents_for_origin(
@@ -4943,13 +3492,13 @@ int hb_font_get_glyph_extents_for_origin(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_font_get_glyph_contour_point_for_origin')
 external int _hb_font_get_glyph_contour_point_for_origin(
@@ -4957,17 +3506,17 @@ external int _hb_font_get_glyph_contour_point_for_origin(
   int glyph,
   int point_index,
   int direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 );
 
-int hb_font_get_glyph_contour_point_for_origin(
+Darthb_bool_t hb_font_get_glyph_contour_point_for_origin(
   ffi.Pointer<hb_font_t> font,
-  int glyph,
+  Darthb_codepoint_t glyph,
   int point_index,
   hb_direction_t direction,
-  ffi.Pointer<ffi.Int32> x,
-  ffi.Pointer<ffi.Int32> y,
+  ffi.Pointer<hb_position_t> x,
+  ffi.Pointer<hb_position_t> y,
 ) => _hb_font_get_glyph_contour_point_for_origin(
   font,
   glyph,
@@ -4981,7 +3530,7 @@ int hb_font_get_glyph_contour_point_for_origin(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.Pointer<ffi.Char>,
     ffi.UnsignedInt,
   )
@@ -4995,25 +3544,25 @@ external void hb_font_glyph_to_string(
 
 /// Parses gidDDD and uniUUUU strings automatically.
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.Pointer<ffi.Char>,
     ffi.Int,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_font_glyph_from_string(
   ffi.Pointer<hb_font_t> font,
   ffi.Pointer<ffi.Char> s,
   int len,
-  ffi.Pointer<ffi.Uint32> glyph,
+  ffi.Pointer<hb_codepoint_t> glyph,
 );
 
 /// Older alias for hb_font_draw_glyph_or_fail() with no return value.
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.Pointer<hb_draw_funcs_t>,
     ffi.Pointer<ffi.Void>,
   )
@@ -5029,11 +3578,11 @@ external void hb_font_draw_glyph(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.Pointer<hb_paint_funcs_t>,
     ffi.Pointer<ffi.Void>,
     ffi.UnsignedInt,
-    ffi.Uint32,
+    hb_color_t,
   )
 >()
 external void hb_font_paint_glyph(
@@ -5064,24 +3613,19 @@ external ffi.Pointer<hb_font_t> hb_font_reference(ffi.Pointer<hb_font_t> font);
 external void hb_font_destroy(ffi.Pointer<hb_font_t> font);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_font_set_user_data(
   ffi.Pointer<hb_font_t> font,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -5099,7 +3643,7 @@ external ffi.Pointer<ffi.Void> hb_font_get_user_data(
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>)>()
 external void hb_font_make_immutable(ffi.Pointer<hb_font_t> font);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_font_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_font_t>)>()
 external int hb_font_is_immutable(ffi.Pointer<hb_font_t> font);
 
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_font_t>)>()
@@ -5131,19 +3675,14 @@ external ffi.Pointer<hb_face_t> hb_font_get_face(ffi.Pointer<hb_font_t> font);
     ffi.Pointer<hb_font_t>,
     ffi.Pointer<hb_font_funcs_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_set_funcs(
   ffi.Pointer<hb_font_t> font,
   ffi.Pointer<hb_font_funcs_t> klass,
   ffi.Pointer<ffi.Void> font_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// Be *very* careful with this function!
@@ -5151,21 +3690,16 @@ external void hb_font_set_funcs(
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_set_funcs_data(
   ffi.Pointer<hb_font_t> font,
   ffi.Pointer<ffi.Void> font_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_font_t>, ffi.Pointer<ffi.Char>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_font_t>, ffi.Pointer<ffi.Char>)>()
 external int hb_font_set_funcs_using(
   ffi.Pointer<hb_font_t> font,
   ffi.Pointer<ffi.Char> name,
@@ -5225,11 +3759,11 @@ external void hb_font_set_ptem(ffi.Pointer<hb_font_t> font, double ptem);
 @ffi.Native<ffi.Float Function(ffi.Pointer<hb_font_t>)>()
 external double hb_font_get_ptem(ffi.Pointer<hb_font_t> font);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_font_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_font_t>)>()
 external int hb_font_is_synthetic(ffi.Pointer<hb_font_t> font);
 
 @ffi.Native<
-  ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.Float, ffi.Float, ffi.Int)
+  ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.Float, ffi.Float, hb_bool_t)
 >()
 external void hb_font_set_synthetic_bold(
   ffi.Pointer<hb_font_t> font,
@@ -5243,14 +3777,14 @@ external void hb_font_set_synthetic_bold(
     ffi.Pointer<hb_font_t>,
     ffi.Pointer<ffi.Float>,
     ffi.Pointer<ffi.Float>,
-    ffi.Pointer<ffi.Int>,
+    ffi.Pointer<hb_bool_t>,
   )
 >()
 external void hb_font_get_synthetic_bold(
   ffi.Pointer<hb_font_t> font,
   ffi.Pointer<ffi.Float> x_embolden,
   ffi.Pointer<ffi.Float> y_embolden,
-  ffi.Pointer<ffi.Int> in_place,
+  ffi.Pointer<hb_bool_t> in_place,
 );
 
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.Float)>()
@@ -5275,7 +3809,7 @@ external void hb_font_set_variations(
   int variations_length,
 );
 
-@ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.Uint32, ffi.Float)>()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>, hb_tag_t, ffi.Float)>()
 external void hb_font_set_variation(
   ffi.Pointer<hb_font_t> font,
   int tag,
@@ -5349,7 +3883,7 @@ hb_glyph_flags_t hb_glyph_info_get_glyph_flags(
 ) => hb_glyph_flags_t.fromValue(_hb_glyph_info_get_glyph_flags(info));
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_segment_properties_t>,
     ffi.Pointer<hb_segment_properties_t>,
   )
@@ -5396,24 +3930,19 @@ external ffi.Pointer<hb_buffer_t> hb_buffer_reference(
 external void hb_buffer_destroy(ffi.Pointer<hb_buffer_t> buffer);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_buffer_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_buffer_set_user_data(
   ffi.Pointer<hb_buffer_t> buffer,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -5507,20 +4036,14 @@ external int _hb_buffer_get_script(ffi.Pointer<hb_buffer_t> buffer);
 hb_script_t hb_buffer_get_script(ffi.Pointer<hb_buffer_t> buffer) =>
     hb_script_t.fromValue(_hb_buffer_get_script(buffer));
 
-@ffi.Native<
-  ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.Pointer<hb_language_impl_t>)
->()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_language_t)>()
 external void hb_buffer_set_language(
   ffi.Pointer<hb_buffer_t> buffer,
-  ffi.Pointer<hb_language_impl_t> language,
+  hb_language_t language,
 );
 
-@ffi.Native<
-  ffi.Pointer<hb_language_impl_t> Function(ffi.Pointer<hb_buffer_t>)
->()
-external ffi.Pointer<hb_language_impl_t> hb_buffer_get_language(
-  ffi.Pointer<hb_buffer_t> buffer,
-);
+@ffi.Native<hb_language_t Function(ffi.Pointer<hb_buffer_t>)>()
+external hb_language_t hb_buffer_get_language(ffi.Pointer<hb_buffer_t> buffer);
 
 @ffi.Native<
   ffi.Void Function(
@@ -5589,42 +4112,42 @@ hb_buffer_cluster_level_t hb_buffer_get_cluster_level(
   ffi.Pointer<hb_buffer_t> buffer,
 ) => hb_buffer_cluster_level_t.fromValue(_hb_buffer_get_cluster_level(buffer));
 
-@ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.Uint32)>()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_codepoint_t)>()
 external void hb_buffer_set_replacement_codepoint(
   ffi.Pointer<hb_buffer_t> buffer,
   int replacement,
 );
 
-@ffi.Native<ffi.Uint32 Function(ffi.Pointer<hb_buffer_t>)>()
+@ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_get_replacement_codepoint(
   ffi.Pointer<hb_buffer_t> buffer,
 );
 
-@ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.Uint32)>()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_codepoint_t)>()
 external void hb_buffer_set_invisible_glyph(
   ffi.Pointer<hb_buffer_t> buffer,
   int invisible,
 );
 
-@ffi.Native<ffi.Uint32 Function(ffi.Pointer<hb_buffer_t>)>()
+@ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_get_invisible_glyph(ffi.Pointer<hb_buffer_t> buffer);
 
-@ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.Uint32)>()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_codepoint_t)>()
 external void hb_buffer_set_not_found_glyph(
   ffi.Pointer<hb_buffer_t> buffer,
   int not_found,
 );
 
-@ffi.Native<ffi.Uint32 Function(ffi.Pointer<hb_buffer_t>)>()
+@ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_get_not_found_glyph(ffi.Pointer<hb_buffer_t> buffer);
 
-@ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.Uint32)>()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_codepoint_t)>()
 external void hb_buffer_set_not_found_variation_selector_glyph(
   ffi.Pointer<hb_buffer_t> buffer,
   int not_found_variation_selector,
 );
 
-@ffi.Native<ffi.Uint32 Function(ffi.Pointer<hb_buffer_t>)>()
+@ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_get_not_found_variation_selector_glyph(
   ffi.Pointer<hb_buffer_t> buffer,
 );
@@ -5642,10 +4165,10 @@ external int hb_buffer_get_random_state(ffi.Pointer<hb_buffer_t> buffer);
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
 external void hb_buffer_clear_contents(ffi.Pointer<hb_buffer_t> buffer);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>()
 external int hb_buffer_pre_allocate(ffi.Pointer<hb_buffer_t> buffer, int size);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_buffer_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_allocation_successful(ffi.Pointer<hb_buffer_t> buffer);
 
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
@@ -5665,7 +4188,7 @@ external void hb_buffer_reverse_clusters(ffi.Pointer<hb_buffer_t> buffer);
 
 /// Filling the buffer in
 @ffi.Native<
-  ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.Uint32, ffi.UnsignedInt)
+  ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_codepoint_t, ffi.UnsignedInt)
 >()
 external void hb_buffer_add(
   ffi.Pointer<hb_buffer_t> buffer,
@@ -5744,7 +4267,7 @@ external void hb_buffer_add_latin1(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_buffer_t>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
     ffi.Int,
     ffi.UnsignedInt,
     ffi.Int,
@@ -5752,7 +4275,7 @@ external void hb_buffer_add_latin1(
 >()
 external void hb_buffer_add_codepoints(
   ffi.Pointer<hb_buffer_t> buffer,
-  ffi.Pointer<ffi.Uint32> text,
+  ffi.Pointer<hb_codepoint_t> text,
   int text_length,
   int item_offset,
   int item_length,
@@ -5773,7 +4296,7 @@ external void hb_buffer_append(
   int end,
 );
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>()
 external int hb_buffer_set_length(ffi.Pointer<hb_buffer_t> buffer, int length);
 
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_buffer_t>)>()
@@ -5802,7 +4325,7 @@ external ffi.Pointer<hb_glyph_position_t> hb_buffer_get_glyph_positions(
   ffi.Pointer<ffi.UnsignedInt> length,
 );
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_buffer_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_has_positions(ffi.Pointer<hb_buffer_t> buffer);
 
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
@@ -5975,7 +4498,7 @@ int hb_buffer_serialize(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_buffer_t>,
     ffi.Pointer<ffi.Char>,
     ffi.Int,
@@ -5993,7 +4516,7 @@ external int _hb_buffer_deserialize_glyphs(
   int format,
 );
 
-int hb_buffer_deserialize_glyphs(
+Darthb_bool_t hb_buffer_deserialize_glyphs(
   ffi.Pointer<hb_buffer_t> buffer,
   ffi.Pointer<ffi.Char> buf,
   int buf_len,
@@ -6010,7 +4533,7 @@ int hb_buffer_deserialize_glyphs(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_buffer_t>,
     ffi.Pointer<ffi.Char>,
     ffi.Int,
@@ -6026,7 +4549,7 @@ external int _hb_buffer_deserialize_unicode(
   int format,
 );
 
-int hb_buffer_deserialize_unicode(
+Darthb_bool_t hb_buffer_deserialize_unicode(
   ffi.Pointer<hb_buffer_t> buffer,
   ffi.Pointer<ffi.Char> buf,
   int buf_len,
@@ -6040,7 +4563,7 @@ int hb_buffer_deserialize_unicode(
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_buffer_t>,
     ffi.Pointer<hb_buffer_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
   )
 >(symbol: 'hb_buffer_diff')
@@ -6054,7 +4577,7 @@ external int _hb_buffer_diff(
 hb_buffer_diff_flags_t hb_buffer_diff(
   ffi.Pointer<hb_buffer_t> buffer,
   ffi.Pointer<hb_buffer_t> reference,
-  int dottedcircle_glyph,
+  Darthb_codepoint_t dottedcircle_glyph,
   int position_fuzz,
 ) => hb_buffer_diff_flags_t.fromValue(
   _hb_buffer_diff(buffer, reference, dottedcircle_glyph, position_fuzz),
@@ -6063,40 +4586,16 @@ hb_buffer_diff_flags_t hb_buffer_diff(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_buffer_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_buffer_t> buffer,
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Char> message,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_buffer_message_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_buffer_set_message_func(
   ffi.Pointer<hb_buffer_t> buffer,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_buffer_t> buffer,
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Char> message,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_buffer_message_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
@@ -6105,44 +4604,16 @@ external void hb_buffer_changed(ffi.Pointer<hb_buffer_t> buffer);
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 unicode,
-          ffi.Uint32 variation_selector,
-          ffi.Pointer<ffi.Uint32> glyph,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 unicode,
-        ffi.Uint32 variation_selector,
-        ffi.Pointer<ffi.Uint32> glyph,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_unicode_funcs_set_eastasian_width_func:
@@ -6158,38 +4629,16 @@ external void hb_font_funcs_set_glyph_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.UnsignedInt Function(
-          ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-          ffi.Uint32 unicode,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_unicode_eastasian_width_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_unicode_funcs_set_eastasian_width_func(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.UnsignedInt Function(
-        ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-        ffi.Uint32 unicode,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_unicode_eastasian_width_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_unicode_eastasian_width:
@@ -6201,7 +4650,7 @@ external void hb_unicode_funcs_set_eastasian_width_func(
 /// Since: 0.9.2
 /// Deprecated: 2.0.0
 @ffi.Native<
-  ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, ffi.Uint32)
+  ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, hb_codepoint_t)
 >()
 external int hb_unicode_eastasian_width(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
@@ -6223,53 +4672,29 @@ external int hb_unicode_eastasian_width(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.UnsignedInt Function(
-          ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-          ffi.Uint32 u,
-          ffi.Pointer<ffi.Uint32> decomposed,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_unicode_decompose_compatibility_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_unicode_funcs_set_decompose_compatibility_func(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.UnsignedInt Function(
-        ffi.Pointer<hb_unicode_funcs_t> ufuncs,
-        ffi.Uint32 u,
-        ffi.Pointer<ffi.Uint32> decomposed,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_unicode_decompose_compatibility_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_unicode_funcs_t>,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Uint32>,
+    hb_codepoint_t,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_unicode_decompose_compatibility(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
   int u,
-  ffi.Pointer<ffi.Uint32> decomposed,
+  ffi.Pointer<hb_codepoint_t> decomposed,
 );
 
 /// hb_font_funcs_set_glyph_v_kerning_func:
@@ -6285,46 +4710,20 @@ external int hb_unicode_decompose_compatibility(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int32 Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 first_glyph,
-          ffi.Uint32 second_glyph,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_v_kerning_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_v_kerning_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int32 Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 first_glyph,
-        ffi.Uint32 second_glyph,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_v_kerning_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 @ffi.Native<
-  ffi.Int32 Function(ffi.Pointer<hb_font_t>, ffi.Uint32, ffi.Uint32)
+  hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t, hb_codepoint_t)
 >()
 external int hb_font_get_glyph_v_kerning(
   ffi.Pointer<hb_font_t> font,
@@ -6346,44 +4745,16 @@ external int hb_font_get_glyph_v_kerning(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<hb_draw_funcs_t> draw_funcs,
-          ffi.Pointer<ffi.Void> draw_data,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_get_glyph_shape_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_glyph_shape_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<hb_draw_funcs_t> draw_funcs,
-        ffi.Pointer<ffi.Void> draw_data,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_get_glyph_shape_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_draw_glyph_func:
@@ -6399,44 +4770,16 @@ external void hb_font_funcs_set_glyph_shape_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Void Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<hb_draw_funcs_t> draw_funcs,
-          ffi.Pointer<ffi.Void> draw_data,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_draw_glyph_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_draw_glyph_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Void Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<hb_draw_funcs_t> draw_funcs,
-        ffi.Pointer<ffi.Void> draw_data,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_draw_glyph_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 /// hb_font_funcs_set_paint_glyph_func:
@@ -6452,54 +4795,22 @@ external void hb_font_funcs_set_draw_glyph_func(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
-    ffi.Pointer<
-      ffi.NativeFunction<
-        ffi.Int Function(
-          ffi.Pointer<hb_font_t> font,
-          ffi.Pointer<ffi.Void> font_data,
-          ffi.Uint32 glyph,
-          ffi.Pointer<hb_paint_funcs_t> paint_funcs,
-          ffi.Pointer<ffi.Void> paint_data,
-          ffi.UnsignedInt palette_index,
-          ffi.Uint32 foreground,
-          ffi.Pointer<ffi.Void> user_data,
-        )
-      >
-    >,
+    hb_font_paint_glyph_func_t,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
+    hb_destroy_func_t,
   )
 >()
 external void hb_font_funcs_set_paint_glyph_func(
   ffi.Pointer<hb_font_funcs_t> ffuncs,
-  ffi.Pointer<
-    ffi.NativeFunction<
-      ffi.Int Function(
-        ffi.Pointer<hb_font_t> font,
-        ffi.Pointer<ffi.Void> font_data,
-        ffi.Uint32 glyph,
-        ffi.Pointer<hb_paint_funcs_t> paint_funcs,
-        ffi.Pointer<ffi.Void> paint_data,
-        ffi.UnsignedInt palette_index,
-        ffi.Uint32 foreground,
-        ffi.Pointer<ffi.Void> user_data,
-      )
-    >
-  >
-  func,
+  hb_font_paint_glyph_func_t func,
   ffi.Pointer<ffi.Void> user_data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
 );
 
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.Pointer<hb_draw_funcs_t>,
     ffi.Pointer<ffi.Void>,
   )
@@ -6527,7 +4838,7 @@ external void hb_shape(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.Pointer<hb_buffer_t>,
     ffi.Pointer<hb_feature_t>,
@@ -6636,24 +4947,19 @@ external ffi.Pointer<hb_shape_plan_t> hb_shape_plan_reference(
 external void hb_shape_plan_destroy(ffi.Pointer<hb_shape_plan_t> shape_plan);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_shape_plan_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_shape_plan_set_user_data(
   ffi.Pointer<hb_shape_plan_t> shape_plan,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -6669,7 +4975,7 @@ external ffi.Pointer<ffi.Void> hb_shape_plan_get_user_data(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_shape_plan_t>,
     ffi.Pointer<hb_font_t>,
     ffi.Pointer<hb_buffer_t>,
@@ -6717,7 +5023,7 @@ external void hb_version(
 external ffi.Pointer<ffi.Char> hb_version_string();
 
 @ffi.Native<
-  ffi.Int Function(ffi.UnsignedInt, ffi.UnsignedInt, ffi.UnsignedInt)
+  hb_bool_t Function(ffi.UnsignedInt, ffi.UnsignedInt, ffi.UnsignedInt)
 >()
 external int hb_version_atleast(int major, int minor, int micro);
 
@@ -6735,8 +5041,8 @@ external ffi.Pointer<hb_ot_name_entry_t> hb_ot_name_list_names(
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.UnsignedInt,
-    ffi.Pointer<hb_language_impl_t>,
+    hb_ot_name_id_t,
+    hb_language_t,
     ffi.Pointer<ffi.UnsignedInt>,
     ffi.Pointer<ffi.Char>,
   )
@@ -6744,7 +5050,7 @@ external ffi.Pointer<hb_ot_name_entry_t> hb_ot_name_list_names(
 external int hb_ot_name_get_utf8(
   ffi.Pointer<hb_face_t> face,
   int name_id,
-  ffi.Pointer<hb_language_impl_t> language,
+  hb_language_t language,
   ffi.Pointer<ffi.UnsignedInt> text_size,
   ffi.Pointer<ffi.Char> text,
 );
@@ -6752,8 +5058,8 @@ external int hb_ot_name_get_utf8(
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.UnsignedInt,
-    ffi.Pointer<hb_language_impl_t>,
+    hb_ot_name_id_t,
+    hb_language_t,
     ffi.Pointer<ffi.UnsignedInt>,
     ffi.Pointer<ffi.Uint16>,
   )
@@ -6761,7 +5067,7 @@ external int hb_ot_name_get_utf8(
 external int hb_ot_name_get_utf16(
   ffi.Pointer<hb_face_t> face,
   int name_id,
-  ffi.Pointer<hb_language_impl_t> language,
+  hb_language_t language,
   ffi.Pointer<ffi.UnsignedInt> text_size,
   ffi.Pointer<ffi.Uint16> text,
 );
@@ -6769,8 +5075,8 @@ external int hb_ot_name_get_utf16(
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.UnsignedInt,
-    ffi.Pointer<hb_language_impl_t>,
+    hb_ot_name_id_t,
+    hb_language_t,
     ffi.Pointer<ffi.UnsignedInt>,
     ffi.Pointer<ffi.Uint32>,
   )
@@ -6778,25 +5084,25 @@ external int hb_ot_name_get_utf16(
 external int hb_ot_name_get_utf32(
   ffi.Pointer<hb_face_t> face,
   int name_id,
-  ffi.Pointer<hb_language_impl_t> language,
+  hb_language_t language,
   ffi.Pointer<ffi.UnsignedInt> text_size,
   ffi.Pointer<ffi.Uint32> text,
 );
 
 /// Color palettes.
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_has_palettes(ffi.Pointer<hb_face_t> face);
 
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_palette_get_count(ffi.Pointer<hb_face_t> face);
 
-@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
+@ffi.Native<hb_ot_name_id_t Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
 external int hb_ot_color_palette_get_name_id(
   ffi.Pointer<hb_face_t> face,
   int palette_index,
 );
 
-@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
+@ffi.Native<hb_ot_name_id_t Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
 external int hb_ot_color_palette_color_get_name_id(
   ffi.Pointer<hb_face_t> face,
   int color_index,
@@ -6823,7 +5129,7 @@ hb_ot_color_palette_flags_t hb_ot_color_palette_get_flags(
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_color_t>,
   )
 >()
 external int hb_ot_color_palette_get_colors(
@@ -6831,17 +5137,17 @@ external int hb_ot_color_palette_get_colors(
   int palette_index,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> color_count,
-  ffi.Pointer<ffi.Uint32> colors,
+  ffi.Pointer<hb_color_t> colors,
 );
 
 /// Color layers.
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_has_layers(ffi.Pointer<hb_face_t> face);
 
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
     ffi.Pointer<hb_ot_color_layer_t>,
@@ -6856,26 +5162,26 @@ external int hb_ot_color_glyph_get_layers(
 );
 
 /// COLRv1
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_has_paint(ffi.Pointer<hb_face_t> face);
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>, ffi.Uint32)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)>()
 external int hb_ot_color_glyph_has_paint(
   ffi.Pointer<hb_face_t> face,
   int glyph,
 );
 
 /// SVG
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_has_svg(ffi.Pointer<hb_face_t> face);
 
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_get_svg_document_count(ffi.Pointer<hb_face_t> face);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.Pointer<ffi.UnsignedInt>,
   )
 >()
@@ -6886,22 +5192,22 @@ external int hb_ot_color_glyph_get_svg_document_index(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_ot_color_get_svg_document_glyph_range(
   ffi.Pointer<hb_face_t> face,
   int svg_document_index,
-  ffi.Pointer<ffi.Uint32> start_glyph_id,
-  ffi.Pointer<ffi.Uint32> end_glyph_id,
+  ffi.Pointer<hb_codepoint_t> start_glyph_id,
+  ffi.Pointer<hb_codepoint_t> end_glyph_id,
 );
 
 @ffi.Native<
-  ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>, ffi.Uint32)
+  ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)
 >()
 external ffi.Pointer<hb_blob_t> hb_ot_color_glyph_reference_svg(
   ffi.Pointer<hb_face_t> face,
@@ -6909,11 +5215,11 @@ external ffi.Pointer<hb_blob_t> hb_ot_color_glyph_reference_svg(
 );
 
 /// PNG: CBDT or sbix
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_has_png(ffi.Pointer<hb_face_t> face);
 
 @ffi.Native<
-  ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_font_t>, ffi.Uint32)
+  ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_font_t>, hb_codepoint_t)
 >()
 external ffi.Pointer<hb_blob_t> hb_ot_color_glyph_reference_png(
   ffi.Pointer<hb_font_t> font,
@@ -6922,28 +5228,28 @@ external ffi.Pointer<hb_blob_t> hb_ot_color_glyph_reference_png(
 
 /// Like hb_ot_layout_table_find_script, but takes zero-terminated array of scripts to test
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Uint32>,
+    hb_tag_t,
+    ffi.Pointer<hb_tag_t>,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
   )
 >()
 external int hb_ot_layout_table_choose_script(
   ffi.Pointer<hb_face_t> face,
   int table_tag,
-  ffi.Pointer<ffi.Uint32> script_tags,
+  ffi.Pointer<hb_tag_t> script_tags,
   ffi.Pointer<ffi.UnsignedInt> script_index,
-  ffi.Pointer<ffi.Uint32> chosen_script,
+  ffi.Pointer<hb_tag_t> chosen_script,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.Pointer<ffi.UnsignedInt>,
   )
 >()
@@ -6958,24 +5264,24 @@ external int hb_ot_layout_script_find_language(
 @ffi.Native<
   ffi.Void Function(
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
+    ffi.Pointer<hb_tag_t>,
   )
 >(symbol: 'hb_ot_tags_from_script')
 external void _hb_ot_tags_from_script(
   int script,
-  ffi.Pointer<ffi.Uint32> script_tag_1,
-  ffi.Pointer<ffi.Uint32> script_tag_2,
+  ffi.Pointer<hb_tag_t> script_tag_1,
+  ffi.Pointer<hb_tag_t> script_tag_2,
 );
 
 void hb_ot_tags_from_script(
   hb_script_t script,
-  ffi.Pointer<ffi.Uint32> script_tag_1,
-  ffi.Pointer<ffi.Uint32> script_tag_2,
+  ffi.Pointer<hb_tag_t> script_tag_1,
+  ffi.Pointer<hb_tag_t> script_tag_2,
 ) => _hb_ot_tags_from_script(script.value, script_tag_1, script_tag_2);
 
-@ffi.Native<ffi.Uint32 Function(ffi.Pointer<hb_language_impl_t>)>()
-external int hb_ot_tag_from_language(ffi.Pointer<hb_language_impl_t> language);
+@ffi.Native<hb_tag_t Function(hb_language_t)>()
+external int hb_ot_tag_from_language(hb_language_t language);
 
 @ffi.Native<
   ffi.UnsignedInt Function(
@@ -6993,9 +5299,9 @@ external int hb_ot_var_get_axes(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.Pointer<ffi.UnsignedInt>,
     ffi.Pointer<hb_ot_var_axis_t>,
   )
@@ -7013,29 +5319,29 @@ external void hb_ot_font_set_funcs(ffi.Pointer<hb_font_t> font);
 @ffi.Native<
   ffi.Void Function(
     ffi.UnsignedInt,
-    ffi.Pointer<hb_language_impl_t>,
+    hb_language_t,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
   )
 >(symbol: 'hb_ot_tags_from_script_and_language')
 external void _hb_ot_tags_from_script_and_language(
   int script,
-  ffi.Pointer<hb_language_impl_t> language,
+  hb_language_t language,
   ffi.Pointer<ffi.UnsignedInt> script_count,
-  ffi.Pointer<ffi.Uint32> script_tags,
+  ffi.Pointer<hb_tag_t> script_tags,
   ffi.Pointer<ffi.UnsignedInt> language_count,
-  ffi.Pointer<ffi.Uint32> language_tags,
+  ffi.Pointer<hb_tag_t> language_tags,
 );
 
 void hb_ot_tags_from_script_and_language(
   hb_script_t script,
-  ffi.Pointer<hb_language_impl_t> language,
+  hb_language_t language,
   ffi.Pointer<ffi.UnsignedInt> script_count,
-  ffi.Pointer<ffi.Uint32> script_tags,
+  ffi.Pointer<hb_tag_t> script_tags,
   ffi.Pointer<ffi.UnsignedInt> language_count,
-  ffi.Pointer<ffi.Uint32> language_tags,
+  ffi.Pointer<hb_tag_t> language_tags,
 ) => _hb_ot_tags_from_script_and_language(
   script.value,
   language,
@@ -7045,35 +5351,35 @@ void hb_ot_tags_from_script_and_language(
   language_tags,
 );
 
-@ffi.Native<ffi.UnsignedInt Function(ffi.Uint32)>(symbol: 'hb_ot_tag_to_script')
+@ffi.Native<ffi.UnsignedInt Function(hb_tag_t)>(symbol: 'hb_ot_tag_to_script')
 external int _hb_ot_tag_to_script(int tag);
 
-hb_script_t hb_ot_tag_to_script(int tag) =>
+hb_script_t hb_ot_tag_to_script(Darthb_tag_t tag) =>
     hb_script_t.fromValue(_hb_ot_tag_to_script(tag));
 
-@ffi.Native<ffi.Pointer<hb_language_impl_t> Function(ffi.Uint32)>()
-external ffi.Pointer<hb_language_impl_t> hb_ot_tag_to_language(int tag);
+@ffi.Native<hb_language_t Function(hb_tag_t)>()
+external hb_language_t hb_ot_tag_to_language(int tag);
 
 @ffi.Native<
   ffi.Void Function(
-    ffi.Uint32,
-    ffi.Uint32,
+    hb_tag_t,
+    hb_tag_t,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Pointer<hb_language_impl_t>>,
+    ffi.Pointer<hb_language_t>,
   )
 >()
 external void hb_ot_tags_to_script_and_language(
   int script_tag,
   int language_tag,
   ffi.Pointer<ffi.UnsignedInt> script,
-  ffi.Pointer<ffi.Pointer<hb_language_impl_t>> language,
+  ffi.Pointer<hb_language_t> language,
 );
 
 /// GDEF
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_layout_has_glyph_classes(ffi.Pointer<hb_face_t> face);
 
-@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>, ffi.Uint32)>(
+@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)>(
   symbol: 'hb_ot_layout_get_glyph_class',
 )
 external int _hb_ot_layout_get_glyph_class(
@@ -7083,7 +5389,7 @@ external int _hb_ot_layout_get_glyph_class(
 
 hb_ot_layout_glyph_class_t hb_ot_layout_get_glyph_class(
   ffi.Pointer<hb_face_t> face,
-  int glyph,
+  Darthb_codepoint_t glyph,
 ) => hb_ot_layout_glyph_class_t.fromValue(
   _hb_ot_layout_get_glyph_class(face, glyph),
 );
@@ -7112,7 +5418,7 @@ void hb_ot_layout_get_glyphs_in_class(
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
     ffi.Pointer<ffi.UnsignedInt>,
@@ -7131,10 +5437,10 @@ external int hb_ot_layout_get_attach_points(
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_ot_layout_get_ligature_carets')
 external int _hb_ot_layout_get_ligature_carets(
@@ -7143,16 +5449,16 @@ external int _hb_ot_layout_get_ligature_carets(
   int glyph,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> caret_count,
-  ffi.Pointer<ffi.Int32> caret_array,
+  ffi.Pointer<hb_position_t> caret_array,
 );
 
 int hb_ot_layout_get_ligature_carets(
   ffi.Pointer<hb_font_t> font,
   hb_direction_t direction,
-  int glyph,
+  Darthb_codepoint_t glyph,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> caret_count,
-  ffi.Pointer<ffi.Int32> caret_array,
+  ffi.Pointer<hb_position_t> caret_array,
 ) => _hb_ot_layout_get_ligature_carets(
   font,
   direction.value,
@@ -7165,10 +5471,10 @@ int hb_ot_layout_get_ligature_carets(
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
   )
 >()
 external int hb_ot_layout_table_get_script_tags(
@@ -7176,14 +5482,14 @@ external int hb_ot_layout_table_get_script_tags(
   int table_tag,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> script_count,
-  ffi.Pointer<ffi.Uint32> script_tags,
+  ffi.Pointer<hb_tag_t> script_tags,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
-    ffi.Uint32,
+    hb_tag_t,
+    hb_tag_t,
     ffi.Pointer<ffi.UnsignedInt>,
   )
 >()
@@ -7195,31 +5501,31 @@ external int hb_ot_layout_table_find_script(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
   )
 >()
 external int hb_ot_layout_table_select_script(
   ffi.Pointer<hb_face_t> face,
   int table_tag,
   int script_count,
-  ffi.Pointer<ffi.Uint32> script_tags,
+  ffi.Pointer<hb_tag_t> script_tags,
   ffi.Pointer<ffi.UnsignedInt> script_index,
-  ffi.Pointer<ffi.Uint32> chosen_script,
+  ffi.Pointer<hb_tag_t> chosen_script,
 );
 
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
   )
 >()
 external int hb_ot_layout_table_get_feature_tags(
@@ -7227,17 +5533,17 @@ external int hb_ot_layout_table_get_feature_tags(
   int table_tag,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> feature_count,
-  ffi.Pointer<ffi.Uint32> feature_tags,
+  ffi.Pointer<hb_tag_t> feature_tags,
 );
 
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
   )
 >()
 external int hb_ot_layout_script_get_language_tags(
@@ -7246,16 +5552,16 @@ external int hb_ot_layout_script_get_language_tags(
   int script_index,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> language_count,
-  ffi.Pointer<ffi.Uint32> language_tags,
+  ffi.Pointer<hb_tag_t> language_tags,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
     ffi.Pointer<ffi.UnsignedInt>,
   )
 >()
@@ -7264,19 +5570,19 @@ external int hb_ot_layout_script_select_language(
   int table_tag,
   int script_index,
   int language_count,
-  ffi.Pointer<ffi.Uint32> language_tags,
+  ffi.Pointer<hb_tag_t> language_tags,
   ffi.Pointer<ffi.UnsignedInt> language_index,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
   )
 >()
 external int hb_ot_layout_script_select_language2(
@@ -7284,15 +5590,15 @@ external int hb_ot_layout_script_select_language2(
   int table_tag,
   int script_index,
   int language_count,
-  ffi.Pointer<ffi.Uint32> language_tags,
+  ffi.Pointer<hb_tag_t> language_tags,
   ffi.Pointer<ffi.UnsignedInt> language_index,
-  ffi.Pointer<ffi.Uint32> chosen_language,
+  ffi.Pointer<hb_tag_t> chosen_language,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
@@ -7307,13 +5613,13 @@ external int hb_ot_layout_language_get_required_feature_index(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
   )
 >()
 external int hb_ot_layout_language_get_required_feature(
@@ -7322,13 +5628,13 @@ external int hb_ot_layout_language_get_required_feature(
   int script_index,
   int language_index,
   ffi.Pointer<ffi.UnsignedInt> feature_index,
-  ffi.Pointer<ffi.Uint32> feature_tag,
+  ffi.Pointer<hb_tag_t> feature_tag,
 );
 
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
@@ -7349,12 +5655,12 @@ external int hb_ot_layout_language_get_feature_indexes(
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
   )
 >()
 external int hb_ot_layout_language_get_feature_tags(
@@ -7364,16 +5670,16 @@ external int hb_ot_layout_language_get_feature_tags(
   int language_index,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> feature_count,
-  ffi.Pointer<ffi.Uint32> feature_tags,
+  ffi.Pointer<hb_tag_t> feature_tags,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.Pointer<ffi.UnsignedInt>,
   )
 >()
@@ -7389,7 +5695,7 @@ external int hb_ot_layout_language_find_feature(
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
@@ -7405,7 +5711,7 @@ external int hb_ot_layout_feature_get_lookups(
   ffi.Pointer<ffi.UnsignedInt> lookup_indexes,
 );
 
-@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>, ffi.Uint32)>()
+@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>, hb_tag_t)>()
 external int hb_ot_layout_table_get_lookup_count(
   ffi.Pointer<hb_face_t> face,
   int table_tag,
@@ -7414,26 +5720,26 @@ external int hb_ot_layout_table_get_lookup_count(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Uint32>,
-    ffi.Pointer<ffi.Uint32>,
-    ffi.Pointer<ffi.Uint32>,
+    hb_tag_t,
+    ffi.Pointer<hb_tag_t>,
+    ffi.Pointer<hb_tag_t>,
+    ffi.Pointer<hb_tag_t>,
     ffi.Pointer<hb_set_t>,
   )
 >()
 external void hb_ot_layout_collect_features(
   ffi.Pointer<hb_face_t> face,
   int table_tag,
-  ffi.Pointer<ffi.Uint32> scripts,
-  ffi.Pointer<ffi.Uint32> languages,
-  ffi.Pointer<ffi.Uint32> features,
+  ffi.Pointer<hb_tag_t> scripts,
+  ffi.Pointer<hb_tag_t> languages,
+  ffi.Pointer<hb_tag_t> features,
   ffi.Pointer<hb_set_t> feature_indexes,
 );
 
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<hb_map_t>,
@@ -7450,26 +5756,26 @@ external void hb_ot_layout_collect_features_map(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Uint32>,
-    ffi.Pointer<ffi.Uint32>,
-    ffi.Pointer<ffi.Uint32>,
+    hb_tag_t,
+    ffi.Pointer<hb_tag_t>,
+    ffi.Pointer<hb_tag_t>,
+    ffi.Pointer<hb_tag_t>,
     ffi.Pointer<hb_set_t>,
   )
 >()
 external void hb_ot_layout_collect_lookups(
   ffi.Pointer<hb_face_t> face,
   int table_tag,
-  ffi.Pointer<ffi.Uint32> scripts,
-  ffi.Pointer<ffi.Uint32> languages,
-  ffi.Pointer<ffi.Uint32> features,
+  ffi.Pointer<hb_tag_t> scripts,
+  ffi.Pointer<hb_tag_t> languages,
+  ffi.Pointer<hb_tag_t> features,
   ffi.Pointer<hb_set_t> lookup_indexes,
 );
 
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.Pointer<hb_set_t>,
     ffi.Pointer<hb_set_t>,
@@ -7489,9 +5795,9 @@ external void hb_ot_layout_lookup_collect_glyphs(
 
 /// Variations support
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.Pointer<ffi.Int>,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
@@ -7508,7 +5814,7 @@ external int hb_ot_layout_table_find_feature_variations(
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
@@ -7527,17 +5833,17 @@ external int hb_ot_layout_feature_with_variations_get_lookups(
 );
 
 /// GSUB
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_layout_has_substitution(ffi.Pointer<hb_face_t> face);
 
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
     ffi.UnsignedInt,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_ot_layout_lookup_get_glyph_alternates(
@@ -7546,11 +5852,11 @@ external int hb_ot_layout_lookup_get_glyph_alternates(
   int glyph,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> alternate_count,
-  ffi.Pointer<ffi.Uint32> alternate_glyphs,
+  ffi.Pointer<hb_codepoint_t> alternate_glyphs,
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
     ffi.UnsignedInt,
     ffi.Pointer<hb_map_t>,
@@ -7565,18 +5871,18 @@ external int hb_ot_layout_lookup_collect_glyph_alternates(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
     ffi.UnsignedInt,
-    ffi.Int,
+    hb_bool_t,
   )
 >()
 external int hb_ot_layout_lookup_would_substitute(
   ffi.Pointer<hb_face_t> face,
   int lookup_index,
-  ffi.Pointer<ffi.Uint32> glyphs,
+  ffi.Pointer<hb_codepoint_t> glyphs,
   int glyphs_length,
   int zero_context,
 );
@@ -7608,17 +5914,17 @@ external void hb_ot_layout_lookups_substitute_closure(
 );
 
 /// GPOS
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_layout_has_positioning(ffi.Pointer<hb_face_t> face);
 
 /// Optical 'size' feature info.  Returns true if found.
 /// https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#size
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
     ffi.Pointer<ffi.UnsignedInt>,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.UnsignedInt>,
+    ffi.Pointer<hb_ot_name_id_t>,
     ffi.Pointer<ffi.UnsignedInt>,
     ffi.Pointer<ffi.UnsignedInt>,
   )
@@ -7627,17 +5933,17 @@ external int hb_ot_layout_get_size_params(
   ffi.Pointer<hb_face_t> face,
   ffi.Pointer<ffi.UnsignedInt> design_size,
   ffi.Pointer<ffi.UnsignedInt> subfamily_id,
-  ffi.Pointer<ffi.UnsignedInt> subfamily_name_id,
+  ffi.Pointer<hb_ot_name_id_t> subfamily_name_id,
   ffi.Pointer<ffi.UnsignedInt> range_start,
   ffi.Pointer<ffi.UnsignedInt> range_end,
 );
 
 @ffi.Native<
-  ffi.Int32 Function(
+  hb_position_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Uint32,
+    hb_codepoint_t,
   )
 >(symbol: 'hb_ot_layout_lookup_get_optical_bound')
 external int _hb_ot_layout_lookup_get_optical_bound(
@@ -7647,11 +5953,11 @@ external int _hb_ot_layout_lookup_get_optical_bound(
   int glyph,
 );
 
-int hb_ot_layout_lookup_get_optical_bound(
+Darthb_position_t hb_ot_layout_lookup_get_optical_bound(
   ffi.Pointer<hb_font_t> font,
   int lookup_index,
   hb_direction_t direction,
-  int glyph,
+  Darthb_codepoint_t glyph,
 ) => _hb_ot_layout_lookup_get_optical_bound(
   font,
   lookup_index,
@@ -7661,36 +5967,36 @@ int hb_ot_layout_lookup_get_optical_bound(
 
 /// GSUB/GPOS
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
+    ffi.Pointer<hb_ot_name_id_t>,
+    ffi.Pointer<hb_ot_name_id_t>,
+    ffi.Pointer<hb_ot_name_id_t>,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.UnsignedInt>,
+    ffi.Pointer<hb_ot_name_id_t>,
   )
 >()
 external int hb_ot_layout_feature_get_name_ids(
   ffi.Pointer<hb_face_t> face,
   int table_tag,
   int feature_index,
-  ffi.Pointer<ffi.UnsignedInt> label_id,
-  ffi.Pointer<ffi.UnsignedInt> tooltip_id,
-  ffi.Pointer<ffi.UnsignedInt> sample_id,
+  ffi.Pointer<hb_ot_name_id_t> label_id,
+  ffi.Pointer<hb_ot_name_id_t> tooltip_id,
+  ffi.Pointer<hb_ot_name_id_t> sample_id,
   ffi.Pointer<ffi.UnsignedInt> num_named_parameters,
-  ffi.Pointer<ffi.UnsignedInt> first_param_id,
+  ffi.Pointer<hb_ot_name_id_t> first_param_id,
 );
 
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_codepoint_t>,
   )
 >()
 external int hb_ot_layout_feature_get_characters(
@@ -7699,16 +6005,16 @@ external int hb_ot_layout_feature_get_characters(
   int feature_index,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> char_count,
-  ffi.Pointer<ffi.Uint32> characters,
+  ffi.Pointer<hb_codepoint_t> characters,
 );
 
 /// BASE
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
-    ffi.Uint32,
-    ffi.Uint32,
+    hb_tag_t,
+    hb_tag_t,
     ffi.Pointer<hb_font_extents_t>,
   )
 >(symbol: 'hb_ot_layout_get_font_extents')
@@ -7720,11 +6026,11 @@ external int _hb_ot_layout_get_font_extents(
   ffi.Pointer<hb_font_extents_t> extents,
 );
 
-int hb_ot_layout_get_font_extents(
+Darthb_bool_t hb_ot_layout_get_font_extents(
   ffi.Pointer<hb_font_t> font,
   hb_direction_t direction,
-  int script_tag,
-  int language_tag,
+  Darthb_tag_t script_tag,
+  Darthb_tag_t language_tag,
   ffi.Pointer<hb_font_extents_t> extents,
 ) => _hb_ot_layout_get_font_extents(
   font,
@@ -7735,11 +6041,11 @@ int hb_ot_layout_get_font_extents(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Pointer<hb_language_impl_t>,
+    hb_language_t,
     ffi.Pointer<hb_font_extents_t>,
   )
 >(symbol: 'hb_ot_layout_get_font_extents2')
@@ -7747,15 +6053,15 @@ external int _hb_ot_layout_get_font_extents2(
   ffi.Pointer<hb_font_t> font,
   int direction,
   int script,
-  ffi.Pointer<hb_language_impl_t> language,
+  hb_language_t language,
   ffi.Pointer<hb_font_extents_t> extents,
 );
 
-int hb_ot_layout_get_font_extents2(
+Darthb_bool_t hb_ot_layout_get_font_extents2(
   ffi.Pointer<hb_font_t> font,
   hb_direction_t direction,
   hb_script_t script,
-  ffi.Pointer<hb_language_impl_t> language,
+  hb_language_t language,
   ffi.Pointer<hb_font_extents_t> extents,
 ) => _hb_ot_layout_get_font_extents2(
   font,
@@ -7777,13 +6083,13 @@ hb_ot_layout_baseline_tag_t hb_ot_layout_get_horizontal_baseline_tag_for_script(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Uint32,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Int32>,
+    hb_tag_t,
+    hb_tag_t,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_ot_layout_get_baseline')
 external int _hb_ot_layout_get_baseline(
@@ -7792,16 +6098,16 @@ external int _hb_ot_layout_get_baseline(
   int direction,
   int script_tag,
   int language_tag,
-  ffi.Pointer<ffi.Int32> coord,
+  ffi.Pointer<hb_position_t> coord,
 );
 
-int hb_ot_layout_get_baseline(
+Darthb_bool_t hb_ot_layout_get_baseline(
   ffi.Pointer<hb_font_t> font,
   hb_ot_layout_baseline_tag_t baseline_tag,
   hb_direction_t direction,
-  int script_tag,
-  int language_tag,
-  ffi.Pointer<ffi.Int32> coord,
+  Darthb_tag_t script_tag,
+  Darthb_tag_t language_tag,
+  ffi.Pointer<hb_position_t> coord,
 ) => _hb_ot_layout_get_baseline(
   font,
   baseline_tag.value,
@@ -7812,13 +6118,13 @@ int hb_ot_layout_get_baseline(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Pointer<hb_language_impl_t>,
-    ffi.Pointer<ffi.Int32>,
+    hb_language_t,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_ot_layout_get_baseline2')
 external int _hb_ot_layout_get_baseline2(
@@ -7826,17 +6132,17 @@ external int _hb_ot_layout_get_baseline2(
   int baseline_tag,
   int direction,
   int script,
-  ffi.Pointer<hb_language_impl_t> language,
-  ffi.Pointer<ffi.Int32> coord,
+  hb_language_t language,
+  ffi.Pointer<hb_position_t> coord,
 );
 
-int hb_ot_layout_get_baseline2(
+Darthb_bool_t hb_ot_layout_get_baseline2(
   ffi.Pointer<hb_font_t> font,
   hb_ot_layout_baseline_tag_t baseline_tag,
   hb_direction_t direction,
   hb_script_t script,
-  ffi.Pointer<hb_language_impl_t> language,
-  ffi.Pointer<ffi.Int32> coord,
+  hb_language_t language,
+  ffi.Pointer<hb_position_t> coord,
 ) => _hb_ot_layout_get_baseline2(
   font,
   baseline_tag.value,
@@ -7851,9 +6157,9 @@ int hb_ot_layout_get_baseline2(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Uint32,
-    ffi.Uint32,
-    ffi.Pointer<ffi.Int32>,
+    hb_tag_t,
+    hb_tag_t,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_ot_layout_get_baseline_with_fallback')
 external void _hb_ot_layout_get_baseline_with_fallback(
@@ -7862,16 +6168,16 @@ external void _hb_ot_layout_get_baseline_with_fallback(
   int direction,
   int script_tag,
   int language_tag,
-  ffi.Pointer<ffi.Int32> coord,
+  ffi.Pointer<hb_position_t> coord,
 );
 
 void hb_ot_layout_get_baseline_with_fallback(
   ffi.Pointer<hb_font_t> font,
   hb_ot_layout_baseline_tag_t baseline_tag,
   hb_direction_t direction,
-  int script_tag,
-  int language_tag,
-  ffi.Pointer<ffi.Int32> coord,
+  Darthb_tag_t script_tag,
+  Darthb_tag_t language_tag,
+  ffi.Pointer<hb_position_t> coord,
 ) => _hb_ot_layout_get_baseline_with_fallback(
   font,
   baseline_tag.value,
@@ -7887,8 +6193,8 @@ void hb_ot_layout_get_baseline_with_fallback(
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
-    ffi.Pointer<hb_language_impl_t>,
-    ffi.Pointer<ffi.Int32>,
+    hb_language_t,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_ot_layout_get_baseline_with_fallback2')
 external void _hb_ot_layout_get_baseline_with_fallback2(
@@ -7896,8 +6202,8 @@ external void _hb_ot_layout_get_baseline_with_fallback2(
   int baseline_tag,
   int direction,
   int script,
-  ffi.Pointer<hb_language_impl_t> language,
-  ffi.Pointer<ffi.Int32> coord,
+  hb_language_t language,
+  ffi.Pointer<hb_position_t> coord,
 );
 
 void hb_ot_layout_get_baseline_with_fallback2(
@@ -7905,8 +6211,8 @@ void hb_ot_layout_get_baseline_with_fallback2(
   hb_ot_layout_baseline_tag_t baseline_tag,
   hb_direction_t direction,
   hb_script_t script,
-  ffi.Pointer<hb_language_impl_t> language,
-  ffi.Pointer<ffi.Int32> coord,
+  hb_language_t language,
+  ffi.Pointer<hb_position_t> coord,
 ) => _hb_ot_layout_get_baseline_with_fallback2(
   font,
   baseline_tag.value,
@@ -7917,10 +6223,10 @@ void hb_ot_layout_get_baseline_with_fallback2(
 );
 
 /// Methods
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_math_has_data(ffi.Pointer<hb_face_t> face);
 
-@ffi.Native<ffi.Int32 Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
+@ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_math_get_constant',
 )
 external int _hb_ot_math_get_constant(
@@ -7928,35 +6234,35 @@ external int _hb_ot_math_get_constant(
   int constant,
 );
 
-int hb_ot_math_get_constant(
+Darthb_position_t hb_ot_math_get_constant(
   ffi.Pointer<hb_font_t> font,
   hb_ot_math_constant_t constant,
 ) => _hb_ot_math_get_constant(font, constant.value);
 
-@ffi.Native<ffi.Int32 Function(ffi.Pointer<hb_font_t>, ffi.Uint32)>()
+@ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t)>()
 external int hb_ot_math_get_glyph_italics_correction(
   ffi.Pointer<hb_font_t> font,
   int glyph,
 );
 
-@ffi.Native<ffi.Int32 Function(ffi.Pointer<hb_font_t>, ffi.Uint32)>()
+@ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t)>()
 external int hb_ot_math_get_glyph_top_accent_attachment(
   ffi.Pointer<hb_font_t> font,
   int glyph,
 );
 
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>, ffi.Uint32)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)>()
 external int hb_ot_math_is_glyph_extended_shape(
   ffi.Pointer<hb_face_t> face,
   int glyph,
 );
 
 @ffi.Native<
-  ffi.Int32 Function(
+  hb_position_t Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
-    ffi.Int32,
+    hb_position_t,
   )
 >(symbol: 'hb_ot_math_get_glyph_kerning')
 external int _hb_ot_math_get_glyph_kerning(
@@ -7966,17 +6272,17 @@ external int _hb_ot_math_get_glyph_kerning(
   int correction_height,
 );
 
-int hb_ot_math_get_glyph_kerning(
+Darthb_position_t hb_ot_math_get_glyph_kerning(
   ffi.Pointer<hb_font_t> font,
-  int glyph,
+  Darthb_codepoint_t glyph,
   hb_ot_math_kern_t kern,
-  int correction_height,
+  Darthb_position_t correction_height,
 ) => _hb_ot_math_get_glyph_kerning(font, glyph, kern.value, correction_height);
 
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
@@ -7994,7 +6300,7 @@ external int _hb_ot_math_get_glyph_kernings(
 
 int hb_ot_math_get_glyph_kernings(
   ffi.Pointer<hb_font_t> font,
-  int glyph,
+  Darthb_codepoint_t glyph,
   hb_ot_math_kern_t kern,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> entries_count,
@@ -8011,7 +6317,7 @@ int hb_ot_math_get_glyph_kernings(
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
@@ -8029,7 +6335,7 @@ external int _hb_ot_math_get_glyph_variants(
 
 int hb_ot_math_get_glyph_variants(
   ffi.Pointer<hb_font_t> font,
-  int glyph,
+  Darthb_codepoint_t glyph,
   hb_direction_t direction,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> variants_count,
@@ -8043,7 +6349,7 @@ int hb_ot_math_get_glyph_variants(
   variants,
 );
 
-@ffi.Native<ffi.Int32 Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
+@ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_math_get_min_connector_overlap',
 )
 external int _hb_ot_math_get_min_connector_overlap(
@@ -8051,7 +6357,7 @@ external int _hb_ot_math_get_min_connector_overlap(
   int direction,
 );
 
-int hb_ot_math_get_min_connector_overlap(
+Darthb_position_t hb_ot_math_get_min_connector_overlap(
   ffi.Pointer<hb_font_t> font,
   hb_direction_t direction,
 ) => _hb_ot_math_get_min_connector_overlap(font, direction.value);
@@ -8059,12 +6365,12 @@ int hb_ot_math_get_min_connector_overlap(
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_font_t>,
-    ffi.Uint32,
+    hb_codepoint_t,
     ffi.UnsignedInt,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
     ffi.Pointer<hb_ot_math_glyph_part_t>,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_ot_math_get_glyph_assembly')
 external int _hb_ot_math_get_glyph_assembly(
@@ -8074,17 +6380,17 @@ external int _hb_ot_math_get_glyph_assembly(
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> parts_count,
   ffi.Pointer<hb_ot_math_glyph_part_t> parts,
-  ffi.Pointer<ffi.Int32> italics_correction,
+  ffi.Pointer<hb_position_t> italics_correction,
 );
 
 int hb_ot_math_get_glyph_assembly(
   ffi.Pointer<hb_font_t> font,
-  int glyph,
+  Darthb_codepoint_t glyph,
   hb_direction_t direction,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> parts_count,
   ffi.Pointer<hb_ot_math_glyph_part_t> parts,
-  ffi.Pointer<ffi.Int32> italics_correction,
+  ffi.Pointer<hb_position_t> italics_correction,
 ) => _hb_ot_math_get_glyph_assembly(
   font,
   glyph,
@@ -8124,41 +6430,41 @@ ffi.Pointer<hb_blob_t> hb_ot_meta_reference_entry(
 ) => _hb_ot_meta_reference_entry(face, meta_tag.value);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_ot_metrics_get_position')
 external int _hb_ot_metrics_get_position(
   ffi.Pointer<hb_font_t> font,
   int metrics_tag,
-  ffi.Pointer<ffi.Int32> position,
+  ffi.Pointer<hb_position_t> position,
 );
 
-int hb_ot_metrics_get_position(
+Darthb_bool_t hb_ot_metrics_get_position(
   ffi.Pointer<hb_font_t> font,
   hb_ot_metrics_tag_t metrics_tag,
-  ffi.Pointer<ffi.Int32> position,
+  ffi.Pointer<hb_position_t> position,
 ) => _hb_ot_metrics_get_position(font, metrics_tag.value, position);
 
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
     ffi.UnsignedInt,
-    ffi.Pointer<ffi.Int32>,
+    ffi.Pointer<hb_position_t>,
   )
 >(symbol: 'hb_ot_metrics_get_position_with_fallback')
 external void _hb_ot_metrics_get_position_with_fallback(
   ffi.Pointer<hb_font_t> font,
   int metrics_tag,
-  ffi.Pointer<ffi.Int32> position,
+  ffi.Pointer<hb_position_t> position,
 );
 
 void hb_ot_metrics_get_position_with_fallback(
   ffi.Pointer<hb_font_t> font,
   hb_ot_metrics_tag_t metrics_tag,
-  ffi.Pointer<ffi.Int32> position,
+  ffi.Pointer<hb_position_t> position,
 ) => _hb_ot_metrics_get_position_with_fallback(
   font,
   metrics_tag.value,
@@ -8178,7 +6484,7 @@ double hb_ot_metrics_get_variation(
   hb_ot_metrics_tag_t metrics_tag,
 ) => _hb_ot_metrics_get_variation(font, metrics_tag.value);
 
-@ffi.Native<ffi.Int32 Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
+@ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_metrics_get_x_variation',
 )
 external int _hb_ot_metrics_get_x_variation(
@@ -8186,12 +6492,12 @@ external int _hb_ot_metrics_get_x_variation(
   int metrics_tag,
 );
 
-int hb_ot_metrics_get_x_variation(
+Darthb_position_t hb_ot_metrics_get_x_variation(
   ffi.Pointer<hb_font_t> font,
   hb_ot_metrics_tag_t metrics_tag,
 ) => _hb_ot_metrics_get_x_variation(font, metrics_tag.value);
 
-@ffi.Native<ffi.Int32 Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
+@ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_metrics_get_y_variation',
 )
 external int _hb_ot_metrics_get_y_variation(
@@ -8199,7 +6505,7 @@ external int _hb_ot_metrics_get_y_variation(
   int metrics_tag,
 );
 
-int hb_ot_metrics_get_y_variation(
+Darthb_position_t hb_ot_metrics_get_y_variation(
   ffi.Pointer<hb_font_t> font,
   hb_ot_metrics_tag_t metrics_tag,
 ) => _hb_ot_metrics_get_y_variation(font, metrics_tag.value);
@@ -8225,7 +6531,7 @@ external void hb_ot_shape_glyphs_closure(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_shape_plan_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.Pointer<hb_set_t>,
   )
 >()
@@ -8240,21 +6546,21 @@ external void hb_ot_shape_plan_collect_lookups(
     ffi.Pointer<hb_shape_plan_t>,
     ffi.UnsignedInt,
     ffi.Pointer<ffi.UnsignedInt>,
-    ffi.Pointer<ffi.Uint32>,
+    ffi.Pointer<hb_tag_t>,
   )
 >()
 external int hb_ot_shape_plan_get_feature_tags(
   ffi.Pointer<hb_shape_plan_t> shape_plan,
   int start_offset,
   ffi.Pointer<ffi.UnsignedInt> tag_count,
-  ffi.Pointer<ffi.Uint32> tags,
+  ffi.Pointer<hb_tag_t> tags,
 );
 
 @ffi.Native<ffi.UnsignedInt Function()>()
 external int hb_ot_shape_get_buffer_format_serial();
 
 /// fvar / avar
-@ffi.Native<ffi.Int Function(ffi.Pointer<hb_face_t>)>()
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_var_has_data(ffi.Pointer<hb_face_t> face);
 
 /// Variation axes.
@@ -8277,9 +6583,9 @@ external int hb_ot_var_get_axis_infos(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.Pointer<hb_ot_var_axis_info_t>,
   )
 >()
@@ -8293,13 +6599,13 @@ external int hb_ot_var_find_axis_info(
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_var_get_named_instance_count(ffi.Pointer<hb_face_t> face);
 
-@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
+@ffi.Native<hb_ot_name_id_t Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
 external int hb_ot_var_named_instance_get_subfamily_name_id(
   ffi.Pointer<hb_face_t> face,
   int instance_index,
 );
 
-@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
+@ffi.Native<hb_ot_name_id_t Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
 external int hb_ot_var_named_instance_get_postscript_name_id(
   ffi.Pointer<hb_face_t> face,
   int instance_index,
@@ -8367,24 +6673,19 @@ external ffi.Pointer<hb_subset_input_t> hb_subset_input_reference(
 external void hb_subset_input_destroy(ffi.Pointer<hb_subset_input_t> input);
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_subset_input_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_subset_input_set_user_data(
   ffi.Pointer<hb_subset_input_t> input,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -8453,7 +6754,7 @@ external void hb_subset_input_set_flags(
 );
 
 @ffi.Native<
-  ffi.Int Function(ffi.Pointer<hb_subset_input_t>, ffi.Pointer<hb_face_t>)
+  hb_bool_t Function(ffi.Pointer<hb_subset_input_t>, ffi.Pointer<hb_face_t>)
 >()
 external int hb_subset_input_pin_all_axes_to_default(
   ffi.Pointer<hb_subset_input_t> input,
@@ -8461,10 +6762,10 @@ external int hb_subset_input_pin_all_axes_to_default(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_subset_input_t>,
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
   )
 >()
 external int hb_subset_input_pin_axis_to_default(
@@ -8474,10 +6775,10 @@ external int hb_subset_input_pin_axis_to_default(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_subset_input_t>,
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.Float,
   )
 >()
@@ -8489,9 +6790,9 @@ external int hb_subset_input_pin_axis_location(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_subset_input_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.Pointer<ffi.Float>,
     ffi.Pointer<ffi.Float>,
     ffi.Pointer<ffi.Float>,
@@ -8506,10 +6807,10 @@ external int hb_subset_input_get_axis_range(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_subset_input_t>,
     ffi.Pointer<hb_face_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.Float,
     ffi.Float,
     ffi.Float,
@@ -8525,7 +6826,7 @@ external int hb_subset_input_set_axis_range(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<ffi.Char>,
     ffi.Int,
     ffi.Pointer<ffi.Float>,
@@ -8544,7 +6845,7 @@ external int hb_subset_axis_range_from_string(
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_subset_input_t>,
-    ffi.Uint32,
+    hb_tag_t,
     ffi.Pointer<ffi.Char>,
     ffi.UnsignedInt,
   )
@@ -8614,24 +6915,19 @@ external ffi.Pointer<hb_subset_plan_t> hb_subset_plan_reference(
 );
 
 @ffi.Native<
-  ffi.Int Function(
+  hb_bool_t Function(
     ffi.Pointer<hb_subset_plan_t>,
     ffi.Pointer<hb_user_data_key_t>,
     ffi.Pointer<ffi.Void>,
-    ffi.Pointer<
-      ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-    >,
-    ffi.Int,
+    hb_destroy_func_t,
+    hb_bool_t,
   )
 >()
 external int hb_subset_plan_set_user_data(
   ffi.Pointer<hb_subset_plan_t> plan,
   ffi.Pointer<hb_user_data_key_t> key,
   ffi.Pointer<ffi.Void> data,
-  ffi.Pointer<
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void> user_data)>
-  >
-  destroy,
+  hb_destroy_func_t destroy,
   int replace,
 );
 
@@ -8645,6 +6941,91 @@ external ffi.Pointer<ffi.Void> hb_subset_plan_get_user_data(
   ffi.Pointer<hb_subset_plan_t> plan,
   ffi.Pointer<hb_user_data_key_t> key,
 );
+
+/// hb_bool_t:
+///
+/// Data type for booleans.
+typedef hb_bool_t = ffi.Int;
+typedef Darthb_bool_t = int;
+
+/// hb_codepoint_t:
+///
+/// Data type for holding Unicode codepoints. Also
+/// used to hold glyph IDs.
+typedef hb_codepoint_t = ffi.Uint32;
+typedef Darthb_codepoint_t = int;
+
+/// hb_position_t:
+///
+/// Data type for holding a single coordinate value.
+/// Contour points and other multi-dimensional data are
+/// stored as tuples of #hb_position_t's.
+typedef hb_position_t = ffi.Int32;
+typedef Darthb_position_t = int;
+
+/// hb_mask_t:
+///
+/// Data type for bitmasks.
+typedef hb_mask_t = ffi.Uint32;
+typedef Darthb_mask_t = int;
+
+final class _hb_var_int_t extends ffi.Union {
+  @ffi.Uint32()
+  external int u32;
+
+  @ffi.Int32()
+  external int i32;
+
+  @ffi.Array.multi([2])
+  external ffi.Array<ffi.Uint16> u16;
+
+  @ffi.Array.multi([2])
+  external ffi.Array<ffi.Int16> i16;
+
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Uint8> u8;
+
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Int8> i8;
+}
+
+typedef hb_var_int_t = _hb_var_int_t;
+
+final class _hb_var_num_t extends ffi.Union {
+  @ffi.Float()
+  external double f;
+
+  @ffi.Uint32()
+  external int u32;
+
+  @ffi.Int32()
+  external int i32;
+
+  @ffi.Array.multi([2])
+  external ffi.Array<ffi.Uint16> u16;
+
+  @ffi.Array.multi([2])
+  external ffi.Array<ffi.Int16> i16;
+
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Uint8> u8;
+
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Int8> i8;
+}
+
+typedef hb_var_num_t = _hb_var_num_t;
+
+/// hb_tag_t:
+///
+/// Data type for tag identifiers. Tags are four
+/// byte integers, each byte representing a character.
+///
+/// Tags are used to identify tables, design-variation axes,
+/// scripts, languages, font features, and baselines with
+/// human-readable names.
+typedef hb_tag_t = ffi.Uint32;
+typedef Darthb_tag_t = int;
 
 /// hb_direction_t:
 /// @HB_DIRECTION_INVALID: Initial, unset direction.
@@ -8679,6 +7060,12 @@ enum hb_direction_t {
 }
 
 final class hb_language_impl_t extends ffi.Opaque {}
+
+/// hb_language_t:
+///
+/// Data type for languages. Each #hb_language_t corresponds to a BCP 47
+/// language tag.
+typedef hb_language_t = ffi.Pointer<hb_language_impl_t>;
 
 /// https://docs.google.com/spreadsheets/d/1Y90M0Ie3MUJ6UVCRDOypOtijlMDLNNyyLk36T6iMu0o
 enum hb_script_t {
@@ -9415,7 +7802,23 @@ enum hb_script_t {
 /// hb_user_data_key_t:
 ///
 /// Data structure for holding user-data keys.
-final class hb_user_data_key_t extends ffi.Opaque {}
+final class hb_user_data_key_t extends ffi.Struct {
+  /// < private >
+  @ffi.Char()
+  external int unused;
+}
+
+typedef hb_destroy_func_tFunction =
+    ffi.Void Function(ffi.Pointer<ffi.Void> user_data);
+typedef Darthb_destroy_func_tFunction =
+    void Function(ffi.Pointer<ffi.Void> user_data);
+
+/// hb_destroy_func_t:
+/// @user_data: the data to be destroyed
+///
+/// A virtual method for destroy user-data callbacks.
+typedef hb_destroy_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_destroy_func_tFunction>>;
 
 /// hb_feature_t:
 /// @tag: The #hb_tag_t tag of the feature
@@ -9430,7 +7833,19 @@ final class hb_user_data_key_t extends ffi.Opaque {}
 /// glyphs which are in clusters between @start (inclusive) and @end (exclusive).
 /// Setting start to #HB_FEATURE_GLOBAL_START and end to #HB_FEATURE_GLOBAL_END
 /// specifies that the feature always applies to the entire buffer.
-final class hb_feature_t extends ffi.Opaque {}
+final class hb_feature_t extends ffi.Struct {
+  @hb_tag_t()
+  external int tag;
+
+  @ffi.Uint32()
+  external int value;
+
+  @ffi.UnsignedInt()
+  external int start;
+
+  @ffi.UnsignedInt()
+  external int end;
+}
 
 /// hb_variation_t:
 /// @tag: The #hb_tag_t tag of the variation-axis name
@@ -9441,7 +7856,22 @@ final class hb_feature_t extends ffi.Opaque {}
 /// [OpenType Axis Tag Registry](https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg).
 ///
 /// Since: 1.4.2
-final class hb_variation_t extends ffi.Opaque {}
+final class hb_variation_t extends ffi.Struct {
+  @hb_tag_t()
+  external int tag;
+
+  @ffi.Float()
+  external double value;
+}
+
+/// hb_color_t:
+///
+/// Data type for holding color values. Colors are eight bits per
+/// channel RGB plus alpha transparency.
+///
+/// Since: 2.1.0
+typedef hb_color_t = ffi.Uint32;
+typedef Darthb_color_t = int;
 
 /// hb_glyph_extents_t:
 /// @x_bearing: Distance from the x-origin to the left extremum of the glyph.
@@ -9452,7 +7882,19 @@ final class hb_variation_t extends ffi.Opaque {}
 /// Glyph extent values, measured in font units.
 ///
 /// Note that @height is negative, in coordinate systems that grow up.
-final class hb_glyph_extents_t extends ffi.Opaque {}
+final class hb_glyph_extents_t extends ffi.Struct {
+  @hb_position_t()
+  external int x_bearing;
+
+  @hb_position_t()
+  external int y_bearing;
+
+  @hb_position_t()
+  external int width;
+
+  @hb_position_t()
+  external int height;
+}
 
 final class hb_font_t extends ffi.Opaque {}
 
@@ -9843,11 +8285,252 @@ enum hb_unicode_combining_class_t {
 
 final class hb_unicode_funcs_t extends ffi.Opaque {}
 
+typedef hb_unicode_combining_class_func_tFunction =
+    ffi.UnsignedInt Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      hb_codepoint_t unicode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_unicode_combining_class_func_tFunction =
+    hb_unicode_combining_class_t Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      Darthb_codepoint_t unicode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_unicode_combining_class_func_t:
+/// @ufuncs: A Unicode-functions structure
+/// @unicode: The code point to query
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_unicode_funcs_t structure.
+///
+/// This method should retrieve the Canonical Combining Class (ccc)
+/// property for a specified Unicode code point.
+///
+/// Return value: The #hb_unicode_combining_class_t of @unicode
+typedef hb_unicode_combining_class_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_unicode_combining_class_func_tFunction>>;
+typedef hb_unicode_general_category_func_tFunction =
+    ffi.UnsignedInt Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      hb_codepoint_t unicode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_unicode_general_category_func_tFunction =
+    hb_unicode_general_category_t Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      Darthb_codepoint_t unicode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_unicode_general_category_func_t:
+/// @ufuncs: A Unicode-functions structure
+/// @unicode: The code point to query
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_unicode_funcs_t structure.
+///
+/// This method should retrieve the General Category property for
+/// a specified Unicode code point.
+///
+/// Return value: The #hb_unicode_general_category_t of @unicode
+typedef hb_unicode_general_category_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_unicode_general_category_func_tFunction>>;
+typedef hb_unicode_mirroring_func_tFunction =
+    hb_codepoint_t Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      hb_codepoint_t unicode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_unicode_mirroring_func_tFunction =
+    Darthb_codepoint_t Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      Darthb_codepoint_t unicode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_unicode_mirroring_func_t:
+/// @ufuncs: A Unicode-functions structure
+/// @unicode: The code point to query
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_unicode_funcs_t structure.
+///
+/// This method should retrieve the Bi-Directional Mirroring Glyph
+/// code point for a specified Unicode code point.
+///
+/// <note>Note: If a code point does not have a specified
+/// Bi-Directional Mirroring Glyph defined, the method should
+/// return the original code point.</note>
+///
+/// Return value: The #hb_codepoint_t of the Mirroring Glyph for @unicode
+typedef hb_unicode_mirroring_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_unicode_mirroring_func_tFunction>>;
+typedef hb_unicode_script_func_tFunction =
+    ffi.UnsignedInt Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      hb_codepoint_t unicode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_unicode_script_func_tFunction =
+    hb_script_t Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      Darthb_codepoint_t unicode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_unicode_script_func_t:
+/// @ufuncs: A Unicode-functions structure
+/// @unicode: The code point to query
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_unicode_funcs_t structure.
+///
+/// This method should retrieve the Script property for a
+/// specified Unicode code point.
+///
+/// Return value: The #hb_script_t of @unicode
+typedef hb_unicode_script_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_unicode_script_func_tFunction>>;
+typedef hb_unicode_compose_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      hb_codepoint_t a,
+      hb_codepoint_t b,
+      ffi.Pointer<hb_codepoint_t> ab,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_unicode_compose_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      Darthb_codepoint_t a,
+      Darthb_codepoint_t b,
+      ffi.Pointer<hb_codepoint_t> ab,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_unicode_compose_func_t:
+/// @ufuncs: A Unicode-functions structure
+/// @a: The first code point to compose
+/// @b: The second code point to compose
+/// @ab: (out): The composed code point
+/// @user_data: user data pointer passed by the caller
+///
+/// A virtual method for the #hb_unicode_funcs_t structure.
+///
+/// This method should compose a sequence of two input Unicode code
+/// points by canonical equivalence, returning the composed code
+/// point in a #hb_codepoint_t output parameter (if successful).
+/// The method must return an #hb_bool_t indicating the success
+/// of the composition.
+///
+/// Return value: `true` is @a,@b composed, `false` otherwise
+typedef hb_unicode_compose_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_unicode_compose_func_tFunction>>;
+typedef hb_unicode_decompose_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      hb_codepoint_t ab,
+      ffi.Pointer<hb_codepoint_t> a,
+      ffi.Pointer<hb_codepoint_t> b,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_unicode_decompose_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      Darthb_codepoint_t ab,
+      ffi.Pointer<hb_codepoint_t> a,
+      ffi.Pointer<hb_codepoint_t> b,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_unicode_decompose_func_t:
+/// @ufuncs: A Unicode-functions structure
+/// @ab: The code point to decompose
+/// @a: (out): The first decomposed code point
+/// @b: (out): The second decomposed code point
+/// @user_data: user data pointer passed by the caller
+///
+/// A virtual method for the #hb_unicode_funcs_t structure.
+///
+/// This method should decompose an input Unicode code point,
+/// returning the two decomposed code points in #hb_codepoint_t
+/// output parameters (if successful). The method must return an
+/// #hb_bool_t indicating the success of the composition.
+///
+/// Return value: `true` if @ab decomposed, `false` otherwise
+typedef hb_unicode_decompose_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_unicode_decompose_func_tFunction>>;
+
 final class hb_set_t extends ffi.Opaque {}
 
 final class hb_map_t extends ffi.Opaque {}
 
 final class hb_face_t extends ffi.Opaque {}
+
+typedef hb_reference_table_func_tFunction =
+    ffi.Pointer<hb_blob_t> Function(
+      ffi.Pointer<hb_face_t> face,
+      hb_tag_t tag,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_reference_table_func_tFunction =
+    ffi.Pointer<hb_blob_t> Function(
+      ffi.Pointer<hb_face_t> face,
+      Darthb_tag_t tag,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_reference_table_func_t:
+/// @face: an #hb_face_t to reference table for
+/// @tag: the tag of the table to reference
+/// @user_data: User data pointer passed by the caller
+///
+/// Callback function for hb_face_create_for_tables(). The @tag is the tag of the
+/// table to reference, and the special tag #HB_TAG_NONE is used to reference the
+/// blob of the face itself. If referencing the face blob is not possible, it is
+/// recommended to set hb_get_table_tags_func_t on the @face to allow
+/// hb_face_reference_blob() to create a face blob out of individual table blobs.
+///
+/// Return value: (transfer full): A pointer to the @tag table within @face or
+/// `NULL` if the table is not found or cannot be referenced.
+///
+/// Since: 0.9.2
+typedef hb_reference_table_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_reference_table_func_tFunction>>;
+typedef hb_get_table_tags_func_tFunction =
+    ffi.UnsignedInt Function(
+      ffi.Pointer<hb_face_t> face,
+      ffi.UnsignedInt start_offset,
+      ffi.Pointer<ffi.UnsignedInt> table_count,
+      ffi.Pointer<hb_tag_t> table_tags,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_get_table_tags_func_tFunction =
+    int Function(
+      ffi.Pointer<hb_face_t> face,
+      int start_offset,
+      ffi.Pointer<ffi.UnsignedInt> table_count,
+      ffi.Pointer<hb_tag_t> table_tags,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_get_table_tags_func_t:
+/// @face: A face object
+/// @start_offset: The index of first table tag to retrieve
+/// @table_count: (inout): Input = the maximum number of table tags to return;
+/// Output = the actual number of table tags returned (may be zero)
+/// @table_tags: (out) (array length=table_count): The array of table tags found
+/// @user_data: User data pointer passed by the caller
+///
+/// Callback function for hb_face_get_table_tags().
+///
+/// Return value: Total number of tables, or zero if it is not possible to list
+///
+/// Since: 10.0.0
+typedef hb_get_table_tags_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_get_table_tags_func_tFunction>>;
 
 /// hb_draw_state_t
 /// @path_open: Whether there is an open path
@@ -9859,9 +8542,217 @@ final class hb_face_t extends ffi.Opaque {}
 /// Current drawing state.
 ///
 /// Since: 4.0.0
-final class hb_draw_state_t extends ffi.Opaque {}
+final class hb_draw_state_t extends ffi.Struct {
+  @hb_bool_t()
+  external int path_open;
+
+  @ffi.Float()
+  external double path_start_x;
+
+  @ffi.Float()
+  external double path_start_y;
+
+  @ffi.Float()
+  external double current_x;
+
+  @ffi.Float()
+  external double current_y;
+
+  /// < private >
+  external hb_var_num_t reserved1;
+
+  external hb_var_num_t reserved2;
+
+  external hb_var_num_t reserved3;
+
+  external hb_var_num_t reserved4;
+
+  external hb_var_num_t reserved5;
+
+  external hb_var_num_t reserved6;
+
+  external hb_var_num_t reserved7;
+}
 
 final class hb_draw_funcs_t extends ffi.Opaque {}
+
+typedef hb_draw_move_to_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_draw_funcs_t> dfuncs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<hb_draw_state_t> st,
+      ffi.Float to_x,
+      ffi.Float to_y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_draw_move_to_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_draw_funcs_t> dfuncs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<hb_draw_state_t> st,
+      double to_x,
+      double to_y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_draw_move_to_func_t:
+/// @dfuncs: draw functions object
+/// @draw_data: The data accompanying the draw functions in hb_font_draw_glyph()
+/// @st: current draw state
+/// @to_x: X component of target point
+/// @to_y: Y component of target point
+/// @user_data: User data pointer passed to hb_draw_funcs_set_move_to_func()
+///
+/// A virtual method for the #hb_draw_funcs_t to perform a "move-to" draw
+/// operation.
+///
+/// Since: 4.0.0
+typedef hb_draw_move_to_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_draw_move_to_func_tFunction>>;
+typedef hb_draw_line_to_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_draw_funcs_t> dfuncs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<hb_draw_state_t> st,
+      ffi.Float to_x,
+      ffi.Float to_y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_draw_line_to_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_draw_funcs_t> dfuncs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<hb_draw_state_t> st,
+      double to_x,
+      double to_y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_draw_line_to_func_t:
+/// @dfuncs: draw functions object
+/// @draw_data: The data accompanying the draw functions in hb_font_draw_glyph()
+/// @st: current draw state
+/// @to_x: X component of target point
+/// @to_y: Y component of target point
+/// @user_data: User data pointer passed to hb_draw_funcs_set_line_to_func()
+///
+/// A virtual method for the #hb_draw_funcs_t to perform a "line-to" draw
+/// operation.
+///
+/// Since: 4.0.0
+typedef hb_draw_line_to_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_draw_line_to_func_tFunction>>;
+typedef hb_draw_quadratic_to_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_draw_funcs_t> dfuncs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<hb_draw_state_t> st,
+      ffi.Float control_x,
+      ffi.Float control_y,
+      ffi.Float to_x,
+      ffi.Float to_y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_draw_quadratic_to_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_draw_funcs_t> dfuncs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<hb_draw_state_t> st,
+      double control_x,
+      double control_y,
+      double to_x,
+      double to_y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_draw_quadratic_to_func_t:
+/// @dfuncs: draw functions object
+/// @draw_data: The data accompanying the draw functions in hb_font_draw_glyph()
+/// @st: current draw state
+/// @control_x: X component of control point
+/// @control_y: Y component of control point
+/// @to_x: X component of target point
+/// @to_y: Y component of target point
+/// @user_data: User data pointer passed to hb_draw_funcs_set_quadratic_to_func()
+///
+/// A virtual method for the #hb_draw_funcs_t to perform a "quadratic-to" draw
+/// operation.
+///
+/// Since: 4.0.0
+typedef hb_draw_quadratic_to_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_draw_quadratic_to_func_tFunction>>;
+typedef hb_draw_cubic_to_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_draw_funcs_t> dfuncs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<hb_draw_state_t> st,
+      ffi.Float control1_x,
+      ffi.Float control1_y,
+      ffi.Float control2_x,
+      ffi.Float control2_y,
+      ffi.Float to_x,
+      ffi.Float to_y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_draw_cubic_to_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_draw_funcs_t> dfuncs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<hb_draw_state_t> st,
+      double control1_x,
+      double control1_y,
+      double control2_x,
+      double control2_y,
+      double to_x,
+      double to_y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_draw_cubic_to_func_t:
+/// @dfuncs: draw functions object
+/// @draw_data: The data accompanying the draw functions in hb_font_draw_glyph()
+/// @st: current draw state
+/// @control1_x: X component of first control point
+/// @control1_y: Y component of first control point
+/// @control2_x: X component of second control point
+/// @control2_y: Y component of second control point
+/// @to_x: X component of target point
+/// @to_y: Y component of target point
+/// @user_data: User data pointer passed to hb_draw_funcs_set_cubic_to_func()
+///
+/// A virtual method for the #hb_draw_funcs_t to perform a "cubic-to" draw
+/// operation.
+///
+/// Since: 4.0.0
+typedef hb_draw_cubic_to_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_draw_cubic_to_func_tFunction>>;
+typedef hb_draw_close_path_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_draw_funcs_t> dfuncs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<hb_draw_state_t> st,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_draw_close_path_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_draw_funcs_t> dfuncs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<hb_draw_state_t> st,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_draw_close_path_func_t:
+/// @dfuncs: draw functions object
+/// @draw_data: The data accompanying the draw functions in hb_font_draw_glyph()
+/// @st: current draw state
+/// @user_data: User data pointer passed to hb_draw_funcs_set_close_path_func()
+///
+/// A virtual method for the #hb_draw_funcs_t to perform a "close-path" draw
+/// operation.
+///
+/// Since: 4.0.0
+typedef hb_draw_close_path_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_draw_close_path_func_tFunction>>;
 
 /// hb_draw_line_cap_t:
 /// @HB_DRAW_LINE_CAP_BUTT:   No cap; the line ends exactly at
@@ -9890,6 +8781,378 @@ enum hb_draw_line_cap_t {
 
 final class hb_paint_funcs_t extends ffi.Opaque {}
 
+typedef hb_paint_push_transform_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Float xx,
+      ffi.Float yx,
+      ffi.Float xy,
+      ffi.Float yy,
+      ffi.Float dx,
+      ffi.Float dy,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_push_transform_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      double xx,
+      double yx,
+      double xy,
+      double yy,
+      double dx,
+      double dy,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_push_transform_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @xx: xx component of the transform matrix
+/// @yx: yx component of the transform matrix
+/// @xy: xy component of the transform matrix
+/// @yy: yy component of the transform matrix
+/// @dx: dx component of the transform matrix
+/// @dy: dy component of the transform matrix
+/// @user_data: User data pointer passed to hb_paint_funcs_set_push_transform_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to apply
+/// a transform to subsequent paint calls.
+///
+/// This transform is applied after the current transform,
+/// and remains in effect until a matching call to
+/// the #hb_paint_funcs_pop_transform_func_t vfunc.
+///
+/// Since: 7.0.0
+typedef hb_paint_push_transform_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_push_transform_func_tFunction>>;
+typedef hb_paint_pop_transform_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_pop_transform_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_pop_transform_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @user_data: User data pointer passed to hb_paint_funcs_set_pop_transform_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to undo
+/// the effect of a prior call to the #hb_paint_funcs_push_transform_func_t
+/// vfunc.
+///
+/// Since: 7.0.0
+typedef hb_paint_pop_transform_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_pop_transform_func_tFunction>>;
+typedef hb_paint_color_glyph_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      hb_codepoint_t glyph,
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_color_glyph_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      Darthb_codepoint_t glyph,
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_color_glyph_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @glyph: the glyph ID
+/// @font: the font
+/// @user_data: User data pointer passed to hb_paint_funcs_set_color_glyph_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to render a color glyph by glyph index.
+///
+/// Return value: `true` if the glyph was painted, `false` otherwise.
+///
+/// Since: 8.2.0
+typedef hb_paint_color_glyph_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_color_glyph_func_tFunction>>;
+typedef hb_paint_push_clip_glyph_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      hb_codepoint_t glyph,
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_push_clip_glyph_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      Darthb_codepoint_t glyph,
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_push_clip_glyph_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @glyph: the glyph ID
+/// @font: the font
+/// @user_data: User data pointer passed to hb_paint_funcs_set_push_clip_glyph_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to clip
+/// subsequent paint calls to the outline of a glyph.
+///
+/// The coordinates of the glyph outline are expected in the
+/// current @font scale (ie. the results of calling
+/// hb_font_draw_glyph() with @font). The outline is
+/// transformed by the current transform.
+///
+/// This clip is applied in addition to the current clip,
+/// and remains in effect until a matching call to
+/// the #hb_paint_funcs_pop_clip_func_t vfunc.
+///
+/// Since: 7.0.0
+typedef hb_paint_push_clip_glyph_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_push_clip_glyph_func_tFunction>>;
+typedef hb_paint_push_clip_rectangle_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Float xmin,
+      ffi.Float ymin,
+      ffi.Float xmax,
+      ffi.Float ymax,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_push_clip_rectangle_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      double xmin,
+      double ymin,
+      double xmax,
+      double ymax,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_push_clip_rectangle_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @xmin: min X for the rectangle
+/// @ymin: min Y for the rectangle
+/// @xmax: max X for the rectangle
+/// @ymax: max Y for the rectangle
+/// @user_data: User data pointer passed to hb_paint_funcs_set_push_clip_rectangle_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to clip
+/// subsequent paint calls to a rectangle.
+///
+/// The coordinates of the rectangle are interpreted according
+/// to the current transform.
+///
+/// This clip is applied in addition to the current clip,
+/// and remains in effect until a matching call to
+/// the #hb_paint_funcs_pop_clip_func_t vfunc.
+///
+/// Since: 7.0.0
+typedef hb_paint_push_clip_rectangle_func_t =
+    ffi.Pointer<
+      ffi.NativeFunction<hb_paint_push_clip_rectangle_func_tFunction>
+    >;
+typedef hb_paint_push_clip_path_start_func_tFunction =
+    ffi.Pointer<hb_draw_funcs_t> Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<ffi.Pointer<ffi.Void>> draw_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_push_clip_path_start_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @draw_data: (out): location to store the draw data the caller should
+/// pass alongside the returned draw funcs.
+/// @user_data: User data pointer passed to hb_paint_funcs_set_push_clip_path_start_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to begin clipping
+/// to an arbitrary path.  The backend returns an
+/// #hb_draw_funcs_t it owns (the caller must not free it)
+/// that the caller feeds the clip outline to via hb_draw_*()
+/// calls, plus a @draw_data value to pass alongside those
+/// calls.  Both are only valid until the matching
+/// #hb_paint_push_clip_path_end_func_t call; no other paint
+/// calls should be made in between.  The clip remains
+/// in effect until a later #hb_paint_pop_clip_func_t call.
+///
+/// Return value: (transfer none): draw funcs that accumulate
+/// the clip path, or `NULL` if arbitrary-path clipping is not
+/// supported.
+///
+/// Since: 14.2.0
+typedef hb_paint_push_clip_path_start_func_t =
+    ffi.Pointer<
+      ffi.NativeFunction<hb_paint_push_clip_path_start_func_tFunction>
+    >;
+typedef hb_paint_push_clip_path_end_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_push_clip_path_end_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_push_clip_path_end_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @user_data: User data pointer passed to hb_paint_funcs_set_push_clip_path_end_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to close the
+/// clip path started by the #hb_paint_push_clip_path_start_func_t
+/// vfunc.  The emitted path is now active as a clip; subsequent
+/// paint ops are masked by it until a matching
+/// #hb_paint_pop_clip_func_t call.
+///
+/// Since: 14.2.0
+typedef hb_paint_push_clip_path_end_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_push_clip_path_end_func_tFunction>>;
+typedef hb_paint_pop_clip_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_pop_clip_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_pop_clip_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @user_data: User data pointer passed to hb_paint_funcs_set_pop_clip_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to undo
+/// the effect of a prior call to the #hb_paint_funcs_push_clip_glyph_func_t,
+/// #hb_paint_funcs_push_clip_rectangle_func_t, or
+/// #hb_paint_funcs_push_clip_path_end_func_t vfuncs.
+///
+/// Since: 7.0.0
+typedef hb_paint_pop_clip_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_pop_clip_func_tFunction>>;
+typedef hb_paint_color_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      hb_bool_t is_foreground,
+      hb_color_t color,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_color_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      Darthb_bool_t is_foreground,
+      Darthb_color_t color,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_color_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @is_foreground: whether the color is the foreground
+/// @color: The color to use, unpremultiplied
+/// @user_data: User data pointer passed to hb_paint_funcs_set_color_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to paint a
+/// color everywhere within the current clip.
+///
+/// When @is_foreground is true, this color originates from the
+/// foreground-color sentinel in the font's color data.  The
+/// @color parameter still carries a fully resolved RGBA value
+/// (with any paint-tree alpha already applied), so backends
+/// that do not need to distinguish the foreground can simply
+/// use @color directly.
+///
+/// Backends that defer foreground resolution (e.g. to honor a
+/// CSS `currentColor` or a runtime uniform) should substitute
+/// their own foreground RGB when @is_foreground is true, but
+/// must combine the alpha from @color with their foreground
+/// alpha, since it encodes additional modulation from the
+/// paint tree.  For this mode to work correctly, the caller
+/// should pass a fully-opaque foreground color to
+/// hb_font_paint_glyph(), so that the alpha in @color
+/// reflects only the paint-tree contribution.
+///
+/// Since: 7.0.0
+typedef hb_paint_color_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_color_func_tFunction>>;
+typedef hb_paint_image_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<hb_blob_t> image,
+      ffi.UnsignedInt width,
+      ffi.UnsignedInt height,
+      hb_tag_t format,
+      ffi.Float slant,
+      ffi.Pointer<hb_glyph_extents_t> extents,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_image_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<hb_blob_t> image,
+      int width,
+      int height,
+      Darthb_tag_t format,
+      double slant,
+      ffi.Pointer<hb_glyph_extents_t> extents,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_image_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @image: the image data
+/// @width: width of the raster image in pixels, or 0
+/// @height: height of the raster image in pixels, or 0
+/// @format: the image format as a tag
+/// @slant: Deprecated. Always set to 0.0.
+/// @extents: (nullable): glyph extents for desired rendering
+/// @user_data: User data pointer passed to hb_paint_funcs_set_image_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to paint a glyph image.
+///
+/// This method is called for glyphs with image blobs in the CBDT,
+/// sbix or SVG tables. The @format identifies the kind of data that
+/// is contained in @image. Possible values include #HB_PAINT_IMAGE_FORMAT_PNG,
+/// #HB_PAINT_IMAGE_FORMAT_SVG and #HB_PAINT_IMAGE_FORMAT_BGRA.
+///
+/// The image dimensions and glyph extents are provided if available,
+/// and should be used to size and position the image.
+///
+/// Return value: Whether the operation was successful.
+///
+/// Since: 7.0.0
+typedef hb_paint_image_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_image_func_tFunction>>;
+
 /// hb_color_stop_t:
 /// @offset: the offset of the color stop
 /// @is_foreground: whether the color is the foreground
@@ -9909,7 +9172,16 @@ final class hb_paint_funcs_t extends ffi.Opaque {}
 /// section for details.
 ///
 /// Since: 7.0.0
-final class hb_color_stop_t extends ffi.Opaque {}
+final class hb_color_stop_t extends ffi.Struct {
+  @ffi.Float()
+  external double offset;
+
+  @hb_bool_t()
+  external int is_foreground;
+
+  @hb_color_t()
+  external int color;
+}
 
 /// hb_paint_extend_t:
 /// @HB_PAINT_EXTEND_PAD: Outside the defined interval,
@@ -9945,12 +9217,261 @@ enum hb_paint_extend_t {
   };
 }
 
+typedef hb_color_line_get_color_stops_func_tFunction =
+    ffi.UnsignedInt Function(
+      ffi.Pointer<hb_color_line_t> color_line,
+      ffi.Pointer<ffi.Void> color_line_data,
+      ffi.UnsignedInt start,
+      ffi.Pointer<ffi.UnsignedInt> count,
+      ffi.Pointer<hb_color_stop_t> color_stops,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_color_line_get_color_stops_func_tFunction =
+    int Function(
+      ffi.Pointer<hb_color_line_t> color_line,
+      ffi.Pointer<ffi.Void> color_line_data,
+      int start,
+      ffi.Pointer<ffi.UnsignedInt> count,
+      ffi.Pointer<hb_color_stop_t> color_stops,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_color_line_get_color_stops_func_t:
+/// @color_line: a #hb_color_line_t object
+/// @color_line_data: the data accompanying @color_line
+/// @start: the index of the first color stop to return
+/// @count: (inout) (optional): Input = the maximum number of feature tags to return;
+/// Output = the actual number of feature tags returned (may be zero)
+/// @color_stops: (out) (array length=count) (optional): Array of #hb_color_stop_t to populate
+/// @user_data: the data accompanying this method
+///
+/// A virtual method for the #hb_color_line_t to fetch color stops.
+///
+/// Return value: the total number of color stops in @color_line
+///
+/// Since: 7.0.0
+typedef hb_color_line_get_color_stops_func_t =
+    ffi.Pointer<
+      ffi.NativeFunction<hb_color_line_get_color_stops_func_tFunction>
+    >;
+typedef hb_color_line_get_extend_func_tFunction =
+    ffi.UnsignedInt Function(
+      ffi.Pointer<hb_color_line_t> color_line,
+      ffi.Pointer<ffi.Void> color_line_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_color_line_get_extend_func_tFunction =
+    hb_paint_extend_t Function(
+      ffi.Pointer<hb_color_line_t> color_line,
+      ffi.Pointer<ffi.Void> color_line_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_color_line_get_extend_func_t:
+/// @color_line: a #hb_color_line_t object
+/// @color_line_data: the data accompanying @color_line
+/// @user_data: the data accompanying this method
+///
+/// A virtual method for the @hb_color_line_t to fetches the extend mode.
+///
+/// Return value: the extend mode of @color_line
+///
+/// Since: 7.0.0
+typedef hb_color_line_get_extend_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_color_line_get_extend_func_tFunction>>;
+
 /// hb_color_line_t:
 ///
 /// A struct containing color information for a gradient.
 ///
 /// Since: 7.0.0
-final class hb_color_line_t extends ffi.Opaque {}
+final class hb_color_line_t extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> data;
+
+  external hb_color_line_get_color_stops_func_t get_color_stops;
+
+  external ffi.Pointer<ffi.Void> get_color_stops_user_data;
+
+  external hb_color_line_get_extend_func_t get_extend;
+
+  external ffi.Pointer<ffi.Void> get_extend_user_data;
+
+  external ffi.Pointer<ffi.Void> reserved0;
+
+  external ffi.Pointer<ffi.Void> reserved1;
+
+  external ffi.Pointer<ffi.Void> reserved2;
+
+  external ffi.Pointer<ffi.Void> reserved3;
+
+  external ffi.Pointer<ffi.Void> reserved5;
+
+  external ffi.Pointer<ffi.Void> reserved6;
+
+  external ffi.Pointer<ffi.Void> reserved7;
+
+  external ffi.Pointer<ffi.Void> reserved8;
+}
+
+typedef hb_paint_linear_gradient_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<hb_color_line_t> color_line,
+      ffi.Float x0,
+      ffi.Float y0,
+      ffi.Float x1,
+      ffi.Float y1,
+      ffi.Float x2,
+      ffi.Float y2,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_linear_gradient_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<hb_color_line_t> color_line,
+      double x0,
+      double y0,
+      double x1,
+      double y1,
+      double x2,
+      double y2,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_linear_gradient_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @color_line: Color information for the gradient
+/// @x0: X coordinate of the first point
+/// @y0: Y coordinate of the first point
+/// @x1: X coordinate of the second point
+/// @y1: Y coordinate of the second point
+/// @x2: X coordinate of the third point
+/// @y2: Y coordinate of the third point
+/// @user_data: User data pointer passed to hb_paint_funcs_set_linear_gradient_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to paint a linear
+/// gradient everywhere within the current clip.
+///
+/// The @color_line object contains information about the colors of the gradients.
+/// It is only valid for the duration of the callback, you cannot keep it around.
+///
+/// The coordinates of the points are interpreted according
+/// to the current transform.
+///
+/// See the OpenType spec [COLR](https://learn.microsoft.com/en-us/typography/opentype/spec/colr)
+/// section for details on how the points define the direction
+/// of the gradient, and how to interpret the @color_line.
+///
+/// Since: 7.0.0
+typedef hb_paint_linear_gradient_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_linear_gradient_func_tFunction>>;
+typedef hb_paint_radial_gradient_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<hb_color_line_t> color_line,
+      ffi.Float x0,
+      ffi.Float y0,
+      ffi.Float r0,
+      ffi.Float x1,
+      ffi.Float y1,
+      ffi.Float r1,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_radial_gradient_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<hb_color_line_t> color_line,
+      double x0,
+      double y0,
+      double r0,
+      double x1,
+      double y1,
+      double r1,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_radial_gradient_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @color_line: Color information for the gradient
+/// @x0: X coordinate of the first circle's center
+/// @y0: Y coordinate of the first circle's center
+/// @r0: radius of the first circle
+/// @x1: X coordinate of the second circle's center
+/// @y1: Y coordinate of the second circle's center
+/// @r1: radius of the second circle
+/// @user_data: User data pointer passed to hb_paint_funcs_set_radial_gradient_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to paint a radial
+/// gradient everywhere within the current clip.
+///
+/// The @color_line object contains information about the colors of the gradients.
+/// It is only valid for the duration of the callback, you cannot keep it around.
+///
+/// The coordinates of the points are interpreted according
+/// to the current transform.
+///
+/// See the OpenType spec [COLR](https://learn.microsoft.com/en-us/typography/opentype/spec/colr)
+/// section for details on how the points define the direction
+/// of the gradient, and how to interpret the @color_line.
+///
+/// Since: 7.0.0
+typedef hb_paint_radial_gradient_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_radial_gradient_func_tFunction>>;
+typedef hb_paint_sweep_gradient_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<hb_color_line_t> color_line,
+      ffi.Float x0,
+      ffi.Float y0,
+      ffi.Float start_angle,
+      ffi.Float end_angle,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_sweep_gradient_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<hb_color_line_t> color_line,
+      double x0,
+      double y0,
+      double start_angle,
+      double end_angle,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_sweep_gradient_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @color_line: Color information for the gradient
+/// @x0: X coordinate of the circle's center
+/// @y0: Y coordinate of the circle's center
+/// @start_angle: the start angle, in radians
+/// @end_angle: the end angle, in radians
+/// @user_data: User data pointer passed to hb_paint_funcs_set_sweep_gradient_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to paint a sweep
+/// gradient everywhere within the current clip.
+///
+/// The @color_line object contains information about the colors of the gradients.
+/// It is only valid for the duration of the callback, you cannot keep it around.
+///
+/// The coordinates of the points are interpreted according
+/// to the current transform.
+///
+/// See the OpenType spec [COLR](https://learn.microsoft.com/en-us/typography/opentype/spec/colr)
+/// section for details on how the points define the direction
+/// of the gradient, and how to interpret the @color_line.
+///
+/// Since: 7.0.0
+typedef hb_paint_sweep_gradient_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_sweep_gradient_func_tFunction>>;
 
 /// hb_paint_composite_mode_t:
 /// @HB_PAINT_COMPOSITE_MODE_CLEAR: clear destination layer (bounded)
@@ -10086,6 +9607,173 @@ enum hb_paint_composite_mode_t {
   };
 }
 
+typedef hb_paint_push_group_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_push_group_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_push_group_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @user_data: User data pointer passed to hb_paint_funcs_set_push_group_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to use
+/// an intermediate surface for subsequent paint calls.
+///
+/// The drawing will be redirected to an intermediate surface
+/// until a matching call to the #hb_paint_funcs_pop_group_func_t
+/// vfunc.
+///
+/// Since: 7.0.0
+typedef hb_paint_push_group_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_push_group_func_tFunction>>;
+typedef hb_paint_push_group_for_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.UnsignedInt mode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_push_group_for_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      hb_paint_composite_mode_t mode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_push_group_for_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @mode: the compositing mode that will be used when the group is popped
+/// @user_data: User data pointer passed to hb_paint_funcs_set_push_group_for_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to use
+/// an intermediate surface for subsequent paint calls,
+/// with the compositing mode known in advance.
+///
+/// This is like #hb_paint_push_group_func_t, but the
+/// compositing mode is provided at push time. By default
+/// this calls #hb_paint_push_group_func_t.
+///
+/// Since: 14.2.0
+typedef hb_paint_push_group_for_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_push_group_for_func_tFunction>>;
+typedef hb_paint_pop_group_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.UnsignedInt mode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_pop_group_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      hb_paint_composite_mode_t mode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_pop_group_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @mode: the compositing mode to use
+/// @user_data: User data pointer passed to hb_paint_funcs_set_pop_group_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to undo
+/// the effect of a prior call to the #hb_paint_funcs_push_group_func_t
+/// vfunc.
+///
+/// This call stops the redirection to the intermediate surface,
+/// and then composites it on the previous surface, using the
+/// compositing mode passed to this call.
+///
+/// Since: 7.0.0
+typedef hb_paint_pop_group_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_pop_group_func_tFunction>>;
+typedef hb_paint_custom_palette_color_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.UnsignedInt color_index,
+      ffi.Pointer<hb_color_t> color,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_custom_palette_color_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      int color_index,
+      ffi.Pointer<hb_color_t> color,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_custom_palette_color_func_t:
+/// @funcs: paint functions object.
+/// @paint_data: data accompanying the paint functions in hb_font_paint_glyph().
+/// @color_index: color index to fetch.
+/// @color: (out): fetched color.
+/// @user_data: user data pointer passed to hb_paint_funcs_set_custom_palette_color_func().
+///
+/// A virtual method for #hb_paint_funcs_t to fetch a custom palette override
+/// color for @color_index.
+///
+/// Custom palette colors override colors from the font's selected color palette.
+/// It is not necessary to override all palette entries; return `false` for
+/// entries that should be taken from the font palette.
+///
+/// This function might be called multiple times, but the custom palette is
+/// expected to remain unchanged for the duration of one
+/// hb_font_paint_glyph() call.
+///
+/// Return value: `true` if a custom color is provided, `false` otherwise.
+///
+/// Since: 7.0.0
+typedef hb_paint_custom_palette_color_func_t =
+    ffi.Pointer<
+      ffi.NativeFunction<hb_paint_custom_palette_color_func_tFunction>
+    >;
+typedef hb_paint_sweep_gradient_tile_func_tFunction =
+    ffi.Void Function(
+      ffi.Float a0,
+      hb_color_t c0,
+      ffi.Float a1,
+      hb_color_t c1,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_paint_sweep_gradient_tile_func_tFunction =
+    void Function(
+      double a0,
+      Darthb_color_t c0,
+      double a1,
+      Darthb_color_t c1,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_paint_sweep_gradient_tile_func_t:
+/// @a0: segment start angle, in radians.
+/// @c0: segment start color.
+/// @a1: segment end angle, in radians.
+/// @c1: segment end color.
+/// @user_data: user data passed to hb_paint_sweep_gradient_tiles().
+///
+/// Callback invoked once per (a0, a1) sector of a sweep
+/// gradient tiling.  See hb_paint_sweep_gradient_tiles().
+///
+/// Since: 14.2.0
+typedef hb_paint_sweep_gradient_tile_func_t =
+    ffi.Pointer<
+      ffi.NativeFunction<hb_paint_sweep_gradient_tile_func_tFunction>
+    >;
+
 final class hb_font_funcs_t extends ffi.Opaque {}
 
 /// hb_font_extents_t:
@@ -10097,7 +9785,677 @@ final class hb_font_funcs_t extends ffi.Opaque {}
 ///
 /// Note that typically @ascender is positive and @descender
 /// negative, in coordinate systems that grow up.
-final class hb_font_extents_t extends ffi.Opaque {}
+final class hb_font_extents_t extends ffi.Struct {
+  @hb_position_t()
+  external int ascender;
+
+  @hb_position_t()
+  external int descender;
+
+  @hb_position_t()
+  external int line_gap;
+
+  /// < private >
+  @hb_position_t()
+  external int reserved9;
+
+  @hb_position_t()
+  external int reserved8;
+
+  @hb_position_t()
+  external int reserved7;
+
+  @hb_position_t()
+  external int reserved6;
+
+  @hb_position_t()
+  external int reserved5;
+
+  @hb_position_t()
+  external int reserved4;
+
+  @hb_position_t()
+  external int reserved3;
+
+  @hb_position_t()
+  external int reserved2;
+
+  @hb_position_t()
+  external int reserved1;
+}
+
+typedef hb_font_get_font_extents_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      ffi.Pointer<hb_font_extents_t> extents,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_font_extents_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      ffi.Pointer<hb_font_extents_t> extents,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_font_extents_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @extents: (out): The font extents retrieved
+/// @user_data: User data pointer passed by the caller
+///
+/// This method should retrieve the extents for a font.
+typedef hb_font_get_font_extents_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_font_extents_func_tFunction>>;
+
+/// hb_font_get_font_h_extents_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the extents for a font, for horizontal-direction
+/// text segments. Extents must be returned in an #hb_glyph_extents output
+/// parameter.
+typedef hb_font_get_font_h_extents_func_t = hb_font_get_font_extents_func_t;
+
+/// hb_font_get_font_v_extents_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the extents for a font, for vertical-direction
+/// text segments. Extents must be returned in an #hb_glyph_extents output
+/// parameter.
+typedef hb_font_get_font_v_extents_func_t = hb_font_get_font_extents_func_t;
+typedef hb_font_get_nominal_glyph_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t unicode,
+      ffi.Pointer<hb_codepoint_t> glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_nominal_glyph_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t unicode,
+      ffi.Pointer<hb_codepoint_t> glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_nominal_glyph_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @unicode: The Unicode code point to query
+/// @glyph: (out): The glyph ID retrieved
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the nominal glyph ID for a specified Unicode code
+/// point. Glyph IDs must be returned in a #hb_codepoint_t output parameter.
+///
+/// Return value: `true` if data found, `false` otherwise
+typedef hb_font_get_nominal_glyph_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_nominal_glyph_func_tFunction>>;
+typedef hb_font_get_variation_glyph_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t unicode,
+      hb_codepoint_t variation_selector,
+      ffi.Pointer<hb_codepoint_t> glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_variation_glyph_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t unicode,
+      Darthb_codepoint_t variation_selector,
+      ffi.Pointer<hb_codepoint_t> glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_variation_glyph_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @unicode: The Unicode code point to query
+/// @variation_selector: The  variation-selector code point to query
+/// @glyph: (out): The glyph ID retrieved
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the glyph ID for a specified Unicode code point
+/// followed by a specified Variation Selector code point. Glyph IDs must be
+/// returned in a #hb_codepoint_t output parameter.
+///
+/// Return value: `true` if data found, `false` otherwise
+typedef hb_font_get_variation_glyph_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_variation_glyph_func_tFunction>>;
+typedef hb_font_get_nominal_glyphs_func_tFunction =
+    ffi.UnsignedInt Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      ffi.UnsignedInt count,
+      ffi.Pointer<hb_codepoint_t> first_unicode,
+      ffi.UnsignedInt unicode_stride,
+      ffi.Pointer<hb_codepoint_t> first_glyph,
+      ffi.UnsignedInt glyph_stride,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_nominal_glyphs_func_tFunction =
+    int Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      int count,
+      ffi.Pointer<hb_codepoint_t> first_unicode,
+      int unicode_stride,
+      ffi.Pointer<hb_codepoint_t> first_glyph,
+      int glyph_stride,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_nominal_glyphs_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @count: number of code points to query
+/// @first_unicode: The first Unicode code point to query
+/// @unicode_stride: The stride between successive code points
+/// @first_glyph: (out): The first glyph ID retrieved
+/// @glyph_stride: The stride between successive glyph IDs
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the nominal glyph IDs for a sequence of
+/// Unicode code points. Glyph IDs must be returned in a #hb_codepoint_t
+/// output parameter.
+///
+/// Return value: the number of code points processed
+typedef hb_font_get_nominal_glyphs_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_nominal_glyphs_func_tFunction>>;
+typedef hb_font_get_glyph_advance_func_tFunction =
+    hb_position_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_glyph_advance_func_tFunction =
+    Darthb_position_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_glyph_advance_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @glyph: The glyph ID to query
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the advance for a specified glyph. The
+/// method must return an #hb_position_t.
+///
+/// Return value: The advance of @glyph within @font
+typedef hb_font_get_glyph_advance_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_glyph_advance_func_tFunction>>;
+
+/// hb_font_get_glyph_h_advance_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the advance for a specified glyph, in
+/// horizontal-direction text segments. Advances must be returned in
+/// an #hb_position_t output parameter.
+typedef hb_font_get_glyph_h_advance_func_t = hb_font_get_glyph_advance_func_t;
+
+/// hb_font_get_glyph_v_advance_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the advance for a specified glyph, in
+/// vertical-direction text segments. Advances must be returned in
+/// an #hb_position_t output parameter.
+typedef hb_font_get_glyph_v_advance_func_t = hb_font_get_glyph_advance_func_t;
+typedef hb_font_get_glyph_advances_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      ffi.UnsignedInt count,
+      ffi.Pointer<hb_codepoint_t> first_glyph,
+      ffi.UnsignedInt glyph_stride,
+      ffi.Pointer<hb_position_t> first_advance,
+      ffi.UnsignedInt advance_stride,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_glyph_advances_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      int count,
+      ffi.Pointer<hb_codepoint_t> first_glyph,
+      int glyph_stride,
+      ffi.Pointer<hb_position_t> first_advance,
+      int advance_stride,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_glyph_advances_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @count: The number of glyph IDs in the sequence queried
+/// @first_glyph: The first glyph ID to query
+/// @glyph_stride: The stride between successive glyph IDs
+/// @first_advance: (out): The first advance retrieved
+/// @advance_stride: The stride between successive advances
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the advances for a sequence of glyphs.
+typedef hb_font_get_glyph_advances_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_glyph_advances_func_tFunction>>;
+
+/// hb_font_get_glyph_h_advances_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the advances for a sequence of glyphs, in
+/// horizontal-direction text segments.
+typedef hb_font_get_glyph_h_advances_func_t = hb_font_get_glyph_advances_func_t;
+
+/// hb_font_get_glyph_v_advances_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the advances for a sequence of glyphs, in
+/// vertical-direction text segments.
+typedef hb_font_get_glyph_v_advances_func_t = hb_font_get_glyph_advances_func_t;
+typedef hb_font_get_glyph_origin_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t glyph,
+      ffi.Pointer<hb_position_t> x,
+      ffi.Pointer<hb_position_t> y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_glyph_origin_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t glyph,
+      ffi.Pointer<hb_position_t> x,
+      ffi.Pointer<hb_position_t> y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_glyph_origin_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @glyph: The glyph ID to query
+/// @x: (out): The X coordinate of the origin
+/// @y: (out): The Y coordinate of the origin
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the (X,Y) coordinates (in scaled units) of the
+/// origin for a glyph. Each coordinate must be returned in an #hb_position_t
+/// output parameter.
+///
+/// Return value: `true` if data found, `false` otherwise
+typedef hb_font_get_glyph_origin_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_glyph_origin_func_tFunction>>;
+
+/// hb_font_get_glyph_h_origin_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the (X,Y) coordinates (in scaled units) of the
+/// origin for a glyph, for horizontal-direction text segments. Each
+/// coordinate must be returned in an #hb_position_t output parameter.
+typedef hb_font_get_glyph_h_origin_func_t = hb_font_get_glyph_origin_func_t;
+
+/// hb_font_get_glyph_v_origin_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the (X,Y) coordinates (in scaled units) of the
+/// origin for a glyph, for vertical-direction text segments. Each coordinate
+/// must be returned in an #hb_position_t output parameter.
+typedef hb_font_get_glyph_v_origin_func_t = hb_font_get_glyph_origin_func_t;
+typedef hb_font_get_glyph_origins_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      ffi.UnsignedInt count,
+      ffi.Pointer<hb_codepoint_t> first_glyph,
+      ffi.UnsignedInt glyph_stride,
+      ffi.Pointer<hb_position_t> first_x,
+      ffi.UnsignedInt x_stride,
+      ffi.Pointer<hb_position_t> first_y,
+      ffi.UnsignedInt y_stride,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_glyph_origins_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      int count,
+      ffi.Pointer<hb_codepoint_t> first_glyph,
+      int glyph_stride,
+      ffi.Pointer<hb_position_t> first_x,
+      int x_stride,
+      ffi.Pointer<hb_position_t> first_y,
+      int y_stride,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_glyph_origins_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @first_glyph: The first glyph ID to query
+/// @count: number of glyphs to query
+/// @glyph_stride: The stride between successive glyph IDs
+/// @first_x: (out): The first origin X coordinate retrieved
+/// @x_stride: The stride between successive origin X coordinates
+/// @first_y: (out): The first origin Y coordinate retrieved
+/// @y_stride: The stride between successive origin Y coordinates
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the (X,Y) coordinates (in scaled units) of the
+/// origin for each requested glyph. Each coordinate value must be returned in
+/// an #hb_position_t in the two output parameters.
+///
+/// Return value: `true` if data found, `false` otherwise
+///
+/// Since: 11.3.0
+typedef hb_font_get_glyph_origins_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_glyph_origins_func_tFunction>>;
+
+/// hb_font_get_glyph_h_origins_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the (X,Y) coordinates (in scaled units) of the
+/// origin for requested glyph, for horizontal-direction text segments. Each
+/// coordinate must be returned in a the x/y #hb_position_t output parameters.
+///
+/// Since: 11.3.0
+typedef hb_font_get_glyph_h_origins_func_t = hb_font_get_glyph_origins_func_t;
+
+/// hb_font_get_glyph_v_origins_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the (X,Y) coordinates (in scaled units) of the
+/// origin for requested glyph, for vertical-direction text segments. Each
+/// coordinate must be returned in a the x/y #hb_position_t output parameters.
+///
+/// Since: 11.3.0
+typedef hb_font_get_glyph_v_origins_func_t = hb_font_get_glyph_origins_func_t;
+typedef hb_font_get_glyph_kerning_func_tFunction =
+    hb_position_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t first_glyph,
+      hb_codepoint_t second_glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_glyph_kerning_func_tFunction =
+    Darthb_position_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t first_glyph,
+      Darthb_codepoint_t second_glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_glyph_kerning_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @first_glyph: The glyph ID of the first glyph in the glyph pair
+/// @second_glyph: The glyph ID of the second glyph in the glyph pair
+/// @user_data: User data pointer passed by the caller
+///
+/// This method should retrieve the kerning-adjustment value for a glyph-pair in
+/// the specified font, for horizontal text segments.
+typedef hb_font_get_glyph_kerning_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_glyph_kerning_func_tFunction>>;
+
+/// hb_font_get_glyph_h_kerning_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the kerning-adjustment value for a glyph-pair in
+/// the specified font, for horizontal text segments.
+typedef hb_font_get_glyph_h_kerning_func_t = hb_font_get_glyph_kerning_func_t;
+typedef hb_font_get_glyph_extents_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t glyph,
+      ffi.Pointer<hb_glyph_extents_t> extents,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_glyph_extents_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t glyph,
+      ffi.Pointer<hb_glyph_extents_t> extents,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_glyph_extents_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @glyph: The glyph ID to query
+/// @extents: (out): The #hb_glyph_extents_t retrieved
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the extents for a specified glyph. Extents must be
+/// returned in an #hb_glyph_extents output parameter.
+///
+/// Return value: `true` if data found, `false` otherwise
+typedef hb_font_get_glyph_extents_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_glyph_extents_func_tFunction>>;
+typedef hb_font_get_glyph_contour_point_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t glyph,
+      ffi.UnsignedInt point_index,
+      ffi.Pointer<hb_position_t> x,
+      ffi.Pointer<hb_position_t> y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_glyph_contour_point_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t glyph,
+      int point_index,
+      ffi.Pointer<hb_position_t> x,
+      ffi.Pointer<hb_position_t> y,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_glyph_contour_point_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @glyph: The glyph ID to query
+/// @point_index: The contour-point index to query
+/// @x: (out): The X value retrieved for the contour point
+/// @y: (out): The Y value retrieved for the contour point
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the (X,Y) coordinates (in scaled units) for a
+/// specified contour point in a glyph. Each coordinate must be returned as
+/// an #hb_position_t output parameter.
+///
+/// Return value: `true` if data found, `false` otherwise
+typedef hb_font_get_glyph_contour_point_func_t =
+    ffi.Pointer<
+      ffi.NativeFunction<hb_font_get_glyph_contour_point_func_tFunction>
+    >;
+typedef hb_font_get_glyph_name_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t glyph,
+      ffi.Pointer<ffi.Char> name,
+      ffi.UnsignedInt size,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_glyph_name_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t glyph,
+      ffi.Pointer<ffi.Char> name,
+      int size,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_glyph_name_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @glyph: The glyph ID to query
+/// @name: (out) (array length=size): Name string retrieved for the glyph ID
+/// @size: Length of the glyph-name string retrieved
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the glyph name that corresponds to a
+/// glyph ID. The name should be returned in a string output parameter.
+///
+/// Return value: `true` if data found, `false` otherwise
+typedef hb_font_get_glyph_name_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_glyph_name_func_tFunction>>;
+typedef hb_font_get_glyph_from_name_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      ffi.Pointer<ffi.Char> name,
+      ffi.Int len,
+      ffi.Pointer<hb_codepoint_t> glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_glyph_from_name_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      ffi.Pointer<ffi.Char> name,
+      int len,
+      ffi.Pointer<hb_codepoint_t> glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_glyph_from_name_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @name: (array length=len): The name string to query
+/// @len: The length of the name queried
+/// @glyph: (out): The glyph ID retrieved
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the glyph ID that corresponds to a glyph-name
+/// string.
+///
+/// Return value: `true` if data found, `false` otherwise
+typedef hb_font_get_glyph_from_name_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_glyph_from_name_func_tFunction>>;
+typedef hb_font_draw_glyph_or_fail_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t glyph,
+      ffi.Pointer<hb_draw_funcs_t> draw_funcs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_draw_glyph_or_fail_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t glyph,
+      ffi.Pointer<hb_draw_funcs_t> draw_funcs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_draw_glyph_or_fail_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @glyph: The glyph ID to query
+/// @draw_funcs: The draw functions to send the shape data to
+/// @draw_data: The data accompanying the draw functions
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// Return value: `true` if glyph was drawn, `false` otherwise
+///
+/// Since: 11.2.0
+typedef hb_font_draw_glyph_or_fail_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_draw_glyph_or_fail_func_tFunction>>;
+typedef hb_font_paint_glyph_or_fail_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t glyph,
+      ffi.Pointer<hb_paint_funcs_t> paint_funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.UnsignedInt palette_index,
+      hb_color_t foreground,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_paint_glyph_or_fail_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t glyph,
+      ffi.Pointer<hb_paint_funcs_t> paint_funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      int palette_index,
+      Darthb_color_t foreground,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_paint_glyph_or_fail_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @glyph: The glyph ID to query
+/// @paint_funcs: The paint functions to use
+/// @paint_data: The data accompanying the paint functions
+/// @palette_index: The color palette to use
+/// @foreground: The foreground color
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// Return value: `true` if glyph was painted, `false` otherwise
+///
+/// Since: 11.2.0
+typedef hb_font_paint_glyph_or_fail_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_paint_glyph_or_fail_func_tFunction>>;
 
 /// hb_glyph_info_t:
 /// @codepoint: either a Unicode code point (before shaping) or a glyph index
@@ -10116,7 +10474,23 @@ final class hb_font_extents_t extends ffi.Opaque {}
 ///
 /// The #hb_glyph_info_t is the structure that holds information about the
 /// glyphs and their relation to input text.
-final class hb_glyph_info_t extends ffi.Opaque {}
+final class hb_glyph_info_t extends ffi.Struct {
+  @hb_codepoint_t()
+  external int codepoint;
+
+  /// < private >
+  @hb_mask_t()
+  external int mask;
+
+  /// < public >
+  @ffi.Uint32()
+  external int cluster;
+
+  /// < private >
+  external hb_var_int_t var1;
+
+  external hb_var_int_t var2;
+}
 
 /// hb_glyph_flags_t:
 /// @HB_GLYPH_FLAG_UNSAFE_TO_BREAK: Indicates that if input text is broken at the
@@ -10235,7 +10609,22 @@ enum hb_glyph_flags_t {
 /// The #hb_glyph_position_t is the structure that holds the positions of the
 /// glyph in both horizontal and vertical directions. All positions in
 /// #hb_glyph_position_t are relative to the current point.
-final class hb_glyph_position_t extends ffi.Opaque {}
+final class hb_glyph_position_t extends ffi.Struct {
+  @hb_position_t()
+  external int x_advance;
+
+  @hb_position_t()
+  external int y_advance;
+
+  @hb_position_t()
+  external int x_offset;
+
+  @hb_position_t()
+  external int y_offset;
+
+  /// < private >
+  external hb_var_int_t var$;
+}
 
 /// hb_segment_properties_t:
 /// @direction: the #hb_direction_t of the buffer, see hb_buffer_set_direction().
@@ -10245,7 +10634,24 @@ final class hb_glyph_position_t extends ffi.Opaque {}
 /// The structure that holds various text properties of an #hb_buffer_t. Can be
 /// set and retrieved using hb_buffer_set_segment_properties() and
 /// hb_buffer_get_segment_properties(), respectively.
-final class hb_segment_properties_t extends ffi.Opaque {}
+final class hb_segment_properties_t extends ffi.Struct {
+  @ffi.UnsignedInt()
+  external int directionAsInt;
+
+  hb_direction_t get direction => hb_direction_t.fromValue(directionAsInt);
+
+  @ffi.UnsignedInt()
+  external int scriptAsInt;
+
+  hb_script_t get script => hb_script_t.fromValue(scriptAsInt);
+
+  external hb_language_t language;
+
+  /// < private >
+  external ffi.Pointer<ffi.Void> reserved1;
+
+  external ffi.Pointer<ffi.Void> reserved2;
+}
 
 final class hb_buffer_t extends ffi.Opaque {}
 
@@ -10572,6 +10978,248 @@ enum hb_buffer_diff_flags_t {
   };
 }
 
+typedef hb_buffer_message_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_buffer_t> buffer,
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Char> message,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_buffer_message_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_buffer_t> buffer,
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Char> message,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_buffer_message_func_t:
+/// @buffer: An #hb_buffer_t to work upon
+/// @font: The #hb_font_t the @buffer is shaped with
+/// @message: `NULL`-terminated message passed to the function
+/// @user_data: User data pointer passed by the caller
+///
+/// A callback method for #hb_buffer_t. The method gets called with the
+/// #hb_buffer_t it was set on, the #hb_font_t the buffer is shaped with and a
+/// message describing what step of the shaping process will be performed.
+/// Returning `false` from this method will skip this shaping step and move to
+/// the next one.
+///
+/// Return value: `true` to perform the shaping step, `false` to skip it.
+///
+/// Since: 1.1.3
+typedef hb_buffer_message_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_buffer_message_func_tFunction>>;
+typedef hb_font_get_glyph_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t unicode,
+      hb_codepoint_t variation_selector,
+      ffi.Pointer<hb_codepoint_t> glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_glyph_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t unicode,
+      Darthb_codepoint_t variation_selector,
+      ffi.Pointer<hb_codepoint_t> glyph,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_glyph_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @unicode: The Unicode code point to query
+/// @variation_selector: The  variation-selector code point to query
+/// @glyph: (out): The glyph ID retrieved
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the glyph ID for a specified Unicode code point
+/// font, with an optional variation selector.
+///
+/// Return value: `true` if data found, `false` otherwise
+/// Deprecated: 1.2.3
+typedef hb_font_get_glyph_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_glyph_func_tFunction>>;
+typedef hb_unicode_eastasian_width_func_tFunction =
+    ffi.UnsignedInt Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      hb_codepoint_t unicode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_unicode_eastasian_width_func_tFunction =
+    int Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      Darthb_codepoint_t unicode,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_unicode_eastasian_width_func_t:
+/// @ufuncs: A Unicode-functions structure
+/// @unicode: The code point to query
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_unicode_funcs_t structure.
+///
+/// Deprecated: 2.0.0
+typedef hb_unicode_eastasian_width_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_unicode_eastasian_width_func_tFunction>>;
+typedef hb_unicode_decompose_compatibility_func_tFunction =
+    ffi.UnsignedInt Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      hb_codepoint_t u,
+      ffi.Pointer<hb_codepoint_t> decomposed,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_unicode_decompose_compatibility_func_tFunction =
+    int Function(
+      ffi.Pointer<hb_unicode_funcs_t> ufuncs,
+      Darthb_codepoint_t u,
+      ffi.Pointer<hb_codepoint_t> decomposed,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_unicode_decompose_compatibility_func_t:
+/// @ufuncs: a Unicode function structure
+/// @u: codepoint to decompose
+/// @decomposed: address of codepoint array (of length #HB_UNICODE_MAX_DECOMPOSITION_LEN) to write decomposition into
+/// @user_data: user data pointer as passed to hb_unicode_funcs_set_decompose_compatibility_func()
+///
+/// Fully decompose @u to its Unicode compatibility decomposition. The codepoints of the decomposition will be written to @decomposed.
+/// The complete length of the decomposition will be returned.
+///
+/// If @u has no compatibility decomposition, zero should be returned.
+///
+/// The Unicode standard guarantees that a buffer of length #HB_UNICODE_MAX_DECOMPOSITION_LEN codepoints will always be sufficient for any
+/// compatibility decomposition plus an terminating value of 0.  Consequently, @decompose must be allocated by the caller to be at least this length.  Implementations
+/// of this function type must ensure that they do not write past the provided array.
+///
+/// Return value: number of codepoints in the full compatibility decomposition of @u, or 0 if no decomposition available.
+///
+/// Deprecated: 2.0.0
+typedef hb_unicode_decompose_compatibility_func_t =
+    ffi.Pointer<
+      ffi.NativeFunction<hb_unicode_decompose_compatibility_func_tFunction>
+    >;
+
+/// hb_font_get_glyph_v_kerning_func_t:
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// This method should retrieve the kerning-adjustment value for a glyph-pair in
+/// the specified font, for vertical text segments.
+typedef hb_font_get_glyph_v_kerning_func_t = hb_font_get_glyph_kerning_func_t;
+typedef hb_font_get_glyph_shape_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t glyph,
+      ffi.Pointer<hb_draw_funcs_t> draw_funcs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_get_glyph_shape_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t glyph,
+      ffi.Pointer<hb_draw_funcs_t> draw_funcs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_get_glyph_shape_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @glyph: The glyph ID to query
+/// @draw_funcs: The draw functions to send the shape data to
+/// @draw_data: The data accompanying the draw functions
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// Since: 4.0.0
+/// Deprecated: 7.0.0: Use #hb_font_draw_glyph_func_t instead
+typedef hb_font_get_glyph_shape_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_get_glyph_shape_func_tFunction>>;
+typedef hb_font_draw_glyph_func_tFunction =
+    ffi.Void Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t glyph,
+      ffi.Pointer<hb_draw_funcs_t> draw_funcs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_draw_glyph_func_tFunction =
+    void Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t glyph,
+      ffi.Pointer<hb_draw_funcs_t> draw_funcs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_draw_glyph_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @glyph: The glyph ID to query
+/// @draw_funcs: The draw functions to send the shape data to
+/// @draw_data: The data accompanying the draw functions
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// Since: 7.0.0
+/// Deprecated: 11.2.0: Use hb_font_draw_glyph_func_or_fail_t instead.
+typedef hb_font_draw_glyph_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_draw_glyph_func_tFunction>>;
+typedef hb_font_paint_glyph_func_tFunction =
+    hb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      hb_codepoint_t glyph,
+      ffi.Pointer<hb_paint_funcs_t> paint_funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.UnsignedInt palette_index,
+      hb_color_t foreground,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+typedef Darthb_font_paint_glyph_func_tFunction =
+    Darthb_bool_t Function(
+      ffi.Pointer<hb_font_t> font,
+      ffi.Pointer<ffi.Void> font_data,
+      Darthb_codepoint_t glyph,
+      ffi.Pointer<hb_paint_funcs_t> paint_funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      int palette_index,
+      Darthb_color_t foreground,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
+/// hb_font_paint_glyph_func_t:
+/// @font: #hb_font_t to work upon
+/// @font_data: @font user data pointer
+/// @glyph: The glyph ID to query
+/// @paint_funcs: The paint functions to use
+/// @paint_data: The data accompanying the paint functions
+/// @palette_index: The color palette to use
+/// @foreground: The foreground color
+/// @user_data: User data pointer passed by the caller
+///
+/// A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+///
+/// Since: 7.0.0
+/// Deprecated: 11.2.0: Use hb_font_paint_glyph_or_fail_func_t instead.
+typedef hb_font_paint_glyph_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_font_paint_glyph_func_tFunction>>;
+
 final class hb_shape_plan_t extends ffi.Opaque {}
 
 /// hb_style_tag_t:
@@ -10726,6 +11374,16 @@ enum hb_ot_name_id_predefined_t {
   };
 }
 
+/// hb_ot_name_id_t:
+///
+/// An integral type representing an OpenType 'name' table name identifier.
+/// There are predefined name IDs, as well as name IDs return from other
+/// API.  These can be used to fetch name strings from a font face.
+///
+/// Since: 2.0.0
+typedef hb_ot_name_id_t = ffi.UnsignedInt;
+typedef Darthb_ot_name_id_t = int;
+
 /// hb_ot_name_entry_t:
 /// @name_id: name ID
 /// @language: language
@@ -10733,7 +11391,16 @@ enum hb_ot_name_id_predefined_t {
 /// Structure representing a name ID in a particular language.
 ///
 /// Since: 2.1.0
-final class hb_ot_name_entry_t extends ffi.Opaque {}
+final class hb_ot_name_entry_t extends ffi.Struct {
+  @hb_ot_name_id_t()
+  external int name_id;
+
+  /// < private >
+  external hb_var_int_t var$;
+
+  /// < public >
+  external hb_language_t language;
+}
 
 /// hb_ot_color_palette_flags_t:
 /// @HB_OT_COLOR_PALETTE_FLAG_DEFAULT: Default indicating that there is nothing special
@@ -10775,7 +11442,13 @@ enum hb_ot_color_palette_flags_t {
 /// be used.
 ///
 /// Since: 2.1.0
-final class hb_ot_color_layer_t extends ffi.Opaque {}
+final class hb_ot_color_layer_t extends ffi.Struct {
+  @hb_codepoint_t()
+  external int glyph;
+
+  @ffi.UnsignedInt()
+  external int color_index;
+}
 
 /// hb_ot_var_axis_t:
 /// @tag: axis tag
@@ -10788,7 +11461,22 @@ final class hb_ot_color_layer_t extends ffi.Opaque {}
 ///
 /// Since: 1.4.2
 /// Deprecated: 2.2.0
-final class hb_ot_var_axis_t extends ffi.Opaque {}
+final class hb_ot_var_axis_t extends ffi.Struct {
+  @hb_tag_t()
+  external int tag;
+
+  @hb_ot_name_id_t()
+  external int name_id;
+
+  @ffi.Float()
+  external double min_value;
+
+  @ffi.Float()
+  external double default_value;
+
+  @ffi.Float()
+  external double max_value;
+}
 
 /// hb_ot_layout_glyph_class_t:
 /// @HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED: Glyphs not matching the other classifications
@@ -11098,7 +11786,13 @@ enum hb_ot_math_kern_t {
 /// Data type to hold math kerning (cut-in) information for a glyph.
 ///
 /// Since: 3.4.0
-final class hb_ot_math_kern_entry_t extends ffi.Opaque {}
+final class hb_ot_math_kern_entry_t extends ffi.Struct {
+  @hb_position_t()
+  external int max_correction_height;
+
+  @hb_position_t()
+  external int kern_value;
+}
 
 /// hb_ot_math_glyph_variant_t:
 /// @glyph: The glyph index of the variant
@@ -11107,7 +11801,13 @@ final class hb_ot_math_kern_entry_t extends ffi.Opaque {}
 /// Data type to hold math-variant information for a glyph.
 ///
 /// Since: 1.3.3
-final class hb_ot_math_glyph_variant_t extends ffi.Opaque {}
+final class hb_ot_math_glyph_variant_t extends ffi.Struct {
+  @hb_codepoint_t()
+  external int glyph;
+
+  @hb_position_t()
+  external int advance;
+}
 
 /// hb_ot_math_glyph_part_flags_t:
 /// @HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER: This is an extender glyph part that
@@ -11143,7 +11843,25 @@ enum hb_ot_math_glyph_part_flags_t {
 /// on the fly from parts.
 ///
 /// Since: 1.3.3
-final class hb_ot_math_glyph_part_t extends ffi.Opaque {}
+final class hb_ot_math_glyph_part_t extends ffi.Struct {
+  @hb_codepoint_t()
+  external int glyph;
+
+  @hb_position_t()
+  external int start_connector_length;
+
+  @hb_position_t()
+  external int end_connector_length;
+
+  @hb_position_t()
+  external int full_advance;
+
+  @ffi.UnsignedInt()
+  external int flagsAsInt;
+
+  hb_ot_math_glyph_part_flags_t get flags =>
+      hb_ot_math_glyph_part_flags_t.fromValue(flagsAsInt);
+}
 
 /// hb_ot_meta_tag_t:
 /// @HB_OT_META_TAG_DESIGN_LANGUAGES: Design languages. Text, using only
@@ -11321,7 +12039,35 @@ enum hb_ot_var_axis_flags_t {
 /// #HB_OT_VAR_AXIS_FLAG_HIDDEN.</note>
 ///
 /// Since: 2.2.0
-final class hb_ot_var_axis_info_t extends ffi.Opaque {}
+final class hb_ot_var_axis_info_t extends ffi.Struct {
+  @ffi.UnsignedInt()
+  external int axis_index;
+
+  @hb_tag_t()
+  external int tag;
+
+  @hb_ot_name_id_t()
+  external int name_id;
+
+  @ffi.UnsignedInt()
+  external int flagsAsInt;
+
+  hb_ot_var_axis_flags_t get flags =>
+      hb_ot_var_axis_flags_t.fromValue(flagsAsInt);
+
+  @ffi.Float()
+  external double min_value;
+
+  @ffi.Float()
+  external double default_value;
+
+  @ffi.Float()
+  external double max_value;
+
+  /// < private >
+  @ffi.UnsignedInt()
+  external int reserved;
+}
 
 final class hb_subset_input_t extends ffi.Opaque {}
 
@@ -11448,3 +12194,97 @@ enum hb_subset_sets_t {
     _ => throw ArgumentError('Unknown value for hb_subset_sets_t: $value'),
   };
 }
+
+const int HB_CODEPOINT_INVALID = 4294967295;
+
+const int HB_TAG_NONE = 0;
+
+const int HB_TAG_MAX = 4294967295;
+
+const int HB_TAG_MAX_SIGNED = 2147483647;
+
+const int HB_FEATURE_GLOBAL_START = 0;
+
+const int HB_FEATURE_GLOBAL_END = 4294967295;
+
+const int HB_UNICODE_MAX = 1114111;
+
+const int HB_SET_VALUE_INVALID = 4294967295;
+
+const int HB_MAP_VALUE_INVALID = 4294967295;
+
+const int HB_PAINT_IMAGE_FORMAT_PNG = 1886283552;
+
+const int HB_PAINT_IMAGE_FORMAT_SVG = 1937139488;
+
+const int HB_PAINT_IMAGE_FORMAT_BGRA = 1111970369;
+
+const int HB_FONT_NO_VAR_NAMED_INSTANCE = 4294967295;
+
+const int HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT = 65533;
+
+const int HB_SCRIPT_CANADIAN_ABORIGINAL = 1130458739;
+
+const int HB_BUFFER_FLAGS_DEFAULT = 0;
+
+const int HB_BUFFER_SERIALIZE_FLAGS_DEFAULT = 0;
+
+const int HB_UNICODE_COMBINING_CLASS_CCC133 = 133;
+
+const int HB_UNICODE_MAX_DECOMPOSITION_LEN = 19;
+
+const int HB_VERSION_MAJOR = 14;
+
+const int HB_VERSION_MINOR = 2;
+
+const int HB_VERSION_MICRO = 1;
+
+const String HB_VERSION_STRING = '14.2.1';
+
+const int HB_MATH_GLYPH_PART_FLAG_EXTENDER = 1;
+
+const int HB_OT_MATH_SCRIPT = 1835103336;
+
+const int HB_OT_VAR_NO_AXIS_INDEX = 4294967295;
+
+const int HB_OT_TAG_BASE = 1111577413;
+
+const int HB_OT_TAG_GDEF = 1195656518;
+
+const int HB_OT_TAG_GSUB = 1196643650;
+
+const int HB_OT_TAG_GPOS = 1196445523;
+
+const int HB_OT_TAG_JSTF = 1246975046;
+
+const int HB_OT_TAG_DEFAULT_SCRIPT = 1145457748;
+
+const int HB_OT_TAG_DEFAULT_LANGUAGE = 1684434036;
+
+const int HB_OT_MAX_TAGS_PER_SCRIPT = 3;
+
+const int HB_OT_MAX_TAGS_PER_LANGUAGE = 3;
+
+const int HB_OT_LAYOUT_NO_SCRIPT_INDEX = 65535;
+
+const int HB_OT_LAYOUT_NO_FEATURE_INDEX = 65535;
+
+const int HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX = 65535;
+
+const int HB_OT_LAYOUT_NO_VARIATIONS_INDEX = 4294967295;
+
+const int HB_OT_TAG_MATH = 1296127048;
+
+const int HB_OT_TAG_MATH_SCRIPT = 1835103336;
+
+const int HB_OT_SHAPE_BUFFER_FORMAT_SERIAL = 1;
+
+const int HB_OT_TAG_VAR_AXIS_ITALIC = 1769234796;
+
+const int HB_OT_TAG_VAR_AXIS_OPTICAL_SIZE = 1869640570;
+
+const int HB_OT_TAG_VAR_AXIS_SLANT = 1936486004;
+
+const int HB_OT_TAG_VAR_AXIS_WIDTH = 2003072104;
+
+const int HB_OT_TAG_VAR_AXIS_WEIGHT = 2003265652;
