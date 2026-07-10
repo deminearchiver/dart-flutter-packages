@@ -1,3 +1,11 @@
+## 0.2.1
+
+- Bumped native HarfBuzz dependency to [`14.2.1`](https://github.com/harfbuzz/harfbuzz/releases/tag/14.2.1).
+
+- Optimized native library builds: disabled RTTI, exceptions, and HarfBuzz multithreading.
+
+- Switched from [`native_toolchain_c`](https://pub.dev/packages/native_toolchain_c) to [`native_toolchain_ninja`](https://pub.dev/packages/native_toolchain_ninja) tool for building the native library.
+
 ## 0.2.0+1
 
 - Moved all HarfBuzz-related packages to a dedicated subdirectory.
