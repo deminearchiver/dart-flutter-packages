@@ -9,6 +9,7 @@ import 'package:material_example/experiment6.dart' show Experiment6View;
 import 'package:material_example/experiment7.dart' show Experiment7View;
 import 'package:material_example/experiment8.dart' show Experiment8View;
 import 'package:material_example/experiment9.dart' show Experiment9View;
+import 'package:material_example/experiment10.dart' show Experiment10View;
 import 'package:vector_math/vector_math_64.dart';
 
 class App extends StatefulWidget {
@@ -141,7 +142,6 @@ class _AppState extends State<App> {
             dragDevices: PointerDeviceKind.values.toSet(),
           )
         : null,
-
     // Navigation
     // navigatorKey: globalNavigatorKey,
     builder: _buildNavigatorWrapper,
@@ -207,6 +207,7 @@ class _NavigationViewState extends State<NavigationView> {
             7 => const Experiment7View(),
             8 => const Experiment8View(),
             9 => const Experiment9View(),
+            10 => const Experiment10View(),
             _ => Scaffold(
               backgroundColor: colorTheme.surfaceContainer,
               body: const Placeholder(),
@@ -223,7 +224,7 @@ class _NavigationViewState extends State<NavigationView> {
   }
 
   static const _firstIndex = 1;
-  static const _lastIndex = 9;
+  static const _lastIndex = 10;
 }
 
 class DeveloperToolbar extends StatefulWidget {
