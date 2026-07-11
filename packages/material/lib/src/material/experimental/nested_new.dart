@@ -234,6 +234,9 @@ abstract class SingleChildStatefulWidget extends StatefulWidget
   @override
   SingleChildStatefulElement createElement() =>
       SingleChildStatefulElement(this);
+
+  @override
+  SingleChildState<SingleChildStatefulWidget> createState();
 }
 
 /// A [State] for [SingleChildStatefulWidget].
