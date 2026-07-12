@@ -522,6 +522,7 @@ final class _LoadingIndicatorThemeDataDefaults
     LoadingIndicatorStates states,
     _LoadingIndicatorThemeDataDefaults defaults,
   ) =>
+      defaults._overrides.containerShape?.resolve(states) ??
       defaults._shapeTheme.applyCorner(corner: defaults._shapeTheme.cornerFull);
 
   @override
@@ -531,13 +532,22 @@ final class _LoadingIndicatorThemeDataDefaults
   static Color _resolveContainerColor(
     LoadingIndicatorStates states,
     _LoadingIndicatorThemeDataDefaults defaults,
-  ) => states.isContained
-      ? defaults._colorTheme.primaryContainer
-      : Colors.transparent;
+  ) =>
+      defaults._overrides.containerColor?.resolve(states) ??
+      (states.isContained
+          ? defaults._colorTheme.primaryContainer
+          : Colors.transparent);
 
   @override
   LoadingIndicatorStateProperty<Outline> get containerOutline =>
-      const .all(.from());
+      _LoadingIndicatorStateProperty(this, _resolveContainerOutline);
+
+  static Outline _resolveContainerOutline(
+    LoadingIndicatorStates states,
+    _LoadingIndicatorThemeDataDefaults defaults,
+  ) => const Outline.from().maybeMerge(
+    defaults._overrides.containerOutline?.resolve(states),
+  );
 
   @override
   LoadingIndicatorStateProperty<Color> get activeIndicatorColor =>
@@ -546,13 +556,22 @@ final class _LoadingIndicatorThemeDataDefaults
   static Color _resolveActiveIndicatorColor(
     LoadingIndicatorStates states,
     _LoadingIndicatorThemeDataDefaults defaults,
-  ) => states.isContained
-      ? defaults._colorTheme.onPrimaryContainer
-      : defaults._colorTheme.primary;
+  ) =>
+      defaults._overrides.activeIndicatorColor?.resolve(states) ??
+      (states.isContained
+          ? defaults._colorTheme.onPrimaryContainer
+          : defaults._colorTheme.primary);
 
   @override
   LoadingIndicatorStateProperty<Outline> get activeIndicatorOutline =>
-      const .all(.from());
+      _LoadingIndicatorStateProperty(this, _resolveActiveIndicatorOutline);
+
+  static Outline _resolveActiveIndicatorOutline(
+    LoadingIndicatorStates states,
+    _LoadingIndicatorThemeDataDefaults defaults,
+  ) => const Outline.from().maybeMerge(
+    defaults._overrides.activeIndicatorOutline?.resolve(states),
+  );
 
   @override
   LoadingIndicatorThemeData copyWith({
