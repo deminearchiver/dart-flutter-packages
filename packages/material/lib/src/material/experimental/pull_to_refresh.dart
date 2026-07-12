@@ -392,13 +392,19 @@ class _PullToRefreshDefaultScrollPhysics extends ScrollPhysics {
   _PullToRefreshDefaultScrollPhysics applyTo(ScrollPhysics? ancestor) =>
       .new(parent: buildParent(ancestor), controller: controller);
 
+  double _applyPhysicsToUserOffsetSuper(ScrollMetrics position, double offset) {
+    if (offset == 0.0) return 0.0;
+    return super.applyPhysicsToUserOffset(position, offset);
+  }
+
   @override
   double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
+    if (offset == 0.0) return 0.0;
     if (!controller.enabled ||
         controller.isRefreshing ||
         controller.isAnimating) {
       controller.farEdgeOverscroll = 0.0;
-      return super.applyPhysicsToUserOffset(position, offset);
+      return _applyPhysicsToUserOffsetSuper(position, offset);
     }
     if (position.pixels < position.maxScrollExtent) {
       controller.farEdgeOverscroll = 0.0;
@@ -406,7 +412,7 @@ class _PullToRefreshDefaultScrollPhysics extends ScrollPhysics {
     if (offset < 0.0 && controller.distancePulled > 0.0) {
       final consumed = controller.consumeAvailableOffset(offset);
       final delta = offset - consumed;
-      return super.applyPhysicsToUserOffset(position, delta);
+      return _applyPhysicsToUserOffsetSuper(position, delta);
     }
     if (offset > 0.0) {
       var remainingOffset = offset;
@@ -418,23 +424,23 @@ class _PullToRefreshDefaultScrollPhysics extends ScrollPhysics {
         controller.farEdgeOverscroll -= overscrollConsumed;
         remainingOffset -= overscrollConsumed;
         if (remainingOffset <= 0.0) {
-          return super.applyPhysicsToUserOffset(position, offset);
+          return _applyPhysicsToUserOffsetSuper(position, offset);
         }
       }
       final delta = position.pixels - position.minScrollExtent;
       if (delta <= 0.0) {
         controller.consumeAvailableOffset(remainingOffset);
-        return super.applyPhysicsToUserOffset(
+        return _applyPhysicsToUserOffsetSuper(
           position,
           offset - remainingOffset,
         );
       } else if (remainingOffset > delta) {
         final overscroll = remainingOffset - delta;
         controller.consumeAvailableOffset(overscroll);
-        return super.applyPhysicsToUserOffset(position, offset - overscroll);
+        return _applyPhysicsToUserOffsetSuper(position, offset - overscroll);
       }
     }
-    return super.applyPhysicsToUserOffset(position, offset);
+    return _applyPhysicsToUserOffsetSuper(position, offset);
   }
 
   @override
