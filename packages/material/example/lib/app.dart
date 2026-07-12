@@ -1,3 +1,4 @@
+import 'package:dynamic_color_ffi/dynamic_color_ffi.dart';
 import 'package:flutter/gestures.dart';
 import 'package:material_example/flutter.dart';
 import 'package:material_example/experiment1.dart' show Experiment1View;
@@ -33,15 +34,21 @@ class _AppState extends State<App> {
       .light => .light,
       .dark => .dark,
     };
+
     final highContrast = MediaQuery.highContrastOf(context);
     final contrastLevel = highContrast ? 1.0 : 0.0;
-    final colorTheme = ColorThemeData.fromSeed(
+
+    var colorTheme = ColorThemeData.fromSeed(
       brightness: brightness,
       contrastLevel: contrastLevel,
       variant: _variant,
       platform: _platform,
       specVersion: _specVersion,
     );
+
+    final dynamicColorScheme = DynamicColor.dynamicColorScheme(brightness);
+    colorTheme = colorTheme.maybeMerge(dynamicColorScheme?.toColorTheme());
+
     final staticColors = StaticColorsData.fallback(
       brightness: brightness,
       contrastLevel: contrastLevel,
@@ -49,6 +56,7 @@ class _AppState extends State<App> {
       platform: _platform,
       specVersion: _specVersion,
     );
+
     return [
       ColorTheme.replaceWithData(data: colorTheme),
       SingleChildBuilder(
