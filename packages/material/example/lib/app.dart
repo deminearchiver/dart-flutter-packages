@@ -11,7 +11,6 @@ import 'package:material_example/experiment7.dart' show Experiment7View;
 import 'package:material_example/experiment8.dart' show Experiment8View;
 import 'package:material_example/experiment9.dart' show Experiment9View;
 import 'package:material_example/experiment10.dart' show Experiment10View;
-import 'package:vector_math/vector_math_64.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -249,7 +248,7 @@ class DeveloperToolbar extends StatefulWidget {
   State<DeveloperToolbar> createState() => _DeveloperToolbarState();
 }
 
-const _kTapTargetSize = 64.0;
+const _kTapTargetSize = 48.0;
 
 enum _DragPhase { idle, down, drag }
 
@@ -257,18 +256,18 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
   final _alignKey = GlobalKey();
   final _toolbarKey = GlobalKey();
 
-  Size? get _alignSizeOrNull {
-    final alignBox = _alignKey.currentContext?.findRenderObject() as RenderBox?;
-    if (alignBox == null) return null;
-    return alignBox.hasSize ? alignBox.size : null;
-  }
+  // Size? get _alignSizeOrNull {
+  //   final alignBox = _alignKey.currentContext?.findRenderObject() as RenderBox?;
+  //   if (alignBox == null) return null;
+  //   return alignBox.hasSize ? alignBox.size : null;
+  // }
 
-  Size? get _toolbarSizeOrNull {
-    final toolbarBox =
-        _toolbarKey.currentContext?.findRenderObject() as RenderBox?;
-    if (toolbarBox == null) return null;
-    return toolbarBox.hasSize ? toolbarBox.size : null;
-  }
+  // Size? get _toolbarSizeOrNull {
+  //   final toolbarBox =
+  //       _toolbarKey.currentContext?.findRenderObject() as RenderBox?;
+  //   if (toolbarBox == null) return null;
+  //   return toolbarBox.hasSize ? toolbarBox.size : null;
+  // }
 
   var _isOpen = false;
 
@@ -295,7 +294,6 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
     });
 
     assert(details.primaryDelta != null);
-    final delta = details.primaryDelta!;
 
     final alignBox = _alignKey.currentContext?.findRenderObject() as RenderBox?;
     final toolbarBox =
@@ -379,37 +377,36 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
           children: [
             SizedTouchTarget(
               minimumSize: const .square(_kTapTargetSize),
-              child: IconButton(
-                style:
-                    LegacyThemeFactory.createIconButtonStyle(
-                      colorTheme: colorTheme,
-                      elevationTheme: elevationTheme,
-                      shapeTheme: shapeTheme,
-                      stateTheme: stateTheme,
-                      size: .small,
-                      color: .standard,
-                      tapTargetSize: .shrinkWrap,
-                      containerColor: colorTheme.surfaceContainerLow,
-                    ).copyWith(
-                      shape: .all(shapeTheme.applyCorners(corners: topCorners)),
+              child: SizedBox.square(
+                dimension: 32.0,
+                child: Surface(
+                  clipBehavior: .antiAlias,
+                  shape: shapeTheme.applyCorners(corners: topCorners),
+                  color: colorTheme.surfaceContainerLow,
+                  child: InkWell(
+                    overlayColor: WidgetStateLayerColor(
+                      color: .all(colorTheme.onSurfaceVariant),
+                      opacity: stateTheme.asWidgetStateLayerOpacity,
                     ),
-                onPressed: () {
-                  widget.onSelectedIndexChanged(widget.selectedIndex - 1);
-                },
-                icon: CenterOptically(
-                  corners: topCorners,
-                  maxOffsets: .infinity,
-                  child: const Icon(
-                    Symbols.arrow_upward_rounded,
-                    opticalSize: 20.0,
-                    size: 20.0,
+                    onTap: () {
+                      widget.onSelectedIndexChanged(widget.selectedIndex - 1);
+                    },
+                    child: CenterOptically(
+                      corners: topCorners,
+                      maxOffsets: .infinity,
+                      child: Icon(
+                        Symbols.arrow_upward_rounded,
+                        opticalSize: 20.0,
+                        size: 20.0,
+                        color: colorTheme.onSurfaceVariant,
+                      ),
+                    ),
                   ),
                 ),
-                tooltip: "Previous",
               ),
             ),
             SizedBox(
-              height: 40.0,
+              height: 32.0,
               child: Surface(
                 shape: shapeTheme.applyCorner(
                   corner: shapeTheme.cornerExtraSmall,
@@ -427,35 +424,32 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
             ),
             SizedTouchTarget(
               minimumSize: const .square(_kTapTargetSize),
-              child: IconButton(
-                style:
-                    LegacyThemeFactory.createIconButtonStyle(
-                      colorTheme: colorTheme,
-                      elevationTheme: elevationTheme,
-                      shapeTheme: shapeTheme,
-                      stateTheme: stateTheme,
-                      size: .small,
-                      color: .standard,
-                      tapTargetSize: .shrinkWrap,
-                      containerColor: colorTheme.surfaceContainerLow,
-                    ).copyWith(
-                      shape: .all(
-                        shapeTheme.applyCorners(corners: bottomCorners),
+              child: SizedBox.square(
+                dimension: 32.0,
+                child: Surface(
+                  clipBehavior: .antiAlias,
+                  shape: shapeTheme.applyCorners(corners: bottomCorners),
+                  color: colorTheme.surfaceContainerLow,
+                  child: InkWell(
+                    overlayColor: WidgetStateLayerColor(
+                      color: .all(colorTheme.onSurfaceVariant),
+                      opacity: stateTheme.asWidgetStateLayerOpacity,
+                    ),
+                    onTap: () {
+                      widget.onSelectedIndexChanged(widget.selectedIndex + 1);
+                    },
+                    child: CenterOptically(
+                      corners: bottomCorners,
+                      maxOffsets: .infinity,
+                      child: Icon(
+                        Symbols.arrow_downward_rounded,
+                        opticalSize: 20.0,
+                        size: 20.0,
+                        color: colorTheme.onSurfaceVariant,
                       ),
                     ),
-                onPressed: () {
-                  widget.onSelectedIndexChanged(widget.selectedIndex + 1);
-                },
-                icon: CenterOptically(
-                  corners: bottomCorners,
-                  maxOffsets: .infinity,
-                  child: const Icon(
-                    Symbols.arrow_downward_rounded,
-                    opticalSize: 20.0,
-                    size: 20.0,
                   ),
                 ),
-                tooltip: "Next",
               ),
             ),
           ],
@@ -480,7 +474,7 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
       return SizedTouchTarget(
         minimumSize: const .square(_kTapTargetSize),
         child: SizedBox.square(
-          dimension: 40.0,
+          dimension: 32.0,
           child: Surface(
             clipBehavior: .antiAlias,
             shape: containerShape,
@@ -500,8 +494,8 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
                 onTap: () {},
                 child: Icon(
                   Symbols.drag_indicator_rounded,
-                  opticalSize: 24.0,
-                  size: 24.0,
+                  opticalSize: 20.0,
+                  size: 20.0,
                   color: contentColor,
                 ),
               ),
@@ -513,33 +507,39 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
 
     Widget buildExpandedContent() {
       return SizedBox(
-        width: 64.0,
+        width: 48.0,
         child: Flex.vertical(
           mainAxisSize: .min,
           children: [
-            const SizedBox(height: 12.0),
+            const SizedBox(height: 8.0),
             SizedTouchTarget(
               minimumSize: const .square(_kTapTargetSize),
-              child: IconButton(
-                style:
-                    LegacyThemeFactory.createIconButtonStyle(
-                      colorTheme: colorTheme,
-                      elevationTheme: elevationTheme,
-                      shapeTheme: shapeTheme,
-                      stateTheme: stateTheme,
-                      color: .standard,
-                      tapTargetSize: .shrinkWrap,
-                      containerColor: colorTheme.surfaceContainerLow,
-                    ).copyWith(
-                      shape: .all(shapeTheme.applyCorners(corners: topCorners)),
+              child: SizedBox.square(
+                dimension: 32.0,
+                child: Surface(
+                  clipBehavior: .antiAlias,
+                  shape: shapeTheme.applyCorners(corners: topCorners),
+                  color: colorTheme.surfaceContainerLow,
+                  child: InkWell(
+                    overlayColor: WidgetStateLayerColor(
+                      color: .all(colorTheme.onSurfaceVariant),
+                      opacity: stateTheme.asWidgetStateLayerOpacity,
                     ),
-                onPressed: () => setState(() => _isOpen = false),
-                icon: CenterOptically(
-                  corners: topCorners,
-                  maxOffsets: .infinity,
-                  child: const Icon(Symbols.close_rounded),
+                    onTap: () {
+                      setState(() => _isOpen = false);
+                    },
+                    child: CenterOptically(
+                      corners: topCorners,
+                      maxOffsets: .infinity,
+                      child: Icon(
+                        Symbols.close_rounded,
+                        opticalSize: 20.0,
+                        size: 20.0,
+                        color: colorTheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
                 ),
-                tooltip: "Close",
               ),
             ),
             const SizedBox(height: 2.0),
@@ -547,55 +547,41 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
             const SizedBox(height: 2.0),
             SizedTouchTarget(
               minimumSize: const .square(_kTapTargetSize),
-              child: IconButton(
-                style:
-                    LegacyThemeFactory.createIconButtonStyle(
-                      colorTheme: colorTheme,
-                      elevationTheme: elevationTheme,
-                      shapeTheme: shapeTheme,
-                      stateTheme: stateTheme,
-                      color: .standard,
-                      tapTargetSize: .shrinkWrap,
-                      containerColor: colorTheme.surfaceContainerLow,
-                    ).copyWith(
-                      shape: .all(
-                        shapeTheme.applyCorners(corners: bottomCorners),
+              child: SizedBox.square(
+                dimension: 32.0,
+                child: Surface(
+                  clipBehavior: .antiAlias,
+                  shape: shapeTheme.applyCorners(corners: bottomCorners),
+                  color: colorTheme.surfaceContainerLow,
+                  child: InkWell(
+                    overlayColor: WidgetStateLayerColor(
+                      color: .all(colorTheme.onSurfaceVariant),
+                      opacity: stateTheme.asWidgetStateLayerOpacity,
+                    ),
+                    onTap: () {
+                      setState(
+                        () => _horizontalAlignment = -_horizontalAlignment,
+                      );
+                    },
+                    child: CenterOptically(
+                      corners: bottomCorners,
+                      maxOffsets: .infinity,
+                      child: Icon(
+                        _horizontalAlignment > 0.0
+                            ? Symbols.chevron_left_rounded
+                            : Symbols.chevron_right_rounded,
+                        opticalSize: 20.0,
+                        size: 20.0,
+                        color: colorTheme.onSurfaceVariant,
                       ),
                     ),
-                onPressed: () => setState(
-                  () => _horizontalAlignment = -_horizontalAlignment,
+                  ),
                 ),
-                icon: CenterOptically(
-                  corners: bottomCorners,
-                  maxOffsets: .infinity,
-                  child: _horizontalAlignment > 0.0
-                      ? const Icon(Symbols.chevron_left_rounded)
-                      : const Icon(Symbols.chevron_right_rounded),
-                ),
-                tooltip: "Close",
               ),
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 6.0),
             buildPager(),
-            // const SizedBox(height: 8.0),
-            // SizedTouchTarget(
-            //   minimumSize: const .square(_kTapTargetSize),
-            //   child: IconButton(
-            //     style: LegacyThemeFactory.createIconButtonStyle(
-            //       colorTheme: colorTheme,
-            //       elevationTheme: elevationTheme,
-            //       shapeTheme: shapeTheme,
-            //       stateTheme: stateTheme,
-            //       color: .standard,
-            //       tapTargetSize: .shrinkWrap,
-            //       containerColor: colorTheme.surfaceContainerLow,
-            //     ),
-            //     onPressed: () {},
-            //     icon: const Icon(Symbols.more_vert_rounded),
-            //     tooltip: "More",
-            //   ),
-            // ),
-            const SizedBox(height: 12.0),
+            const SizedBox(height: 8.0),
           ],
         ),
       );
@@ -625,99 +611,56 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
           alignment: Alignment(value, _verticalAlignment),
           child: child,
         ),
-        child: MouseRegion(
-          opaque: true,
-          // onEnter: (event) {
-          //   if (_dragPhase == .drag) return;
-          //   switch (event.kind) {
-          //     case .mouse || .trackpad:
-          //       setState(() => _isOpen = true);
-          //     default:
-          //   }
-          // },
-          // onExit: (event) {
-          //   if (_dragPhase == .drag) return;
-          //   switch (event.kind) {
-          //     case .mouse || .trackpad:
-          //       setState(() => _isOpen = false);
-          //     default:
-          //   }
-          // },
-          child: GestureDetector(
-            onTapUp: (details) {
-              if (_dragPhase == .drag) return;
-              // switch (details.kind) {
-              //   case .mouse || .trackpad:
-              //     break;
-              //   default:
-              setState(() => _isOpen = true);
-              // }
+        child: GestureDetector(
+          onTapUp: (details) {
+            if (_dragPhase == .drag) return;
+            setState(() => _isOpen = true);
+          },
+          onVerticalDragDown: !_isOpen ? _onDragDown : null,
+          onVerticalDragStart: !_isOpen ? _onDragStart : null,
+          onVerticalDragUpdate: !_isOpen ? _onDragUpdate : null,
+          onVerticalDragEnd: !_isOpen ? _onDragEnd : null,
+          onVerticalDragCancel: !_isOpen ? _onDragCancel : null,
+          child: TweenAnimationBuilder<double>(
+            tween: Tween<double>(end: isOpen ? 1.0 : 0.0),
+            duration: duration,
+            curve: easing,
+            builder: (context, value, child) {
+              return Surface(
+                key: _toolbarKey,
+                clipBehavior: .antiAlias,
+                shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
+                color: Color.lerp(
+                  colorTheme.surfaceContainerHigh,
+                  colorTheme.surfaceContainerLowest,
+                  value,
+                ),
+                elevation: lerpDouble(
+                  elevationTheme.level0,
+                  elevationTheme.level3,
+                  value,
+                ),
+                child: IgnorePointer(
+                  ignoring: value != 0.0 && value != 1.0,
+                  child: child,
+                ),
+              );
             },
-            onVerticalDragDown: !_isOpen ? _onDragDown : null,
-            onVerticalDragStart: !_isOpen ? _onDragStart : null,
-            onVerticalDragUpdate: !_isOpen ? _onDragUpdate : null,
-            onVerticalDragEnd: !_isOpen ? _onDragEnd : null,
-            onVerticalDragCancel: !_isOpen ? _onDragCancel : null,
-            child: TweenAnimationBuilder<double>(
-              tween: Tween<double>(end: isOpen ? 1.0 : 0.0),
+            child: AnimatedSize(
               duration: duration,
               curve: easing,
-              builder: (context, value, child) {
-                return Surface(
-                  key: _toolbarKey,
-                  clipBehavior: .antiAlias,
-                  shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
-                  color: Color.lerp(
-                    colorTheme.surfaceContainerHigh,
-                    colorTheme.surfaceContainerLowest,
-                    value,
-                  ),
-                  elevation: lerpDouble(
-                    elevationTheme.level0,
-                    elevationTheme.level3,
-                    value,
-                  ),
-                  child: IgnorePointer(
-                    ignoring: value != 0.0 && value != 1.0,
-                    child: child,
-                  ),
-                );
-              },
-              child: AnimatedSize(
+              clipBehavior: .none,
+              alignment: resolvedAlignment,
+              child: AnimatedSwitcher(
                 duration: duration,
-                curve: easing,
-                clipBehavior: .none,
-                alignment: resolvedAlignment,
-                child: AnimatedSwitcher(
-                  duration: duration,
-                  child: isOpen
-                      ? buildExpandedContent()
-                      : buildCollapsedContent(),
-                ),
+                child: isOpen
+                    ? buildExpandedContent()
+                    : buildCollapsedContent(),
               ),
             ),
           ),
         ),
       ),
     );
-  }
-}
-
-class Navigation2View extends StatefulWidget {
-  const Navigation2View({super.key});
-
-  @override
-  State<Navigation2View> createState() => _Navigation2ViewState();
-}
-
-class _Navigation2ViewState extends State<Navigation2View> {
-  @override
-  Widget build(BuildContext context) {
-    final colorTheme = ColorTheme.of(context);
-    final elevationTheme = ElevationTheme.of(context);
-    final shapeTheme = ShapeTheme.of(context);
-    final stateTheme = StateTheme.of(context);
-    final typescaleTheme = TypescaleTheme.of(context);
-    return Scaffold(backgroundColor: colorTheme.surfaceContainer);
   }
 }
