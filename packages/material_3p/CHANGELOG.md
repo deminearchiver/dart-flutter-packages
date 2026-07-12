@@ -1,3 +1,17 @@
+## 0.3.0
+
+- Removed `material_loading_indicator` library. Replaced by `material` library.
+  - This ensures all future widgets, classes and utilities are combined together.
+
+- Added experimental [Pull-to-refresh](https://developer.android.com/develop/ui/compose/components/pull-to-refresh) component implementation *without theming support*.
+  - Based on Compose Material 3 pull-to-refresh component.
+  - Available in `material` library.
+  - Flexible, composable API.
+
+- Skip painting loading indicator fill if color is transparent.
+
+- Updated README with examples.
+
 ## 0.2.0
 
 - Added Material Color Utilities.

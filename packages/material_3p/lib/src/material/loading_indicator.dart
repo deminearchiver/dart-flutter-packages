@@ -247,10 +247,12 @@ class _DeterminateLoadingIndicatorPainter extends CustomPainter {
       matrix: matrix,
     );
 
-    final paint = Paint()
-      ..style = PaintingStyle.fill
-      ..color = color;
-    canvas.drawPath(path, paint);
+    if (color.a > 0.0) {
+      final paint = Paint()
+        ..style = PaintingStyle.fill
+        ..color = color;
+      canvas.drawPath(path, paint);
+    }
 
     if (outline.width > 0.0 && outline.color.a > 0.0) {
       DynamicPathBorder.paintPathStroke(
@@ -653,10 +655,12 @@ class _IndeterminateLoadingIndicatorPainter
       matrix: _matrix,
     );
 
-    final paint = Paint()
-      ..style = PaintingStyle.fill
-      ..color = color;
-    canvas.drawPath(path, paint);
+    if (color.a > 0.0) {
+      final paint = Paint()
+        ..style = PaintingStyle.fill
+        ..color = color;
+      canvas.drawPath(path, paint);
+    }
 
     if (outline.width > 0.0 && outline.color.a > 0.0) {
       DynamicPathBorder.paintPathStroke(
