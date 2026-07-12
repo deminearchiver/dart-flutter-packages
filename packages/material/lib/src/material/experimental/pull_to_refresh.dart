@@ -61,9 +61,7 @@ class PullToRefreshDefaultDelegate extends PullToRefreshDelegate {
          animationBehavior: .preserve,
          debugLabel: "PullToRefreshDefaultDelegate",
        ),
-       _spring =
-           spring ??
-           .withDampingRatio(mass: 1.0, stiffness: 1500.0, ratio: 1.0);
+       _spring = spring ?? defaultSpring;
 
   late final AnimationController _animationController;
 
@@ -110,6 +108,12 @@ class PullToRefreshDefaultDelegate extends PullToRefreshDelegate {
       "spring: $spring,"
       "distanceFraction: ${distanceFraction.value}"
       ")";
+
+  static final defaultSpring = SpringDescription.withDampingRatio(
+    mass: 1.0,
+    stiffness: 1500.0,
+    ratio: 1.0,
+  );
 }
 
 @optionalTypeArgs

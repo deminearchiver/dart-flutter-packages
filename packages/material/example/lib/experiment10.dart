@@ -267,11 +267,7 @@ class CustomPullToRefresh extends StatefulWidget {
   @override
   CustomPullToRefreshState createState() => CustomPullToRefreshState();
 
-  static final defaultSpring = SpringDescription.withDampingRatio(
-    mass: 1.0,
-    stiffness: 1500.0,
-    ratio: 1.0,
-  );
+  static final defaultSpring = PullToRefreshDefaultDelegate.defaultSpring;
 
   static const defaultThreshold = 80.0;
 }
