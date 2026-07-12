@@ -106,7 +106,7 @@ class PullToRefreshDefaultDelegate extends PullToRefreshDelegate {
 
   @override
   String toString() =>
-      "${objectRuntimeType(this, "PullToRefreshDefaultDelegate")}("
+      "${describeIdentity(this)}("
       "spring: $spring,"
       "distanceFraction: ${distanceFraction.value}"
       ")";
@@ -127,6 +127,11 @@ abstract class PullToRefreshController<
   }) {
     if (kFlutterMemoryAllocationsEnabled) {
       ChangeNotifier.maybeDispatchObjectCreation(this);
+    }
+    if (isRefreshing) {
+      _distancePulled = threshold;
+      _delegate.snapTo(1.0);
+      _verticalOffset = calculateVerticalOffset();
     }
     delegate.distanceFraction.addListener(_animationListener);
   }
@@ -190,7 +195,7 @@ abstract class PullToRefreshController<
   set isRefreshing(bool value) {
     if (_isRefreshing == value) return;
     _isRefreshing = value;
-    if (isRefreshing) {
+    if (_isRefreshing) {
       unawaited(animateToThreshold());
     } else {
       unawaited(animateToHidden());
@@ -210,7 +215,7 @@ abstract class PullToRefreshController<
 
   @protected
   double calculateVerticalOffset() {
-    if (isAnimating || isRefreshing) {
+    if (isRefreshing || isAnimating) {
       return distanceFraction * threshold;
     }
 
@@ -262,7 +267,7 @@ abstract class PullToRefreshController<
 
   @protected
   double consumeAvailableOffset(double availableOffset) {
-    if (isRefreshing || !enabled) return 0.0;
+    if (!enabled || isRefreshing || isAnimating) return 0.0;
     final newOffset = math.max(0.0, distancePulled + availableOffset);
     final dragConsumed = newOffset - distancePulled;
     distancePulled = newOffset;
@@ -271,7 +276,7 @@ abstract class PullToRefreshController<
 
   @protected
   void onRelease(double velocity) {
-    if (_isDisposed || isRefreshing || isAnimating || !enabled) return;
+    if (_isDisposed || !enabled || isRefreshing || isAnimating) return;
     if (adjustedDistancePulled >= threshold) {
       onRefresh();
     } else {
@@ -284,6 +289,8 @@ abstract class PullToRefreshController<
   @protected
   Future<void> animateToThreshold() async {
     _isRefreshing = true;
+    _distancePulled = threshold;
+    _verticalOffset = calculateVerticalOffset();
     notifyListeners();
     try {
       await delegate.animateToThreshold();
@@ -300,6 +307,8 @@ abstract class PullToRefreshController<
   @protected
   Future<void> animateToHidden() async {
     _isRefreshing = false;
+    _distancePulled = 0.0;
+    _verticalOffset = calculateVerticalOffset();
     notifyListeners();
     try {
       await delegate.animateToHidden();
@@ -329,7 +338,7 @@ abstract class PullToRefreshController<
 
   @override
   String toString() =>
-      "${objectRuntimeType(this, "PullToRefreshController")}("
+      "${describeIdentity(this)}("
       "enabled: $enabled,"
       "delegate: $delegate,"
       "threshold: $threshold"
