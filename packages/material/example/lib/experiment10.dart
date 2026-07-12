@@ -13,36 +13,7 @@ class Experiment10View extends StatefulWidget {
 
 class _Experiment10ViewState extends State<Experiment10View>
     with TickerProviderStateMixin {
-  late CustomPullToRefreshController _pullToRefreshController;
-  late CustomPullToRefreshDelegate _pullToRefreshDelegate;
-
-  Future<void> _onRefresh() async {
-    if (!mounted) return;
-    _pullToRefreshController.isRefreshing = true;
-
-    await Future<void>.delayed(const .new(milliseconds: 3000));
-
-    if (!mounted) return;
-    _pullToRefreshController.isRefreshing = false;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _pullToRefreshDelegate = .new(vsync: this);
-    _pullToRefreshController = .new(
-      onRefresh: _onRefresh,
-      delegate: _pullToRefreshDelegate,
-      threshold: _kIndicatorMaxDistance,
-    );
-  }
-
-  @override
-  void dispose() {
-    _pullToRefreshController.dispose();
-    _pullToRefreshDelegate.dispose();
-    super.dispose();
-  }
+  var _itemCount = 30;
 
   @override
   Widget build(BuildContext context) {
@@ -54,72 +25,128 @@ class _Experiment10ViewState extends State<Experiment10View>
     final stateTheme = StateTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
     return Scaffold(
-      body: CustomScrollView(
-        physics: PullToRefreshScrollPhysics(
-          controller: _pullToRefreshController,
-        ),
-        slivers: [
-          AnimatedBuilder(
-            animation: _pullToRefreshController,
-            builder: (context, child) {
-              final isRefreshing = _pullToRefreshController.isRefreshing;
-              final verticalOffset = _pullToRefreshController.verticalOffset;
-              final layoutHeight = _pullToRefreshController.layoutHeight;
-              final PreferredSizeWidget bottom = PreferredSize(
-                preferredSize: Size(.infinity, layoutHeight),
-                child: SizedBox(
-                  height: layoutHeight,
-                  child: OverflowBox(
-                    alignment: .center,
-                    minHeight: 0.0,
-                    maxHeight: _kIndicatorMaxDistance,
-                    child: Visibility(
-                      visible: verticalOffset > 0.0 || isRefreshing,
-                      child: child!,
-                    ),
-                  ),
-                ),
-              );
-              return SliverAppBar(
+      body: CustomPullToRefresh(
+        onRefresh: () => Future.delayed(const .new(seconds: 3)),
+        builder: (context, controller) => CustomScrollView(
+          physics: AlwaysScrollableScrollPhysics(
+            parent: controller.createScrollPhysics(),
+          ),
+          slivers: [
+            ValueListenableBuilder(
+              valueListenable: controller,
+              builder: (context, states, child) => SliverAppBar(
                 clipBehavior: .none,
                 pinned: true,
                 backgroundColor: colorTheme.surfaceContainer,
                 surfaceTintColor: Colors.transparent,
+                centerTitle: true,
                 title: const Text("Pull to refresh!"),
-                bottom: bottom,
-              );
-            },
-            child: Align.bottomCenter(
-              child: PullToRefreshFadeTransition(
-                states: _pullToRefreshController,
-                child: PullToRefreshLoadingIndicator(
-                  states: _pullToRefreshController,
+                bottom: buildBottomPullToRefresh(
+                  context: context,
+                  states: states,
+                  child: child!,
+                ),
+              ),
+              child: Align.center(
+                child: PullToRefreshFadeTransition(
+                  states: controller,
+                  endFraction: 0.4,
+                  dismissedScale: 0.4,
+                  child: PullToRefreshLoadingIndicator(states: controller),
                 ),
               ),
             ),
-          ),
-          // SliverToBoxAdapter(
-          //   child: PullToRefreshDefaultLayout(
-          //     clipBehavior: .none,
-          //     controller: _pullToRefreshController,
-          //     child: Align.bottomCenter(
-          //       child: PullToRefreshLoadingIndicator(
-          //         controller: _pullToRefreshController,
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          SliverList.builder(
-            itemCount: 30,
-            itemBuilder: (context, index) => ListItemInteraction(
-              onTap: () {},
-              child: ListItemLayout(headline: Text("Item ${index + 1}")),
+            SliverPadding(
+              padding: .fromLTRB(8.0, 0.0, 8.0, 16.0),
+              sliver: SliverList.list(
+                children: [
+                  ListItemContainer(
+                    isFirst: true,
+                    isLast: true,
+                    child: Flex.vertical(
+                      children: [
+                        ListItemLayout(
+                          leading: const Icon(Symbols.list_rounded),
+                          headline: Text("Item count"),
+                          trailing: Text("$_itemCount"),
+                        ),
+                        Slider(
+                          padding: const .fromLTRB(16.0, 8.0, 16.0, 16.0),
+                          value: _itemCount.toDouble(),
+                          onChanged: (value) =>
+                              setState(() => _itemCount = value.round()),
+                          min: 0.0,
+                          max: 50.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            SliverList.builder(
+              itemCount: _itemCount,
+              itemBuilder: (context, index) {
+                const spacing = 2.0;
+                final lastIndex = _itemCount - 1;
+                final isFirst = index == 0;
+                final isLast = index == lastIndex;
+                return Padding(
+                  padding: .fromLTRB(
+                    8.0,
+                    isFirst ? 0.0 : spacing / 2.0,
+                    8.0,
+                    isLast ? 0.0 : spacing / 2.0,
+                  ),
+                  child: ListItemContainer(
+                    isFirst: isFirst,
+                    isLast: isLast,
+                    child: ListItemInteraction(
+                      onTap: () {},
+                      child: ListItemLayout(
+                        headline: Text("Item ${index + 1}"),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+PreferredSizeWidget buildBottomPullToRefresh({
+  required BuildContext context,
+  required CustomPullToRefreshStates states,
+  double maxHeight = CustomPullToRefresh.defaultThreshold,
+  required Widget child,
+}) {
+  final isRefreshing = states.isRefreshing;
+  final verticalOffset = states.verticalOffset;
+  final layoutHeight = states.layoutHeight;
+  return PreferredSize(
+    preferredSize: Size(.infinity, layoutHeight),
+    child: SizedBox(
+      height: layoutHeight,
+      child: OverflowBox(
+        alignment: .topCenter,
+        minHeight: verticalOffset,
+        maxHeight: verticalOffset,
+        child: OverflowBox(
+          alignment: .center,
+          minHeight: 0.0,
+          maxHeight: maxHeight,
+          child: Visibility(
+            visible: isRefreshing || verticalOffset > 0.0,
+            child: child,
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class CustomPullToRefreshDelegate extends PullToRefreshDefaultDelegate {
@@ -209,4 +236,124 @@ class CustomPullToRefreshController
     delegate.layoutFraction.removeListener(notifyListeners);
     super.dispose();
   }
+}
+
+typedef CustomPullToRefreshBuilder =
+    Widget Function(
+      BuildContext context,
+      CustomPullToRefreshController controller,
+    );
+
+class CustomPullToRefresh extends StatefulWidget {
+  const CustomPullToRefresh({
+    super.key,
+    required this.onRefresh,
+    this.enabled = true,
+    this.spring,
+    this.threshold = defaultThreshold,
+    required this.builder,
+  });
+
+  final RefreshCallback onRefresh;
+
+  final bool enabled;
+
+  final SpringDescription? spring;
+
+  final double threshold;
+
+  final CustomPullToRefreshBuilder builder;
+
+  @override
+  CustomPullToRefreshState createState() => CustomPullToRefreshState();
+
+  static final defaultSpring = SpringDescription.withDampingRatio(
+    mass: 1.0,
+    stiffness: 1500.0,
+    ratio: 1.0,
+  );
+
+  static const defaultThreshold = 80.0;
+}
+
+class CustomPullToRefreshState extends State<CustomPullToRefresh>
+    with TickerProviderStateMixin {
+  late CustomPullToRefreshController _controller;
+
+  late CustomPullToRefreshDelegate _delegate;
+
+  Future<void>? _refreshFuture;
+
+  void _onRefresh() {
+    if (!mounted) return;
+
+    final completer = Completer<void>();
+    _refreshFuture = completer.future;
+
+    _controller.isRefreshing = true;
+
+    unawaited(
+      widget.onRefresh().whenComplete(() {
+        if (!mounted) return;
+
+        _controller.isRefreshing = false;
+
+        if (!completer.isCompleted) {
+          completer.complete();
+        }
+
+        _refreshFuture = null;
+      }),
+    );
+  }
+
+  ValueListenable<CustomPullToRefreshStates> get states => _controller;
+
+  Future<void> show() {
+    if (!mounted) return Future.value();
+    if (_refreshFuture case final refreshFuture?) {
+      return refreshFuture;
+    }
+    _onRefresh();
+    return _refreshFuture ?? Future.value();
+  }
+
+  // TODO: implement?
+  // bool dismiss() {}
+
+  @override
+  void initState() {
+    super.initState();
+    _delegate = .new(
+      vsync: this,
+      spring: widget.spring ?? CustomPullToRefresh.defaultSpring,
+    );
+    _controller = .new(
+      onRefresh: _onRefresh,
+      enabled: widget.enabled,
+      delegate: _delegate,
+      threshold: widget.threshold,
+      isRefreshing: false,
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomPullToRefresh oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.spring != oldWidget.spring) {
+      _delegate.spring = widget.spring ?? CustomPullToRefresh.defaultSpring;
+    }
+    _controller.enabled = widget.enabled;
+    _controller.threshold = widget.threshold;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _delegate.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.builder(context, _controller);
 }

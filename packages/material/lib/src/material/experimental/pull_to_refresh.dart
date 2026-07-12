@@ -265,9 +265,25 @@ abstract class PullToRefreshController<
   @override
   double get progress => adjustedDistancePulled / threshold;
 
+  var _farEdgeOverscroll = 0.0;
+
+  double get farEdgeOverscroll => _farEdgeOverscroll;
+
+  @protected
+  set farEdgeOverscroll(double value) {
+    if (value < 0.0) value = 0.0;
+    if (_farEdgeOverscroll == value) return;
+    _farEdgeOverscroll = value;
+    notifyListeners();
+  }
+
+  ScrollPhysics createScrollPhysics({ScrollPhysics? parent}) =>
+      _PullToRefreshDefaultScrollPhysics(parent: parent, controller: this);
+
   @protected
   double consumeAvailableOffset(double availableOffset) {
     if (!enabled || isRefreshing || isAnimating) return 0.0;
+    farEdgeOverscroll = 0.0;
     final newOffset = math.max(0.0, distancePulled + availableOffset);
     final dragConsumed = newOffset - distancePulled;
     distancePulled = newOffset;
@@ -363,18 +379,17 @@ class PullToRefreshDefaultController<DelegateType extends PullToRefreshDelegate>
   PullToRefreshStates get value => this;
 }
 
-// TODO: should this be added?
-// class _PullToRefreshControllerWithDefaultDelegate
-//     extends PullToRefreshController {}
-
 // TODO: check if this works in reverse scroll views (spoiler: it doesn't?)
-class PullToRefreshScrollPhysics extends ScrollPhysics {
-  const PullToRefreshScrollPhysics({super.parent, required this.controller});
+class _PullToRefreshDefaultScrollPhysics extends ScrollPhysics {
+  const _PullToRefreshDefaultScrollPhysics({
+    super.parent,
+    required this.controller,
+  });
 
   final PullToRefreshController controller;
 
   @override
-  PullToRefreshScrollPhysics applyTo(ScrollPhysics? ancestor) =>
+  _PullToRefreshDefaultScrollPhysics applyTo(ScrollPhysics? ancestor) =>
       .new(parent: buildParent(ancestor), controller: controller);
 
   @override
@@ -382,7 +397,11 @@ class PullToRefreshScrollPhysics extends ScrollPhysics {
     if (!controller.enabled ||
         controller.isRefreshing ||
         controller.isAnimating) {
+      controller.farEdgeOverscroll = 0.0;
       return super.applyPhysicsToUserOffset(position, offset);
+    }
+    if (position.pixels < position.maxScrollExtent) {
+      controller.farEdgeOverscroll = 0.0;
     }
     if (offset < 0.0 && controller.distancePulled > 0.0) {
       final consumed = controller.consumeAvailableOffset(offset);
@@ -390,14 +409,29 @@ class PullToRefreshScrollPhysics extends ScrollPhysics {
       return super.applyPhysicsToUserOffset(position, delta);
     }
     if (offset > 0.0) {
+      var remainingOffset = offset;
+      if (controller.farEdgeOverscroll > 0.0) {
+        final overscrollConsumed = math.min(
+          controller.farEdgeOverscroll,
+          remainingOffset,
+        );
+        controller.farEdgeOverscroll -= overscrollConsumed;
+        remainingOffset -= overscrollConsumed;
+        if (remainingOffset <= 0.0) {
+          return super.applyPhysicsToUserOffset(position, offset);
+        }
+      }
       final delta = position.pixels - position.minScrollExtent;
       if (delta <= 0.0) {
-        controller.consumeAvailableOffset(offset);
-        return 0.0;
-      } else if (offset > delta) {
-        final overscroll = offset - delta;
+        controller.consumeAvailableOffset(remainingOffset);
+        return super.applyPhysicsToUserOffset(
+          position,
+          offset - remainingOffset,
+        );
+      } else if (remainingOffset > delta) {
+        final overscroll = remainingOffset - delta;
         controller.consumeAvailableOffset(overscroll);
-        return super.applyPhysicsToUserOffset(position, delta);
+        return super.applyPhysicsToUserOffset(position, offset - overscroll);
       }
     }
     return super.applyPhysicsToUserOffset(position, offset);
@@ -413,7 +447,11 @@ class PullToRefreshScrollPhysics extends ScrollPhysics {
         position.minScrollExtent < position.pixels) {
       return value - position.minScrollExtent;
     }
-    return super.applyBoundaryConditions(position, value);
+    final overscroll = super.applyBoundaryConditions(position, value);
+    if (overscroll > 0.0) {
+      controller.farEdgeOverscroll += overscroll;
+    }
+    return overscroll;
   }
 
   @override
@@ -421,6 +459,7 @@ class PullToRefreshScrollPhysics extends ScrollPhysics {
     ScrollMetrics position,
     double velocity,
   ) {
+    controller.farEdgeOverscroll = 0.0;
     if (controller.enabled &&
         !controller.isRefreshing &&
         !controller.isAnimating &&
