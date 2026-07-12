@@ -91,9 +91,9 @@ class _Experiment10ViewState extends State<Experiment10View>
             },
             child: Align.bottomCenter(
               child: PullToRefreshFadeTransition(
-                controller: _pullToRefreshController,
+                states: _pullToRefreshController,
                 child: PullToRefreshLoadingIndicator(
-                  controller: _pullToRefreshController,
+                  states: _pullToRefreshController,
                 ),
               ),
             ),
@@ -182,7 +182,9 @@ mixin CustomPullToRefreshStates implements PullToRefreshStates {
 
 class CustomPullToRefreshController
     extends PullToRefreshController<CustomPullToRefreshDelegate>
-    implements CustomPullToRefreshStates {
+    implements
+        CustomPullToRefreshStates,
+        ValueListenable<CustomPullToRefreshStates> {
   CustomPullToRefreshController({
     super.onRefresh,
     super.enabled,
@@ -198,6 +200,9 @@ class CustomPullToRefreshController
 
   @override
   double get layoutHeight => layoutFraction * threshold;
+
+  @override
+  CustomPullToRefreshStates get value => this;
 
   @override
   void dispose() {

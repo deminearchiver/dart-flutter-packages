@@ -113,7 +113,9 @@ class PullToRefreshDefaultDelegate extends PullToRefreshDelegate {
 }
 
 @optionalTypeArgs
-class PullToRefreshController<DelegateType extends PullToRefreshDelegate>
+abstract class PullToRefreshController<
+  DelegateType extends PullToRefreshDelegate
+>
     with ChangeNotifier
     implements PullToRefreshStates {
   PullToRefreshController({
@@ -336,6 +338,22 @@ class PullToRefreshController<DelegateType extends PullToRefreshDelegate>
   static void _defaultOnRefresh() {}
 }
 
+@optionalTypeArgs
+class PullToRefreshDefaultController<DelegateType extends PullToRefreshDelegate>
+    extends PullToRefreshController<DelegateType>
+    implements ValueListenable<PullToRefreshStates> {
+  PullToRefreshDefaultController({
+    super.onRefresh,
+    super.enabled,
+    required super.delegate,
+    super.threshold,
+    super.isRefreshing,
+  });
+
+  @override
+  PullToRefreshStates get value => this;
+}
+
 // TODO: should this be added?
 // class _PullToRefreshControllerWithDefaultDelegate
 //     extends PullToRefreshController {}
@@ -415,22 +433,22 @@ class PullToRefreshScrollPhysics extends ScrollPhysics {
 class PullToRefreshDefaultLayout extends StatelessWidget {
   const PullToRefreshDefaultLayout({
     super.key,
-    required this.controller,
+    required this.states,
     this.clipBehavior = .hardEdge,
     this.child,
   });
 
-  final PullToRefreshController controller;
+  final ValueListenable<PullToRefreshStates> states;
 
   final Clip clipBehavior;
 
   final Widget? child;
 
   @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-    animation: controller,
-    builder: (context, child) {
-      final height = controller.verticalOffset;
+  Widget build(BuildContext context) => ValueListenableBuilder(
+    valueListenable: states,
+    builder: (context, states, child) {
+      final height = states.verticalOffset;
       return SizedBox(
         height: height,
         child: ClipRect(
@@ -451,14 +469,14 @@ class PullToRefreshDefaultLayout extends StatelessWidget {
 class PullToRefreshFadeTransition extends StatelessWidget {
   const PullToRefreshFadeTransition({
     super.key,
-    required this.controller,
+    required this.states,
     this.endFraction = 1.0,
     this.dismissedScale = 0.0,
     required this.child,
   }) : assert(endFraction > 0.0 && endFraction <= 1.0),
        assert(dismissedScale >= 0.0);
 
-  final PullToRefreshController controller;
+  final ValueListenable<PullToRefreshStates> states;
 
   /// End of the progress interval that will be scaled to the proper range.
   ///
@@ -473,10 +491,10 @@ class PullToRefreshFadeTransition extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-    animation: controller,
-    builder: (context, child) {
-      final progress = math.max(0.0, controller.distanceFraction);
+  Widget build(BuildContext context) => ValueListenableBuilder(
+    valueListenable: states,
+    builder: (context, states, child) {
+      final progress = math.max(0.0, states.distanceFraction);
 
       // Scale first 40% of progress to range between 0% and 200%.
       final linearTension = clampDouble(2.0 * progress / endFraction, 0.0, 2.0);
@@ -628,7 +646,7 @@ final class _PullToRefreshLoadingIndicatorStates
 class PullToRefreshLoadingIndicator extends StatefulWidget {
   const PullToRefreshLoadingIndicator({
     super.key,
-    required this.controller,
+    required this.states,
     this.determinateIndicatorPolygons,
     this.indeterminateIndicatorPolygons,
     this.containerShape,
@@ -639,7 +657,7 @@ class PullToRefreshLoadingIndicator extends StatefulWidget {
     this.forEachPolygon = LoadingIndicatorHelper.defaultForEachPolygon,
   });
 
-  final PullToRefreshController controller;
+  final ValueListenable<PullToRefreshStates> states;
 
   final List<RoundedPolygon>? determinateIndicatorPolygons;
 
@@ -669,54 +687,53 @@ class PullToRefreshLoadingIndicator extends StatefulWidget {
 class _PullToRefreshLoadingIndicatorState
     extends State<PullToRefreshLoadingIndicator>
     with SingleTickerProviderStateMixin {
-  PullToRefreshController get _controller => widget.controller;
-
   late LoadingIndicatorThemeData _loadingIndicatorTheme;
 
-  late _PullToRefreshLoadingIndicatorStates _states;
   late OutlinedBorder _resolvedContainerShape;
   late Color _resolvedContainerColor;
   late Outline _resolvedContainerOutline;
   late Color _resolvedActiveIndicatorColor;
   late Outline _resolvedActiveIndicatorOutline;
 
-  void _update() {
-    _states = .fromPullToRefreshStates(_controller);
+  void _didChangeStates() {
+    final states = _PullToRefreshLoadingIndicatorStates.fromPullToRefreshStates(
+      widget.states.value,
+    );
 
     _resolvedContainerShape =
-        widget.containerShape?.resolve(_states) ??
-        _loadingIndicatorTheme.containerShape.resolve(_states);
+        widget.containerShape?.resolve(states) ??
+        _loadingIndicatorTheme.containerShape.resolve(states);
 
     _resolvedContainerColor =
-        widget.containerColor?.resolve(_states) ??
-        _loadingIndicatorTheme.containerColor.resolve(_states);
+        widget.containerColor?.resolve(states) ??
+        _loadingIndicatorTheme.containerColor.resolve(states);
 
     _resolvedContainerOutline = _loadingIndicatorTheme.containerOutline
-        .resolve(_states)
-        .maybeMerge(widget.containerOutline?.resolve(_states));
+        .resolve(states)
+        .maybeMerge(widget.containerOutline?.resolve(states));
 
     _resolvedActiveIndicatorColor =
-        widget.activeIndicatorColor?.resolve(_states) ??
-        _loadingIndicatorTheme.activeIndicatorColor.resolve(_states);
+        widget.activeIndicatorColor?.resolve(states) ??
+        _loadingIndicatorTheme.activeIndicatorColor.resolve(states);
 
     _resolvedActiveIndicatorOutline = _loadingIndicatorTheme
         .activeIndicatorOutline
-        .resolve(_states)
-        .maybeMerge(widget.activeIndicatorOutline?.resolve(_states));
+        .resolve(states)
+        .maybeMerge(widget.activeIndicatorOutline?.resolve(states));
   }
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(_update);
+    widget.states.addListener(_didChangeStates);
   }
 
   @override
   void didUpdateWidget(covariant PullToRefreshLoadingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.controller != oldWidget.controller) {
-      oldWidget.controller.removeListener(_update);
-      widget.controller.addListener(_update);
+    if (widget.states != oldWidget.states) {
+      oldWidget.states.removeListener(_didChangeStates);
+      widget.states.addListener(_didChangeStates);
     }
   }
 
@@ -728,20 +745,20 @@ class _PullToRefreshLoadingIndicatorState
 
   @override
   void dispose() {
-    _controller.removeListener(_update);
+    widget.states.removeListener(_didChangeStates);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _update();
+    _didChangeStates();
 
     const resolvedContainerSize = 48.0;
 
-    final Widget determinateActiveIndicator = AnimatedBuilder(
-      animation: _controller,
-      builder: (context, _) {
-        final progress = math.max(0.0, _controller.distanceFraction);
+    final Widget determinateActiveIndicator = ValueListenableBuilder(
+      valueListenable: widget.states,
+      builder: (context, states, _) {
+        final progress = math.max(0.0, states.distanceFraction);
         return Transform.rotate(
           // Start the rotation on progress - 1 (i.e. 0) to avoid a jump
           // that would be more noticeable on some LoadingIndicator shapes.
@@ -755,14 +772,14 @@ class _PullToRefreshLoadingIndicatorState
             containerOutline: const .all(.from()),
             activeIndicatorColor: .all(_resolvedActiveIndicatorColor),
             activeIndicatorOutline: .all(_resolvedActiveIndicatorOutline),
-            progress: clampDouble(_controller.distanceFraction, 0.0, 1.0),
+            progress: clampDouble(states.distanceFraction, 0.0, 1.0),
           ),
         );
       },
     );
 
-    final Widget indeterminateActiveIndicator = AnimatedBuilder(
-      animation: _controller,
+    final Widget indeterminateActiveIndicator = ListenableBuilder(
+      listenable: widget.states,
       builder: (context, _) => IndeterminateLoadingIndicator(
         indicatorPolygons: widget.indeterminateIndicatorPolygons,
         contained: false,
@@ -776,16 +793,16 @@ class _PullToRefreshLoadingIndicatorState
 
     return SizedBox.square(
       dimension: resolvedContainerSize,
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, _) => Surface(
+      child: ValueListenableBuilder(
+        valueListenable: widget.states,
+        builder: (context, states, _) => Surface(
           clipBehavior: .antiAlias,
           shape: _resolvedContainerOutline.apply(_resolvedContainerShape),
           color: _resolvedContainerColor,
           elevation: 0.0,
           shadowColor: Colors.transparent,
           child: _PullToRefreshLoadingIndicatorCrossFade(
-            isRefreshing: _controller.isRefreshing,
+            isRefreshing: states.isRefreshing,
             determinateChild: determinateActiveIndicator,
             indeterminateChild: indeterminateActiveIndicator,
           ),
