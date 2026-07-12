@@ -1,3 +1,17 @@
+## 0.4.0
+
+- Breaking. Encapsulated `PullToRefreshScrollPhysics`, making them private.
+  - Use new `PullToRefreshController.createScrollPhysics()` method to get the proper pull-to-refresh `ScrollPhysics`.
+
+- Added `PullToRefreshDefaultDelegate.defaultSpring`, which contains the default spring value used if a user override was not provided.
+
+- Fixed pull-to-refresh activating early if the user pulls on a viewport which has overscroll on the far edge.
+  - Pull-to-refresh should now behave as expected on scroll views with `AlwaysScrollableScrollPhysics` applied.
+
+- Fixed pull-to-refresh `ScrollPhysics` incorrectly handling zero user offsets.
+  - Now pull-to-refresh should work with `BouncingScrollPhysics` without any issues.
+
+
 ## 0.3.0
 
 - Removed `material_loading_indicator` library. Replaced by `material` library.

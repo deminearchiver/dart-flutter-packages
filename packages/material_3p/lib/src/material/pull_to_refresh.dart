@@ -64,9 +64,7 @@ class PullToRefreshDefaultDelegate extends PullToRefreshDelegate {
          animationBehavior: .preserve,
          debugLabel: "PullToRefreshDefaultDelegate",
        ),
-       _spring =
-           spring ??
-           .withDampingRatio(mass: 1.0, stiffness: 1500.0, ratio: 1.0);
+       _spring = spring ?? defaultSpring;
 
   late final AnimationController _animationController;
 
@@ -113,6 +111,12 @@ class PullToRefreshDefaultDelegate extends PullToRefreshDelegate {
       "spring: $spring,"
       "distanceFraction: ${distanceFraction.value}"
       ")";
+
+  static final defaultSpring = SpringDescription.withDampingRatio(
+    mass: 1.0,
+    stiffness: 1500.0,
+    ratio: 1.0,
+  );
 }
 
 @optionalTypeArgs
@@ -268,9 +272,25 @@ abstract class PullToRefreshController<
   @override
   double get progress => adjustedDistancePulled / threshold;
 
+  var _farEdgeOverscroll = 0.0;
+
+  double get farEdgeOverscroll => _farEdgeOverscroll;
+
+  @protected
+  set farEdgeOverscroll(double value) {
+    if (value < 0.0) value = 0.0;
+    if (_farEdgeOverscroll == value) return;
+    _farEdgeOverscroll = value;
+    notifyListeners();
+  }
+
+  ScrollPhysics createScrollPhysics({ScrollPhysics? parent}) =>
+      _PullToRefreshDefaultScrollPhysics(parent: parent, controller: this);
+
   @protected
   double consumeAvailableOffset(double availableOffset) {
     if (!enabled || isRefreshing || isAnimating) return 0.0;
+    farEdgeOverscroll = 0.0;
     final newOffset = math.max(0.0, distancePulled + availableOffset);
     final dragConsumed = newOffset - distancePulled;
     distancePulled = newOffset;
@@ -364,39 +384,67 @@ class PullToRefreshDefaultController<DelegateType extends PullToRefreshDelegate>
   PullToRefreshStates get value => this;
 }
 
-class PullToRefreshScrollPhysics extends ScrollPhysics {
-  const PullToRefreshScrollPhysics({super.parent, required this.controller});
+class _PullToRefreshDefaultScrollPhysics extends ScrollPhysics {
+  const _PullToRefreshDefaultScrollPhysics({
+    super.parent,
+    required this.controller,
+  });
 
   final PullToRefreshController controller;
 
   @override
-  PullToRefreshScrollPhysics applyTo(ScrollPhysics? ancestor) =>
+  _PullToRefreshDefaultScrollPhysics applyTo(ScrollPhysics? ancestor) =>
       .new(parent: buildParent(ancestor), controller: controller);
+
+  double _applyPhysicsToUserOffsetSuper(ScrollMetrics position, double offset) {
+    if (offset == 0.0) return 0.0;
+    return super.applyPhysicsToUserOffset(position, offset);
+  }
 
   @override
   double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
+    if (offset == 0.0) return 0.0;
     if (!controller.enabled ||
         controller.isRefreshing ||
         controller.isAnimating) {
-      return super.applyPhysicsToUserOffset(position, offset);
+      controller.farEdgeOverscroll = 0.0;
+      return _applyPhysicsToUserOffsetSuper(position, offset);
+    }
+    if (position.pixels < position.maxScrollExtent) {
+      controller.farEdgeOverscroll = 0.0;
     }
     if (offset < 0.0 && controller.distancePulled > 0.0) {
       final consumed = controller.consumeAvailableOffset(offset);
       final delta = offset - consumed;
-      return super.applyPhysicsToUserOffset(position, delta);
+      return _applyPhysicsToUserOffsetSuper(position, delta);
     }
     if (offset > 0.0) {
+      var remainingOffset = offset;
+      if (controller.farEdgeOverscroll > 0.0) {
+        final overscrollConsumed = math.min(
+          controller.farEdgeOverscroll,
+          remainingOffset,
+        );
+        controller.farEdgeOverscroll -= overscrollConsumed;
+        remainingOffset -= overscrollConsumed;
+        if (remainingOffset <= 0.0) {
+          return _applyPhysicsToUserOffsetSuper(position, offset);
+        }
+      }
       final delta = position.pixels - position.minScrollExtent;
       if (delta <= 0.0) {
-        controller.consumeAvailableOffset(offset);
-        return 0.0;
-      } else if (offset > delta) {
-        final overscroll = offset - delta;
+        controller.consumeAvailableOffset(remainingOffset);
+        return _applyPhysicsToUserOffsetSuper(
+          position,
+          offset - remainingOffset,
+        );
+      } else if (remainingOffset > delta) {
+        final overscroll = remainingOffset - delta;
         controller.consumeAvailableOffset(overscroll);
-        return super.applyPhysicsToUserOffset(position, delta);
+        return _applyPhysicsToUserOffsetSuper(position, offset - overscroll);
       }
     }
-    return super.applyPhysicsToUserOffset(position, offset);
+    return _applyPhysicsToUserOffsetSuper(position, offset);
   }
 
   @override
@@ -409,7 +457,11 @@ class PullToRefreshScrollPhysics extends ScrollPhysics {
         position.minScrollExtent < position.pixels) {
       return value - position.minScrollExtent;
     }
-    return super.applyBoundaryConditions(position, value);
+    final overscroll = super.applyBoundaryConditions(position, value);
+    if (overscroll > 0.0) {
+      controller.farEdgeOverscroll += overscroll;
+    }
+    return overscroll;
   }
 
   @override
@@ -417,6 +469,7 @@ class PullToRefreshScrollPhysics extends ScrollPhysics {
     ScrollMetrics position,
     double velocity,
   ) {
+    controller.farEdgeOverscroll = 0.0;
     if (controller.enabled &&
         !controller.isRefreshing &&
         !controller.isAnimating &&
@@ -769,7 +822,7 @@ class PullToRefreshCollapsingDelegate extends PullToRefreshDefaultDelegate {
 
   Animation<double> get layoutFraction => _layoutController.view;
 
-  SpringSimulation _createInternalSimulation(double targetValue) => .new(
+  SpringSimulation _createLayoutSimulation(double targetValue) => .new(
     spring,
     _layoutController.value,
     targetValue,
@@ -788,14 +841,14 @@ class PullToRefreshCollapsingDelegate extends PullToRefreshDefaultDelegate {
   @override
   TickerFuture animateToThreshold() {
     _isActive = true;
-    unawaited(_layoutController.animateWith(_createInternalSimulation(0.0)));
+    unawaited(_layoutController.animateWith(_createLayoutSimulation(0.0)));
     return super.animateToThreshold();
   }
 
   @override
   TickerFuture animateToHidden() {
     _isActive = false;
-    unawaited(_layoutController.animateWith(_createInternalSimulation(0.0)));
+    unawaited(_layoutController.animateWith(_createLayoutSimulation(0.0)));
     return super.animateToHidden();
   }
 
@@ -843,6 +896,12 @@ class PullToRefreshCollapsingController
   }
 }
 
+typedef PullToRefreshWidgetBuilder =
+    Widget Function(
+      BuildContext context,
+      PullToRefreshCollapsingController controller,
+    );
+
 class PullToRefresh extends StatefulWidget {
   const PullToRefresh({
     super.key,
@@ -861,20 +920,12 @@ class PullToRefresh extends StatefulWidget {
 
   final double threshold;
 
-  final Widget Function(
-    BuildContext context,
-    PullToRefreshCollapsingController controller,
-  )
-  builder;
+  final PullToRefreshWidgetBuilder builder;
 
   @override
   PullToRefreshState createState() => PullToRefreshState();
 
-  static final defaultSpring = SpringDescription.withDampingRatio(
-    mass: 1.0,
-    stiffness: 1500.0,
-    ratio: 1.0,
-  );
+  static final defaultSpring = PullToRefreshDefaultDelegate.defaultSpring;
 
   static const defaultThreshold = 80.0;
 }
