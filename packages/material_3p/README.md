@@ -57,8 +57,8 @@ PullToRefresh(
   onRefresh: () => Future.delayed(const Duration(seconds: 3)),
   builder: (context, controller) => CustomScrollView(
     physics: AlwaysScrollableScrollPhysics(
-      // Using PullToRefreshScrollPhysics is mandatory.
-      parent: PullToRefreshScrollPhysics(controller: controller),
+      // Using controller-provided ScrollPhysics is mandatory.
+      parent: controller.createScrollPhysics(),
     ),
     slivers: [
       ValueListenableBuilder(

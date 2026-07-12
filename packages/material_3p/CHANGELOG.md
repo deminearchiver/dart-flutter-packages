@@ -1,3 +1,7 @@
+## 0.4.0+1
+
+- Updated examples in README to show breaking changes.
+
 ## 0.4.0
 
 - Breaking. Encapsulated `PullToRefreshScrollPhysics`, making them private.
