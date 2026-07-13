@@ -2,64 +2,88 @@ import 'dart:io';
 
 import 'package:icongen/icongen.dart';
 
-enum _Variant {
-  outlined(
-    fileName: "google_symbols_outlined",
+mixin _IconFontId {
+  String get library;
+
+  String get className;
+
+  String get fontFamily;
+
+  String? get fontPackage;
+}
+
+enum _GoogleSymbolsId implements _IconFontId {
+  googleSymbols(
+    library: "example/src/google_symbols.dart",
+    className: "GoogleSymbols",
+    fontFamily: "Google Symbols",
+  ),
+  googleSymbolsOutlined(
+    library: "example/src/google_symbols_outlined.dart",
     className: "GoogleSymbolsOutlined",
     fontFamily: "Google Symbols Outlined",
   ),
-  rounded(
-    fileName: "google_symbols_rounded",
+  googleSymbolsRounded(
+    library: "example/src/google_symbols_rounded.dart",
     className: "GoogleSymbolsRounded",
     fontFamily: "Google Symbols Rounded",
   ),
-  sharp(
-    fileName: "google_symbols_sharp",
+  googleSymbolsSharp(
+    library: "example/src/google_symbols_sharp.dart",
     className: "GoogleSymbolsSharp",
     fontFamily: "Google Symbols Sharp",
   );
 
-  const _Variant({
-    required this.fileName,
+  const _GoogleSymbolsId({
+    required this.library,
     required this.className,
     required this.fontFamily,
   });
 
-  final String fileName;
+  @override
+  final String library;
 
+  @override
   final String className;
 
+  @override
   final String fontFamily;
+
+  @override
+  String get fontPackage => "icongen";
 }
 
 void main() async {
   final packageRoot = Platform.script.resolve("../");
-  final subsetResults = await generateFontSubsets<_Variant>(
+  final subsetResults = await generateFontSubsets<_GoogleSymbolsId>(
     input: packageRoot.resolve("../../wip/Google_Symbols_ORIGINAL.ttf"),
     outputs: {
-      .outlined: SubsetOutput(
-        asset: packageRoot.resolve("assets/fonts/GoogleSymbolsOutlined.ttf"),
+      .googleSymbols: SubsetOutput(
+        asset: packageRoot.resolve("example/fonts/GoogleSymbols.ttf"),
+      ),
+      .googleSymbolsOutlined: SubsetOutput(
+        asset: packageRoot.resolve("example/fonts/GoogleSymbolsOutlined.ttf"),
         axisConstraints: const [.fixed("ROND", at: 50.0)],
       ),
-      .rounded: SubsetOutput(
-        asset: packageRoot.resolve("assets/fonts/GoogleSymbolsRounded.ttf"),
+      .googleSymbolsRounded: SubsetOutput(
+        asset: packageRoot.resolve("example/fonts/GoogleSymbolsRounded.ttf"),
         axisConstraints: const [.fixed("ROND", at: 100.0)],
       ),
-      .sharp: SubsetOutput(
-        asset: packageRoot.resolve("assets/fonts/GoogleSymbolsSharp.ttf"),
+      .googleSymbolsSharp: SubsetOutput(
+        asset: packageRoot.resolve("example/fonts/GoogleSymbolsSharp.ttf"),
         axisConstraints: const [.fixed("ROND", at: 0.0)],
       ),
     },
   );
 
   for (final subsetResult in subsetResults.values) {
-    final variant = subsetResult.outputId;
+    final id = subsetResult.outputId;
     await generateIconBindings(
       subsetResult,
-      library: packageRoot.resolve("example/src/${variant.fileName}.dart"),
-      className: variant.className,
-      fontPackage: "icongen",
-      fontFamily: variant.fontFamily,
+      library: packageRoot.resolve(id.library),
+      className: id.className,
+      fontFamily: id.fontFamily,
+      fontPackage: id.fontPackage,
     );
   }
 }
