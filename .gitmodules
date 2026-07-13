@@ -4,3 +4,6 @@
 [submodule "packages/harfbuzz_ffi/third_party/harfbuzz"]
 	path = packages/harfbuzz/harfbuzz_ffi/third_party/harfbuzz
 	url = git@github.com:harfbuzz/harfbuzz
+[submodule "packages/woff2_ffi/third_party/woff2"]
+	path = packages/woff2_ffi/third_party/woff2
+	url = git@github.com:google/woff2
