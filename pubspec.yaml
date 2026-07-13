@@ -40,6 +40,7 @@ workspace:
   - packages/screen_corners_ffi/example
   - packages/touch_targets
   - packages/touch_targets/example
+  - packages/woff2_ffi
 
 # This is needed for the VSCode extension to identify Flutter properly
 # https://github.com/Dart-Code/Dart-Code/blob/1b24cf3d1d84ffb3a761711a96b5cef4c4f6e26f/src/shared/utils/fs.ts#L187
