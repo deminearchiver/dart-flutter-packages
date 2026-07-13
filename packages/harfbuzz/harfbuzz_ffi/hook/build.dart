@@ -29,7 +29,7 @@ void main(List<String> arguments) async {
     await ninjaBuilder.run(
       input: input,
       output: output,
-      logger: Logger('')
+      logger: Logger("")
         ..level = .WARNING
         // ignore: avoid_print
         ..onRecord.listen((r) => print(r.message)),

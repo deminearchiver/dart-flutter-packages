@@ -1,3 +1,7 @@
+## 0.3.1
+
+- Internal code clarity and code style changes.
+
 ## 0.3.0
 
 - Included more declarations from the HarfBuzz C++ library into the generated bindings.

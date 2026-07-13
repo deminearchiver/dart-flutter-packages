@@ -4,6 +4,12 @@ import 'package:ffigen/ffigen.dart';
 
 void main() {
   final packageRoot = Platform.script.resolve("../");
+
+  final identifierRegExp = RegExp("^hb_", caseSensitive: false);
+
+  bool include(Declaration declaration) =>
+      identifierRegExp.hasMatch(declaration.originalName);
+
   FfiGenerator(
     output: Output(
       dartFile: packageRoot.resolve("lib/src/ffi_bindings.g.dart"),
@@ -17,33 +23,12 @@ void main() {
       ],
       // compilerOptions: ["-DHB_HAS_SUBSET"],
     ),
-    functions: .new(
-      include: (declaration) =>
-          declaration.originalName.toLowerCase().startsWith("hb_"),
-    ),
-    enums: .new(
-      include: (declaration) =>
-          declaration.originalName.toLowerCase().startsWith("hb_"),
-    ),
-    structs: .new(
-      include: (declaration) =>
-          declaration.originalName.toLowerCase().startsWith("hb_"),
-    ),
-    globals: .new(
-      include: (declaration) =>
-          declaration.originalName.toLowerCase().startsWith("hb_"),
-    ),
-    macros: .new(
-      include: (declaration) =>
-          declaration.originalName.toLowerCase().startsWith("hb_"),
-    ),
-    typedefs: .new(
-      include: (declaration) =>
-          declaration.originalName.toLowerCase().startsWith("hb_"),
-    ),
-    unions: .new(
-      include: (declaration) =>
-          declaration.originalName.toLowerCase().startsWith("hb_"),
-    ),
+    functions: .new(include: include),
+    enums: .new(include: include),
+    structs: .new(include: include),
+    globals: .new(include: include),
+    macros: .new(include: include),
+    typedefs: .new(include: include),
+    unions: .new(include: include),
   ).generate();
 }
