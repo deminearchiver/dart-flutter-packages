@@ -1,3 +1,3 @@
 library;
 
-export 'src/blob.dart';
+export 'package:harfbuzz_ffi/harfbuzz_ffi.dart';

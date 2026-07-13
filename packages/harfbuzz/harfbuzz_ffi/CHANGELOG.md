@@ -1,3 +1,11 @@
+## 0.4.0
+
+- Moved high-level FFI wrappers (currently only around `hb-blob`) from the now-discontinued `harfbuzz` package to this package.
+  - They are now available in the `harfbuzz_ffi` library.
+  - FFI bindings are still available in the `harfbuzz_ffi_bindings` library.
+
+- Imported and migrated examples from the discontinued `harfbuzz` package.
+
 ## 0.3.1
 
 - Internal code clarity and code style changes.

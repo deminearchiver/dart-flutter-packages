@@ -1,3 +1,9 @@
+## 0.3.0
+
+- Migrated away from discontinued `harfbuzz` dependency to `harfbuzz_ffi`, which has fully replaced the former package.
+  - Removed discontinued `harfbuzz` dependency.
+  - Bumped `harfbuzz_ffi` dependency to `^0.4.0`.
+
 ## 0.2.0
 
 - The generator will now add `fontFamily` and `fontPackage` static constants to generated classes.

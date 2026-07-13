@@ -3,8 +3,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
-import 'package:harfbuzz/harfbuzz.dart';
 import 'package:harfbuzz_ffi/harfbuzz_ffi_bindings.dart';
+import 'package:harfbuzz_ffi/harfbuzz_ffi.dart';
 import 'package:icongen/src/types.dart';
 
 Future<Map<T, SubsetResult<T>>> generateFontSubsets<T extends Object?>({

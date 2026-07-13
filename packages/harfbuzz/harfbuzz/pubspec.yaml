@@ -1,6 +1,6 @@
 name: harfbuzz
 description: High-level wrapper over Harfbuzz FFI bindings.
-version: 0.1.1
+version: 0.2.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/harfbuzz/harfbuzz
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
@@ -11,8 +11,8 @@ environment:
 
 dependencies:
   ffi: ^2.2.0
-  harfbuzz_ffi: ^0.3.0
-  meta: ^1.17.0
+  harfbuzz_ffi: any
+  meta: ^1.18.0
 
 dev_dependencies:
   args: ^2.7.0
