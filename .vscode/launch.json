@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "androidx_graphics_shapes/example (debug mode)",
+      "name": "androidx_graphics_shapes/example (debug)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
@@ -11,7 +11,7 @@
       "program": "lib/main.dart"
     },
     {
-      "name": "androidx_graphics_shapes/example (profile mode)",
+      "name": "androidx_graphics_shapes/example (profile)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
@@ -20,7 +20,7 @@
       "program": "lib/main.dart"
     },
     {
-      "name": "androidx_graphics_shapes/example (release mode)",
+      "name": "androidx_graphics_shapes/example (release)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release",
@@ -29,7 +29,7 @@
       "program": "lib/main.dart"
     },
     {
-      "name": "material/example (debug mode)",
+      "name": "material/example (debug)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
@@ -38,7 +38,7 @@
       "program": "lib/main.dart"
     },
     {
-      "name": "material/example (profile mode)",
+      "name": "material/example (profile)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
@@ -47,7 +47,7 @@
       "program": "lib/main.dart"
     },
     {
-      "name": "material/example (release mode)",
+      "name": "material/example (release)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release",
@@ -56,7 +56,7 @@
       "program": "lib/main.dart"
     },
     {
-      "name": "touch_targets/example (debug mode)",
+      "name": "touch_targets/example (debug)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
@@ -65,7 +65,7 @@
       "program": "lib/main.dart"
     },
     {
-      "name": "touch_targets/example (profile mode)",
+      "name": "touch_targets/example (profile)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
@@ -74,7 +74,7 @@
       "program": "lib/main.dart"
     },
     {
-      "name": "touch_targets/example (release mode)",
+      "name": "touch_targets/example (release)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release",
