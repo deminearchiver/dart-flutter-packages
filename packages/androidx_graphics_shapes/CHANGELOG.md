@@ -1,4 +1,10 @@
-# 1.6.0
+## Unreleased
+
+- Applied minor optimizations to `Cubic.split()` (cartesian optimization) and `Cubic.pointOnCurve()`.
+
+- Fixed changelog formatting.
+
+## 1.6.0
 
 - Introduced a new abstract `DynamicPathBorder` class, which allows implementing bounds-dependent path borders while handling the painting logic automatically.
   - This change adds proper `BorderSide` support to both `RoundedPolygonBorder` and `MorphBorder`, including proper stroke alignment.
