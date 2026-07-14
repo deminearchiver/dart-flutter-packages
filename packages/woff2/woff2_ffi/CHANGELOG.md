@@ -1,3 +1,7 @@
+## Unreleased
+
+- Changed package location in the repository.
+
 ## 0.1.1
 
 - Disabled verbose logging in the Dart build hook.
