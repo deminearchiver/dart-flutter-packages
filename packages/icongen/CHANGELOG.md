@@ -1,32 +1,36 @@
+## 0.4.0+1
+
+- Fixed grammar mistakes in the `0.4.0` changelog.
+
 ## 0.4.0
 
 - Moved the main APIs away from being ID-aware.
   - Removed `generateFontSubsets` and `generateIconBindings` utility functions.
   - Removed automatic font loading functionality for maximum flexibility.
-  - The low-level APIs are now fully synchronous, because they don' perform I/O operations anymore.
+  - The low-level APIs are now fully synchronous, because they don't perform I/O operations anymore.
   - Renamed `FontSubsetBuilder` to `SubsetBuilder`, `IconBindingsBuilder` to `BindingsBuilder` and marked them as `@immutable`.
   - Renamed `SubsetAxisConstraint` to `VariableAxisConstraint`.
   - Removed type parameters from all low-level classes (`SubsetBuilder` and `SubsetResult` no longer accept an ID type parameter).
 
-- Added mid-level utility functions to serve as replacements for removed ID-based generator APIs.
-  - `buildSubsets` and `buildIcons` build ID-mapped subsets and icons respectively, fully synchrounously.
+- Added mid-level utility functions to serve as replacements for the removed ID-based generator APIs.
+  - `buildSubsets` and `buildIcons` build ID-mapped subsets and icons respectively, fully synchronously.
   - `SubsetEntry` (replacement for `SubsetOutput`) and `BindingsEntry` provide configuration for the build methods.
-  - `SubsetResultWithId<IdType>` and `BindingsResultWithId<IdType>` represent results of the build methods.
+  - `SubsetResultWithId<IdType>` and `BindingsResultWithId<IdType>` represent the results of the build methods.
   - `writeSubsets` and `writeBindings` are small utility functions that help write the generated font subset bytes and icon bindings code to the file system. `WriteEntry<T>` serves as the main primitive for these functions.
 
 - Added a new type to store predefined tags: `VariableAxisTag`.
   - This extension type is erased at runtime, meaning casts from `String` are safe for custom axis tags.
   - This class contains extensive metadata about each axis tag defined in the Google Fonts Axis Registry.
-  - Added a Python script to generate the data automatically from latest Google Fonts Axis Registry data.
+  - Added a Python script to generate the data automatically from the latest Google Fonts Axis Registry data.
 
-- Removed `tag` property from `VariableAxisConstraint`.
-  - Constraints are now defined by a new type: `VariableAxisConstraints`, which is a `Map<VariableAxisTag, VariableAxisConstraint>` - prevents duplicate constraints issues.
+- Removed the `tag` property from `VariableAxisConstraint`.
+  - Constraints are now defined by a new type: `VariableAxisConstraints`, which is a `Map<VariableAxisTag, VariableAxisConstraint>` - prevents duplicate constraint issues.
 
-- Migrated result models (i.e. `SubsetResult`, `BindingsResult`, etc.) away from Freezed data class because they may store large amounts of data now (`Uint8List`, etc.).
+- Migrated result models (i.e. `SubsetResult`, `BindingsResult`, etc.) away from Freezed data classes because they may store large amounts of data now (`Uint8List`, etc.).
 
 - Reviewed and fixed icon identifier sanitization logic.
-  - Aligned the reserved keywords list with Dart language specification.
-  - Surrounding class name is now considered a reserved identifier.
+  - Aligned the reserved keyword list with the Dart language specification.
+  - The surrounding class name is now considered a reserved identifier.
 
 - Enabled JSON serialization functionality for `VariableAxisConstraint` (deserialized based on the `type` field) and `IconGlyph`.
 
