@@ -29,6 +29,9 @@ class BindingsBuilder {
         _defaultForceTreeShakeIconGlyph(subsetResult);
 
     final reservedIdentifiers = <String>{
+      // A class member can't have the same name as the enclosing class.
+      className,
+      // A class member can't share a name with another member.
       "fontFamily",
       if (fontPackage != null) "fontPackage",
       "forceCompileTimeTreeShaking",
