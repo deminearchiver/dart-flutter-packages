@@ -5,6 +5,8 @@ import 'package:native_toolchain_ninja/native_toolchain_ninja.dart';
 
 void main(List<String> arguments) async {
   await build(arguments, (input, output) async {
+    if (!input.config.buildCodeAssets) return;
+
     final packageName = input.packageName;
     final isWindows = input.config.code.targetOS == .windows;
     final ninjaBuilder = NinjaBuilder.library(
@@ -67,20 +69,17 @@ void main(List<String> arguments) async {
         // Brotli
         "third_party/woff2/brotli/c/include",
       ],
+      optimizationLevel: .o2,
       defines: {
         "WOFF2_EXTERN": isWindows
             ? "__declspec(dllexport)"
             : "__attribute__((visibility(\"default\")))",
       },
-      optimizationLevel: .o2,
     );
-    await ninjaBuilder.run(
-      input: input,
-      output: output,
-      logger: Logger("")
-        ..level = .ALL
-        // ignore: avoid_print
-        ..onRecord.listen((r) => print(r.message)),
-    );
+    final logger = Logger("")
+      ..level = .WARNING
+      // ignore: avoid_print
+      ..onRecord.listen((r) => print(r.message));
+    await ninjaBuilder.run(input: input, output: output, logger: logger);
   });
 }

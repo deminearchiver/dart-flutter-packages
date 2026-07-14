@@ -1,3 +1,9 @@
+## 0.1.1
+
+- Disabled verbose logging in the Dart build hook.
+
+- Minor build hook improvements.
+
 ## 0.1.0
 
 - Initial version.
