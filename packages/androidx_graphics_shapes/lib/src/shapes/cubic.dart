@@ -109,11 +109,15 @@ abstract class Cubic {
 
   @internal
   Point pointOnCurve(double t) {
+    // Factored out most of variables to minimize the amount of calculations.
     final u = 1.0 - t;
-    final uCb = u * u * u;
-    final tCb = t * t * t;
-    final threeTUSq = 3.0 * t * u * u;
-    final threeUTSq = 3.0 * t * t * u;
+    final uSq = u * u;
+    final tSq = t * t;
+    final threeUT = 3.0 * u * t;
+    final uCb = uSq * u;
+    final tCb = tSq * t;
+    final threeTUSq = threeUT * u;
+    final threeUTSq = threeUT * t;
     return .new(
       anchor0X * uCb +
           control0X * threeTUSq +
@@ -225,34 +229,36 @@ abstract class Cubic {
 
   /// Returns two Cubics, created by splitting this curve at the given distance of [t] between the
   /// original starting and ending anchor points.
-  // TODO: cartesian optimization?
   (Cubic, Cubic) split(double t) {
-    final pointOnCurve = this.pointOnCurve(t);
+    // Cartesian optimization via the De Casteljau's algorithm.
+
+    // Use barycentric interpolation.
     final u = 1.0 - t;
-    final uSquared = u * u;
-    final tSquared = t * t;
-    final twoUt = 2.0 * u * t;
+
+    // Interpolation 1.
+    final p01X = anchor0X * u + control0X * t;
+    final p01Y = anchor0Y * u + control0Y * t;
+
+    final p12X = control0X * u + control1X * t;
+    final p12Y = control0Y * u + control1Y * t;
+
+    final p23X = control1X * u + anchor1X * t;
+    final p23Y = control1Y * u + anchor1Y * t;
+
+    // Interpolation 2.
+    final p012X = p01X * u + p12X * t;
+    final p012Y = p01Y * u + p12Y * t;
+
+    final p123X = p12X * u + p23X * t;
+    final p123Y = p12Y * u + p23Y * t;
+
+    // Interpolation 3.
+    final p0123X = p012X * u + p123X * t;
+    final p0123Y = p012Y * u + p123Y * t;
+
     return (
-      .from(
-        anchor0X,
-        anchor0Y,
-        anchor0X * u + control0X * t,
-        anchor0Y * u + control0Y * t,
-        anchor0X * uSquared + control0X * twoUt + control1X * tSquared,
-        anchor0Y * uSquared + control0Y * twoUt + control1Y * tSquared,
-        pointOnCurve.x,
-        pointOnCurve.y,
-      ),
-      .from(
-        pointOnCurve.x,
-        pointOnCurve.y,
-        control0X * uSquared + control1X * twoUt + anchor1X * tSquared,
-        control0Y * uSquared + control1Y * twoUt + anchor1Y * tSquared,
-        control1X * u + anchor1X * t,
-        control1Y * u + anchor1Y * t,
-        anchor1X,
-        anchor1Y,
-      ),
+      .from(anchor0X, anchor0Y, p01X, p01Y, p012X, p012Y, p0123X, p0123Y),
+      .from(p0123X, p0123Y, p123X, p123Y, p23X, p23Y, anchor1X, anchor1Y),
     );
   }
 
