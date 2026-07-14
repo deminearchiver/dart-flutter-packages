@@ -1,3 +1,9 @@
+## 0.4.1
+
+- Updated the Dart build hook to fix some potential issues on different hosts.
+
+- Other minor improvements to the Dart build hook.
+
 ## 0.4.0
 
 - Moved high-level FFI wrappers (currently only around `hb-blob`) from the now-discontinued `harfbuzz` package to this package.
