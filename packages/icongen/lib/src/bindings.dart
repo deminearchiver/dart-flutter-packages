@@ -1,51 +1,32 @@
+import 'dart:collection';
 import 'dart:ffi';
-import 'dart:io';
 
 import 'package:ffi/ffi.dart';
 import 'package:harfbuzz_ffi/harfbuzz_ffi_bindings.dart';
-import 'package:harfbuzz_ffi/harfbuzz_ffi.dart';
-import 'package:icongen/src/types.dart';
+import 'package:icongen/icongen.dart';
+import 'package:meta/meta.dart';
 
-Future<void> generateIconBindings(
-  SubsetResult subsetResult, {
-  required Uri library,
-  String? className,
-  String? fontFamily,
-  String? fontPackage,
-  IconGlyph? forceTreeShakeIconGlyph,
-}) => IconBindingsBuilder(
-  subsetResult,
-  library: library,
-  className: className,
-  fontFamily: fontFamily,
-  fontPackage: fontPackage,
-  forceTreeShakeIconGlyph: forceTreeShakeIconGlyph,
-).generate();
-
-class IconBindingsBuilder {
-  IconBindingsBuilder(
+@immutable
+class BindingsBuilder {
+  const BindingsBuilder(
     this.subsetResult, {
-    required this.library,
-    this.className,
+    required this.className,
     this.fontFamily,
     this.fontPackage,
     this.forceTreeShakeIconGlyph,
   });
 
   final SubsetResult subsetResult;
-  final Uri library;
-  final String? className;
+  final String className;
   final String? fontFamily;
   final String? fontPackage;
   final IconGlyph? forceTreeShakeIconGlyph;
 
-  Future<void> generate() async {
-    final resolvedClassName = className ?? "Icons";
-    final resolvedFontFamily =
-        fontFamily ?? subsetResult.fontFamily ?? resolvedClassName;
-    final resolvedForceTreeShakeIconGlyph =
-        forceTreeShakeIconGlyph ??
-        await _defaultForceTreeShakeIconGlyph(subsetResult);
+  BindingsResult build() {
+    final fontFamily = this.fontFamily ?? subsetResult.fontFamily ?? className;
+    final forceTreeShakeIconGlyph =
+        this.forceTreeShakeIconGlyph ??
+        _defaultForceTreeShakeIconGlyph(subsetResult);
 
     final reservedIdentifiers = <String>{
       "fontFamily",
@@ -53,18 +34,16 @@ class IconBindingsBuilder {
       "forceCompileTimeTreeShaking",
     };
 
-    Iterable<IconGlyph> uniqueIconGlyphsByName(Iterable<IconGlyph> iconGlyphs) {
-      final nameToIconGlyph = <String, IconGlyph>{};
-      final unnamedIconGlyphs = <IconGlyph>[];
-      for (final icon in iconGlyphs) {
-        final name = icon.name;
-        if (name != null && name.isNotEmpty) {
-          nameToIconGlyph.putIfAbsent(name, () => icon);
-        } else {
-          unnamedIconGlyphs.add(icon);
+    Iterable<IconGlyph> uniqueIconGlyphsByName(
+      Iterable<IconGlyph> iconGlyphs,
+    ) sync* {
+      final seen = HashSet<String>();
+      for (final iconGlyph in iconGlyphs) {
+        final name = iconGlyph.name;
+        if (name == null || name.isEmpty || seen.add(name)) {
+          yield iconGlyph;
         }
       }
-      return nameToIconGlyph.values.followedBy(unnamedIconGlyphs);
     }
 
     Iterable<_Icon> identifyIcons(Iterable<IconGlyph> iconGlyphs) =>
@@ -94,16 +73,18 @@ class IconBindingsBuilder {
 
       final identifierToIndex = <String, int>{};
       for (final icon in icons) {
-        if (identifierToCount[icon.identifier]! > 1) {
+        final identifier = icon.identifier;
+        final count = identifierToCount[identifier]!;
+        if (count > 1) {
           final index = identifierToIndex.update(
-            icon.identifier,
+            identifier,
             (value) => value + 1,
             ifAbsent: () => 0,
           );
           yield _Icon(
             codePoint: icon.codePoint,
             name: icon.name,
-            identifier: "${icon.identifier}\$$index",
+            identifier: "$identifier\$$index",
           );
         } else {
           yield icon;
@@ -111,17 +92,17 @@ class IconBindingsBuilder {
       }
     }
 
-    final icons =
-        renameDuplicateIcons(
-            identifyIcons(uniqueIconGlyphsByName(subsetResult.iconGlyphs)),
-          ).toList(growable: false)
-          ..sort((a, b) => a.identifier.compareTo(b.identifier));
+    final uniqueIconGlyphs = uniqueIconGlyphsByName(subsetResult.iconGlyphs);
+    final identifiedIcons = identifyIcons(uniqueIconGlyphs);
+    final renamedIcons = renameDuplicateIcons(identifiedIcons);
+    final icons = renamedIcons.toList(growable: false)
+      ..sort((a, b) => a.identifier.compareTo(b.identifier));
 
     final code = _generateCode(
-      className: resolvedClassName,
-      fontFamily: resolvedFontFamily,
+      className: className,
+      fontFamily: fontFamily,
       fontPackage: fontPackage,
-      forceTreeShakeIconGlyph: resolvedForceTreeShakeIconGlyph,
+      forceTreeShakeIconGlyph: forceTreeShakeIconGlyph,
       icons: icons,
     );
 
@@ -136,30 +117,30 @@ class IconBindingsBuilder {
     //   formattedCode = rawCode;
     // }
 
-    final file = File(library.toFilePath());
-    await file.parent.create(recursive: true);
-    await file.writeAsString(code);
+    return BindingsResult(code: code);
   }
 }
 
-Future<IconGlyph?> _defaultForceTreeShakeIconGlyph(
-  SubsetResult subsetResult,
-) async {
+IconGlyph? _defaultForceTreeShakeIconGlyph(SubsetResult subsetResult) {
   if (subsetResult.iconGlyphs.isEmpty) return null;
-  return using((arena) async {
-    final subsetFile = File(subsetResult.output.asset.toFilePath());
-    if (!subsetFile.existsSync()) {
+  return using((arena) {
+    final bytes = subsetResult.bytes;
+    final nativeBytes = arena<Uint8>(bytes.length);
+    nativeBytes.asTypedList(bytes.length).setAll(0, bytes);
+
+    final subsetBlob = hb_blob_create_or_fail(
+      nativeBytes.cast(),
+      bytes.length,
+      hb_memory_mode_t.HB_MEMORY_MODE_READONLY,
+      nullptr,
+      nullptr,
+    );
+    if (subsetBlob == nullptr) {
       return null;
     }
+    arena.onReleaseAll(() => hb_blob_destroy(subsetBlob));
 
-    final subsetBytes = await subsetFile.readAsBytes();
-    final subsetBlob = HarfbuzzBlob.tryFromBytes(subsetBytes);
-    if (subsetBlob == null) {
-      return null;
-    }
-    arena.onReleaseAll(subsetBlob.dispose);
-
-    final subsetFace = hb_face_create(subsetBlob.asNativeBlob, 0);
+    final subsetFace = hb_face_create(subsetBlob, 0);
     if (subsetFace == nullptr) {
       return null;
     }
@@ -178,28 +159,29 @@ Future<IconGlyph?> _defaultForceTreeShakeIconGlyph(
     int? smallestArea;
 
     for (final icon in subsetResult.iconGlyphs) {
-      if (hb_font_get_nominal_glyph(
-            subsetFont,
-            icon.codePoint,
-            glyphIdPointer,
-          ) !=
-          0) {
-        if (hb_font_get_glyph_extents(
-              subsetFont,
-              glyphIdPointer.value,
-              extentsPointer,
-            ) !=
-            0) {
-          final width = extentsPointer.ref.width.abs();
-          final height = extentsPointer.ref.height.abs();
-          final area = width * height;
-          if (area > 0) {
-            if (smallestArea == null || area < smallestArea) {
-              smallestArea = area;
-              smallestIcon = icon;
-            }
-          }
-        }
+      var status = hb_font_get_nominal_glyph(
+        subsetFont,
+        icon.codePoint,
+        glyphIdPointer,
+      );
+      if (status == 0) continue;
+
+      status = hb_font_get_glyph_extents(
+        subsetFont,
+        glyphIdPointer.value,
+        extentsPointer,
+      );
+      if (status != 0) continue;
+
+      final width = extentsPointer.ref.width.abs();
+      final height = extentsPointer.ref.height.abs();
+
+      final area = width * height;
+      if (area <= 0) continue;
+
+      if (smallestArea == null || area < smallestArea) {
+        smallestArea = area;
+        smallestIcon = icon;
       }
     }
 
@@ -412,8 +394,11 @@ extension type const _Icon._(
   String get identifier => _.identifier;
 }
 
-// TODO: check if this list is exhaustive
-const _keywords = <String>{
+// This list is sourced from the latest Dart language specification draft,
+// section "Reserved Words".
+//
+// See: https://dart.dev/resources/language/spec.
+const _reservedWords = <String>[
   "assert",
   "break",
   "case",
@@ -447,28 +432,7 @@ const _keywords = <String>{
   "void",
   "while",
   "with",
-  "yield",
-  "async",
-  "await",
-  "dynamic",
-  "implements",
-  "import",
-  "library",
-  "operator",
-  "part",
-  "set",
-  "get",
-  "static",
-  "typedef",
-  "late",
-  "required",
-  "covariant",
-  "factory",
-  "extension",
-  "inline",
-  "interface",
-  "mixin",
-};
+];
 
 const _ones = <String>[
   "zero",
@@ -543,7 +507,7 @@ String _sanitizeIconIdentifier(
       name = '${words}_$rest';
     }
   }
-  if (_keywords.contains(name) || reservedIdentifiers.contains(name)) {
+  if (_reservedWords.contains(name) || reservedIdentifiers.contains(name)) {
     name = "$name\$";
   }
   if (RegExp(r"^\d").hasMatch(name) || name.isEmpty) {

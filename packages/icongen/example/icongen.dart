@@ -1,8 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:icongen/icongen.dart';
 
 mixin _IconFontId {
+  String get asset;
+
   String get library;
 
   String get className;
@@ -14,31 +18,39 @@ mixin _IconFontId {
 
 enum _GoogleSymbolsId implements _IconFontId {
   googleSymbols(
+    asset: "example/fonts/GoogleSymbols.ttf",
     library: "example/src/google_symbols.dart",
     className: "GoogleSymbols",
     fontFamily: "Google Symbols",
   ),
   googleSymbolsOutlined(
+    asset: "example/fonts/GoogleSymbolsOutlined.ttf",
     library: "example/src/google_symbols_outlined.dart",
     className: "GoogleSymbolsOutlined",
     fontFamily: "Google Symbols Outlined",
   ),
   googleSymbolsRounded(
+    asset: "example/fonts/GoogleSymbolsRounded.ttf",
     library: "example/src/google_symbols_rounded.dart",
     className: "GoogleSymbolsRounded",
     fontFamily: "Google Symbols Rounded",
   ),
   googleSymbolsSharp(
+    asset: "example/fonts/GoogleSymbolsSharp.ttf",
     library: "example/src/google_symbols_sharp.dart",
     className: "GoogleSymbolsSharp",
     fontFamily: "Google Symbols Sharp",
   );
 
   const _GoogleSymbolsId({
+    required this.asset,
     required this.library,
     required this.className,
     required this.fontFamily,
   });
+
+  @override
+  final String asset;
 
   @override
   final String library;
@@ -50,40 +62,74 @@ enum _GoogleSymbolsId implements _IconFontId {
   final String fontFamily;
 
   @override
-  String get fontPackage => "icongen";
+  String get fontPackage => "google_symbols_icons";
 }
 
 void main() async {
   final packageRoot = Platform.script.resolve("../");
-  final subsetResults = await generateFontSubsets<_GoogleSymbolsId>(
-    input: packageRoot.resolve("../../wip/Google_Symbols_ORIGINAL.ttf"),
-    outputs: {
-      .googleSymbols: SubsetOutput(
-        asset: packageRoot.resolve("example/fonts/GoogleSymbols.ttf"),
+
+  print("\nLoading input files...");
+
+  final inputPath = packageRoot
+      .resolve("../../wip/Google_Symbols_ORIGINAL.ttf")
+      .toFilePath();
+
+  final inputBytes = await File(inputPath).readAsBytes();
+
+  print("\nSubsetting fonts...");
+
+  // Returned value is the pure interface, not specific enum.
+  final subsetResults = buildSubsets<_IconFontId>(
+    bytes: inputBytes,
+    // Upcast to enum so we can use dot shorthands on keys.
+    entries: const <_GoogleSymbolsId, SubsetEntry>{
+      .googleSymbols: .new(),
+      .googleSymbolsOutlined: .new(
+        variableAxisConstraints: {.rond: .fixed(at: 50.0)},
       ),
-      .googleSymbolsOutlined: SubsetOutput(
-        asset: packageRoot.resolve("example/fonts/GoogleSymbolsOutlined.ttf"),
-        axisConstraints: const [.fixed("ROND", at: 50.0)],
+      .googleSymbolsRounded: .new(
+        variableAxisConstraints: {.rond: .fixed(at: 100.0)},
       ),
-      .googleSymbolsRounded: SubsetOutput(
-        asset: packageRoot.resolve("example/fonts/GoogleSymbolsRounded.ttf"),
-        axisConstraints: const [.fixed("ROND", at: 100.0)],
-      ),
-      .googleSymbolsSharp: SubsetOutput(
-        asset: packageRoot.resolve("example/fonts/GoogleSymbolsSharp.ttf"),
-        axisConstraints: const [.fixed("ROND", at: 0.0)],
+      .googleSymbolsSharp: .new(
+        variableAxisConstraints: {.rond: .fixed(at: 0.0)},
       ),
     },
   );
 
-  for (final subsetResult in subsetResults.values) {
-    final id = subsetResult.outputId;
-    await generateIconBindings(
-      subsetResult,
-      library: packageRoot.resolve(id.library),
-      className: id.className,
-      fontFamily: id.fontFamily,
-      fontPackage: id.fontPackage,
-    );
-  }
+  print("Writing font subsets...");
+
+  await writeSubsets(
+    entries: subsetResults.values.map(
+      (subsetResult) =>
+          .new(subsetResult, path: packageRoot.resolve(subsetResult.id.asset)),
+    ),
+  );
+
+  print("\nGenerating icon bindings...");
+
+  final bindingsResults = buildBindings(
+    entries: {
+      for (final MapEntry(key: id, value: SubsetResult subsetResult)
+          in subsetResults.entries)
+        id: .new(
+          subsetResult: subsetResult,
+          className: id.className,
+          fontFamily: id.fontFamily,
+          fontPackage: id.fontPackage,
+        ),
+    },
+  );
+
+  print("Writing generated code...");
+
+  await writeBindings(
+    entries: bindingsResults.values.map(
+      (bindingsResult) => .new(
+        bindingsResult,
+        path: packageRoot.resolve(bindingsResult.id.library),
+      ),
+    ),
+  );
+
+  print("\nDone!");
 }

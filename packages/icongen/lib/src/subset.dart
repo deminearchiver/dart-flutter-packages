@@ -1,83 +1,70 @@
 import 'dart:ffi';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:harfbuzz_ffi/harfbuzz_ffi_bindings.dart';
-import 'package:harfbuzz_ffi/harfbuzz_ffi.dart';
-import 'package:icongen/src/types.dart';
+import 'package:icongen/icongen.dart';
+import 'package:meta/meta.dart';
 
-Future<Map<T, SubsetResult<T>>> generateFontSubsets<T extends Object?>({
-  required Uri input,
-  required Map<T, SubsetOutput> outputs,
-}) => FontSubsetBuilder(input: input, outputs: outputs).generate();
+@immutable
+class SubsetBuilder {
+  const SubsetBuilder({
+    required this.inputBytes,
+    this.variableAxisConstraints = const {},
+  });
 
-class FontSubsetBuilder<T extends Object?> {
-  FontSubsetBuilder({required this.input, required this.outputs});
+  final Uint8List inputBytes;
 
-  final Uri input;
-  final Map<T, SubsetOutput> outputs;
+  final VariableAxisConstraints variableAxisConstraints;
 
-  Future<Map<T, SubsetResult<T>>> generate() async {
-    final inputFile = File(input.toFilePath());
-    if (!inputFile.existsSync()) {
-      throw FileSystemException(
-        "Input font file does not exist.",
-        inputFile.path,
+  SubsetResult build() => using((arena) {
+    final nativeBytes = arena<Uint8>(inputBytes.length);
+
+    nativeBytes.asTypedList(inputBytes.length).setAll(0, inputBytes);
+
+    final inputBlob = hb_blob_create_or_fail(
+      nativeBytes.cast<Char>(),
+      inputBytes.length,
+      .HB_MEMORY_MODE_READONLY,
+      nullptr,
+      nullptr,
+    );
+    if (inputBlob == nullptr) {
+      throw StateError("Failed to create hb_blob_t.");
+    }
+    arena.onReleaseAll(() => hb_blob_destroy(inputBlob));
+
+    final inputFace = hb_face_create(inputBlob, 0);
+    if (inputFace == nullptr) {
+      throw StateError("Failed to create hb_face_t.");
+    }
+    arena.onReleaseAll(() => hb_face_destroy(inputFace));
+
+    Pointer<hb_face_t> subsetFace;
+
+    if (variableAxisConstraints.isEmpty) {
+      subsetFace = inputFace;
+    } else {
+      subsetFace = _createSubset(
+        inputFace,
+        variableAxisConstraints,
+        arena: arena,
       );
     }
 
-    final inputBytes = await inputFile.readAsBytes();
-    final inputBlob = HarfbuzzBlob.tryFromBytes(inputBytes);
-    if (inputBlob == null) {
-      throw Exception("Failed to create HarfBuzz blob from input font.");
-    }
+    final subsetBytes = _faceToBytes(subsetFace, arena: arena);
 
-    final results = <T, SubsetResult<T>>{};
-
-    try {
-      for (final MapEntry(key: id, value: output) in outputs.entries) {
-        await using((arena) async {
-          final inputFace = hb_face_create(inputBlob.asNativeBlob, 0);
-          if (inputFace == nullptr) {
-            throw StateError("failed to create hb_face_t.");
-          }
-          arena.onReleaseAll(() => hb_face_destroy(inputFace));
-
-          Pointer<hb_face_t> subsetFace;
-
-          final isCircular = input == output.asset;
-          if (isCircular) {
-            if (output.axisConstraints.isNotEmpty) {
-              throw ArgumentError(
-                "Cannot subset when output asset is identical to the input font file.",
-              );
-            }
-            subsetFace = inputFace;
-          } else {
-            subsetFace = _createSubset(inputFace, output, arena: arena);
-            await _writeAssetFile(subsetFace, output, arena: arena);
-          }
-
-          results[id] = .new(
-            outputId: id,
-            output: output,
-            fontFamily: _extractFontFamily(subsetFace, arena: arena),
-            iconGlyphs: _extractIconGlyphs(subsetFace, arena: arena),
-          );
-        });
-      }
-    } finally {
-      inputBlob.dispose();
-    }
-
-    return results;
-  }
+    return SubsetResult(
+      bytes: subsetBytes,
+      fontFamily: _extractFontFamily(subsetFace, arena: arena),
+      iconGlyphs: _extractIconGlyphs(subsetFace, arena: arena),
+    );
+  });
 }
 
 Pointer<hb_face_t> _createSubset(
   Pointer<hb_face_t> inputFace,
-  SubsetOutput output, {
+  VariableAxisConstraints variableAxisConstraints, {
   required Arena arena,
 }) {
   final subsetInput = hb_subset_input_create_or_fail();
@@ -99,57 +86,58 @@ Pointer<hb_face_t> _createSubset(
   hb_set_clear(unicodeSet);
   hb_set_invert(unicodeSet);
 
-  for (final axisConstraint in output.axisConstraints) {
-    final tag = _createNativeTag(axisConstraint.tag);
-    switch (axisConstraint) {
-      case SubsetAxisFixed(:final at):
-        final result = hb_subset_input_pin_axis_location(
+  for (final MapEntry(key: tag, value: variableAxisConstraint)
+      in variableAxisConstraints.entries) {
+    final nativeTag = _createNativeTag(tag, arena: arena);
+    switch (variableAxisConstraint) {
+      case VariableAxisFixed(:final at):
+        final status = hb_subset_input_pin_axis_location(
           subsetInput,
           inputFace,
-          tag,
+          nativeTag,
           at,
         );
-        if (result == 0) {
-          throw Exception("Failed to pin axis value for ${axisConstraint.tag}");
+        if (status == 0) {
+          throw StateError("Failed to pin axis value for $tag.");
         }
-      case SubsetAxisRange(:final from, :final to, :final defaultValue):
+      case VariableAxisRange(:final from, :final to, :final defaultValue):
         if (from >= to) {
           throw ArgumentError.value(
-            axisConstraint,
+            variableAxisConstraint,
             null,
             "Axis constraint range cannot be empty.",
           );
         }
         if (defaultValue < from || defaultValue > to) {
           throw ArgumentError.value(
-            axisConstraint,
+            variableAxisConstraint,
             null,
             "Axis constraint default value must be in range.",
           );
         }
-        final result = hb_subset_input_set_axis_range(
+        final status = hb_subset_input_set_axis_range(
           subsetInput,
           inputFace,
-          tag,
+          nativeTag,
           from,
           to,
           defaultValue,
         );
-        if (result == 0) {
-          throw Exception("Failed to pin axis range for ${axisConstraint.tag}");
+        if (status == 0) {
+          throw StateError("Failed to pin axis range for $tag.");
         }
     }
   }
 
   final subsetFace = hb_subset_or_fail(inputFace, subsetInput);
   if (subsetFace == nullptr) {
-    throw StateError("HarfBuzz subsetting failed for $output.");
+    throw StateError("HarfBuzz subsetting failed.");
   }
   arena.onReleaseAll(() => hb_face_destroy(subsetFace));
   return subsetFace;
 }
 
-Uint8List _faceToBytesUnsafe(Pointer<hb_face_t> face, {required Arena arena}) {
+Uint8List _faceToBytes(Pointer<hb_face_t> face, {required Arena arena}) {
   final blob = hb_face_reference_blob(face);
   if (blob == nullptr) {
     throw StateError("Failed to reference face hb_blob_t.");
@@ -161,24 +149,39 @@ Uint8List _faceToBytesUnsafe(Pointer<hb_face_t> face, {required Arena arena}) {
   if (data == nullptr) {
     throw StateError("Failed to extract data from face blob.");
   }
-  return data.cast<Uint8>().asTypedList(lengthPointer.value);
+
+  final view = data.cast<Uint8>().asTypedList(lengthPointer.value);
+  return .fromList(view);
 }
 
-Future<void> _writeAssetFile(
-  Pointer<hb_face_t> subsetFace,
-  SubsetOutput output, {
-  required Arena arena,
-}) async {
-  final subsetBytes = _faceToBytesUnsafe(subsetFace, arena: arena);
+String? _extractFontFamily(Pointer<hb_face_t> face, {required Arena arena}) {
+  final nameId = hb_ot_name_id_predefined_t.HB_OT_NAME_ID_FONT_FAMILY.value;
 
-  final file = File(output.asset.toFilePath());
+  final length = hb_ot_name_get_utf8(
+    face,
+    nameId,
+    hb_language_get_default(),
+    nullptr,
+    nullptr,
+  );
+  if (length <= 0) return null;
 
-  // Recursively create path to file, if not exist.
-  await file.parent.create(recursive: true);
+  final size = length + 1;
+  final lengthPointer = arena<UnsignedInt>()..value = size;
+  final stringPointer = arena<Char>(size);
 
-  // Write bytes to file, overriding if exists.
-  await file.writeAsBytes(subsetBytes);
+  hb_ot_name_get_utf8(
+    face,
+    nameId,
+    hb_language_get_default(),
+    lengthPointer,
+    stringPointer,
+  );
+
+  return stringPointer.cast<Utf8>().toDartString(length: length);
 }
+
+final _uniRegExp = RegExp(r"^u(ni)?[0-9a-fA-F]{4,}$");
 
 List<IconGlyph> _extractIconGlyphs(
   Pointer<hb_face_t> face, {
@@ -215,15 +218,15 @@ List<IconGlyph> _extractIconGlyphs(
     String? name;
     if (hb_font_get_nominal_glyph(font, codePoint, glyphIdPointer) != 0) {
       final glyphId = glyphIdPointer.value;
-      if (hb_font_get_glyph_name(
-            font,
-            glyphId,
-            glyphNamePointer,
-            glyphNameLength,
-          ) !=
-          0) {
+      final status = hb_font_get_glyph_name(
+        font,
+        glyphId,
+        glyphNamePointer,
+        glyphNameLength,
+      );
+      if (status != 0) {
         final glyphName = glyphNamePointer.cast<Utf8>().toDartString();
-        if (glyphName.isNotEmpty && !glyphName.contains("uni")) {
+        if (glyphName.isNotEmpty && !_uniRegExp.hasMatch(glyphName)) {
           name = glyphName;
         }
       }
@@ -234,41 +237,12 @@ List<IconGlyph> _extractIconGlyphs(
   return iconGlyphs;
 }
 
-String? _extractFontFamily(Pointer<hb_face_t> face, {required Arena arena}) {
-  final nameId = hb_ot_name_id_predefined_t.HB_OT_NAME_ID_FONT_FAMILY.value;
-
-  final length = hb_ot_name_get_utf8(
-    face,
-    nameId,
-    hb_language_get_default(),
-    nullptr,
-    nullptr,
-  );
-  if (length <= 0) return null;
-
-  final size = length + 1;
-  final lengthPointer = arena<UnsignedInt>()..value = size;
-  final stringPointer = arena<Char>(size);
-
-  hb_ot_name_get_utf8(
-    face,
-    nameId,
-    hb_language_get_default(),
-    lengthPointer,
-    stringPointer,
-  );
-
-  return stringPointer.cast<Utf8>().toDartString(length: length);
-}
-
-int _createNativeTag(String tag, [Allocator wrappedAllocator = calloc]) {
+int _createNativeTag(String tag, {required Arena arena}) {
   if (tag.length != 4) {
     throw ArgumentError(
-      "Variable font axis tags must be exactly 4 characters long.",
+      "Variable font axis tag must be exactly 4 characters long.",
     );
   }
-  return using((allocator) {
-    final nativeString = tag.toNativeUtf8(allocator: allocator);
-    return hb_tag_from_string(nativeString.cast(), tag.length);
-  }, wrappedAllocator);
+  final nativeString = tag.toNativeUtf8(allocator: arena);
+  return hb_tag_from_string(nativeString.cast<Char>(), tag.length);
 }
