@@ -30,8 +30,11 @@ migrate_working_dir/
 /build/
 /coverage/
 
-test/snapshots/
-test/snapshot_test.dart
-test/snapshot_test.freezed.dart
-test/snapshot_test.g.dart
-tool/
+/test/snapshots/
+/test/snapshot_test.dart
+/test/snapshot_test.freezed.dart
+/test/snapshot_test.g.dart
+
+/third_party/material-color-utilities/
+
+/tool/

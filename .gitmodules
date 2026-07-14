@@ -7,3 +7,6 @@
 [submodule "packages/woff2_ffi/third_party/woff2"]
 	path = packages/woff2/woff2_ffi/third_party/woff2
 	url = git@github.com:google/woff2
+[submodule "packages/libmonet/third_party/material-color-utilities"]
+	path = packages/libmonet/third_party/material-color-utilities
+	url = git@github.com:material-foundation/material-color-utilities
