@@ -1,3 +1,41 @@
+## 0.4.0
+
+- Moved the main APIs away from being ID-aware.
+  - Removed `generateFontSubsets` and `generateIconBindings` utility functions.
+  - Removed automatic font loading functionality for maximum flexibility.
+  - The low-level APIs are now fully synchronous, because they don' perform I/O operations anymore.
+  - Renamed `FontSubsetBuilder` to `SubsetBuilder`, `IconBindingsBuilder` to `BindingsBuilder` and marked them as `@immutable`.
+  - Renamed `SubsetAxisConstraint` to `VariableAxisConstraint`.
+  - Removed type parameters from all low-level classes (`SubsetBuilder` and `SubsetResult` no longer accept an ID type parameter).
+
+- Added mid-level utility functions to serve as replacements for removed ID-based generator APIs.
+  - `buildSubsets` and `buildIcons` build ID-mapped subsets and icons respectively, fully synchrounously.
+  - `SubsetEntry` (replacement for `SubsetOutput`) and `BindingsEntry` provide configuration for the build methods.
+  - `SubsetResultWithId<IdType>` and `BindingsResultWithId<IdType>` represent results of the build methods.
+  - `writeSubsets` and `writeBindings` are small utility functions that help write the generated font subset bytes and icon bindings code to the file system. `WriteEntry<T>` serves as the main primitive for these functions.
+
+- Added a new type to store predefined tags: `VariableAxisTag`.
+  - This extension type is erased at runtime, meaning casts from `String` are safe for custom axis tags.
+  - This class contains extensive metadata about each axis tag defined in the Google Fonts Axis Registry.
+  - Added a Python script to generate the data automatically from latest Google Fonts Axis Registry data.
+
+- Removed `tag` property from `VariableAxisConstraint`.
+  - Constraints are now defined by a new type: `VariableAxisConstraints`, which is a `Map<VariableAxisTag, VariableAxisConstraint>` - prevents duplicate constraints issues.
+
+- Migrated result models (i.e. `SubsetResult`, `BindingsResult`, etc.) away from Freezed data class because they may store large amounts of data now (`Uint8List`, etc.).
+
+- Reviewed and fixed icon identifier sanitization logic.
+  - Aligned the reserved keywords list with Dart language specification.
+  - Surrounding class name is now considered a reserved identifier.
+
+- Enabled JSON serialization functionality for `VariableAxisConstraint` (deserialized based on the `type` field) and `IconGlyph`.
+
+- Fixed `build_runner` builds failing if the `example` directory had generated icon bindings files which didn't belong to the package.
+
+- Heavily improved internal file structure.
+
+- Updated examples and README.
+
 ## 0.3.0
 
 - Migrated away from discontinued `harfbuzz` dependency to `harfbuzz_ffi`, which has fully replaced the former package.

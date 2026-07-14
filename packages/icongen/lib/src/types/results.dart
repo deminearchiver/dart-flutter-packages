@@ -37,7 +37,7 @@ class SubsetResult {
 }
 
 @immutable
-class SubsetResultWithId<T extends Object?> extends SubsetResult {
+class SubsetResultWithId<IdType extends Object?> extends SubsetResult {
   const SubsetResultWithId({
     required this.id,
     required super.bytes,
@@ -54,11 +54,11 @@ class SubsetResultWithId<T extends Object?> extends SubsetResult {
          iconGlyphs: subsetResult.iconGlyphs,
        );
 
-  final T id;
+  final IdType id;
 
   @override
   String toString() =>
-      "SubsetResultWithId<T>("
+      "SubsetResultWithId<$IdType>("
       "id: $id, bytes: $bytes, fontFamily: $fontFamily, iconGlyphs: $iconGlyphs"
       ")";
 
@@ -66,7 +66,7 @@ class SubsetResultWithId<T extends Object?> extends SubsetResult {
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
-          other is SubsetResultWithId<T> &&
+          other is SubsetResultWithId<IdType> &&
           id == other.id &&
           bytes == other.bytes &&
           fontFamily == other.fontFamily &&
@@ -98,7 +98,7 @@ class BindingsResult {
 }
 
 @immutable
-class BindingsResultWithId<T extends Object?> extends BindingsResult {
+class BindingsResultWithId<IdType extends Object?> extends BindingsResult {
   const BindingsResultWithId({required this.id, required super.code});
 
   BindingsResultWithId.fromBindingsResult(
@@ -106,16 +106,16 @@ class BindingsResultWithId<T extends Object?> extends BindingsResult {
     required this.id,
   }) : super(code: bindingsResult.code);
 
-  final T id;
+  final IdType id;
 
   @override
-  String toString() => "BindingsResultWithId(id: $id, code: $code)";
+  String toString() => "BindingsResultWithId<$IdType>(id: $id, code: $code)";
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
-          other is BindingsResultWithId<T> &&
+          other is BindingsResultWithId<IdType> &&
           id == other.id &&
           code == other.code;
 

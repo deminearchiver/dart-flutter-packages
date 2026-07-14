@@ -146,20 +146,20 @@ as VariableAxisConstraints,
 }
 
 /// @nodoc
-mixin _$WriteEntry<T extends Object?> {
+mixin _$WriteEntry<ValueType extends Object?> {
 
- T get value; Uri get path;
+ ValueType get value; Uri get path;
 /// Create a copy of WriteEntry
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$WriteEntryCopyWith<T, WriteEntry<T>> get copyWith => _$WriteEntryCopyWithImpl<T, WriteEntry<T>>(this as WriteEntry<T>, _$identity);
+$WriteEntryCopyWith<ValueType, WriteEntry<ValueType>> get copyWith => _$WriteEntryCopyWithImpl<ValueType, WriteEntry<ValueType>>(this as WriteEntry<ValueType>, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is WriteEntry<T>&&const DeepCollectionEquality().equals(other.value, value)&&(identical(other.path, path) || other.path == path));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WriteEntry<ValueType>&&const DeepCollectionEquality().equals(other.value, value)&&(identical(other.path, path) || other.path == path));
 }
 
 
@@ -168,18 +168,18 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'WriteEntry<$T>(value: $value, path: $path)';
+  return 'WriteEntry<$ValueType>(value: $value, path: $path)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $WriteEntryCopyWith<T extends Object?,$Res>  {
-  factory $WriteEntryCopyWith(WriteEntry<T> value, $Res Function(WriteEntry<T>) _then) = _$WriteEntryCopyWithImpl;
+abstract mixin class $WriteEntryCopyWith<ValueType extends Object?,$Res>  {
+  factory $WriteEntryCopyWith(WriteEntry<ValueType> value, $Res Function(WriteEntry<ValueType>) _then) = _$WriteEntryCopyWithImpl;
 @useResult
 $Res call({
- T value, Uri path
+ ValueType value, Uri path
 });
 
 
@@ -187,19 +187,19 @@ $Res call({
 
 }
 /// @nodoc
-class _$WriteEntryCopyWithImpl<T extends Object?,$Res>
-    implements $WriteEntryCopyWith<T, $Res> {
+class _$WriteEntryCopyWithImpl<ValueType extends Object?,$Res>
+    implements $WriteEntryCopyWith<ValueType, $Res> {
   _$WriteEntryCopyWithImpl(this._self, this._then);
 
-  final WriteEntry<T> _self;
-  final $Res Function(WriteEntry<T>) _then;
+  final WriteEntry<ValueType> _self;
+  final $Res Function(WriteEntry<ValueType>) _then;
 
 /// Create a copy of WriteEntry
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? value = freezed,Object? path = null,}) {
   return _then(_self.copyWith(
 value: freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
-as T,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
+as ValueType,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as Uri,
   ));
 }
@@ -211,24 +211,24 @@ as Uri,
 /// @nodoc
 
 
-class _WriteEntry<T extends Object?> implements WriteEntry<T> {
+class _WriteEntry<ValueType extends Object?> implements WriteEntry<ValueType> {
   const _WriteEntry(this.value, {required this.path});
   
 
-@override final  T value;
+@override final  ValueType value;
 @override final  Uri path;
 
 /// Create a copy of WriteEntry
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$WriteEntryCopyWith<T, _WriteEntry<T>> get copyWith => __$WriteEntryCopyWithImpl<T, _WriteEntry<T>>(this, _$identity);
+_$WriteEntryCopyWith<ValueType, _WriteEntry<ValueType>> get copyWith => __$WriteEntryCopyWithImpl<ValueType, _WriteEntry<ValueType>>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WriteEntry<T>&&const DeepCollectionEquality().equals(other.value, value)&&(identical(other.path, path) || other.path == path));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WriteEntry<ValueType>&&const DeepCollectionEquality().equals(other.value, value)&&(identical(other.path, path) || other.path == path));
 }
 
 
@@ -237,18 +237,18 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'WriteEntry<$T>(value: $value, path: $path)';
+  return 'WriteEntry<$ValueType>(value: $value, path: $path)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$WriteEntryCopyWith<T extends Object?,$Res> implements $WriteEntryCopyWith<T, $Res> {
-  factory _$WriteEntryCopyWith(_WriteEntry<T> value, $Res Function(_WriteEntry<T>) _then) = __$WriteEntryCopyWithImpl;
+abstract mixin class _$WriteEntryCopyWith<ValueType extends Object?,$Res> implements $WriteEntryCopyWith<ValueType, $Res> {
+  factory _$WriteEntryCopyWith(_WriteEntry<ValueType> value, $Res Function(_WriteEntry<ValueType>) _then) = __$WriteEntryCopyWithImpl;
 @override @useResult
 $Res call({
- T value, Uri path
+ ValueType value, Uri path
 });
 
 
@@ -256,19 +256,19 @@ $Res call({
 
 }
 /// @nodoc
-class __$WriteEntryCopyWithImpl<T extends Object?,$Res>
-    implements _$WriteEntryCopyWith<T, $Res> {
+class __$WriteEntryCopyWithImpl<ValueType extends Object?,$Res>
+    implements _$WriteEntryCopyWith<ValueType, $Res> {
   __$WriteEntryCopyWithImpl(this._self, this._then);
 
-  final _WriteEntry<T> _self;
-  final $Res Function(_WriteEntry<T>) _then;
+  final _WriteEntry<ValueType> _self;
+  final $Res Function(_WriteEntry<ValueType>) _then;
 
 /// Create a copy of WriteEntry
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? value = freezed,Object? path = null,}) {
-  return _then(_WriteEntry<T>(
+  return _then(_WriteEntry<ValueType>(
 freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
-as T,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
+as ValueType,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as Uri,
   ));
 }
@@ -358,7 +358,7 @@ $IconGlyphCopyWith<$Res>? get forceTreeShakeIconGlyph {
 
 
 class _BindingsEntry implements BindingsEntry {
-  const _BindingsEntry({required this.subsetResult, required this.className, this.fontFamily, this.fontPackage, this.forceTreeShakeIconGlyph});
+  const _BindingsEntry(this.subsetResult, {required this.className, this.fontFamily, this.fontPackage, this.forceTreeShakeIconGlyph});
   
 
 @override final  SubsetResult subsetResult;
@@ -416,7 +416,7 @@ class __$BindingsEntryCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? subsetResult = null,Object? className = null,Object? fontFamily = freezed,Object? fontPackage = freezed,Object? forceTreeShakeIconGlyph = freezed,}) {
   return _then(_BindingsEntry(
-subsetResult: null == subsetResult ? _self.subsetResult : subsetResult // ignore: cast_nullable_to_non_nullable
+null == subsetResult ? _self.subsetResult : subsetResult // ignore: cast_nullable_to_non_nullable
 as SubsetResult,className: null == className ? _self.className : className // ignore: cast_nullable_to_non_nullable
 as String,fontFamily: freezed == fontFamily ? _self.fontFamily : fontFamily // ignore: cast_nullable_to_non_nullable
 as String?,fontPackage: freezed == fontPackage ? _self.fontPackage : fontPackage // ignore: cast_nullable_to_non_nullable

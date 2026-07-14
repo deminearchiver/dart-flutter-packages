@@ -68,29 +68,22 @@ $VariableAxisConstraintCopyWith(VariableAxisConstraint _, $Res Function(Variable
 
 
 
+
+
+
 /// @nodoc
-@JsonSerializable()
+mixin _$VariableAxisFixed {
 
-class VariableAxisFixed extends VariableAxisConstraint {
-  const VariableAxisFixed({required this.at, final  String? $type}): $type = $type ?? 'fixed',super._();
-  factory VariableAxisFixed.fromJson(Map<String, dynamic> json) => _$VariableAxisFixedFromJson(json);
-
- final  double at;
-
-@JsonKey(name: 'type')
-final String $type;
-
-
-/// Create a copy of VariableAxisConstraint
+ double get at;
+/// Create a copy of VariableAxisFixed
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$VariableAxisFixedCopyWith<VariableAxisFixed> get copyWith => _$VariableAxisFixedCopyWithImpl<VariableAxisFixed>(this, _$identity);
+$VariableAxisFixedCopyWith<VariableAxisFixed> get copyWith => _$VariableAxisFixedCopyWithImpl<VariableAxisFixed>(this as VariableAxisFixed, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$VariableAxisFixedToJson(this, );
-}
+  /// Serializes this VariableAxisFixed to a JSON map.
+  Map<String, dynamic> toJson();
+
 
 @override
 bool operator ==(Object other) {
@@ -103,7 +96,7 @@ int get hashCode => Object.hash(runtimeType,at);
 
 @override
 String toString() {
-  return 'VariableAxisConstraint.fixed(at: $at)';
+  return 'VariableAxisFixed(at: $at)';
 }
 
 
@@ -129,10 +122,80 @@ class _$VariableAxisFixedCopyWithImpl<$Res>
   final VariableAxisFixed _self;
   final $Res Function(VariableAxisFixed) _then;
 
-/// Create a copy of VariableAxisConstraint
+/// Create a copy of VariableAxisFixed
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? at = null,}) {
-  return _then(VariableAxisFixed(
+@pragma('vm:prefer-inline') @override $Res call({Object? at = null,}) {
+  return _then(_self.copyWith(
+at: null == at ? _self.at : at // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+}
+
+
+
+/// @nodoc
+@JsonSerializable()
+
+class _VariableAxisFixed extends VariableAxisFixed {
+  const _VariableAxisFixed({required this.at}): super._();
+  factory _VariableAxisFixed.fromJson(Map<String, dynamic> json) => _$VariableAxisFixedFromJson(json);
+
+@override final  double at;
+
+/// Create a copy of VariableAxisFixed
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$VariableAxisFixedCopyWith<_VariableAxisFixed> get copyWith => __$VariableAxisFixedCopyWithImpl<_VariableAxisFixed>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$VariableAxisFixedToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VariableAxisFixed&&(identical(other.at, at) || other.at == at));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,at);
+
+@override
+String toString() {
+  return 'VariableAxisFixed(at: $at)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$VariableAxisFixedCopyWith<$Res> implements $VariableAxisFixedCopyWith<$Res> {
+  factory _$VariableAxisFixedCopyWith(_VariableAxisFixed value, $Res Function(_VariableAxisFixed) _then) = __$VariableAxisFixedCopyWithImpl;
+@override @useResult
+$Res call({
+ double at
+});
+
+
+
+
+}
+/// @nodoc
+class __$VariableAxisFixedCopyWithImpl<$Res>
+    implements _$VariableAxisFixedCopyWith<$Res> {
+  __$VariableAxisFixedCopyWithImpl(this._self, this._then);
+
+  final _VariableAxisFixed _self;
+  final $Res Function(_VariableAxisFixed) _then;
+
+/// Create a copy of VariableAxisFixed
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? at = null,}) {
+  return _then(_VariableAxisFixed(
 at: null == at ? _self.at : at // ignore: cast_nullable_to_non_nullable
 as double,
   ));
@@ -141,31 +204,20 @@ as double,
 
 }
 
+
 /// @nodoc
-@JsonSerializable()
+mixin _$VariableAxisRange {
 
-class VariableAxisRange extends VariableAxisConstraint {
-  const VariableAxisRange({required this.from, required this.to, required this.defaultValue, final  String? $type}): $type = $type ?? 'range',super._();
-  factory VariableAxisRange.fromJson(Map<String, dynamic> json) => _$VariableAxisRangeFromJson(json);
-
- final  double from;
- final  double to;
- final  double defaultValue;
-
-@JsonKey(name: 'type')
-final String $type;
-
-
-/// Create a copy of VariableAxisConstraint
+ double get from; double get to; double get defaultValue;
+/// Create a copy of VariableAxisRange
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$VariableAxisRangeCopyWith<VariableAxisRange> get copyWith => _$VariableAxisRangeCopyWithImpl<VariableAxisRange>(this, _$identity);
+$VariableAxisRangeCopyWith<VariableAxisRange> get copyWith => _$VariableAxisRangeCopyWithImpl<VariableAxisRange>(this as VariableAxisRange, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$VariableAxisRangeToJson(this, );
-}
+  /// Serializes this VariableAxisRange to a JSON map.
+  Map<String, dynamic> toJson();
+
 
 @override
 bool operator ==(Object other) {
@@ -178,7 +230,7 @@ int get hashCode => Object.hash(runtimeType,from,to,defaultValue);
 
 @override
 String toString() {
-  return 'VariableAxisConstraint.range(from: $from, to: $to, defaultValue: $defaultValue)';
+  return 'VariableAxisRange(from: $from, to: $to, defaultValue: $defaultValue)';
 }
 
 
@@ -204,10 +256,84 @@ class _$VariableAxisRangeCopyWithImpl<$Res>
   final VariableAxisRange _self;
   final $Res Function(VariableAxisRange) _then;
 
-/// Create a copy of VariableAxisConstraint
+/// Create a copy of VariableAxisRange
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? from = null,Object? to = null,Object? defaultValue = null,}) {
-  return _then(VariableAxisRange(
+@pragma('vm:prefer-inline') @override $Res call({Object? from = null,Object? to = null,Object? defaultValue = null,}) {
+  return _then(_self.copyWith(
+from: null == from ? _self.from : from // ignore: cast_nullable_to_non_nullable
+as double,to: null == to ? _self.to : to // ignore: cast_nullable_to_non_nullable
+as double,defaultValue: null == defaultValue ? _self.defaultValue : defaultValue // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+}
+
+
+
+/// @nodoc
+@JsonSerializable()
+
+class _VariableAxisRange extends VariableAxisRange {
+  const _VariableAxisRange({required this.from, required this.to, required this.defaultValue}): super._();
+  factory _VariableAxisRange.fromJson(Map<String, dynamic> json) => _$VariableAxisRangeFromJson(json);
+
+@override final  double from;
+@override final  double to;
+@override final  double defaultValue;
+
+/// Create a copy of VariableAxisRange
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$VariableAxisRangeCopyWith<_VariableAxisRange> get copyWith => __$VariableAxisRangeCopyWithImpl<_VariableAxisRange>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$VariableAxisRangeToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VariableAxisRange&&(identical(other.from, from) || other.from == from)&&(identical(other.to, to) || other.to == to)&&(identical(other.defaultValue, defaultValue) || other.defaultValue == defaultValue));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,from,to,defaultValue);
+
+@override
+String toString() {
+  return 'VariableAxisRange(from: $from, to: $to, defaultValue: $defaultValue)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$VariableAxisRangeCopyWith<$Res> implements $VariableAxisRangeCopyWith<$Res> {
+  factory _$VariableAxisRangeCopyWith(_VariableAxisRange value, $Res Function(_VariableAxisRange) _then) = __$VariableAxisRangeCopyWithImpl;
+@override @useResult
+$Res call({
+ double from, double to, double defaultValue
+});
+
+
+
+
+}
+/// @nodoc
+class __$VariableAxisRangeCopyWithImpl<$Res>
+    implements _$VariableAxisRangeCopyWith<$Res> {
+  __$VariableAxisRangeCopyWithImpl(this._self, this._then);
+
+  final _VariableAxisRange _self;
+  final $Res Function(_VariableAxisRange) _then;
+
+/// Create a copy of VariableAxisRange
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? from = null,Object? to = null,Object? defaultValue = null,}) {
+  return _then(_VariableAxisRange(
 from: null == from ? _self.from : from // ignore: cast_nullable_to_non_nullable
 as double,to: null == to ? _self.to : to // ignore: cast_nullable_to_non_nullable
 as double,defaultValue: null == defaultValue ? _self.defaultValue : defaultValue // ignore: cast_nullable_to_non_nullable

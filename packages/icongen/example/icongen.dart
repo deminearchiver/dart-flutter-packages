@@ -112,7 +112,7 @@ void main() async {
       for (final MapEntry(key: id, value: SubsetResult subsetResult)
           in subsetResults.entries)
         id: .new(
-          subsetResult: subsetResult,
+          subsetResult,
           className: id.className,
           fontFamily: id.fontFamily,
           fontPackage: id.fontPackage,

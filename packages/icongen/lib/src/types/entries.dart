@@ -11,14 +11,16 @@ abstract class SubsetEntry with _$SubsetEntry {
 }
 
 @Freezed(fromJson: false, toJson: false)
-abstract class WriteEntry<T extends Object?> with _$WriteEntry<T> {
-  const factory WriteEntry(T value, {required Uri path}) = _WriteEntry<T>;
+abstract class WriteEntry<ValueType extends Object?>
+    with _$WriteEntry<ValueType> {
+  const factory WriteEntry(ValueType value, {required Uri path}) =
+      _WriteEntry<ValueType>;
 }
 
 @Freezed(fromJson: false, toJson: false)
 abstract class BindingsEntry with _$BindingsEntry {
-  const factory BindingsEntry({
-    required SubsetResult subsetResult,
+  const factory BindingsEntry(
+    SubsetResult subsetResult, {
     required String className,
     String? fontFamily,
     String? fontPackage,

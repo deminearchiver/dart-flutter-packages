@@ -39,26 +39,32 @@ This utility utilizes HarfBuzz to strip unused glyph data from TrueType/OpenType
 
    enum _MyIconsId {
      myIcons(
+       asset: "assets/fonts/MyIcons.ttf",
        library: "lib/src/icons/my_icons.dart",
        className: "MyIcons",
        fontFamily: "My Icons",
      ),
      myIconsRounded(
+       asset: "assets/fonts/MyIconsRounded.ttf",
        library: "lib/src/icons/my_icons_rounded.dart",
        className: "MyIconsRounded",
        fontFamily: "My Icons Rounded",
      ),
      myIconsSharp(
+       asset: "assets/fonts/MyIconsSharp.ttf",
        library: "lib/src/icons/my_icons_sharp.dart",
        className: "MyIconsSharp",
        fontFamily: "My Icons Sharp",
      );
 
      const _MyIconsId({
+       required this.asset,
        required this.library,
        required this.className,
        required this.fontFamily,
      });
+
+     final String asset;
 
      final String library;
 
@@ -72,35 +78,55 @@ This utility utilizes HarfBuzz to strip unused glyph data from TrueType/OpenType
    void main() async {
      final packageRoot = Platform.script.resolve("../");
 
-     final subsetResults = await generateFontSubsets<_MyIconsId>(
-       input: packageRoot.resolve(
-         "third_party/fonts/myicons/MyIcons-VariableFont.ttf",
-       ),
-       outputs: {
-         .myIcons: SubsetOutput(
-           asset: packageRoot.resolve("assets/fonts/myicons/MyIcons.ttf"),
+     // Load the input font bytes.
+     final inputPath = packageRoot
+         .resolve("third_party/fonts/MyIcons-VariableFont.ttf")
+         .toFilePath();
+     final inputBytes = await File(inputPath).readAsBytes();
+
+     // Subset the input font.
+     final subsetResults = buildSubsets<_MyIconsId>(
+       bytes: inputBytes,
+       entries: const <_MyIconsId, SubsetEntry>{
+         .myIcons: .new(),
+         .myIconsRounded: .new(
+           variableAxisConstraints: {.rond: .fixed(at: 100.0)},
          ),
-         .myIconsRounded: SubsetOutput(
-           asset: packageRoot.resolve("assets/fonts/myicons/MyIconsRounded.ttf"),
-           axisConstraints: const [.fixed("ROND", at: 100.0)],
-         ),
-         .myIconsSharp: SubsetOutput(
-           asset: packageRoot.resolve("assets/fonts/myicons/MyIconsSharp.ttf"),
-           axisConstraints: const [.fixed("ROND", at: 0.0)],
-         ),
+         .myIconsSharp: .new(variableAxisConstraints: {.rond: .fixed(at: 0.0)}),
        },
      );
 
-     for (final subsetResult in subsetResults.values) {
-       final id = subsetResult.outputId;
-       await generateIconBindings(
-         subsetResult,
-         library: packageRoot.resolve(id.library),
-         className: id.className,
-         fontFamily: id.fontFamily,
-         fontPackage: id.fontPackage,
-       );
-     }
+     // Write font subsets to their respective files.
+     await writeSubsets(
+       entries: subsetResults.values.map(
+         (subsetResult) =>
+             .new(subsetResult, path: packageRoot.resolve(subsetResult.id.asset)),
+       ),
+     );
+
+     // Generate bindings code.
+     final bindingsResults = buildBindings(
+       entries: {
+         for (final MapEntry(key: id, value: subsetResult)
+             in subsetResults.entries)
+           id: .new(
+             subsetResult,
+             className: id.className,
+             fontFamily: id.fontFamily,
+             fontPackage: id.fontPackage,
+           ),
+       },
+     );
+
+     // Write bindings to their respective files.
+     await writeBindings(
+       entries: bindingsResults.values.map(
+         (bindingsResult) => .new(
+           bindingsResult,
+           path: packageRoot.resolve(bindingsResult.id.library),
+         ),
+       ),
+     );
    }
    ```
 
@@ -129,13 +155,13 @@ This utility utilizes HarfBuzz to strip unused glyph data from TrueType/OpenType
      fonts:
        - family: My Icons
          fonts:
-           - asset: assets/fonts/myicons/MyIcons.ttf
+           - asset: assets/fonts/MyIcons.ttf
        - family: My Icons Rounded
          fonts:
-           - asset: assets/fonts/myicons/MyIconsRounded.ttf
+           - asset: assets/fonts/MyIconsRounded.ttf
        - family: My Icons Sharp
          fonts:
-           - asset: assets/fonts/myicons/MyIconsSharp.ttf
+           - asset: assets/fonts/MyIconsSharp.ttf
    ```
 
 That's it!
