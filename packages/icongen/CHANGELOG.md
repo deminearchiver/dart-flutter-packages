@@ -1,3 +1,27 @@
+## 0.4.1
+
+- Added WOFF2 support via the `woff2_ffi` package.
+  - WOFF2 fonts are automatically decompressed before subsetting.
+  - Font format (TTF / WOFF2) is preserved after subsetting.
+  - You can use the `SubsetBuilder.forceSubset` property to override the output format.
+
+- Added `SubsetBuilder.forceSubset` flag.
+  - Defaults to `false`. Setting to `true` will enforce a subset even if it would be unnecessary.
+
+- Updated `SubsetEntry` to support new `SubsetBuilder` parameters: `forceSubset` and `subsetFormat`.
+
+- Added extension methods `SubsetBuilder.buildWithId()` and `BindingsBuilder.buildWithId()`.
+  - They simplify creating `SubsetResultWithId` or `BindingsResultWithId` directly, without unnecessary intermediate `SubsetResult` or `BindingsResult`.
+
+- Added utility `SubsetIdToResultMap<IdType>` and `BindingsIdToResultMap<IdType>` type aliases.
+  - They can help when building from multiple font sources with different ID classes.
+
+- Improved internal source file structure.
+
+- Updated `.gitignore` to use the standard template.
+
+- Clarified `uniXXXX` icon names filtration in the `0.4.0` changelog.
+
 ## 0.4.0+1
 
 - Fixed grammar mistakes in the `0.4.0` changelog.
@@ -27,6 +51,8 @@
   - Constraints are now defined by a new type: `VariableAxisConstraints`, which is a `Map<VariableAxisTag, VariableAxisConstraint>` - prevents duplicate constraint issues.
 
 - Migrated result models (i.e. `SubsetResult`, `BindingsResult`, etc.) away from Freezed data classes because they may store large amounts of data now (`Uint8List`, etc.).
+
+- Icon names matching the following regular expression are now filtered out: `^u(ni)?[0-9a-fA-F]{4,}$`.
 
 - Reviewed and fixed icon identifier sanitization logic.
   - Aligned the reserved keyword list with the Dart language specification.

@@ -7,6 +7,8 @@ part 'entries.freezed.dart';
 abstract class SubsetEntry with _$SubsetEntry {
   const factory SubsetEntry({
     @Default({}) VariableAxisConstraints variableAxisConstraints,
+    @Default(false) bool forceSubset,
+    SubsetFormat? subsetFormat,
   }) = _SubsetEntry;
 }
 

@@ -7,6 +7,30 @@ import 'package:icongen/icongen.dart';
 import 'package:meta/meta.dart';
 
 @immutable
+class BindingsResult {
+  const BindingsResult({required this.code});
+
+  final String code;
+
+  @override
+  String toString() => "BindingsResult(code: $code)";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is BindingsResult &&
+          code == other.code;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, code);
+}
+
+@internal
+typedef BindingsBuilderResultFactory<ResultType extends Object?> =
+    ResultType Function({required String code});
+
+@immutable
 class BindingsBuilder {
   const BindingsBuilder(
     this.subsetResult, {
@@ -22,7 +46,10 @@ class BindingsBuilder {
   final String? fontPackage;
   final IconGlyph? forceTreeShakeIconGlyph;
 
-  BindingsResult build() {
+  @internal
+  ResultType buildInternal<ResultType extends Object?>(
+    BindingsBuilderResultFactory<ResultType> factory,
+  ) {
     final fontFamily = this.fontFamily ?? subsetResult.fontFamily ?? className;
     final forceTreeShakeIconGlyph =
         this.forceTreeShakeIconGlyph ??
@@ -120,77 +147,56 @@ class BindingsBuilder {
     //   formattedCode = rawCode;
     // }
 
-    return BindingsResult(code: code);
+    return factory(code: code);
   }
+
+  BindingsResult build() => buildInternal(BindingsResult.new);
 }
 
-IconGlyph? _defaultForceTreeShakeIconGlyph(SubsetResult subsetResult) {
-  if (subsetResult.iconGlyphs.isEmpty) return null;
-  return using((arena) {
-    final bytes = subsetResult.bytes;
-    final nativeBytes = arena<Uint8>(bytes.length);
-    nativeBytes.asTypedList(bytes.length).setAll(0, bytes);
+IconGlyph? _defaultForceTreeShakeIconGlyph(SubsetResult subsetResult) =>
+    subsetResult.iconGlyphs.isEmpty
+    ? null
+    : using((arena) {
+        final (subsetFont, subsetFormat) = SubsetBuilder.parseFont(
+          subsetResult.bytes,
+          arena: arena,
+        );
 
-    final subsetBlob = hb_blob_create_or_fail(
-      nativeBytes.cast(),
-      bytes.length,
-      hb_memory_mode_t.HB_MEMORY_MODE_READONLY,
-      nullptr,
-      nullptr,
-    );
-    if (subsetBlob == nullptr) {
-      return null;
-    }
-    arena.onReleaseAll(() => hb_blob_destroy(subsetBlob));
+        final extentsPointer = arena<hb_glyph_extents_t>();
+        final glyphIdPointer = arena<Uint32>();
 
-    final subsetFace = hb_face_create(subsetBlob, 0);
-    if (subsetFace == nullptr) {
-      return null;
-    }
-    arena.onReleaseAll(() => hb_face_destroy(subsetFace));
+        IconGlyph? smallestIcon;
+        int? smallestArea;
 
-    final subsetFont = hb_font_create(subsetFace);
-    if (subsetFont == nullptr) {
-      return null;
-    }
-    arena.onReleaseAll(() => hb_font_destroy(subsetFont));
+        for (final icon in subsetResult.iconGlyphs) {
+          var status = hb_font_get_nominal_glyph(
+            subsetFont,
+            icon.codePoint,
+            glyphIdPointer,
+          );
+          if (status == 0) continue;
 
-    final extentsPointer = arena<hb_glyph_extents_t>();
-    final glyphIdPointer = arena<Uint32>();
+          status = hb_font_get_glyph_extents(
+            subsetFont,
+            glyphIdPointer.value,
+            extentsPointer,
+          );
+          if (status == 0) continue;
 
-    IconGlyph? smallestIcon;
-    int? smallestArea;
+          final width = extentsPointer.ref.width.abs();
+          final height = extentsPointer.ref.height.abs();
 
-    for (final icon in subsetResult.iconGlyphs) {
-      var status = hb_font_get_nominal_glyph(
-        subsetFont,
-        icon.codePoint,
-        glyphIdPointer,
-      );
-      if (status == 0) continue;
+          final area = width * height;
+          if (area <= 0) continue;
 
-      status = hb_font_get_glyph_extents(
-        subsetFont,
-        glyphIdPointer.value,
-        extentsPointer,
-      );
-      if (status != 0) continue;
+          if (smallestArea == null || area < smallestArea) {
+            smallestArea = area;
+            smallestIcon = icon;
+          }
+        }
 
-      final width = extentsPointer.ref.width.abs();
-      final height = extentsPointer.ref.height.abs();
-
-      final area = width * height;
-      if (area <= 0) continue;
-
-      if (smallestArea == null || area < smallestArea) {
-        smallestArea = area;
-        smallestIcon = icon;
-      }
-    }
-
-    return smallestIcon;
-  });
-}
+        return smallestIcon;
+      });
 
 String _generateCode({
   required String className,

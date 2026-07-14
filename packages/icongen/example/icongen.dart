@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:icongen/icongen.dart';
 
@@ -65,36 +66,77 @@ enum _GoogleSymbolsId implements _IconFontId {
   String get fontPackage => "google_symbols_icons";
 }
 
+enum _LuminousSymbolsId implements _IconFontId {
+  luminousSymbols(
+    asset: "example/fonts/LuminousSymbols.woff2",
+    library: "example/src/luminous_symbols.dart",
+    className: "LuminousSymbols",
+    fontFamily: "Luminous Symbols",
+  );
+
+  const _LuminousSymbolsId({
+    required this.asset,
+    required this.library,
+    required this.className,
+    required this.fontFamily,
+  });
+
+  @override
+  final String asset;
+
+  @override
+  final String library;
+
+  @override
+  final String className;
+
+  @override
+  final String fontFamily;
+
+  @override
+  String get fontPackage => "luminous_symbols_icons";
+}
+
 void main() async {
   final packageRoot = Platform.script.resolve("../");
 
   print("\nLoading input files...");
 
-  final inputPath = packageRoot
-      .resolve("../../wip/Google_Symbols_ORIGINAL.ttf")
-      .toFilePath();
-
-  final inputBytes = await File(inputPath).readAsBytes();
+  Future<Uint8List> loadBytes(String path) {
+    final resolvedPath = packageRoot.resolve(path).toFilePath();
+    return File(resolvedPath).readAsBytes();
+  }
 
   print("\nSubsetting fonts...");
 
   // Returned value is the pure interface, not specific enum.
-  final subsetResults = buildSubsets<_IconFontId>(
-    bytes: inputBytes,
-    // Upcast to enum so we can use dot shorthands on keys.
-    entries: const <_GoogleSymbolsId, SubsetEntry>{
-      .googleSymbols: .new(),
-      .googleSymbolsOutlined: .new(
-        variableAxisConstraints: {.rond: .fixed(at: 50.0)},
-      ),
-      .googleSymbolsRounded: .new(
-        variableAxisConstraints: {.rond: .fixed(at: 100.0)},
-      ),
-      .googleSymbolsSharp: .new(
-        variableAxisConstraints: {.rond: .fixed(at: 0.0)},
-      ),
-    },
-  );
+  final SubsetIdToResultMap<_IconFontId> subsetResults = {
+    // Upcast to _GoogleSymbolsId so we can use dot shorthands.
+    ...buildSubsets<_GoogleSymbolsId>(
+      bytes: await loadBytes("../../wip/Google_Symbols_ORIGINAL.ttf"),
+      entries: const {
+        .googleSymbols: .new(),
+        .googleSymbolsOutlined: .new(
+          variableAxisConstraints: {.rond: .fixed(at: 50.0)},
+        ),
+        .googleSymbolsRounded: .new(
+          variableAxisConstraints: {.rond: .fixed(at: 100.0)},
+        ),
+        .googleSymbolsSharp: .new(
+          variableAxisConstraints: {.rond: .fixed(at: 0.0)},
+        ),
+      },
+    ),
+    // Upcast to _LuminousSymbolsId so we can use dot shorthands.
+    ...buildSubsets<_LuminousSymbolsId>(
+      bytes: await loadBytes("../../wip/LuminousSymbols.woff2"),
+      entries: const {
+        .luminousSymbols: .new(
+          variableAxisConstraints: {.wght: .fixed(at: 200.0)},
+        ),
+      },
+    ),
+  };
 
   print("Writing font subsets...");
 

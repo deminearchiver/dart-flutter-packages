@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SubsetEntry {
 
- VariableAxisConstraints get variableAxisConstraints;
+ VariableAxisConstraints get variableAxisConstraints; bool get forceSubset; SubsetFormat? get subsetFormat;
 /// Create a copy of SubsetEntry
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $SubsetEntryCopyWith<SubsetEntry> get copyWith => _$SubsetEntryCopyWithImpl<Subs
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubsetEntry&&const DeepCollectionEquality().equals(other.variableAxisConstraints, variableAxisConstraints));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubsetEntry&&const DeepCollectionEquality().equals(other.variableAxisConstraints, variableAxisConstraints)&&(identical(other.forceSubset, forceSubset) || other.forceSubset == forceSubset)&&(identical(other.subsetFormat, subsetFormat) || other.subsetFormat == subsetFormat));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(variableAxisConstraints));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(variableAxisConstraints),forceSubset,subsetFormat);
 
 @override
 String toString() {
-  return 'SubsetEntry(variableAxisConstraints: $variableAxisConstraints)';
+  return 'SubsetEntry(variableAxisConstraints: $variableAxisConstraints, forceSubset: $forceSubset, subsetFormat: $subsetFormat)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $SubsetEntryCopyWith<$Res>  {
   factory $SubsetEntryCopyWith(SubsetEntry value, $Res Function(SubsetEntry) _then) = _$SubsetEntryCopyWithImpl;
 @useResult
 $Res call({
- VariableAxisConstraints variableAxisConstraints
+ VariableAxisConstraints variableAxisConstraints, bool forceSubset, SubsetFormat? subsetFormat
 });
 
 
@@ -62,10 +62,12 @@ class _$SubsetEntryCopyWithImpl<$Res>
 
 /// Create a copy of SubsetEntry
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? variableAxisConstraints = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? variableAxisConstraints = null,Object? forceSubset = null,Object? subsetFormat = freezed,}) {
   return _then(_self.copyWith(
 variableAxisConstraints: null == variableAxisConstraints ? _self.variableAxisConstraints : variableAxisConstraints // ignore: cast_nullable_to_non_nullable
-as VariableAxisConstraints,
+as VariableAxisConstraints,forceSubset: null == forceSubset ? _self.forceSubset : forceSubset // ignore: cast_nullable_to_non_nullable
+as bool,subsetFormat: freezed == subsetFormat ? _self.subsetFormat : subsetFormat // ignore: cast_nullable_to_non_nullable
+as SubsetFormat?,
   ));
 }
 
@@ -77,7 +79,7 @@ as VariableAxisConstraints,
 
 
 class _SubsetEntry implements SubsetEntry {
-  const _SubsetEntry({final  VariableAxisConstraints variableAxisConstraints = const {}}): _variableAxisConstraints = variableAxisConstraints;
+  const _SubsetEntry({final  VariableAxisConstraints variableAxisConstraints = const {}, this.forceSubset = false, this.subsetFormat}): _variableAxisConstraints = variableAxisConstraints;
   
 
  final  VariableAxisConstraints _variableAxisConstraints;
@@ -87,6 +89,8 @@ class _SubsetEntry implements SubsetEntry {
   return EqualUnmodifiableMapView(_variableAxisConstraints);
 }
 
+@override@JsonKey() final  bool forceSubset;
+@override final  SubsetFormat? subsetFormat;
 
 /// Create a copy of SubsetEntry
 /// with the given fields replaced by the non-null parameter values.
@@ -98,16 +102,16 @@ _$SubsetEntryCopyWith<_SubsetEntry> get copyWith => __$SubsetEntryCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SubsetEntry&&const DeepCollectionEquality().equals(other._variableAxisConstraints, _variableAxisConstraints));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SubsetEntry&&const DeepCollectionEquality().equals(other._variableAxisConstraints, _variableAxisConstraints)&&(identical(other.forceSubset, forceSubset) || other.forceSubset == forceSubset)&&(identical(other.subsetFormat, subsetFormat) || other.subsetFormat == subsetFormat));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_variableAxisConstraints));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_variableAxisConstraints),forceSubset,subsetFormat);
 
 @override
 String toString() {
-  return 'SubsetEntry(variableAxisConstraints: $variableAxisConstraints)';
+  return 'SubsetEntry(variableAxisConstraints: $variableAxisConstraints, forceSubset: $forceSubset, subsetFormat: $subsetFormat)';
 }
 
 
@@ -118,7 +122,7 @@ abstract mixin class _$SubsetEntryCopyWith<$Res> implements $SubsetEntryCopyWith
   factory _$SubsetEntryCopyWith(_SubsetEntry value, $Res Function(_SubsetEntry) _then) = __$SubsetEntryCopyWithImpl;
 @override @useResult
 $Res call({
- VariableAxisConstraints variableAxisConstraints
+ VariableAxisConstraints variableAxisConstraints, bool forceSubset, SubsetFormat? subsetFormat
 });
 
 
@@ -135,10 +139,12 @@ class __$SubsetEntryCopyWithImpl<$Res>
 
 /// Create a copy of SubsetEntry
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? variableAxisConstraints = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? variableAxisConstraints = null,Object? forceSubset = null,Object? subsetFormat = freezed,}) {
   return _then(_SubsetEntry(
 variableAxisConstraints: null == variableAxisConstraints ? _self._variableAxisConstraints : variableAxisConstraints // ignore: cast_nullable_to_non_nullable
-as VariableAxisConstraints,
+as VariableAxisConstraints,forceSubset: null == forceSubset ? _self.forceSubset : forceSubset // ignore: cast_nullable_to_non_nullable
+as bool,subsetFormat: freezed == subsetFormat ? _self.subsetFormat : subsetFormat // ignore: cast_nullable_to_non_nullable
+as SubsetFormat?,
   ));
 }
 
