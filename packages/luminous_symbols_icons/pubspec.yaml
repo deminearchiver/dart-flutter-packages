@@ -22,7 +22,7 @@ dev_dependencies:
   icongen: ^0.4.1
 
 flutter:
-  # fonts:
-  #   - family: Luminous Symbols
-  #     fonts:
-  #       - asset: lib/fonts/LuminousSymbols.ttf
+  fonts:
+    - family: Luminous Symbols
+      fonts:
+        - asset: lib/fonts/LuminousSymbols.ttf
