@@ -27,6 +27,7 @@ workspace:
   - packages/leonardo
   - packages/libmonet
   - packages/linked_layouts
+  - packages/luminous_symbols_icons
   - packages/lz4_ffi
   - packages/material/example
   - packages/material

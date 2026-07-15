@@ -1,40 +1,37 @@
 name: google_symbols_icons
-description: Guard package for the Google Symbols icons generator.
-version: 0.0.1
+description: Flutter bindings for Google Symbols icon fonts.
+version: 1.0.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/google_symbols_icons
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
+publish_to: none
 resolution: workspace
 
 environment:
-  sdk: ^3.11.0
-  flutter: ">=3.41.0"
+  sdk: ^3.12.0
+  flutter: ">=3.44.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  meta: ^1.17.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  args: ^2.7.0
   deminearchiver_lints: ^2.1.2
-  google_symbols: any
+  icongen: ^0.4.1
 
 flutter:
-  # fonts:
-  # TODO: comment out after subsetting
-  # - family: Google Symbols
-  #   fonts:
-  #     - asset: lib/fonts/GoogleSymbols.ttf
-  # TODO: uncomment after subsetting
-  # - family: Google Symbols Outlined
-  #   fonts:
-  #    - asset: lib/fonts/GoogleSymbolsOutlined.ttf
-  # - family: Google Symbols Rounded
-  #   fonts:
-  #    - asset: lib/fonts/GoogleSymbolsRounded.ttf
-  # - family: Google Symbols Sharp
-  #   fonts:
-  #    - asset: lib/fonts/GoogleSymbolsSharp.ttf
+  fonts:
+    - family: Google Symbols
+      fonts:
+        - asset: lib/fonts/GoogleSymbols.ttf
+    - family: Google Symbols Outlined
+      fonts:
+        - asset: lib/fonts/GoogleSymbolsOutlined.ttf
+    - family: Google Symbols Rounded
+      fonts:
+        - asset: lib/fonts/GoogleSymbolsRounded.ttf
+    - family: Google Symbols Sharp
+      fonts:
+        - asset: lib/fonts/GoogleSymbolsSharp.ttf
