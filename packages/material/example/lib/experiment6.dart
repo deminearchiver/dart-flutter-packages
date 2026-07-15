@@ -251,7 +251,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
             //           //               spacing: 4.0,
             //           //               children: [
             //           //                 Icon(
-            //           //                   Symbols.add_2_rounded,
+            //           //                   MaterialSymbols.add_2_rounded,
             //           //                   opticalSize: 24.0,
             //           //                   size: 16.0,
             //           //                   color: colorTheme.onPrimary,
@@ -292,7 +292,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
             //                   ),
             //                   onTap: () {},
             //                   child: Icon(
-            //                     Symbols.add_rounded,
+            //                     MaterialSymbols.add_rounded,
             //                     fill: 1.0,
             //                     opticalSize: 24.0,
             //                     size: 24.0,
@@ -321,7 +321,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
             //                   ),
             //                   onTap: () {},
             //                   child: Icon(
-            //                     Symbols.share_rounded,
+            //                     MaterialSymbols.share_rounded,
             //                     fill: 1.0,
             //                     opticalSize: 24.0,
             //                     size: 24.0,
@@ -349,7 +349,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
             //                   ),
             //                   onTap: () {},
             //                   child: Icon(
-            //                     Symbols.more_vert_rounded,
+            //                     MaterialSymbols.more_vert_rounded,
             //                     fill: 1.0,
             //                     opticalSize: 24.0,
             //                     size: 24.0,

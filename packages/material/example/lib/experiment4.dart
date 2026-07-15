@@ -161,7 +161,7 @@ class _Experiment4ViewState extends State<Experiment4View>
       // ),
       floatingActionButton: FloatingActionButton(
         onPressed: _openPopup,
-        child: const Icon(Symbols.open_in_new_rounded),
+        child: const Icon(MaterialSymbols.open_in_new_rounded),
       ),
       body: AnimatedBuilder(
         animation: _controller,

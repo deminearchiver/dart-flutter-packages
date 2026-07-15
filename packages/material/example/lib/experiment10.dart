@@ -66,7 +66,7 @@ class _Experiment10ViewState extends State<Experiment10View>
                     child: Flex.vertical(
                       children: [
                         ListItemLayout(
-                          leading: const Icon(Symbols.list_rounded),
+                          leading: const Icon(MaterialSymbols.list_rounded),
                           headline: Text("Item count"),
                           trailing: Text("$_itemCount"),
                         ),

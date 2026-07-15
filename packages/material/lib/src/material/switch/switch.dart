@@ -625,13 +625,13 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     final Widget unselectedIcon = Transform.rotate(
       angle: iconRotationDisplacement,
       transformHitTests: false,
-      child: const Icon(Symbols.close_rounded),
+      child: const Icon(MaterialSymbols.close_rounded),
     );
 
     final Widget selectedIcon = Transform.rotate(
       angle: 0.0,
       transformHitTests: false,
-      child: const Icon(Symbols.check_rounded),
+      child: const Icon(MaterialSymbols.check_rounded),
     );
 
     final Widget handleChild = AnimatedBuilder(

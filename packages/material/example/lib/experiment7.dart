@@ -195,7 +195,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                             iconSize: iconSize,
                             isSelected: _selectedIndex == 0,
                             onTap: () => setState(() => _selectedIndex = 0),
-                            icon: const Icon(Symbols.home_rounded),
+                            icon: const Icon(MaterialSymbols.home_rounded),
                           ),
                           _NavigationDestination(
                             unselectedContainerWidth: unselectedContainerWidth,
@@ -204,7 +204,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                             iconSize: iconSize,
                             isSelected: _selectedIndex == 1,
                             onTap: () => setState(() => _selectedIndex = 1),
-                            icon: const Icon(Symbols.info_rounded),
+                            icon: const Icon(MaterialSymbols.info_rounded),
                           ),
                           _NavigationDestination(
                             unselectedContainerWidth: unselectedContainerWidth,
@@ -213,7 +213,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                             iconSize: iconSize,
                             isSelected: _selectedIndex == 2,
                             onTap: () => setState(() => _selectedIndex = 2),
-                            icon: const Icon(Symbols.work_rounded),
+                            icon: const Icon(MaterialSymbols.work_rounded),
                           ),
                           _NavigationDestination(
                             unselectedContainerWidth: unselectedContainerWidth,
@@ -222,7 +222,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                             iconSize: iconSize,
                             isSelected: _selectedIndex == 3,
                             onTap: () => setState(() => _selectedIndex = 3),
-                            icon: const Icon(Symbols.docs_rounded),
+                            icon: const Icon(MaterialSymbols.docs_rounded),
                           ),
                           _NavigationDestination(
                             unselectedContainerWidth: unselectedContainerWidth,
@@ -231,7 +231,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                             iconSize: iconSize,
                             isSelected: _selectedIndex == 4,
                             onTap: () => setState(() => _selectedIndex = 4),
-                            icon: const Icon(Symbols.mail_rounded),
+                            icon: const Icon(MaterialSymbols.mail_rounded),
                           ),
                           SizedBox(
                             width: 1.0,
@@ -258,7 +258,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                                 ),
                                 onTap: () {},
                                 child: Icon(
-                                  Symbols.search_rounded,
+                                  MaterialSymbols.search_rounded,
                                   fill: 1.0,
                                   opticalSize: iconSize,
                                   size: iconSize,
@@ -301,7 +301,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                                 ),
                                 onTap: () {},
                                 child: Icon(
-                                  Symbols.link_2_rounded,
+                                  MaterialSymbols.link_2_rounded,
                                   fill: 0.0,
                                   opticalSize: iconSize,
                                   size: iconSize,
@@ -324,7 +324,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                                 ),
                                 onTap: () {},
                                 child: Icon(
-                                  Symbols.link_2_rounded,
+                                  MaterialSymbols.link_2_rounded,
                                   fill: 0.0,
                                   opticalSize: iconSize,
                                   size: iconSize,
@@ -347,7 +347,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                                 ),
                                 onTap: () {},
                                 child: Icon(
-                                  Symbols.link_2_rounded,
+                                  MaterialSymbols.link_2_rounded,
                                   fill: 0.0,
                                   opticalSize: iconSize,
                                   size: iconSize,

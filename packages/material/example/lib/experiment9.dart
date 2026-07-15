@@ -108,21 +108,21 @@ class _DockedSearchViewExampleState extends State<DockedSearchViewExample> {
       _buildSegment(
         context,
         title: "Recent",
-        icon: Symbols.history,
+        icon: MaterialSymbols.history,
         itemCount: 4,
       ),
       SliverToBoxAdapter(child: SizedBox(height: widget.gap)),
       _buildSegment(
         context,
         title: "Suggestions",
-        icon: Symbols.search,
+        icon: MaterialSymbols.search,
         itemCount: 15,
       ),
       SliverToBoxAdapter(child: SizedBox(height: widget.gap)),
       _buildSegment(
         context,
         title: "Contacts",
-        icon: Symbols.person_outline,
+        icon: MaterialSymbols.person_outline,
         itemCount: 8,
       ),
     ];
@@ -202,11 +202,11 @@ class _DockedSearchViewExampleState extends State<DockedSearchViewExample> {
             setState(() => _selectedIndex = index),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Symbols.splitscreen),
+            icon: Icon(MaterialSymbols.splitscreen),
             label: "Sliver Header",
           ),
           NavigationDestination(
-            icon: Icon(Symbols.view_day),
+            icon: Icon(MaterialSymbols.view_day),
             label: "Fixed Header",
           ),
         ],
@@ -262,7 +262,7 @@ class _SearchBarWidget extends StatelessWidget {
                   stateTheme: stateTheme,
                   color: .standard,
                 ),
-                icon: const Icon(Symbols.chevron_left),
+                icon: const Icon(MaterialSymbols.chevron_left),
                 onPressed: () {},
               ),
             ),
@@ -285,7 +285,7 @@ class _SearchBarWidget extends StatelessWidget {
                   stateTheme: stateTheme,
                   color: .standard,
                 ),
-                icon: const Icon(Symbols.clear_rounded),
+                icon: const Icon(MaterialSymbols.clear_rounded),
                 onPressed: () {},
               ),
             ),

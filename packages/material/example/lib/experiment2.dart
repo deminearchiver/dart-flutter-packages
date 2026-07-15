@@ -437,7 +437,9 @@ class _Experiment2ViewState extends State<Experiment2View> {
                               child: Flex.vertical(
                                 children: [
                                   ListItemLayout(
-                                    leading: const Icon(Symbols.width_rounded),
+                                    leading: const Icon(
+                                      MaterialSymbols.width_rounded,
+                                    ),
                                     headline: Text("Width"),
                                     trailing: Text(
                                       "${_formatValue(width, true, "dp")} ",
@@ -474,7 +476,9 @@ class _Experiment2ViewState extends State<Experiment2View> {
                               child: Flex.vertical(
                                 children: [
                                   ListItemLayout(
-                                    leading: const Icon(Symbols.height_rounded),
+                                    leading: const Icon(
+                                      MaterialSymbols.height_rounded,
+                                    ),
                                     headline: Text("Height"),
                                     trailing: Text(
                                       "${_formatValue(height, true, "dp")} ",
@@ -506,7 +510,9 @@ class _Experiment2ViewState extends State<Experiment2View> {
                       child: Flex.vertical(
                         children: [
                           ListItemLayout(
-                            leading: const Icon(Symbols.rounded_corner_rounded),
+                            leading: const Icon(
+                              MaterialSymbols.rounded_corner_rounded,
+                            ),
                             headline: Text("Fixed"),
                             trailing: Text(
                               "${_formatValue(shapeTheme.cornerValueExtraExtraLarge * _fixedTopLeft, true, "dp")} "
@@ -589,7 +595,9 @@ class _Experiment2ViewState extends State<Experiment2View> {
                       child: Flex.vertical(
                         children: [
                           ListItemLayout(
-                            leading: const Icon(Symbols.percent_rounded),
+                            leading: const Icon(
+                              MaterialSymbols.percent_rounded,
+                            ),
                             headline: Text("Fractional"),
                             trailing: Text(
                               "${_formatPercentage(_fractionalTopLeft, true)} "

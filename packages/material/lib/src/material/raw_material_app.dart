@@ -499,7 +499,7 @@ class _RawMaterialAppState extends State<RawMaterialApp> {
   }) => _MaterialInspectorButton.filled(
     onPressed: onPressed,
     semanticsLabel: semanticsLabel,
-    icon: Symbols.close_rounded,
+    icon: MaterialSymbols.close_rounded,
     buttonKey: key,
     isDarkTheme: _isDarkTheme,
   );
@@ -513,8 +513,8 @@ class _RawMaterialAppState extends State<RawMaterialApp> {
     onPressed: onPressed,
     semanticsLabel: semanticsLabel,
     icon: usesDefaultAlignment
-        ? Symbols.arrow_right_rounded
-        : Symbols.arrow_left_rounded,
+        ? MaterialSymbols.arrow_right_rounded
+        : MaterialSymbols.arrow_left_rounded,
     isDarkTheme: _isDarkTheme,
   );
 

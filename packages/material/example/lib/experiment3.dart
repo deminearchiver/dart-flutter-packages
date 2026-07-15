@@ -885,7 +885,7 @@ class _AppBarWithSearchState extends State<_AppBarWithSearch> {
                                 color: .standard,
                               ),
                               onPressed: () {},
-                              icon: const Icon(Symbols.mic_rounded),
+                              icon: const Icon(MaterialSymbols.mic_rounded),
                             ),
                           ),
                         ),
@@ -1067,7 +1067,9 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
                         color: .standard,
                       ),
                       onPressed: () => navigator?.pop(),
-                      icon: const Icon(Symbols.chevron_backward_rounded),
+                      icon: const Icon(
+                        MaterialSymbols.chevron_backward_rounded,
+                      ),
                     ),
                   ),
                 ),
@@ -1091,7 +1093,7 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
                               color: .standard,
                             ),
                             onPressed: () {},
-                            icon: const Icon(Symbols.clear_rounded),
+                            icon: const Icon(MaterialSymbols.clear_rounded),
                           ),
                         ),
                       ),
@@ -1104,7 +1106,7 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
                           color: .standard,
                         ),
                         onPressed: () {},
-                        icon: const Icon(Symbols.mic_rounded),
+                        icon: const Icon(MaterialSymbols.mic_rounded),
                       ),
                     ],
                   ),
@@ -1150,7 +1152,7 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
               //             color: .standard,
               //           ),
               //           onPressed: () {},
-              //           icon: const Icon(Symbols.clear_rounded),
+              //           icon: const Icon(MaterialSymbols.clear_rounded),
               //         ),
               //       ),
               //       const SizedBox(width: 4.0),
@@ -1185,7 +1187,7 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
                                       corner: shapeTheme.cornerFull,
                                     ),
                                     child: const Icon(
-                                      Symbols.search_rounded,
+                                      MaterialSymbols.search_rounded,
                                       opticalSize: 20.0,
                                       size: 20.0,
                                     ),
@@ -1277,7 +1279,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                                 ),
                                 onPressed: () {},
                                 icon: const Icon(
-                                  Symbols.menu_rounded,
+                                  MaterialSymbols.menu_rounded,
                                   fill: 0.0,
                                 ),
                               ),
@@ -1301,7 +1303,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                                         ),
                                     onPressed: () {},
                                     icon: const Icon(
-                                      Symbols.cast_rounded,
+                                      MaterialSymbols.cast_rounded,
                                       fill: 0.0,
                                     ),
                                   ),
@@ -1317,7 +1319,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                                         ),
                                     onPressed: () {},
                                     icon: const Icon(
-                                      Symbols.more_vert_rounded,
+                                      MaterialSymbols.more_vert_rounded,
                                       fill: 0.0,
                                     ),
                                   ),
@@ -1342,7 +1344,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                     child: Flex.vertical(
                       children: [
                         ListItemLayout(
-                          leading: const Icon(Symbols.height_rounded),
+                          leading: const Icon(MaterialSymbols.height_rounded),
                           headline: const Text("App bar height"),
                           supportingText: const Text(
                             "Height will change after dragging is stopped.",
@@ -1382,7 +1384,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                         trailingPadding: const .symmetric(
                           vertical: 10.0 - (48.0 - 40.0) / 2.0,
                         ),
-                        leading: const Icon(Symbols.menu_rounded),
+                        leading: const Icon(MaterialSymbols.menu_rounded),
                         headline: const Text("Show navigation icon"),
                         trailing: ExcludeFocus(
                           child: Switch(
@@ -1404,7 +1406,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                         trailingPadding: const .symmetric(
                           vertical: 10.0 - (48.0 - 40.0) / 2.0,
                         ),
-                        leading: const Icon(Symbols.star_rounded),
+                        leading: const Icon(MaterialSymbols.star_rounded),
                         headline: const Text("Show action icon 1"),
                         trailing: ExcludeFocus(
                           child: Switch(
@@ -1426,7 +1428,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                         trailingPadding: const .symmetric(
                           vertical: 10.0 - (48.0 - 40.0) / 2.0,
                         ),
-                        leading: const Icon(Symbols.more_horiz_rounded),
+                        leading: const Icon(MaterialSymbols.more_horiz_rounded),
                         headline: const Text("Show action icon 2"),
                         trailing: ExcludeFocus(
                           child: Switch(
@@ -1445,7 +1447,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                       trailingPadding: const .symmetric(
                         vertical: 10.0 - (48.0 - 40.0) / 2.0,
                       ),
-                      leading: const Icon(Symbols.restart_alt_rounded),
+                      leading: const Icon(MaterialSymbols.restart_alt_rounded),
                       headline: const Text("Reset all properties"),
                       supportingText: const Text(
                         "Set all values to their respective defaults.",
@@ -1478,7 +1480,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                     leading: Padding(
                       padding: .fromSTEB(16.0, 0.0, 12.0, 0.0),
                       child: Icon(
-                        Symbols.search_rounded,
+                        MaterialSymbols.search_rounded,
                         color: colorTheme.onSurface,
                       ),
                     ),
@@ -1496,7 +1498,10 @@ class _Experiment3ViewState extends State<Experiment3View>
                               color: .standard,
                             ),
                             onPressed: () {},
-                            icon: const Icon(Symbols.cast_rounded, fill: 0.0),
+                            icon: const Icon(
+                              MaterialSymbols.cast_rounded,
+                              fill: 0.0,
+                            ),
                           ),
                           IconButton(
                             style: LegacyThemeFactory.createIconButtonStyle(
@@ -1508,7 +1513,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                             ),
                             onPressed: () {},
                             icon: const Icon(
-                              Symbols.more_vert_rounded,
+                              MaterialSymbols.more_vert_rounded,
                               fill: 0.0,
                             ),
                           ),

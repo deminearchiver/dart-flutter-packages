@@ -77,4 +77,3 @@ export 'package:touch_targets/touch_targets.dart';
 
 // Own exports
 export 'package:material/material.dart';
-export 'package:material/material_symbols.dart';

@@ -64,6 +64,10 @@ export 'src/material/experimental/pull_to_refresh.dart';
 
 export 'src/material/keyed_persistent_hash_map.dart';
 
+export 'src/material/icon/google_symbols_icons.dart';
+export 'src/material/icon/luminous_symbols_icons.dart';
+export 'src/material/icon/material_symbols_icons.dart';
+
 import 'package:material/src/material/flutter.dart';
 
 /// Same as [num.clamp] but optimized for a non-null [int].

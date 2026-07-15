@@ -395,7 +395,7 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
                       corners: topCorners,
                       maxOffsets: .infinity,
                       child: Icon(
-                        Symbols.arrow_upward_rounded,
+                        MaterialSymbols.arrow_upward_rounded,
                         opticalSize: 20.0,
                         size: 20.0,
                         color: colorTheme.onSurfaceVariant,
@@ -442,7 +442,7 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
                       corners: bottomCorners,
                       maxOffsets: .infinity,
                       child: Icon(
-                        Symbols.arrow_downward_rounded,
+                        MaterialSymbols.arrow_downward_rounded,
                         opticalSize: 20.0,
                         size: 20.0,
                         color: colorTheme.onSurfaceVariant,
@@ -493,7 +493,7 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
                 ),
                 onTap: () {},
                 child: Icon(
-                  Symbols.drag_indicator_rounded,
+                  MaterialSymbols.drag_indicator_rounded,
                   opticalSize: 20.0,
                   size: 20.0,
                   color: contentColor,
@@ -532,7 +532,7 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
                       corners: topCorners,
                       maxOffsets: .infinity,
                       child: Icon(
-                        Symbols.close_rounded,
+                        MaterialSymbols.close_rounded,
                         opticalSize: 20.0,
                         size: 20.0,
                         color: colorTheme.onSurfaceVariant,
@@ -568,8 +568,8 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
                       maxOffsets: .infinity,
                       child: Icon(
                         _horizontalAlignment > 0.0
-                            ? Symbols.chevron_left_rounded
-                            : Symbols.chevron_right_rounded,
+                            ? MaterialSymbols.chevron_left_rounded
+                            : MaterialSymbols.chevron_right_rounded,
                         opticalSize: 20.0,
                         size: 20.0,
                         color: colorTheme.onSurfaceVariant,
@@ -591,7 +591,7 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
       return Padding(
         padding: const .symmetric(horizontal: 2.0, vertical: 38.0),
         child: Icon(
-          Symbols.code_rounded,
+          MaterialSymbols.code_rounded,
           fill: 1.0,
           opticalSize: 16.0,
           size: 16.0,

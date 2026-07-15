@@ -204,7 +204,9 @@ class _PlayerBottomSheetState extends State<PlayerBottomSheet>
                     child: ListItemLayout(
                       minHeight: 64.0,
                       maxHeight: 64.0,
-                      leading: const Icon(Symbols.frame_exclamation_rounded),
+                      leading: const Icon(
+                        MaterialSymbols.frame_exclamation_rounded,
+                      ),
                       headline: Text(
                         "Swipe me!",
                         maxLines: 1,
@@ -215,7 +217,7 @@ class _PlayerBottomSheetState extends State<PlayerBottomSheet>
                         maxLines: 1,
                         overflow: .ellipsis,
                       ),
-                      trailing: const Icon(Symbols.swipe_right_rounded),
+                      trailing: const Icon(MaterialSymbols.swipe_right_rounded),
                     ),
                   ),
                 ),
@@ -235,21 +237,21 @@ class _PlayerBottomSheetState extends State<PlayerBottomSheet>
                     Flexible.tight(
                       child: _VerticalNavigationItem(
                         isSelected: true,
-                        icon: Icon(Symbols.home),
+                        icon: Icon(MaterialSymbols.home),
                         label: Text("Home"),
                       ),
                     ),
                     Flexible.tight(
                       child: _VerticalNavigationItem(
                         isSelected: false,
-                        icon: Icon(Symbols.library_music_rounded),
+                        icon: Icon(MaterialSymbols.library_music_rounded),
                         label: Text("Library"),
                       ),
                     ),
                     Flexible.tight(
                       child: _VerticalNavigationItem(
                         isSelected: false,
-                        icon: Icon(Symbols.settings_rounded),
+                        icon: Icon(MaterialSymbols.settings_rounded),
                         label: Text("Settings"),
                       ),
                     ),

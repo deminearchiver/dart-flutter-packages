@@ -23,7 +23,7 @@ class _Experiment8ViewState extends State<Experiment8View> {
       backgroundColor: colorTheme.surfaceContainer,
       body: Align.center(
         child: _GeminiIcon(
-          child: Icon(Symbols.search_rounded, fill: 1.0, size: 512.0),
+          child: Icon(MaterialSymbols.search_rounded, fill: 1.0, size: 512.0),
         ),
       ),
     );
