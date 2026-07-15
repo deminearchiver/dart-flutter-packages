@@ -3,7 +3,7 @@ import 'dart:ui' as ui show Image, PictureRecorder;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart' as flutter;
-import 'package:material/material_quantize.dart';
+import 'package:material/quantize.dart';
 import 'package:material/material_color_utilities.dart'
     show
         Hct,

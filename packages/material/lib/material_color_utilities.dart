@@ -7,4 +7,4 @@
 /// all in a new color space.
 library;
 
-export 'src/material_color_utilities/material_color_utilities.dart';
+export 'package:libmonet/material_color_utilities.dart';
