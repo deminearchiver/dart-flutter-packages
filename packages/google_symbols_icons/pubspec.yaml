@@ -19,7 +19,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   deminearchiver_lints: ^2.1.2
-  icongen: ^0.4.1
+  icongen: ^0.5.0
 
 flutter:
   fonts:

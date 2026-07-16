@@ -1,6 +1,6 @@
 name: icongen
 description: Subsets icon fonts and generates Flutter bindings for them.
-version: 0.4.1
+version: 0.5.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/icongen
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues

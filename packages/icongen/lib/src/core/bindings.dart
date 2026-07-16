@@ -1,9 +1,8 @@
 import 'dart:collection';
-import 'dart:ffi';
+import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
-import 'package:harfbuzz_ffi/harfbuzz_ffi_bindings.dart';
-import 'package:icongen/icongen.dart';
+import 'package:icongen/src/icongen.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -31,109 +30,85 @@ typedef BindingsBuilderResultFactory<ResultType extends Object?> =
     ResultType Function({required String code});
 
 @immutable
-class BindingsBuilder {
-  const BindingsBuilder(
-    this.subsetResult, {
+final class BindingsBuilder {
+  const BindingsBuilder({
+    required this.inputBytes,
     required this.className,
     this.fontFamily,
     this.fontPackage,
     this.forceTreeShakeIconGlyph,
   });
 
-  final SubsetResult subsetResult;
+  final Uint8List inputBytes;
+
   final String className;
+
   final String? fontFamily;
+
   final String? fontPackage;
+
   final IconGlyph? forceTreeShakeIconGlyph;
+
+  List<_Icon> _buildIcons(List<IconGlyph> iconGlyphs) {
+    final uniqueIconGlyphs = _uniqueIconGlyphsByName(iconGlyphs);
+
+    final identifiedIcons = _identifyIcons(
+      uniqueIconGlyphs,
+      reservedIdentifiers: <String>{
+        // A class member can't have the same name as the enclosing class.
+        className,
+        // A class member can't share a name with another member.
+        "fontFamily",
+        if (fontPackage != null) "fontPackage",
+        "forceCompileTimeTreeShaking",
+      },
+    );
+
+    final renamedIcons = _renameDuplicateIcons(identifiedIcons);
+
+    return renamedIcons.toList(growable: false)
+      ..sort((a, b) => a.identifier.compareTo(b.identifier));
+  }
 
   @internal
   ResultType buildInternal<ResultType extends Object?>(
     BindingsBuilderResultFactory<ResultType> factory,
-  ) {
-    final fontFamily = this.fontFamily ?? subsetResult.fontFamily ?? className;
+  ) => using((arena) {
+    final (inputFormat, inputBlob) = createBlob(
+      inputBytes,
+      "Unsupported font format or failed to create hb_blob_t.",
+      arena: arena,
+    );
+
+    final inputFace = createFace(
+      inputBlob,
+      "Unsupported font format or failed to create hb_face_t.",
+      arena: arena,
+    );
+
+    final inputFont = createFont(
+      inputFace,
+      "Unsupported font format or failed to create hb_font_t.",
+      arena: arena,
+    );
+
+    final fontFamily =
+        this.fontFamily ??
+        extractFontFamily(inputFace, arena: arena) ??
+        className;
+
+    final iconGlyphs = extractIconGlyphs(inputFont, arena: arena);
+
     final forceTreeShakeIconGlyph =
         this.forceTreeShakeIconGlyph ??
-        _defaultForceTreeShakeIconGlyph(subsetResult);
-
-    final reservedIdentifiers = <String>{
-      // A class member can't have the same name as the enclosing class.
-      className,
-      // A class member can't share a name with another member.
-      "fontFamily",
-      if (fontPackage != null) "fontPackage",
-      "forceCompileTimeTreeShaking",
-    };
-
-    Iterable<IconGlyph> uniqueIconGlyphsByName(
-      Iterable<IconGlyph> iconGlyphs,
-    ) sync* {
-      final seen = HashSet<String>();
-      for (final iconGlyph in iconGlyphs) {
-        final name = iconGlyph.name;
-        if (name == null || name.isEmpty || seen.add(name)) {
-          yield iconGlyph;
-        }
-      }
-    }
-
-    Iterable<_Icon> identifyIcons(Iterable<IconGlyph> iconGlyphs) =>
-        iconGlyphs.map((iconGlyph) {
-          final IconGlyph(:codePoint, :name) = iconGlyph;
-          final hex = iconGlyph.codePoint.toRadixString(16);
-          final identifier = name ?? "\$${hex.toLowerCase()}";
-          return _Icon(
-            codePoint: codePoint,
-            name: name,
-            identifier: _sanitizeIconIdentifier(
-              identifier,
-              reservedIdentifiers: reservedIdentifiers,
-            ),
-          );
-        });
-
-    Iterable<_Icon> renameDuplicateIcons(Iterable<_Icon> icons) sync* {
-      final identifierToCount = <String, int>{};
-      for (final _Icon(:identifier) in icons) {
-        identifierToCount.update(
-          identifier,
-          (value) => value + 1,
-          ifAbsent: () => 1,
-        );
-      }
-
-      final identifierToIndex = <String, int>{};
-      for (final icon in icons) {
-        final identifier = icon.identifier;
-        final count = identifierToCount[identifier]!;
-        if (count > 1) {
-          final index = identifierToIndex.update(
-            identifier,
-            (value) => value + 1,
-            ifAbsent: () => 0,
-          );
-          yield _Icon(
-            codePoint: icon.codePoint,
-            name: icon.name,
-            identifier: "$identifier\$$index",
-          );
-        } else {
-          yield icon;
-        }
-      }
-    }
-
-    final uniqueIconGlyphs = uniqueIconGlyphsByName(subsetResult.iconGlyphs);
-    final identifiedIcons = identifyIcons(uniqueIconGlyphs);
-    final renamedIcons = renameDuplicateIcons(identifiedIcons);
-    final icons = renamedIcons.toList(growable: false)
-      ..sort((a, b) => a.identifier.compareTo(b.identifier));
+        extractSmallestIconGlyph(inputFont, iconGlyphs, arena: arena);
 
     final code = _generateCode(
       className: className,
       fontFamily: fontFamily,
       fontPackage: fontPackage,
       forceTreeShakeIconGlyph: forceTreeShakeIconGlyph,
-      icons: icons,
+      icons: _buildIcons(iconGlyphs),
     );
 
     // TODO: allow to configure formatting
@@ -148,55 +123,70 @@ class BindingsBuilder {
     // }
 
     return factory(code: code);
-  }
+  });
 
   BindingsResult build() => buildInternal(BindingsResult.new);
 }
 
-IconGlyph? _defaultForceTreeShakeIconGlyph(SubsetResult subsetResult) =>
-    subsetResult.iconGlyphs.isEmpty
-    ? null
-    : using((arena) {
-        final (subsetFont, subsetFormat) = SubsetBuilder.parseFont(
-          subsetResult.bytes,
-          arena: arena,
-        );
+Iterable<IconGlyph> _uniqueIconGlyphsByName(
+  Iterable<IconGlyph> iconGlyphs,
+) sync* {
+  final seen = HashSet<String>();
+  for (final iconGlyph in iconGlyphs) {
+    final name = iconGlyph.name;
+    if (name == null || name.isEmpty || seen.add(name)) {
+      yield iconGlyph;
+    }
+  }
+}
 
-        final extentsPointer = arena<hb_glyph_extents_t>();
-        final glyphIdPointer = arena<Uint32>();
+Iterable<_Icon> _identifyIcons(
+  Iterable<IconGlyph> iconGlyphs, {
+  Set<String> reservedIdentifiers = const {},
+}) => iconGlyphs.map((iconGlyph) {
+  final IconGlyph(:codePoint, :name) = iconGlyph;
+  final hex = iconGlyph.codePoint.toRadixString(16);
+  final rawIdentifier = name ?? "\$${hex.toLowerCase()}";
+  return _Icon(
+    codePoint: codePoint,
+    name: name,
+    identifier: sanitizeIconIdentifier(
+      rawIdentifier,
+      reservedIdentifiers: reservedIdentifiers,
+    ),
+  );
+});
 
-        IconGlyph? smallestIcon;
-        int? smallestArea;
+Iterable<_Icon> _renameDuplicateIcons(Iterable<_Icon> icons) sync* {
+  final identifierToCount = <String, int>{};
+  for (final _Icon(:identifier) in icons) {
+    identifierToCount.update(
+      identifier,
+      (value) => value + 1,
+      ifAbsent: () => 1,
+    );
+  }
 
-        for (final icon in subsetResult.iconGlyphs) {
-          var status = hb_font_get_nominal_glyph(
-            subsetFont,
-            icon.codePoint,
-            glyphIdPointer,
-          );
-          if (status == 0) continue;
-
-          status = hb_font_get_glyph_extents(
-            subsetFont,
-            glyphIdPointer.value,
-            extentsPointer,
-          );
-          if (status == 0) continue;
-
-          final width = extentsPointer.ref.width.abs();
-          final height = extentsPointer.ref.height.abs();
-
-          final area = width * height;
-          if (area <= 0) continue;
-
-          if (smallestArea == null || area < smallestArea) {
-            smallestArea = area;
-            smallestIcon = icon;
-          }
-        }
-
-        return smallestIcon;
-      });
+  final identifierToIndex = <String, int>{};
+  for (final icon in icons) {
+    final identifier = icon.identifier;
+    final count = identifierToCount[identifier]!;
+    if (count > 1) {
+      final index = identifierToIndex.update(
+        identifier,
+        (value) => value + 1,
+        ifAbsent: () => 0,
+      );
+      yield _Icon(
+        codePoint: icon.codePoint,
+        name: icon.name,
+        identifier: "$identifier\$$index",
+      );
+    } else {
+      yield icon;
+    }
+  }
+}
 
 String _generateCode({
   required String className,
@@ -401,126 +391,4 @@ extension type const _Icon._(
   String? get name => _.name;
 
   String get identifier => _.identifier;
-}
-
-// This list is sourced from the latest Dart language specification draft,
-// section "Reserved Words".
-//
-// See: https://dart.dev/resources/language/spec.
-const _reservedWords = <String>[
-  "assert",
-  "break",
-  "case",
-  "catch",
-  "class",
-  "const",
-  "continue",
-  "default",
-  "do",
-  "else",
-  "enum",
-  "extends",
-  "false",
-  "final",
-  "finally",
-  "for",
-  "if",
-  "in",
-  "is",
-  "new",
-  "null",
-  "rethrow",
-  "return",
-  "super",
-  "switch",
-  "this",
-  "throw",
-  "true",
-  "try",
-  "var",
-  "void",
-  "while",
-  "with",
-];
-
-const _ones = <String>[
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-  "ten",
-  "eleven",
-  "twelve",
-  "thirteen",
-  "fourteen",
-  "fifteen",
-  "sixteen",
-  "seventeen",
-  "eighteen",
-  "nineteen",
-];
-
-const _tens = <String>[
-  "",
-  "",
-  "twenty",
-  "thirty",
-  "forty",
-  "fifty",
-  "sixty",
-  "seventy",
-  "eighty",
-  "ninety",
-];
-
-String _intToNaturalLanguage(int value) {
-  if (value < 20) return _ones[value];
-  if (value < 100) {
-    final t = value ~/ 10;
-    final r = value % 10;
-    return _tens[t] + (r > 0 ? "_${_ones[r]}" : "");
-  }
-  if (value < 1000) {
-    final h = value ~/ 100;
-    final r = value % 100;
-    if (r == 0) return "${_ones[h]}_hundred";
-    if (r < 10) return "${_ones[h]}_o_${_ones[r]}";
-    return "${_ones[h]}_${_intToNaturalLanguage(r)}";
-  }
-  return value.toString();
-}
-
-String _sanitizeIconIdentifier(
-  String name, {
-  Set<String> reservedIdentifiers = const {},
-}) {
-  name = name.replaceAll(RegExp(r"^_+"), "");
-  name = name.replaceAll("-", "_");
-  name = name.replaceAll(".", "_");
-  final match = RegExp(r"^(\d+)(.*)").firstMatch(name);
-  if (match != null) {
-    final numStr = match.group(1)!;
-    final rest = match.group(2)!;
-    final words = _intToNaturalLanguage(int.parse(numStr));
-    if (rest.isEmpty) {
-      name = words;
-    } else if (rest.startsWith('_')) {
-      name = words + rest;
-    } else {
-      name = '${words}_$rest';
-    }
-  }
-  if (_reservedWords.contains(name) || reservedIdentifiers.contains(name)) {
-    name = "$name\$";
-  }
-  if (RegExp(r"^\d").hasMatch(name) || name.isEmpty) {
-    name = "\$$name";
-  }
-  return name;
 }

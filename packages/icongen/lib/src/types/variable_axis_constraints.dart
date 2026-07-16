@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:icongen/icongen.dart';
+import 'package:icongen/src/icongen.dart';
 
 part 'variable_axis_constraints.freezed.dart';
 part 'variable_axis_constraints.g.dart';

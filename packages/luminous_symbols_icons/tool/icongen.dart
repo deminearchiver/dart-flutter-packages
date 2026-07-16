@@ -55,10 +55,12 @@ void main() async {
   }
 
   final subsetResults = buildSubsets<_LuminousSymbolsId>(
-    bytes: await loadBytes(
+    inputBytes: await loadBytes(
       "third_party/luminoussymbols/LuminousSymbols[opsz,wght].woff2",
     ),
-    entries: const {.luminousSymbols: .new(subsetFormat: .ttf)},
+    entries: const {
+      .luminousSymbols: .new(forceSubset: true, subsetFormat: .ttf),
+    },
   );
 
   await writeSubsets(
@@ -70,10 +72,10 @@ void main() async {
 
   final bindingsResults = buildBindings(
     entries: {
-      for (final MapEntry(key: id, value: SubsetResult subsetResult)
+      for (final MapEntry(key: id, value: SubsetResult(:bytes))
           in subsetResults.entries)
         id: .new(
-          subsetResult,
+          inputBytes: bytes,
           className: id.className,
           fontFamily: id.fontFamily,
           fontPackage: id.fontPackage,

@@ -1,10 +1,34 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:icongen/icongen.dart';
+import 'package:icongen/src/icongen.dart';
+import 'package:meta/meta.dart';
+
+@immutable
+class WriteEntry<ValueType extends Object?> {
+  const WriteEntry(this.value, {required this.path});
+
+  final ValueType value;
+
+  final Uri path;
+
+  @override
+  String toString() => "WriteEntry<$ValueType>($value, path: $path)";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is WriteEntry<ValueType> &&
+          value == other.value &&
+          path == other.path;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value, path);
+}
 
 typedef _WriteEntriesCallback<ValueType extends Object?> =
-    Future<void> Function(IOSink sink, ValueType value);
+    Future<void> Function(RandomAccessFile handle, ValueType value);
 
 Future<void> _writeEntries<ValueType extends Object?>(
   Iterable<WriteEntry<ValueType>> entries,
@@ -21,19 +45,29 @@ Future<void> _writeEntries<ValueType extends Object?>(
       );
     }
 
-    // TODO: consider replacing with Future(() async { ... })
-    futures.add(() async {
-      final file = File(path);
-      await file.parent.create(recursive: true);
-
-      final sink = file.openWrite();
-      try {
-        await write(sink, entry.value);
-        await sink.flush();
-      } finally {
-        await sink.close();
-      }
-    }());
+    futures.add(
+      .new(() async {
+        final file = File(path);
+        RandomAccessFile handle;
+        try {
+          handle = await file.open(mode: .write);
+        } on Object {
+          if (!file.existsSync()) {
+            file.createSync(recursive: true);
+            handle = await file.open(mode: .write);
+          } else {
+            rethrow;
+          }
+        }
+        await handle.lock(.blockingExclusive);
+        try {
+          await write(handle, entry.value);
+        } finally {
+          await handle.flush();
+          await handle.close();
+        }
+      }),
+    );
   }
 
   await Future.wait(futures);
@@ -41,12 +75,8 @@ Future<void> _writeEntries<ValueType extends Object?>(
 
 Future<void> writeSubsets<ValueType extends Object?>({
   required Iterable<WriteEntry<SubsetResultWithId<ValueType>>> entries,
-}) => _writeEntries(entries, (sink, value) async {
-  sink.add(value.bytes);
-});
+}) => _writeEntries(entries, (handle, value) => handle.writeFrom(value.bytes));
 
 Future<void> writeBindings<ValueType extends Object?>({
   required Iterable<WriteEntry<BindingsResultWithId<ValueType>>> entries,
-}) => _writeEntries(entries, (sink, value) async {
-  sink.write(value.code);
-});
+}) => _writeEntries(entries, (handle, value) => handle.writeString(value.code));

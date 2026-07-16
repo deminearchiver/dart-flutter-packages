@@ -113,9 +113,9 @@ void main() async {
   final SubsetIdToResultMap<_IconFontId> subsetResults = {
     // Upcast to _GoogleSymbolsId so we can use dot shorthands.
     ...buildSubsets<_GoogleSymbolsId>(
-      bytes: await loadBytes("../../wip/Google_Symbols_ORIGINAL.ttf"),
+      inputBytes: await loadBytes("../../wip/Google_Symbols_ORIGINAL.ttf"),
       entries: const {
-        .googleSymbols: .new(),
+        .googleSymbols: .new(forceSubset: true),
         .googleSymbolsOutlined: .new(
           variableAxisConstraints: {.rond: .fixed(at: 50.0)},
         ),
@@ -129,12 +129,8 @@ void main() async {
     ),
     // Upcast to _LuminousSymbolsId so we can use dot shorthands.
     ...buildSubsets<_LuminousSymbolsId>(
-      bytes: await loadBytes("../../wip/LuminousSymbols.woff2"),
-      entries: const {
-        .luminousSymbols: .new(
-          variableAxisConstraints: {.wght: .fixed(at: 200.0)},
-        ),
-      },
+      inputBytes: await loadBytes("../../wip/LuminousSymbols.woff2"),
+      entries: const {.luminousSymbols: .new(forceSubset: true)},
     ),
   };
 
@@ -151,10 +147,10 @@ void main() async {
 
   final bindingsResults = buildBindings(
     entries: {
-      for (final MapEntry(key: id, value: SubsetResult subsetResult)
+      for (final MapEntry(key: id, value: SubsetResult(:bytes))
           in subsetResults.entries)
         id: .new(
-          subsetResult,
+          inputBytes: bytes,
           className: id.className,
           fontFamily: id.fontFamily,
           fontPackage: id.fontPackage,

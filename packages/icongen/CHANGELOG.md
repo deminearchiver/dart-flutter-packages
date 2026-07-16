@@ -1,3 +1,22 @@
+## 0.5.0
+
+- Renamed `bytes` parameter to `inputBytes` in `SubsetBuilder` and `buildSubsets()`.
+
+- Replaced positional `subsetResult` parameter with named `inputBytes` parameter in `BindingsBuilder` and `BindingsEntry`.
+  - They now accept raw font bytes directly instead of requiring a `SubsetResult` instance.
+
+- Removed `fontFamily` and `iconGlyphs` properties from `SubsetResult`.
+  - `SubsetResult` and `SubsetResultWithId` now only store the generated font subset `bytes`.
+  - Removed `fontFamily` and `iconGlyphs` parameters from `SubsetBuilderResultFactory`.
+
+- Migrated entry models (`SubsetEntry`, `BindingsEntry` and `WriteEntry`) away from Freezed data classes to standard immutable Dart classes.
+
+- Added library-level documentation comment to `package:icongen`.
+
+- Refactored internal low-level HarfBuzz and WOFF2 font parsing and extraction utilities into a shared internal library.
+
+- Updated usage examples.
+
 ## 0.4.1
 
 - Added WOFF2 support via the `woff2_ffi` package.

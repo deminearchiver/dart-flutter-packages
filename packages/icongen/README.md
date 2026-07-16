@@ -86,7 +86,7 @@ This utility utilizes HarfBuzz to strip unused glyph data from TrueType/OpenType
 
      // Subset the input font.
      final subsetResults = buildSubsets<_MyIconsId>(
-       bytes: inputBytes,
+       inputBytes: inputBytes,
        entries: const <_MyIconsId, SubsetEntry>{
          .myIcons: .new(),
          .myIconsRounded: .new(
@@ -107,10 +107,10 @@ This utility utilizes HarfBuzz to strip unused glyph data from TrueType/OpenType
      // Generate bindings code.
      final bindingsResults = buildBindings(
        entries: {
-         for (final MapEntry(key: id, value: subsetResult)
+         for (final MapEntry(key: id, value: SubsetResult(:bytes))
              in subsetResults.entries)
            id: .new(
-             subsetResult,
+             inputBytes: bytes,
              className: id.className,
              fontFamily: id.fontFamily,
              fontPackage: id.fontPackage,

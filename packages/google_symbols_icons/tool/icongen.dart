@@ -73,11 +73,11 @@ void main() async {
   }
 
   final subsetResults = buildSubsets<_GoogleSymbolsId>(
-    bytes: await loadBytes(
+    inputBytes: await loadBytes(
       "third_party/googlesymbols/GoogleSymbols[FILL,GRAD,opsz,ROND,wght].ttf",
     ),
     entries: const {
-      .googleSymbols: .new(),
+      .googleSymbols: .new(forceSubset: true),
       .googleSymbolsOutlined: .new(
         variableAxisConstraints: {.rond: .fixed(at: 50.0)},
       ),
@@ -99,10 +99,10 @@ void main() async {
 
   final bindingsResults = buildBindings(
     entries: {
-      for (final MapEntry(key: id, value: SubsetResult subsetResult)
+      for (final MapEntry(key: id, value: SubsetResult(:bytes))
           in subsetResults.entries)
         id: .new(
-          subsetResult,
+          inputBytes: bytes,
           className: id.className,
           fontFamily: id.fontFamily,
           fontPackage: id.fontPackage,
