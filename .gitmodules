@@ -10,9 +10,3 @@
 [submodule "packages/libmonet/third_party/material-color-utilities"]
 	path = packages/libmonet/third_party/material-color-utilities
 	url = git@github.com:material-foundation/material-color-utilities
-[submodule "packages/google_symbols_icons/third_party/googlesymbols"]
-	path = packages/google_symbols_icons/third_party/googlesymbols
-	url = git@github.com:deminearchiver/googlesymbols.git
-[submodule "packages/luminous_symbols_icons/third_party/luminoussymbols"]
-	path = packages/luminous_symbols_icons/third_party/luminoussymbols
-	url = git@github.com:deminearchiver/luminoussymbols.git
