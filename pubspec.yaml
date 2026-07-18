@@ -41,6 +41,7 @@ workspace:
   - packages/screen_corners_ffi/example
   - packages/touch_targets
   - packages/touch_targets/example
+  - packages/woff2/woff
   - packages/woff2/woff2_ffi
   - packages/woff2/woff2_flutter
 
