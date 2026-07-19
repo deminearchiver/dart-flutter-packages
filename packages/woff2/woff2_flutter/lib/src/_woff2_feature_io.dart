@@ -9,20 +9,19 @@ import 'package:woff2_flutter/woff2_flutter.dart';
 class Woff2FontLoaderFeature implements FontLoaderFeature {
   const Woff2FontLoaderFeature();
 
-  @override
-  Future<bool> tryLoadFont(Uint8List list, String family) async {
+  Uint8List? _tryConvertWoff2ToTtf(Uint8List bytes) {
     const Allocator allocator = calloc;
     final nativeFree = calloc.nativeFree;
-    return using((arena) async {
-      final bytesLength = list.length;
+    return using((arena) {
+      final bytesLength = bytes.length;
       final bytesPointer = arena<Uint8>(bytesLength);
-      bytesPointer.asTypedList(bytesLength).setAll(0, list);
+      bytesPointer.asTypedList(bytesLength).setAll(0, bytes);
 
       final uncompressedSize = woff2_compute_final_size(
         bytesPointer,
         bytesLength,
       );
-      if (uncompressedSize <= 0) return false;
+      if (uncompressedSize <= 0) return null;
 
       final uncompressedBytesPointer = allocator<Uint8>(uncompressedSize);
       var uncompressedBytesLoose = true;
@@ -39,10 +38,10 @@ class Woff2FontLoaderFeature implements FontLoaderFeature {
           bytesLength,
           memoryOutPointer.cast<woff2_out_t>(),
         );
-        if (!status) return false;
+        if (!status) return null;
 
         final uncompressedBytesLength = woff2_memory_out_size(memoryOutPointer);
-        if (uncompressedBytesLength <= 0) return false;
+        if (uncompressedBytesLength <= 0) return null;
 
         final uncompressedBytes = uncompressedBytesPointer.asTypedList(
           uncompressedBytesLength,
@@ -50,13 +49,20 @@ class Woff2FontLoaderFeature implements FontLoaderFeature {
         );
         uncompressedBytesLoose = false;
 
-        const fallbackFeature = FallbackFontLoaderFeature();
-        return fallbackFeature.tryLoadFont(uncompressedBytes, family);
+        return uncompressedBytes;
       } finally {
         if (uncompressedBytesLoose) {
           allocator.free(uncompressedBytesPointer);
         }
       }
     }, allocator);
+  }
+
+  @override
+  Future<bool> tryLoadFont(Uint8List list, String family) async {
+    final bytes = _tryConvertWoff2ToTtf(list);
+    if (bytes == null) return false;
+    const fallbackFeature = FallbackFontLoaderFeature();
+    return fallbackFeature.tryLoadFont(bytes, family);
   }
 }
