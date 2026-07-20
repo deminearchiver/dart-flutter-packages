@@ -1,4 +1,4 @@
-## Unreleased
+## 1.6.1
 
 - Applied minor optimizations to `Cubic.split()` (cartesian optimization) and `Cubic.pointOnCurve()`.
 
