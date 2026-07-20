@@ -5342,7 +5342,7 @@ final class _StaticPaletteDefaults extends StaticPalette {
   Color get yellow90 => _overrides.yellow90 ?? const Color(0xFFFFE07C);
 
   @override
-  Color get yellow95 => _overrides.yellow95 ?? const Color(0xFFFFE07C);
+  Color get yellow95 => _overrides.yellow95 ?? const Color(0XFFFFF2B4);
 
   @override
   Color get yellow98 => _overrides.yellow98 ?? const Color(0xFFFFFADE);
