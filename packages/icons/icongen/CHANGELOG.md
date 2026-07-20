@@ -7,10 +7,16 @@
   - This integration will help track potential native memory leaks.
 
 - Added `fromJson()` and `toJson()` to `VariableAxisConstraint`.
+  - Preparing for future file config support.
+
+
+- Renamed type parameter from `ValueType` to `IdType` in `writeSubsets()` and `writeBindings()`.
+  - This does not affect dependents in any way, but improves API clarity.
 
 - Minor internal changes.
 
-- Renamed type parameter from `ValueType` to `IdType` in `writeSubsets()` and `writeBindings()`.
+- Bumped the `harfbuzz_ffi` dependency to `0.4.2`.
+  - Minimum version which supporst HarfBuzz experimental APIs for future use.
 
 - Changed package path in monorepo (from `packages/icongen` to `packages/icons/icongen`).
 

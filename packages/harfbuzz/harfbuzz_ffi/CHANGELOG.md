@@ -1,4 +1,4 @@
-## Unreleased
+## 0.4.2
 
 - Included HarfBuzz experimental APIs into the generated bindings and built libraries.
 
