@@ -23,28 +23,28 @@ dependencies:
     path: ../
 
   # Hosted dependencies
-  flutter_markdown_plus: ^1.0.7
+  collection: ^1.19.1
+  cue: ^0.3.1
+  dynamic_color_ffi: ^1.1.2
+  flutter_markdown_plus: ^1.0.12
+  flutter_shaders: ^0.1.3
+  follow_the_leader: ^0.5.3
   freezed_annotation: ^3.1.0
+  headless_widgets: ^0.0.7
+  inspire_blur: ^0.4.0
   json_annotation: ^4.12.0
   linked_layouts: ^0.5.0
   markdown: ^7.3.1
+  material_3p: ^0.4.0+1
   meta: ^1.18.0
   motor: ^1.1.0
-  slang: ^4.18.0
-  slang_flutter: ^4.18.0
-  follow_the_leader: ^0.5.3
-  vector_math: ^2.2.0
-  collection: ^1.19.1
-  cue: ^0.3.1
-  touch_targets: ^0.5.0
-  inspire_blur: ^0.2.0
-  window_toolbox: ^0.0.7
-  flutter_shaders: ^0.1.3
-  widget_mask: ^1.0.0+0
-  headless_widgets: ^0.0.7
-  dynamic_color_ffi: ^1.1.2
   skeletonizer: ^2.1.3
-  material_3p: ^0.4.0+1
+  slang_flutter: ^4.18.0
+  slang: ^4.18.0
+  touch_targets: ^0.5.0
+  vector_math: ^2.2.0
+  widget_mask: ^1.0.0+0
+  window_toolbox: ^0.0.7
 
 dev_dependencies:
   # SDK dependencies

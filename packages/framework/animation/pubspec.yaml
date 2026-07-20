@@ -1,8 +1,7 @@
 name: animation
-description: "A new Flutter package project."
 version: 1.0.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
-repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/animation
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/framework/animation
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
 publish_to: none
 resolution: workspace
@@ -12,15 +11,21 @@ environment:
   flutter: ">=3.44.0"
 
 dependencies:
+  # SDK dependencies
   flutter:
     sdk: flutter
+
+  # Hosted dependencies
   collection: ^1.19.1
-  meta: ^1.18.0
-  vector_math: ^2.2.0
   cue: ^0.3.1
+  meta: ^1.18.0
   motor: ^1.1.0
+  vector_math: ^2.2.0
 
 dev_dependencies:
+  # SDK dependencies
   flutter_test:
     sdk: flutter
+
+  # Hosted dependencies
   deminearchiver_lints: ^2.1.2

@@ -1,8 +1,7 @@
 name: material
-description: A Flutter library implementing Google's Material 3 Expressive design system.
 version: 2.0.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
-repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/material
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/framework/material
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
 topics: [ui, widgets, material]
 publish_to: none
@@ -22,23 +21,21 @@ dependencies:
   # Path dependencies
   animation:
     path: ../animation
-  google_symbols_icons:
-    path: ../icons/google_symbols_icons
   layout:
     path: ../layout
-  luminous_symbols_icons:
-    path: ../icons/luminous_symbols_icons
 
   # Hosted dependencies
   androidx_graphics_shapes: ^1.6.0
   collection: ^1.19.1
+  google_symbols_icons: ^0.1.0
   libmonet: 2.0.0-dev.18
+  luminous_symbols_icons: ^0.1.0
+  material_3p: ^0.4.0+1
   material_symbols_icons: ^4.2951.0
   meta: ^1.18.0
   motor: ^1.1.0
-  touch_targets: ^0.5.0
   nested: ^1.0.0
-  material_3p: ^0.4.0+1
+  touch_targets: ^0.5.0
 
 dev_dependencies:
   # SDK dependencies
@@ -46,5 +43,5 @@ dev_dependencies:
     sdk: flutter
 
   # Hosted dependencies
-  deminearchiver_lints: ^2.1.2
   build_runner: ^2.15.0
+  deminearchiver_lints: ^2.1.2

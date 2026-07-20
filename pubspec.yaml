@@ -8,7 +8,6 @@ environment:
 workspace:
   - packages/androidx_graphics_shapes
   - packages/androidx_graphics_shapes/example
-  - packages/animation
   - packages/csscolorparser
   - packages/csscolorparser_flutter
   - packages/deminearchiver_lints
@@ -17,6 +16,10 @@ workspace:
   - packages/dynamic_color_ffi
   - packages/dynamic_color_ffi/example
   - packages/figma/figmadev
+  - packages/framework/animation
+  - packages/framework/layout
+  - packages/framework/material
+  - packages/framework/material/example
   - packages/harfbuzz/harfbuzz
   - packages/harfbuzz/harfbuzz_ffi
   - packages/harfbuzz/harfbuzz_rs
@@ -25,13 +28,10 @@ workspace:
   - packages/icons/icongen
   - packages/icons/icongen_tools
   - packages/icons/luminous_symbols_icons
-  - packages/layout
   - packages/leonardo
   - packages/libmonet
   - packages/linked_layouts
   - packages/lz4_ffi
-  - packages/material/example
-  - packages/material
   - packages/material_3p
   - packages/named_colors
   - packages/package_info_ffi
