@@ -18,16 +18,17 @@ workspace:
   - packages/dynamic_color_ffi/example
   - packages/figma/figmadev
   - packages/google_symbols
-  - packages/google_symbols_icons
   - packages/harfbuzz/harfbuzz
   - packages/harfbuzz/harfbuzz_ffi
   - packages/harfbuzz/harfbuzz_rs
-  - packages/icongen
+  - packages/icons/google_symbols_icons
+  - packages/icons/icongen
+  - packages/icons/icongen_tools
+  - packages/icons/luminous_symbols_icons
   - packages/layout
   - packages/leonardo
   - packages/libmonet
   - packages/linked_layouts
-  - packages/luminous_symbols_icons
   - packages/lz4_ffi
   - packages/material/example
   - packages/material
@@ -51,3 +52,7 @@ dev_dependencies:
   flutter:
     sdk: flutter
   deminearchiver_lints: ^2.1.2
+
+dependency_overrides:
+  # Required for package:interact2.
+  dart_console: ^5.1.0

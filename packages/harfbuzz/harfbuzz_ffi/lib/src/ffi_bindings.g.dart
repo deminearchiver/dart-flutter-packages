@@ -4854,6 +4854,33 @@ external int hb_shape_full(
   ffi.Pointer<ffi.Pointer<ffi.Char>> shaper_list,
 );
 
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_font_t>,
+    ffi.Pointer<hb_buffer_t>,
+    ffi.Pointer<hb_feature_t>,
+    ffi.UnsignedInt,
+    ffi.Pointer<ffi.Pointer<ffi.Char>>,
+    ffi.Float,
+    ffi.Float,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<hb_tag_t>,
+    ffi.Pointer<ffi.Float>,
+  )
+>()
+external int hb_shape_justify(
+  ffi.Pointer<hb_font_t> font,
+  ffi.Pointer<hb_buffer_t> buffer,
+  ffi.Pointer<hb_feature_t> features,
+  int num_features,
+  ffi.Pointer<ffi.Pointer<ffi.Char>> shaper_list,
+  double min_target_advance,
+  double max_target_advance,
+  ffi.Pointer<ffi.Float> advance,
+  ffi.Pointer<hb_tag_t> var_tag,
+  ffi.Pointer<ffi.Float> var_value,
+);
+
 @ffi.Native<ffi.Pointer<ffi.Pointer<ffi.Char>> Function()>()
 external ffi.Pointer<ffi.Pointer<ffi.Char>> hb_shape_list_shapers();
 
@@ -6855,6 +6882,54 @@ external void hb_subset_axis_range_to_string(
   int axis_tag,
   ffi.Pointer<ffi.Char> buf,
   int size,
+);
+
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_subset_input_t>,
+    hb_ot_name_id_t,
+    ffi.UnsignedInt,
+    ffi.UnsignedInt,
+    ffi.UnsignedInt,
+    ffi.Pointer<ffi.Char>,
+    ffi.Int,
+  )
+>()
+external int hb_subset_input_override_name_table(
+  ffi.Pointer<hb_subset_input_t> input,
+  int name_id,
+  int platform_id,
+  int encoding_id,
+  int language_id,
+  ffi.Pointer<ffi.Char> name_str,
+  int str_len,
+);
+
+/// Raw outline data access
+@ffi.Native<
+  ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)
+>()
+external ffi.Pointer<hb_blob_t> hb_subset_cff_get_charstring_data(
+  ffi.Pointer<hb_face_t> face,
+  int glyph,
+);
+
+@ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>)>()
+external ffi.Pointer<hb_blob_t> hb_subset_cff_get_charstrings_index(
+  ffi.Pointer<hb_face_t> face,
+);
+
+@ffi.Native<
+  ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)
+>()
+external ffi.Pointer<hb_blob_t> hb_subset_cff2_get_charstring_data(
+  ffi.Pointer<hb_face_t> face,
+  int glyph,
+);
+
+@ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>)>()
+external ffi.Pointer<hb_blob_t> hb_subset_cff2_get_charstrings_index(
+  ffi.Pointer<hb_face_t> face,
 );
 
 @ffi.Native<ffi.Pointer<hb_face_t> Function(ffi.Pointer<hb_face_t>)>()
@@ -12128,6 +12203,8 @@ enum hb_subset_flags_t {
   HB_SUBSET_FLAGS_NO_LAYOUT_CLOSURE(512),
   HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS(1024),
   HB_SUBSET_FLAGS_NO_BIDI_CLOSURE(2048),
+  HB_SUBSET_FLAGS_IFTB_REQUIREMENTS(4096),
+  HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS(8192),
   HB_SUBSET_FLAGS_DOWNGRADE_CFF2(16384);
 
   final int value;
@@ -12147,6 +12224,8 @@ enum hb_subset_flags_t {
     512 => HB_SUBSET_FLAGS_NO_LAYOUT_CLOSURE,
     1024 => HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS,
     2048 => HB_SUBSET_FLAGS_NO_BIDI_CLOSURE,
+    4096 => HB_SUBSET_FLAGS_IFTB_REQUIREMENTS,
+    8192 => HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS,
     16384 => HB_SUBSET_FLAGS_DOWNGRADE_CFF2,
     _ => throw ArgumentError('Unknown value for hb_subset_flags_t: $value'),
   };

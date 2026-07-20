@@ -42,7 +42,8 @@ void main(List<String> arguments) async {
         "HB_EXTERN": targetOS == .windows
             ? "__declspec(dllexport)"
             : "__attribute__((visibility(\"default\")))",
-        "HB_HAS_SUBSET": null,
+        "HB_HAS_SUBSET": "",
+        "HB_EXPERIMENTAL_API": "",
         "HB_NO_MT": "1",
         "HB_NO_PRAGMA_GCC_DIAGNOSTIC": "1",
         if (targetOS == .windows) "_HAS_EXCEPTIONS": "0",

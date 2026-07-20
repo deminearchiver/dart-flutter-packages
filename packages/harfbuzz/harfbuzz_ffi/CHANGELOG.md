@@ -1,3 +1,7 @@
+## Unreleased
+
+- Included HarfBuzz experimental APIs into the generated bindings and built libraries.
+
 ## 0.4.1
 
 - Updated the Dart build hook to fix some potential issues on different hosts.

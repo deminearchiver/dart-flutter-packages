@@ -23,11 +23,11 @@ dependencies:
   animation:
     path: ../animation
   google_symbols_icons:
-    path: ../google_symbols_icons
+    path: ../icons/google_symbols_icons
   layout:
     path: ../layout
   luminous_symbols_icons:
-    path: ../luminous_symbols_icons
+    path: ../icons/luminous_symbols_icons
 
   # Hosted dependencies
   androidx_graphics_shapes: ^1.6.0

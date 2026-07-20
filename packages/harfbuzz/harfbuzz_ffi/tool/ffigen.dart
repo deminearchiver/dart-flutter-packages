@@ -21,7 +21,7 @@ void main() {
         packageRoot.resolve("third_party/harfbuzz/src/hb.h"),
         packageRoot.resolve("third_party/harfbuzz/src/hb-subset.h"),
       ],
-      // compilerOptions: ["-DHB_HAS_SUBSET"],
+      compilerOptions: ["-DHB_HAS_SUBSET", "-DHB_EXPERIMENTAL_API"],
     ),
     functions: .new(include: include),
     enums: .new(include: include),
