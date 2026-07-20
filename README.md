@@ -1,108 +1,67 @@
-<!-- To exclude from TOC generator -->
-<h1>Dart & Flutter Packages</h1>
+# Dart & Flutter Packages
 
 This repository contains interconnected published and unpublished Dart and Flutter packages.
 
-<details>
-  <summary>
-    <h3>Table of contents</h3>
-  </summary>
+## Packages
 
-- [Published packages](#published-packages)
-  - [AndroidX Graphics Shapes](#androidx-graphics-shapes)
-  - [deminearchiver lints](#deminearchiver-lints)
-  - [Device Info FFI](#device-info-ffi)
-  - [Material Color Utilities](#material-color-utilities)
-  - [LZ4 FFI](#lz4-ffi)
-  - [Dynamic Color FFI](#dynamic-color-ffi)
-  - [Package Info FFI](#package-info-ffi)
-  - [Screen Corners FFI](#screen-corners-ffi)
-- [Unpublished packages](#unpublished-packages)
-  - [Layout](#layout)
-  - [Material](#material)
-- [License](#license)
+### Uncategorized packages
 
-</details>
-
-## Published packages
-
-Click on a package's name to view its README.
-
-### [AndroidX Graphics Shapes](packages/androidx_graphics_shapes/README.md)
-
-A Flutter port of the `androidx.graphics.shapes` and `androidx.compose.material3.MaterialShapes` Kotlin libraries.
-
-**Location**: [`packages/androidx_graphics_shapes`](packages/androidx_graphics_shapes).
-
-**Published to**: [`androidx_graphics_shapes`](https://pub.dev/packages/androidx_graphics_shapes).
-
-### [deminearchiver lints](packages/deminearchiver_lints/README.md)
-
+- `deminearchiver_lints` [![Pub Version](https://img.shields.io/pub/v/deminearchiver_lints?include_prereleases&style=flat)](https://pub.dev/packages/deminearchiver_lints)\
 Opinionated lints for Dart and Flutter projects.
 
-**Location**: [`packages/deminearchiver_lints`](packages/deminearchiver_lints).
-
-**Published to**: [`deminearchiver_lints`](https://pub.dev/packages/deminearchiver_lints).
-
-### [Device Info FFI](packages/device_info_ffi/README.md)
-
-An FFI-based version of the device_info_plus plugin.
-
-**Location**: [`packages/device_info_ffi`](packages/device_info_ffi).
-
-**Published to**: [`device_info_ffi`](https://pub.dev/packages/device_info_ffi).
-
-### [Material Color Utilities](packages/libmonet/README.md)
-
+- `libmonet` [![Pub Version](https://img.shields.io/pub/v/libmonet?include_prereleases&style=flat)](https://pub.dev/packages/libmonet)\
 Algorithms and utilities that power the Material Design 3 (M3) color system, including choosing theme colors from images and creating tones of colors; all in a new color space.
 
-**Location**: [`packages/libmonet`](packages/libmonet).
+- `androidx_graphics_shapes` [![Pub Version](https://img.shields.io/pub/v/androidx_graphics_shapes?include_prereleases&style=flat)](https://pub.dev/packages/androidx_graphics_shapes)\
+A library for easy creation, transformation, and morphing of rounded polygonal shapes. Contains predefined Material Design shapes that can be used at various components.
 
-**Published to**: [`libmonet`](https://pub.dev/packages/libmonet).
+- `linked_layouts` [![Pub Version](https://img.shields.io/pub/v/linked_layouts?include_prereleases&style=flat)](https://pub.dev/packages/linked_layouts)\
+Create custom layout systems based on the multi-leader-multi-follower pattern.
 
-### [LZ4 FFI](packages/lz4_ffi/README.md)
+- `touch_targets` [![Pub Version](https://img.shields.io/pub/v/touch_targets?include_prereleases&style=flat)](https://pub.dev/packages/touch_targets)\
+Create overflowing touch targets to make accessible design-sized components.
 
-FFI bindings for the LZ4 compression algorithm library.
+- `material_3p` [![Pub Version](https://img.shields.io/pub/v/material_3p?include_prereleases&style=flat)](https://pub.dev/packages/material_3p)\
+3P (third-party) version of the Material 3 Expressive package.
 
-**Location**: [`packages/lz4_ffi`](packages/lz4_ffi).
+- `harfbuzz_ffi` [![Pub Version](https://img.shields.io/pub/v/harfbuzz_ffi?include_prereleases&style=flat)](https://pub.dev/packages/harfbuzz_ffi)\
+FFI bindings for the HarfBuzz text shaping engine.
 
-**Published to**: [`lz4_ffi`](https://pub.dev/packages/lz4_ffi).
+- `woff2_ffi` [![Pub Version](https://img.shields.io/pub/v/woff2_ffi?include_prereleases&style=flat)](https://pub.dev/packages/woff2_ffi)\
+FFI bindings for the WOFF2 reference implementation library.
 
-### [Dynamic Color FFI](packages/dynamic_color_ffi/README.md)
+- `woff2_flutter` [![Pub Version](https://img.shields.io/pub/v/woff2_flutter?include_prereleases&style=flat)](https://pub.dev/packages/woff2_flutter)\
+Allows parsing and loading WOFF2 fonts directly in Flutter using FFI.
 
+- `device_info_ffi` [![Pub Version](https://img.shields.io/pub/v/device_info_ffi?include_prereleases&style=flat)](https://pub.dev/packages/device_info_ffi)\
+An FFI-based version of the device_info_plus plugin.
+
+- `dynamic_color_ffi` [![Pub Version](https://img.shields.io/pub/v/dynamic_color_ffi?include_prereleases&style=flat)](https://pub.dev/packages/dynamic_color_ffi)\
 An FFI-based version of the dynamic_color plugin.
 
-**Location**: [`packages/dynamic_color_ffi`](packages/dynamic_color_ffi).
-
-**Published to**: [`dynamic_color_ffi`](https://pub.dev/packages/dynamic_color_ffi).
-
-### [Package Info FFI](packages/package_info_ffi/README.md)
-
-An FFI-based version of the package_info_plus plugin.
-
-**Location**: [`packages/package_info_ffi`](packages/package_info_ffi).
-
-**Published to**: [`package_info_ffi`](https://pub.dev/packages/package_info_ffi).
-
-### [Screen Corners FFI](packages/screen_corners_ffi/README.md)
-
+- `screen_corners_ffi` [![Pub Version](https://img.shields.io/pub/v/screen_corners_ffi?include_prereleases&style=flat)](https://pub.dev/packages/screen_corners_ffi)\
 A Flutter FFI-based plugin to obtain the screen corner radius on mobile platforms.
 
-**Location**: [`packages/screen_corners_ffi`](packages/screen_corners_ffi).
+### Icons-related packages
 
-**Published to**: [`screen_corners_ffi`](https://pub.dev/packages/screen_corners_ffi).
+All packages are located in `packages/icons/*`.
 
-## Unpublished packages
+- `icongen` [![Pub Version](https://img.shields.io/pub/v/icongen?include_prereleases&style=flat)](https://pub.dev/packages/icongen)\
+Subsets icon fonts and generates Flutter bindings for them.
 
-Click on a package's name to view its README.
+- `google_symbols_icons` [![Pub Version](https://img.shields.io/pub/v/google_symbols_icons?include_prereleases&style=flat)](https://pub.dev/packages/google_symbols_icons)\
+Flutter bindings for Google Symbols icon fonts.
 
-### [Layout](packages/layout/README.md)
+- `luminous_symbols_icons` [![Pub Version](https://img.shields.io/pub/v/luminous_symbols_icons?include_prereleases&style=flat)](https://pub.dev/packages/luminous_symbols_icons)\
+Flutter bindings for Luminous Symbols icon fonts.
 
-**Location**: [`packages/layout`](packages/layout)
+### Framework packages
 
-### [Material](packages/material/README.md)
+All packages are located in `packages/framework/*`.
 
-**Location**: [`packages/material`](packages/material)
+- `layout`
+
+- `material`
 
 ## License
 
