@@ -1,11 +1,10 @@
 name: luminous_symbols_icons
 description: Flutter bindings for Luminous Symbols icon fonts.
-version: 1.0.0
+version: 0.1.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/icons/luminous_symbols_icons
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
 topics: [icon, icons, google, luminous-symbols, luminous-symbols-icons]
-publish_to: none
 resolution: workspace
 
 environment:
