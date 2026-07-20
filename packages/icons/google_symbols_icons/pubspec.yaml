@@ -21,4 +21,4 @@ dev_dependencies:
   icongen_tools:
     path: ../icongen_tools
   deminearchiver_lints: ^2.1.2
-  icongen: ^0.5.0
+  icongen: ^0.5.1

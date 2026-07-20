@@ -1,4 +1,4 @@
-## Unreleased
+## 0.5.1
 
 - Reduced unnecessary memory copies by utilizing Dart native finalizers.
   - Currently, this experimental change only applies to two use cases: decompressing a WOFF2 font before any processing, and compressing subset results to WOFF2.
@@ -8,7 +8,6 @@
 
 - Added `fromJson()` and `toJson()` to `VariableAxisConstraint`.
   - Preparing for future file config support.
-
 
 - Renamed type parameter from `ValueType` to `IdType` in `writeSubsets()` and `writeBindings()`.
   - This does not affect dependents in any way, but improves API clarity.
