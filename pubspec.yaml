@@ -17,10 +17,10 @@ workspace:
   - packages/dynamic_color_ffi
   - packages/dynamic_color_ffi/example
   - packages/figma/figmadev
-  - packages/google_symbols
   - packages/harfbuzz/harfbuzz
   - packages/harfbuzz/harfbuzz_ffi
   - packages/harfbuzz/harfbuzz_rs
+  - packages/icons/google_symbols
   - packages/icons/google_symbols_icons
   - packages/icons/icongen
   - packages/icons/icongen_tools
