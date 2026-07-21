@@ -540,6 +540,14 @@ abstract class InheritedThemeResolverWidget<
   bool updateShouldNotify(WidgetType oldWidget) =>
       resolver != oldWidget.resolver;
 
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      DiagnosticsProperty<ThemeResolver<PartialType>>("resolver", resolver),
+    );
+  }
+
   static ThemeResolver<PartialType>? maybeResolverOf<
     PartialType extends Object?,
     WidgetType extends InheritedThemeResolverWidget<
@@ -715,6 +723,7 @@ base class InheritedThemeResolverElement<
       _dependencyCache = Expando();
       _resolutionCache = null;
       _mergeCache = null;
+      // Super call chain explicitly inlined here to avoid unnecessary checks.
       notifyClients(oldWidget);
     }
   }
@@ -732,6 +741,26 @@ base class InheritedThemeResolverElement<
   void removeDependent(Element dependent) {
     _dependencyCache[dependent] = null;
     super.removeDependent(dependent);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(
+        DiagnosticsProperty<_ResolutionCache<PartialType>>(
+          "resolution cache",
+          _resolutionCache,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<_MergeCache<PartialType>>(
+          "merge cache",
+          _mergeCache,
+          defaultValue: null,
+        ),
+      );
   }
 }
 
