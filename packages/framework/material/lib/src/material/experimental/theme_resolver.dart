@@ -606,15 +606,13 @@ base class InheritedThemeResolverElement<
   _MergeCache<PartialType>? _mergeCache;
 
   ElementType? _findAncestorElementOfSameType() {
-    ElementType? ancestor;
-    visitAncestorElements((element) {
-      if (element is ElementType) {
-        ancestor = element;
-        return false;
-      }
-      return true;
+    InheritedElement? ancestor;
+    visitAncestorElements((parent) {
+      ancestor = parent.getElementForInheritedWidgetOfExactType<WidgetType>();
+      return false;
     });
-    return ancestor;
+    assert(ancestor == null || ancestor.runtimeType == ElementType);
+    return ancestor as ElementType?;
   }
 
   _ResolveResult<PartialType> _resolveOverridesIn(BuildContext context) {
