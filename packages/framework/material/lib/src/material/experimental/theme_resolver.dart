@@ -364,7 +364,7 @@ final class _ResolutionContext implements BuildContext {
               cachedWidget is InheritedThemeResolverWidget) {
             return currentWidget.resolver == cachedWidget.resolver;
           }
-          return currentWidget == widget;
+          return currentWidget == cachedWidget;
         },
         register: (context) =>
             context.dependOnInheritedElement(ancestor, aspect: aspect),
@@ -402,6 +402,7 @@ final class _ResolutionContext implements BuildContext {
       _matchers.add(
         .new(
           verify: (context) {
+            if (!ancestor.mounted) return false;
             final element = context
                 .getElementForInheritedWidgetOfExactType<T>();
             if (element != ancestor) return false;
@@ -412,7 +413,7 @@ final class _ResolutionContext implements BuildContext {
                 cachedWidget is InheritedThemeResolverWidget) {
               return currentWidget.resolver == cachedWidget.resolver;
             }
-            return currentWidget == widget;
+            return currentWidget == cachedWidget;
           },
           register: (context) =>
               context.dependOnInheritedElement(ancestor, aspect: aspect),
