@@ -34,7 +34,7 @@
       "type": "dart",
       "flutterMode": "debug",
       "args": [],
-      "cwd": "packages/material/example",
+      "cwd": "packages/framework/material/example",
       "program": "lib/main.dart"
     },
     {
@@ -43,7 +43,7 @@
       "type": "dart",
       "flutterMode": "profile",
       "args": [],
-      "cwd": "packages/material/example",
+      "cwd": "packages/framework/material/example",
       "program": "lib/main.dart"
     },
     {
@@ -52,7 +52,7 @@
       "type": "dart",
       "flutterMode": "release",
       "args": [],
-      "cwd": "packages/material/example",
+      "cwd": "packages/framework/material/example",
       "program": "lib/main.dart"
     },
     {
