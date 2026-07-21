@@ -1,37 +1,53 @@
 import 'dart:math' as math;
 
-String buildObjectHashExpression(List<String> expressions) {
-  assert(expressions.isNotEmpty);
+extension type const ObjectHashExpressionBuilder._(
+  ({List<String> expressions}) _
+) implements Object {
+  const ObjectHashExpressionBuilder(List<String> expressions)
+    : assert(expressions.length > 1, "Must have at least two expressions."),
+      _ = (expressions: expressions);
 
-  const separator = ", ";
-  const limit = 20;
-  final size = expressions.length;
+  List<String> get expressions => _.expressions;
 
-  if (size <= limit) {
-    return "Object.hash(${expressions.join(separator)})";
-  }
+  String build() {
+    if (expressions.length <= 1) {
+      throw ArgumentError.value(
+        expressions,
+        "expressions",
+        "Must have at least two expressions.",
+      );
+    }
 
-  final buffer = StringBuffer();
-  final extraItems = size - limit;
-  final extraChunks = (extraItems / (limit - 1)).ceil();
+    const separator = ", ";
+    const limit = 20;
+    final size = expressions.length;
 
-  for (var i = 0; i < extraChunks; i++) {
-    buffer.write("Object.hash(");
-  }
+    if (size <= limit) {
+      return "Object.hash(${expressions.join(separator)})";
+    }
 
-  buffer
-    ..write("Object.hash(")
-    ..writeAll(expressions.take(20), separator)
-    ..write(")");
+    final buffer = StringBuffer();
+    final extraItems = size - limit;
+    final extraChunks = (extraItems / (limit - 1)).ceil();
 
-  var index = limit;
-  for (var i = 0; i < extraChunks; i++) {
-    final end = math.min(index + limit - 1, size);
+    for (var i = 0; i < extraChunks; i++) {
+      buffer.write("Object.hash(");
+    }
+
     buffer
-      ..write(separator)
-      ..writeAll(expressions.getRange(index, end), separator)
+      ..write("Object.hash(")
+      ..writeAll(expressions.take(20), separator)
       ..write(")");
-    index += limit - 1;
+
+    var index = limit;
+    for (var i = 0; i < extraChunks; i++) {
+      final end = math.min(index + limit - 1, size);
+      buffer
+        ..write(separator)
+        ..writeAll(expressions.getRange(index, end), separator)
+        ..write(")");
+      index += limit - 1;
+    }
+    return buffer.toString();
   }
-  return buffer.toString();
 }

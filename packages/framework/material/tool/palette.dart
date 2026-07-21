@@ -768,9 +768,9 @@ String _buildCode(List<_Token> tokens) {
           ..writeln("  @override")
           ..write("  int get hashCode => ")
           ..write(
-            buildObjectHashExpression(
+            ObjectHashExpressionBuilder(
               tokens.map((token) => token.identifier).toList(),
-            ),
+            ).build(),
           )
           ..writeln(";");
       case .partialAsConcreteImplementation || .concreteDefaultsImplementation:
