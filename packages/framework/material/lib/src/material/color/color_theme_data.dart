@@ -91,38 +91,38 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     return .fromDynamicScheme(scheme);
   }
 
-  factory ColorThemeData.fromPalette({
-    required BaselinePalette palette,
+  factory ColorThemeData.defaults({
+    required PaletteThemeData paletteTheme,
     required Brightness brightness,
     double contrastLevel = 0.0,
     ColorThemeDataPartial? overrides,
   }) {
     final isDark = brightness == .dark;
     late final normal = isDark
-        ? _ColorThemeDataFromPaletteDarkNormalContrast(
-            palette: palette,
+        ? _ColorThemeDataDefaultsDarkNormalContrast(
+            palette: paletteTheme,
             overrides: overrides,
           )
-        : _ColorThemeDataFromPaletteLightNormalContrast(
-            palette: palette,
+        : _ColorThemeDataDefaultsLightNormalContrast(
+            palette: paletteTheme,
             overrides: overrides,
           );
     late final medium = isDark
-        ? _ColorThemeDataFromPaletteDarkMediumContrast(
-            palette: palette,
+        ? _ColorThemeDataDefaultsDarkMediumContrast(
+            palette: paletteTheme,
             overrides: overrides,
           )
-        : _ColorThemeDataFromPaletteLightMediumContrast(
-            palette: palette,
+        : _ColorThemeDataDefaultsLightMediumContrast(
+            palette: paletteTheme,
             overrides: overrides,
           );
     late final high = isDark
-        ? _ColorThemeDataFromPaletteDarkHighContrast(
-            palette: palette,
+        ? _ColorThemeDataDefaultsDarkHighContrast(
+            palette: paletteTheme,
             overrides: overrides,
           )
-        : _ColorThemeDataFromPaletteLightHighContrast(
-            palette: palette,
+        : _ColorThemeDataDefaultsLightHighContrast(
+            palette: paletteTheme,
             overrides: overrides,
           );
     return switch (contrastLevel) {
@@ -139,6 +139,22 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     //   _ => high,
     // };
   }
+
+  factory ColorThemeData.defaultsOf(
+    BuildContext context, {
+    Brightness? brightness,
+    double? contrastLevel,
+    ColorThemeDataPartial? overrides,
+  }) => .defaults(
+    paletteTheme: PaletteTheme.of(context),
+    brightness:
+        brightness ??
+        Theme.maybeBrightnessOf(context) ??
+        MediaQuery.platformBrightnessOf(context),
+    contrastLevel:
+        contrastLevel ?? (MediaQuery.highContrastOf(context) ? 1.0 : 0.0),
+    overrides: overrides,
+  );
 
   @override
   Brightness get brightness;

@@ -6,8 +6,8 @@ export 'src/material/shape/outline.dart';
 export 'src/material/center_optically.dart';
 export 'src/material/surface.dart';
 
-export 'src/material/color/static_palette.dart';
-export 'src/material/color/baseline_palette.dart';
+export 'src/material/color/palette_theme_data.dart';
+export 'src/material/color/palette_theme.dart';
 export 'src/material/color/color_theme.dart';
 
 export 'src/material/motion/duration_theme.dart';

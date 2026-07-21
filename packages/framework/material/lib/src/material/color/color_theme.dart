@@ -105,24 +105,11 @@ abstract class ColorTheme extends SingleChildStatelessWidget {
   static ColorThemeData? maybeOf(BuildContext context) {
     final overrides = _ColorTheme.maybeOverridesOf(context);
     if (overrides == null) return null;
-    return .fromPalette(
-      palette: BaselinePaletteTheme.of(context),
-      brightness:
-          Theme.maybeBrightnessOf(context) ??
-          MediaQuery.platformBrightnessOf(context),
-      contrastLevel: MediaQuery.highContrastOf(context) ? 1.0 : 0.0,
-      overrides: overrides,
-    );
+    return .defaultsOf(context, overrides: overrides);
   }
 
-  static ColorThemeData of(BuildContext context) => .fromPalette(
-    palette: BaselinePaletteTheme.of(context),
-    brightness:
-        Theme.maybeBrightnessOf(context) ??
-        MediaQuery.platformBrightnessOf(context),
-    contrastLevel: MediaQuery.highContrastOf(context) ? 1.0 : 0.0,
-    overrides: _ColorTheme.maybeOverridesOf(context),
-  );
+  static ColorThemeData of(BuildContext context) =>
+      .defaultsOf(context, overrides: _ColorTheme.maybeOverridesOf(context));
 }
 
 class _ColorThemeWithResolver<T extends ColorThemeDataPartial>

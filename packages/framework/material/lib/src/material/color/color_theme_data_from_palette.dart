@@ -1,10 +1,8 @@
 part of 'color_theme.dart';
 
-mixin _ColorThemeDataFromPaletteMixin<
-  T extends _ColorThemeDataFromPaletteMixin<T>
->
+mixin _ColorThemeDataDefaultsMixin<T extends _ColorThemeDataDefaultsMixin<T>>
     on ColorThemeData {
-  BaselinePalette get _palette;
+  PaletteThemeData get _palette;
   ColorThemeDataPartial get _overrides;
 
   Brightness get _brightness;
@@ -69,7 +67,7 @@ mixin _ColorThemeDataFromPaletteMixin<
   Color get _onErrorContainer;
 
   T _create({
-    required BaselinePalette palette,
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   });
 
@@ -728,19 +726,19 @@ mixin _ColorThemeDataFromPaletteMixin<
   int get hashCode => Object.hash(_palette, _overrides);
 }
 
-final class _ColorThemeDataFromPaletteLightNormalContrast extends ColorThemeData
+final class _ColorThemeDataDefaultsLightNormalContrast extends ColorThemeData
     with
-        _ColorThemeDataFromPaletteMixin<
-          _ColorThemeDataFromPaletteLightNormalContrast
+        _ColorThemeDataDefaultsMixin<
+          _ColorThemeDataDefaultsLightNormalContrast
         > {
-  const _ColorThemeDataFromPaletteLightNormalContrast({
-    required BaselinePalette palette,
+  const _ColorThemeDataDefaultsLightNormalContrast({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePalette _palette;
+  final PaletteThemeData _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -881,25 +879,25 @@ final class _ColorThemeDataFromPaletteLightNormalContrast extends ColorThemeData
   Color get _surfaceDim => _palette.neutral87;
 
   @override
-  _ColorThemeDataFromPaletteLightNormalContrast _create({
-    required BaselinePalette palette,
+  _ColorThemeDataDefaultsLightNormalContrast _create({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }
 
-final class _ColorThemeDataFromPaletteLightMediumContrast extends ColorThemeData
+final class _ColorThemeDataDefaultsLightMediumContrast extends ColorThemeData
     with
-        _ColorThemeDataFromPaletteMixin<
-          _ColorThemeDataFromPaletteLightMediumContrast
+        _ColorThemeDataDefaultsMixin<
+          _ColorThemeDataDefaultsLightMediumContrast
         > {
-  const _ColorThemeDataFromPaletteLightMediumContrast({
-    required BaselinePalette palette,
+  const _ColorThemeDataDefaultsLightMediumContrast({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePalette _palette;
+  final PaletteThemeData _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -1040,25 +1038,23 @@ final class _ColorThemeDataFromPaletteLightMediumContrast extends ColorThemeData
   Color get _surfaceDim => _palette.neutral87;
 
   @override
-  _ColorThemeDataFromPaletteLightMediumContrast _create({
-    required BaselinePalette palette,
+  _ColorThemeDataDefaultsLightMediumContrast _create({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }
 
-final class _ColorThemeDataFromPaletteLightHighContrast extends ColorThemeData
+final class _ColorThemeDataDefaultsLightHighContrast extends ColorThemeData
     with
-        _ColorThemeDataFromPaletteMixin<
-          _ColorThemeDataFromPaletteLightHighContrast
-        > {
-  const _ColorThemeDataFromPaletteLightHighContrast({
-    required BaselinePalette palette,
+        _ColorThemeDataDefaultsMixin<_ColorThemeDataDefaultsLightHighContrast> {
+  const _ColorThemeDataDefaultsLightHighContrast({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePalette _palette;
+  final PaletteThemeData _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -1199,25 +1195,25 @@ final class _ColorThemeDataFromPaletteLightHighContrast extends ColorThemeData
   Color get _surfaceDim => _palette.neutral87;
 
   @override
-  _ColorThemeDataFromPaletteLightHighContrast _create({
-    required BaselinePalette palette,
+  _ColorThemeDataDefaultsLightHighContrast _create({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }
 
-final class _ColorThemeDataFromPaletteDarkNormalContrast extends ColorThemeData
+final class _ColorThemeDataDefaultsDarkNormalContrast extends ColorThemeData
     with
-        _ColorThemeDataFromPaletteMixin<
-          _ColorThemeDataFromPaletteDarkNormalContrast
+        _ColorThemeDataDefaultsMixin<
+          _ColorThemeDataDefaultsDarkNormalContrast
         > {
-  const _ColorThemeDataFromPaletteDarkNormalContrast({
-    required BaselinePalette palette,
+  const _ColorThemeDataDefaultsDarkNormalContrast({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePalette _palette;
+  final PaletteThemeData _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -1358,25 +1354,25 @@ final class _ColorThemeDataFromPaletteDarkNormalContrast extends ColorThemeData
   Color get _surfaceDim => _palette.neutral6;
 
   @override
-  _ColorThemeDataFromPaletteDarkNormalContrast _create({
-    required BaselinePalette palette,
+  _ColorThemeDataDefaultsDarkNormalContrast _create({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }
 
-final class _ColorThemeDataFromPaletteDarkMediumContrast extends ColorThemeData
+final class _ColorThemeDataDefaultsDarkMediumContrast extends ColorThemeData
     with
-        _ColorThemeDataFromPaletteMixin<
-          _ColorThemeDataFromPaletteDarkMediumContrast
+        _ColorThemeDataDefaultsMixin<
+          _ColorThemeDataDefaultsDarkMediumContrast
         > {
-  const _ColorThemeDataFromPaletteDarkMediumContrast({
-    required BaselinePalette palette,
+  const _ColorThemeDataDefaultsDarkMediumContrast({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePalette _palette;
+  final PaletteThemeData _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -1517,25 +1513,22 @@ final class _ColorThemeDataFromPaletteDarkMediumContrast extends ColorThemeData
   Color get _surfaceDim => _palette.neutral6;
 
   @override
-  _ColorThemeDataFromPaletteDarkMediumContrast _create({
-    required BaselinePalette palette,
+  _ColorThemeDataDefaultsDarkMediumContrast _create({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }
 
-final class _ColorThemeDataFromPaletteDarkHighContrast extends ColorThemeData
-    with
-        _ColorThemeDataFromPaletteMixin<
-          _ColorThemeDataFromPaletteDarkHighContrast
-        > {
-  const _ColorThemeDataFromPaletteDarkHighContrast({
-    required BaselinePalette palette,
+final class _ColorThemeDataDefaultsDarkHighContrast extends ColorThemeData
+    with _ColorThemeDataDefaultsMixin<_ColorThemeDataDefaultsDarkHighContrast> {
+  const _ColorThemeDataDefaultsDarkHighContrast({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) : _palette = palette,
        _overrides = overrides ?? const .from();
 
   @override
-  final BaselinePalette _palette;
+  final PaletteThemeData _palette;
 
   @override
   final ColorThemeDataPartial _overrides;
@@ -1676,8 +1669,8 @@ final class _ColorThemeDataFromPaletteDarkHighContrast extends ColorThemeData
   Color get _surfaceDim => _palette.neutral6;
 
   @override
-  _ColorThemeDataFromPaletteDarkHighContrast _create({
-    required BaselinePalette palette,
+  _ColorThemeDataDefaultsDarkHighContrast _create({
+    required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   }) => .new(palette: palette, overrides: overrides);
 }
