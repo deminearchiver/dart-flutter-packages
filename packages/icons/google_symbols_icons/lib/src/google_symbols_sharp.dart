@@ -11395,6 +11395,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "simulation".
   static const IconData simulation = IconData(0xf3e1, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "single_arrow".
+  static const IconData single_arrow = IconData(0xffed9, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "single_bed".
   static const IconData single_bed = IconData(0xea48, fontFamily: fontFamily, fontPackage: fontPackage);
 
