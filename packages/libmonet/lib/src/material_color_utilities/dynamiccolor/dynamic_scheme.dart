@@ -569,8 +569,7 @@ class DynamicScheme {
 
 extension type const _DynamicSchemeSettings._(
   (Variant variant, bool isDark, Platform platform, SpecVersion specVersion) _
-)
-    implements Object {
+) implements Object {
   const _DynamicSchemeSettings({
     required Variant variant,
     required bool isDark,

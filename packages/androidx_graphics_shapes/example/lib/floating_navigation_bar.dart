@@ -507,8 +507,7 @@ class _RenderPadding extends RenderShiftedBox implements flutter.RenderPadding {
 
 extension type const FloatingNavigationBarDestination._(
   ({Widget icon, Widget label, String? tooltip}) _
-)
-    implements Object {
+) implements Object {
   const FloatingNavigationBarDestination({
     required Widget icon,
     required Widget label,
