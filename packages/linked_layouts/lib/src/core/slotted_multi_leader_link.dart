@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/rendering.dart';
 import 'package:linked_layouts/linked_layouts.dart';
 
@@ -7,8 +9,8 @@ base class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
           SlottedLayoutLeaderClient<RenderBox, SlotType>,
           LayoutFollowerClient
         > {
-  final _slotToLeader =
-      <SlotType, SlottedLayoutLeaderClient<RenderBox, SlotType>>{};
+  final Map<SlotType, SlottedLayoutLeaderClient<RenderBox, SlotType>>
+  _slotToLeader = HashMap();
 
   SlottedLayoutLeaderClient<RenderBox, SlotType>? leaderForSlot(SlotType slot) {
     final leader = _slotToLeader[slot];

@@ -1,3 +1,7 @@
+## Unreleased
+
+- Applied minor optimizations to the linked layouts algorithms.
+
 ## 0.5.0
 
 - Fixed internal update order of `RenderObjectWithOptionalLayoutLinkMixin.layoutLink`, `RenderObjectWithRequiredLayoutLinkMixin.layoutLink`, `RenderSlottedLayoutLeader.slot`.

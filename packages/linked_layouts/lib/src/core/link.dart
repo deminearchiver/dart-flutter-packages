@@ -1,13 +1,26 @@
+import 'dart:collection';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:linked_layouts/linked_layouts.dart';
 
+class _LeaderLayout {
+  _LeaderLayout({this.size, this.transform});
+
+  Size? size;
+
+  Matrix4? transform;
+
+  @override
+  String toString() => "_LeaderLayout(size: $size, transform: $transform)";
+}
+
 abstract base class LayoutLink<
   LeaderClientType extends LayoutLeaderClient,
   FollowerClientType extends LayoutFollowerClient
 > {
-  final _leaders = <LeaderClientType>{};
+  final Set<LeaderClientType> _leaders = HashSet();
 
   @protected
   Iterable<LeaderClientType> get leadersInternal;
@@ -110,6 +123,7 @@ abstract base class LayoutLink<
     // Unregister the leader.
     unregisterLeaderInternal(leader);
     _leaders.remove(leader);
+    _lastLeaderLayouts.remove(leader);
 
     // Leaders must be in a valid state.
     assert(debugAssertLeadersAreValid(leadersInternal));
@@ -118,7 +132,7 @@ abstract base class LayoutLink<
     _onLeaderLayout();
   }
 
-  final _followers = <FollowerClientType>{};
+  final Set<FollowerClientType> _followers = HashSet();
 
   FollowerLayoutLinkHandle<LeaderClientType, FollowerClientType>
   registerFollower(FollowerClientType follower) {
@@ -170,97 +184,103 @@ abstract base class LayoutLink<
   }
 
   late final _frameCallbackScheduler = FrameCallbackScheduler(_frameCallback);
-  final _lastLeaderTransforms = <LeaderClientType, Matrix4>{};
-  final _lastLeaderSizes = <LeaderClientType, Size>{};
   var _isSchedulingPostFrameLayout = false;
 
   void _frameCallback(Duration _) {
-    if (_followers.isNotEmpty) {
-      if (_checkForLeaderChanges(checkTransforms: true, checkSizes: true)) {
-        _scheduleFollowersLayout();
-      }
-      _frameCallbackScheduler.schedule();
+    if (_followers.isEmpty) return;
+
+    if (_checkForLeaderChanges(checkSizes: true, checkTransforms: true)) {
+      _scheduleFollowersLayout();
     }
+
+    _frameCallbackScheduler.schedule();
   }
 
+  final Map<LeaderClientType, _LeaderLayout> _lastLeaderLayouts = HashMap();
+  final _leaderTransformCache = Matrix4.zero();
+
   bool _checkForLeaderChanges({
-    required bool checkTransforms,
     required bool checkSizes,
+    required bool checkTransforms,
   }) {
-    if (!checkTransforms && !checkSizes) return false;
+    assert(checkSizes || checkTransforms);
 
     var changed = false;
 
-    // Remove transforms of removed leaders.
-    if (checkTransforms) {
-      _lastLeaderTransforms.removeWhere(
-        (leader, _) => !_leaders.contains(leader) && (changed = true),
-      );
-    }
-    if (checkSizes) {
-      _lastLeaderSizes.removeWhere(
-        (leader, _) => !_leaders.contains(leader) && (changed = true),
-      );
-    }
-
-    // Check if transforms have changed and update last transforms.
     for (final leader in _leaders) {
       if (!leader.renderObject.attached) continue;
-      if (checkTransforms) {
-        final currentTransform =
-            tryGetTransformTo(leader.renderObject) ?? .identity();
-        final lastTransform = _lastLeaderTransforms[leader];
-        if (lastTransform == null || lastTransform != currentTransform) {
+
+      final lastLayout = _lastLeaderLayouts[leader] ??= .new();
+
+      if (checkSizes) {
+        final size = leader.size;
+        if (lastLayout.size != size) {
+          lastLayout.size = size;
           changed = true;
-          _lastLeaderTransforms[leader] = currentTransform;
         }
       }
-      if (checkSizes) {
-        final currentSize = leader.size ?? .zero;
-        final lastSize = _lastLeaderSizes[leader];
-        if (lastSize != currentSize) {
-          changed = true;
-          _lastLeaderSizes[leader] = currentSize;
+
+      if (checkTransforms) {
+        final transform = tryGetTransformTo(
+          leader.renderObject,
+          matrix: _leaderTransformCache,
+        );
+        final lastTransform = lastLayout.transform;
+        if (transform != null) {
+          if (lastTransform == null || lastTransform != transform) {
+            lastLayout.transform = (lastTransform ?? .zero())
+              ..setFrom(_leaderTransformCache);
+            changed = true;
+          }
+        } else {
+          if (lastTransform != null) {
+            lastLayout.transform = null;
+            changed = true;
+          }
         }
       }
     }
+
     return changed;
   }
 
   void _markFollowersNeedLayout() {
     for (final follower in _followers) {
-      if (follower.renderObject.attached) {
-        follower.renderObject.markNeedsLayout();
-      }
+      if (!follower.renderObject.attached) continue;
+
+      follower.renderObject.markNeedsLayout();
     }
+  }
+
+  void _postFrameCallback(Duration _) {
+    _isSchedulingPostFrameLayout = false;
+    _markFollowersNeedLayout();
   }
 
   void _scheduleFollowersLayout() {
     if (_followers.isEmpty) return;
-    final schedulerPhase = SchedulerBinding.instance.schedulerPhase;
-    if (schedulerPhase == .persistentCallbacks ||
-        schedulerPhase == .postFrameCallbacks) {
-      if (!_isSchedulingPostFrameLayout) {
-        _isSchedulingPostFrameLayout = true;
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          _isSchedulingPostFrameLayout = false;
-          _markFollowersNeedLayout();
-        });
-      }
-    } else {
-      _markFollowersNeedLayout();
+
+    switch (SchedulerBinding.instance.schedulerPhase) {
+      case .persistentCallbacks || .postFrameCallbacks:
+        if (!_isSchedulingPostFrameLayout) {
+          _isSchedulingPostFrameLayout = true;
+          SchedulerBinding.instance.addPostFrameCallback(_postFrameCallback);
+        }
+
+      default:
+        _markFollowersNeedLayout();
     }
   }
 
   void _onLeaderLayout() {
     // TODO: implement leader debug tracking
-    _checkForLeaderChanges(checkTransforms: true, checkSizes: true);
+    _checkForLeaderChanges(checkSizes: true, checkTransforms: true);
     _scheduleFollowersLayout();
   }
 
   void _onLeaderPaint() {
     // TODO: implement leader debug tracking
-    if (_checkForLeaderChanges(checkTransforms: true, checkSizes: false)) {
+    if (_checkForLeaderChanges(checkSizes: false, checkTransforms: true)) {
       _scheduleFollowersLayout();
     }
   }
@@ -271,51 +291,90 @@ abstract base class LayoutLink<
     return true;
   }
 
+  static final _ancestorsCache = <RenderObject>[];
+  static final _leaderGlobalTransformCache = Matrix4.zero();
+  static final _coordinateSpaceGlobalTransformCache = Matrix4.zero();
+
   static Offset? getOffsetIn(
     RenderObject leader,
     RenderObject coordinateSpace,
   ) {
     if (!leader.attached || !coordinateSpace.attached) return null;
-    final leaderGlobal = tryGetTransformTo(leader);
-    final transform = tryGetTransformTo(coordinateSpace);
-    if (leaderGlobal == null || transform == null) return null;
-    final determinant = transform.invert();
+
+    final leaderGlobalTransform = tryGetTransformTo(
+      leader,
+      matrix: _leaderGlobalTransformCache,
+    );
+    final coordinateSpaceGlobalTransform = tryGetTransformTo(
+      coordinateSpace,
+      matrix: _coordinateSpaceGlobalTransformCache,
+    );
+
+    if (leaderGlobalTransform == null ||
+        coordinateSpaceGlobalTransform == null) {
+      return null;
+    }
+
+    final determinant = coordinateSpaceGlobalTransform.invert();
     if (determinant == 0.0) return null;
-    return MatrixUtils.transformPoint(transform..multiply(leaderGlobal), .zero);
+
+    return MatrixUtils.transformPoint(
+      coordinateSpaceGlobalTransform..multiply(leaderGlobalTransform),
+      .zero,
+    );
   }
 
   @internal
   static Matrix4? tryGetTransformTo(
     RenderObject descendant, {
     RenderObject? ancestor,
+    Matrix4? matrix,
   }) {
     if (!descendant.attached) return null;
+
+    _ancestorsCache.clear();
     RenderObject? object;
-    final objects = <RenderObject>[
-      for (
-        object = descendant;
-        object != null && object != ancestor;
-        object = object.parent
-      )
-        object,
-    ];
+    for (
+      object = descendant;
+      object != null && object != ancestor;
+      object = object.parent
+    ) {
+      _ancestorsCache.add(object);
+    }
 
-    if (ancestor != null && object != ancestor) return null;
+    if (ancestor != null && object != ancestor) {
+      _ancestorsCache.clear();
+      return null;
+    }
 
-    final transform = Matrix4.identity();
-    for (var index = objects.length - 1; index > 0; index -= 1) {
-      final parent = objects[index];
-      final child = objects[index - 1];
+    for (final ancestor in _ancestorsCache) {
+      switch (ancestor) {
+        case RenderBox(hasSize: false):
+        case RenderSliver(geometry: null):
+          _ancestorsCache.clear();
+          return null;
+      }
+    }
+
+    final transform = (matrix?..setIdentity()) ?? Matrix4.identity();
+
+    for (var index = _ancestorsCache.length - 1; index > 0; index -= 1) {
+      final parent = _ancestorsCache[index];
+      final child = _ancestorsCache[index - 1];
+
       try {
         parent.applyPaintTransform(child, transform);
       } on Object {
         final childParentData = child.parentData;
-        if (childParentData is BoxParentData) {
-          final offset = childParentData.offset;
-          transform.translateByDouble(offset.dx, offset.dy, 0.0, 1.0);
+        switch (childParentData) {
+          case BoxParentData(:final offset):
+          case SliverPhysicalParentData(paintOffset: final offset):
+            transform.translateByDouble(offset.dx, offset.dy, 0.0, 1.0);
         }
       }
     }
+
+    _ancestorsCache.clear();
     return transform;
   }
 }
@@ -422,6 +481,7 @@ final class LeaderLayoutLinkHandle<
     assert(LayoutLinkHandle.debugAssertNotDisposed(this));
     _linkOrNull?._unregisterLeader(client);
     _linkOrNull = null;
+
     super.dispose();
   }
 }
@@ -463,23 +523,25 @@ final class FollowerLayoutLinkHandle<
   bool tryRedepthClient() {
     assert(LayoutLinkHandle.debugAssertNotDisposed(this));
 
-    final child = client.renderObject;
-    final deepestLeader = _link.leaders.fold<LeaderClientType?>(
-      null,
-      (result, leader) =>
-          leader.renderObject.attached &&
-              (result == null ||
-                  leader.renderObject.depth > result.renderObject.depth)
-          ? leader
-          : result,
-    );
+    LeaderClientType? deepestLeader;
+    for (final leader in _link.leaders) {
+      if (!leader.renderObject.attached) continue;
+
+      final maxDepth = deepestLeader?.renderObject.depth;
+      if (maxDepth == null || leader.renderObject.depth > maxDepth) {
+        deepestLeader = leader;
+      }
+    }
+
     if (deepestLeader != null &&
-        child.depth <= deepestLeader.renderObject.depth) {
+        client.renderObject.depth <= deepestLeader.renderObject.depth) {
       // ignore: invalid_use_of_protected_member
-      deepestLeader.renderObject.redepthChild(child);
+      deepestLeader.renderObject.redepthChild(client.renderObject);
+
       // Return because leader's render object calls this function recursively.
       return true;
     }
+
     return false;
   }
 
