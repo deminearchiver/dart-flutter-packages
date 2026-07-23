@@ -38,10 +38,7 @@ class _Experiment9ViewState extends State<Experiment9View> {
               mainAxisSize: .min,
               mainAxisAlignment: .center,
               crossAxisAlignment: .stretch,
-              children: [CustomScrollView(shrinkWrap: true, slivers: [
-
-                  ],
-                )],
+              children: [CustomScrollView(shrinkWrap: true, slivers: [])],
             ),
           ),
         ),
