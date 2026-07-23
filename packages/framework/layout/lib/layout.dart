@@ -1,6 +1,7 @@
 library;
 
 export 'src/layout/align.dart';
+export 'src/layout/aligned_flow.dart';
 export 'src/layout/compound_render_object_widget.dart';
 export 'src/layout/constraints.dart';
 export 'src/layout/flex.dart';
