@@ -352,6 +352,9 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "design_services".
   static const IconData design_services = IconData(0xf10a, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "device_swoosh_spark".
+  static const IconData device_swoosh_spark = IconData(0xffeef, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "diamond_shine".
   static const IconData diamond_shine = IconData(0xf2b2, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -877,6 +880,9 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "page_info".
   static const IconData page_info = IconData(0xf614, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "partner".
+  static const IconData partner = IconData(0xffed8, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "pause".
   static const IconData pause = IconData(0xe034, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -1335,6 +1341,9 @@ abstract final class LuminousSymbols {
 
   /// Luminous Symbols icon named "verified_user".
   static const IconData verified_user = IconData(0xe8e8, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "vibe_code_app".
+  static const IconData vibe_code_app = IconData(0xffed7, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "videocam".
   static const IconData videocam = IconData(0xe04b, fontFamily: fontFamily, fontPackage: fontPackage);

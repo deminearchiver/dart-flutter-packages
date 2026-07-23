@@ -25,7 +25,7 @@ enum _LuminousSymbolsEntry implements PipelineEntry {
   });
 
   String get inputPath =>
-      "third_party/fonts/luminoussymbols/LuminousSymbols[opsz,wght].woff2";
+      "third_party/fonts/luminoussymbols/LuminousSymbols[FILL,opsz,wght].woff2";
 
   @override
   Uri get input => _packageRoot.resolve(inputPath);
