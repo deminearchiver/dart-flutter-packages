@@ -1,3 +1,10 @@
+## Unreleased
+
+- Fixed mistakenly calculating WOFF2 uncompressed size for *some* non-WOFF2 fonts.
+  - The issue was causing absurdly large allocations before the decompression would fail.
+  - Adds a check for the [WOFF2 Header](https://www.w3.org/TR/WOFF2/#woff20Header) signature.
+  - Now, non-WOFF2 fonts fill never get passed to the WOFF2 native library.
+
 ## 0.5.1
 
 - Reduced unnecessary memory copies by utilizing Dart native finalizers.

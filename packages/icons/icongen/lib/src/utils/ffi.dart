@@ -8,6 +8,13 @@ import 'package:icongen/src/icongen.dart';
 import 'package:meta/meta.dart';
 import 'package:woff2_ffi/woff2_ffi_bindings.dart';
 
+bool _isWoff2(Uint8List bytes) =>
+    bytes.length >= 4 &&
+    bytes[0] == 0x77 &&
+    bytes[1] == 0x4F &&
+    bytes[2] == 0x46 &&
+    bytes[3] == 0x32;
+
 @internal
 (SubsetFormat, Pointer<hb_blob_t>)? tryCreateBlob(
   Uint8List bytes, {
@@ -23,38 +30,40 @@ import 'package:woff2_ffi/woff2_ffi_bindings.dart';
   Pointer<Void> userData = nullptr;
   hb_destroy_func_t destroyFunction = nullptr;
 
-  final uncompressedSize = woff2_compute_final_size(
-    nativeBytesPointer,
-    bytes.length,
-  );
-  if (uncompressedSize > 0) {
-    final uncompressedBytesPointer = adaptiveCalloc<Uint8>(uncompressedSize);
-    var uncompressedBytesLoose = true;
+  if (_isWoff2(bytes)) {
+    final uncompressedSize = woff2_compute_final_size(
+      nativeBytesPointer,
+      bytes.length,
+    );
+    if (uncompressedSize > 0) {
+      final uncompressedBytesPointer = adaptiveCalloc<Uint8>(uncompressedSize);
+      var uncompressedBytesLoose = true;
 
-    try {
-      final memoryOutPointer = woff2_memory_out_create(
-        uncompressedBytesPointer,
-        uncompressedSize,
-      );
-      arena.onReleaseAll(() => woff2_memory_out_destroy(memoryOutPointer));
+      try {
+        final memoryOutPointer = woff2_memory_out_create(
+          uncompressedBytesPointer,
+          uncompressedSize,
+        );
+        arena.onReleaseAll(() => woff2_memory_out_destroy(memoryOutPointer));
 
-      final status = woff2_convert_to_ttf(
-        nativeBytesPointer,
-        bytes.length,
-        memoryOutPointer.cast<woff2_out_t>(),
-      );
-      if (status) {
-        format = .woff2;
-        resolvedBytesPointer = uncompressedBytesPointer;
-        resolvedBytesLength = woff2_memory_out_size(memoryOutPointer);
+        final status = woff2_convert_to_ttf(
+          nativeBytesPointer,
+          bytes.length,
+          memoryOutPointer.cast<woff2_out_t>(),
+        );
+        if (status) {
+          format = .woff2;
+          resolvedBytesPointer = uncompressedBytesPointer;
+          resolvedBytesLength = woff2_memory_out_size(memoryOutPointer);
 
-        userData = uncompressedBytesPointer.cast<Void>();
-        destroyFunction = adaptiveCalloc.nativeFree;
-        uncompressedBytesLoose = false;
-      }
-    } finally {
-      if (uncompressedBytesLoose) {
-        adaptiveCalloc.free(uncompressedBytesPointer);
+          userData = uncompressedBytesPointer.cast<Void>();
+          destroyFunction = adaptiveCalloc.nativeFree;
+          uncompressedBytesLoose = false;
+        }
+      } finally {
+        if (uncompressedBytesLoose) {
+          adaptiveCalloc.free(uncompressedBytesPointer);
+        }
       }
     }
   }
