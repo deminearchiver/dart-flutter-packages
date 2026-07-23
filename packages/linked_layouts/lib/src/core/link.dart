@@ -98,8 +98,8 @@ abstract base class LayoutLink<
     // Leaders must be in a valid state.
     assert(debugAssertLeadersAreValid(leadersInternal));
 
-    // Force layout update in all followers.
-    _onLeaderLayout();
+    // Schedule followers layout.
+    _onLeaderCountChanged();
 
     // Return a finalizer handle.
     return LeaderLayoutLinkHandle._(link: this, leader: leader);
@@ -128,8 +128,8 @@ abstract base class LayoutLink<
     // Leaders must be in a valid state.
     assert(debugAssertLeadersAreValid(leadersInternal));
 
-    // Force layout update in all followers.
-    _onLeaderLayout();
+    // Schedule followers layout.
+    _onLeaderCountChanged();
   }
 
   final Set<FollowerClientType> _followers = HashSet();
@@ -189,7 +189,7 @@ abstract base class LayoutLink<
   void _frameCallback(Duration _) {
     if (_followers.isEmpty) return;
 
-    if (_checkForLeaderChanges(checkSizes: true, checkTransforms: true)) {
+    if (_checkForLeaderChanges(checkSizes: false, checkTransforms: true)) {
       _scheduleFollowersLayout();
     }
 
@@ -254,6 +254,7 @@ abstract base class LayoutLink<
 
   void _postFrameCallback(Duration _) {
     _isSchedulingPostFrameLayout = false;
+    if (_followers.isEmpty) return;
     _markFollowersNeedLayout();
   }
 
@@ -273,8 +274,12 @@ abstract base class LayoutLink<
   }
 
   void _onLeaderLayout() {
-    // TODO: implement leader debug tracking
-    _checkForLeaderChanges(checkSizes: true, checkTransforms: true);
+    if (_checkForLeaderChanges(checkSizes: true, checkTransforms: true)) {
+      _scheduleFollowersLayout();
+    }
+  }
+
+  void _onLeaderCountChanged() {
     _scheduleFollowersLayout();
   }
 
@@ -330,52 +335,126 @@ abstract base class LayoutLink<
     RenderObject? ancestor,
     Matrix4? matrix,
   }) {
-    if (!descendant.attached) return null;
+    try {
+      if (!descendant.attached) return null;
 
-    _ancestorsCache.clear();
-    RenderObject? object;
-    for (
-      object = descendant;
-      object != null && object != ancestor;
-      object = object.parent
-    ) {
-      _ancestorsCache.add(object);
-    }
-
-    if (ancestor != null && object != ancestor) {
-      _ancestorsCache.clear();
-      return null;
-    }
-
-    for (final ancestor in _ancestorsCache) {
-      switch (ancestor) {
-        case RenderBox(hasSize: false):
-        case RenderSliver(geometry: null):
-          _ancestorsCache.clear();
-          return null;
+      RenderObject? object = descendant;
+      while (object != null) {
+        if (!_hasLayout(object)) return null;
+        _ancestorsCache.add(object);
+        if (object == ancestor) break;
+        object = object.parent;
       }
-    }
 
-    final transform = (matrix?..setIdentity()) ?? Matrix4.identity();
+      if (ancestor != null && _ancestorsCache.last != ancestor) return null;
 
-    for (var index = _ancestorsCache.length - 1; index > 0; index -= 1) {
-      final parent = _ancestorsCache[index];
-      final child = _ancestorsCache[index - 1];
+      final transform = (matrix?..setIdentity()) ?? Matrix4.identity();
 
-      try {
-        parent.applyPaintTransform(child, transform);
-      } on Object {
-        final childParentData = child.parentData;
-        switch (childParentData) {
-          case BoxParentData(:final offset):
-          case SliverPhysicalParentData(paintOffset: final offset):
-            transform.translateByDouble(offset.dx, offset.dy, 0.0, 1.0);
+      for (var index = 1; index < _ancestorsCache.length; index++) {
+        final child = _ancestorsCache[index - 1];
+        final parent = _ancestorsCache[index];
+
+        var debugNeedsPaintTransform = true;
+        assert(() {
+          try {
+            parent.applyPaintTransform(child, transform);
+          } on Error {
+            _tryApplyFallbackTransform(transform, parent, child);
+          } finally {
+            debugNeedsPaintTransform = false;
+          }
+          return true;
+        }());
+
+        if (debugNeedsPaintTransform) {
+          parent.applyPaintTransform(child, transform);
         }
       }
+
+      return transform;
+    } finally {
+      _ancestorsCache.clear();
+    }
+  }
+
+  static bool _hasLayout(RenderObject renderObject) {
+    if (!renderObject.attached) return false;
+
+    var debugHasLayout = true;
+    assert(() {
+      debugHasLayout = renderObject.debugDisposed == false;
+      return true;
+    }());
+    if (!debugHasLayout) return false;
+
+    switch (renderObject) {
+      case RenderBox(hasSize: false):
+      case RenderSliver(geometry: null):
+        return false;
     }
 
-    _ancestorsCache.clear();
-    return transform;
+    return true;
+  }
+
+  static bool _tryApplyFallbackTransform(
+    Matrix4 transform,
+    RenderObject parent,
+    RenderObject child,
+  ) {
+    switch (child.parentData) {
+      case BoxParentData(:final offset):
+      case SliverPhysicalParentData(paintOffset: final offset):
+        transform.translateByDouble(offset.dx, offset.dy, 0.0, 1.0);
+        return true;
+      case SliverLogicalParentData(:final layoutOffset?)
+          when parent is RenderSliver:
+        final constraints = parent.constraints;
+        final axisDirection = applyGrowthDirectionToAxisDirection(
+          constraints.axisDirection,
+          constraints.growthDirection,
+        );
+        final delta = layoutOffset - constraints.scrollOffset;
+        switch (axisDirection) {
+          case .down:
+            transform.translateByDouble(0.0, delta, 0.0, 1.0);
+          case .right:
+            transform.translateByDouble(delta, 0.0, 0.0, 1.0);
+          case .up:
+            final height = _tryGetBoxDimension(child, .vertical) ?? 0.0;
+            transform.translateByDouble(0.0, -(delta + height), 0.0, 1.0);
+          case .left:
+            final width = _tryGetBoxDimension(child, .horizontal) ?? 0.0;
+            transform.translateByDouble(-(delta + width), 0.0, 0.0, 1.0);
+        }
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  static double? _tryGetBoxDimension(RenderObject child, Axis axis) {
+    if (child is! RenderBox || !child.hasSize) return null;
+
+    Size? size;
+
+    var debugHasSize = false;
+    assert(() {
+      try {
+        size = child.size;
+      } on Error {
+        size = null;
+      } finally {
+        debugHasSize = true;
+      }
+      return true;
+    }());
+
+    if (!debugHasSize) size = child.size;
+
+    return switch (axis) {
+      .horizontal => size?.width,
+      .vertical => size?.height,
+    };
   }
 }
 
