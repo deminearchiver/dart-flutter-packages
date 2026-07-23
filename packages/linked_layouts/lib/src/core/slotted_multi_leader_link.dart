@@ -19,13 +19,18 @@ base class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
       leader == null || leader.slot == slot,
       "Slotted leader changed slots.",
     );
-    assert(
-      leader == null ||
-          !leaders.any(
-            (otherLeader) => otherLeader != leader && otherLeader.slot == slot,
-          ),
-      "Found multiple leaders with the same slot $slot.",
-    );
+    assert(() {
+      if (leader != null) {
+        for (final otherLeader in leadersInternal) {
+          if (otherLeader != leader && otherLeader.slot == slot) {
+            throw FlutterError(
+              "Found multiple leaders with the same slot $slot.",
+            );
+          }
+        }
+      }
+      return true;
+    }());
     return leader;
   }
 

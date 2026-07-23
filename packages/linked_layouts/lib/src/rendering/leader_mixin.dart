@@ -49,6 +49,7 @@ mixin RenderLayoutLeaderMixin<
   void performLayout() {
     super.performLayout();
     layoutLinkHandle?.client.size = _lastSize = size;
+    layoutLinkHandle?.onClientDidLayout();
   }
 
   @mustCallSuper

@@ -189,7 +189,8 @@ abstract base class LayoutLink<
   void _frameCallback(Duration _) {
     if (_followers.isEmpty) return;
 
-    if (_checkForLeaderChanges(checkSizes: false, checkTransforms: true)) {
+    if (!_isSchedulingPostFrameLayout &&
+        _checkLeadersChanged(checkSizes: false, checkTransforms: true)) {
       _scheduleFollowersLayout();
     }
 
@@ -199,7 +200,50 @@ abstract base class LayoutLink<
   final Map<LeaderClientType, _LeaderLayout> _lastLeaderLayouts = HashMap();
   final _leaderTransformCache = Matrix4.zero();
 
-  bool _checkForLeaderChanges({
+  bool _checkLeaderChanged(
+    LeaderClientType leader, {
+    required bool checkSizes,
+    required bool checkTransforms,
+  }) {
+    assert(checkSizes || checkTransforms);
+
+    if (!leader.renderObject.attached) return false;
+
+    var changed = false;
+    final lastLayout = _lastLeaderLayouts[leader] ??= .new();
+
+    if (checkSizes) {
+      final size = leader.size;
+      if (lastLayout.size != size) {
+        lastLayout.size = size;
+        changed = true;
+      }
+    }
+
+    if (checkTransforms) {
+      final transform = tryGetTransformTo(
+        leader.renderObject,
+        result: _leaderTransformCache,
+      );
+      final lastTransform = lastLayout.transform;
+      if (transform != null) {
+        if (lastTransform == null || lastTransform != transform) {
+          lastLayout.transform = (lastTransform ?? .zero())
+            ..setFrom(_leaderTransformCache);
+          changed = true;
+        }
+      } else {
+        if (lastTransform != null) {
+          lastLayout.transform = null;
+          changed = true;
+        }
+      }
+    }
+
+    return changed;
+  }
+
+  bool _checkLeadersChanged({
     required bool checkSizes,
     required bool checkTransforms,
   }) {
@@ -208,36 +252,12 @@ abstract base class LayoutLink<
     var changed = false;
 
     for (final leader in _leaders) {
-      if (!leader.renderObject.attached) continue;
-
-      final lastLayout = _lastLeaderLayouts[leader] ??= .new();
-
-      if (checkSizes) {
-        final size = leader.size;
-        if (lastLayout.size != size) {
-          lastLayout.size = size;
-          changed = true;
-        }
-      }
-
-      if (checkTransforms) {
-        final transform = tryGetTransformTo(
-          leader.renderObject,
-          matrix: _leaderTransformCache,
-        );
-        final lastTransform = lastLayout.transform;
-        if (transform != null) {
-          if (lastTransform == null || lastTransform != transform) {
-            lastLayout.transform = (lastTransform ?? .zero())
-              ..setFrom(_leaderTransformCache);
-            changed = true;
-          }
-        } else {
-          if (lastTransform != null) {
-            lastLayout.transform = null;
-            changed = true;
-          }
-        }
+      if (_checkLeaderChanged(
+        leader,
+        checkSizes: checkSizes,
+        checkTransforms: checkTransforms,
+      )) {
+        changed = true;
       }
     }
 
@@ -261,21 +281,15 @@ abstract base class LayoutLink<
   void _scheduleFollowersLayout() {
     if (_followers.isEmpty) return;
 
-    switch (SchedulerBinding.instance.schedulerPhase) {
+    final schedulerBinding = SchedulerBinding.instance;
+    switch (schedulerBinding.schedulerPhase) {
       case .persistentCallbacks || .postFrameCallbacks:
         if (!_isSchedulingPostFrameLayout) {
           _isSchedulingPostFrameLayout = true;
-          SchedulerBinding.instance.addPostFrameCallback(_postFrameCallback);
+          schedulerBinding.addPostFrameCallback(_postFrameCallback);
         }
-
       default:
         _markFollowersNeedLayout();
-    }
-  }
-
-  void _onLeaderLayout() {
-    if (_checkForLeaderChanges(checkSizes: true, checkTransforms: true)) {
-      _scheduleFollowersLayout();
     }
   }
 
@@ -283,9 +297,15 @@ abstract base class LayoutLink<
     _scheduleFollowersLayout();
   }
 
-  void _onLeaderPaint() {
+  void _onLeaderLayout(LeaderClientType leader) {
+    if (_checkLeaderChanged(leader, checkSizes: true, checkTransforms: true)) {
+      _scheduleFollowersLayout();
+    }
+  }
+
+  void _onLeaderPaint(LeaderClientType leader) {
     // TODO: implement leader debug tracking
-    if (_checkForLeaderChanges(checkSizes: false, checkTransforms: true)) {
+    if (_checkLeaderChanged(leader, checkSizes: false, checkTransforms: true)) {
       _scheduleFollowersLayout();
     }
   }
@@ -297,50 +317,151 @@ abstract base class LayoutLink<
   }
 
   static final _ancestorsCache = <RenderObject>[];
+  static final _leaderAncestorsCache = <RenderObject>[];
+  static final _coordinateSpaceAncestorsCache = <RenderObject>[];
   static final _leaderGlobalTransformCache = Matrix4.zero();
   static final _coordinateSpaceGlobalTransformCache = Matrix4.zero();
+
+  static bool _fillAncestorsPath(
+    RenderObject descendant,
+    List<RenderObject> result,
+  ) {
+    result.clear();
+    RenderObject? object = descendant;
+    while (object != null) {
+      if (!object.attached) return false;
+      result.add(object);
+
+      final firstParent = object.parent;
+      if (firstParent == null) break;
+      if (!firstParent.attached) return false;
+      result.add(firstParent);
+
+      final secondParent = firstParent.parent;
+      if (secondParent == null) break;
+      if (!secondParent.attached) return false;
+      result.add(secondParent);
+
+      final thirdParent = secondParent.parent;
+      if (thirdParent == null) break;
+      if (!thirdParent.attached) return false;
+      result.add(thirdParent);
+
+      object = thirdParent.parent;
+    }
+    return result.isNotEmpty;
+  }
+
+  static void _tryApplyPaintTransform(
+    RenderObject parent,
+    RenderObject child,
+    Matrix4 transform,
+  ) {
+    try {
+      parent.applyPaintTransform(child, transform);
+    } on Error {
+      _tryApplyFallbackTransform(parent, child, transform);
+    }
+  }
 
   static Offset? getOffsetIn(
     RenderObject leader,
     RenderObject coordinateSpace,
   ) {
-    if (!leader.attached || !coordinateSpace.attached) return null;
+    try {
+      if (!leader.attached || !coordinateSpace.attached) return null;
+      if (leader == coordinateSpace) return Offset.zero;
 
-    final leaderGlobalTransform = tryGetTransformTo(
-      leader,
-      matrix: _leaderGlobalTransformCache,
-    );
-    final coordinateSpaceGlobalTransform = tryGetTransformTo(
-      coordinateSpace,
-      matrix: _coordinateSpaceGlobalTransformCache,
-    );
+      final leaderParent = leader.parent;
+      if (leaderParent == coordinateSpace) {
+        final leaderTransform = _leaderGlobalTransformCache..setIdentity();
+        _tryApplyPaintTransform(coordinateSpace, leader, leaderTransform);
+        return MatrixUtils.transformPoint(leaderTransform, .zero);
+      }
 
-    if (leaderGlobalTransform == null ||
-        coordinateSpaceGlobalTransform == null) {
-      return null;
+      final leaderGrandparent = leaderParent?.parent;
+      if (leaderGrandparent == coordinateSpace) {
+        final leaderTransform = _leaderGlobalTransformCache..setIdentity();
+
+        // Non-null if grandparent is non-null.
+        _tryApplyPaintTransform(leaderParent!, leader, leaderTransform);
+
+        _tryApplyPaintTransform(coordinateSpace, leaderParent, leaderTransform);
+
+        return MatrixUtils.transformPoint(leaderTransform, .zero);
+      }
+
+      if (!_fillAncestorsPath(leader, _leaderAncestorsCache) ||
+          !_fillAncestorsPath(
+            coordinateSpace,
+            _coordinateSpaceAncestorsCache,
+          )) {
+        return null;
+      }
+
+      if (_leaderAncestorsCache.last != _coordinateSpaceAncestorsCache.last) {
+        return null;
+      }
+
+      var leaderIndex = _leaderAncestorsCache.length - 1;
+      var coordinateSpaceIndex = _coordinateSpaceAncestorsCache.length - 1;
+
+      while (leaderIndex >= 0 &&
+          coordinateSpaceIndex >= 0 &&
+          _leaderAncestorsCache[leaderIndex] ==
+              _coordinateSpaceAncestorsCache[coordinateSpaceIndex]) {
+        leaderIndex--;
+        coordinateSpaceIndex--;
+      }
+
+      final leaderAncestorIndex = leaderIndex + 1;
+      final coordinateSpaceAncestorIndex = coordinateSpaceIndex + 1;
+
+      final leaderTransform = _leaderGlobalTransformCache..setIdentity();
+      for (var index = 1; index <= leaderAncestorIndex; index++) {
+        final child = _leaderAncestorsCache[index - 1];
+        final parent = _leaderAncestorsCache[index];
+        _tryApplyPaintTransform(parent, child, leaderTransform);
+      }
+
+      if (coordinateSpaceAncestorIndex == 0) {
+        return MatrixUtils.transformPoint(leaderTransform, .zero);
+      }
+
+      final coordinateTransform = _coordinateSpaceGlobalTransformCache
+        ..setIdentity();
+      for (var index = 1; index <= coordinateSpaceAncestorIndex; index++) {
+        final child = _coordinateSpaceAncestorsCache[index - 1];
+        final parent = _coordinateSpaceAncestorsCache[index];
+        _tryApplyPaintTransform(parent, child, coordinateTransform);
+      }
+
+      final determinant = coordinateTransform.invert();
+      if (determinant == 0.0) return null;
+
+      if (leaderAncestorIndex > 0) {
+        coordinateTransform.multiply(leaderTransform);
+      }
+
+      return MatrixUtils.transformPoint(coordinateTransform, .zero);
+    } finally {
+      _leaderAncestorsCache.clear();
+      _coordinateSpaceAncestorsCache.clear();
     }
-
-    final determinant = coordinateSpaceGlobalTransform.invert();
-    if (determinant == 0.0) return null;
-
-    return MatrixUtils.transformPoint(
-      coordinateSpaceGlobalTransform..multiply(leaderGlobalTransform),
-      .zero,
-    );
   }
 
   @internal
   static Matrix4? tryGetTransformTo(
     RenderObject descendant, {
     RenderObject? ancestor,
-    Matrix4? matrix,
+    Matrix4? result,
   }) {
     try {
       if (!descendant.attached) return null;
 
       RenderObject? object = descendant;
       while (object != null) {
-        if (!_hasLayout(object)) return null;
+        if (!object.attached) return null;
         _ancestorsCache.add(object);
         if (object == ancestor) break;
         object = object.parent;
@@ -348,27 +469,12 @@ abstract base class LayoutLink<
 
       if (ancestor != null && _ancestorsCache.last != ancestor) return null;
 
-      final transform = (matrix?..setIdentity()) ?? Matrix4.identity();
+      final transform = (result?..setIdentity()) ?? Matrix4.identity();
 
       for (var index = 1; index < _ancestorsCache.length; index++) {
         final child = _ancestorsCache[index - 1];
         final parent = _ancestorsCache[index];
-
-        var debugNeedsPaintTransform = true;
-        assert(() {
-          try {
-            parent.applyPaintTransform(child, transform);
-          } on Error {
-            _tryApplyFallbackTransform(transform, parent, child);
-          } finally {
-            debugNeedsPaintTransform = false;
-          }
-          return true;
-        }());
-
-        if (debugNeedsPaintTransform) {
-          parent.applyPaintTransform(child, transform);
-        }
+        _tryApplyPaintTransform(parent, child, transform);
       }
 
       return transform;
@@ -377,29 +483,10 @@ abstract base class LayoutLink<
     }
   }
 
-  static bool _hasLayout(RenderObject renderObject) {
-    if (!renderObject.attached) return false;
-
-    var debugHasLayout = true;
-    assert(() {
-      debugHasLayout = renderObject.debugDisposed == false;
-      return true;
-    }());
-    if (!debugHasLayout) return false;
-
-    switch (renderObject) {
-      case RenderBox(hasSize: false):
-      case RenderSliver(geometry: null):
-        return false;
-    }
-
-    return true;
-  }
-
   static bool _tryApplyFallbackTransform(
-    Matrix4 transform,
     RenderObject parent,
     RenderObject child,
+    Matrix4 transform,
   ) {
     switch (child.parentData) {
       case BoxParentData(:final offset):
@@ -536,7 +623,23 @@ final class LeaderLayoutLinkHandle<
   /// }
   /// ```
   void onClientNeedsLayout() {
-    _link._onLeaderLayout();
+    _link._onLeaderLayout(client);
+  }
+
+  /// Notify the connected [LayoutLink] that the client has performed layout.
+  ///
+  /// This must be called only from [RenderObject.performLayout].
+  ///
+  /// Example:
+  /// ```dart
+  /// @override
+  /// void performLayout() {
+  ///   size = _computeLayout(constraints);
+  ///   layoutLinkHandle?.onClientDidLayout();
+  /// }
+  /// ```
+  void onClientDidLayout() {
+    _link._onLeaderLayout(client);
   }
 
   /// Notify the connected [LayoutLink] that the client has performed a paint.
@@ -552,7 +655,7 @@ final class LeaderLayoutLinkHandle<
   /// }
   /// ```
   void onClientPaint() {
-    _link._onLeaderPaint();
+    _link._onLeaderPaint(client);
   }
 
   @override
