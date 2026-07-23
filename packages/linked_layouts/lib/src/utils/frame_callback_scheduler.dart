@@ -12,10 +12,17 @@ class FrameCallbackScheduler {
 
   int? _lastCallbackId;
 
+  bool _isExecutingCallback = false;
+
   void _callback(Duration timestamp) {
     _isScheduled = false;
     _lastCallbackId = null;
-    callback(timestamp);
+    _isExecutingCallback = true;
+    try {
+      callback(timestamp);
+    } finally {
+      _isExecutingCallback = false;
+    }
   }
 
   bool schedule({bool canSkip = false}) {
@@ -27,9 +34,7 @@ class FrameCallbackScheduler {
     _lastCallbackId = _scheduler.scheduleFrameCallback(
       _callback,
       scheduleNewFrame: false,
-      rescheduling:
-          _scheduler.schedulerPhase == .transientCallbacks &&
-          _lastCallbackId == null,
+      rescheduling: _isExecutingCallback,
     );
     return true;
   }
