@@ -12,6 +12,8 @@ import 'package:material_example/experiment8.dart' show Experiment8View;
 import 'package:material_example/experiment9.dart' show Experiment9View;
 import 'package:material_example/experiment10.dart' show Experiment10View;
 
+final _themeModeNotifier = ValueNotifier(ThemeMode.system);
+
 class App extends StatefulWidget {
   const App({super.key});
 
@@ -27,45 +29,51 @@ class _AppState extends State<App> {
     _buildTypefaceTheme(context),
   ];
 
-  List<SingleChildWidget> _buildColorThemes(BuildContext context) {
-    final Brightness brightness = switch (_themeMode) {
-      .system => MediaQuery.platformBrightnessOf(context),
-      .light => .light,
-      .dark => .dark,
-    };
+  SingleChildWidget _buildColorTheme(
+    BuildContext context,
+  ) => SingleChildBuilder(
+    builder: (_, child) => ValueListenableBuilder(
+      valueListenable: _themeModeNotifier,
+      builder: (_, themeMode, child) {
+        final Brightness brightness = switch (themeMode) {
+          .system => MediaQuery.platformBrightnessOf(context),
+          .light => .light,
+          .dark => .dark,
+        };
 
-    final highContrast = MediaQuery.highContrastOf(context);
-    final contrastLevel = highContrast ? 1.0 : 0.0;
+        final highContrast = MediaQuery.highContrastOf(context);
+        final contrastLevel = highContrast ? 1.0 : 0.0;
 
-    var colorTheme = ColorThemeData.fromSeed(
-      brightness: brightness,
-      contrastLevel: contrastLevel,
-      variant: _variant,
-      platform: _platform,
-      specVersion: _specVersion,
-    );
+        var colorTheme = ColorThemeData.fromSeed(
+          brightness: brightness,
+          contrastLevel: contrastLevel,
+          variant: _variant,
+          platform: _platform,
+          specVersion: _specVersion,
+        );
 
-    final dynamicColorScheme = DynamicColor.dynamicColorScheme(brightness);
-    colorTheme = colorTheme.maybeMerge(dynamicColorScheme?.toColorTheme());
+        final dynamicColorScheme = DynamicColor.dynamicColorScheme(brightness);
+        colorTheme = colorTheme.maybeMerge(dynamicColorScheme?.toColorTheme());
 
-    final staticColors = StaticColorsData.fallback(
-      brightness: brightness,
-      contrastLevel: contrastLevel,
-      variant: _variant,
-      platform: _platform,
-      specVersion: _specVersion,
-    );
+        final staticColors = StaticColorsData.fallback(
+          brightness: brightness,
+          contrastLevel: contrastLevel,
+          variant: _variant,
+          platform: _platform,
+          specVersion: _specVersion,
+        );
 
-    return [
-      ColorTheme.replaceWithData(data: colorTheme),
-      SingleChildBuilder(
-        builder: (context, child) => StaticColors(
-          data: staticColors,
-          child: child ?? const SizedBox.shrink(),
-        ),
-      ),
-    ];
-  }
+        return ColorTheme.replaceWithData(
+          data: colorTheme,
+          child: StaticColors(
+            data: staticColors,
+            child: child ?? const SizedBox.shrink(),
+          ),
+        );
+      },
+      child: child,
+    ),
+  );
 
   SingleChildWidget _buildSpringTheme(BuildContext context) =>
       const SpringTheme.replaceWithData(data: .defaultsExpressive());
@@ -74,7 +82,7 @@ class _AppState extends State<App> {
       TypescaleTheme.mergeWithData(data: _typography.typescale);
 
   List<SingleChildWidget> _buildSystemThemes(BuildContext context) => [
-    ..._buildColorThemes(context),
+    _buildColorTheme(context),
     _buildSpringTheme(context),
     _buildTypescaleTheme(context),
     // const MeasurementTheme.mergeWithData(data: .from(space100: 4.0)),
@@ -161,7 +169,6 @@ class _AppState extends State<App> {
     return _buildThemes(context, appBuilder);
   }
 
-  static const _themeMode = ThemeMode.system;
   static const _variant = DynamicSchemeVariant.vibrant;
   static const _platform = DynamicSchemePlatform.phone;
   static const _specVersion = DynamicSchemeSpecVersion.spec2026;
@@ -573,6 +580,53 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
                         opticalSize: 20.0,
                         size: 20.0,
                         color: colorTheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 6.0),
+            ValueListenableBuilder(
+              valueListenable: _themeModeNotifier,
+              builder: (context, themeMode, _) => Tooltip(
+                message: switch (themeMode) {
+                  .system => "System",
+                  .light => "Light",
+                  .dark => "Dark",
+                },
+                child: SizedTouchTarget(
+                  minimumSize: const .square(_kTapTargetSize),
+                  child: SizedBox.square(
+                    dimension: 32.0,
+                    child: Surface(
+                      clipBehavior: .antiAlias,
+                      shape: shapeTheme.applyCorner(
+                        corner: shapeTheme.cornerFull,
+                      ),
+                      color: colorTheme.surfaceContainerLow,
+                      child: InkWell(
+                        overlayColor: WidgetStateLayerColor(
+                          color: .all(colorTheme.onSurfaceVariant),
+                          opacity: stateTheme.asWidgetStateLayerOpacity,
+                        ),
+                        onTap: () =>
+                            _themeModeNotifier.value = switch (themeMode) {
+                              .system => .light,
+                              .light => .dark,
+                              .dark => .system,
+                            },
+                        child: Icon(
+                          switch (themeMode) {
+                            .system => MaterialSymbols.auto_mode_rounded,
+                            .light => MaterialSymbols.light_mode_rounded,
+                            .dark => MaterialSymbols.dark_mode_rounded,
+                          },
+                          fill: 1.0,
+                          opticalSize: 20.0,
+                          size: 20.0,
+                          color: colorTheme.onSurfaceVariant,
+                        ),
                       ),
                     ),
                   ),
