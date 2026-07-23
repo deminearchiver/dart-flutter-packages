@@ -1,4 +1,4 @@
-## Unreleased
+## 0.5.1
 
 - Added `onClientDidLayout()` method to `LeaderLayoutLinkHandle`.
   - Captures leader size and transform immediately upon completing layout.
