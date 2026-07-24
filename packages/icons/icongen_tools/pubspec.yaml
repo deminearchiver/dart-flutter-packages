@@ -10,7 +10,7 @@ environment:
   sdk: ^3.12.0
 
 dependencies:
-  icongen: ^0.5.1
+  icongen: ^0.5.2
   interact2: ^4.0.0
   logging: ^1.3.0
   meta: ^1.18.0
