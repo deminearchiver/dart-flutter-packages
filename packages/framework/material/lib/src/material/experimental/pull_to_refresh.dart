@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:flutter/scheduler.dart';
 import 'package:material/material_shapes.dart';
 import 'package:material/src/material/flutter.dart';
 
@@ -271,6 +272,7 @@ abstract class PullToRefreshController<
 
   var _farEdgeOverscroll = 0.0;
 
+  @protected
   double get farEdgeOverscroll => _farEdgeOverscroll;
 
   @protected
@@ -301,6 +303,23 @@ abstract class PullToRefreshController<
       onRefresh();
     } else {
       unawaited(animateToHidden());
+    }
+  }
+
+  @override
+  void notifyListeners() {
+    if (_isDisposed) return;
+    final schedulerBinding = SchedulerBinding.instance;
+    switch (schedulerBinding.schedulerPhase) {
+      // We check scheduler phase here because this method could be called
+      // during layout phase potentially (scroll physics).
+      case .persistentCallbacks:
+        schedulerBinding.addPostFrameCallback((_) {
+          if (_isDisposed) return;
+          super.notifyListeners();
+        });
+      default:
+        super.notifyListeners();
     }
   }
 
@@ -407,7 +426,9 @@ class _PullToRefreshDefaultScrollPhysics extends ScrollPhysics {
     if (!controller.enabled ||
         controller.isRefreshing ||
         controller.isAnimating) {
-      controller.farEdgeOverscroll = 0.0;
+      if (position.pixels < position.maxScrollExtent) {
+        controller.farEdgeOverscroll = 0.0;
+      }
       return _applyPhysicsToUserOffsetSuper(position, offset);
     }
     if (position.pixels < position.maxScrollExtent) {
@@ -469,7 +490,9 @@ class _PullToRefreshDefaultScrollPhysics extends ScrollPhysics {
     ScrollMetrics position,
     double velocity,
   ) {
-    controller.farEdgeOverscroll = 0.0;
+    if (position.pixels < position.maxScrollExtent) {
+      controller.farEdgeOverscroll = 0.0;
+    }
     if (controller.enabled &&
         !controller.isRefreshing &&
         !controller.isAnimating &&
