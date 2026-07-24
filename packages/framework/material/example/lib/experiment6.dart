@@ -76,398 +76,128 @@ class Experiment6View extends StatefulWidget {
 }
 
 class _Experiment6ViewState extends State<Experiment6View> {
-  var _customSwitchChecked = false;
-  final _selected = <int>{};
+  late ValueNotifier<Set<int>> _selected;
 
-  ListItemThemeDataPartial _listItemTheme1(BuildContext context) {
+  void _toggle(int index) {
+    final selected = _selected.value;
+    if (selected.contains(index)) {
+      selected.remove(index);
+    } else {
+      selected.add(index);
+    }
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    _selected.notifyListeners();
+  }
+
+  ListItemThemeDataPartial _listItemTheme1(
+    BuildContext context,
+    Set<int> selected,
+  ) {
     final colorTheme = ColorTheme.of(context);
     return .from(
       containerColor: .all(
-        _selected.contains(1)
+        selected.contains(1)
             ? colorTheme.secondaryContainer
             : colorTheme.surfaceContainerLow,
       ),
-      // containerColor: .resolveWith(
-      //   (states) => _selected.contains(1)
-      //       ? colorTheme.secondaryContainer
-      //       : colorTheme.surfaceContainerLow,
-      // ),
     );
   }
 
-  ListItemThemeDataPartial _listItemTheme2(BuildContext context) {
+  ListItemThemeDataPartial _listItemTheme2(
+    BuildContext context,
+    Set<int> selected,
+  ) {
     final colorTheme = ColorTheme.of(context);
     return .from(
       containerColor: .all(
-        _selected.contains(2) ? colorTheme.tertiaryContainer : null,
+        selected.contains(2) ? colorTheme.tertiaryContainer : null,
       ),
-      // containerColor: .resolveWith(
-      //   (states) => _selected.contains(2) ? colorTheme.tertiaryContainer : null,
-      // ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selected = .new({});
+  }
+
+  @override
+  void dispose() {
+    _selected.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final colorTheme = ColorTheme.of(context);
-    final elevationTheme = ElevationTheme.of(context);
-    final measurementTheme = MeasurementTheme.of(context);
-    final shapeTheme = ShapeTheme.of(context);
-    final stateTheme = StateTheme.of(context);
-    // .copyWith(hoverStateLayerOpacity: 0.32, pressedStateLayerOpacity: 0.32);
-    final typescaleTheme = TypescaleTheme.of(context);
 
-    // final focusInsetRingTheme = FocusInsetRingTheme.of(context);
-
-    // final listItemTheme = material_experimental.ListItemTheme.of(context);
-    // print(listItemTheme);
-
-    // Widget buildConnectedButtonGroupButton({
-    //   required ButtonSize size,
-    //   required ButtonShape shape,
-    //   required ConnectedButtonGroupColor color,
-    //   required bool isSelected,
-    //   required Widget child,
-    // }) {
-    //   late final unselectedContainerColor = switch (color) {
-    //     .filled => colorTheme.surfaceContainer,
-    //     .tonal => colorTheme.secondaryContainer,
-    //     .outlined => Colors.transparent,
-    //   };
-    //   late final selectedContainerColor = switch (color) {
-    //     .filled => colorTheme.primary,
-    //     .tonal => colorTheme.secondary,
-    //     .outlined => colorTheme.inverseSurface,
-    //   };
-    //   final containerColor = isSelected
-    //       ? selectedContainerColor
-    //       : unselectedContainerColor;
-    //   late final unselectedContentColor = switch (color) {
-    //     .filled => colorTheme.onSurfaceVariant,
-    //     .tonal => colorTheme.onSecondaryContainer,
-    //     .outlined => colorTheme.onSurfaceVariant,
-    //   };
-    //   late final selectedContentColor = switch (color) {
-    //     .filled => colorTheme.onPrimary,
-    //     .tonal => colorTheme.onSecondary,
-    //     .outlined => colorTheme.inverseOnSurface,
-    //   };
-    //   final contentColor = isSelected
-    //       ? selectedContentColor
-    //       : unselectedContentColor;
-    //   return Surface(
-    //     clipBehavior: .antiAlias,
-    //     color: containerColor,
-    //     child: child,
-    //   );
-    // }
     return Scaffold(
       backgroundColor: colorTheme.surfaceContainer,
-      // body: Align.center(child: _Layer1(child: _Layer2())),
       body: SafeArea(
         top: false,
         bottom: false,
-        child: CustomScrollView(
-          slivers: [
-            // SliverFillRemaining(
-            //   fillOverscroll: false,
-            //   hasScrollBody: false,
-            //   child: Flex.vertical(
-            //     mainAxisAlignment: .center,
-            //     children: [
-            //       // SizedBox.square(
-            //       //   dimension: 100.0,
-            //       //   child: SwitchTheme.mergeWithData(
-            //       //     // data: const .from(),
-            //       //     data: const .from(minTapTargetSize: .all(.square(100.0))),
-            //       //     child: Switch(
-            //       //       onCheckedChanged: (value) {},
-            //       //       checked: false,
-            //       //     ),
-            //       //   ),
-            //       // ),
-            //       // Switch(onCheckedChanged: (value) {}, checked: false),
-            //       // Wrap(
-            //       //   children: [
-            //       //     SizedBox.square(
-            //       //       dimension: 100.0,
-            //       //       child: Surface(
-            //       //         shape: shapeTheme.applyCorner(
-            //       //           corner: shapeTheme.cornerLarge,
-            //       //         ),
-            //       //         color: colorTheme.surface,
-            //       //         child: Align.center(
-            //       //           child: CustomSwitch(value: _customSwitchChecked),
-            //       //         ),
-            //       //       ),
-            //       //     ),
-            //       //     SizedBox.square(
-            //       //       dimension: 100.0,
-            //       //       child: Surface(
-            //       //         shape: shapeTheme.applyCorner(
-            //       //           corner: shapeTheme.cornerLarge,
-            //       //         ),
-            //       //         color: colorTheme.surface,
-            //       //         child: CustomSwitch(value: _customSwitchChecked),
-            //       //       ),
-            //       //     ),
-            //       //   ],
-            //       // ),
-            //       Wrap(
-            //         direction: .horizontal,
-            //         alignment: .center,
-            //         spacing: 12.0,
-            //         children: [
-            //           // SizedTouchTarget(
-            //           //   behavior: .overflow,
-            //           //   minimumSize: .square(48.0),
-            //           //   child: ConstrainedBox(
-            //           //     constraints: BoxConstraints(
-            //           //       minWidth: 48.0,
-            //           //       minHeight: 24.0,
-            //           //     ),
-            //           //     child: Surface(
-            //           //       clipBehavior: .antiAlias,
-            //           //       color: colorTheme.primary,
-            //           //       shape: shapeTheme.applyCorners(
-            //           //         corners: .all(shapeTheme.cornerSmall),
-            //           //       ),
-            //           //       child: InkWell(
-            //           //         overlayColor: WidgetStateLayerColor(
-            //           //           color: .all(colorTheme.onPrimary),
-            //           //           opacity: stateTheme.asWidgetStateLayerOpacity,
-            //           //         ),
-            //           //         onTap: () {},
-            //           //         child: Align.center(
-            //           //           widthFactor: 1.0,
-            //           //           heightFactor: 1.0,
-            //           //           child: Padding(
-            //           //             padding: .symmetric(
-            //           //               horizontal: measurementTheme.space100,
-            //           //               vertical: measurementTheme.space50,
-            //           //             ),
-            //           //             child: Flex.horizontal(
-            //           //               mainAxisSize: .min,
-            //           //               spacing: 4.0,
-            //           //               children: [
-            //           //                 Icon(
-            //           //                   MaterialSymbols.add_2_rounded,
-            //           //                   opticalSize: 24.0,
-            //           //                   size: 16.0,
-            //           //                   color: colorTheme.onPrimary,
-            //           //                 ),
-            //           //                 Flexible.loose(
-            //           //                   child: Text(
-            //           //                     "Option A",
-            //           //                     style: typescaleTheme.labelMedium
-            //           //                         .toTextStyle(
-            //           //                           color: colorTheme.onPrimary,
-            //           //                         ),
-            //           //                   ),
-            //           //                 ),
-            //           //               ],
-            //           //             ),
-            //           //           ),
-            //           //         ),
-            //           //       ),
-            //           //     ),
-            //           //   ),
-            //           // ),
-            //           SizedTouchTarget(
-            //             fit: .overflow,
-            //             minimumSize: const .square(48.0),
-            //             child: SizedBox(
-            //               width: 32.0,
-            //               height: 40.0,
-            //               child: Surface(
-            //                 clipBehavior: .antiAlias,
-            //                 color: colorTheme.primary,
-            //                 shape: shapeTheme.applyCorners(
-            //                   corners: .all(shapeTheme.cornerFull),
-            //                 ),
-            //                 child: InkWell(
-            //                   overlayColor: WidgetStateLayerColor(
-            //                     color: .all(colorTheme.onPrimary),
-            //                     opacity: stateTheme.asWidgetStateLayerOpacity,
-            //                   ),
-            //                   onTap: () {},
-            //                   child: Icon(
-            //                     MaterialSymbols.add_rounded,
-            //                     fill: 1.0,
-            //                     opticalSize: 24.0,
-            //                     size: 24.0,
-            //                     color: colorTheme.onPrimary,
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //           SizedTouchTarget(
-            //             fit: .overflow,
-            //             minimumSize: const .square(48.0),
-            //             child: SizedBox(
-            //               width: 32.0,
-            //               height: 40.0,
-            //               child: Surface(
-            //                 clipBehavior: .antiAlias,
-            //                 color: colorTheme.secondaryContainer,
-            //                 shape: shapeTheme.applyCorners(
-            //                   corners: .all(shapeTheme.cornerFull),
-            //                 ),
-            //                 child: InkWell(
-            //                   overlayColor: WidgetStateLayerColor(
-            //                     color: .all(colorTheme.onSecondaryContainer),
-            //                     opacity: stateTheme.asWidgetStateLayerOpacity,
-            //                   ),
-            //                   onTap: () {},
-            //                   child: Icon(
-            //                     MaterialSymbols.share_rounded,
-            //                     fill: 1.0,
-            //                     opticalSize: 24.0,
-            //                     size: 24.0,
-            //                     color: colorTheme.onSecondaryContainer,
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //           SizedTouchTarget(
-            //             fit: .overflow,
-            //             minimumSize: const .square(48.0),
-            //             child: SizedBox(
-            //               width: 32.0,
-            //               height: 40.0,
-            //               child: Surface(
-            //                 clipBehavior: .antiAlias,
-            //                 shape: shapeTheme.applyCorners(
-            //                   corners: .all(shapeTheme.cornerFull),
-            //                 ),
-            //                 child: InkWell(
-            //                   overlayColor: WidgetStateLayerColor(
-            //                     color: .all(colorTheme.onSurfaceVariant),
-            //                     opacity: stateTheme.asWidgetStateLayerOpacity,
-            //                   ),
-            //                   onTap: () {},
-            //                   child: Icon(
-            //                     MaterialSymbols.more_vert_rounded,
-            //                     fill: 1.0,
-            //                     opticalSize: 24.0,
-            //                     size: 24.0,
-            //                     color: colorTheme.onSurfaceVariant,
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            ListItemTheme.mergeWithCallback(
-              callback: _listItemTheme1,
-              // ListItemTheme.mergeWithData(
-              // data: .from(
-              //   containerColor: .all(
-              //     _selected.contains(2)
-              //         ? colorTheme.tertiaryContainer
-              //         : colorTheme.surface,
-              //   ),
-              // ),
-              child: ListItemTheme.mergeWithCallback(
-                callback: _listItemTheme2,
-                child: ColorTheme.mergeWithData(
-                  data: .from(),
-                  // data: .from(surfaceBright: Colors.red),
-                  child: SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const .symmetric(
-                        horizontal: 8.0,
-                        vertical: 64.0,
-                      ),
-                      child: Flex.vertical(
-                        // itemCount: 100,
-                        // separatorBuilder: (context, index) =>
-                        //     const SizedBox(height: 2.0),
-                        // itemBuilder: (context, index) {
-                        spacing: 2.0,
-                        children: List.generate(100, (index) {
-                          return ListItemContainer(
-                            isFirst: index == 0,
-                            isLast: index == 100 - 1,
-                            child: ListItemInteraction(
-                              onTap: () {
-                                if (_selected.contains(index)) {
-                                  setState(() {
-                                    _selected.remove(index);
-                                  });
-                                } else {
-                                  setState(() {
-                                    _selected.add(index);
-                                  });
-                                }
-                              },
-                              child: ListItemLayout(
-                                padding: .fromSTEB(16.0 - 4.0, 0.0, 16.0, 0.0),
-                                leadingPadding: const .symmetric(
-                                  vertical: 10.0 - (48.0 - 40.0) / 2.0,
+        child: ValueListenableBuilder<Set<int>>(
+          valueListenable: _selected,
+          builder: (context, selected, child) =>
+              // TODO: replace with tear-offs.
+              ListItemTheme.mergeWithCallback(
+                callback: (context) => _listItemTheme1(context, selected),
+                child: ListItemTheme.mergeWithCallback(
+                  callback: (context) => _listItemTheme2(context, selected),
+                  child: CustomScrollView(
+                    slivers: [
+                      ColorTheme.mergeWithData(
+                        data: const .from(),
+                        child: SliverPadding(
+                          padding: const .symmetric(
+                            horizontal: 8.0,
+                            vertical: 64.0,
+                          ),
+                          sliver: SliverList.separated(
+                            itemCount: 100,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 2.0),
+                            itemBuilder: (context, index) =>
+                                ValueListenableBuilder<Set<int>>(
+                                  valueListenable: _selected,
+                                  builder: (context, selected, child) {
+                                    final isSelected = selected.contains(index);
+                                    return ListItemContainer(
+                                      isFirst: index == 0,
+                                      isLast: index == 100 - 1,
+                                      child: ListItemInteraction(
+                                        onTap: () => _toggle(index),
+                                        child: ListItemLayout(
+                                          padding: const .fromSTEB(
+                                            16.0 - 4.0,
+                                            0.0,
+                                            16.0,
+                                            0.0,
+                                          ),
+                                          leadingPadding: const .symmetric(
+                                            vertical:
+                                                10.0 - (48.0 - 40.0) / 2.0,
+                                          ),
+                                          leading: ExcludeFocus(
+                                            child: Switch(
+                                              onCheckedChanged: (_) =>
+                                                  _toggle(index),
+                                              checked: isSelected,
+                                            ),
+                                          ),
+                                          headline: Text("Item ${index + 1}"),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                                leading: ExcludeFocus(
-                                  // child: Checkbox.bistate(
-                                  //   onCheckedChanged: (value) {
-                                  //     if (value) {
-                                  //       setState(() {
-                                  //         _selected.add(index);
-                                  //       });
-                                  //     } else {
-                                  //       setState(() {
-                                  //         _selected.remove(index);
-                                  //       });
-                                  //     }
-                                  //   },
-                                  //   checked: _selected.contains(index),
-                                  // ),
-                                  child: Switch(
-                                    onCheckedChanged: (value) {
-                                      if (value) {
-                                        setState(() {
-                                          _selected.add(index);
-                                        });
-                                      } else {
-                                        setState(() {
-                                          _selected.remove(index);
-                                        });
-                                      }
-                                    },
-                                    checked: _selected.contains(index),
-                                  ),
-                                  // child: RadioButton(
-                                  //   onTap: () {
-                                  //     if (_selected.contains(index)) {
-                                  //       setState(() {
-                                  //         _selected.remove(index);
-                                  //       });
-                                  //     } else {
-                                  //       setState(() {
-                                  //         _selected.add(index);
-                                  //       });
-                                  //     }
-                                  //   },
-                                  //   selected: _selected.contains(index),
-                                  // ),
-                                ),
-                                headline: Text("Item ${index + 1}"),
-                              ),
-                            ),
-                          );
-                        }),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),
-            ),
-          ],
         ),
       ),
     );
