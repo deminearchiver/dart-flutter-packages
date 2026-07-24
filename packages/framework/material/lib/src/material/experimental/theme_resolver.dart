@@ -164,31 +164,38 @@ typedef ConcreteDataCombineCallback<
   ConcreteType extends PartialType
 > = ConcreteType Function(ConcreteType fallback, PartialType? overrides);
 
+typedef _VerifyCallback = bool Function(BuildContext context);
+
 /// A snapshot capturing an [InheritedElement] at the moment a dependency on it
 /// was registered. It includes the element itself, its [InheritedWidget], and
 /// the aspect, if any, which was supplied when registering the dependency.
-extension type const _InheritedSnapshot._(
-  ({InheritedElement element, InheritedWidget widget, Object? aspect}) _
-) implements Object {
+final class _InheritedSnapshot {
   _InheritedSnapshot.fromElementAndWidget({
-    required InheritedElement element,
-    required InheritedWidget widget,
-    Object? aspect,
-  }) : assert(identical(widget, element.widget)),
-       _ = (element: element, widget: widget, aspect: aspect);
+    required this.element,
+    required this.widget,
+    this.aspect,
+    required this._verify,
+  });
 
-  _InheritedSnapshot.fromElement(InheritedElement element, {Object? aspect})
-    : assert(element.widget is InheritedWidget),
-      _ = (
-        element: element,
-        widget: element.widget as InheritedWidget,
-        aspect: aspect,
-      );
+  _InheritedSnapshot.fromElement(
+    this.element, {
+    this.aspect,
+    required this._verify,
+  }) : assert(element.widget is InheritedWidget),
+       widget = element.widget as InheritedWidget;
 
-  bool get isValid {
-    if (!_.element.mounted) return false;
-    final currentWidget = _.element.widget;
-    final cachedWidget = _.widget;
+  final InheritedElement element;
+  final InheritedWidget widget;
+  final Object? aspect;
+  final _VerifyCallback _verify;
+
+  bool verify(BuildContext context) {
+    if (!element.mounted) return false;
+
+    if (!_verify(context)) return false;
+
+    final currentWidget = element.widget;
+    final cachedWidget = widget;
     if (identical(currentWidget, cachedWidget)) return true;
     if (currentWidget is InheritedThemeResolverWidget &&
         cachedWidget is InheritedThemeResolverWidget) {
@@ -197,113 +204,82 @@ extension type const _InheritedSnapshot._(
     return currentWidget == cachedWidget;
   }
 
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
   void register(BuildContext context) {
-    context.dependOnInheritedElement(_.element, aspect: _.aspect);
+    context.dependOnInheritedElement(element, aspect: aspect);
   }
 }
 
 /// Stores the fully resolved, merged theme data and the complete tree of
 /// dependencies required to validate it.
-class _DependencyTree {
-  const _DependencyTree(this._local, {this._ancestor});
+final class _DependencyTree {
+  _DependencyTree(this.local, {this.ancestorSnapshot, this.ancestorTree});
 
-  final List<_InheritedSnapshot> _local;
+  final List<_InheritedSnapshot> local;
+  final _InheritedSnapshot? ancestorSnapshot;
+  final _DependencyTree? ancestorTree;
 
-  final _DependencyTree? _ancestor;
-
-  bool get isValid {
-    for (final snapshot in _local) {
-      if (!snapshot.isValid) return false;
+  bool verifyAll(BuildContext context) {
+    for (final snapshot in local) {
+      if (!snapshot.verify(context)) return false;
     }
-    return _ancestor?.isValid ?? true;
+    if (ancestorSnapshot case final ancestorSnapshot?
+        when !ancestorSnapshot.verify(context)) {
+      return false;
+    }
+    return ancestorTree?.verifyAll(context) ?? true;
   }
 
   void registerAll(BuildContext context) {
-    for (final snapshot in _local) {
+    for (final snapshot in local) {
       snapshot.register(context);
     }
-    _ancestor?.registerAll(context);
+    ancestorSnapshot?.register(context);
+    ancestorTree?.registerAll(context);
   }
 }
 
-extension type const _DependencyCacheEntry<PartialType extends Object?>._(
-  ({PartialType data, _DependencyTree dependencies}) _
-) implements Object {
-  const _DependencyCacheEntry(
-    PartialType data, {
-    required _DependencyTree dependencies,
-  }) : _ = (data: data, dependencies: dependencies);
+final class _DependencyCacheEntry<PartialType extends Object?> {
+  _DependencyCacheEntry(this.data, {required this.dependencies});
 
-  PartialType get data => _.data;
-
-  _DependencyTree get dependencies => _.dependencies;
+  final PartialType data;
+  final _DependencyTree dependencies;
 }
 
-typedef _MatcherVerifyCallback = bool Function(BuildContext context);
+final class _ResolutionCache<PartialType extends Object?> {
+  _ResolutionCache({required this.data, required this.dependencies});
 
-typedef _MatcherRegisterCallback = void Function(BuildContext context);
-
-extension type const _Matcher._(
-  ({_MatcherVerifyCallback verify, _MatcherRegisterCallback register}) _
-) {
-  const _Matcher({
-    required _MatcherVerifyCallback verify,
-    required _MatcherRegisterCallback register,
-  }) : _ = (verify: verify, register: register);
-
-  bool verify(BuildContext context) => _.verify(context);
-
-  void register(BuildContext context) => _.register(context);
-}
-
-extension type const _ResolutionCache<PartialType extends Object?>._(
-  ({
-    PartialType data,
-    List<_InheritedSnapshot> dependencies,
-    List<_Matcher> matchers,
-  })
-  _
-) implements Object {
-  const _ResolutionCache({
-    required PartialType data,
-    required List<_InheritedSnapshot> dependencies,
-    required List<_Matcher> matchers,
-  }) : _ = (data: data, dependencies: dependencies, matchers: matchers);
-
-  PartialType get data => _.data;
-
-  List<_InheritedSnapshot> get dependencies => _.dependencies;
+  final PartialType data;
+  final List<_InheritedSnapshot> dependencies;
 
   bool verifyAll(BuildContext context) {
-    for (final matcher in _.matchers) {
-      if (!matcher.verify(context)) return false;
+    for (final snapshot in dependencies) {
+      if (!snapshot.verify(context)) return false;
     }
     return true;
   }
 
   void registerAll(BuildContext context) {
-    for (final matcher in _.matchers) {
-      matcher.register(context);
+    for (final snapshot in dependencies) {
+      snapshot.register(context);
     }
   }
 }
 
 /// Data structure for fine-grained cache control. Stores three partial objects:
 /// base [fallback], applied [overrides], and the [merged] result.
-extension type const _MergeCache<PartialType extends Object?>._(
-  ({PartialType fallback, PartialType overrides, PartialType merged}) _
-) implements Object {
-  const _MergeCache({
-    required PartialType fallback,
-    required PartialType overrides,
-    required PartialType merged,
-  }) : _ = (fallback: fallback, overrides: overrides, merged: merged);
+final class _MergeCache<PartialType extends Object?> {
+  _MergeCache({
+    required this.fallback,
+    required this.overrides,
+    required this.merged,
+  });
 
-  PartialType get fallback => _.fallback;
-
-  PartialType get overrides => _.overrides;
-
-  PartialType get merged => _.merged;
+  final PartialType fallback;
+  final PartialType overrides;
+  final PartialType merged;
 }
 
 /// A proxy [BuildContext] that intercepts dependency registrations during
@@ -313,12 +289,9 @@ final class _ResolutionContext implements BuildContext {
 
   final BuildContext _context;
 
-  // TODO: implement resolution context recognition or remove this field
   final Element? _element;
 
   final _dependencies = <_InheritedSnapshot>[];
-
-  final _matchers = <_Matcher>[];
 
   @override
   Widget get widget => _context.widget;
@@ -343,35 +316,33 @@ final class _ResolutionContext implements BuildContext {
     InheritedElement ancestor, {
     Object? aspect,
   }) {
-    // Original result should be preserved.
     final widget = _context.dependOnInheritedElement(ancestor, aspect: aspect);
     assert(identical(ancestor.widget, widget));
-
-    // Update dependencies.
     _dependencies.add(
-      .fromElementAndWidget(element: ancestor, widget: widget, aspect: aspect),
-    );
-
-    // Add matcher.
-    _matchers.add(
-      .new(
+      .fromElementAndWidget(
+        element: ancestor,
+        widget: widget,
+        aspect: aspect,
         verify: (context) {
           if (!ancestor.mounted) return false;
-          final currentWidget = ancestor.widget;
-          final cachedWidget = widget;
-          if (identical(currentWidget, cachedWidget)) return true;
-          if (currentWidget is InheritedThemeResolverWidget &&
-              cachedWidget is InheritedThemeResolverWidget) {
-            return currentWidget.resolver == cachedWidget.resolver;
+          if (context is InheritedThemeResolverElement) {
+            if (context._inheritedElements[widget.runtimeType]
+                case final cachedAncestor?) {
+              return cachedAncestor == ancestor;
+            }
           }
-          return currentWidget == cachedWidget;
+          InheritedElement? element;
+          context.visitAncestorElements((other) {
+            if (other == ancestor) {
+              element = other as InheritedElement;
+              return false;
+            }
+            return true;
+          });
+          return element == ancestor;
         },
-        register: (context) =>
-            context.dependOnInheritedElement(ancestor, aspect: aspect),
       ),
     );
-
-    // Return original result.
     return widget;
   }
 
@@ -379,49 +350,26 @@ final class _ResolutionContext implements BuildContext {
   T? dependOnInheritedWidgetOfExactType<T extends InheritedWidget>({
     Object? aspect,
   }) {
-    // Original result should be preserved.
     final widget = _context.dependOnInheritedWidgetOfExactType<T>(
       aspect: aspect,
     );
     final ancestor = _context.getElementForInheritedWidgetOfExactType<T>();
     assert(identical(ancestor?.widget, widget));
-
     if (ancestor != null) {
       assert(widget != null);
-
-      // Update dependencies.
       _dependencies.add(
-        .fromElementAndWidget(
+        _InheritedSnapshot.fromElementAndWidget(
           element: ancestor,
           widget: widget!,
           aspect: aspect,
-        ),
-      );
-
-      // Add matcher.
-      _matchers.add(
-        .new(
           verify: (context) {
-            if (!ancestor.mounted) return false;
             final element = context
                 .getElementForInheritedWidgetOfExactType<T>();
-            if (element != ancestor) return false;
-            final currentWidget = element!.widget;
-            final cachedWidget = widget;
-            if (identical(currentWidget, cachedWidget)) return true;
-            if (currentWidget is InheritedThemeResolverWidget &&
-                cachedWidget is InheritedThemeResolverWidget) {
-              return currentWidget.resolver == cachedWidget.resolver;
-            }
-            return currentWidget == cachedWidget;
+            return element == ancestor;
           },
-          register: (context) =>
-              context.dependOnInheritedElement(ancestor, aspect: aspect),
         ),
       );
     }
-
-    // Return original result.
     return widget;
   }
 
@@ -485,24 +433,48 @@ final class _ResolutionContext implements BuildContext {
   DiagnosticsNode describeOwnershipChain(String name) =>
       _context.describeOwnershipChain(name);
 
-  static Element? _asElement(BuildContext context) => switch (context) {
-    _ResolutionContext(_element: final element) => element,
-    final Element element => element,
-    _ => null,
-  };
+  static Element? _asElement(BuildContext context) {
+    if (context is Element) return context;
+    if (context is _ResolutionContext) return context._element;
+    return null;
+  }
 }
 
-extension type const _ResolveResult<PartialType extends Object?>._(
-  ({PartialType data, _DependencyTree dependencies}) _
-) implements Object {
-  const _ResolveResult(
-    PartialType data, {
-    required _DependencyTree dependencies,
-  }) : _ = (data: data, dependencies: dependencies);
+final class _ResolveResult<PartialType extends Object?> {
+  _ResolveResult(this.data, {required this.dependencies});
 
-  PartialType get data => _.data;
+  final PartialType data;
+  final _DependencyTree dependencies;
+}
 
-  _DependencyTree get dependencies => _.dependencies;
+final class _Scope<
+  PartialType extends Object?,
+  WidgetType extends InheritedThemeResolverWidget<
+    PartialType,
+    WidgetType,
+    ElementType
+  >,
+  ElementType extends InheritedThemeResolverElement<
+    PartialType,
+    WidgetType,
+    ElementType
+  >
+>
+    extends InheritedWidget {
+  const _Scope({super.key, required this.element, required super.child});
+
+  final ElementType element;
+
+  @override
+  bool updateShouldNotify(
+    _Scope<PartialType, WidgetType, ElementType> oldWidget,
+  ) => element != oldWidget.element;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<ElementType>("element", element));
+  }
 }
 
 abstract class InheritedThemeResolverWidget<
@@ -600,18 +572,66 @@ base class InheritedThemeResolverElement<
   >
 >
     extends InheritedElement {
-  InheritedThemeResolverElement(WidgetType super.widget);
+  InheritedThemeResolverElement(WidgetType super.widget)
+    : assert(
+        widget.runtimeType == WidgetType,
+        "${widget.runtimeType} must be exactly $WidgetType.",
+      ) {
+    assert(
+      runtimeType == ElementType,
+      "$runtimeType must be exactly $ElementType.",
+    );
+  }
 
-  WidgetType get _widget => super.widget as WidgetType;
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  WidgetType get _widget {
+    final widget = this.widget;
+    assert(
+      widget.runtimeType == WidgetType,
+      "${widget.runtimeType} must be exactly $WidgetType.",
+    );
+    return widget as WidgetType;
+  }
 
-  // Dependency cache is only valid if no changes have occured since last
-  // rebuild.
+  PersistentHashMap<Type, InheritedElement> _inheritedElements = const .empty();
+
+  void _updateInheritanceMap() {
+    InheritedThemeResolverElement? parent;
+    visitAncestorElements((ancestor) {
+      if (ancestor is InheritedThemeResolverElement) {
+        parent = ancestor;
+        return false;
+      }
+
+      final scopeElement = ancestor
+          .getElementForInheritedWidgetOfExactType<
+            _Scope<PartialType, WidgetType, ElementType>
+          >();
+      final scopeWidget = scopeElement?.widget;
+      assert(
+        scopeWidget == null ||
+            scopeWidget.runtimeType ==
+                _Scope<PartialType, WidgetType, ElementType>,
+      );
+      if (scopeWidget != null) {
+        scopeWidget as _Scope<PartialType, WidgetType, ElementType>;
+        parent = scopeWidget.element;
+        return false;
+      }
+
+      return true;
+    });
+
+    final inheritedElements = parent?._inheritedElements ?? const .empty();
+    _inheritedElements = inheritedElements.put(WidgetType, this);
+  }
+
   var _dependencyCache = Expando<_DependencyCacheEntry<PartialType>>();
 
-  // Resolution cache stores the result of the last resolver invocation.
   _ResolutionCache<PartialType>? _resolutionCache;
 
-  // Merge cache is only used if the element has an ancestor of the same type.
   _MergeCache<PartialType>? _mergeCache;
 
   ElementType? _findAncestorElementOfSameType() {
@@ -627,46 +647,33 @@ base class InheritedThemeResolverElement<
   _ResolveResult<PartialType> _resolveOverridesIn(BuildContext context) {
     final element = _ResolutionContext._asElement(context);
 
-    // Dependency cache is the best possible case.
     final dependencyCached = element != null ? _dependencyCache[element] : null;
-    if (dependencyCached != null && dependencyCached.dependencies.isValid) {
-      // print("dependency cache hit");
-
+    if (dependencyCached != null &&
+        dependencyCached.dependencies.verifyAll(context)) {
       dependencyCached.dependencies.registerAll(context);
-
-      // Safe to return: cache invalidates when changing dependencies.
       return .new(
         dependencyCached.data,
         dependencies: dependencyCached.dependencies,
       );
     }
 
-    // print("dependency cache miss");
-
     final PartialType resolved;
     List<_InheritedSnapshot> localDependencies;
 
     if (_resolutionCache case final resolutionCached?
         when resolutionCached.verifyAll(context)) {
-      // print("resolution cache hit");
-
       resolved = resolutionCached.data;
       localDependencies = resolutionCached.dependencies;
       resolutionCached.registerAll(context);
     } else {
-      // print("resolution cache miss");
-
       final resolutionContext = _ResolutionContext(context);
       resolved = _widget.resolver.resolve(resolutionContext);
       localDependencies = resolutionContext._dependencies;
-      _resolutionCache = _ResolutionCache(
-        data: resolved,
-        dependencies: localDependencies,
-        matchers: resolutionContext._matchers,
-      );
+      _resolutionCache = .new(data: resolved, dependencies: localDependencies);
     }
 
     final PartialType result;
+    _InheritedSnapshot? ancestorSnapshot;
     _DependencyTree? ancestorTree;
 
     if (_widget.isConcrete(resolved)) {
@@ -677,10 +684,10 @@ base class InheritedThemeResolverElement<
         result = resolved;
       } else {
         context.dependOnInheritedElement(ancestorElement);
-        localDependencies = [
-          ...localDependencies,
-          .fromElement(ancestorElement),
-        ];
+        ancestorSnapshot = .fromElement(
+          ancestorElement,
+          verify: (_) => _findAncestorElementOfSameType() == ancestorElement,
+        );
 
         final PartialType ancestor;
         _ResolveResult(data: ancestor, dependencies: ancestorTree) =
@@ -689,12 +696,8 @@ base class InheritedThemeResolverElement<
         if (_mergeCache case final mergeCached?
             when _widget.equals(mergeCached.fallback, ancestor) &&
                 _widget.equals(mergeCached.overrides, resolved)) {
-          // print("merge cache hit");
-
           result = mergeCached.merged;
         } else {
-          // print("merge cache miss");
-
           result = _widget.merge(ancestor, resolved);
           _mergeCache = .new(
             fallback: ancestor,
@@ -707,7 +710,8 @@ base class InheritedThemeResolverElement<
 
     final localTree = _DependencyTree(
       localDependencies,
-      ancestor: ancestorTree,
+      ancestorSnapshot: ancestorSnapshot,
+      ancestorTree: ancestorTree,
     );
 
     if (element != null) {
@@ -717,12 +721,28 @@ base class InheritedThemeResolverElement<
     return .new(result, dependencies: localTree);
   }
 
+  void _invalidateCaches() {
+    _dependencyCache = .new();
+    _resolutionCache = null;
+    _mergeCache = null;
+  }
+
+  @override
+  void activate() {
+    super.activate();
+    _invalidateCaches();
+  }
+
+  @override
+  void unmount() {
+    _invalidateCaches();
+    super.unmount();
+  }
+
   @override
   void updated(covariant WidgetType oldWidget) {
     if (_widget.updateShouldNotify(oldWidget)) {
-      _dependencyCache = Expando();
-      _resolutionCache = null;
-      _mergeCache = null;
+      _invalidateCaches();
       // Super call chain explicitly inlined here to avoid unnecessary checks.
       notifyClients(oldWidget);
     }
@@ -730,9 +750,7 @@ base class InheritedThemeResolverElement<
 
   @override
   void didChangeDependencies() {
-    _dependencyCache = Expando();
-    _resolutionCache = null;
-    _mergeCache = null;
+    _invalidateCaches();
     super.didChangeDependencies();
     notifyClients(_widget);
   }
@@ -741,6 +759,15 @@ base class InheritedThemeResolverElement<
   void removeDependent(Element dependent) {
     _dependencyCache[dependent] = null;
     super.removeDependent(dependent);
+  }
+
+  @override
+  Widget build() {
+    _updateInheritanceMap();
+    return _Scope<PartialType, WidgetType, ElementType>(
+      element: this as ElementType,
+      child: super.build(),
+    );
   }
 
   @override
