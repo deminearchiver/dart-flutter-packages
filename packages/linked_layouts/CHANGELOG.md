@@ -1,13 +1,13 @@
-## Unreleased
+## 0.5.2
 
 - Added `LayoutLeaderClient.tryGetTransformIn()` and `LayoutLeaderClient.tryGetPositionIn()`.
-  - `LayoutLink.getTransformIn()` and `LayoutLink.getOffsetIn()` have been deprecated in favor of the new methods on `LayoutLeaderClient`. They will be removed in the next minor pre-release.
+  - `LayoutLink.getTransformIn()` and `LayoutLink.getOffsetIn()` have been deprecated in favor of the new methods on `LayoutLeaderClient`. They will be removed in the `0.6.0` minor pre-release.
 
 - Deprecated `LayoutLeaderClient.scale` getter in favor of `LayoutLeaderClient.tryGetTransformIn()` method.
   - Reverted `LayoutLeaderClient.scale` to use the old `RenderView` boundary logic, restoring behaviors broken in `0.5.1`.
   - The deprecated getter uses incorrect logic: attempts to get the leader's scale in global coordinate space.
   - Migrating to `LayoutLeaderClient.tryGetTransformIn()` is highly advised, because the replacement returns a full transform from the leader to the specified render object (e.g. follower), avoiding hacky workarounds (i.e. `RenderView` boundaries).
-  - `LayoutLeaderClient.scale` will be removed in the next minor pre-release.
+  - `LayoutLeaderClient.scale` will be removed in the `0.6.0` minor pre-release.
 
 - Fixed `LayoutLeaderClient.size` setter logic to handle detached render objects properly.
 
