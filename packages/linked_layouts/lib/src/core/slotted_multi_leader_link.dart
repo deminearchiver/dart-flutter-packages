@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/rendering.dart';
-import 'package:linked_layouts/linked_layouts.dart';
+import 'package:linked_layouts/src/linked_layouts.dart';
 
 base class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
     extends

@@ -1,6 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:linked_layouts/linked_layouts.dart';
+import 'package:linked_layouts/src/linked_layouts.dart';
 
 typedef AbstractLayoutLeaderClientFactory<
   LeaderClientType extends LayoutLeaderClient,

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
-import 'package:linked_layouts/linked_layouts.dart';
+import 'package:linked_layouts/src/linked_layouts.dart';
 
 mixin RenderLayoutLeaderMixin<
   LeaderClientType extends LayoutLeaderClient,

@@ -1,5 +1,5 @@
 import 'package:flutter/rendering.dart';
-import 'package:linked_layouts/linked_layouts.dart';
+import 'package:linked_layouts/src/linked_layouts.dart';
 
 mixin LayoutLinkClient<RenderObjectType extends RenderObject> {
   RenderObjectType get renderObject;
@@ -12,22 +12,44 @@ mixin LayoutLeaderClient<RenderObjectType extends RenderBox>
   Size? get size => renderObject.attached ? _size : null;
 
   set size(Size? value) {
-    if (renderObject.attached) _size = value;
+    if (!renderObject.attached) value = null;
+    if (_size == value) return;
+    _size = value;
   }
 
+  final _scaleMatrix = Matrix4.identity();
+
+  @Deprecated("Use tryGetTransformIn instead.")
   Size? get scale {
     if (!renderObject.attached) return null;
-    final transform = LayoutLink.tryGetTransformTo(renderObject);
+    RenderObject? ancestor = renderObject;
+    while (ancestor?.parent != null && ancestor!.parent is! RenderView) {
+      ancestor = ancestor.parent;
+    }
+    final transform = RenderObjectTransformHelper.tryGetTransformTo(
+      renderObject,
+      ancestor: ancestor,
+      result: _scaleMatrix,
+    );
     if (transform == null) return null;
     // TODO: perspective transform (inline calculations from Matrix4)
     final matrix = transform.storage;
     return Size(matrix[0], matrix[5]);
-    // Initial calculation:
-    // return Size(
-    //   transform.transform3(.new(1, 0, 0)).x - transform.transform3(.zero()).x,
-    //   transform.transform3(.new(0, 1, 0)).y - transform.transform3(.zero()).y,
-    // );
   }
+
+  Matrix4? tryGetTransformIn(RenderObject other, {Matrix4? matrix}) =>
+      RenderObjectTransformHelper.tryGetTransformIn(
+        renderObject,
+        other,
+        matrix: matrix,
+      );
+
+  Offset? tryGetPositionIn(RenderObject other, {Matrix4? matrix}) =>
+      RenderObjectTransformHelper.tryGetPositionIn(
+        renderObject,
+        other,
+        matrix: matrix,
+      );
 }
 
 mixin SlottedLayoutLeaderClient<

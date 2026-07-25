@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:linked_layouts/linked_layouts.dart';
+import 'package:linked_layouts/src/linked_layouts.dart';
 
 class CustomLayoutLeader<
   LeaderClientType extends LayoutLeaderClient,

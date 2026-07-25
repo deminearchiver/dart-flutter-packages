@@ -1,4 +1,4 @@
-import 'package:linked_layouts/linked_layouts.dart';
+import 'package:linked_layouts/src/linked_layouts.dart';
 
 base class SingleLeaderLayoutLink<
   LeaderClientType extends LayoutLeaderClient,

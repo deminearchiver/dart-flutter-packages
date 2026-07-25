@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:linked_layouts/linked_layouts.dart';
+import 'package:linked_layouts/src/linked_layouts.dart';
 
 class _LeaderLayout {
   _LeaderLayout({this.size, this.transform});
@@ -221,7 +221,7 @@ abstract base class LayoutLink<
     }
 
     if (checkTransforms) {
-      final transform = tryGetTransformTo(
+      final transform = RenderObjectTransformHelper.tryGetTransformTo(
         leader.renderObject,
         result: _leaderTransformCache,
       );
@@ -316,233 +316,20 @@ abstract base class LayoutLink<
     return true;
   }
 
-  static final _ancestorsCache = <RenderObject>[];
-  static final _leaderAncestorsCache = <RenderObject>[];
-  static final _coordinateSpaceAncestorsCache = <RenderObject>[];
-  static final _leaderGlobalTransformCache = Matrix4.zero();
-  static final _coordinateSpaceGlobalTransformCache = Matrix4.zero();
-
-  static bool _fillAncestorsPath(
-    RenderObject descendant,
-    List<RenderObject> result,
-  ) {
-    result.clear();
-    RenderObject? object = descendant;
-    while (object != null) {
-      if (!object.attached) return false;
-      result.add(object);
-
-      final firstParent = object.parent;
-      if (firstParent == null) break;
-      if (!firstParent.attached) return false;
-      result.add(firstParent);
-
-      final secondParent = firstParent.parent;
-      if (secondParent == null) break;
-      if (!secondParent.attached) return false;
-      result.add(secondParent);
-
-      final thirdParent = secondParent.parent;
-      if (thirdParent == null) break;
-      if (!thirdParent.attached) return false;
-      result.add(thirdParent);
-
-      object = thirdParent.parent;
-    }
-    return result.isNotEmpty;
-  }
-
-  static void _tryApplyPaintTransform(
-    RenderObject parent,
-    RenderObject child,
-    Matrix4 transform,
-  ) {
-    try {
-      parent.applyPaintTransform(child, transform);
-    } on Error {
-      _tryApplyFallbackTransform(parent, child, transform);
-    }
-  }
-
-  static Offset? getOffsetIn(
-    RenderObject leader,
-    RenderObject coordinateSpace,
-  ) {
-    try {
-      if (!leader.attached || !coordinateSpace.attached) return null;
-      if (leader == coordinateSpace) return Offset.zero;
-
-      final leaderParent = leader.parent;
-      if (leaderParent == coordinateSpace) {
-        final leaderTransform = _leaderGlobalTransformCache..setIdentity();
-        _tryApplyPaintTransform(coordinateSpace, leader, leaderTransform);
-        return MatrixUtils.transformPoint(leaderTransform, .zero);
-      }
-
-      final leaderGrandparent = leaderParent?.parent;
-      if (leaderGrandparent == coordinateSpace) {
-        final leaderTransform = _leaderGlobalTransformCache..setIdentity();
-
-        // Non-null if grandparent is non-null.
-        _tryApplyPaintTransform(leaderParent!, leader, leaderTransform);
-
-        _tryApplyPaintTransform(coordinateSpace, leaderParent, leaderTransform);
-
-        return MatrixUtils.transformPoint(leaderTransform, .zero);
-      }
-
-      if (!_fillAncestorsPath(leader, _leaderAncestorsCache) ||
-          !_fillAncestorsPath(
-            coordinateSpace,
-            _coordinateSpaceAncestorsCache,
-          )) {
-        return null;
-      }
-
-      if (_leaderAncestorsCache.last != _coordinateSpaceAncestorsCache.last) {
-        return null;
-      }
-
-      var leaderIndex = _leaderAncestorsCache.length - 1;
-      var coordinateSpaceIndex = _coordinateSpaceAncestorsCache.length - 1;
-
-      while (leaderIndex >= 0 &&
-          coordinateSpaceIndex >= 0 &&
-          _leaderAncestorsCache[leaderIndex] ==
-              _coordinateSpaceAncestorsCache[coordinateSpaceIndex]) {
-        leaderIndex--;
-        coordinateSpaceIndex--;
-      }
-
-      final leaderAncestorIndex = leaderIndex + 1;
-      final coordinateSpaceAncestorIndex = coordinateSpaceIndex + 1;
-
-      final leaderTransform = _leaderGlobalTransformCache..setIdentity();
-      for (var index = 1; index <= leaderAncestorIndex; index++) {
-        final child = _leaderAncestorsCache[index - 1];
-        final parent = _leaderAncestorsCache[index];
-        _tryApplyPaintTransform(parent, child, leaderTransform);
-      }
-
-      if (coordinateSpaceAncestorIndex == 0) {
-        return MatrixUtils.transformPoint(leaderTransform, .zero);
-      }
-
-      final coordinateTransform = _coordinateSpaceGlobalTransformCache
-        ..setIdentity();
-      for (var index = 1; index <= coordinateSpaceAncestorIndex; index++) {
-        final child = _coordinateSpaceAncestorsCache[index - 1];
-        final parent = _coordinateSpaceAncestorsCache[index];
-        _tryApplyPaintTransform(parent, child, coordinateTransform);
-      }
-
-      final determinant = coordinateTransform.invert();
-      if (determinant == 0.0) return null;
-
-      if (leaderAncestorIndex > 0) {
-        coordinateTransform.multiply(leaderTransform);
-      }
-
-      return MatrixUtils.transformPoint(coordinateTransform, .zero);
-    } finally {
-      _leaderAncestorsCache.clear();
-      _coordinateSpaceAncestorsCache.clear();
-    }
-  }
-
-  @internal
-  static Matrix4? tryGetTransformTo(
-    RenderObject descendant, {
-    RenderObject? ancestor,
+  @Deprecated("Use LayoutLeaderClient.transformIn() instead.")
+  static Matrix4? getTransformIn(
+    RenderObject target,
+    RenderObject other, {
     Matrix4? result,
-  }) {
-    try {
-      if (!descendant.attached) return null;
+  }) => RenderObjectTransformHelper.tryGetTransformIn(
+    target,
+    other,
+    matrix: result,
+  );
 
-      RenderObject? object = descendant;
-      while (object != null) {
-        if (!object.attached) return null;
-        _ancestorsCache.add(object);
-        if (object == ancestor) break;
-        object = object.parent;
-      }
-
-      if (ancestor != null && _ancestorsCache.last != ancestor) return null;
-
-      final transform = (result?..setIdentity()) ?? Matrix4.identity();
-
-      for (var index = 1; index < _ancestorsCache.length; index++) {
-        final child = _ancestorsCache[index - 1];
-        final parent = _ancestorsCache[index];
-        _tryApplyPaintTransform(parent, child, transform);
-      }
-
-      return transform;
-    } finally {
-      _ancestorsCache.clear();
-    }
-  }
-
-  static bool _tryApplyFallbackTransform(
-    RenderObject parent,
-    RenderObject child,
-    Matrix4 transform,
-  ) {
-    switch (child.parentData) {
-      case BoxParentData(:final offset):
-      case SliverPhysicalParentData(paintOffset: final offset):
-        transform.translateByDouble(offset.dx, offset.dy, 0.0, 1.0);
-        return true;
-      case SliverLogicalParentData(:final layoutOffset?)
-          when parent is RenderSliver:
-        final constraints = parent.constraints;
-        final axisDirection = applyGrowthDirectionToAxisDirection(
-          constraints.axisDirection,
-          constraints.growthDirection,
-        );
-        final delta = layoutOffset - constraints.scrollOffset;
-        switch (axisDirection) {
-          case .down:
-            transform.translateByDouble(0.0, delta, 0.0, 1.0);
-          case .right:
-            transform.translateByDouble(delta, 0.0, 0.0, 1.0);
-          case .up:
-            final height = _tryGetBoxDimension(child, .vertical) ?? 0.0;
-            transform.translateByDouble(0.0, -(delta + height), 0.0, 1.0);
-          case .left:
-            final width = _tryGetBoxDimension(child, .horizontal) ?? 0.0;
-            transform.translateByDouble(-(delta + width), 0.0, 0.0, 1.0);
-        }
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  static double? _tryGetBoxDimension(RenderObject child, Axis axis) {
-    if (child is! RenderBox || !child.hasSize) return null;
-
-    Size? size;
-
-    var debugHasSize = false;
-    assert(() {
-      try {
-        size = child.size;
-      } on Error {
-        size = null;
-      } finally {
-        debugHasSize = true;
-      }
-      return true;
-    }());
-
-    if (!debugHasSize) size = child.size;
-
-    return switch (axis) {
-      .horizontal => size?.width,
-      .vertical => size?.height,
-    };
-  }
+  @Deprecated("Use LayoutLeaderClient.positionIn() instead.")
+  static Offset? getOffsetIn(RenderObject target, RenderObject other) =>
+      RenderObjectTransformHelper.tryGetPositionIn(target, other);
 }
 
 sealed class LayoutLinkHandle<LayoutClientType extends LayoutLinkClient> {

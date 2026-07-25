@@ -103,7 +103,7 @@ class _RenderSearchViewLayout extends RenderShiftedBox
         child?.layout(BoxConstraints.tight(size), parentUsesSize: false);
       }
 
-      final leaderOffset = LayoutLink.getOffsetIn(leader.renderObject, this);
+      final leaderOffset = leader.tryGetPositionIn(this);
       if (leaderOffset != null) {
         (child?.parentData as BoxParentData?)?.offset = leaderOffset;
       }

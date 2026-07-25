@@ -204,18 +204,17 @@ class _RenderSearchViewLayout extends RenderBox
 
     if (searchBarLeader != null) {
       if (searchBarLeader.size case final searchBarSize?) {
-        final searchBarScale = searchBarLeader.scale ?? const Size(1.0, 1.0);
-        beginSearchBarSize = Size(
-          searchBarSize.width * searchBarScale.width,
-          searchBarSize.height * searchBarScale.height,
+        final searchBarLeaderTransform = searchBarLeader.tryGetTransformIn(
+          this,
         );
-      }
-      final leaderOffset = LayoutLink.getOffsetIn(
-        searchBarLeader.renderObject,
-        this,
-      );
-      if (leaderOffset != null) {
-        beginSearchBarOffset = leaderOffset;
+        if (searchBarLeaderTransform != null) {
+          final searchBarRect = MatrixUtils.transformRect(
+            searchBarLeaderTransform,
+            Offset.zero & searchBarSize,
+          );
+          beginSearchBarOffset = searchBarRect.topLeft;
+          beginSearchBarSize = searchBarRect.size;
+        }
       }
     }
 
@@ -243,18 +242,15 @@ class _RenderSearchViewLayout extends RenderBox
 
     if (appBarLeader != null) {
       if (appBarLeader.size case final appBarSize?) {
-        final appBarScale = appBarLeader.scale ?? const Size(1.0, 1.0);
-        beginAppBarSize = Size(
-          appBarSize.width * appBarScale.width,
-          appBarSize.height * appBarScale.height,
-        );
-      }
-      final appBarOffset = LayoutLink.getOffsetIn(
-        appBarLeader.renderObject,
-        this,
-      );
-      if (appBarOffset != null) {
-        beginAppBarOffset = appBarOffset;
+        final appBarLeaderTransform = appBarLeader.tryGetTransformIn(this);
+        if (appBarLeaderTransform != null) {
+          final appBarRect = MatrixUtils.transformRect(
+            appBarLeaderTransform,
+            Offset.zero & appBarSize,
+          );
+          beginAppBarOffset = appBarRect.topLeft;
+          beginAppBarSize = appBarRect.size;
+        }
       }
     }
 
