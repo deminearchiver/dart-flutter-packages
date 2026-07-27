@@ -1,4 +1,4 @@
-## Unreleased
+## 0.6.0
 
 This release contains a major refactor of the "layout clients" API surface. This is the biggest breaking change in this release.
 
