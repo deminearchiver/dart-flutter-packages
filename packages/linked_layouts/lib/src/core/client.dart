@@ -17,26 +17,6 @@ mixin LayoutLeaderClient<RenderObjectType extends RenderBox>
     _size = value;
   }
 
-  final _scaleMatrix = Matrix4.identity();
-
-  @Deprecated("Use tryGetTransformIn instead.")
-  Size? get scale {
-    if (!renderObject.attached) return null;
-    RenderObject? ancestor = renderObject;
-    while (ancestor?.parent != null && ancestor!.parent is! RenderView) {
-      ancestor = ancestor.parent;
-    }
-    final transform = RenderObjectTransformHelper.tryGetTransformTo(
-      renderObject,
-      ancestor: ancestor,
-      result: _scaleMatrix,
-    );
-    if (transform == null) return null;
-    // TODO: perspective transform (inline calculations from Matrix4)
-    final matrix = transform.storage;
-    return Size(matrix[0], matrix[5]);
-  }
-
   Matrix4? tryGetTransformIn(RenderObject other, {Matrix4? matrix}) =>
       RenderObjectTransformHelper.tryGetTransformIn(
         renderObject,

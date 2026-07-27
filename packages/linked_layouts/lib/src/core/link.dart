@@ -315,21 +315,6 @@ abstract base class LayoutLink<
     assert(debugAssertLeadersAreValid(leadersInternal));
     return true;
   }
-
-  @Deprecated("Use LayoutLeaderClient.transformIn() instead.")
-  static Matrix4? getTransformIn(
-    RenderObject target,
-    RenderObject other, {
-    Matrix4? result,
-  }) => RenderObjectTransformHelper.tryGetTransformIn(
-    target,
-    other,
-    matrix: result,
-  );
-
-  @Deprecated("Use LayoutLeaderClient.positionIn() instead.")
-  static Offset? getOffsetIn(RenderObject target, RenderObject other) =>
-      RenderObjectTransformHelper.tryGetPositionIn(target, other);
 }
 
 sealed class LayoutLinkHandle<LayoutClientType extends LayoutLinkClient> {

@@ -1,3 +1,10 @@
+## Unreleased
+
+- `LayoutLink.getTransformIn`, `LayoutLink.getOffsetIn` and `LayoutLeaderClient.scale` deprecated elements have been removed.
+  - Please use `LayoutLeaderClient.tryGetTransformIn()` or `LayoutLeaderClient.tryGetPositionIn()` instead.
+
+- Minor internal changes.
+
 ## 0.5.4
 
 - Improved fallback `RenderBox` size algorithm.

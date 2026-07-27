@@ -356,11 +356,7 @@ abstract final class RenderObjectTransformHelper {
       for (var index = 1; index < _ancestorsCache.length; index++) {
         final child = _ancestorsCache[index - 1];
         final parent = _ancestorsCache[index];
-        RenderObjectTransformHelper.applyPaintTransformOr(
-          parent,
-          child,
-          transform,
-        );
+        applyPaintTransformOr(parent, child, transform);
       }
 
       return transform;
