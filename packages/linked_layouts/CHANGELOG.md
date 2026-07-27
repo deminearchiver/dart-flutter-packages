@@ -1,3 +1,9 @@
+## Unreleased
+
+- Fixed fallback paint transform failing to apply because of method renames (stupid mistake).
+  - Complex usecases, such as `FractionTranslation` (`RenderFractionalTranslation`) between leader and follower (e.g. in page routes), should now work properly again.
+  - Please mind that fallback paint transform was never able to account for all usecases, such as using a `Transform` (`RenderTransform`) widget with alignment applied, or any other render objects that attempt to access `RenderBox.size` in `RenderObject.applyPaintTransform()` without modifying `RenderObject.parentData` of their child (children). This issue is unlikely to be solved in the near future.
+
 ## 0.5.2
 
 - Added `LayoutLeaderClient.tryGetTransformIn()` and `LayoutLeaderClient.tryGetPositionIn()`.

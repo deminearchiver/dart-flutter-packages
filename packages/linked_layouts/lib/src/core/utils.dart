@@ -149,14 +149,14 @@ abstract final class RenderObjectTransformHelper {
     // We do some loop unrolling here.
     final targetParent = target.parent;
     if (targetParent == other) {
-      tryApplyPaintTransform(other, target, transform);
+      applyPaintTransformOr(other, target, transform);
       return transform;
     }
     final targetGrandparent = targetParent?.parent;
     if (targetGrandparent == other) {
       // Non-null if grandparent is non-null.
-      tryApplyPaintTransform(targetParent!, target, transform);
-      tryApplyPaintTransform(other, targetParent, transform);
+      applyPaintTransformOr(targetParent!, target, transform);
+      applyPaintTransformOr(other, targetParent, transform);
       return transform;
     }
 
@@ -188,7 +188,7 @@ abstract final class RenderObjectTransformHelper {
       for (var index = 1; index <= targetAncestorIndex; index++) {
         final child = _targetAncestorsCache[index - 1];
         final parent = _targetAncestorsCache[index];
-        tryApplyPaintTransform(parent, child, targetGlobalTransform);
+        applyPaintTransformOr(parent, child, targetGlobalTransform);
       }
 
       if (otherAncestorIndex == 0) {
@@ -200,7 +200,7 @@ abstract final class RenderObjectTransformHelper {
       for (var index = 1; index <= otherAncestorIndex; index++) {
         final child = _otherAncestorsCache[index - 1];
         final parent = _otherAncestorsCache[index];
-        tryApplyPaintTransform(parent, child, otherGlobalTransform);
+        applyPaintTransformOr(parent, child, otherGlobalTransform);
       }
 
       final determinant = otherGlobalTransform.invert();
