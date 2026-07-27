@@ -79,59 +79,162 @@ abstract final class RenderObjectTransformHelper {
     RenderObject child,
     Matrix4 transform,
   ) {
-    switch (child.parentData) {
-      case BoxParentData(:final offset):
-      case SliverPhysicalParentData(paintOffset: final offset):
-        transform.translateByDouble(offset.dx, offset.dy, 0.0, 1.0);
-        return true;
-      case SliverLogicalParentData(:final layoutOffset?)
-          when parent is RenderSliver:
-        final constraints = parent.constraints;
-        final axisDirection = applyGrowthDirectionToAxisDirection(
-          constraints.axisDirection,
-          constraints.growthDirection,
-        );
-        final delta = layoutOffset - constraints.scrollOffset;
-        switch (axisDirection) {
-          case .down:
-            transform.translateByDouble(0.0, delta, 0.0, 1.0);
-          case .right:
-            transform.translateByDouble(delta, 0.0, 0.0, 1.0);
-          case .up:
-            final height = _tryGetBoxDimension(child, .vertical) ?? 0.0;
-            transform.translateByDouble(0.0, -(delta + height), 0.0, 1.0);
-          case .left:
-            final width = _tryGetBoxDimension(child, .horizontal) ?? 0.0;
-            transform.translateByDouble(-(delta + width), 0.0, 0.0, 1.0);
-        }
-        return true;
-      default:
-        return false;
+    // We're not using switch statements here to avoid excessive nesting.
+
+    // TODO: replace with a pluggable fallback registry.
+    if (parent case RenderFractionalTranslation(:final translation)) {
+      // Passthrough case, avoid dry layout calculations.
+      if (translation == .zero) return true;
+
+      final size = _tryGetProxyBoxSize(parent, child);
+
+      // Other fallback cases don't matter for RenderFractionalTranslation,
+      // because BoxParentData.offset is always zero.
+      if (size == null) return false;
+
+      // Simulate RenderFractionalTranslation.applyPaintTransform().
+      transform.translateByDouble(
+        translation.dx * size.width,
+        translation.dy * size.height,
+        0.0,
+        1.0,
+      );
+      return true;
     }
+
+    if (child.parentData
+        case BoxParentData(:final offset) ||
+            SliverPhysicalParentData(paintOffset: final offset)) {
+      transform.translateByDouble(offset.dx, offset.dy, 0.0, 1.0);
+      return true;
+    }
+
+    if (child.parentData case SliverLogicalParentData(
+      :final layoutOffset?,
+    ) when parent is RenderSliver) {
+      final constraints = parent.constraints;
+      final axisDirection = applyGrowthDirectionToAxisDirection(
+        constraints.axisDirection,
+        constraints.growthDirection,
+      );
+      final delta = layoutOffset - constraints.scrollOffset;
+      switch (axisDirection) {
+        case .down:
+          transform.translateByDouble(0.0, delta, 0.0, 1.0);
+        case .right:
+          transform.translateByDouble(delta, 0.0, 0.0, 1.0);
+        case .up:
+          final height =
+              (child is RenderBox
+                  ? _tryGetBoxDimension(child, .vertical)
+                  : null) ??
+              0.0;
+          transform.translateByDouble(0.0, -(delta + height), 0.0, 1.0);
+        case .left:
+          final width =
+              (child is RenderBox
+                  ? _tryGetBoxDimension(child, .horizontal)
+                  : null) ??
+              0.0;
+          transform.translateByDouble(-(delta + width), 0.0, 0.0, 1.0);
+      }
+      return true;
+    }
+
+    return false;
   }
 
-  static double? _tryGetBoxDimension(RenderObject child, Axis axis) {
-    if (child is! RenderBox || !child.hasSize) return null;
+  static Size? _tryGetBoxSize(RenderBox box) {
+    // Excessive branching may seem redundant, but it must remain for future
+    // potential changes, such as adding diagnostic logging, etc.
 
     Size? size;
 
-    var debugHasSize = false;
-    assert(() {
-      try {
-        size = child.size;
-      } on Error {
-        size = null;
-      } finally {
-        debugHasSize = true;
+    if (box.hasSize) {
+      // Technically it does the same thing as the statement after,
+      // but we split it up for future potential improvements.
+      var debugHasSize = false;
+      assert(() {
+        try {
+          size = box.size;
+        } on Error {
+          size = null;
+        } finally {
+          debugHasSize = true;
+        }
+        return true;
+      }());
+
+      if (!debugHasSize) {
+        // We don't need try-catch here because we've checked `RenderBox.hasSize`
+        // earlier.
+        size = box.size;
       }
-      return true;
-    }());
+    }
 
-    if (!debugHasSize) size = child.size;
+    // TODO: assess the order of size/constraints, especially the isTight check.
 
+    // Last resort: attempt getting size using a dry layout pass.
+    if (size == null) {
+      BoxConstraints? constraints;
+
+      // Technically it does the same thing as the statement after,
+      // but we split it up for future potential improvements.
+      var debugHasConstraints = false;
+      assert(() {
+        try {
+          constraints = box.constraints;
+        } on Error {
+          constraints = null;
+        } finally {
+          debugHasConstraints = true;
+        }
+        return true;
+      }());
+
+      if (!debugHasConstraints) {
+        // We can't check if `RenderBox.constraints` are non-null,
+        // so we have to account for potential errors here.
+        try {
+          constraints = box.constraints;
+        } on Error {
+          constraints = null;
+        }
+      }
+
+      if (constraints case final constraints?) {
+        // Skip dry layout if constraints are tight.
+        if (constraints.isTight) {
+          size = constraints.biggest;
+        } else {
+          try {
+            size = box.getDryLayout(constraints);
+          } on Error {
+            // Technically this error may only occur when assertions are
+            // enabled, meaning otherwise we get a zero size, which means sizes
+            // may potentially be unstable depending on whether assertions are
+            // enabled.
+            size = null;
+          }
+        }
+      }
+    }
+
+    return size;
+  }
+
+  static Size? _tryGetProxyBoxSize(RenderBox parent, RenderObject child) =>
+      // TODO: consider checking child first
+      //   because it reduces worst-case dry layout path length by one.
+      _tryGetBoxSize(parent) ??
+      (child is RenderBox ? _tryGetBoxSize(child) : null);
+
+  static double? _tryGetBoxDimension(RenderBox box, Axis axis) {
+    final size = _tryGetBoxSize(box);
+    if (size == null) return null;
     return switch (axis) {
-      .horizontal => size?.width,
-      .vertical => size?.height,
+      .horizontal => size.width,
+      .vertical => size.height,
     };
   }
 

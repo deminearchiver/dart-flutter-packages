@@ -1,3 +1,15 @@
+## Unreleased
+
+- Improved fallback `RenderBox` size algorithm.
+  - The resolver will attempt to access `constraints` and call `getDryLayout()` if other methods fail.
+  - When `constraints.isTight` returns true, `getDryLayout()` will not be called, resulting in returning `constraints.biggest` early.
+  - This still doesn't guarantee a size will be resolved.
+
+- Actually fixed `RenderFractionalTranslation` paint transform not being applied even in the fallback callback.
+  - This change introduces a manual static type check to handle `RenderFractionalTranslation` specifically, simulating its `applyPaintTransform()` call.
+  - Custom fallback registry will be introduced in the future.
+  - Please mind that the system currently fails to update the transform properly if an inactive `RenderFractionalTranslation` (e.g. in an inactive route) get resized - the size will not be updated, meaning the transform will remain the same until the render object becomes active again.
+
 ## 0.5.3
 
 - Fixed fallback paint transform failing to apply because of method renames (stupid mistake).
