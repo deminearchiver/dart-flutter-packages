@@ -1,4 +1,4 @@
-## Unreleased
+## 0.5.3
 
 - Fixed fallback paint transform failing to apply because of method renames (stupid mistake).
   - Complex usecases, such as `FractionTranslation` (`RenderFractionalTranslation`) between leader and follower (e.g. in page routes), should now work properly again.
