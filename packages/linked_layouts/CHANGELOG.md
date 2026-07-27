@@ -1,9 +1,47 @@
 ## Unreleased
 
+This release contains a major refactor of the "layout clients" API surface. This is the biggest breaking change in this release.
+
+- Renamed `LayoutLinkClient` to `LayoutClient`.
+
+- Made layout clients self-contained.
+  - Removed `LayoutClient.renderObject` property.
+  - Removed the `RenderObjectType` type argument from all respective members of the library, so members like `LayoutClient`, `LayoutLeaderClient`, `LayoutFollowerClient`, `LayoutLink`, etc. don't need their render object type specified.
+  - Added several new methods and getters that custom layout clients must implement, such as: `attached`, `depth`, `markNeedsLayout`, `tryGetSize`, `tryGetTransformIn`, etc., allowing for complete customization potential.
+
+- Changed layout client types from mixins to pure interfaces.
+  - Composition can no longer be achieved via the `with` keyword. Use `implements` instead.
+  - This change applies to `LayoutClient`, `LayoutLeaderClient`, `SlottedLayoutLeaderClient` and `LayoutFollowerClient`.
+
+- `DefaultLayoutLeaderClient`, `DefaultSlottedLayoutLeaderClient`, `DefaultLayoutFollowerClient` are now const-constructable.
+  - Const-construction will rarely be used typically, but this change means that default layout clients are now fully immutable, allowing to cache them.
+  - Added default const factory constructors to `LayoutLeaderClient`, `SlottedLayoutLeaderClient` and `LayoutFollowerClient`, which redirect to the default implementations respectively.
+
+The following breaking changes were introduced in continuation of the layout clients refactor.
+
 - `LayoutLink.getTransformIn`, `LayoutLink.getOffsetIn` and `LayoutLeaderClient.scale` deprecated elements have been removed.
   - Please use `LayoutLeaderClient.tryGetTransformIn()` or `LayoutLeaderClient.tryGetPositionIn()` instead.
 
-- Minor internal changes.
+- Removed `RenderObjectWithLayoutLinkBaseMixin`, `RenderObjectWithOptionalLayoutLinkMixin`, `RenderObjectWithRequiredLayoutLinkMixin`, `RenderLayoutLeaderMixin`, `RenderLayoutFollowerMixin`.
+  - These APIs were removed due to them enforcing a strict property structure in consumer code.
+  - A more manual (but flexible) approach should be preferred by applying the newly introduced `LayoutLeaderRenderObjectMixin` and `LayoutFollowerRenderObjectMixin`.
+
+- Removed `AbstractLayoutLeaderClientFactory`, `AbstractLayoutLeader`, `RenderAbstractLayoutLeader`, `CustomLayoutLeader` building blocks in favor of the new, manual system.
+  - It's preferred to use `SingleLayoutLeader` and `SlottedLayoutLeader` in most layout leader usecases.
+  - When a custom leader is absolutely needed, apply the newly introduced `LayoutLeaderRenderObjectMixin` to a `RenderBox` subclass.
+
+This update also contains the following minor changes.
+
+- Made the `layoutLink` parameter in `SingleLayoutLeader` and `SlottedLayoutLeader` nullable.
+  - Now it's possible to conditionally register a layout leader without the need of creating a custom render object.
+
+- Made `FrameCallbackScheduler.callback` property private.
+  - It was never supposed to be public.
+  - This property can no longer be accesssed inside consumer code.
+
+- Bumped minimum SDK versions to Dart 3.12 and Flutter 3.44.
+
+- Refactored internal file structure.
 
 ## 0.5.4
 

@@ -31,24 +31,28 @@ class _SearchViewLayout extends SingleChildRenderObjectWidget {
   }
 }
 
-class _RenderSearchViewLayout extends RenderShiftedBox
-    with
-        RenderObjectWithRequiredLayoutLinkMixin<
-          LayoutFollowerClient,
-          SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>
-        >,
-        RenderLayoutFollowerMixin<
-          SlottedLayoutLeaderClient<RenderBox, _SearchViewLeaderSlot>,
-          LayoutFollowerClient,
-          SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>
-        > {
+class _RenderSearchViewLayout extends RenderShiftedBox {
   _RenderSearchViewLayout({
-    required SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot> layoutLink,
-    required ValueListenable<double> animation,
+    this._layoutLink,
+    required this._animation,
     RenderBox? child,
-  }) : _animation = animation,
-       super(child) {
-    this.layoutLink = layoutLink;
+  }) : super(child);
+
+  SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? _layoutLink;
+
+  SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? get layoutLink =>
+      _layoutLink;
+
+  set layoutLink(SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? value) {
+    if (_layoutLink == value) return;
+    _layoutLinkHandle?.dispose();
+    _layoutLinkHandle = null;
+    _layoutLink = value;
+    if (_layoutLink case final layoutLink? when attached) {
+      final client = LayoutFollowerClient(this);
+      _layoutLinkHandle = layoutLink.registerFollower(client);
+    }
+    markNeedsLayout();
   }
 
   ValueListenable<double> _animation;
@@ -66,21 +70,42 @@ class _RenderSearchViewLayout extends RenderShiftedBox
     }
   }
 
-  @override
-  LayoutFollowerClient<_RenderSearchViewLayout> createLayoutClientInternal() =>
-      DefaultLayoutFollowerClient(this);
+  FollowerLayoutLinkHandle<
+    SlottedLayoutLeaderClient<_SearchViewLeaderSlot>,
+    LayoutFollowerClient
+  >?
+  _layoutLinkHandle;
 
   @override
   void attach(PipelineOwner owner) {
     super.attach(owner);
+
+    assert(_layoutLinkHandle == null);
+    if (layoutLink case final layoutLink?) {
+      final client = LayoutFollowerClient(this);
+      _layoutLinkHandle = layoutLink.registerFollower(client);
+    }
+
     animation.addListener(markNeedsLayout);
   }
 
   @override
   void detach() {
     super.detach();
+
+    _layoutLinkHandle?.dispose();
+    _layoutLinkHandle = null;
+
     animation.removeListener(markNeedsLayout);
   }
+
+  @override
+  void redepthChildren() {
+    if (_layoutLinkHandle?.tryRedepthClient() == true) return;
+    super.redepthChildren();
+  }
+
+  final _matrix = Matrix4.zero();
 
   @override
   bool get sizedByParent => true;
@@ -92,21 +117,17 @@ class _RenderSearchViewLayout extends RenderShiftedBox
 
   @override
   void performLayout() {
-    final leader = layoutLink.leaderForSlot(.searchBar);
-    if (leader != null) {
-      if (leader.size case final leaderSize?) {
-        final size = Size.lerp(
-          leaderSize,
-          Size(leaderSize.width, constraints.constrainHeight() * 2.0 / 3.0),
-          animation.value,
-        )!;
-        child?.layout(BoxConstraints.tight(size), parentUsesSize: false);
-      }
+    final leader = layoutLink?.leaderForSlot(.searchBar);
+    final leaderRect = leader?.tryGetRectIn(this, matrix: _matrix);
+    if (leaderRect != null) {
+      final size = Size.lerp(
+        leaderRect.size,
+        Size(leaderRect.width, constraints.constrainHeight() * 2.0 / 3.0),
+        animation.value,
+      )!;
+      child?.layout(BoxConstraints.tight(size), parentUsesSize: false);
 
-      final leaderOffset = leader.tryGetPositionIn(this);
-      if (leaderOffset != null) {
-        (child?.parentData as BoxParentData?)?.offset = leaderOffset;
-      }
+      (child?.parentData as BoxParentData?)?.offset = leaderRect.topLeft;
     } else {
       child?.layout(
         BoxConstraints.tight(constraints.biggest),

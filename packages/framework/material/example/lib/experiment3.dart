@@ -63,24 +63,28 @@ class _SearchViewLayout
 }
 
 class _RenderSearchViewLayout extends RenderBox
-    with
-        SlottedContainerRenderObjectMixin<_SearchViewLayoutSlot, RenderBox>,
-        RenderObjectWithRequiredLayoutLinkMixin<
-          LayoutFollowerClient,
-          SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>
-        >,
-        RenderLayoutFollowerMixin<
-          SlottedLayoutLeaderClient<RenderBox, _SearchViewLeaderSlot>,
-          LayoutFollowerClient,
-          SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>
-        > {
+    with SlottedContainerRenderObjectMixin<_SearchViewLayoutSlot, RenderBox> {
   _RenderSearchViewLayout({
-    required SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot> layoutLink,
-    required ValueListenable<double> animation,
-    required EdgeInsets padding,
-  }) : _animation = animation,
-       _padding = padding {
-    this.layoutLink = layoutLink;
+    this._layoutLink,
+    required this._animation,
+    required this._padding,
+  });
+
+  SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? _layoutLink;
+
+  SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? get layoutLink =>
+      _layoutLink;
+
+  set layoutLink(SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? value) {
+    if (_layoutLink == value) return;
+    _layoutLinkHandle?.dispose();
+    _layoutLinkHandle = null;
+    _layoutLink = value;
+    if (_layoutLink case final layoutLink? when attached) {
+      final client = LayoutFollowerClient(this);
+      _layoutLinkHandle = layoutLink.registerFollower(client);
+    }
+    markNeedsLayout();
   }
 
   ValueListenable<double> _animation;
@@ -112,20 +116,39 @@ class _RenderSearchViewLayout extends RenderBox
   RenderBox? get _appBarTrailing => childForSlot(.appBarTrailing);
   RenderBox? get _list => childForSlot(.list);
 
-  @override
-  LayoutFollowerClient<_RenderSearchViewLayout> createLayoutClientInternal() =>
-      DefaultLayoutFollowerClient(this);
+  FollowerLayoutLinkHandle<
+    SlottedLayoutLeaderClient<_SearchViewLeaderSlot>,
+    LayoutFollowerClient
+  >?
+  _layoutLinkHandle;
 
   @override
   void attach(PipelineOwner owner) {
     super.attach(owner);
+
+    assert(_layoutLinkHandle == null);
+    if (layoutLink case final layoutLink?) {
+      final client = LayoutFollowerClient(this);
+      _layoutLinkHandle = layoutLink.registerFollower(client);
+    }
+
     animation.addListener(markNeedsLayout);
   }
 
   @override
   void detach() {
     super.detach();
+
+    _layoutLinkHandle?.dispose();
+    _layoutLinkHandle = null;
+
     animation.removeListener(markNeedsLayout);
+  }
+
+  @override
+  void redepthChildren() {
+    if (_layoutLinkHandle?.tryRedepthClient() == true) return;
+    super.redepthChildren();
   }
 
   @override
@@ -142,8 +165,8 @@ class _RenderSearchViewLayout extends RenderBox
     final searchBarContainer = _searchBarContainer;
     final appBarTrailing = _appBarTrailing;
 
-    final appBarLeader = layoutLink.leaderForSlot(.appBar);
-    final searchBarLeader = layoutLink.leaderForSlot(.searchBar);
+    final appBarLeader = layoutLink?.leaderForSlot(.appBar);
+    final searchBarLeader = layoutLink?.leaderForSlot(.searchBar);
 
     const searchBarPadding = EdgeInsets.symmetric(
       horizontal: 8.0,
@@ -203,7 +226,7 @@ class _RenderSearchViewLayout extends RenderBox
     );
 
     if (searchBarLeader != null) {
-      if (searchBarLeader.size case final searchBarSize?) {
+      if (searchBarLeader.tryGetSize() case final searchBarSize?) {
         final searchBarLeaderTransform = searchBarLeader.tryGetTransformIn(
           this,
         );
@@ -241,7 +264,7 @@ class _RenderSearchViewLayout extends RenderBox
     final endAppBarOffset = Offset(padding.left, padding.top);
 
     if (appBarLeader != null) {
-      if (appBarLeader.size case final appBarSize?) {
+      if (appBarLeader.tryGetSize() case final appBarSize?) {
         final appBarLeaderTransform = appBarLeader.tryGetTransformIn(this);
         if (appBarLeaderTransform != null) {
           final appBarRect = MatrixUtils.transformRect(

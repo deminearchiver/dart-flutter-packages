@@ -1,3 +1,6 @@
+// Leave this ignore here. Don't move into a shared library.
+// ignore_for_file: invalid_use_of_visible_for_overriding_member
+
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
@@ -22,7 +25,7 @@ abstract base class LayoutLink<
 > {
   final Set<LeaderClientType> _leaders = HashSet();
 
-  @protected
+  @visibleForOverriding
   Iterable<LeaderClientType> get leadersInternal;
 
   Iterable<LeaderClientType> get leaders {
@@ -68,10 +71,10 @@ abstract base class LayoutLink<
     return _leaders.contains(leader);
   }
 
-  @protected
+  @visibleForOverriding
   void registerLeaderInternal(LeaderClientType leader);
 
-  @protected
+  @visibleForOverriding
   void unregisterLeaderInternal(LeaderClientType leader);
 
   LeaderLayoutLinkHandle<LeaderClientType, FollowerClientType> registerLeader(
@@ -207,13 +210,13 @@ abstract base class LayoutLink<
   }) {
     assert(checkSizes || checkTransforms);
 
-    if (!leader.renderObject.attached) return false;
+    if (!leader.attached) return false;
 
     var changed = false;
     final lastLayout = _lastLeaderLayouts[leader] ??= .new();
 
     if (checkSizes) {
-      final size = leader.size;
+      final size = leader.tryGetSize();
       if (lastLayout.size != size) {
         lastLayout.size = size;
         changed = true;
@@ -221,9 +224,9 @@ abstract base class LayoutLink<
     }
 
     if (checkTransforms) {
-      final transform = RenderObjectTransformHelper.tryGetTransformTo(
-        leader.renderObject,
-        result: _leaderTransformCache,
+      final transform = leader.tryGetTransformFrom(
+        null,
+        matrix: _leaderTransformCache,
       );
       final lastTransform = lastLayout.transform;
       if (transform != null) {
@@ -266,9 +269,8 @@ abstract base class LayoutLink<
 
   void _markFollowersNeedLayout() {
     for (final follower in _followers) {
-      if (!follower.renderObject.attached) continue;
-
-      follower.renderObject.markNeedsLayout();
+      if (!follower.attached) continue;
+      follower.markNeedsLayout();
     }
   }
 
@@ -317,8 +319,8 @@ abstract base class LayoutLink<
   }
 }
 
-sealed class LayoutLinkHandle<LayoutClientType extends LayoutLinkClient> {
-  LayoutLinkHandle._({required LayoutClientType client}) : _client = client;
+sealed class LayoutLinkHandle<LayoutClientType extends LayoutClient> {
+  LayoutLinkHandle._(LayoutClientType client) : _client = client;
 
   LayoutClientType? _client;
 
@@ -371,7 +373,7 @@ final class LeaderLayoutLinkHandle<
     required LayoutLink<LeaderClientType, FollowerClientType> link,
     required LeaderClientType leader,
   }) : _linkOrNull = link,
-       super._(client: leader);
+       super._(leader);
 
   LayoutLink<LeaderClientType, FollowerClientType>? _linkOrNull;
 
@@ -449,7 +451,7 @@ final class FollowerLayoutLinkHandle<
     required LayoutLink<LeaderClientType, FollowerClientType> link,
     required FollowerClientType follower,
   }) : _linkOrNull = link,
-       super._(client: follower);
+       super._(follower);
 
   LayoutLink<LeaderClientType, FollowerClientType>? _linkOrNull;
 
@@ -476,27 +478,7 @@ final class FollowerLayoutLinkHandle<
   /// ```
   bool tryRedepthClient() {
     assert(LayoutLinkHandle.debugAssertNotDisposed(this));
-
-    LeaderClientType? deepestLeader;
-    for (final leader in _link.leaders) {
-      if (!leader.renderObject.attached) continue;
-
-      final maxDepth = deepestLeader?.renderObject.depth;
-      if (maxDepth == null || leader.renderObject.depth > maxDepth) {
-        deepestLeader = leader;
-      }
-    }
-
-    if (deepestLeader != null &&
-        client.renderObject.depth <= deepestLeader.renderObject.depth) {
-      // ignore: invalid_use_of_protected_member
-      deepestLeader.renderObject.redepthChild(client.renderObject);
-
-      // Return because leader's render object calls this function recursively.
-      return true;
-    }
-
-    return false;
+    return client.tryRedepthWith(_link._leaders);
   }
 
   @override
