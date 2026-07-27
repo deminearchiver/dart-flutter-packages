@@ -1,4 +1,4 @@
-## Unreleased
+## 0.5.4
 
 - Improved fallback `RenderBox` size algorithm.
   - The resolver will attempt to access `constraints` and call `getDryLayout()` if other methods fail.

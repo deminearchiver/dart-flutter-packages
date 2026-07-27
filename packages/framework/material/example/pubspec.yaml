@@ -33,7 +33,7 @@ dependencies:
   headless_widgets: ^0.0.7
   inspire_blur: ^0.4.0
   json_annotation: ^4.12.0
-  linked_layouts: ^0.5.3
+  linked_layouts: ^0.5.4
   markdown: ^7.3.1
   material_3p: ^0.4.0+1
   meta: ^1.18.0

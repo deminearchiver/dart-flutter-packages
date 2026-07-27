@@ -1,6 +1,6 @@
 name: linked_layouts
 description: Create custom layout systems based on the multi-leader-multi-follower pattern.
-version: 0.5.3
+version: 0.5.4
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/linked_layouts
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
