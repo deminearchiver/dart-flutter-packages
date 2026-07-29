@@ -515,11 +515,9 @@ class ColorSpec2025 extends ColorSpec2021 {
             return _tMaxC(
               scheme.primaryPalette,
               0,
-              Hct.isYellow(scheme.primaryPalette.hue)
-                  ? 25
-                  : Hct.isCyan(scheme.primaryPalette.hue)
-                  ? 88
-                  : 98,
+              scheme.isDark
+                  ? (Hct.isCyan(scheme.primaryPalette.hue) ? 88 : 98)
+                  : (Hct.isYellow(scheme.primaryPalette.hue) ? 25 : 98),
             );
           } else {
             // WATCH
@@ -619,7 +617,7 @@ class ColorSpec2025 extends ColorSpec2021 {
               : _tMaxC(scheme.primaryPalette, 0, 90);
         } else if (scheme.variant == .expressive) {
           return scheme.isDark
-              ? _tMaxC(scheme.primaryPalette, 30, 93)
+              ? _tMinC(scheme.primaryPalette, 30, 93)
               : _tMaxC(
                   scheme.primaryPalette,
                   78,

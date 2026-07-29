@@ -7,6 +7,7 @@
   - Refactor DynamicScheme to accept a list of source colors. ([`4578d0a`](https://github.com/material-foundation/material-color-utilities/commit/4578d0a1d40f1d17f1ca6f34cc9c484bea8f0a9d))
   - Updated background for on-fixed colors in ColorSpec2026. ([`91da30d`](https://github.com/material-foundation/material-color-utilities/commit/91da30d89e70c3dc9575ec71a1ebe8874d881f29))
   - Adjust chroma calculation in ColorSpec2025 for yellow hues at tone 99. ([`1a34bd2`](https://github.com/material-foundation/material-color-utilities/commit/1a34bd2d696a5dd669beca679546ad72209d0937))
+  - Updated PrimaryContainer color calculation for Expressive dark mode. ([`ec7c4da`](https://github.com/material-foundation/material-color-utilities/commit/ec7c4da3e0774264275377cd6b7687474bad577a))
   - Added support for energy color generation via the new `EnergyColors` utility. Implementation is experimental as it comes from an unreleased version of the upstream library.
 
 - Renamed `android_dynamic_colors` library to `android_color_utilities`.
