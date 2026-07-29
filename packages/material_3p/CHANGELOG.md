@@ -1,3 +1,7 @@
+## 0.4.1
+
+- Bumped `libmonet` dependency to `2.0.0-dev.19` and relaxed the dependency constraint.
+
 ## 0.4.0+1
 
 - Updated examples in README to show breaking changes.

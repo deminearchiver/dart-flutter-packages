@@ -1,6 +1,6 @@
 name: material_3p
 description: 3P (third-party) version of the Material 3 Expressive package.
-version: 0.4.0+1
+version: 0.4.1
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/material_3p
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
@@ -21,7 +21,7 @@ dependencies:
   # Hosted dependencies
   androidx_graphics_shapes: ^1.6.0
   collection: ^1.19.1
-  libmonet: 2.0.0-dev.19
+  libmonet: ^2.0.0-dev.19
   material_symbols_icons: ^4.2951.0
 
 dev_dependencies:
