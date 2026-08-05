@@ -77,16 +77,25 @@ class _Experiment1ViewState extends State<Experiment1View> {
             // outlines: [.from(color: colorTheme.outlineVariant, width: 1.0)],
             child: Align.center(
               child: Surface.ink(
+                clipBehavior: .antiAlias,
                 position: .background,
                 shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
                 backgroundDecorations: [
-                  .elevationShadow(12.0, color: colorTheme.onSurface),
+                  .elevationShadow(
+                    24.0,
+                    color: colorTheme.primary,
+                    transparentOccluder: true,
+                  ),
                   .fillGradient(
                     LinearGradient(
                       begin: .topStart,
                       end: .bottomEnd,
                       colors: [containerColor, middleColor, endColor],
                     ),
+                    blendMode: switch (colorTheme.brightness) {
+                      .light => .hardLight,
+                      .dark => .screen,
+                    },
                   ),
                 ],
                 foregroundDecorations: [

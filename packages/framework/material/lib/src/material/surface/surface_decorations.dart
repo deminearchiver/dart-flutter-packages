@@ -32,6 +32,18 @@ class SurfaceElevationShadow extends SurfaceDecoration {
         ),
       );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is SurfaceElevationShadow &&
+          elevation == other.elevation &&
+          color == other.color &&
+          transparentOccluder == other.transparentOccluder;
+
+  @override
+  int get hashCode => Object.hash(elevation, color, transparentOccluder);
 }
 
 class SurfaceElevationShadowPaint extends LazySurfaceDecorationPaint
@@ -72,6 +84,18 @@ class SurfaceElevationShadowPaint extends LazySurfaceDecorationPaint
         ),
       );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is SurfaceElevationShadowPaint &&
+          elevation == other.elevation &&
+          color == other.color &&
+          transparentOccluder == other.transparentOccluder;
+
+  @override
+  int get hashCode => Object.hash(elevation, color, transparentOccluder);
 }
 
 class _SurfaceElevationShadowPainter extends SurfaceDecorationPainter {
