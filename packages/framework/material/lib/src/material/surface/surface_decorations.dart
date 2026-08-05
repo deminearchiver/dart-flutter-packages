@@ -14,7 +14,7 @@ class SurfaceElevationShadow extends SurfaceDecoration {
   @override
   SurfaceElevationShadowPaint resolve(BuildContext context) => .new(
     elevation: elevation,
-    color: color ?? ColorScheme.of(context).shadow,
+    color: color ?? ColorTheme.of(context).shadow,
     transparentOccluder: transparentOccluder,
   );
 
