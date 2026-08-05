@@ -151,7 +151,7 @@ class ListItemContainer extends StatelessWidget {
   final bool isLast;
   final bool opticalCenterEnabled;
   final EdgeInsetsGeometry opticalCenterMaxOffsets;
-  final ListItemStateProperty<ShapeBorder?>? containerShape;
+  final ListItemStateProperty<OutlinedBorder?>? containerShape;
   final ListItemStateProperty<Color?>? containerColor;
   final Widget child;
 

@@ -35,7 +35,7 @@ abstract class ListItemThemeDataPartial with Diagnosticable
   const ListItemThemeDataPartial();
 
   const factory ListItemThemeDataPartial.from({
-    ListItemStateProperty<ShapeBorder?>? containerShape,
+    ListItemStateProperty<OutlinedBorder?>? containerShape,
     ListItemStateProperty<Color?>? containerColor,
     ListItemStateProperty<Color?>? stateLayerColor,
     ListItemStateProperty<double?>? stateLayerOpacity,
@@ -48,7 +48,7 @@ abstract class ListItemThemeDataPartial with Diagnosticable
     ListItemStateProperty<IconThemeDataPartial?>? trailingIconTheme,
   }) = _ListItemThemeDataPartial;
 
-  ListItemStateProperty<ShapeBorder?>? get containerShape;
+  ListItemStateProperty<OutlinedBorder?>? get containerShape;
 
   ListItemStateProperty<Color?>? get containerColor;
 
@@ -73,7 +73,7 @@ abstract class ListItemThemeDataPartial with Diagnosticable
   ListItemThemeDataPartial copy() => copyWith();
 
   ListItemThemeDataPartial copyWith({
-    covariant ListItemStateProperty<ShapeBorder?>? containerShape,
+    covariant ListItemStateProperty<OutlinedBorder?>? containerShape,
     covariant ListItemStateProperty<Color?>? containerColor,
     covariant ListItemStateProperty<Color?>? stateLayerColor,
     covariant ListItemStateProperty<double?>? stateLayerOpacity,
@@ -99,7 +99,7 @@ abstract class ListItemThemeDataPartial with Diagnosticable
   );
 
   ListItemThemeDataPartial maybeCopyWith({
-    covariant ListItemStateProperty<ShapeBorder?>? containerShape,
+    covariant ListItemStateProperty<OutlinedBorder?>? containerShape,
     covariant ListItemStateProperty<Color?>? containerColor,
     covariant ListItemStateProperty<Color?>? stateLayerColor,
     covariant ListItemStateProperty<double?>? stateLayerOpacity,
@@ -138,7 +138,7 @@ abstract class ListItemThemeDataPartial with Diagnosticable
       : this;
 
   ListItemThemeDataPartial mergeWith({
-    ListItemStateProperty<ShapeBorder?>? containerShape,
+    ListItemStateProperty<OutlinedBorder?>? containerShape,
     ListItemStateProperty<Color?>? containerColor,
     ListItemStateProperty<Color?>? stateLayerColor,
     ListItemStateProperty<double?>? stateLayerOpacity,
@@ -187,7 +187,7 @@ abstract class ListItemThemeDataPartial with Diagnosticable
   );
 
   ListItemThemeDataPartial maybeMergeWith({
-    ListItemStateProperty<ShapeBorder?>? containerShape,
+    ListItemStateProperty<OutlinedBorder?>? containerShape,
     ListItemStateProperty<Color?>? containerColor,
     ListItemStateProperty<Color?>? stateLayerColor,
     ListItemStateProperty<double?>? stateLayerOpacity,
@@ -290,7 +290,7 @@ abstract class ListItemThemeDataPartial with Diagnosticable
     super.debugFillProperties(properties);
     properties
       ..add(
-        DiagnosticsProperty<ListItemStateProperty<ShapeBorder?>>(
+        DiagnosticsProperty<ListItemStateProperty<OutlinedBorder?>>(
           "containerShape",
           containerShape,
           defaultValue: null,
@@ -385,7 +385,7 @@ final class _ListItemThemeDataPartial extends ListItemThemeDataPartial {
   });
 
   @override
-  final ListItemStateProperty<ShapeBorder?>? containerShape;
+  final ListItemStateProperty<OutlinedBorder?>? containerShape;
 
   @override
   final ListItemStateProperty<Color?>? containerColor;
@@ -468,7 +468,7 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial
   const ListItemThemeData();
 
   const factory ListItemThemeData.from({
-    required ListItemStateProperty<ShapeBorder> containerShape,
+    required ListItemStateProperty<OutlinedBorder> containerShape,
     required ListItemStateProperty<Color> containerColor,
     required ListItemStateProperty<Color> stateLayerColor,
     required ListItemStateProperty<double> stateLayerOpacity,
@@ -501,7 +501,7 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial
   );
 
   @override
-  ListItemStateProperty<ShapeBorder> get containerShape;
+  ListItemStateProperty<OutlinedBorder> get containerShape;
 
   @override
   ListItemStateProperty<Color> get containerColor;
@@ -538,7 +538,7 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial
 
   @override
   ListItemThemeData copyWith({
-    covariant ListItemStateProperty<ShapeBorder>? containerShape,
+    covariant ListItemStateProperty<OutlinedBorder>? containerShape,
     covariant ListItemStateProperty<Color>? containerColor,
     covariant ListItemStateProperty<Color>? stateLayerColor,
     covariant ListItemStateProperty<double>? stateLayerOpacity,
@@ -565,7 +565,7 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial
 
   @override
   ListItemThemeData maybeCopyWith({
-    covariant ListItemStateProperty<ShapeBorder>? containerShape,
+    covariant ListItemStateProperty<OutlinedBorder>? containerShape,
     covariant ListItemStateProperty<Color>? containerColor,
     covariant ListItemStateProperty<Color>? stateLayerColor,
     covariant ListItemStateProperty<double>? stateLayerOpacity,
@@ -605,7 +605,7 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial
 
   @override
   ListItemThemeData mergeWith({
-    ListItemStateProperty<ShapeBorder?>? containerShape,
+    ListItemStateProperty<OutlinedBorder?>? containerShape,
     ListItemStateProperty<Color?>? containerColor,
     ListItemStateProperty<Color?>? stateLayerColor,
     ListItemStateProperty<double?>? stateLayerOpacity,
@@ -653,7 +653,7 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial
 
   @override
   ListItemThemeData maybeMergeWith({
-    ListItemStateProperty<ShapeBorder?>? containerShape,
+    ListItemStateProperty<OutlinedBorder?>? containerShape,
     ListItemStateProperty<Color?>? containerColor,
     ListItemStateProperty<Color?>? stateLayerColor,
     ListItemStateProperty<double?>? stateLayerOpacity,
@@ -750,7 +750,7 @@ abstract class ListItemThemeData extends ListItemThemeDataPartial
     super.debugFillProperties(properties);
     properties
       ..add(
-        DiagnosticsProperty<ListItemStateProperty<ShapeBorder>>(
+        DiagnosticsProperty<ListItemStateProperty<OutlinedBorder>>(
           "containerShape",
           containerShape,
         ),
@@ -834,7 +834,7 @@ final class _ListItemThemeData extends ListItemThemeData {
   });
 
   @override
-  final ListItemStateProperty<ShapeBorder> containerShape;
+  final ListItemStateProperty<OutlinedBorder> containerShape;
 
   @override
   final ListItemStateProperty<Color> stateLayerColor;
@@ -914,10 +914,10 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
   final ListItemThemeDataPartial _overrides;
 
   @override
-  ListItemStateProperty<ShapeBorder> get containerShape =>
+  ListItemStateProperty<OutlinedBorder> get containerShape =>
       _ListItemStateProperty(this, _resolveContainerShape);
 
-  static ShapeBorder _resolveContainerShape(
+  static OutlinedBorder _resolveContainerShape(
     ListItemStates states,
     _ListItemThemeDataDefaults defaults,
   ) {
@@ -1188,7 +1188,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
 
   @override
   ListItemThemeData copyWith({
-    covariant ListItemStateProperty<ShapeBorder>? containerShape,
+    covariant ListItemStateProperty<OutlinedBorder>? containerShape,
     covariant ListItemStateProperty<Color>? containerColor,
     covariant ListItemStateProperty<Color>? stateLayerColor,
     covariant ListItemStateProperty<double>? stateLayerOpacity,
@@ -1221,7 +1221,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
 
   @override
   ListItemThemeData maybeCopyWith({
-    covariant ListItemStateProperty<ShapeBorder>? containerShape,
+    covariant ListItemStateProperty<OutlinedBorder>? containerShape,
     covariant ListItemStateProperty<Color>? containerColor,
     covariant ListItemStateProperty<Color>? stateLayerColor,
     covariant ListItemStateProperty<double>? stateLayerOpacity,
@@ -1285,7 +1285,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
 
   @override
   ListItemThemeData mergeWith({
-    ListItemStateProperty<ShapeBorder?>? containerShape,
+    ListItemStateProperty<OutlinedBorder?>? containerShape,
     ListItemStateProperty<Color?>? containerColor,
     ListItemStateProperty<Color?>? stateLayerColor,
     ListItemStateProperty<double?>? stateLayerOpacity,
@@ -1318,7 +1318,7 @@ final class _ListItemThemeDataDefaults extends ListItemThemeData {
 
   @override
   ListItemThemeData maybeMergeWith({
-    ListItemStateProperty<ShapeBorder?>? containerShape,
+    ListItemStateProperty<OutlinedBorder?>? containerShape,
     ListItemStateProperty<Color?>? containerColor,
     ListItemStateProperty<Color?>? stateLayerColor,
     ListItemStateProperty<double?>? stateLayerOpacity,
