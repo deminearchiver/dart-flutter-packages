@@ -173,10 +173,10 @@ class ListItemContainer extends StatelessWidget {
         containerColor?.resolve(states) ??
         listItemTheme.containerColor.resolve(states);
 
-    return Surface(
+    return Surface.material(
       clipBehavior: .antiAlias,
-      color: resolvedContainerColor,
       shape: resolvedShape,
+      backgroundDecorations: [.fillColor(resolvedContainerColor)],
       child: CenterOptically(
         enabled: corners != null,
         corners: corners ?? .zero,

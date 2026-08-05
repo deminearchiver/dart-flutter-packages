@@ -82,7 +82,7 @@ class _DockedSearchViewExampleState extends State<DockedSearchViewExample> {
         const _SearchBarWidget(),
         SizedBox(height: widget.gap),
         Flexible.loose(
-          child: Surface(
+          child: Surface.ink(
             // TODO: ideally it should work like this?
             // TODO: track active edge corner dynamically?
             // TODO: this doesn't work because corner needs to collapse
@@ -135,7 +135,7 @@ class _DockedSearchViewExampleState extends State<DockedSearchViewExample> {
     final shapeTheme = ShapeTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
     return NestedSliverBuilder(
-      builder: (context, child) => Surface(
+      builder: (context, child) => Surface.material(
         clipBehavior: .antiAlias,
         shape: shapeTheme.applyCorner(corner: shapeTheme.cornerMedium),
         // shape: RoundedPolygonBorder(
@@ -149,7 +149,7 @@ class _DockedSearchViewExampleState extends State<DockedSearchViewExample> {
         //   polygon: MaterialShapes.circle,
         //   squash: 1,
         // ),
-        color: colorTheme.surfaceContainerHigh,
+        backgroundDecorations: [.fillColor(colorTheme.surfaceContainerHigh)],
         child: child,
       ),
 
@@ -168,6 +168,19 @@ class _DockedSearchViewExampleState extends State<DockedSearchViewExample> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
+              // (context, index) => ListItemContainer(
+              //   containerColor: .all(Colors.transparent),
+              //   containerShape: .all(
+              //     shapeTheme.applyCorner(corner: shapeTheme.cornerNone),
+              //   ),
+              //   child: ListItemInteraction(
+              //     onTap: () {},
+              //     child: ListItemLayout(
+              //       leading: Icon(icon),
+              //       headline: Text("Item ${index + 1} in $title"),
+              //     ),
+              //   ),
+              // ),
               (context, index) => ListItemInteraction(
                 onTap: () {},
                 child: ListItemLayout(
@@ -243,10 +256,10 @@ class _SearchBarWidget extends StatelessWidget {
     return SizedBox(
       width: .infinity,
       height: 56.0,
-      child: Surface(
+      child: Surface.material(
         clipBehavior: .antiAlias,
         shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
-        color: colorTheme.surfaceContainerHigh,
+        backgroundDecorations: [.fillColor(colorTheme.surfaceContainerHigh)],
         child: Flex.horizontal(
           children: [
             Padding(

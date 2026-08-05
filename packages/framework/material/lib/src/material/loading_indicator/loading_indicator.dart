@@ -211,10 +211,11 @@ class _DeterminateLoadingIndicatorState
             minWidth: _kContainerWidth,
             minHeight: _kContainerHeight,
           ),
-          child: Surface(
+          child: Surface.material(
             clipBehavior: .antiAlias,
-            shape: resolvedContainerOutline.apply(resolvedContainerShape),
-            color: resolvedContainerColor,
+            shape: resolvedContainerShape,
+            backgroundDecorations: [.fillColor(resolvedContainerColor)],
+            foregroundDecorations: [.outline(resolvedContainerOutline)],
             child: CustomPaint(
               painter: _DeterminateLoadingIndicatorPainter(
                 color: resolvedActiveIndicatorColor,
@@ -460,10 +461,11 @@ class _IndeterminateLoadingIndicatorState
             minWidth: _kContainerWidth,
             minHeight: _kContainerHeight,
           ),
-          child: Surface(
+          child: Surface.material(
             clipBehavior: .antiAlias,
-            shape: resolvedContainerOutline.apply(resolvedContainerShape),
-            color: resolvedContainerColor,
+            shape: resolvedContainerShape,
+            backgroundDecorations: [.fillColor(resolvedContainerColor)],
+            foregroundDecorations: [.outline(resolvedContainerOutline)],
             child: CustomPaint(painter: _painter, willChange: true),
           ),
         ),

@@ -134,12 +134,13 @@ class _Experiment2ViewState extends State<Experiment2View> {
                         child: SizedBox(
                           width: maxWidth,
                           height: maxHeight,
-                          child: Surface(
-                            borderOnForeground: false,
+                          child: Surface.material(
                             shape: shapeTheme.applyCorners(
                               corners: containerCorners,
                             ),
-                            color: colorTheme.surfaceContainerLowest,
+                            backgroundDecorations: [
+                              .fillColor(colorTheme.surfaceContainerLowest),
+                            ],
                             child: Stack(
                               fit: .expand,
                               children: [
@@ -248,18 +249,25 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                   child: SizedBox(
                                     width: width,
                                     height: height,
-                                    child: Surface(
+                                    child: Surface.material(
                                       clipBehavior: .antiAlias,
-                                      borderOnForeground: true,
                                       shape: CornersBorder(
                                         delegate: _delegate,
                                         corners: corners,
-                                        side: .new(
-                                          width: thickness,
-                                          color: colorTheme.primary,
-                                        ),
                                       ),
-                                      color: colorTheme.surfaceContainerHighest,
+                                      backgroundDecorations: [
+                                        .fillColor(
+                                          colorTheme.surfaceContainerHighest,
+                                        ),
+                                      ],
+                                      foregroundDecorations: [
+                                        .outline(
+                                          .from(
+                                            width: thickness,
+                                            color: colorTheme.primary,
+                                          ),
+                                        ),
+                                      ],
                                       child: InkWell(
                                         overlayColor: WidgetStateLayerColor(
                                           color: .all(colorTheme.primary),

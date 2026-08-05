@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:material/material_color_utilities.dart' show EnergyColors;
 import 'package:material/material_shapes.dart'
     show
         MaterialShapes,
@@ -48,6 +49,89 @@ class _Experiment1ViewState extends State<Experiment1View> {
     final shapeTheme = ShapeTheme.of(context);
     final stateTheme = StateTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
+
+    final containerColor = colorTheme.primary;
+    final contentColor = colorTheme.onPrimary;
+
+    final (middleArgb, endArgb) = EnergyColors.withAccentsArgb(
+      containerColor.toARGB32(),
+      colorTheme.primary.toARGB32(),
+      colorTheme.secondary.toARGB32(),
+      colorTheme.tertiary.toARGB32(),
+      colorTheme.surfaceContainer.toARGB32(),
+      false,
+      .primary,
+    );
+    final middleColor = Color(middleArgb);
+    final endColor = Color(endArgb);
+
+    return Scaffold(
+      body: SizedBox.expand(
+        child: Padding(
+          padding: .all(56.0),
+          child: Surface.ink(
+            shape: shapeTheme.applyCorner(corner: shapeTheme.cornerExtraLarge),
+            backgroundDecorations: [.fillColor(colorTheme.surface)],
+            // decoration: .compound(fills: [.color(colorTheme.surface)]),
+            // fills: [.color(colorTheme.surface)],
+            // outlines: [.from(color: colorTheme.outlineVariant, width: 1.0)],
+            child: Align.center(
+              child: Surface.ink(
+                position: .background,
+                shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
+                backgroundDecorations: [
+                  .elevationShadow(12.0, color: colorTheme.onSurface),
+                  .fillGradient(
+                    LinearGradient(
+                      begin: .topStart,
+                      end: .bottomEnd,
+                      colors: [containerColor, middleColor, endColor],
+                    ),
+                  ),
+                ],
+                foregroundDecorations: [
+                  // .fillColor(Colors.red),
+                  // .color(colorTheme.outlineVariant, width: 3.0),
+                  // .color(colorTheme.secondary, width: 10.0),
+                  // .color(colorTheme.onSecondary, width: 5.0),
+                  // .borderSide(.new(color: colorTheme.secondary, width: 10.0)),
+                  // .borderSide(.new(color: colorTheme.onSecondary, width: 5.0)),
+                ],
+                child: RawSurfaceInteraction(
+                  shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
+                  stateLayerColor: .all(contentColor),
+                  stateLayerOpacity: stateTheme.asWidgetStateLayerOpacity,
+                  onTap: () {},
+                  child: Padding(
+                    padding: .symmetric(horizontal: 64.0, vertical: 48.0),
+                    child: Flex.horizontal(
+                      mainAxisSize: .min,
+                      mainAxisAlignment: .center,
+                      spacing: 16.0,
+                      children: [
+                        Icon(
+                          MaterialSymbols.touch_app_rounded,
+                          fill: 1.0,
+                          opticalSize: 40.0,
+                          size: 40.0,
+                          color: contentColor,
+                        ),
+                        Text(
+                          "Button",
+                          style: typescaleTheme.headlineLargeEmphasized
+                              .toTextStyle(color: contentColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
     final shape = MorphBorder(
       side: BorderSide(
         color: colorTheme.onSecondaryContainer,

@@ -4,7 +4,12 @@ export 'src/material/extensions.dart';
 export 'src/material/window_size_class.dart';
 export 'src/material/shape/outline.dart';
 export 'src/material/center_optically.dart';
-export 'src/material/surface.dart';
+
+export 'src/material/surface/surface_decoration.dart';
+export 'src/material/surface/surface_decorations.dart';
+export 'src/material/surface/surface_interaction.dart';
+export 'src/material/surface/surface_material.dart';
+export 'src/material/surface/surface.dart';
 
 export 'src/material/color/palette_theme_data.dart';
 export 'src/material/color/palette_theme.dart';
