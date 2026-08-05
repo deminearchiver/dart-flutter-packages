@@ -1,7 +1,7 @@
+import 'dart:collection';
+
 import 'package:collection/collection.dart';
 import 'package:material/src/material/flutter.dart';
-
-const _decorationsEquality = ListEquality<SurfaceDecoration>();
 
 const _paintsEquality = ListEquality<SurfaceDecorationPaint>();
 
@@ -260,9 +260,16 @@ class _SurfaceInkFeature extends InkFeature {
       _backgroundDecorations;
   set backgroundDecorations(List<SurfaceDecorationPaint> value) {
     if (_paintsEquality.equals(_backgroundDecorations, value)) return;
-    _backgroundPaintersCache?.forEach(_disposePainter);
-    _backgroundPaintersCache = null;
+    final oldBackgroundDecorations = _backgroundDecorations;
     _backgroundDecorations = value;
+    if (_backgroundPaintersCache case final oldBackgroundPainters?) {
+      SurfaceDecorationHelper.updatePainters(
+        oldBackgroundPainters,
+        oldDecorations: oldBackgroundDecorations,
+        newDecorations: _backgroundDecorations,
+        createPainter: _createPainter,
+      );
+    }
     controller.markNeedsPaint();
   }
 
@@ -286,7 +293,7 @@ class _SurfaceInkFeature extends InkFeature {
   List<SurfaceDecorationPainterBase> get _backgroundPainters =>
       _backgroundPaintersCache ??= backgroundDecorations
           .map(_createPainter)
-          .toList(growable: false);
+          .toList();
 
   SurfaceDecorationPainterBase _createPainter(SurfaceDecorationPaint paint) =>
       switch (paint) {
@@ -324,7 +331,7 @@ class _SurfaceInkFeature extends InkFeature {
 
   @override
   void dispose() {
-    _backgroundPaintersCache?.forEach(_disposePainter);
+    _backgroundPaintersCache?.forEach(SurfaceDecorationHelper.dispose);
     super.dispose();
   }
 }
@@ -398,9 +405,16 @@ class _RenderSurfacePaint extends RenderProxyBox {
       _backgroundDecorations;
   set backgroundDecorations(List<SurfaceDecorationPaint> value) {
     if (_paintsEquality.equals(_backgroundDecorations, value)) return;
-    _backgroundPaintersCache?.forEach(_disposePainter);
-    _backgroundPaintersCache = null;
+    final oldBackgroundDecorations = _backgroundDecorations;
     _backgroundDecorations = value;
+    if (_backgroundPaintersCache case final oldBackgroundPainters?) {
+      SurfaceDecorationHelper.updatePainters(
+        oldBackgroundPainters,
+        oldDecorations: oldBackgroundDecorations,
+        newDecorations: _backgroundDecorations,
+        createPainter: _createPainter,
+      );
+    }
     markNeedsPaint();
   }
 
@@ -409,9 +423,16 @@ class _RenderSurfacePaint extends RenderProxyBox {
       _foregroundDecorations;
   set foregroundDecorations(List<SurfaceDecorationPaint> value) {
     if (_paintsEquality.equals(_foregroundDecorations, value)) return;
-    _foregroundPaintersCache?.forEach(_disposePainter);
-    _foregroundPaintersCache = null;
+    final oldForegroundDecorations = _foregroundDecorations;
     _foregroundDecorations = value;
+    if (_foregroundPaintersCache case final oldForegroundPainters?) {
+      SurfaceDecorationHelper.updatePainters(
+        oldForegroundPainters,
+        oldDecorations: oldForegroundDecorations,
+        newDecorations: _foregroundDecorations,
+        createPainter: _createPainter,
+      );
+    }
     markNeedsPaint();
   }
 
@@ -439,13 +460,13 @@ class _RenderSurfacePaint extends RenderProxyBox {
   List<SurfaceDecorationPainterBase> get _backgroundPainters =>
       _backgroundPaintersCache ??= backgroundDecorations
           .map(_createPainter)
-          .toList(growable: false);
+          .toList();
 
   List<SurfaceDecorationPainterBase>? _foregroundPaintersCache;
   List<SurfaceDecorationPainterBase> get _foregroundPainters =>
       _foregroundPaintersCache ??= foregroundDecorations
           .map(_createPainter)
-          .toList(growable: false);
+          .toList();
 
   SurfaceDecorationPainterBase _createPainter(SurfaceDecorationPaint paint) =>
       switch (paint) {
@@ -462,9 +483,9 @@ class _RenderSurfacePaint extends RenderProxyBox {
   @override
   void detach() {
     _clipPathCache = null;
-    _backgroundPaintersCache?.forEach(_disposePainter);
+    _backgroundPaintersCache?.forEach(SurfaceDecorationHelper.dispose);
     _backgroundPaintersCache = null;
-    _foregroundPaintersCache?.forEach(_disposePainter);
+    _foregroundPaintersCache?.forEach(SurfaceDecorationHelper.dispose);
     _foregroundPaintersCache = null;
     super.detach();
     markNeedsPaint();
@@ -472,8 +493,8 @@ class _RenderSurfacePaint extends RenderProxyBox {
 
   @override
   void dispose() {
-    _backgroundPaintersCache?.forEach(_disposePainter);
-    _foregroundPaintersCache?.forEach(_disposePainter);
+    _backgroundPaintersCache?.forEach(SurfaceDecorationHelper.dispose);
+    _foregroundPaintersCache?.forEach(SurfaceDecorationHelper.dispose);
     super.dispose();
   }
 
@@ -490,8 +511,8 @@ class _RenderSurfacePaint extends RenderProxyBox {
   void paint(PaintingContext context, Offset offset) {
     final rect = offset & size;
 
-    if (backgroundDecorations.any(_isComplex) ||
-        foregroundDecorations.any(_isComplex)) {
+    if (backgroundDecorations.any(SurfaceDecorationHelper.isComplex) ||
+        foregroundDecorations.any(SurfaceDecorationHelper.isComplex)) {
       context.setIsComplexHint();
     }
 
@@ -550,13 +571,154 @@ class _RenderSurfacePaint extends RenderProxyBox {
       };
 }
 
-bool _isComplex(SurfaceDecorationPaint paint) => paint.isComplex;
+abstract final class SurfaceDecorationHelper {
+  static bool isComplex(SurfaceDecorationPaint paint) => paint.isComplex;
 
-void _disposePainter(SurfaceDecorationPainterBase painter) {
-  switch (painter) {
-    case EagerSurfaceDecorationPaint():
-      break;
-    case SurfaceDecorationPainter():
-      painter.dispose();
+  static bool dispose(SurfaceDecorationPainterBase painter) {
+    switch (painter) {
+      case EagerSurfaceDecorationPaint():
+        return false;
+      case SurfaceDecorationPainter():
+        painter.dispose();
+        return true;
+    }
+  }
+
+  static void updatePainters(
+    List<SurfaceDecorationPainterBase> painters, {
+    required List<SurfaceDecorationPaint> oldDecorations,
+    required List<SurfaceDecorationPaint> newDecorations,
+    required SurfaceDecorationPainterBase Function(SurfaceDecorationPaint)
+    createPainter,
+  }) {
+    assert(painters.length == oldDecorations.length);
+    assert(!identical(newDecorations, oldDecorations));
+
+    final newSize = newDecorations.length;
+    if (newSize == 0) {
+      painters
+        ..forEach(dispose)
+        ..clear();
+      return;
+    }
+
+    final oldSize = painters.length;
+    if (oldSize == 0) {
+      for (final paint in newDecorations) {
+        painters.add(createPainter(paint));
+      }
+      return;
+    }
+
+    var start = 0;
+    while (start < oldSize &&
+        start < newSize &&
+        oldDecorations[start] == newDecorations[start]) {
+      start++;
+    }
+
+    if (start == oldSize) {
+      for (var i = start; i < newSize; i++) {
+        painters.add(createPainter(newDecorations[i]));
+      }
+      return;
+    }
+
+    if (start == newSize) {
+      for (var i = start; i < oldSize; i++) {
+        dispose(painters[i]);
+      }
+      painters.length = newSize;
+      return;
+    }
+
+    var oldEnd = oldSize - 1;
+    var newEnd = newSize - 1;
+    while (oldEnd >= start &&
+        newEnd >= start &&
+        oldDecorations[oldEnd] == newDecorations[newEnd]) {
+      oldEnd--;
+      newEnd--;
+    }
+
+    final oldMiddleSize = oldEnd - start + 1;
+    final newMiddleSize = newEnd - start + 1;
+
+    final middlePainters = <SurfaceDecorationPainterBase>[];
+
+    // TODO: try different values here, maybe bring down to 6?
+    const linearSearchThreshold = 8;
+
+    if (oldMiddleSize <= linearSearchThreshold &&
+        newMiddleSize <= linearSearchThreshold) {
+      final used = List<bool>.filled(oldMiddleSize, false);
+
+      for (var newIndex = start; newIndex <= newEnd; newIndex++) {
+        final paint = newDecorations[newIndex];
+        SurfaceDecorationPainterBase? painter;
+
+        for (var i = 0; i < oldMiddleSize; i++) {
+          if (used[i]) continue;
+
+          final oldIndex = start + i;
+          if (oldDecorations[oldIndex] == paint) {
+            used[i] = true;
+            painter = painters[oldIndex];
+            break;
+          }
+        }
+
+        middlePainters.add(painter ?? createPainter(paint));
+      }
+
+      for (var i = 0; i < oldMiddleSize; i++) {
+        if (!used[i]) {
+          dispose(painters[start + i]);
+        }
+      }
+    } else {
+      final oldDecorationToPainters =
+          HashMap<
+            SurfaceDecorationPaint,
+            ListQueue<SurfaceDecorationPainterBase>
+          >();
+
+      for (var i = start; i <= oldEnd; i++) {
+        oldDecorationToPainters.update(
+          oldDecorations[i],
+          (queue) => queue..addLast(painters[i]),
+          ifAbsent: () => ListQueue()..add(painters[i]),
+        );
+      }
+
+      for (var i = start; i <= newEnd; i++) {
+        final paint = newDecorations[i];
+        final queue = oldDecorationToPainters[paint];
+
+        if (queue == null || queue.isEmpty) {
+          middlePainters.add(createPainter(paint));
+          continue;
+        }
+
+        middlePainters.add(queue.removeFirst());
+
+        if (queue.isEmpty) {
+          oldDecorationToPainters.remove(paint);
+        }
+      }
+
+      for (final queue in oldDecorationToPainters.values) {
+        queue.forEach(dispose);
+      }
+    }
+
+    final suffix = painters.sublist(oldEnd + 1);
+
+    painters
+      ..length = start
+      ..addAll(middlePainters)
+      ..addAll(suffix);
+
+    assert(painters.length == newSize);
   }
 }
