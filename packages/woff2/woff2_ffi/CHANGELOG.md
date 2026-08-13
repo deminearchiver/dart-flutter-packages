@@ -1,4 +1,4 @@
-## Unreleased
+## 0.1.2
 
 - Fixed Dart build hook failing on Linux.
 

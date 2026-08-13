@@ -1,6 +1,6 @@
 name: woff2_ffi
 description: FFI bindings for the WOFF2 reference implementation library.
-version: 0.1.1
+version: 0.1.2
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/woff2/woff2_ffi
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
