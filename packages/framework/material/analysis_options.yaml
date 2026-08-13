@@ -1,3 +1,12 @@
 include:
   - package:deminearchiver_lints/base.yaml
   - package:deminearchiver_lints/package_loose.yaml
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
