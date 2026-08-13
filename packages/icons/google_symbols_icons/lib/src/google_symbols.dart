@@ -6385,6 +6385,9 @@ abstract final class GoogleSymbols {
   /// Google Symbols icon named "high_quality".
   static const IconData high_quality = IconData(0xe024, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols icon named "high_quality_off".
+  static const IconData high_quality_off = IconData(0xffed6, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols icon named "high_res".
   static const IconData high_res = IconData(0xf54b, fontFamily: fontFamily, fontPackage: fontPackage);
 
