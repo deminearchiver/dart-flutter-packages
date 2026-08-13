@@ -11,8 +11,7 @@ typedef MeasuredFeatures = List<ProgressableFeature>;
 @internal
 extension type const ProgressableFeature._((double progress, Feature feature) _)
     implements Object {
-  const ProgressableFeature(double progress, Feature feature)
-    : this._((progress, feature));
+  const new(double progress, Feature feature) : _ = (progress, feature);
 
   double get progress => _.$1;
   Feature get feature => _.$2;
@@ -44,13 +43,10 @@ DoubleMapper featureMapper(
 
 @internal
 extension type const DistanceVertex._(
-  (double distance, ProgressableFeature f1, ProgressableFeature f2) _
+  (double distance, ProgressableFeature f1, ProgressableFeature f2) _,
 ) implements Object {
-  const DistanceVertex(
-    double distance,
-    ProgressableFeature f1,
-    ProgressableFeature f2,
-  ) : this._((distance, f1, f2));
+  const new(double distance, ProgressableFeature f1, ProgressableFeature f2)
+    : _ = (distance, f1, f2);
 
   double get distance => _.$1;
   ProgressableFeature get f1 => _.$2;
@@ -93,9 +89,7 @@ List<(double, double)> doMapping(
 
 const _identityMapping = <(double, double)>[(0.0, 0.0), (0.5, 0.5)];
 
-final class _MappingHelper {
-  _MappingHelper();
-
+final class _MappingHelper() {
   // List of mappings from progress in the start shape to progress in the end shape.
   // We keep this list sorted by the first element.
   final mapping = <(double, double)>[];

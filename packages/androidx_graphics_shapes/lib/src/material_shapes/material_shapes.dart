@@ -1,10 +1,10 @@
 import 'dart:math' as math;
+import 'dart:ui' show lerpDouble;
 
+import 'package:androidx_graphics_shapes/androidx_graphics_shapes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:vector_math/vector_math_64.dart';
-
-import '../shapes/shapes.dart';
 
 extension RoundedPolygonExtension on RoundedPolygon {
   // Matrix calculations inlined to avoid unnecessary memory allocation.
@@ -674,13 +674,13 @@ abstract final class MaterialShapes {
 
 extension type const _RepeatDelta._((double angle, double distance) _)
     implements Object {
-  const _RepeatDelta({required double angle, required double distance})
-    : this._((angle, distance));
+  const new({required double angle, required double distance})
+    : _ = (angle, distance);
 
-  _RepeatDelta.from(double dx, double dy)
+  new from(double dx, double dy)
     : this(angle: math.atan2(dy, dx), distance: math.sqrt(dx * dx + dy * dy));
 
-  _RepeatDelta.fromOffsetAndCenter(Offset offset, Offset center)
+  new fromOffsetAndCenter(Offset offset, Offset center)
     : this.from(offset.dx - center.dx, offset.dy - center.dy);
 
   double get angle => _.$1;
@@ -693,15 +693,13 @@ extension type const _RepeatDelta._((double angle, double distance) _)
 
 @internal
 extension type const OffsetAndRounding._(
-  (Offset offset, CornerRounding rounding) _
+  (Offset offset, CornerRounding rounding) _,
 ) implements Object {
-  const OffsetAndRounding(Offset offset, [CornerRounding rounding = .unrounded])
-    : this._((offset, rounding));
+  const new(Offset offset, [CornerRounding rounding = .unrounded])
+    : _ = (offset, rounding);
 
-  const OffsetAndRounding.from({
-    required Offset offset,
-    CornerRounding rounding = .unrounded,
-  }) : this(offset, rounding);
+  const new from({required Offset offset, CornerRounding rounding = .unrounded})
+    : _ = (offset, rounding);
 
   Offset get offset => _.$1;
 
@@ -728,23 +726,18 @@ extension on double {
   double _toRadians() => this * (math.pi / 180.0);
 }
 
-abstract class DynamicPathBorder extends OutlinedBorder {
-  const DynamicPathBorder({
-    super.side,
-    this.strokeCap = .butt,
-    this.strokeJoin = .miter,
-    this.strokeMiterLimit = 4.0,
-  });
+abstract class const DynamicPathBorder({
+  super.side,
 
   /// See [Paint.strokeCap].
-  final StrokeCap strokeCap;
+  final StrokeCap strokeCap = .butt,
 
   /// See [Paint.strokeJoin].
-  final StrokeJoin strokeJoin;
+  final StrokeJoin strokeJoin = .miter,
 
   /// See [Paint.strokeMiterLimit].
-  final double strokeMiterLimit;
-
+  final double strokeMiterLimit = 4.0,
+}) extends OutlinedBorder {
   @override
   DynamicPathBorder copyWith({
     BorderSide? side,
@@ -914,14 +907,11 @@ abstract class DynamicPathBorder extends OutlinedBorder {
   }
 }
 
-abstract class StaticPathBorder extends DynamicPathBorder {
-  const StaticPathBorder({
-    super.side,
-    super.strokeCap,
-    super.strokeJoin,
-    super.strokeMiterLimit,
-    this.squash = 0.0,
-  });
+abstract class const StaticPathBorder({
+  super.side,
+  super.strokeCap,
+  super.strokeJoin,
+  super.strokeMiterLimit,
 
   /// How much of the aspect ratio of the attached widget to take on.
   ///
@@ -939,8 +929,8 @@ abstract class StaticPathBorder extends DynamicPathBorder {
   /// if the widget is square to begin with.
   ///
   /// Defaults to zero, and must be between zero and one, inclusive.
-  final double squash;
-
+  final double squash = 0.0,
+}) extends DynamicPathBorder {
   /// The static path of this border.
   ///
   /// The path must be normalized to fit exactly into a single unit square,
@@ -1028,22 +1018,18 @@ abstract class StaticPathBorder extends DynamicPathBorder {
   );
 }
 
-class RoundedPolygonBorder extends StaticPathBorder {
-  RoundedPolygonBorder({
-    super.side,
-    super.strokeCap,
-    super.strokeJoin,
-    super.strokeMiterLimit,
-    super.squash,
-    required this.polygon,
-    this.startAngle = 0.0,
-  }) : path = polygon.toPath(startAngle: startAngle);
-
-  final RoundedPolygon polygon;
-  final double startAngle;
-
+// ignore: prefer_const_constructors_in_immutables
+class RoundedPolygonBorder({
+  super.side,
+  super.strokeCap,
+  super.strokeJoin,
+  super.strokeMiterLimit,
+  super.squash,
+  required final RoundedPolygon polygon,
+  final double startAngle = 0.0,
+}) extends StaticPathBorder {
   @override
-  final Path path;
+  final Path path = polygon.toPath(startAngle: startAngle);
 
   @override
   RoundedPolygonBorder copyWith({
@@ -1082,15 +1068,11 @@ class RoundedPolygonBorder extends StaticPathBorder {
         side: BorderSide.lerp(a.side, side, t),
         strokeCap: t < 0.5 ? a.strokeCap : strokeCap,
         strokeJoin: t < 0.5 ? a.strokeJoin : strokeJoin,
-        strokeMiterLimit: interpolateDouble(
-          a.strokeMiterLimit,
-          strokeMiterLimit,
-          t,
-        ),
-        squash: interpolateDouble(a.squash, squash, t),
+        strokeMiterLimit: lerpDouble(a.strokeMiterLimit, strokeMiterLimit, t)!,
+        squash: lerpDouble(a.squash, squash, t)!,
         morph: Morph(a.polygon, polygon),
         progress: t,
-        startAngle: interpolateDouble(a.startAngle, startAngle, t),
+        startAngle: lerpDouble(a.startAngle, startAngle, t)!,
       );
     }
     return super.lerpFrom(a, t);
@@ -1103,15 +1085,11 @@ class RoundedPolygonBorder extends StaticPathBorder {
         side: BorderSide.lerp(side, b.side, t),
         strokeCap: t < 0.5 ? strokeCap : b.strokeCap,
         strokeJoin: t < 0.5 ? strokeJoin : b.strokeJoin,
-        strokeMiterLimit: interpolateDouble(
-          strokeMiterLimit,
-          b.strokeMiterLimit,
-          t,
-        ),
-        squash: interpolateDouble(squash, b.squash, t),
+        strokeMiterLimit: lerpDouble(strokeMiterLimit, b.strokeMiterLimit, t)!,
+        squash: lerpDouble(squash, b.squash, t)!,
         morph: Morph(polygon, b.polygon),
         progress: t,
-        startAngle: interpolateDouble(startAngle, b.startAngle, t),
+        startAngle: lerpDouble(startAngle, b.startAngle, t)!,
       );
     }
     return super.lerpTo(b, t);
@@ -1167,24 +1145,19 @@ class RoundedPolygonBorder extends StaticPathBorder {
   );
 }
 
-class MorphBorder extends StaticPathBorder {
-  MorphBorder({
-    super.side,
-    super.strokeCap,
-    super.strokeJoin,
-    super.strokeMiterLimit,
-    super.squash,
-    required this.morph,
-    required this.progress,
-    this.startAngle = 0.0,
-  }) : path = morph.toPath(progress: progress, startAngle: startAngle);
-
-  final Morph morph;
-  final double progress;
-  final double startAngle;
-
+// ignore: prefer_const_constructors_in_immutables
+class MorphBorder({
+  super.side,
+  super.strokeCap,
+  super.strokeJoin,
+  super.strokeMiterLimit,
+  super.squash,
+  required final Morph morph,
+  required final double progress,
+  final double startAngle = 0.0,
+}) extends StaticPathBorder {
   @override
-  final Path path;
+  final Path path = morph.toPath(progress: progress, startAngle: startAngle);
 
   @override
   MorphBorder copyWith({
@@ -1226,15 +1199,11 @@ class MorphBorder extends StaticPathBorder {
         side: BorderSide.lerp(a.side, side, t),
         strokeCap: t < 0.5 ? a.strokeCap : strokeCap,
         strokeJoin: t < 0.5 ? a.strokeJoin : strokeJoin,
-        strokeMiterLimit: interpolateDouble(
-          a.strokeMiterLimit,
-          strokeMiterLimit,
-          t,
-        ),
-        squash: interpolateDouble(a.squash, squash, t),
+        strokeMiterLimit: lerpDouble(a.strokeMiterLimit, strokeMiterLimit, t)!,
+        squash: lerpDouble(a.squash, squash, t)!,
         morph: t < 0.5 ? a.morph : morph,
-        progress: interpolateDouble(a.progress, progress, t),
-        startAngle: interpolateDouble(a.startAngle, startAngle, t),
+        progress: lerpDouble(a.progress, progress, t)!,
+        startAngle: lerpDouble(a.startAngle, startAngle, t)!,
       );
     }
     return super.lerpFrom(a, t);
@@ -1247,15 +1216,11 @@ class MorphBorder extends StaticPathBorder {
         side: BorderSide.lerp(side, b.side, t),
         strokeCap: t < 0.5 ? strokeCap : b.strokeCap,
         strokeJoin: t < 0.5 ? strokeJoin : b.strokeJoin,
-        strokeMiterLimit: interpolateDouble(
-          strokeMiterLimit,
-          b.strokeMiterLimit,
-          t,
-        ),
-        squash: interpolateDouble(squash, b.squash, t),
+        strokeMiterLimit: lerpDouble(strokeMiterLimit, b.strokeMiterLimit, t)!,
+        squash: lerpDouble(squash, b.squash, t)!,
         morph: t < 0.5 ? morph : b.morph,
-        progress: interpolateDouble(progress, b.progress, t),
-        startAngle: interpolateDouble(startAngle, b.startAngle, t),
+        progress: lerpDouble(progress, b.progress, t)!,
+        startAngle: lerpDouble(startAngle, b.startAngle, t)!,
       );
     }
     return super.lerpTo(b, t);

@@ -19,9 +19,7 @@ import 'utils.dart';
 ///
 /// By using features, you can manipulate polygon shapes
 /// with more context and control.
-abstract class Feature {
-  const Feature(this.cubics);
-
+sealed class const Feature(final List<Cubic> cubics) {
   /// Group a list of [Cubic] objects to a feature that
   /// should be ignored in the default [Morph] mapping.
   /// The feature can have any indentation.
@@ -47,7 +45,7 @@ abstract class Feature {
   /// [cubics] - The list of raw cubics describing the feature's shape.
   ///
   /// Throws [ArgumentError] for lists of empty cubics or non-continuous cubics.
-  factory Feature.ignorable(List<Cubic> cubics) => validated(Edge(cubics));
+  factory ignorable(List<Cubic> cubics) => validated(Edge(cubics));
 
   /// Group a [Cubic] object to an edge
   /// (neither inward or outward identification in a shape).
@@ -55,25 +53,21 @@ abstract class Feature {
   /// [cubic] - The raw cubic describing the edge's shape.
   ///
   /// Throws [ArgumentError] for lists of empty cubics or non-continuous cubics.
-  factory Feature.edge(Cubic cubic) => Edge([cubic]);
+  factory edge(Cubic cubic) => Edge([cubic]);
 
   /// Group a list of [Cubic] objects to a convex corner
   /// (outward indentation in a shape).
   ///
   /// [cubics] - The list of raw cubics describing the corner's shape
   /// Throws [ArgumentError] for lists of empty cubics or non-continuous cubics.
-  factory Feature.convexCorner(List<Cubic> cubics) =>
-      validated(Corner(cubics, true));
+  factory convexCorner(List<Cubic> cubics) => validated(Corner(cubics, true));
 
   /// Group a list of [Cubic] objects to a concave corner
   /// (inward indentation in a shape).
   ///
   /// [cubics] - The list of raw cubics describing the corner's shape.
   /// Throws [ArgumentError] for lists of empty cubics or non-continuous cubics.
-  factory Feature.concaveCorner(List<Cubic> cubics) =>
-      validated(Corner(cubics, false));
-
-  final List<Cubic> cubics;
+  factory concaveCorner(List<Cubic> cubics) => validated(Corner(cubics, false));
 
   /// Transforms the points in this [Feature] with the given [PointTransformer]
   /// and returns a new [Feature].
@@ -148,9 +142,7 @@ abstract class Feature {
 /// Edges lie between corners and have no vertex or concavity;
 /// the curves are simply straight lines (represented by Cubic curves).
 @internal
-final class Edge extends Feature {
-  const Edge(super.cubics);
-
+final class const Edge(super.cubics) extends Feature {
   @override
   Edge transformed(PointTransformer f) => Edge([
     // Performance: Builds the list by avoiding creating an unnecessary Iterator to
@@ -179,11 +171,8 @@ final class Edge extends Feature {
 }
 
 @internal
-final class Corner extends Feature {
-  const Corner(super.cubics, [this.convex = true]);
-
-  final bool convex;
-
+final class const Corner(super.cubics, [final bool convex = true])
+    extends Feature {
   @override
   Corner transformed(PointTransformer f) => Corner([
     // Performance: Builds the list by avoiding creating an unnecessary Iterator to

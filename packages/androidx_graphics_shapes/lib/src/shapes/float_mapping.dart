@@ -39,10 +39,8 @@ double linearMap(List<double> xValues, List<double> yValues, double x) {
 }
 
 @internal
-final class DoubleMapper {
-  DoubleMapper(List<(double, double)> mappings)
-    : _sourceValues = .filled(mappings.length, 0.0),
-      _targetValues = .filled(mappings.length, 0.0) {
+final class DoubleMapper(List<(double, double)> mappings) {
+  this {
     for (var i = 0; i < mappings.length; i++) {
       _sourceValues[i] = mappings[i].$1;
       _targetValues[i] = mappings[i].$2;
@@ -51,9 +49,9 @@ final class DoubleMapper {
     validateProgress(_targetValues);
   }
 
-  final List<double> _sourceValues;
+  final List<double> _sourceValues = .filled(mappings.length, 0.0);
 
-  final List<double> _targetValues;
+  final List<double> _targetValues = .filled(mappings.length, 0.0);
 
   double map(double x) => linearMap(_sourceValues, _targetValues, x);
 

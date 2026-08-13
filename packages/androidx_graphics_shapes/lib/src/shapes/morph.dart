@@ -10,18 +10,14 @@ import 'polygon_measure.dart';
 import 'rounded_polygon.dart';
 import 'utils.dart';
 
-final class Morph {
-  Morph(this.start, this.end)
-    : morphMatch = UnmodifiableListView(match(start, end));
-
+final class Morph(
+  @internal final RoundedPolygon start,
+  @internal final RoundedPolygon end,
+) {
   @internal
-  final RoundedPolygon start;
-
-  @internal
-  final RoundedPolygon end;
-
-  @internal
-  final List<(Cubic, Cubic)> morphMatch;
+  final List<(Cubic, Cubic)> morphMatch = UnmodifiableListView(
+    match(start, end),
+  );
 
   Rect calculateBounds({bool approximate = true}) {
     final startBounds = start.calculateBounds(approximate: approximate);

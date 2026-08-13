@@ -8,11 +8,11 @@ import 'utils.dart';
 @internal
 extension type const Point._((double x, double y) _) implements Object {
   @internal
-  const Point.fromRaw((double x, double y) value) : this._(value);
+  const new fromRaw((double x, double y) value) : _ = value;
 
-  const Point(double x, double y) : this.fromRaw((x, y));
+  const new(double x, double y) : _ = (x, y);
 
-  const Point.from({required double x, required double y}) : this(x, y);
+  const new from({required double x, required double y}) : _ = (x, y);
 
   (double x, double y) get asRaw => _;
 

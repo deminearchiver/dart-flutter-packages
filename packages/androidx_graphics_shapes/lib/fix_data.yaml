@@ -1,0 +1,8 @@
+version: 1
+transforms:
+  - title: "Replace with package:androidx_graphics_shapes/androidx_graphics_shapes.dart"
+    date: 2026-08-13
+    library: package:androidx_graphics_shapes/shapes.dart
+    changes:
+      - kind: replacedBy
+        newLibrary: package:androidx_graphics_shapes/androidx_graphics_shapes.dart

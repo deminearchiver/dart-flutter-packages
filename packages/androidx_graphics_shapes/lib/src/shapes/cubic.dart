@@ -8,13 +8,11 @@ import 'features.dart';
 import 'point.dart';
 import 'utils.dart';
 
-abstract class Cubic {
-  const Cubic();
-
+abstract class const Cubic() {
   @internal
-  const factory Cubic.empty(double x0, double y0) = _Cubic.empty;
+  const factory empty(double x0, double y0) = _Cubic.empty;
 
-  const factory Cubic.from(
+  const factory from(
     double anchor0X,
     double anchor0Y,
     double control0X,
@@ -26,26 +24,25 @@ abstract class Cubic {
   ) = _Cubic;
 
   @internal
-  const factory Cubic.fromPoints(
+  const factory fromPoints(
     Point anchor0,
     Point control0,
     Point control1,
     Point anchor1,
   ) = _CubicFromPoints;
 
-  factory Cubic.straightLine(double x0, double y0, double x1, double y1) =>
-      .from(
-        x0,
-        y0,
-        interpolateDouble(x0, x1, 1.0 / 3.0),
-        interpolateDouble(y0, y1, 1.0 / 3.0),
-        interpolateDouble(x0, x1, 2.0 / 3.0),
-        interpolateDouble(y0, y1, 2.0 / 3.0),
-        x1,
-        y1,
-      );
+  factory straightLine(double x0, double y0, double x1, double y1) => .from(
+    x0,
+    y0,
+    interpolateDouble(x0, x1, 1.0 / 3.0),
+    interpolateDouble(y0, y1, 1.0 / 3.0),
+    interpolateDouble(x0, x1, 2.0 / 3.0),
+    interpolateDouble(y0, y1, 2.0 / 3.0),
+    x1,
+    y1,
+  );
 
-  factory Cubic.circularArc(
+  factory circularArc(
     double centerX,
     double centerY,
     double x0,
@@ -443,60 +440,27 @@ abstract class Cubic {
         );
 }
 
-class _Cubic extends Cubic {
-  const _Cubic(
-    this.anchor0X,
-    this.anchor0Y,
-    this.control0X,
-    this.control0Y,
-    this.control1X,
-    this.control1Y,
-    this.anchor1X,
-    this.anchor1Y,
-  );
-
-  const _Cubic.empty(double x0, double y0)
-    : this(x0, y0, x0, y0, x0, y0, x0, y0);
-
-  @override
-  final double anchor0X;
-
-  @override
-  final double anchor0Y;
-
-  @override
-  final double control0X;
-
-  @override
-  final double control0Y;
-
-  @override
-  final double control1X;
-
-  @override
-  final double control1Y;
-
-  @override
-  final double anchor1X;
-
-  @override
-  final double anchor1Y;
+class const _Cubic(
+  @override final double anchor0X,
+  @override final double anchor0Y,
+  @override final double control0X,
+  @override final double control0Y,
+  @override final double control1X,
+  @override final double control1Y,
+  @override final double anchor1X,
+  @override final double anchor1Y,
+) extends Cubic {
+  const new empty(double x0, double y0) : this(x0, y0, x0, y0, x0, y0, x0, y0);
 }
 
-class _CubicFromPoints extends Cubic {
-  const _CubicFromPoints(
-    this.anchor0,
-    this.control0,
-    this.control1,
-    this.anchor1,
-  );
-
+class const _CubicFromPoints(
+  @override final Point anchor0,
+  @override final Point control0,
+  @override final Point control1,
+  @override final Point anchor1,
+) extends Cubic {
   // ignore: unused_element
-  const _CubicFromPoints.empty(Point p0)
-    : anchor0 = p0,
-      control0 = p0,
-      control1 = p0,
-      anchor1 = p0;
+  const new empty(Point p0) : this(p0, p0, p0, p0);
 
   @override
   double get anchor0X => anchor0.x;
@@ -521,18 +485,6 @@ class _CubicFromPoints extends Cubic {
 
   @override
   double get anchor1Y => anchor1.y;
-
-  @override
-  final Point anchor0;
-
-  @override
-  final Point control0;
-
-  @override
-  final Point control1;
-
-  @override
-  final Point anchor1;
 
   @override
   String toString() =>
@@ -574,13 +526,11 @@ typedef TransformResult = (double x, double y);
 
 typedef PointTransformer = TransformResult Function(double x, double y);
 
-abstract class MutableCubic extends Cubic {
-  MutableCubic();
-
+abstract class MutableCubic() extends Cubic {
   @internal
-  factory MutableCubic.empty(double x0, double y0) = _MutableCubic.empty;
+  factory empty(double x0, double y0) = _MutableCubic.empty;
 
-  factory MutableCubic.from(
+  factory from(
     double anchor0X,
     double anchor0Y,
     double control0X,
@@ -591,7 +541,7 @@ abstract class MutableCubic extends Cubic {
     double anchor1Y,
   ) = _MutableCubic;
 
-  factory MutableCubic.fromCubic(Cubic other) => .from(
+  factory fromCubic(Cubic other) => .from(
     other.anchor0X,
     other.anchor0Y,
     other.control0X,
@@ -663,42 +613,15 @@ abstract class MutableCubic extends Cubic {
   int get hashCode => identityHashCode(this);
 }
 
-class _MutableCubic extends MutableCubic {
-  _MutableCubic(
-    this.anchor0X,
-    this.anchor0Y,
-    this.control0X,
-    this.control0Y,
-    this.control1X,
-    this.control1Y,
-    this.anchor1X,
-    this.anchor1Y,
-  );
-
-  _MutableCubic.empty(double x0, double y0)
-    : this(x0, y0, x0, y0, x0, y0, x0, y0);
-
-  @override
-  double anchor0X;
-
-  @override
-  double anchor0Y;
-
-  @override
-  double control0X;
-
-  @override
-  double control0Y;
-
-  @override
-  double control1X;
-
-  @override
-  double control1Y;
-
-  @override
-  double anchor1X;
-
-  @override
-  double anchor1Y;
+class _MutableCubic(
+  @override var double anchor0X,
+  @override var double anchor0Y,
+  @override var double control0X,
+  @override var double control0Y,
+  @override var double control1X,
+  @override var double control1Y,
+  @override var double anchor1X,
+  @override var double anchor1Y,
+) extends MutableCubic {
+  new empty(double x0, double y0) : this(x0, y0, x0, y0, x0, y0, x0, y0);
 }

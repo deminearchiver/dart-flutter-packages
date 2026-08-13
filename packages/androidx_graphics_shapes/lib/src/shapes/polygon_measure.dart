@@ -11,13 +11,13 @@ import 'rounded_polygon.dart';
 import 'utils.dart';
 
 @internal
-final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
-  MeasuredPolygon._(
-    this._measurer,
-    this.features,
-    List<Cubic> cubics,
-    List<double> outlineProgress,
-  ) : super([]) {
+final class MeasuredPolygon._(
+  final Measurer _measurer,
+  final List<ProgressableFeature> features,
+  List<Cubic> cubics,
+  List<double> outlineProgress,
+) extends DelegatingList<MeasuredCubic> {
+  this : super([]) {
     if (outlineProgress.length != cubics.length + 1) {
       throw ArgumentError(
         "Outline progress size is expected to be the cubics size + 1",
@@ -51,10 +51,6 @@ final class MeasuredPolygon extends DelegatingList<MeasuredCubic> {
     // We could have removed empty cubics at the end. Ensure the last measured cubic ends at 1f
     this[length - 1].updateProgressRange(endOutlineProgress: 1.0);
   }
-
-  final Measurer _measurer;
-
-  final List<ProgressableFeature> features;
 
   MeasuredPolygon cutAndShift(double cuttingPoint) {
     // require(cuttingPoint in 0f..1f) { "Cutting point is expected to be between 0 and 1" }
@@ -207,13 +203,13 @@ abstract interface class Measurer {
 /// Outline progress is a value in [0..1) that represents the distance traveled
 /// along the overall outline path of the shape.
 @internal
-final class MeasuredCubic {
-  MeasuredCubic(
-    this._owner,
-    this.cubic,
-    this._startOutlineProgress,
-    this._endOutlineProgress,
-  ) : measuredSize = _owner._measurer.measureCubic(cubic) {
+final class MeasuredCubic(
+  final MeasuredPolygon _owner,
+  final Cubic cubic,
+  var double _startOutlineProgress,
+  var double _endOutlineProgress,
+) {
+  this {
     if (startOutlineProgress < 0.0 || startOutlineProgress > 1.0) {
       throw ArgumentError.value(
         startOutlineProgress,
@@ -235,19 +231,11 @@ final class MeasuredCubic {
     }
   }
 
-  final MeasuredPolygon _owner;
-
-  final Cubic cubic;
-
-  double _startOutlineProgress;
-
   double get startOutlineProgress => _startOutlineProgress;
-
-  double _endOutlineProgress;
 
   double get endOutlineProgress => _endOutlineProgress;
 
-  final double measuredSize;
+  final double measuredSize = _owner._measurer.measureCubic(cubic);
 
   @internal
   void updateProgressRange({
@@ -316,9 +304,7 @@ final class MeasuredCubic {
 /// 98.5% accuracy on the case of a circular arc, which is the worst case for
 /// our standard shapes.
 @internal
-final class LengthMeasurer implements Measurer {
-  const LengthMeasurer();
-
+final class const LengthMeasurer() implements Measurer {
   (double, double) _closestProgressTo(Cubic cubic, double threshold) {
     var total = 0.0;
     var remainder = threshold;

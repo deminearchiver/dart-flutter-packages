@@ -1,14 +1,14 @@
-class CornerRounding {
-  const CornerRounding([this.radius = 0.0, this.smoothing = 0.0])
-    : assert(radius >= 0.0),
-      assert(smoothing >= 0.0 && smoothing <= 1.0);
+import 'package:meta/meta.dart';
 
-  const CornerRounding.from({double radius = 0.0, double smoothing = 0.0})
+@immutable
+class const CornerRounding([
+  final double radius = 0.0,
+  final double smoothing = 0.0,
+]) {
+  this : assert(radius >= 0.0), assert(smoothing >= 0.0 && smoothing <= 1.0);
+
+  const new from({double radius = 0.0, double smoothing = 0.0})
     : this(radius, smoothing);
-
-  final double radius;
-
-  final double smoothing;
 
   @override
   bool operator ==(Object other) =>

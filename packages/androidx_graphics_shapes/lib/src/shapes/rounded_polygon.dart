@@ -13,10 +13,12 @@ import 'utils.dart';
 /// The RoundedPolygon class allows simple construction of polygonal shapes
 /// with optional rounding at the vertices. Polygons can be constructed
 /// with either the number of vertices desired or an ordered list of vertices.
-final class RoundedPolygon {
+final class RoundedPolygon(
+  final List<Feature> features,
+  @internal final Point center,
+) {
   @internal
-  RoundedPolygon(this.features, this.center)
-    : cubics = _buildCubics(features, center) {
+  this {
     var prevCubic = cubics[cubics.length - 1];
     for (var index = 0; index < cubics.length; index++) {
       final cubic = cubics[index];
@@ -61,7 +63,7 @@ final class RoundedPolygon {
   /// @throws IllegalArgumentException If [perVertexRounding] is not null and its size is not equal to
   ///   [numVertices].
   /// @throws IllegalArgumentException [numVertices] must be at least 3.
-  factory RoundedPolygon.regular({
+  factory regular({
     required int numVertices,
     double radius = 1.0,
     double centerX = 0.0,
@@ -81,10 +83,10 @@ final class RoundedPolygon {
     );
   }
 
-  factory RoundedPolygon.fromPolygon(RoundedPolygon source) =>
-      RoundedPolygon(source.features, source.center);
+  factory fromPolygon(RoundedPolygon source) =>
+      .new(source.features, source.center);
 
-  factory RoundedPolygon.fromVertices({
+  factory fromVertices({
     required List<double> vertices,
     CornerRounding rounding = .unrounded,
     List<CornerRounding>? perVertexRounding,
@@ -207,10 +209,10 @@ final class RoundedPolygon {
     final c = centerX == .minPositive || centerY == .minPositive
         ? calculateCenter(vertices)
         : Point(centerX, centerY);
-    return RoundedPolygon(tempFeatures, c);
+    return .new(tempFeatures, c);
   }
 
-  factory RoundedPolygon.fromFeatures({
+  factory fromFeatures({
     required List<Feature> features,
     double centerX = .nan,
     double centerY = .nan,
@@ -228,10 +230,10 @@ final class RoundedPolygon {
     final cX = centerX.isNaN ? calculateCenter(vertices).x : centerX;
     final cY = centerY.isNaN ? calculateCenter(vertices).y : centerY;
 
-    return RoundedPolygon(features, Point(cX, cY));
+    return .new(features, Point(cX, cY));
   }
 
-  factory RoundedPolygon.circle({
+  factory circle({
     int numVertices = 8,
     double radius = 1.0,
     double centerX = 0.0,
@@ -262,7 +264,7 @@ final class RoundedPolygon {
     );
   }
 
-  factory RoundedPolygon.rectangle({
+  factory rectangle({
     double width = 2.0,
     double height = 2.0,
     CornerRounding rounding = .unrounded,
@@ -284,7 +286,7 @@ final class RoundedPolygon {
     );
   }
 
-  factory RoundedPolygon.star({
+  factory star({
     required int numVerticesPerRadius,
     double radius = 1.0,
     double innerRadius = 0.5,
@@ -340,7 +342,7 @@ final class RoundedPolygon {
     );
   }
 
-  factory RoundedPolygon.pill({
+  factory pill({
     double width = 2.0,
     double height = 1.0,
     double smoothing = 0.0,
@@ -371,7 +373,7 @@ final class RoundedPolygon {
     );
   }
 
-  factory RoundedPolygon.pillStar({
+  factory pillStar({
     double width = 2.0,
     double height = 1.0,
     int numVerticesPerRadius = 8,
@@ -446,17 +448,12 @@ final class RoundedPolygon {
     );
   }
 
-  final List<Feature> features;
-
-  @internal
-  final Point center;
-
   double get centerX => center.x;
   double get centerY => center.y;
 
-  final List<Cubic> cubics;
+  final List<Cubic> cubics = _buildCubics(features, center);
 
-  RoundedPolygon transformed(PointTransformer f) => RoundedPolygon([
+  RoundedPolygon transformed(PointTransformer f) => .new([
     for (var i = 0; i < features.length; i++) features[i].transformed(f),
   ], center.transformed(f));
 
@@ -644,27 +641,20 @@ Point calculateCenter(List<double> vertices) {
   );
 }
 
-final class _RoundedCorner {
-  _RoundedCorner._({
-    required this.p0,
-    required this.p1,
-    required this.p2,
-    this.rounding,
-    required this.d1,
-    required this.d2,
-    required this.cornerRadius,
-    required this.smoothing,
-    required this.cosAngle,
-    required this.sinAngle,
-    required this.expectedRoundCut,
-  });
-
-  factory _RoundedCorner(
-    Point p0,
-    Point p1,
-    Point p2, [
-    CornerRounding? rounding,
-  ]) {
+final class _RoundedCorner._({
+  required final Point p0,
+  required final Point p1,
+  required final Point p2,
+  final CornerRounding? rounding,
+  required final Point d1,
+  required final Point d2,
+  required final double cornerRadius,
+  required final double smoothing,
+  required final double cosAngle,
+  required final double sinAngle,
+  required final double expectedRoundCut,
+}) {
+  factory(Point p0, Point p1, Point p2, [CornerRounding? rounding]) {
     final v01 = p0 - p1;
     final v21 = p2 - p1;
     final d01 = v01.distance;
@@ -699,8 +689,8 @@ final class _RoundedCorner {
           : 0.0;
     } else {
       // One (or both) of the sides is empty, not much we can do.
-      d1 = const Point(0.0, 0.0);
-      d2 = const Point(0.0, 0.0);
+      d1 = .zero;
+      d2 = .zero;
       cornerRadius = 0.0;
       smoothing = 0.0;
       cosAngle = 0.0;
@@ -708,7 +698,7 @@ final class _RoundedCorner {
       expectedRoundCut = 0.0;
     }
 
-    return _RoundedCorner._(
+    return ._(
       p0: p0,
       p1: p1,
       p2: p2,
@@ -722,19 +712,6 @@ final class _RoundedCorner {
       expectedRoundCut: expectedRoundCut,
     );
   }
-
-  final Point p0;
-  final Point p1;
-  final Point p2;
-  final CornerRounding? rounding;
-
-  final Point d1;
-  final Point d2;
-  final double cornerRadius;
-  final double smoothing;
-  final double cosAngle;
-  final double sinAngle;
-  final double expectedRoundCut;
 
   double get expectedCut => (1.0 + smoothing) * expectedRoundCut;
 

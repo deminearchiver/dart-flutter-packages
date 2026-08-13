@@ -1,3 +1,18 @@
+## Unreleased
+
+- Introduced the library `androidx_graphics_shapes`.
+  - The `shapes` library is now deprecated in favor of `androidx_graphics_shapes`.
+  - Added [data-driven fixes](https://github.com/flutter/flutter/blob/master/docs/contributing/Data-driven-Fixes.md) for automatic migration from `package:androidx_graphics_shapes/shapes.dart` to `package:androidx_graphics_shapes/androidx_graphics_shapes.dart`.
+
+- Bumped minimum SDK versions to Dart 3.13 and Flutter 3.47.
+  - Refactored classes and extension types to use Dart 3.13 [primary constructors](https://dart.dev/language/primary-constructors) and [concise constructor syntax](https://dart.dev/language/constructors#concise-constructor-syntax).
+  - Reformatted the library with [Dart 3.13 formatter changes](https://dart.dev/blog/announcing-dart-3-13#dart-formatter).
+
+- Made `Feature` a `sealed class`.
+  - This restricts subclass hierarchy solely to `Edge` and `Corner`, which are already `final` classes.
+
+- Minor internal changes.
+
 ## 1.6.1
 
 - Applied minor optimizations to `Cubic.split()` (cartesian optimization) and `Cubic.pointOnCurve()`.
