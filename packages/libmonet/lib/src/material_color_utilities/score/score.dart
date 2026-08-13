@@ -112,7 +112,7 @@ abstract final class Score {
 }
 
 extension type const _ScoredHct._(({Hct hct, double score}) _) {
-  const _ScoredHct(Hct hct, double score) : this._((hct: hct, score: score));
+  const new(Hct hct, double score) : this._((hct: hct, score: score));
 
   Hct get hct => _.hct;
 

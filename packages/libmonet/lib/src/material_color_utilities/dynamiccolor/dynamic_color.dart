@@ -4,7 +4,6 @@ import '../palettes/tonal_palette.dart';
 import '../utils/math_utils.dart';
 
 import 'color_spec.dart';
-import 'color_specs.dart';
 import 'tone_delta_pair.dart';
 import 'contrast_curve.dart';
 import 'dynamic_scheme.dart';
@@ -42,20 +41,42 @@ typedef DynamicSchemeCallback<T> = T Function(DynamicScheme scheme);
 /// @param contrastCurve Function that provides a contrast curve, given a DynamicScheme.
 /// @param toneDeltaPair Function that provides a tone delta pair, given a DynamicScheme.
 /// @param opacity Function that provides an opacity percentage, given a DynamicScheme.
-final class DynamicColor {
-  DynamicColor({
-    required this.name,
-    required this.palette,
-    this.isBackground = false,
-    this.chromaMultiplier,
-    this.background,
-    DynamicSchemeCallback<double>? tone,
-    this.secondBackground,
-    this.contrastCurve,
-    this.toneDeltaPair,
-    this.opacity,
-  }) : tone = tone ?? getInitialToneFromBackground(background),
-       _hctCache = <DynamicScheme, Hct>{} {
+final class DynamicColor({
+  /// The name of the dynamic color.
+  required final String name,
+
+  /// Function that provides a [TonalPalette] given [DynamicScheme].
+  /// A [TonalPalette] is defined by a hue and chroma, so this replaces
+  /// the need to specify hue/chroma. By providing a tonal palette,
+  /// when contrast adjustments are made, intended chroma can be preserved.
+  required final DynamicSchemeCallback<TonalPalette> palette,
+
+  /// Whether this dynamic color is a background,
+  /// with some other color as the foreground.
+  final bool isBackground = false,
+
+  /// Function that provides a chroma multiplier, given a [DynamicScheme].
+  final DynamicSchemeCallback<double>? chromaMultiplier,
+
+  /// Function that provides a background color, given a [DynamicScheme].
+  final DynamicSchemeCallback<DynamicColor?>? background,
+
+  /// Function that provides a tone, given a [DynamicScheme].
+  DynamicSchemeCallback<double>? tone,
+
+  /// Function that provides a second background color, given a [DynamicScheme].
+  final DynamicSchemeCallback<DynamicColor?>? secondBackground,
+
+  /// Function that provides a contrast curve, given a [DynamicScheme].
+  final DynamicSchemeCallback<ContrastCurve?>? contrastCurve,
+
+  /// Function that provides a tone delta pair, given a [DynamicScheme].
+  final DynamicSchemeCallback<ToneDeltaPair?>? toneDeltaPair,
+
+  /// Function that provides an opacity percentage, given a [DynamicScheme].
+  final DynamicSchemeCallback<double?>? opacity,
+}) {
+  this {
     if (background == null && secondBackground != null) {
       throw ArgumentError(
         "Color $name has secondBackground defined, "
@@ -83,51 +104,17 @@ final class DynamicColor {
   ///
   /// - [name] - The name of the dynamic color.
   /// - [argb] - The source color from which to extract the hue and chroma.
-  factory DynamicColor.fromArgb(String name, int argb) {
+  factory fromArgb(String name, int argb) {
     final hct = Hct.fromInt(argb);
     final palette = TonalPalette.fromInt(argb);
-    return DynamicColor(
-      name: name,
-      palette: (_) => palette,
-      tone: (_) => hct.tone,
-    );
+    return .new(name: name, palette: (_) => palette, tone: (_) => hct.tone);
   }
 
-  /// The name of the dynamic color.
-  final String name;
-
-  /// Function that provides a [TonalPalette] given [DynamicScheme].
-  /// A [TonalPalette] is defined by a hue and chroma, so this replaces
-  /// the need to specify hue/chroma. By providing a tonal palette,
-  /// when contrast adjustments are made, intended chroma can be preserved.
-  final DynamicSchemeCallback<TonalPalette> palette;
-
-  /// Whether this dynamic color is a background,
-  /// with some other color as the foreground.
-  final bool isBackground;
-
-  /// Function that provides a chroma multiplier, given a [DynamicScheme].
-  final DynamicSchemeCallback<double>? chromaMultiplier;
-
-  /// Function that provides a background color, given a [DynamicScheme].
-  final DynamicSchemeCallback<DynamicColor?>? background;
-
   /// Function that provides a tone, given a [DynamicScheme].
-  final DynamicSchemeCallback<double> tone;
+  final DynamicSchemeCallback<double> tone =
+      tone ?? getInitialToneFromBackground(background);
 
-  /// Function that provides a second background color, given a [DynamicScheme].
-  final DynamicSchemeCallback<DynamicColor?>? secondBackground;
-
-  /// Function that provides a contrast curve, given a [DynamicScheme].
-  final DynamicSchemeCallback<ContrastCurve?>? contrastCurve;
-
-  /// Function that provides a tone delta pair, given a [DynamicScheme].
-  final DynamicSchemeCallback<ToneDeltaPair?>? toneDeltaPair;
-
-  /// Function that provides an opacity percentage, given a [DynamicScheme].
-  final DynamicSchemeCallback<double?>? opacity;
-
-  final Map<DynamicScheme, Hct> _hctCache;
+  final Map<DynamicScheme, Hct> _hctCache = <DynamicScheme, Hct>{};
 
   DynamicColor copyWith({
     String? name,
@@ -135,7 +122,7 @@ final class DynamicColor {
     DynamicSchemeCallback<double>? tone,
     bool? isBackground,
   }) => name != null || palette != null || tone != null || isBackground != null
-      ? DynamicColor(
+      ? .new(
           name: name ?? this.name,
           palette: palette ?? this.palette,
           tone: tone ?? this.tone,
@@ -164,14 +151,15 @@ final class DynamicColor {
   Hct getHct(DynamicScheme scheme) {
     final cachedAnswer = _hctCache[scheme];
     if (cachedAnswer != null) return cachedAnswer;
-    final answer = ColorSpecs.get(scheme.specVersion).getHct(scheme, this);
+    final answer = ColorSpec.fromSpecVersion(scheme.specVersion)
+        .getHct(scheme, this);
     if (_hctCache.length > 4) _hctCache.clear();
     _hctCache[scheme] = answer;
     return answer;
   }
 
   double getTone(DynamicScheme scheme) =>
-      ColorSpecs.get(scheme.specVersion).getTone(scheme, this);
+      ColorSpec.fromSpecVersion(scheme.specVersion).getTone(scheme, this);
 
   DynamicColor extendSpecVersion(
     SpecVersion specVersion,

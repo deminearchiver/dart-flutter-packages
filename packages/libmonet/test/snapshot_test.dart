@@ -328,7 +328,7 @@ abstract class SnapshotSchemeProperties with _$SnapshotSchemeProperties {
     required Platform platform,
     required SpecVersion specVersion,
   }) {
-    final colorSpec = ColorSpecs.get(specVersion);
+    final colorSpec = ColorSpec.fromSpecVersion(specVersion);
     return .raw(
       sourceColor: sourceColor,
       variant: variant,

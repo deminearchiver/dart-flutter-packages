@@ -41,7 +41,7 @@ extension type _SeedColors._(
     TonalPaletteSourceColor? neutralVariantPaletteKeyColor,
     TonalPaletteSourceColor? errorPaletteKeyColor,
   })
-  _
+  _,
 ) implements Object {
   const _SeedColors({
     required TonalPaletteSourceColor sourceColor,
@@ -205,7 +205,7 @@ final _allDynamicColors = <DynamicColor>{
 };
 
 extension type const _DynamicSchemeConfiguration._(
-  ({Variant variant, Platform platform, SpecVersion specVersion}) _
+  ({Variant variant, Platform platform, SpecVersion specVersion}) _,
 ) implements Object {
   const _DynamicSchemeConfiguration({
     required Variant variant,
@@ -219,6 +219,7 @@ extension type const _DynamicSchemeConfiguration._(
 
   SpecVersion get specVersion => _.specVersion;
 }
+
 String _cssHexFromArgb(int argb) {
   final rgbHex =
       "${ColorUtils.redFromArgb(argb).toRadixString(16).toUpperCase().padLeft(2, "0")}"

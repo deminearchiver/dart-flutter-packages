@@ -9,6 +9,7 @@ import 'package:material/material_color_utilities.dart'
         Hct,
         Score,
         DynamicScheme,
+        MaterialDynamicSchemeColorsExtension,
         Variant,
         Platform,
         SpecVersion,

@@ -1,39 +1,41 @@
 ## 2.0.0
 
-- Bumped minimum SDK version to Dart 3.12.
-
-- Ported from upstream Material Color Utilities:
+- Adapted changes and algorithms from upstream sources.
   - Added CMF Scheme in 2026 spec. ([`19ad665`](https://github.com/material-foundation/material-color-utilities/commit/19ad665aff08662e949f6759d34d65ba8acc1b83))
   - Refactor DynamicScheme to accept a list of source colors. ([`4578d0a`](https://github.com/material-foundation/material-color-utilities/commit/4578d0a1d40f1d17f1ca6f34cc9c484bea8f0a9d))
   - Updated background for on-fixed colors in ColorSpec2026. ([`91da30d`](https://github.com/material-foundation/material-color-utilities/commit/91da30d89e70c3dc9575ec71a1ebe8874d881f29))
   - Adjust chroma calculation in ColorSpec2025 for yellow hues at tone 99. ([`1a34bd2`](https://github.com/material-foundation/material-color-utilities/commit/1a34bd2d696a5dd669beca679546ad72209d0937))
   - Updated PrimaryContainer color calculation for Expressive dark mode. ([`ec7c4da`](https://github.com/material-foundation/material-color-utilities/commit/ec7c4da3e0774264275377cd6b7687474bad577a))
-  - Added support for energy color generation via the new `EnergyColors` utility. Implementation is experimental as it comes from an unreleased version of the upstream library.
+  - Fixed an upstream issue of `AndroidDynamicColors.clockSecond` and `AndroidDynamicColors.weatherTemp` having a medium contrast of `70`, when it should've been `7`.
+  - Added `surfaceEffect0`, `surfaceEffect1`, `surfaceEffect2`, `surfaceEffect3`,`surfaceEffect0Fallback` color roles representing translucent surfaces with background effects to `AndroidDynamicColors`.
+  - Added `SchemeClock` and `SchemeClockVibrant` to the `android_color_utilities` library.
+  - Added `Cam16.getInt()` and `Cam16.getIntInViewingConditions()` to the `material_color_utilities` library.
+  - Added support for energy color generation via the new `EnergyColors` utility. Implementation is experimental as it is based on an internal version of the upstream library.
+
+- Added a default `libmonet` library which exports all members from the other libraries.
 
 - Renamed `android_dynamic_colors` library to `android_color_utilities`.
 
-- Fixed an upstream issue of `AndroidDynamicColors.clockSecond` and `AndroidDynamicColors.weatherTemp` having a medium contrast of `70`, when it should've been `7`.
-
-- Ported from upstream Android source code:
-  - Added `surfaceEffect0`, `surfaceEffect1`, `surfaceEffect2`, `surfaceEffect3`,`surfaceEffect0Fallback` color roles representing translucent surfaces with background effects to `AndroidDynamicColors`.
-  - Added `SchemeClock` and `SchemeClockVibrant` to the `android_color_utilities` library.
-  - Added `Cam16.getInt` and `Cam16.getIntInViewingConditions` to the `material_color_utilities` library.
-
-- Massively refactored `DynamicScheme` (including deviations from upstream):
+- Massively refactored `DynamicScheme` (including deviations from upstream).
   - Removed custom palette key colors support from `DynamicScheme`.
   - Replaced `sourceColorHct` with `sourceColor` of type `TonalPaletteSourceColor`.
-  - Renamed `DynamicScheme.fromPalettesOrKeyColors` to `DynamicScheme.withDefaults`.
-  - All `DynamicScheme.withDefaults` and `Scheme*` constructor parameters are now optional (`isDark` defaults to `false` as per `md.sys.color` token defaults).
+  - Renamed `DynamicScheme.fromPalettesOrKeyColors()` to `DynamicScheme.withDefaults()`.
+  - All `DynamicScheme.withDefaults()` and `Scheme*` constructor parameters are now optional (`isDark` defaults to `false` as per `md.sys.color` token defaults).
   - Implemented complex fallback logic for `isDark`, `platform` and `specVersion`.
-  - Added `DynamicScheme.raw` for creating potentially logically impossible scheme configurations.
+  - Added `DynamicScheme.raw()` constructor for creating potentially logically impossible scheme configurations.
+  - Removed ARGB dynamic color value getters from the class and replaced with extension methods instead: `MaterialDynamicSchemeColorsExtension` and `AndroidDynamicSchemeColorsExtension` (on `DynamicScheme`).
 
-- Aligning the library with Dart best practices:
-  - Renamed `TemperatureCache.getComplement` to `TemperatureCache.complement` and made it a getter.
-  - Changed `Score.score` positional parameters to be named instead.
+- Aligning the library with Dart best practices.
+  - Renamed `TemperatureCache.getComplement()` to `TemperatureCache.complement` and made it a getter.
+  - Changed `Score.score()` positional parameters to be named instead.
   - Made `Hct` immutable to avoid issues with value equality in collections: removed `hue`, `chroma` and `tone` setters and added a new `copyWith` method.
   - Added `year` property to `SpecVersion` and implemented `Comparable<SpecVersion>` in order to make spec versions orderable.
+  - Removed `ColorSpecs` in favor of `ColorSpec.fromSpecVersion()` factory constructor.
+  - Renamed `ViewingConditions.srgb` to `ViewingConditions.sRgb`.
 
-- Added a default `libmonet` library which exports all members from the other libraries.
+- Bumped minimum SDK version to Dart 3.13.
+  - Applied [dot shorthands](https://dart.dev/language/dot-shorthands), [primary constructors](https://dart.dev/language/primary-constructors) and [concise constructor syntax](https://dart.dev/language/constructors#concise-constructor-syntax) throughout the source code of the library.
+  - Reformatted the library with [Dart 3.13 formatter changes](https://dart.dev/blog/announcing-dart-3-13#dart-formatter).
 
 - Added generated example schemes in CSS and Figma formats.
 

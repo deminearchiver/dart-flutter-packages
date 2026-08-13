@@ -24,21 +24,48 @@ import 'viewing_conditions.dart';
 /// For example, white under the traditional assumption of a midday sun
 /// white point is accurately measured as a slightly chromatic blue by CAM16.
 /// (roughly, hue 203, chroma 3, lightness 100)
-final class Cam16 {
-  const Cam16._(
-    this.hue,
-    this.chroma,
-    this.j,
-    this.q,
-    this.m,
-    this.s,
-    this.jstar,
-    this.astar,
-    this.bstar,
-  );
+final class const Cam16._(
+  /// Hue in CAM16.
+  final double hue,
 
+  /// Chroma in CAM16.
+  final double chroma,
+
+  /// Lightness in CAM16.
+  final double j,
+
+  /// Brightness in CAM16.
+  ///
+  /// Prefer lightness, brightness is an absolute quantity. For example,
+  /// a sheet of white paper is much brighter viewed in sunlight than in
+  /// indoor light, but it is the lightest object under any lighting.
+  final double q,
+
+  /// Colorfulness in CAM16.
+  ///
+  /// Prefer chroma, colorfulness is an absolute quantity. For example,
+  /// a yellow toy car is much more colorful outside than inside,
+  /// but it has the same chroma in both environments.
+  final double m,
+
+  /// Saturation in CAM16.
+  ///
+  /// Colorfulness in proportion to brightness. Prefer chroma,
+  /// saturation measures colorfulness relative to the color's own brightness,
+  /// where chroma is colorfulness relative to white.
+  final double s,
+
+  /// Lightness coordinate in CAM16-UCS.
+  final double jstar,
+
+  /// a* coordinate in CAM16-UCS.
+  final double astar,
+
+  /// b* coordinate in CAM16-UCS.
+  final double bstar,
+) {
   @internal
-  factory Cam16.fromXyzInViewingConditions(
+  factory fromXyzInViewingConditions(
     double x,
     double y,
     double z,
@@ -125,7 +152,7 @@ final class Cam16 {
 
   /// Create a CAM16 color from a color in defined viewing conditions.
   @internal
-  factory Cam16.fromIntInViewingConditions(
+  factory fromIntInViewingConditions(
     int argb,
     ViewingConditions viewingConditions,
   ) {
@@ -143,11 +170,11 @@ final class Cam16 {
 
   /// Create a CAM16 color from a color,
   /// assuming the color was viewed in default viewing conditions.
-  factory Cam16.fromInt(int argb) =>
-      .fromIntInViewingConditions(argb, ViewingConditions.srgb);
+  factory fromInt(int argb) =>
+      .fromIntInViewingConditions(argb, ViewingConditions.sRgb);
 
   @internal
-  factory Cam16.fromJchInViewingConditions(
+  factory fromJchInViewingConditions(
     double j,
     double c,
     double h,
@@ -174,12 +201,12 @@ final class Cam16 {
   }
 
   @internal
-  factory Cam16.fromJch(double j, double c, double h) =>
-      .fromJchInViewingConditions(j, c, h, ViewingConditions.srgb);
+  factory fromJch(double j, double c, double h) =>
+      .fromJchInViewingConditions(j, c, h, ViewingConditions.sRgb);
 
   /// Create a CAM16 color from CAM16-UCS coordinates in defined
   /// viewing conditions.
-  factory Cam16.fromUcsInViewingConditions(
+  factory fromUcsInViewingConditions(
     double jstar,
     double astar,
     double bstar,
@@ -197,47 +224,8 @@ final class Cam16 {
   }
 
   ///  Create a CAM16 color from CAM16-UCS coordinates.
-  factory Cam16.fromUcs(double jstar, double astar, double bstar) =>
-      .fromUcsInViewingConditions(jstar, astar, bstar, ViewingConditions.srgb);
-
-  /// Hue in CAM16.
-  final double hue;
-
-  /// Chroma in CAM16.
-  final double chroma;
-
-  /// Lightness in CAM16.
-  final double j;
-
-  /// Brightness in CAM16.
-  ///
-  /// Prefer lightness, brightness is an absolute quantity. For example,
-  /// a sheet of white paper is much brighter viewed in sunlight than in
-  /// indoor light, but it is the lightest object under any lighting.
-  final double q;
-
-  /// Colorfulness in CAM16.
-  ///
-  /// Prefer chroma, colorfulness is an absolute quantity. For example,
-  /// a yellow toy car is much more colorful outside than inside,
-  /// but it has the same chroma in both environments.
-  final double m;
-
-  /// Saturation in CAM16.
-  ///
-  /// Colorfulness in proportion to brightness. Prefer chroma,
-  /// saturation measures colorfulness relative to the color's own brightness,
-  /// where chroma is colorfulness relative to white.
-  final double s;
-
-  /// Lightness coordinate in CAM16-UCS.
-  final double jstar;
-
-  /// a* coordinate in CAM16-UCS.
-  final double astar;
-
-  /// b* coordinate in CAM16-UCS.
-  final double bstar;
+  factory fromUcs(double jstar, double astar, double bstar) =>
+      .fromUcsInViewingConditions(jstar, astar, bstar, ViewingConditions.sRgb);
 
   /// CAM16 instances also have coordinates in the CAM16-UCS space,
   /// called J*, a*, b*, or jstar, astar, bstar in code.
@@ -257,13 +245,10 @@ final class Cam16 {
         ? 0.0
         : chroma / math.sqrt(j / 100.0);
 
-    final t =
-        math.pow(
-              alpha /
-                  math.pow(1.64 - math.pow(0.29, viewingConditions.n), 0.73),
-              1.0 / 0.9,
-            )
-            as double;
+    final t = math.pow(
+      alpha / math.pow(1.64 - math.pow(0.29, viewingConditions.n), 0.73),
+      1.0 / 0.9,
+    ) as double;
     final hRad = MathUtils.toRadians(hue);
 
     final eHue = 0.25 * (math.cos(hRad + 2.0) + 3.8);
@@ -314,7 +299,7 @@ final class Cam16 {
     return ColorUtils.argbFromXyz(xyz[0], xyz[1], xyz[2]);
   }
 
-  int viewedInSrgb() => viewed(.srgb);
+  int viewedInSrgb() => viewed(.sRgb);
 
   /// ARGB representation of the color. Assumes the color was viewed
   /// in default viewing conditions, which are near-identical
@@ -500,7 +485,7 @@ final class Cam16 {
     // Yellows are very chromatic at L = 100, and blues are very chromatic at L = 0. All the
     // other hues are white at L = 100, and black at L = 0. To preserve consistency for users of
     // this system, it is better to simply return white at L* > 99, and black and L* < 0.
-    if (viewingConditions == .srgb) {
+    if (viewingConditions == .sRgb) {
       // If the viewing conditions are the same as the default sRGB-like
       // viewing conditions, skip to using HctSolver: it uses geometrical
       // insights to find the closest in-gamut match to hue/chroma/lstar.
@@ -566,5 +551,5 @@ final class Cam16 {
   /// with high chroma, and high L* does not exist: red hues
   /// have a maximum chroma below 10 in light shades, creating pink.
   static int getInt(double hue, double chroma, double lstar) =>
-      getIntInViewingConditions(hue, chroma, lstar, .srgb);
+      getIntInViewingConditions(hue, chroma, lstar, .sRgb);
 }

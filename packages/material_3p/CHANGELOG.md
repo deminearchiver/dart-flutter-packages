@@ -1,3 +1,8 @@
+## Unreleased
+
+- Upgraded hosted dependencies.
+  - `libmonet` to `^2.0.0-dev.20`.
+
 ## 0.5.0
 
 - Moved `package:androidx_graphics_shapes/material_shapes` library implementation into `material_3p`.

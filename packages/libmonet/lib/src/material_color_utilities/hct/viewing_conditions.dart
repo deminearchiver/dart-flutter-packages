@@ -16,28 +16,28 @@ import 'cam16.dart';
 ///
 /// This class caches intermediate values of the CAM16 conversion process
 /// that depend only on viewing conditions, enabling speed ups.
-final class ViewingConditions {
+final class const ViewingConditions._(
+  final double n,
+  final double aw,
+  final double nbb,
+  final double ncb,
+  final double c,
+  final double nc,
+  final List<double> rgbD,
+  final double fl,
+  final double flRoot,
+  final double z,
+) {
   /// Parameters are intermediate values of the CAM16 conversion process.
   /// Their names are shorthand for technical color science terminology,
   /// this class would not benefit from documenting them individually.
   /// A brief overview is available in the CAM16 specification,
   /// and a complete overview requires a color science textbook,
-  /// such as Fairchild's Color Appearance Models.
-  const ViewingConditions._(
-    this.n,
-    this.aw,
-    this.nbb,
-    this.ncb,
-    this.c,
-    this.nc,
-    this.rgbD,
-    this.fl,
-    this.flRoot,
-    this.z,
-  );
+  /// such as Fair1`child's Color Appearance Models.
+  this;
 
   /// Create ViewingConditions from a simple, physically relevant, set of parameters.
-  factory ViewingConditions.make(
+  factory make(
     List<double> whitePoint,
     double adaptingLuminance,
     double backgroundLstar,
@@ -118,24 +118,13 @@ final class ViewingConditions {
   /// Create sRGB-like viewing conditions with a custom background lstar.
   ///
   /// Default viewing conditions have a lstar of 50, midgray.
-  factory ViewingConditions.defaultWithBackgroundLstar(double lstar) => .make(
+  factory defaultWithBackgroundLstar(double lstar) => .make(
     ColorUtils.whitePointD65,
     200.0 / math.pi * ColorUtils.yFromLstar(50.0) / 100.0,
     lstar,
     2.0,
     false,
   );
-
-  final double aw;
-  final double nbb;
-  final double ncb;
-  final double c;
-  final double nc;
-  final double n;
-  final List<double> rgbD;
-  final double fl;
-  final double flRoot;
-  final double z;
 
   @override
   String toString() =>
@@ -161,5 +150,5 @@ final class ViewingConditions {
   int get hashCode => Object.hash(n, aw, nbb, ncb, c, nc, rgbD, fl, flRoot, z);
 
   /// sRGB-like viewing conditions.
-  static final srgb = ViewingConditions.defaultWithBackgroundLstar(50.0);
+  static final sRgb = ViewingConditions.defaultWithBackgroundLstar(50.0);
 }

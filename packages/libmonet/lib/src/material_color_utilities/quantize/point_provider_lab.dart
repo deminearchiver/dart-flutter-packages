@@ -5,9 +5,7 @@ import 'point_provider.dart';
 /// Provides conversions needed for K-Means quantization.
 /// Converting input to points, and converting the final state of the
 /// K-Means algorithm to colors.
-final class PointProviderLab implements PointProvider {
-  const PointProviderLab();
-
+final class const PointProviderLab() implements PointProvider {
   /// Convert a color represented in ARGB to a 3-element array
   /// of L*a*b* coordinates of the color.
   @override

@@ -448,10 +448,10 @@ abstract final class EnergyColors {
   }
 }
 
-extension type HueShifts._(
-  ({double midHueShift, double endHueShift, double surfaceHueShift}) _
+extension type const HueShifts._(
+  ({double midHueShift, double endHueShift, double surfaceHueShift}) _,
 ) implements Object {
-  HueShifts(double midHueShift, double endHueShift, double surfaceHueShift)
+  const new(double midHueShift, double endHueShift, double surfaceHueShift)
     : _ = (
         midHueShift: midHueShift,
         endHueShift: endHueShift,
@@ -459,6 +459,8 @@ extension type HueShifts._(
       );
 
   double get midHueShift => _.midHueShift;
+
   double get endHueShift => _.endHueShift;
+
   double get surfaceHueShift => _.surfaceHueShift;
 }

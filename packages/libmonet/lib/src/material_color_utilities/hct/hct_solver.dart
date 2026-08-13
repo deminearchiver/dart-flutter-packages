@@ -531,7 +531,7 @@ abstract final class HctSolver {
     // ===========================================================
     // Operations inlined from Cam16 to avoid repeated calculation
     // ===========================================================
-    final viewingConditions = ViewingConditions.srgb;
+    final viewingConditions = ViewingConditions.sRgb;
     final tInnerCoeff =
         1.0 / math.pow(1.64 - math.pow(0.29, viewingConditions.n), 0.73);
     final eHue = 0.25 * (math.cos(hueRadians + 2.0) + 3.8);

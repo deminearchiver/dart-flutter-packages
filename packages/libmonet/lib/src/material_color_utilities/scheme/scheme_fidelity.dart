@@ -8,12 +8,12 @@ import '../dynamiccolor/dynamic_scheme.dart';
 ///
 /// Tertiary Container is the complement to the source color, using TemperatureCache. It also
 /// maintains constant appearance.
-class SchemeFidelity extends DynamicScheme {
-  SchemeFidelity({
-    super.sourceColor,
-    super.isDark,
-    super.contrastLevel,
-    super.platform,
-    super.specVersion,
-  }) : super.withDefaults(variant: .vibrant);
+class SchemeFidelity({
+  super.sourceColor,
+  super.isDark,
+  super.contrastLevel,
+  super.platform,
+  super.specVersion,
+}) extends DynamicScheme {
+  this : super.withDefaults(variant: .vibrant);
 }

@@ -6,26 +6,22 @@ import '../utils/color_utils.dart';
 ///
 /// TonalPalette is intended for use in a single thread due to
 /// its stateful caching.
-final class TonalPalette {
-  TonalPalette._(this.hue, this.chroma, this.keyColor);
-
+final class TonalPalette._(
+  final double hue,
+  final double chroma,
+  final Hct keyColor,
+) {
   /// Create tones using the HCT hue and chroma from a color.
-  TonalPalette.fromInt(int argb) : this.fromHct(Hct.fromInt(argb));
+  new fromInt(int argb) : this.fromHct(.fromInt(argb));
 
   /// Create tones using a HCT color.
-  TonalPalette.fromHct(Hct hct) : this._(hct.hue, hct.chroma, hct);
+  new fromHct(Hct hct) : this._(hct.hue, hct.chroma, hct);
 
   /// Create tones from a defined HCT hue and chroma.
-  TonalPalette.fromHueAndChroma(double hue, double chroma)
+  new fromHueAndChroma(double hue, double chroma)
     : this._(hue, chroma, _KeyColor(hue, chroma).create());
 
   final Map<int, int> _cache = <int, int>{};
-
-  final double hue;
-
-  final double chroma;
-
-  final Hct keyColor;
 
   /// Create an ARGB color with HCT hue and chroma of this Tones instance,
   /// and the provided HCT tone.
@@ -68,12 +64,7 @@ final class TonalPalette {
 }
 
 /// Key color is a color that represents the hue and chroma of a tonal palette.
-final class _KeyColor {
-  _KeyColor(this.hue, this.requestedChroma);
-
-  final double hue;
-  final double requestedChroma;
-
+final class _KeyColor(final double hue, final double requestedChroma) {
   /// Cache that maps tone to max chroma to avoid duplicated HCT calculation.
   final Map<int, double> _chromaCache = <int, double>{};
 

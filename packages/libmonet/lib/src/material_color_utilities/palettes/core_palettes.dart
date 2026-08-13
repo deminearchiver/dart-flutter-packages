@@ -6,25 +6,13 @@ import 'tonal_palette.dart';
 ///
 /// Generated from a source color, these palettes will then be part
 /// of a [DynamicScheme] together with appearance preferences.
-final class CorePalettes {
-  const CorePalettes({
-    required this.primary,
-    required this.secondary,
-    required this.tertiary,
-    required this.neutral,
-    required this.neutralVariant,
-  });
-
-  final TonalPalette primary;
-
-  final TonalPalette secondary;
-
-  final TonalPalette tertiary;
-
-  final TonalPalette neutral;
-
-  final TonalPalette neutralVariant;
-
+final class const CorePalettes({
+  required final TonalPalette primary,
+  required final TonalPalette secondary,
+  required final TonalPalette tertiary,
+  required final TonalPalette neutral,
+  required final TonalPalette neutralVariant,
+}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

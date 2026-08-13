@@ -1,3 +1,8 @@
+## Unreleased
+
+- Upgraded hosted dependencies.
+  - `freezed` to `4.0.0-dev.3`
+
 ## 0.5.2
 
 - Fixed mistakenly calculating WOFF2 uncompressed size for *some* non-WOFF2 fonts.

@@ -7,36 +7,19 @@ import 'viewing_conditions.dart';
 /// HCT, hue, chroma, and tone. A color system that provides a perceptually
 /// accurate color measurement system that can also accurately render
 /// what colors will appear as in different lighting environments.
-final class Hct {
-  const Hct._({
-    required int argb,
-    required this.hue,
-    required this.chroma,
-    required this.tone,
-  }) : _argb = argb;
-
-  Hct._fromCam({required int argb, required Cam16 cam})
-    : this._(
-        argb: argb,
-        hue: cam.hue,
-        chroma: cam.chroma,
-        tone: ColorUtils.lstarFromArgb(argb),
-      );
-
+final class Hct._fromCam({required final int _argb, required Cam16 cam}) {
   /// Create an HCT color from a color.
-  Hct.fromInt(int argb) : this._fromCam(argb: argb, cam: .fromInt(argb));
+  new fromInt(int argb) : this._fromCam(argb: argb, cam: .fromInt(argb));
 
   /// Create an HCT color from hue, chroma, and tone.
-  Hct.from(double hue, double chroma, double tone)
+  new from(double hue, double chroma, double tone)
     : this.fromInt(HctSolver.solveToInt(hue, chroma, tone));
 
-  final int _argb;
+  final double hue = cam.hue;
 
-  final double hue;
+  final double chroma = cam.chroma;
 
-  final double chroma;
-
-  final double tone;
+  final double tone = ColorUtils.lstarFromArgb(_argb);
 
   int toInt() => _argb;
 
@@ -55,7 +38,7 @@ final class Hct {
       viewedInVc[0],
       viewedInVc[1],
       viewedInVc[2],
-      .srgb,
+      .sRgb,
     );
 
     // 3. Create HCT from:

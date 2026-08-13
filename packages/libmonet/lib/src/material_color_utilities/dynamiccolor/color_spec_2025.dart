@@ -15,9 +15,7 @@ import 'tone_delta_pair.dart';
 import 'variant.dart';
 
 /// [ColorSpec] implementation for the 2025 spec.
-class ColorSpec2025 extends ColorSpec2021 {
-  const ColorSpec2025();
-
+class const ColorSpec2025() extends ColorSpec2021 {
   @override
   DynamicColor get background {
     final color2025 = surface.copyWith(name: "background");

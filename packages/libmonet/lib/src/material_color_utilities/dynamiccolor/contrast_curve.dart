@@ -5,21 +5,19 @@ import '../utils/math_utils.dart';
 /// Usually represents the contrast requirements for a dynamic color on its
 /// background. The four values correspond to values for contrast levels
 /// -1.0, 0.0, 0.5, and 1.0, respectively.
-final class ContrastCurve {
-  const ContrastCurve(this.low, this.normal, this.medium, this.high);
-
+final class const ContrastCurve(
   /// Value for contrast level -1.0.
-  final double low;
+  final double low,
 
   /// Value for contrast level 0.0.
-  final double normal;
+  final double normal,
 
   /// Value for contrast level 0.5.
-  final double medium;
+  final double medium,
 
   /// Value for contrast level 1.0.
-  final double high;
-
+  final double high,
+) {
   /// Returns the value at a given contrast level.
   double get(double contrastLevel) => switch (contrastLevel) {
     <= -1.0 => low,

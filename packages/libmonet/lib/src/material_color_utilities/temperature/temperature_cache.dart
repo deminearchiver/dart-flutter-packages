@@ -9,11 +9,7 @@ import '../utils/math_utils.dart';
 ///
 /// Analogous colors, complementary color, and cache to efficiently,
 /// lazily, generate data for calculations when needed.
-final class TemperatureCache {
-  TemperatureCache(this.input);
-
-  final Hct input;
-
+final class TemperatureCache(final Hct input) {
   Hct? _precomputedComplement;
   List<Hct>? _precomputedHctsByTemp;
   List<Hct>? _precomputedHctsByHue;

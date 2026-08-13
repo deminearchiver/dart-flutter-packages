@@ -1,19 +1,18 @@
 import '../hct/hct.dart';
 import '../palettes/tonal_palette.dart';
 
+import 'color_spec_2021.dart';
+import 'color_spec_2025.dart';
+import 'color_spec_2026.dart';
 import 'dynamic_color.dart';
 import 'dynamic_scheme.dart';
 import 'variant.dart';
 
 /// All available spec versions.
-enum SpecVersion implements Comparable<SpecVersion> {
+enum SpecVersion(final int year) implements Comparable<SpecVersion> {
   spec2021(2021),
   spec2025(2025),
   spec2026(2026);
-
-  const SpecVersion(this.year);
-
-  final int year;
 
   bool operator >(SpecVersion other) => year > other.year;
   bool operator >=(SpecVersion other) => year >= other.year;
@@ -27,6 +26,13 @@ enum SpecVersion implements Comparable<SpecVersion> {
 /// An interface defining all the necessary methods that could be different
 /// between specs.
 abstract interface class ColorSpec {
+  /// Get the correct color spec for a given spec version.
+  factory fromSpecVersion(SpecVersion specVersion) => switch (specVersion) {
+    .spec2021 => const ColorSpec2021(),
+    .spec2025 => const ColorSpec2025(),
+    .spec2026 => const ColorSpec2026(),
+  };
+
   // ////////////////////////////////////////////////////////////////
   // Main Palettes //
   // ////////////////////////////////////////////////////////////////

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'figma.dart';
@@ -9,6 +9,7 @@ part of 'figma.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 T _$identity<T>(T value) => value;
 
 /// @nodoc
@@ -100,7 +101,7 @@ class _$ThemeCopyWithImpl<$Res> implements $ThemeCopyWith<$Res> {
     Object? schemes = null,
   }) {
     return _then(
-      _self.copyWith(
+      Theme(
         description: null == description
             ? _self.description
             : description // ignore: cast_nullable_to_non_nullable
@@ -153,7 +154,7 @@ class _Theme extends Theme {
     this.description = "",
     @_ArgbHexConverter() required this.seed,
     required this.coreColors,
-    final List<ExtendedColor> extendedColors = const [],
+    List<ExtendedColor> extendedColors = const [],
     required this.schemes,
   }) : _extendedColors = extendedColors,
        super._();
@@ -413,7 +414,7 @@ class _$CoreColorsCopyWithImpl<$Res> implements $CoreColorsCopyWith<$Res> {
     Object? error = freezed,
   }) {
     return _then(
-      _self.copyWith(
+      CoreColors(
         primary: freezed == primary
             ? _self.primary
             : primary // ignore: cast_nullable_to_non_nullable
@@ -677,7 +678,7 @@ class _$ExtendedColorCopyWithImpl<$Res>
     Object? harmonized = null,
   }) {
     return _then(
-      _self.copyWith(
+      ExtendedColor(
         name: null == name
             ? _self.name
             : name // ignore: cast_nullable_to_non_nullable
@@ -914,7 +915,7 @@ class _$SchemesCopyWithImpl<$Res> implements $SchemesCopyWith<$Res> {
     Object? darkHighContrast = null,
   }) {
     return _then(
-      _self.copyWith(
+      Schemes(
         light: null == light
             ? _self.light
             : light // ignore: cast_nullable_to_non_nullable
@@ -2042,7 +2043,7 @@ class _$SchemeCopyWithImpl<$Res> implements $SchemeCopyWith<$Res> {
     Object? overviewBackground = freezed,
   }) {
     return _then(
-      _self.copyWith(
+      Scheme(
         primaryPaletteKeyColor: freezed == primaryPaletteKeyColor
             ? _self.primaryPaletteKeyColor
             : primaryPaletteKeyColor // ignore: cast_nullable_to_non_nullable

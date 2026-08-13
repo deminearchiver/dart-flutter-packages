@@ -7,9 +7,7 @@ import '../palettes/tonal_palette.dart';
 import '../utils/math_utils.dart';
 
 import 'color_spec.dart';
-import 'color_specs.dart';
 import 'dynamic_color.dart';
-import 'material_dynamic_colors.dart';
 import 'variant.dart';
 
 /// The platform on which this scheme is intended to be used.
@@ -23,23 +21,40 @@ enum Platform { phone, watch }
 /// 2. A theme. (Variant)
 /// 3. Whether or not its dark mode.
 /// 4. Contrast level. (-1 to 1, currently contrast ratio 3.0 and 7.0)
-class DynamicScheme {
-  const DynamicScheme.raw({
-    required this.sourceColor,
-    required this.variant,
-    required this.isDark,
-    required this.contrastLevel,
-    required this.platform,
-    required this.specVersion,
-    required this.primaryPalette,
-    required this.secondaryPalette,
-    required this.tertiaryPalette,
-    required this.neutralPalette,
-    required this.neutralVariantPalette,
-    required this.errorPalette,
-  });
+class const DynamicScheme.raw({
+  /// The source color of the scheme.
+  required final TonalPaletteSourceColor sourceColor,
 
-  DynamicScheme._fromSettings({
+  /// The variant of the scheme.
+  required final Variant variant,
+
+  /// Whether or not the scheme is dark mode.
+  required final bool isDark,
+
+  /// Value from -1 to 1. -1 represents minimum contrast.
+  /// 0 represents standard (i.e. the design as spec'd),
+  /// and 1 represents maximum contrast.
+  required final double contrastLevel,
+
+  /// The platform on which this scheme is intended to be used.
+  required final Platform platform,
+
+  /// The spec version of the scheme.
+  required final SpecVersion specVersion,
+
+  required final TonalPalette primaryPalette,
+
+  required final TonalPalette secondaryPalette,
+
+  required final TonalPalette tertiaryPalette,
+
+  required final TonalPalette neutralPalette,
+
+  required final TonalPalette neutralVariantPalette,
+
+  required final TonalPalette errorPalette,
+}) {
+  new _fromSettings({
     required _DynamicSchemeSettings settings,
     required TonalPaletteSourceColor sourceColor,
     double contrastLevel = 0.0,
@@ -64,7 +79,7 @@ class DynamicScheme {
          errorPalette: errorPalette,
        );
 
-  DynamicScheme({
+  new({
     required TonalPaletteSourceColor sourceColor,
     required Variant variant,
     required bool isDark,
@@ -94,7 +109,7 @@ class DynamicScheme {
          errorPalette: errorPalette,
        );
 
-  DynamicScheme._fromColorSpec({
+  new _fromColorSpec({
     required TonalPaletteSourceColor sourceColor,
     required Variant variant,
     required bool isDark,
@@ -177,7 +192,7 @@ class DynamicScheme {
              ),
        );
 
-  DynamicScheme._fromSettingsWithDefaults({
+  new _fromSettingsWithDefaults({
     required _DynamicSchemeSettings settings,
     required TonalPaletteSourceColor sourceColor,
     required double contrastLevel,
@@ -200,10 +215,10 @@ class DynamicScheme {
          neutralPalette: neutralPalette,
          neutralVariantPalette: neutralVariantPalette,
          errorPalette: errorPalette,
-         colorSpec: ColorSpecs.get(settings.specVersion),
+         colorSpec: .fromSpecVersion(settings.specVersion),
        );
 
-  DynamicScheme.withDefaults({
+  new withDefaults({
     TonalPaletteSourceColor? sourceColor,
     Variant? variant,
     bool? isDark,
@@ -232,38 +247,6 @@ class DynamicScheme {
          neutralVariantPalette: neutralVariantPalette,
          errorPalette: errorPalette,
        );
-
-  /// The source color of the scheme.
-  final TonalPaletteSourceColor sourceColor;
-
-  /// The variant of the scheme.
-  final Variant variant;
-
-  /// Whether or not the scheme is dark mode.
-  final bool isDark;
-
-  /// Value from -1 to 1. -1 represents minimum contrast.
-  /// 0 represents standard (i.e. the design as spec'd),
-  /// and 1 represents maximum contrast.
-  final double contrastLevel;
-
-  /// The platform on which this scheme is intended to be used.
-  final Platform platform;
-
-  /// The spec version of the scheme.
-  final SpecVersion specVersion;
-
-  final TonalPalette primaryPalette;
-
-  final TonalPalette secondaryPalette;
-
-  final TonalPalette tertiaryPalette;
-
-  final TonalPalette neutralPalette;
-
-  final TonalPalette neutralVariantPalette;
-
-  final TonalPalette errorPalette;
 
   /// The source color of the scheme in HCT format.
   @pragma("wasm:prefer-inline")
@@ -336,153 +319,6 @@ class DynamicScheme {
   @pragma("dart2js:prefer-inline")
   int getArgb(DynamicColor dynamicColor) => dynamicColor.getArgb(this);
 
-  int get primaryPaletteKeyColor =>
-      getArgb(_dynamicColors.primaryPaletteKeyColor);
-
-  int get secondaryPaletteKeyColor =>
-      getArgb(_dynamicColors.secondaryPaletteKeyColor);
-
-  int get tertiaryPaletteKeyColor =>
-      getArgb(_dynamicColors.tertiaryPaletteKeyColor);
-
-  int get neutralPaletteKeyColor =>
-      getArgb(_dynamicColors.neutralPaletteKeyColor);
-
-  int get neutralVariantPaletteKeyColor =>
-      getArgb(_dynamicColors.neutralVariantPaletteKeyColor);
-
-  int get errorPaletteKeyColor => getArgb(_dynamicColors.errorPaletteKeyColor);
-
-  int get background => getArgb(_dynamicColors.background);
-
-  int get onBackground => getArgb(_dynamicColors.onBackground);
-
-  int get surface => getArgb(_dynamicColors.surface);
-
-  int get surfaceDim => getArgb(_dynamicColors.surfaceDim);
-
-  int get surfaceBright => getArgb(_dynamicColors.surfaceBright);
-
-  int get surfaceContainerLowest =>
-      getArgb(_dynamicColors.surfaceContainerLowest);
-
-  int get surfaceContainerLow => getArgb(_dynamicColors.surfaceContainerLow);
-
-  int get surfaceContainer => getArgb(_dynamicColors.surfaceContainer);
-
-  int get surfaceContainerHigh => getArgb(_dynamicColors.surfaceContainerHigh);
-
-  int get surfaceContainerHighest =>
-      getArgb(_dynamicColors.surfaceContainerHighest);
-
-  int get onSurface => getArgb(_dynamicColors.onSurface);
-
-  int get surfaceVariant => getArgb(_dynamicColors.surfaceVariant);
-
-  int get onSurfaceVariant => getArgb(_dynamicColors.onSurfaceVariant);
-
-  int get outline => getArgb(_dynamicColors.outline);
-
-  int get outlineVariant => getArgb(_dynamicColors.outlineVariant);
-
-  int get inverseSurface => getArgb(_dynamicColors.inverseSurface);
-
-  int get inverseOnSurface => getArgb(_dynamicColors.inverseOnSurface);
-
-  int get shadow => getArgb(_dynamicColors.shadow);
-
-  int get scrim => getArgb(_dynamicColors.scrim);
-
-  int get surfaceTint => getArgb(_dynamicColors.surfaceTint);
-
-  int get primary => getArgb(_dynamicColors.primary);
-
-  int get primaryDim => getArgb(_dynamicColors.primaryDim);
-
-  int get onPrimary => getArgb(_dynamicColors.onPrimary);
-
-  int get primaryContainer => getArgb(_dynamicColors.primaryContainer);
-
-  int get onPrimaryContainer => getArgb(_dynamicColors.onPrimaryContainer);
-
-  int get primaryFixed => getArgb(_dynamicColors.primaryFixed);
-
-  int get primaryFixedDim => getArgb(_dynamicColors.primaryFixedDim);
-
-  int get onPrimaryFixed => getArgb(_dynamicColors.onPrimaryFixed);
-
-  int get onPrimaryFixedVariant =>
-      getArgb(_dynamicColors.onPrimaryFixedVariant);
-
-  int get inversePrimary => getArgb(_dynamicColors.inversePrimary);
-
-  int get secondary => getArgb(_dynamicColors.secondary);
-
-  int get secondaryDim => getArgb(_dynamicColors.secondaryDim);
-
-  int get onSecondary => getArgb(_dynamicColors.onSecondary);
-
-  int get secondaryContainer => getArgb(_dynamicColors.secondaryContainer);
-
-  int get onSecondaryContainer => getArgb(_dynamicColors.onSecondaryContainer);
-
-  int get secondaryFixed => getArgb(_dynamicColors.secondaryFixed);
-
-  int get secondaryFixedDim => getArgb(_dynamicColors.secondaryFixedDim);
-
-  int get onSecondaryFixed => getArgb(_dynamicColors.onSecondaryFixed);
-
-  int get onSecondaryFixedVariant =>
-      getArgb(_dynamicColors.onSecondaryFixedVariant);
-
-  int get tertiary => getArgb(_dynamicColors.tertiary);
-
-  int get tertiaryDim => getArgb(_dynamicColors.tertiaryDim);
-
-  int get onTertiary => getArgb(_dynamicColors.onTertiary);
-
-  int get tertiaryContainer => getArgb(_dynamicColors.tertiaryContainer);
-
-  int get onTertiaryContainer => getArgb(_dynamicColors.onTertiaryContainer);
-
-  int get tertiaryFixed => getArgb(_dynamicColors.tertiaryFixed);
-
-  int get tertiaryFixedDim => getArgb(_dynamicColors.tertiaryFixedDim);
-
-  int get onTertiaryFixed => getArgb(_dynamicColors.onTertiaryFixed);
-
-  int get onTertiaryFixedVariant =>
-      getArgb(_dynamicColors.onTertiaryFixedVariant);
-
-  int get error => getArgb(_dynamicColors.error);
-
-  int get errorDim => getArgb(_dynamicColors.errorDim);
-
-  int get onError => getArgb(_dynamicColors.onError);
-
-  int get errorContainer => getArgb(_dynamicColors.errorContainer);
-
-  int get onErrorContainer => getArgb(_dynamicColors.onErrorContainer);
-
-  int get controlActivated => getArgb(_dynamicColors.controlActivated);
-
-  int get controlNormal => getArgb(_dynamicColors.controlNormal);
-
-  int get controlHighlight => getArgb(_dynamicColors.controlHighlight);
-
-  int get textPrimaryInverse => getArgb(_dynamicColors.textPrimaryInverse);
-
-  int get textSecondaryAndTertiaryInverse =>
-      getArgb(_dynamicColors.textSecondaryAndTertiaryInverse);
-
-  int get textPrimaryInverseDisableOnly =>
-      getArgb(_dynamicColors.textPrimaryInverseDisableOnly);
-
-  int get textSecondaryAndTertiaryInverseDisabled =>
-      getArgb(_dynamicColors.textSecondaryAndTertiaryInverseDisabled);
-
-  int get textHintInverse => getArgb(_dynamicColors.textHintInverse);
-
   @override
   String toString() {
     final sourceColor = sourceColorHctList.length > 1
@@ -535,8 +371,6 @@ class DynamicScheme {
 
   static const defaultPlatform = Platform.phone;
 
-  static final _dynamicColors = MaterialDynamicColors();
-
   static double getPiecewiseValue(
     Hct sourceColorHct,
     List<double> hueBreakpoints,
@@ -568,16 +402,16 @@ class DynamicScheme {
 }
 
 extension type const _DynamicSchemeSettings._(
-  (Variant variant, bool isDark, Platform platform, SpecVersion specVersion) _
+  (Variant variant, bool isDark, Platform platform, SpecVersion specVersion) _,
 ) implements Object {
-  const _DynamicSchemeSettings({
+  const new({
     required Variant variant,
     required bool isDark,
     required Platform platform,
     required SpecVersion specVersion,
-  }) : this._((variant, isDark, platform, specVersion));
+  }) : _ = (variant, isDark, platform, specVersion);
 
-  factory _DynamicSchemeSettings.normalize({
+  factory normalize({
     required Variant variant,
     required bool isDark,
     required Platform platform,
@@ -793,6 +627,6 @@ class _TonalPaletteHctListSource extends TonalPaletteSourceColor {
 // TODO: consider replacing with a custom list type.
 extension type const _SingletonList<E extends Object?>._(List<E> _)
     implements List<E> {
-  _SingletonList(E element)
+  new(E element)
     : this._(UnmodifiableListView(List.filled(1, element, growable: false)));
 }

@@ -5,15 +5,10 @@ abstract interface class Quantizer {
 }
 
 /// Represents the result of a quantizer run.
-final class QuantizerResult {
-  const QuantizerResult({
-    required this.colorToCount,
-    this.inputPixelToClusterPixel = const {},
-  });
-
-  final Map<int, int> colorToCount;
-  final Map<int, int> inputPixelToClusterPixel;
-
+final class const QuantizerResult({
+  required final Map<int, int> colorToCount,
+  final Map<int, int> inputPixelToClusterPixel = const {},
+}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

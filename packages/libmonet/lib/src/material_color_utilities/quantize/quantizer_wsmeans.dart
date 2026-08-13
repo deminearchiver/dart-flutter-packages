@@ -17,9 +17,7 @@ const _minMovementDistance = 3.0;
 /// and was found in their 2011 paper,
 /// Improving the Performance of K-Means for Color Quantization.
 /// https://arxiv.org/abs/1101.0395
-final class QuantizerWsmeans implements Quantizer {
-  const QuantizerWsmeans();
-
+final class const QuantizerWsmeans() implements Quantizer {
   /// Reduce the number of colors needed to represented the input, minimizing
   /// the difference between the original image and the recolored image.
   ///
@@ -190,9 +188,7 @@ final class QuantizerWsmeans implements Quantizer {
   }
 }
 
-class _Distance implements Comparable<_Distance> {
-  _Distance();
-
+class _Distance() implements Comparable<_Distance> {
   int index = -1;
   double distance = -1.0;
 

@@ -2,10 +2,12 @@
 
 import 'package:libmonet/material_color_utilities.dart';
 
-final class AndroidDynamicColors {
-  AndroidDynamicColors();
+final _androidDynamicColors = AndroidDynamicColors._();
 
-  final _mdc = MaterialDynamicColors();
+final class AndroidDynamicColors._() {
+  factory() => _androidDynamicColors;
+
+  final _materialDynamicColors = MaterialDynamicColors();
 
   // CLOCK COLORS
 
@@ -114,7 +116,7 @@ final class AndroidDynamicColors {
       _ => 70.0,
     },
     isBackground: true,
-    background: (_) => _mdc.surfaceContainerHigh,
+    background: (_) => _materialDynamicColors.surfaceContainerHigh,
     contrastCurve: (_) => const ContrastCurve(1.8, 1.8, 3.0, 4.5),
   );
 
@@ -145,7 +147,7 @@ final class AndroidDynamicColors {
     name: "brand_a",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
-    background: (_) => _mdc.surfaceContainerLow,
+    background: (_) => _materialDynamicColors.surfaceContainerLow,
     contrastCurve: (scheme) => scheme.isDark
         ? const ContrastCurve(10.0, 10.0, 12.0, 13.0)
         : const ContrastCurve(6.0, 6.0, 9.0, 12.0),
@@ -159,7 +161,7 @@ final class AndroidDynamicColors {
     name: "brand_b",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) => scheme.isDark ? 98.0 : 70.0,
-    background: (_) => _mdc.surfaceContainerLow,
+    background: (_) => _materialDynamicColors.surfaceContainerLow,
     contrastCurve: (scheme) => scheme.isDark
         ? const ContrastCurve(16.0, 16.0, 16.5, 17.0)
         : const ContrastCurve(2.0, 2.0, 3.0, 4.5),
@@ -173,7 +175,7 @@ final class AndroidDynamicColors {
     name: "brand_c",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 60.0 : 50.0,
-    background: (_) => _mdc.surfaceContainerLow,
+    background: (_) => _materialDynamicColors.surfaceContainerLow,
     contrastCurve: (scheme) => scheme.isDark
         ? const ContrastCurve(6.0, 6.0, 9.0, 11.0)
         : const ContrastCurve(4.0, 4.0, 7.0, 8.0),
@@ -187,7 +189,7 @@ final class AndroidDynamicColors {
     name: "brand_d",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) => scheme.isDark ? 90.0 : 59.0,
-    background: (_) => _mdc.surfaceContainerLow,
+    background: (_) => _materialDynamicColors.surfaceContainerLow,
     contrastCurve: (scheme) => scheme.isDark
         ? const ContrastCurve(13.0, 13.0, 14.0, 15.0)
         : const ContrastCurve(3.0, 3.0, 4.5, 6.0),
@@ -343,8 +345,7 @@ final class AndroidDynamicColors {
   ///
   /// A list containing getters for all dynamic colors of this class.
   /// Iteration order is stable.
-  // TODO: List.unmodifiable is dynamic. List.unmodifiableOf will be static.
-  late final List<DynamicColor Function()> allDynamicColors = .unmodifiable([
+  late final allDynamicColors = List<DynamicColor Function()>.unmodifiableOf([
     () => widgetBackground,
     () => clockHour,
     () => clockMinute,
@@ -421,4 +422,64 @@ final class AndroidDynamicColors {
     upperBound,
     _findBestToneForChroma(palette.hue, palette.chroma, 0.0, false),
   );
+}
+
+extension AndroidDynamicSchemeColorsExtension on DynamicScheme {
+  int get widgetBackground => getArgb(_androidDynamicColors.widgetBackground);
+
+  int get clockHour => getArgb(_androidDynamicColors.clockHour);
+
+  int get clockMinute => getArgb(_androidDynamicColors.clockMinute);
+
+  int get clockSecond => getArgb(_androidDynamicColors.clockSecond);
+
+  int get weatherTemp => getArgb(_androidDynamicColors.weatherTemp);
+
+  int get themeApp => getArgb(_androidDynamicColors.themeApp);
+
+  int get onThemeApp => getArgb(_androidDynamicColors.onThemeApp);
+
+  int get themeAppRing => getArgb(_androidDynamicColors.themeAppRing);
+
+  int get themeNotif => getArgb(_androidDynamicColors.themeNotif);
+
+  int get brandA => getArgb(_androidDynamicColors.brandA);
+
+  int get brandB => getArgb(_androidDynamicColors.brandB);
+
+  int get brandC => getArgb(_androidDynamicColors.brandC);
+
+  int get brandD => getArgb(_androidDynamicColors.brandD);
+
+  int get underSurface => getArgb(_androidDynamicColors.underSurface);
+
+  int get shadeActive => getArgb(_androidDynamicColors.shadeActive);
+
+  int get onShadeActive => getArgb(_androidDynamicColors.onShadeActive);
+
+  int get onShadeActiveVariant =>
+      getArgb(_androidDynamicColors.onShadeActiveVariant);
+
+  int get shadeInactive => getArgb(_androidDynamicColors.shadeInactive);
+
+  int get onShadeInactive => getArgb(_androidDynamicColors.onShadeInactive);
+
+  int get onShadeInactiveVariant =>
+      getArgb(_androidDynamicColors.onShadeInactiveVariant);
+
+  int get shadeDisabled => getArgb(_androidDynamicColors.shadeDisabled);
+
+  int get overviewBackground =>
+      getArgb(_androidDynamicColors.overviewBackground);
+
+  int get surfaceEffect0 => getArgb(_androidDynamicColors.surfaceEffect0);
+
+  int get surfaceEffect1 => getArgb(_androidDynamicColors.surfaceEffect1);
+
+  int get surfaceEffect2 => getArgb(_androidDynamicColors.surfaceEffect2);
+
+  int get surfaceEffect3 => getArgb(_androidDynamicColors.surfaceEffect3);
+
+  int get surfaceEffect0Fallback =>
+      getArgb(_androidDynamicColors.surfaceEffect0Fallback);
 }

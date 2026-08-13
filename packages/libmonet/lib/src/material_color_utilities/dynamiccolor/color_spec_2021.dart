@@ -16,53 +16,51 @@ import 'tone_delta_pair.dart';
 import 'variant.dart';
 
 /// [ColorSpec] implementation for the 2021 spec.
-class ColorSpec2021 implements ColorSpec {
-  const ColorSpec2021();
-
+class const ColorSpec2021() implements ColorSpec {
   @override
-  DynamicColor get primaryPaletteKeyColor => DynamicColor(
+  DynamicColor get primaryPaletteKeyColor => .new(
     name: "primary_palette_key_color",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.primaryPalette.keyColor.tone,
   );
 
   @override
-  DynamicColor get secondaryPaletteKeyColor => DynamicColor(
+  DynamicColor get secondaryPaletteKeyColor => .new(
     name: "secondary_palette_key_color",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) => scheme.secondaryPalette.keyColor.tone,
   );
 
   @override
-  DynamicColor get tertiaryPaletteKeyColor => DynamicColor(
+  DynamicColor get tertiaryPaletteKeyColor => .new(
     name: "tertiary_palette_key_color",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) => scheme.tertiaryPalette.keyColor.tone,
   );
 
   @override
-  DynamicColor get neutralPaletteKeyColor => DynamicColor(
+  DynamicColor get neutralPaletteKeyColor => .new(
     name: "neutral_palette_key_color",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.neutralPalette.keyColor.tone,
   );
 
   @override
-  DynamicColor get neutralVariantPaletteKeyColor => DynamicColor(
+  DynamicColor get neutralVariantPaletteKeyColor => .new(
     name: "neutral_variant_palette_key_color",
     palette: (scheme) => scheme.neutralVariantPalette,
     tone: (scheme) => scheme.neutralVariantPalette.keyColor.tone,
   );
 
   @override
-  DynamicColor get errorPaletteKeyColor => DynamicColor(
+  DynamicColor get errorPaletteKeyColor => .new(
     name: "error_palette_key_color",
     palette: (scheme) => scheme.errorPalette,
     tone: (scheme) => scheme.errorPalette.keyColor.tone,
   );
 
   @override
-  DynamicColor get background => DynamicColor(
+  DynamicColor get background => .new(
     name: "background",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark ? 6.0 : 98.0,
@@ -70,7 +68,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onBackground => DynamicColor(
+  DynamicColor get onBackground => .new(
     name: "on_background",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark ? 90.0 : 10.0,
@@ -79,7 +77,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get surface => DynamicColor(
+  DynamicColor get surface => .new(
     name: "surface",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark ? 6.0 : 98.0,
@@ -87,7 +85,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get surfaceDim => DynamicColor(
+  DynamicColor get surfaceDim => .new(
     name: "surface_dim",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark
@@ -97,7 +95,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get surfaceBright => DynamicColor(
+  DynamicColor get surfaceBright => .new(
     name: "surface_bright",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark
@@ -107,7 +105,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get surfaceContainerLowest => DynamicColor(
+  DynamicColor get surfaceContainerLowest => .new(
     name: "surface_container_lowest",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark
@@ -117,7 +115,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get surfaceContainerLow => DynamicColor(
+  DynamicColor get surfaceContainerLow => .new(
     name: "surface_container_low",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark
@@ -127,7 +125,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get surfaceContainer => DynamicColor(
+  DynamicColor get surfaceContainer => .new(
     name: "surface_container",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark
@@ -137,7 +135,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get surfaceContainerHigh => DynamicColor(
+  DynamicColor get surfaceContainerHigh => .new(
     name: "surface_container_high",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark
@@ -147,7 +145,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get surfaceContainerHighest => DynamicColor(
+  DynamicColor get surfaceContainerHighest => .new(
     name: "surface_container_highest",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark
@@ -157,7 +155,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onSurface => DynamicColor(
+  DynamicColor get onSurface => .new(
     name: "on_surface",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark ? 90.0 : 10.0,
@@ -166,7 +164,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get surfaceVariant => DynamicColor(
+  DynamicColor get surfaceVariant => .new(
     name: "surface_variant",
     palette: (scheme) => scheme.neutralVariantPalette,
     tone: (scheme) => scheme.isDark ? 30.0 : 90.0,
@@ -174,7 +172,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onSurfaceVariant => DynamicColor(
+  DynamicColor get onSurfaceVariant => .new(
     name: "on_surface_variant",
     palette: (scheme) => scheme.neutralVariantPalette,
     tone: (scheme) => scheme.isDark ? 80.0 : 30.0,
@@ -183,7 +181,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get inverseSurface => DynamicColor(
+  DynamicColor get inverseSurface => .new(
     name: "inverse_surface",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark ? 90.0 : 20.0,
@@ -191,7 +189,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get inverseOnSurface => DynamicColor(
+  DynamicColor get inverseOnSurface => .new(
     name: "inverse_on_surface",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark ? 20.0 : 95.0,
@@ -200,7 +198,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get outline => DynamicColor(
+  DynamicColor get outline => .new(
     name: "outline",
     palette: (scheme) => scheme.neutralVariantPalette,
     tone: (scheme) => scheme.isDark ? 60.0 : 50.0,
@@ -209,7 +207,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get outlineVariant => DynamicColor(
+  DynamicColor get outlineVariant => .new(
     name: "outline_variant",
     palette: (scheme) => scheme.neutralVariantPalette,
     tone: (scheme) => scheme.isDark ? 30.0 : 80.0,
@@ -218,21 +216,21 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get shadow => DynamicColor(
+  DynamicColor get shadow => .new(
     name: "shadow",
     palette: (scheme) => scheme.neutralPalette,
     tone: (_) => 0.0,
   );
 
   @override
-  DynamicColor get scrim => DynamicColor(
+  DynamicColor get scrim => .new(
     name: "scrim",
     palette: (scheme) => scheme.neutralPalette,
     tone: (_) => 0.0,
   );
 
   @override
-  DynamicColor get surfaceTint => DynamicColor(
+  DynamicColor get surfaceTint => .new(
     name: "surface_tint",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
@@ -240,7 +238,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get primary => DynamicColor(
+  DynamicColor get primary => .new(
     name: "primary",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) {
@@ -266,7 +264,7 @@ class ColorSpec2021 implements ColorSpec {
   DynamicColor? get primaryDim => null;
 
   @override
-  DynamicColor get onPrimary => DynamicColor(
+  DynamicColor get onPrimary => .new(
     name: "on_primary",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) {
@@ -280,7 +278,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get primaryContainer => DynamicColor(
+  DynamicColor get primaryContainer => .new(
     name: "primary_container",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) {
@@ -306,7 +304,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onPrimaryContainer => DynamicColor(
+  DynamicColor get onPrimaryContainer => .new(
     name: "on_primary_container",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) {
@@ -323,7 +321,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get inversePrimary => DynamicColor(
+  DynamicColor get inversePrimary => .new(
     name: "inverse_primary",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 40.0 : 80.0,
@@ -332,7 +330,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get secondary => DynamicColor(
+  DynamicColor get secondary => .new(
     name: "secondary",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
@@ -353,7 +351,7 @@ class ColorSpec2021 implements ColorSpec {
   DynamicColor? get secondaryDim => null;
 
   @override
-  DynamicColor get onSecondary => DynamicColor(
+  DynamicColor get onSecondary => .new(
     name: "on_secondary",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) {
@@ -367,7 +365,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get secondaryContainer => DynamicColor(
+  DynamicColor get secondaryContainer => .new(
     name: "secondary_container",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) {
@@ -397,7 +395,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onSecondaryContainer => DynamicColor(
+  DynamicColor get onSecondaryContainer => .new(
     name: "on_secondary_container",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) {
@@ -414,7 +412,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get tertiary => DynamicColor(
+  DynamicColor get tertiary => .new(
     name: "tertiary",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) {
@@ -440,7 +438,7 @@ class ColorSpec2021 implements ColorSpec {
   DynamicColor? get tertiaryDim => null;
 
   @override
-  DynamicColor get onTertiary => DynamicColor(
+  DynamicColor get onTertiary => .new(
     name: "on_tertiary",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) {
@@ -454,7 +452,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get tertiaryContainer => DynamicColor(
+  DynamicColor get tertiaryContainer => .new(
     name: "tertiary_container",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) {
@@ -483,7 +481,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onTertiaryContainer => DynamicColor(
+  DynamicColor get onTertiaryContainer => .new(
     name: "on_tertiary_container",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) {
@@ -500,7 +498,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get error => DynamicColor(
+  DynamicColor get error => .new(
     name: "error",
     palette: (scheme) => scheme.errorPalette,
     tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
@@ -521,7 +519,7 @@ class ColorSpec2021 implements ColorSpec {
   DynamicColor? get errorDim => null;
 
   @override
-  DynamicColor get onError => DynamicColor(
+  DynamicColor get onError => .new(
     name: "on_error",
     palette: (scheme) => scheme.errorPalette,
     tone: (scheme) => scheme.isDark ? 20.0 : 100.0,
@@ -530,7 +528,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get errorContainer => DynamicColor(
+  DynamicColor get errorContainer => .new(
     name: "error_container",
     palette: (scheme) => scheme.errorPalette,
     tone: (scheme) => scheme.isDark ? 30.0 : 90.0,
@@ -548,7 +546,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onErrorContainer => DynamicColor(
+  DynamicColor get onErrorContainer => .new(
     name: "on_error_container",
     palette: (scheme) => scheme.errorPalette,
     tone: (scheme) {
@@ -562,7 +560,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get primaryFixed => DynamicColor(
+  DynamicColor get primaryFixed => .new(
     name: "primary_fixed",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => _isMonochrome(scheme) ? 40.0 : 90.0,
@@ -579,7 +577,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get primaryFixedDim => DynamicColor(
+  DynamicColor get primaryFixedDim => .new(
     name: "primary_fixed_dim",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => _isMonochrome(scheme) ? 30.0 : 80.0,
@@ -596,7 +594,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onPrimaryFixed => DynamicColor(
+  DynamicColor get onPrimaryFixed => .new(
     name: "on_primary_fixed",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => _isMonochrome(scheme) ? 100.0 : 10.0,
@@ -606,7 +604,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onPrimaryFixedVariant => DynamicColor(
+  DynamicColor get onPrimaryFixedVariant => .new(
     name: "on_primary_fixed_variant",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => _isMonochrome(scheme) ? 90.0 : 30.0,
@@ -616,7 +614,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get secondaryFixed => DynamicColor(
+  DynamicColor get secondaryFixed => .new(
     name: "secondary_fixed",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) => _isMonochrome(scheme) ? 80.0 : 90.0,
@@ -633,7 +631,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get secondaryFixedDim => DynamicColor(
+  DynamicColor get secondaryFixedDim => .new(
     name: "secondary_fixed_dim",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) => _isMonochrome(scheme) ? 70.0 : 80.0,
@@ -650,7 +648,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onSecondaryFixed => DynamicColor(
+  DynamicColor get onSecondaryFixed => .new(
     name: "on_secondary_fixed",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (_) => 10.0,
@@ -660,7 +658,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onSecondaryFixedVariant => DynamicColor(
+  DynamicColor get onSecondaryFixedVariant => .new(
     name: "on_secondary_fixed_variant",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) => _isMonochrome(scheme) ? 25.0 : 30.0,
@@ -670,7 +668,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get tertiaryFixed => DynamicColor(
+  DynamicColor get tertiaryFixed => .new(
     name: "tertiary_fixed",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) => _isMonochrome(scheme) ? 40.0 : 90.0,
@@ -687,7 +685,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get tertiaryFixedDim => DynamicColor(
+  DynamicColor get tertiaryFixedDim => .new(
     name: "tertiary_fixed_dim",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) => _isMonochrome(scheme) ? 30.0 : 80.0,
@@ -704,7 +702,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onTertiaryFixed => DynamicColor(
+  DynamicColor get onTertiaryFixed => .new(
     name: "on_tertiary_fixed",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) => _isMonochrome(scheme) ? 100.0 : 10.0,
@@ -714,7 +712,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get onTertiaryFixedVariant => DynamicColor(
+  DynamicColor get onTertiaryFixedVariant => .new(
     name: "on_tertiary_fixed_variant",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) => _isMonochrome(scheme) ? 90.0 : 30.0,
@@ -724,7 +722,7 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get controlActivated => DynamicColor(
+  DynamicColor get controlActivated => .new(
     name: "control_activated",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 30.0 : 90.0,
@@ -732,14 +730,14 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get controlNormal => DynamicColor(
+  DynamicColor get controlNormal => .new(
     name: "control_normal",
     palette: (scheme) => scheme.neutralVariantPalette,
     tone: (scheme) => scheme.isDark ? 80.0 : 30.0,
   );
 
   @override
-  DynamicColor get controlHighlight => DynamicColor(
+  DynamicColor get controlHighlight => .new(
     name: "control_highlight",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark ? 100.0 : 0.0,
@@ -747,35 +745,35 @@ class ColorSpec2021 implements ColorSpec {
   );
 
   @override
-  DynamicColor get textPrimaryInverse => DynamicColor(
+  DynamicColor get textPrimaryInverse => .new(
     name: "text_primary_inverse",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark ? 10.0 : 90.0,
   );
 
   @override
-  DynamicColor get textSecondaryAndTertiaryInverse => DynamicColor(
+  DynamicColor get textSecondaryAndTertiaryInverse => .new(
     name: "text_secondary_and_tertiary_inverse",
     palette: (scheme) => scheme.neutralVariantPalette,
     tone: (scheme) => scheme.isDark ? 30.0 : 80.0,
   );
 
   @override
-  DynamicColor get textPrimaryInverseDisableOnly => DynamicColor(
+  DynamicColor get textPrimaryInverseDisableOnly => .new(
     name: "text_primary_inverse_disable_only",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark ? 10.0 : 90.0,
   );
 
   @override
-  DynamicColor get textSecondaryAndTertiaryInverseDisabled => DynamicColor(
+  DynamicColor get textSecondaryAndTertiaryInverseDisabled => .new(
     name: "text_secondary_and_tertiary_inverse_disabled",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark ? 10.0 : 90.0,
   );
 
   @override
-  DynamicColor get textHintInverse => DynamicColor(
+  DynamicColor get textHintInverse => .new(
     name: "text_hint_inverse",
     palette: (scheme) => scheme.neutralPalette,
     tone: (scheme) => scheme.isDark ? 10.0 : 90.0,

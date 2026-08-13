@@ -9,9 +9,7 @@ import 'quantizer.dart';
 ///
 /// The algorithm was described by Xiaolin Wu in Graphic Gems II,
 /// published in 1991.
-final class QuantizerWu implements Quantizer {
-  QuantizerWu();
-
+final class QuantizerWu() implements Quantizer {
   late List<int> _weights;
   late List<int> _momentsR;
   late List<int> _momentsG;
@@ -232,19 +230,22 @@ final class QuantizerWu implements Quantizer {
     switch (cutDirection) {
       case .red:
         one.r1 = maxRResult.cutLocation;
-        two.r0 = one.r1;
-        two.g0 = one.g0;
-        two.b0 = one.b0;
+        two
+          ..r0 = one.r1
+          ..g0 = one.g0
+          ..b0 = one.b0;
       case .green:
         one.g1 = maxGResult.cutLocation;
-        two.r0 = one.r0;
-        two.g0 = one.g1;
-        two.b0 = one.b0;
+        two
+          ..r0 = one.r0
+          ..g0 = one.g1
+          ..b0 = one.b0;
       case .blue:
         one.b1 = maxBResult.cutLocation;
-        two.r0 = one.r0;
-        two.g0 = one.g0;
-        two.b0 = one.b1;
+        two
+          ..r0 = one.r0
+          ..g0 = one.g0
+          ..b0 = one.b1;
     }
 
     one.vol = (one.r1 - one.r0) * (one.g1 - one.g0) * (one.b1 - one.b0);
@@ -377,8 +378,8 @@ final class QuantizerWu implements Quantizer {
 enum _Direction { red, green, blue }
 
 extension type const _MaximizeResult._(({int cutLocation, double maximum}) _) {
-  const _MaximizeResult({required int cutLocation, required double maximum})
-    : this._((cutLocation: cutLocation, maximum: maximum));
+  const new({required int cutLocation, required double maximum})
+    : _ = (cutLocation: cutLocation, maximum: maximum);
 
   // < 0 if cut impossible
   int get cutLocation => _.cutLocation;
@@ -387,34 +388,22 @@ extension type const _MaximizeResult._(({int cutLocation, double maximum}) _) {
 }
 
 extension type const _CreateBoxesResult._(
-  ({int requestedCount, int resultCount}) _
+  ({int requestedCount, int resultCount}) _,
 ) {
-  const _CreateBoxesResult({
-    required int requestedCount,
-    required int resultCount,
-  }) : this._((requestedCount: requestedCount, resultCount: resultCount));
+  const new({required int requestedCount, required int resultCount})
+    : _ = (requestedCount: requestedCount, resultCount: resultCount);
 
   int get requestedCount => _.requestedCount;
 
   int get resultCount => _.resultCount;
 }
 
-final class _Box {
-  _Box({
-    this.r0 = 0,
-    this.r1 = 0,
-    this.g0 = 0,
-    this.g1 = 0,
-    this.b0 = 0,
-    this.b1 = 0,
-    this.vol = 0,
-  });
-
-  int r0;
-  int r1;
-  int g0;
-  int g1;
-  int b0;
-  int b1;
-  int vol;
-}
+final class _Box({
+  var int r0 = 0,
+  var int r1 = 0,
+  var int g0 = 0,
+  var int g1 = 0,
+  var int b0 = 0,
+  var int b1 = 0,
+  var int vol = 0,
+});
