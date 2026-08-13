@@ -1,4 +1,4 @@
-## Unreleased
+## 1.7.0
 
 - Introduced a new main library `androidx_graphics_shapes`.
   - The `shapes` library is now deprecated in favor of `androidx_graphics_shapes`.
@@ -17,6 +17,8 @@
 - Upgraded dependencies to latest pinned SDK constraints.
   - `meta` to `^1.19.0`.
   - `vector_math` to `^2.4.2`.
+
+- Updated example to use the `material_3p` package.
 
 - Minor internal changes.
 

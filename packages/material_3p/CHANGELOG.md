@@ -1,4 +1,4 @@
-## Unreleased
+## 0.5.0
 
 - Moved `package:androidx_graphics_shapes/material_shapes` library implementation into `material_3p`.
   - Re-exports base shape types from `package:androidx_graphics_shapes/androidx_graphics_shapes.dart` instead of the deprecated `shapes.dart`.

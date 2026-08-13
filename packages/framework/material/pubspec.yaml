@@ -25,13 +25,12 @@ dependencies:
     path: ../layout
 
   # Hosted dependencies
-  androidx_graphics_shapes: ^1.6.0
   collection: ^1.19.1
   google_symbols_icons: ^0.1.0
   libmonet: ^2.0.0-dev.19
   luminous_symbols_icons: ^0.1.0
-  material_3p: 0.4.1
-  material_symbols_icons: ^4.2951.0
+  material_3p: ^0.5.0
+  material_symbols_icons: ^4.2960.0
   meta: ^1.18.0
   motor: ^1.1.0
   nested: ^1.0.0

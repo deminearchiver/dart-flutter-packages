@@ -1,6 +1,6 @@
 name: androidx_graphics_shapes
 description: A library for easy creation, transformation, and morphing of rounded polygonal shapes. Contains predefined Material Design shapes that can be used at various components.
-version: 1.6.1
+version: 1.7.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/androidx_graphics_shapes
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
@@ -14,7 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
   collection: ^1.19.1
-  material_3p: any # TODO: SET A CONSTRAINT THIS IS SERIOUS
+  material_3p: ^0.5.0
   meta: ^1.19.0
   vector_math: ^2.4.2
 

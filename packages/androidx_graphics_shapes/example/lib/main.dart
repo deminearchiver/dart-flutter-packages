@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:libmonet/libmonet.dart';
+import 'package:material_3p/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 import 'floating_navigation_bar.dart';
-import 'loading_indicator.dart';
 
 void main() {
   runApp(const App());
