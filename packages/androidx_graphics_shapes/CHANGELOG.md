@@ -1,8 +1,11 @@
 ## Unreleased
 
-- Introduced the library `androidx_graphics_shapes`.
+- Introduced a new main library `androidx_graphics_shapes`.
   - The `shapes` library is now deprecated in favor of `androidx_graphics_shapes`.
   - Added [data-driven fixes](https://github.com/flutter/flutter/blob/master/docs/contributing/Data-driven-Fixes.md) for automatic migration from `package:androidx_graphics_shapes/shapes.dart` to `package:androidx_graphics_shapes/androidx_graphics_shapes.dart`.
+
+- Deprecated the `material_shapes` library in favor of `package:material_3p/material_shapes.dart`.
+  - Added [data-driven fixes](https://github.com/flutter/flutter/blob/master/docs/contributing/Data-driven-Fixes.md) for automatic migration from `package:androidx_graphics_shapes/material_shapes.dart` to `package:material_3p/material_shapes.dart`.
 
 - Bumped minimum SDK versions to Dart 3.13 and Flutter 3.47.
   - Refactored classes and extension types to use Dart 3.13 [primary constructors](https://dart.dev/language/primary-constructors) and [concise constructor syntax](https://dart.dev/language/constructors#concise-constructor-syntax).
@@ -10,6 +13,10 @@
 
 - Made `Feature` a `sealed class`.
   - This restricts subclass hierarchy solely to `Edge` and `Corner`, which are already `final` classes.
+
+- Upgraded dependencies to latest pinned SDK constraints.
+  - `meta` to `^1.19.0`.
+  - `vector_math` to `^2.4.2`.
 
 - Minor internal changes.
 

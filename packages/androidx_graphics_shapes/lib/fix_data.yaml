@@ -6,3 +6,9 @@ transforms:
     changes:
       - kind: replacedBy
         newLibrary: package:androidx_graphics_shapes/androidx_graphics_shapes.dart
+  - title: "Replace with package:material_3p/material_shapes.dart"
+    date: 2026-08-13
+    library: package:androidx_graphics_shapes/material_shapes.dart
+    changes:
+      - kind: replacedBy
+        newLibrary: package:material_3p/material_shapes.dart

@@ -1,3 +1,15 @@
+## Unreleased
+
+- Moved `package:androidx_graphics_shapes/material_shapes` library implementation into `material_3p`.
+  - Re-exports base shape types from `package:androidx_graphics_shapes/androidx_graphics_shapes.dart` instead of the deprecated `shapes.dart`.
+
+- Bumped minimum SDK versions to Dart 3.13 and Flutter 3.47.
+
+- Upgraded hosted dependencies.
+  - `material_symbols_icons` to `^4.2960.0`.
+  - `meta` to `^1.19.0`.
+  - `vector_math` to `^2.4.2`.
+
 ## 0.4.1
 
 - Bumped `libmonet` dependency to `2.0.0-dev.19` and relaxed the dependency constraint.
