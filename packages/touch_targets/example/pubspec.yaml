@@ -14,7 +14,7 @@ dependencies:
   touch_targets:
     path: ../
   collection: ^1.19.1
-  material_symbols_icons: ^4.2928.1
+  material_symbols_icons: ^4.2960.0
   meta: ^1.17.0
 
 dev_dependencies:
