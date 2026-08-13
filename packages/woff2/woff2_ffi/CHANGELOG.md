@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Fixed Dart build hook failing on Linux.
+
 - Changed package location in the repository.
 
 ## 0.1.1

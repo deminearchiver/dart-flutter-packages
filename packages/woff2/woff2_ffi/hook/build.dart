@@ -8,7 +8,8 @@ void main(List<String> arguments) async {
     if (!input.config.buildCodeAssets) return;
 
     final packageName = input.packageName;
-    final isWindows = input.config.code.targetOS == .windows;
+    final targetOS = input.config.code.targetOS;
+
     final ninjaBuilder = NinjaBuilder.library(
       name: packageName,
       assetName: "src/ffi_bindings.g.dart",
@@ -70,10 +71,38 @@ void main(List<String> arguments) async {
         "third_party/woff2/brotli/c/include",
       ],
       optimizationLevel: .o2,
+      flags: switch (targetOS) {
+        .windows => const [
+          // MSVC / clang-cl: no exceptions or RTTI (matches HB_NO_* build).
+          "/EHs-",
+          "/GR-",
+          "/bigobj",
+        ],
+        .linux => const [
+          "-fno-exceptions",
+          "-fno-rtti",
+          // Embed libstdc++/libgcc so the .so does not depend on the host's
+          // shared C++ runtime (AppImage / older distros).
+          "-static-libstdc++",
+          "-static-libgcc",
+        ],
+        _ => const ["-fno-exceptions", "-fno-rtti"],
+      },
+      libraries: switch (targetOS) {
+        .windows => const [],
+        _ => const ["m", "stdc++"],
+      },
       defines: {
-        "WOFF2_EXTERN": isWindows
+        "WOFF2_EXTERN": targetOS == .windows
             ? "__declspec(dllexport)"
             : "__attribute__((visibility(\"default\")))",
+      },
+      cppLinkStdLib: switch (targetOS) {
+        .android => "c++_static",
+        .iOS || .macOS || .fuchsia => "c++",
+        .linux => "stdc++",
+        .windows => null,
+        _ => null,
       },
     );
     final logger = Logger("")
