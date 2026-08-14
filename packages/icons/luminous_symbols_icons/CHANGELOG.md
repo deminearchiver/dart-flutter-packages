@@ -1,3 +1,8 @@
+## 0.1.3
+
+- Rolled the Luminous Symbols font from `v46` to `v49`.
+  - This update introduces 44 new icons: `arrow_outward`, `background_replace`, `bookmark_spark`, `calendar_today`, `chat_add_on`, `checklist`, `chevron_backward`, `compress`, `computer`, `content_cut`, `crop_square`, `dashboard`, `description`, `display_add`, `edit_note`, `expand`, `fiber_manual_record`, `file_export`, `globe_clock`, `graph_6`, `history_toggle_off`, `keep_off`, `lasso_select`, `link_off`, `logout`, `mindfulness`, `mode_auto`, `mood_spark`, `network_node`, `open_in_browser`, `open_in_full`, `pace`, `person_cancel`, `picture_as_pdf`, `route`, `school`, `select_window_2`, `shield_lock`, `step`, `stream_science`, `subdirectory_arrow_right`, `team_dashboard`, `terminal_add`, `tts_off`.
+
 ## 0.1.2
 
 - Rolled the Luminous Symbols font from `v42` to `v46`.
