@@ -890,7 +890,7 @@ abstract final class GoogleSymbolsSharp {
   static const IconData art_track = IconData(0xe060, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "article".
-  static const IconData article = IconData(0xe672, fontFamily: fontFamily, fontPackage: fontPackage);
+  static const IconData article = IconData(0xef42, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "article_person".
   static const IconData article_person = IconData(0xf368, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -3272,7 +3272,7 @@ abstract final class GoogleSymbolsSharp {
   static const IconData dermatology = IconData(0xe0a7, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "description".
-  static const IconData description = IconData(0xe683, fontFamily: fontFamily, fontPackage: fontPackage);
+  static const IconData description = IconData(0xe873, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "deselect".
   static const IconData deselect = IconData(0xebb6, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -3538,6 +3538,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "dishwasher_gen".
   static const IconData dishwasher_gen = IconData(0xe832, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "display_add".
+  static const IconData display_add = IconData(0xffed2, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "display_external_input".
   static const IconData display_external_input = IconData(0xf7e7, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -3739,6 +3742,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "drive_ai".
   static const IconData drive_ai = IconData(0xe6bc, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "drive_apk".
+  static const IconData drive_apk = IconData(0xffecf, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "drive_apps_script".
   static const IconData drive_apps_script = IconData(0xf0c4, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -3748,6 +3754,15 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "drive_audio".
   static const IconData drive_audio = IconData(0xe670, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "drive_chart".
+  static const IconData drive_chart = IconData(0xe671, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "drive_csv".
+  static const IconData drive_csv = IconData(0xffece, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "drive_document".
+  static const IconData drive_document = IconData(0xe672, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "drive_drawing".
   static const IconData drive_drawing = IconData(0xe673, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -3756,6 +3771,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "drive_export".
   static const IconData drive_export = IconData(0xf41d, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "drive_file".
+  static const IconData drive_file = IconData(0xe674, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "drive_file_gmail".
   static const IconData drive_file_gmail = IconData(0xf8fa, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -3775,11 +3793,23 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "drive_folder_upload".
   static const IconData drive_folder_upload = IconData(0xe9a3, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "drive_form".
+  static const IconData drive_form = IconData(0xe677, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "drive_fusiontable".
+  static const IconData drive_fusiontable = IconData(0xe678, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "drive_gmail".
   static const IconData drive_gmail = IconData(0xf8fb, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "drive_image".
+  static const IconData drive_image = IconData(0xe679, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "drive_keep".
   static const IconData drive_keep = IconData(0xe67a, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "drive_maps".
+  static const IconData drive_maps = IconData(0xffecd, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "drive_ms_excel".
   static const IconData drive_ms_excel = IconData(0xe67b, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -3793,8 +3823,14 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "drive_pdf".
   static const IconData drive_pdf = IconData(0xe67e, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "drive_pics".
+  static const IconData drive_pics = IconData(0xffecc, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "drive_presentation".
   static const IconData drive_presentation = IconData(0xe67f, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "drive_projects".
+  static const IconData drive_projects = IconData(0xffed0, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "drive_ps".
   static const IconData drive_ps = IconData(0xe6bd, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -3808,11 +3844,23 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "drive_shortcut".
   static const IconData drive_shortcut = IconData(0xf105, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "drive_site".
+  static const IconData drive_site = IconData(0xe681, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "drive_sketch".
   static const IconData drive_sketch = IconData(0xe6be, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "drive_spreadsheet".
   static const IconData drive_spreadsheet = IconData(0xe682, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "drive_text".
+  static const IconData drive_text = IconData(0xe683, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "drive_video".
+  static const IconData drive_video = IconData(0xe684, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "drive_vids".
+  static const IconData drive_vids = IconData(0xffecb, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "drive_zip".
   static const IconData drive_zip = IconData(0xe685, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -5851,6 +5899,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "globe_book".
   static const IconData globe_book = IconData(0xf3c9, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "globe_clock".
+  static const IconData globe_clock = IconData(0xffed1, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "globe_location_pin".
   static const IconData globe_location_pin = IconData(0xf35d, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -7341,6 +7392,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "list".
   static const IconData list = IconData(0xe896, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "list_2".
+  static const IconData list_2 = IconData(0xffeca, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "list_alt".
   static const IconData list_alt = IconData(0xe0ee, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -11734,6 +11788,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "speech_to_text".
   static const IconData speech_to_text = IconData(0xf8a7, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "speech_to_text_2".
+  static const IconData speech_to_text_2 = IconData(0xffec9, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "speed".
   static const IconData speed = IconData(0xe9e4, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -12621,6 +12678,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "terminal_2".
   static const IconData terminal_2 = IconData(0xfff8e, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "terminal_add".
+  static const IconData terminal_add = IconData(0xffed3, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "test_clone".
   static const IconData test_clone = IconData(0xe52a, fontFamily: fontFamily, fontPackage: fontPackage);

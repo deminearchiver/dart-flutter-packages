@@ -1,3 +1,8 @@
+## 0.1.3
+
+- Rolled the Google Symbols font from `v451` to `v454`.
+  - This update introduces 22 new icons: `article`, `description`, `display_add`, `drive_apk`, `drive_chart`, `drive_csv`, `drive_document`, `drive_file`, `drive_form`, `drive_fusiontable`, `drive_image`, `drive_maps`, `drive_pics`, `drive_projects`, `drive_site`, `drive_text`, `drive_video`, `drive_vids`, `globe_clock`, `list_2`, `speech_to_text_2`, `terminal_add`.
+
 ## 0.1.2
 
 - Rolled the Google Symbols font from `v449` to `v451`.
