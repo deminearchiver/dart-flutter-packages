@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart' show DefaultCupertinoLocalizations;
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cupertino_ui/cupertino_ui.dart'
+    show DefaultCupertinoLocalizations;
 import 'package:material/src/material/flutter.dart';
 
 /// [RawMaterialApp] uses this [TextStyle] as its [DefaultTextStyle] to encourage

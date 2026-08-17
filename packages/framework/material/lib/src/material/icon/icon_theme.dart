@@ -1,5 +1,5 @@
 import 'package:material/src/material/flutter.dart';
-import 'package:flutter/material.dart' as flutter;
+import 'package:material_ui/material_ui.dart' as flutter;
 
 part 'icon_theme_data_partial.dart';
 part 'icon_theme_data.dart';
