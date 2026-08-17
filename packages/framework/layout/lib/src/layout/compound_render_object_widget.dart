@@ -397,8 +397,9 @@ class CompoundRenderObjectElement<
         }
         renderObject._insertIntoChildList(child, after: value?.renderObject);
       case (KeyedSlot<SlotType>(key: final newSlot), IndexedSlot<Element?>()):
-        renderObject._removeFromChildList(child);
-        renderObject._setSlottedChild(child, newSlot);
+        renderObject
+          .._removeFromChildList(child)
+          .._setSlottedChild(child, newSlot);
         assert(renderObject._slotToChild[newSlot] == child);
       default:
         assert(

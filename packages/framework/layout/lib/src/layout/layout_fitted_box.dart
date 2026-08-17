@@ -57,14 +57,11 @@ class LayoutFittedBox extends SingleChildRenderObjectWidget {
 
 class RenderLayoutFittedBox extends RenderShiftedBox {
   RenderLayoutFittedBox({
-    BoxFit fit = .contain,
-    AlignmentGeometry alignment = .center,
-    TextDirection? textDirection,
+    this._fit = .contain,
+    this._alignment = .center,
+    this._textDirection,
     RenderBox? child,
-  }) : _fit = fit,
-       _alignment = alignment,
-       _textDirection = textDirection,
-       super(child);
+  }) : super(child);
 
   Alignment? _resolvedAlignmentCache;
 

@@ -97,8 +97,6 @@ class Flex extends MultiChildRenderObjectWidget {
          crossAxisAlignment != .baseline || textBaseline != null,
          "textBaseline is required if you specify the crossAxisAlignment with CrossAxisAlignment.baseline",
        );
-  // Cannot use == in the assert above instead of identical because of https://github.com/dart-lang/language/issues/1811.
-  // TODO: the above issue is not fixed; replace identical with primitive equality.
 
   /// Creates a horizontal array of children.
   ///
@@ -1062,7 +1060,7 @@ extension type const _AscentDescent._(
 }
 
 typedef _ChildSizingFunction = double Function(RenderBox child, double extent);
-typedef _NextChild = RenderBox? Function(RenderBox child);
+// typedef _NextChild = RenderBox? Function(RenderBox child);
 
 class _LayoutSizes {
   _LayoutSizes({
@@ -1231,25 +1229,16 @@ class RenderFlex extends RenderBox
   /// start of the main axis and the center of the cross axis.
   RenderFlex({
     List<RenderBox>? children,
-    Axis direction = .horizontal,
-    MainAxisSize mainAxisSize = .max,
-    MainAxisAlignment mainAxisAlignment = .start,
-    CrossAxisAlignment crossAxisAlignment = .center,
-    TextDirection? textDirection,
-    VerticalDirection verticalDirection = .down,
-    TextBaseline? textBaseline,
-    Clip clipBehavior = .none,
-    double spacing = 0.0,
-  }) : _direction = direction,
-       _mainAxisAlignment = mainAxisAlignment,
-       _mainAxisSize = mainAxisSize,
-       _crossAxisAlignment = crossAxisAlignment,
-       _textDirection = textDirection,
-       _verticalDirection = verticalDirection,
-       _textBaseline = textBaseline,
-       _clipBehavior = clipBehavior,
-       _spacing = spacing,
-       assert(spacing >= 0.0) {
+    this._direction = .horizontal,
+    this._mainAxisSize = .max,
+    this._mainAxisAlignment = .start,
+    this._crossAxisAlignment = .center,
+    this._textDirection,
+    this._verticalDirection = .down,
+    this._textBaseline,
+    this._clipBehavior = .none,
+    this._spacing = 0.0,
+  }) : assert(_spacing >= 0.0) {
     addAll(children);
   }
 

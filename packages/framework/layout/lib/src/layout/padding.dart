@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
 import 'package:layout/src/layout/flutter.dart';
 import 'package:flutter/rendering.dart' as flutter;
 import 'package:flutter/widgets.dart' as flutter;
@@ -13,23 +12,6 @@ import 'package:flutter/widgets.dart' as flutter;
 /// constraints by the given padding, causing the child to layout at a smaller
 /// size. Padding then sizes itself to its child's size, inflated by the
 /// padding, effectively creating empty space around the child.
-///
-/// {@tool snippet}
-///
-/// This snippet creates "Hello World!" [Text] inside a [Card] that is indented
-/// by sixteen pixels in each direction.
-///
-/// ![](https://flutter.github.io/assets-for-api-docs/assets/widgets/padding.png)
-///
-/// ```dart
-/// const Card(
-///   child: Padding(
-///     padding: EdgeInsets.all(16.0),
-///     child: Text('Hello World!'),
-///   ),
-/// )
-/// ```
-/// {@end-tool}
 ///
 /// See also:
 ///
@@ -72,13 +54,8 @@ class Padding extends SingleChildRenderObjectWidget implements flutter.Padding {
 /// padding, effectively creating empty space around the child.
 class RenderPadding extends RenderShiftedBox implements flutter.RenderPadding {
   /// Creates a render object that insets its child.
-  RenderPadding({
-    required EdgeInsetsGeometry padding,
-    TextDirection? textDirection,
-    RenderBox? child,
-  }) : _padding = padding,
-       _textDirection = textDirection,
-       super(child);
+  RenderPadding({required this._padding, this._textDirection, RenderBox? child})
+    : super(child);
 
   EdgeInsets? _resolvedPaddingCache;
 

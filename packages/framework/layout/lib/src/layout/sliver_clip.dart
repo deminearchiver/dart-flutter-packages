@@ -20,7 +20,7 @@ class SliverClip extends SingleChildRenderObjectWidget {
 }
 
 class RenderSliverClip extends RenderProxySliver {
-  RenderSliverClip({required bool clipOverlap}) : _clipOverlap = clipOverlap;
+  RenderSliverClip({required this._clipOverlap});
 
   bool _clipOverlap;
 

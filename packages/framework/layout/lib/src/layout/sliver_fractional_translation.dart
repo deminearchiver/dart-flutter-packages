@@ -65,11 +65,10 @@ class SliverFractionalTranslation extends SingleChildRenderObjectWidget {
 class RenderSliverFractionalTranslation extends RenderProxySliver {
   /// Creates a render object that translates its child's painting.
   RenderSliverFractionalTranslation({
-    required Offset translation,
+    required this._translation,
     this.transformHitTests = true,
     RenderSliver? child,
-  }) : _translation = translation,
-       super(child);
+  }) : super(child);
 
   /// The translation to apply to the child, scaled to the child's size.
   ///
