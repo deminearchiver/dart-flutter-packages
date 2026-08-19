@@ -1,3 +1,9 @@
+## Unreleased
+
+- Removed deprecated analysis presets.
+  - Presets from `package:deminearchiver_lints/deprecated/*.yaml` cannot be used now.
+  - Removed `lints` and `flutter_lints` dependencies.
+
 ## 2.1.2
 
 - Disabled the [`avoid_private_typedef_functions`](https://dart.dev/lints/avoid_private_typedef_functions) linter rule.
