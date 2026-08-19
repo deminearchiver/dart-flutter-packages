@@ -1,6 +1,7 @@
 include:
   - lib/analysis_options.yaml
   - lib/package/strict.yaml
+
 # TODO: get rid of this please
 analyzer:
   exclude:
