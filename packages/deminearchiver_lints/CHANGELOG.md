@@ -1,3 +1,7 @@
+## Unreleased
+
+- Disabled the [`avoid_redundant_argument_values`](https://dart.dev/tools/diagnostics/avoid_redundant_argument_values) lint rule.
+
 ## 3.0.0
 
 - Fully decoupled the package from the `very_good_analysis` preset.
