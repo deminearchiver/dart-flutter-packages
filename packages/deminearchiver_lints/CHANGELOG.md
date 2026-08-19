@@ -1,6 +1,6 @@
-## Unreleased
+## 3.0.1
 
-- Disabled the [`avoid_redundant_argument_values`](https://dart.dev/tools/diagnostics/avoid_redundant_argument_values) lint rule.
+- Disabled the [`avoid_redundant_argument_values`](https://dart.dev/tools/linter-rules/avoid_redundant_argument_values) lint rule.
 
 ## 3.0.0
 
