@@ -20,5 +20,5 @@ dev_dependencies:
     sdk: flutter
   icongen_tools:
     path: ../icongen_tools
-  deminearchiver_lints: ^2.1.2
+  deminearchiver_lints: ^3.0.0
   icongen: ^0.5.2

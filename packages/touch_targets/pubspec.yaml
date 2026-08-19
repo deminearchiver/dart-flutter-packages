@@ -25,7 +25,7 @@ dev_dependencies:
     sdk: flutter
 
   # Hosted dependencies
-  deminearchiver_lints: ^2.1.2
+  deminearchiver_lints: ^3.0.0
 
 # TODO: should this be removed?
 flutter:

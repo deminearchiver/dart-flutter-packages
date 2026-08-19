@@ -51,7 +51,6 @@ workspace:
 dev_dependencies:
   flutter:
     sdk: flutter
-  deminearchiver_lints: ^2.1.2
 
 dependency_overrides:
   # Required for package:interact2.

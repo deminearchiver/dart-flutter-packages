@@ -45,4 +45,4 @@ dev_dependencies:
 
   # Hosted dependencies
   build_runner: ^2.15.0
-  deminearchiver_lints: ^2.1.2
+  deminearchiver_lints: ^3.0.0
