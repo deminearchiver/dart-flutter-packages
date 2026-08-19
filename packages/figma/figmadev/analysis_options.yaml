@@ -1,6 +1,6 @@
 include:
-  - package:deminearchiver_lints/base.yaml
-  - package:deminearchiver_lints/app.yaml
+  - package:deminearchiver_lints/analysis_options.yaml
+  - package:deminearchiver_lints/app/loose.yaml
 analyzer:
   exclude:
     - build/**
