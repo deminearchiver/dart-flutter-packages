@@ -1,11 +1,23 @@
 ## Unreleased
 
+- Fully decoupled the package from the `very_good_analysis` preset.
+  - The package is now standalone and no longer depends on any external packages.
+  - Removed `lints`, `flutter_lints` and `very_good_analysis` dependencies.
+
+- Introduced a redesigned, modular preset structure based on additive composition.
+  - Removed legacy composition-based presets.
+  - Removed deprecated analysis presets.
+
+- Updated and tightened linter rules.
+  - The package better adheres to the code style and conventions of repositories maintained by [@deminearchiver](https://github.com/deminearchiver).
+  - Since the package is mostly used internally, no changes will be listed here.
+
+- Enhanced analyzer and formatter configurations.
+  - This change should have no effect on most projects.
+
 - Stopped ignoring own `analysis_options.yaml` configuration.
   - The path has been removed from `.gitignore` and `.pubignore`.
-
-- Removed deprecated analysis presets.
-  - Presets from `package:deminearchiver_lints/deprecated/*.yaml` cannot be used now.
-  - Removed `lints` and `flutter_lints` dependencies.
+  - `.gitignore` file has been normalized with other packages in the monorepo.
 
 ## 2.1.2
 

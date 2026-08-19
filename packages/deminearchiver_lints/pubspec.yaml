@@ -8,7 +8,4 @@ topics: [lints, analyzer, analysis]
 resolution: workspace
 
 environment:
-  sdk: ^3.11.0
-
-dependencies:
-  very_good_analysis: ^10.2.0
+  sdk: ^3.13.0
