@@ -1,10 +1,10 @@
 name: deminearchiver_lints
 description: Opinionated lints for Dart and Flutter projects.
-version: 2.1.2
+version: 3.0.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/deminearchiver_lints
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
-topics: [lints, analyzer, analysis]
+topics: [analysis, analyzer, code-style, lint, lints]
 resolution: workspace
 
 environment:

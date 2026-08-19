@@ -1,4 +1,4 @@
-## Unreleased
+## 3.0.0
 
 - Fully decoupled the package from the `very_good_analysis` preset.
   - The package is now standalone and no longer depends on any external packages.
