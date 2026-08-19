@@ -1,5 +1,8 @@
 ## Unreleased
 
+- Stopped ignoring own `analysis_options.yaml` configuration.
+  - The path has been removed from `.gitignore` and `.pubignore`.
+
 - Removed deprecated analysis presets.
   - Presets from `package:deminearchiver_lints/deprecated/*.yaml` cannot be used now.
   - Removed `lints` and `flutter_lints` dependencies.
