@@ -1,4 +1,4 @@
-## Unreleased
+## 0.5.0
 
 - Bumped minimum SDK version to Dart 3.13.
   - Refactored classes and extension types to use Dart 3.13 [primary constructors](https://dart.dev/language/primary-constructors) and [concise constructor syntax](https://dart.dev/language/constructors#concise-constructor-syntax).
