@@ -44,7 +44,7 @@ dependencies:
   touch_targets: ^0.5.0
   vector_math: ^2.2.0
   widget_mask: ^1.0.0+0
-  window_toolbox: ^0.0.7
+  # window_toolbox: ^0.0.7
 
 dev_dependencies:
   # SDK dependencies
