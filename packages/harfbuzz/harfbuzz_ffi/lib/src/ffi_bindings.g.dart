@@ -3484,6 +3484,24 @@ external int hb_ot_color_palette_get_name_id(
   int palette_index,
 );
 
+@ffi.Native<ffi.Uint32 Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>(
+  symbol: 'hb_ot_fetch_bits',
+)
+external int _hb_ot_fetch_bits(ffi.Pointer<hb_face_t> face, int tag);
+
+int hb_ot_fetch_bits(ffi.Pointer<hb_face_t> face, hb_ot_bits_tag_t tag) {
+  return _hb_ot_fetch_bits(face, tag.value);
+}
+
+@ffi.Native<ffi.Int32 Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>(
+  symbol: 'hb_ot_fetch_number',
+)
+external int _hb_ot_fetch_number(ffi.Pointer<hb_face_t> face, int tag);
+
+int hb_ot_fetch_number(ffi.Pointer<hb_face_t> face, hb_ot_number_tag_t tag) {
+  return _hb_ot_fetch_number(face, tag.value);
+}
+
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>)>()
 external void hb_ot_font_set_funcs(ffi.Pointer<hb_font_t> font);
 
@@ -5086,6 +5104,25 @@ external int hb_paint_custom_palette_color(
   ffi.Pointer<hb_color_t> color,
 );
 
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_paint_funcs_t>,
+    ffi.Pointer<ffi.Void>,
+    hb_codepoint_t,
+    ffi.Pointer<hb_font_t>,
+    hb_bool_t,
+    hb_color_t,
+  )
+>()
+external void hb_paint_fill_glyph(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  ffi.Pointer<ffi.Void> paint_data,
+  int glyph,
+  ffi.Pointer<hb_font_t> font,
+  int is_foreground,
+  int color,
+);
+
 @ffi.Native<ffi.Pointer<hb_paint_funcs_t> Function()>()
 external ffi.Pointer<hb_paint_funcs_t> hb_paint_funcs_create();
 
@@ -5189,6 +5226,30 @@ external void hb_paint_funcs_set_color_glyph_func(
 external void hb_paint_funcs_set_custom_palette_color_func(
   ffi.Pointer<hb_paint_funcs_t> funcs,
   hb_paint_custom_palette_color_func_t func,
+  ffi.Pointer<ffi.Void> user_data,
+  hb_destroy_func_t destroy,
+);
+
+/// hb_paint_funcs_set_fill_glyph_func:
+/// @funcs: A paint functions struct
+/// @func: (closure user_data) (destroy destroy) (scope notified): The fill-glyph callback
+/// @user_data: Data to pass to @func
+/// @destroy: (nullable): Function to call when @user_data is no longer needed
+///
+/// Sets the fill-glyph callback on the paint functions struct.
+///
+/// Since: 14.3.0
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_paint_funcs_t>,
+    hb_paint_fill_glyph_func_t,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+  )
+>()
+external void hb_paint_funcs_set_fill_glyph_func(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  hb_paint_fill_glyph_func_t func,
   ffi.Pointer<ffi.Void> user_data,
   hb_destroy_func_t destroy,
 );
@@ -6448,6 +6509,44 @@ external ffi.Pointer<hb_blob_t> hb_subset_cff_get_charstrings_index(
   ffi.Pointer<hb_face_t> face,
 );
 
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_subset_depend_t>)>()
+external void hb_subset_depend_destroy(ffi.Pointer<hb_subset_depend_t> depend);
+
+@ffi.Native<ffi.Pointer<hb_subset_depend_t> Function(ffi.Pointer<hb_face_t>)>()
+external ffi.Pointer<hb_subset_depend_t> hb_subset_depend_from_face_or_fail(
+  ffi.Pointer<hb_face_t> face,
+);
+
+@ffi.Native<
+  ffi.UnsignedInt Function(
+    ffi.Pointer<hb_subset_depend_t>,
+    hb_codepoint_t,
+    ffi.UnsignedInt,
+    ffi.Pointer<ffi.UnsignedInt>,
+    ffi.Pointer<hb_subset_depend_entry_t>,
+  )
+>()
+external int hb_subset_depend_lookup_glyph(
+  ffi.Pointer<hb_subset_depend_t> depend,
+  int gid,
+  int start_offset,
+  ffi.Pointer<ffi.UnsignedInt> entry_count,
+  ffi.Pointer<hb_subset_depend_entry_t> entries,
+);
+
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_subset_depend_t>,
+    hb_codepoint_t,
+    ffi.Pointer<hb_set_t>,
+  )
+>()
+external int hb_subset_depend_lookup_set(
+  ffi.Pointer<hb_subset_depend_t> depend,
+  int index,
+  ffi.Pointer<hb_set_t> out,
+);
+
 @ffi.Native<ffi.Pointer<hb_subset_input_t> Function()>()
 external ffi.Pointer<hb_subset_input_t> hb_subset_input_create_or_fail();
 
@@ -6634,6 +6733,11 @@ external int hb_subset_input_set_user_data(
   int replace,
 );
 
+@ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_subset_input_t>)>()
+external ffi.Pointer<hb_blob_t> hb_subset_input_to_string_or_fail(
+  ffi.Pointer<hb_subset_input_t> input,
+);
+
 @ffi.Native<ffi.Pointer<hb_set_t> Function(ffi.Pointer<hb_subset_input_t>)>()
 external ffi.Pointer<hb_set_t> hb_subset_input_unicode_set(
   ffi.Pointer<hb_subset_input_t> input,
@@ -6722,6 +6826,19 @@ external ffi.Pointer<hb_map_t> hb_subset_plan_unicode_to_old_glyph_mapping(
 @ffi.Native<ffi.Pointer<hb_face_t> Function(ffi.Pointer<hb_face_t>)>()
 external ffi.Pointer<hb_face_t> hb_subset_preprocess(
   ffi.Pointer<hb_face_t> source,
+);
+
+@ffi.Native<
+  ffi.Pointer<hb_blob_t> Function(
+    hb_tag_t,
+    ffi.Pointer<hb_subset_serialize_object_t>,
+    ffi.UnsignedInt,
+  )
+>()
+external ffi.Pointer<hb_blob_t> hb_subset_serialize_or_fail(
+  int table_tag,
+  ffi.Pointer<hb_subset_serialize_object_t> hb_objects,
+  int num_hb_objs,
 );
 
 /// len=-1 means str is NUL-terminated.
@@ -7294,9 +7411,9 @@ const int HB_VERSION_MAJOR = 14;
 
 const int HB_VERSION_MICRO = 1;
 
-const int HB_VERSION_MINOR = 2;
+const int HB_VERSION_MINOR = 3;
 
-const String HB_VERSION_STRING = '14.2.1';
+const String HB_VERSION_STRING = '14.3.1';
 
 final class _hb_var_int_t extends ffi.Union {
   @ffi.Uint32()
@@ -9035,7 +9152,7 @@ final class hb_font_t extends ffi.Opaque {}
 /// @start_offset: The index of first table tag to retrieve
 /// @table_count: (inout): Input = the maximum number of table tags to return;
 /// Output = the actual number of table tags returned (may be zero)
-/// @table_tags: (out) (array length=table_count): The array of table tags found
+/// @table_tags: (out) (array length=table_count) (nullable): The array of table tags found
 /// @user_data: User data pointer passed by the caller
 ///
 /// Callback function for hb_face_get_table_tags().
@@ -9323,6 +9440,55 @@ enum hb_memory_mode_t {
     2 => HB_MEMORY_MODE_WRITABLE,
     3 => HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE,
     _ => throw ArgumentError('Unknown value for hb_memory_mode_t: $value'),
+  };
+}
+
+/// hb_ot_bits_tag_t:
+/// @HB_OT_BITS_TAG_FS_TYPE: `fsType` of the `OS/2` table.
+/// @HB_OT_BITS_TAG_FS_SELECTION: `fsSelection` of the `OS/2` table.
+/// @HB_OT_BITS_TAG_MAC_STYLE: `macStyle` of the `head` table.
+/// @HB_OT_BITS_TAG_IS_FIXED_PITCH: `isFixedPitch` of the `post` table.
+/// @HB_OT_BITS_TAG_UNICODE_RANGE_1: `ulUnicodeRange1` of the `OS/2` table.
+/// @HB_OT_BITS_TAG_UNICODE_RANGE_2: `ulUnicodeRange2` of the `OS/2` table.
+/// @HB_OT_BITS_TAG_UNICODE_RANGE_3: `ulUnicodeRange3` of the `OS/2` table.
+/// @HB_OT_BITS_TAG_UNICODE_RANGE_4: `ulUnicodeRange4` of the `OS/2` table.
+/// @HB_OT_BITS_TAG_CODE_PAGE_RANGE_1: `ulCodePageRange1` of the `OS/2` table.
+/// @HB_OT_BITS_TAG_CODE_PAGE_RANGE_2: `ulCodePageRange2` of the `OS/2` table.
+///
+/// Bit fields that can be fetched with hb_ot_fetch_bits().
+///
+/// Since: 14.3.0
+enum hb_ot_bits_tag_t {
+  HB_OT_BITS_TAG_FS_TYPE(1718842480),
+  HB_OT_BITS_TAG_FS_SELECTION(1718842220),
+  HB_OT_BITS_TAG_MAC_STYLE(1835234164),
+  HB_OT_BITS_TAG_IS_FIXED_PITCH(1719169140),
+  HB_OT_BITS_TAG_UNICODE_RANGE_1(1970433585),
+  HB_OT_BITS_TAG_UNICODE_RANGE_2(1970433586),
+  HB_OT_BITS_TAG_UNICODE_RANGE_3(1970433587),
+  HB_OT_BITS_TAG_UNICODE_RANGE_4(1970433588),
+  HB_OT_BITS_TAG_CODE_PAGE_RANGE_1(1668313649),
+  HB_OT_BITS_TAG_CODE_PAGE_RANGE_2(1668313650),
+
+  /// < skip >
+  _HB_OT_BITS_TAG_MAX_VALUE(2147483647);
+
+  final int value;
+  const hb_ot_bits_tag_t(this.value);
+
+  static hb_ot_bits_tag_t fromValue(int value) => switch (value) {
+    1718842480 => HB_OT_BITS_TAG_FS_TYPE,
+    1718842220 => HB_OT_BITS_TAG_FS_SELECTION,
+    1835234164 => HB_OT_BITS_TAG_MAC_STYLE,
+    1719169140 => HB_OT_BITS_TAG_IS_FIXED_PITCH,
+    1970433585 => HB_OT_BITS_TAG_UNICODE_RANGE_1,
+    1970433586 => HB_OT_BITS_TAG_UNICODE_RANGE_2,
+    1970433587 => HB_OT_BITS_TAG_UNICODE_RANGE_3,
+    1970433588 => HB_OT_BITS_TAG_UNICODE_RANGE_4,
+    1668313649 => HB_OT_BITS_TAG_CODE_PAGE_RANGE_1,
+    1668313650 => HB_OT_BITS_TAG_CODE_PAGE_RANGE_2,
+    2147483647 => _HB_OT_BITS_TAG_MAX_VALUE,
+    _ => throw ArgumentError('Unknown value for hb_ot_bits_tag_t: $value'),
   };
 }
 
@@ -10063,6 +10229,37 @@ enum hb_ot_name_id_predefined_t {
 typedef hb_ot_name_id_t = ffi.UnsignedInt;
 typedef Darthb_ot_name_id_t = int;
 
+/// hb_ot_number_tag_t:
+/// @HB_OT_NUMBER_TAG_FONT_X_MIN: `xMin` of the `head` table.
+/// @HB_OT_NUMBER_TAG_FONT_Y_MIN: `yMin` of the `head` table.
+/// @HB_OT_NUMBER_TAG_FONT_X_MAX: `xMax` of the `head` table.
+/// @HB_OT_NUMBER_TAG_FONT_Y_MAX: `yMax` of the `head` table.
+///
+/// Numbers that can be fetched with hb_ot_fetch_number().
+///
+/// Since: 14.3.0
+enum hb_ot_number_tag_t {
+  HB_OT_NUMBER_TAG_FONT_X_MIN(2020436334),
+  HB_OT_NUMBER_TAG_FONT_Y_MIN(2037213550),
+  HB_OT_NUMBER_TAG_FONT_X_MAX(2020434296),
+  HB_OT_NUMBER_TAG_FONT_Y_MAX(2037211512),
+
+  /// < skip >
+  _HB_OT_NUMBER_TAG_MAX_VALUE(2147483647);
+
+  final int value;
+  const hb_ot_number_tag_t(this.value);
+
+  static hb_ot_number_tag_t fromValue(int value) => switch (value) {
+    2020436334 => HB_OT_NUMBER_TAG_FONT_X_MIN,
+    2037213550 => HB_OT_NUMBER_TAG_FONT_Y_MIN,
+    2020434296 => HB_OT_NUMBER_TAG_FONT_X_MAX,
+    2037211512 => HB_OT_NUMBER_TAG_FONT_Y_MAX,
+    2147483647 => _HB_OT_NUMBER_TAG_MAX_VALUE,
+    _ => throw ArgumentError('Unknown value for hb_ot_number_tag_t: $value'),
+  };
+}
+
 /// hb_ot_var_axis_flags_t:
 /// @HB_OT_VAR_AXIS_FLAG_HIDDEN: The axis should not be exposed directly in user interfaces.
 ///
@@ -10479,6 +10676,42 @@ enum hb_paint_extend_t {
     _ => throw ArgumentError('Unknown value for hb_paint_extend_t: $value'),
   };
 }
+
+/// hb_paint_fill_glyph_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
+/// @glyph: the glyph ID
+/// @font: the font
+/// @is_foreground: whether the color is the foreground
+/// @color: The color to use, unpremultiplied
+/// @user_data: User data pointer passed to hb_paint_funcs_set_fill_glyph_func()
+///
+/// A virtual method for the #hb_paint_funcs_t to fill a glyph's shape with
+/// a solid color. If not implemented, a sequence of "push-clip-glyph",
+/// "color", "pop-clip" paint operations, in that order, will be emitted
+/// instead.
+///
+/// Since: 14.3.0
+typedef hb_paint_fill_glyph_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_fill_glyph_func_tFunction>>;
+typedef hb_paint_fill_glyph_func_tFunction = ffi.Void Function(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  ffi.Pointer<ffi.Void> paint_data,
+  hb_codepoint_t glyph,
+  ffi.Pointer<hb_font_t> font,
+  hb_bool_t is_foreground,
+  hb_color_t color,
+  ffi.Pointer<ffi.Void> user_data,
+);
+typedef Darthb_paint_fill_glyph_func_tFunction = void Function(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  ffi.Pointer<ffi.Void> paint_data,
+  Darthb_codepoint_t glyph,
+  ffi.Pointer<hb_font_t> font,
+  Darthb_bool_t is_foreground,
+  Darthb_color_t color,
+  ffi.Pointer<ffi.Void> user_data,
+);
 
 final class hb_paint_funcs_t extends ffi.Opaque {}
 
@@ -11895,6 +12128,105 @@ enum hb_style_tag_t {
   };
 }
 
+/// hb_subset_depend_edge_flags_t:
+/// @HB_SUBSET_DEPEND_EDGE_FLAG_NONE: No flags set.
+/// @HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION: Edge from a multi-position
+/// contextual rule (Context or ChainContext with inputCount > 1). Depend
+/// extraction records edges based on what glyphs could statically be at each
+/// position according to input coverage or class. However, at runtime lookups
+/// within the rule are applied sequentially: a lookup at an earlier position
+/// may transform the glyph at a later position, and two lookups at the same
+/// position may interact such that one produces a glyph that another
+/// immediately consumes as an "intermediate". A glyph that matches the static
+/// coverage may therefore not persist at that position when the rule actually
+/// fires, so this edge may not trigger during closure.
+/// @HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT: Edge from a lookup invoked
+/// within another contextual lookup. The outer context's requirements are not
+/// propagated to this edge, so the edge may fire even when those requirements
+/// are not met.
+///
+/// Flags on dependency edges returned by hb_subset_depend_lookup_glyph() that
+/// mark edges which may produce expected over-approximation when computing
+/// closure via the depend graph, relative to
+/// hb_ot_layout_lookups_substitute_closure(). These flags help distinguish
+/// known limitations of static dependency analysis (expected over-approximation)
+/// from bugs (unexpected over-approximation).
+///
+/// Since: 14.3.0
+enum hb_subset_depend_edge_flags_t {
+  HB_SUBSET_DEPEND_EDGE_FLAG_NONE(0),
+  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION(1),
+  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT(2);
+
+  final int value;
+  const hb_subset_depend_edge_flags_t(this.value);
+
+  static hb_subset_depend_edge_flags_t fromValue(int value) => switch (value) {
+    0 => HB_SUBSET_DEPEND_EDGE_FLAG_NONE,
+    1 => HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION,
+    2 => HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT,
+    _ => throw ArgumentError(
+      'Unknown value for hb_subset_depend_edge_flags_t: $value',
+    ),
+  };
+}
+
+/// hb_subset_depend_entry_t:
+/// @table_tag: Source table (e.g. GSUB, glyf, CFF, COLR, MATH).
+/// @dependent: Target glyph ID.
+/// @layout_tag: Feature tag for GSUB edges; 0 otherwise.
+/// @ligature_set_index: Index into the sets array for ligature component
+/// glyphs, or #HB_CODEPOINT_INVALID if not a ligature edge.
+/// @context_set_index: Index into the sets array for context requirement
+/// glyphs, or #HB_CODEPOINT_INVALID if none. Use hb_subset_depend_lookup_set()
+/// to retrieve the set.
+/// @flags: Edge flags (#hb_subset_depend_edge_flags_t).
+///
+/// A single dependency edge returned by hb_subset_depend_lookup_glyph().
+///
+/// Since: 14.3.0
+final class hb_subset_depend_entry_t extends ffi.Struct {
+  @hb_tag_t()
+  external int table_tag;
+
+  @hb_codepoint_t()
+  external int dependent;
+
+  @hb_tag_t()
+  external int layout_tag;
+
+  @hb_codepoint_t()
+  external int ligature_set_index;
+
+  @hb_codepoint_t()
+  external int context_set_index;
+
+  @ffi.UnsignedInt()
+  external int flagsAsInt;
+
+  hb_subset_depend_edge_flags_t get flags =>
+      hb_subset_depend_edge_flags_t.fromValue(flagsAsInt);
+  set flags(hb_subset_depend_edge_flags_t value) => flagsAsInt = value.value;
+
+  static ffi.Pointer<hb_subset_depend_entry_t> $allocate(
+    ffi.Allocator $allocator, {
+    required int table_tag,
+    required int dependent,
+    required int layout_tag,
+    required int ligature_set_index,
+    required int context_set_index,
+    required hb_subset_depend_edge_flags_t flags,
+  }) => $allocator<hb_subset_depend_entry_t>()
+    ..ref.table_tag = table_tag
+    ..ref.dependent = dependent
+    ..ref.layout_tag = layout_tag
+    ..ref.ligature_set_index = ligature_set_index
+    ..ref.context_set_index = context_set_index
+    ..ref.flags = flags;
+}
+
+final class hb_subset_depend_t extends ffi.Opaque {}
+
 /// hb_subset_flags_t:
 /// @HB_SUBSET_FLAGS_DEFAULT: all flags at their default value of false.
 /// @HB_SUBSET_FLAGS_NO_HINTING: If set hinting instructions will be dropped in
@@ -11929,9 +12261,12 @@ enum hb_style_tag_t {
 /// HB_SUBSET_FLAGS_RETAIN_GIDS then the number of glyphs in the font won't
 /// be reduced as a result of subsetting. If necessary empty glyphs will be
 /// included at the end of the font to keep the number of glyphs unchanged.
-/// @HB_SUBSET_FLAGS_DOWNGRADE_CFF2: If set and instantiating a variable font,
-/// convert the output CFF2 table to CFF1. This enables compatibility with older
-/// renderers that don't support CFF2. Since: 13.0.0
+/// @HB_SUBSET_FLAGS_DOWNGRADE_CFF2: If set and instantiating a variable font
+/// with all axes pinned, convert the output CFF2 table to CFF1. This enables
+/// compatibility with older renderers that don't support CFF2. Since: 13.0.0
+/// @HB_SUBSET_FLAGS_CFF_IDENTITY_CHARSET: If set and subsetting a CID-keyed CFF
+/// font, the output CFF charset will use sequential identity CIDs (CID = new
+/// GID) rather than preserving the original CIDs. Since: 14.3.0
 ///
 /// List of boolean properties that can be configured on the subset input.
 ///
@@ -11952,7 +12287,8 @@ enum hb_subset_flags_t {
   HB_SUBSET_FLAGS_NO_BIDI_CLOSURE(2048),
   HB_SUBSET_FLAGS_IFTB_REQUIREMENTS(4096),
   HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS(8192),
-  HB_SUBSET_FLAGS_DOWNGRADE_CFF2(16384);
+  HB_SUBSET_FLAGS_DOWNGRADE_CFF2(16384),
+  HB_SUBSET_FLAGS_CFF_IDENTITY_CHARSET(32768);
 
   final int value;
   const hb_subset_flags_t(this.value);
@@ -11974,6 +12310,7 @@ enum hb_subset_flags_t {
     4096 => HB_SUBSET_FLAGS_IFTB_REQUIREMENTS,
     8192 => HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS,
     16384 => HB_SUBSET_FLAGS_DOWNGRADE_CFF2,
+    32768 => HB_SUBSET_FLAGS_CFF_IDENTITY_CHARSET,
     _ => throw ArgumentError('Unknown value for hb_subset_flags_t: $value'),
   };
 }
@@ -11981,6 +12318,82 @@ enum hb_subset_flags_t {
 final class hb_subset_input_t extends ffi.Opaque {}
 
 final class hb_subset_plan_t extends ffi.Opaque {}
+
+/// hb_subset_serialize_link_t:
+/// @width: offsetSize in bytes
+/// @position: position of the offset field in bytes from
+/// beginning of subtable
+/// @objidx: index of subtable
+///
+/// Represents a link between two objects in the object graph
+/// to be serialized.
+///
+/// Since: 10.2.0
+final class hb_subset_serialize_link_t extends ffi.Struct {
+  @ffi.UnsignedInt()
+  external int width;
+
+  @ffi.UnsignedInt()
+  external int position;
+
+  @ffi.UnsignedInt()
+  external int objidx;
+
+  static ffi.Pointer<hb_subset_serialize_link_t> $allocate(
+    ffi.Allocator $allocator, {
+    required int width,
+    required int position,
+    required int objidx,
+  }) => $allocator<hb_subset_serialize_link_t>()
+    ..ref.width = width
+    ..ref.position = position
+    ..ref.objidx = objidx;
+}
+
+/// hb_subset_serialize_object_t:
+/// @head: start of object data
+/// @tail: end of object data
+/// @num_real_links: number of offset field in the object
+/// @real_links: array of offset info
+/// @num_virtual_links: number of objects that must be packed
+/// after current object in the final
+/// serialized order
+/// @virtual_links: array of virtual link info
+///
+/// Represents an object in the object graph to be serialized.
+///
+/// Since: 10.2.0
+final class hb_subset_serialize_object_t extends ffi.Struct {
+  external ffi.Pointer<ffi.Char> head;
+
+  external ffi.Pointer<ffi.Char> tail;
+
+  @ffi.UnsignedInt()
+  external int num_real_links;
+
+  external ffi.Pointer<hb_subset_serialize_link_t> real_links;
+
+  @ffi.UnsignedInt()
+  external int num_virtual_links;
+
+  external ffi.Pointer<hb_subset_serialize_link_t> virtual_links;
+
+  static ffi.Pointer<hb_subset_serialize_object_t> $allocate(
+    ffi.Allocator $allocator, {
+    required ffi.Pointer<ffi.Char> head,
+    required ffi.Pointer<ffi.Char> tail,
+    required int num_real_links,
+    required ffi.Pointer<hb_subset_serialize_link_t> real_links,
+    required int num_virtual_links,
+    required ffi.Pointer<hb_subset_serialize_link_t> virtual_links,
+  }) => $allocator<hb_subset_serialize_object_t>()
+    ..ref.head = head
+    ..ref.tail = tail
+    ..ref.num_real_links = num_real_links
+    ..ref.real_links = real_links
+    ..ref.num_virtual_links = num_virtual_links
+    ..ref.virtual_links = virtual_links;
+}
 
 /// hb_subset_sets_t:
 /// @HB_SUBSET_SETS_GLYPH_INDEX: the set of glyph indexes to retain in the subset.

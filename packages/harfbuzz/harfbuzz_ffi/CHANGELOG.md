@@ -1,3 +1,7 @@
+## Unreleased
+
+- Bumped native HarfBuzz dependency to [`14.3.1`](https://github.com/harfbuzz/harfbuzz/releases/tag/14.3.1).
+
 ## 0.5.0
 
 - Bumped minimum SDK version to Dart 3.13.
