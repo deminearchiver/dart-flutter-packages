@@ -7,16 +7,12 @@ import 'package:flutter/services.dart';
 
 @immutable
 abstract interface class FontLoaderFeature {
-  const FontLoaderFeature();
-
   @visibleForOverriding
   FutureOr<bool> tryLoadFont(Uint8List list, String family);
 }
 
 @immutable
-class FallbackFontLoaderFeature implements FontLoaderFeature {
-  const FallbackFontLoaderFeature();
-
+class const FallbackFontLoaderFeature() implements FontLoaderFeature {
   @override
   Future<bool> tryLoadFont(Uint8List list, String family) async {
     try {
@@ -29,11 +25,7 @@ class FallbackFontLoaderFeature implements FontLoaderFeature {
 }
 
 @immutable
-class FontLoaderFeatures {
-  const FontLoaderFeatures(this.features);
-
-  final List<FontLoaderFeature> features;
-
+class const FontLoaderFeatures(final List<FontLoaderFeature> features) {
   FontLoader fromFamily(String family) => FeaturesFontLoader(features, family);
 
   @override
@@ -51,11 +43,8 @@ class FontLoaderFeatures {
 }
 
 @visibleForTesting
-class FeaturesFontLoader extends FontLoader {
-  FeaturesFontLoader(this.features, super.family);
-
-  final List<FontLoaderFeature> features;
-
+class FeaturesFontLoader(final List<FontLoaderFeature> features, super.family)
+    extends FontLoader {
   Future<bool> tryLoadFont(Uint8List list, String family) async {
     for (final feature in features) {
       final result = switch (feature.tryLoadFont(list, family)) {
