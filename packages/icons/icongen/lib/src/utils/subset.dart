@@ -8,15 +8,12 @@ typedef SubsetIdToResultMap<IdType extends Object?> =
     Map<IdType, SubsetResultWithId<IdType>>;
 
 @immutable
-class SubsetResultWithId<IdType extends Object?> extends SubsetResult {
-  const SubsetResultWithId({required this.id, required super.bytes});
-
-  SubsetResultWithId.fromSubsetResult(
-    SubsetResult subsetResult, {
-    required this.id,
-  }) : super(bytes: subsetResult.bytes);
-
-  final IdType id;
+class const SubsetResultWithId<IdType extends Object?>({
+  required final IdType id,
+  required super.bytes,
+}) extends SubsetResult {
+  new fromSubsetResult(SubsetResult subsetResult, {required IdType id})
+    : this(id: id, bytes: subsetResult.bytes);
 
   @override
   String toString() => "SubsetResultWithId<$IdType>(id: $id, bytes: $bytes)";
@@ -40,19 +37,11 @@ extension SubsetBuilderIdExtension on SubsetBuilder {
 }
 
 @immutable
-class SubsetEntry {
-  const SubsetEntry({
-    this.forceSubset = false,
-    this.subsetFormat,
-    this.variableAxisConstraints = const {},
-  });
-
-  final bool forceSubset;
-
-  final SubsetFormat? subsetFormat;
-
-  final VariableAxisConstraints variableAxisConstraints;
-
+class const SubsetEntry({
+  final bool forceSubset = false,
+  final SubsetFormat? subsetFormat,
+  final VariableAxisConstraints variableAxisConstraints = const {},
+}) {
   SubsetBuilder toBuilder({required Uint8List inputBytes}) => .new(
     inputBytes: inputBytes,
     forceSubset: forceSubset,

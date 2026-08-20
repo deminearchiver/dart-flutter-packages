@@ -6,11 +6,7 @@ import 'package:icongen/src/icongen.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class SubsetResult {
-  const SubsetResult({required this.bytes});
-
-  final Uint8List bytes;
-
+class const SubsetResult({required final Uint8List bytes}) {
   @override
   String toString() => "SubsetResult(bytes: $bytes)";
 
@@ -30,22 +26,12 @@ typedef SubsetBuilderResultFactory<ResultType extends Object?> =
     ResultType Function({required Uint8List bytes});
 
 @immutable
-final class SubsetBuilder {
-  const SubsetBuilder({
-    required this.inputBytes,
-    this.variableAxisConstraints = const {},
-    this.forceSubset = false,
-    this.subsetFormat,
-  });
-
-  final Uint8List inputBytes;
-
-  final VariableAxisConstraints variableAxisConstraints;
-
-  final bool forceSubset;
-
-  final SubsetFormat? subsetFormat;
-
+final class const SubsetBuilder({
+  required final Uint8List inputBytes,
+  final VariableAxisConstraints variableAxisConstraints = const {},
+  final bool forceSubset = false,
+  final SubsetFormat? subsetFormat,
+}) {
   @internal
   ResultType buildInternal<ResultType extends Object?>(
     SubsetBuilderResultFactory<ResultType> factory,

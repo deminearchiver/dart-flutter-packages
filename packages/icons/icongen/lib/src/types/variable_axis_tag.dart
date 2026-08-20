@@ -1,5 +1,5 @@
 extension type const VariableAxisTag._(String _) implements String {
-  const VariableAxisTag.fromJson(String json)
+  const new fromJson(String json)
     : assert(
         json.length == 4,
         "Variable axis tag must contain exactly 4 characters.",

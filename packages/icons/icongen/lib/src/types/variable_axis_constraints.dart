@@ -6,13 +6,9 @@ part 'variable_axis_constraints.g.dart';
 
 typedef VariableAxisConstraints = Map<VariableAxisTag, VariableAxisConstraint>;
 
-enum _VariableAxisConstraintType {
+enum _VariableAxisConstraintType(final String _json) {
   fixed("fixed"),
   range("range");
-
-  const _VariableAxisConstraintType(this._json);
-
-  final String _json;
 
   String toJson() => _json;
 
@@ -27,21 +23,18 @@ enum _VariableAxisConstraintType {
 }
 
 @Freezed(fromJson: true, toJson: true, unionKey: "type", unionValueCase: .snake)
-sealed class VariableAxisConstraint with _$VariableAxisConstraint {
-  const VariableAxisConstraint._();
-
+sealed class const VariableAxisConstraint._() with _$VariableAxisConstraint {
   @FreezedUnionValue("fixed")
-  const factory VariableAxisConstraint.fixed({required double at}) =
-      VariableAxisFixed;
+  const factory fixed({required double at}) = VariableAxisFixed;
 
   @FreezedUnionValue("range")
-  const factory VariableAxisConstraint.range({
+  const factory range({
     required double from,
     required double to,
     required double defaultValue,
   }) = VariableAxisRange;
 
-  factory VariableAxisConstraint.fromJson(Map<String, Object?> json) =>
+  factory fromJson(Map<String, Object?> json) =>
       _$VariableAxisConstraintFromJson(json);
 
   @_VariableAxisConstraintType._jsonKey
@@ -54,11 +47,11 @@ sealed class VariableAxisConstraint with _$VariableAxisConstraint {
 @Freezed(fromJson: true, toJson: true, unionKey: "type")
 sealed class VariableAxisFixed extends VariableAxisConstraint
     with _$VariableAxisFixed {
-  const VariableAxisFixed._() : super._();
+  const new _() : super._();
 
-  const factory VariableAxisFixed({required double at}) = _VariableAxisFixed;
+  const factory({required double at}) = _VariableAxisFixed;
 
-  factory VariableAxisFixed.fromJson(Map<String, Object?> json) =>
+  factory fromJson(Map<String, Object?> json) =>
       _$VariableAxisFixedFromJson(json);
 
   @_VariableAxisConstraintType._jsonKey
@@ -68,17 +61,18 @@ sealed class VariableAxisFixed extends VariableAxisConstraint
 
 /// @nodoc
 @Freezed(fromJson: true, toJson: true, unionKey: "type")
-sealed class VariableAxisRange extends VariableAxisConstraint
+sealed class const VariableAxisRange._()
+    extends VariableAxisConstraint
     with _$VariableAxisRange {
-  const VariableAxisRange._() : super._();
+  this : super._();
 
-  const factory VariableAxisRange({
+  const factory({
     required double from,
     required double to,
     required double defaultValue,
   }) = _VariableAxisRange;
 
-  factory VariableAxisRange.fromJson(Map<String, Object?> json) =>
+  factory fromJson(Map<String, Object?> json) =>
       _$VariableAxisRangeFromJson(json);
 
   @_VariableAxisConstraintType._jsonKey

@@ -5,13 +5,10 @@ import 'package:icongen/src/icongen.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class WriteEntry<ValueType extends Object?> {
-  const WriteEntry(this.value, {required this.path});
-
-  final ValueType value;
-
-  final Uri path;
-
+class const WriteEntry<ValueType extends Object?>(
+  final ValueType value, {
+  required final Uri path,
+}) {
   @override
   String toString() => "WriteEntry<$ValueType>($value, path: $path)";
 
@@ -28,8 +25,10 @@ class WriteEntry<ValueType extends Object?> {
 }
 
 @internal
-typedef WriteEntriesCallback<ValueType extends Object?> =
-    Future<void> Function(RandomAccessFile handle, ValueType value);
+typedef WriteEntriesCallback<ValueType extends Object?> = Future<void> Function(
+  RandomAccessFile handle,
+  ValueType value,
+);
 
 @internal
 Future<void> writeEntries<ValueType extends Object?>(

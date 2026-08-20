@@ -5,8 +5,7 @@ part 'icon_glyph.g.dart';
 
 @Freezed(fromJson: true, toJson: true)
 abstract class IconGlyph with _$IconGlyph {
-  const factory IconGlyph({required int codePoint, String? name}) = _IconGlyph;
+  const factory({required int codePoint, String? name}) = _IconGlyph;
 
-  factory IconGlyph.fromJson(Map<String, Object?> json) =>
-      _$IconGlyphFromJson(json);
+  factory fromJson(Map<String, Object?> json) => _$IconGlyphFromJson(json);
 }

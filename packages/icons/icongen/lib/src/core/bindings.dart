@@ -7,11 +7,7 @@ import 'package:icongen/src/icongen.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class BindingsResult {
-  const BindingsResult({required this.code});
-
-  final String code;
-
+class const BindingsResult({required final String code}) {
   @override
   String toString() => "BindingsResult(code: $code)";
 
@@ -31,25 +27,13 @@ typedef BindingsBuilderResultFactory<ResultType extends Object?> =
     ResultType Function({required String code});
 
 @immutable
-final class BindingsBuilder {
-  const BindingsBuilder({
-    required this.inputBytes,
-    required this.className,
-    this.fontFamily,
-    this.fontPackage,
-    this.forceTreeShakeIconGlyph,
-  });
-
-  final Uint8List inputBytes;
-
-  final String className;
-
-  final String? fontFamily;
-
-  final String? fontPackage;
-
-  final IconGlyph? forceTreeShakeIconGlyph;
-
+final class const BindingsBuilder({
+  required final Uint8List inputBytes,
+  required final String className,
+  final String? fontFamily,
+  final String? fontPackage,
+  final IconGlyph? forceTreeShakeIconGlyph,
+}) {
   List<_Icon> _buildIcons(List<IconGlyph> iconGlyphs) {
     final uniqueIconGlyphs = _uniqueIconGlyphsByName(iconGlyphs);
 
@@ -379,13 +363,10 @@ String _generateCode({
 }
 
 extension type const _Icon._(
-  ({int codePoint, String? name, String identifier}) _
+  ({int codePoint, String? name, String identifier}) _,
 ) implements Object {
-  const _Icon({
-    required int codePoint,
-    String? name,
-    required String identifier,
-  }) : _ = (codePoint: codePoint, name: name, identifier: identifier);
+  const new({required int codePoint, String? name, required String identifier})
+    : _ = (codePoint: codePoint, name: name, identifier: identifier);
 
   int get codePoint => _.codePoint;
 

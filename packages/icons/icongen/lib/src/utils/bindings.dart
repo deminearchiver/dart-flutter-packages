@@ -7,15 +7,12 @@ typedef BindingsIdToResultMap<IdType extends Object?> =
     Map<IdType, BindingsResultWithId<IdType>>;
 
 @immutable
-class BindingsResultWithId<IdType extends Object?> extends BindingsResult {
-  const BindingsResultWithId({required this.id, required super.code});
-
-  BindingsResultWithId.fromBindingsResult(
-    BindingsResult bindingsResult, {
-    required this.id,
-  }) : super(code: bindingsResult.code);
-
-  final IdType id;
+class const BindingsResultWithId<IdType extends Object?>({
+  required final IdType id,
+  required super.code,
+}) extends BindingsResult {
+  new fromBindingsResult(BindingsResult bindingsResult, {required IdType id})
+    : this(id: id, code: bindingsResult.code);
 
   @override
   String toString() => "BindingsResultWithId<$IdType>(id: $id, code: $code)";
@@ -39,25 +36,13 @@ extension BindingsBuilderIdExtension on BindingsBuilder {
 }
 
 @immutable
-class BindingsEntry {
-  const BindingsEntry({
-    required this.inputBytes,
-    required this.className,
-    this.fontFamily,
-    this.fontPackage,
-    this.forceTreeShakeIconGlyph,
-  });
-
-  final Uint8List inputBytes;
-
-  final String className;
-
-  final String? fontFamily;
-
-  final String? fontPackage;
-
-  final IconGlyph? forceTreeShakeIconGlyph;
-
+class const BindingsEntry({
+  required final Uint8List inputBytes,
+  required final String className,
+  final String? fontFamily,
+  final String? fontPackage,
+  final IconGlyph? forceTreeShakeIconGlyph,
+}) {
   BindingsBuilder toBuilder() => .new(
     inputBytes: inputBytes,
     className: className,
