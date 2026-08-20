@@ -1,6 +1,6 @@
 name: woff2_flutter
 description: Allows parsing and loading WOFF2 fonts directly in Flutter using FFI.
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/woff2/woff2_flutter
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues

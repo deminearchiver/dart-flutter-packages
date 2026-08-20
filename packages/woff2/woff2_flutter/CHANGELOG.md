@@ -1,4 +1,4 @@
-## Unreleased
+## 0.2.0
 
 - Fixed mistakenly calculating WOFF2 uncompressed size for *some* non-WOFF2 fonts.
   - The issue was causing absurdly large allocations before the decompression would fail.
