@@ -1,14 +1,3 @@
 include:
   - lib/analysis_options.yaml
   - lib/package/strict.yaml
-
-# TODO: get rid of this please
-analyzer:
-  exclude:
-    - build/**
-    - android/**
-    - ios/**
-    - web/**
-    - windows/**
-    - macos/**
-    - linux/**

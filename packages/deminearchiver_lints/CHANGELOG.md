@@ -1,3 +1,12 @@
+## Unreleased
+
+- Excluded Flutter 3.47+ default build and platform directories in base presets.
+  - When using Flutter 3.47.0, every `analysis_options.yaml` in a Flutter workspace would get automatically migrated, which was unnecessary and annoying.
+  - Upgrading to Flutter 3.47.1 will allow skipping `analysis_options.yaml` migration when using (any) base lints from the package (not necessarily `analysis_options_flutter.yaml`).
+  - See [flutter/187728](https://github.com/flutter/flutter/issues/187728) and [flutter/191056](https://github.com/flutter/flutter/issues/191056) for the upstream issues.
+
+- Added minor explanantion comments to lint preset configurations.
+
 ## 3.0.1
 
 - Disabled the [`avoid_redundant_argument_values`](https://dart.dev/tools/linter-rules/avoid_redundant_argument_values) lint rule.
