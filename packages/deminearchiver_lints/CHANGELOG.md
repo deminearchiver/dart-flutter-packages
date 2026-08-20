@@ -1,4 +1,4 @@
-## Unreleased
+## 3.1.0
 
 - Excluded Flutter 3.47+ default build and platform directories in base presets.
   - When using Flutter 3.47.0, every `analysis_options.yaml` in a Flutter workspace would get automatically migrated, which was unnecessary and annoying.
