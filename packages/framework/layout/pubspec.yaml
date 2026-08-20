@@ -25,4 +25,4 @@ dev_dependencies:
     sdk: flutter
 
   # Hosted dependencies
-  deminearchiver_lints: ^3.0.1
+  deminearchiver_lints: ^3.1.0

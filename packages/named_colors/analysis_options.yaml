@@ -1,12 +1,3 @@
 include:
   - package:deminearchiver_lints/analysis_options_flutter.yaml
   - package:deminearchiver_lints/package/loose.yaml
-analyzer:
-  exclude:
-    - build/**
-    - android/**
-    - ios/**
-    - web/**
-    - windows/**
-    - macos/**
-    - linux/**
