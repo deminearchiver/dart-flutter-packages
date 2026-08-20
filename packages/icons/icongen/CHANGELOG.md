@@ -3,6 +3,7 @@
 - Bumped dependency constraints.
   - `freezed` to `^4.0.0-dev.3`.
   - `harfbuzz_ffi` to `^0.5.0`.
+  - `woff2_ffi` to `^0.2.0`.
 
 ## 0.5.2
 
