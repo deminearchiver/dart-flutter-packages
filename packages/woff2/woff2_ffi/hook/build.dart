@@ -1,7 +1,7 @@
 import 'package:code_assets/code_assets.dart';
 import 'package:hooks/hooks.dart';
 import 'package:logging/logging.dart';
-import 'package:native_toolchain_ninja/native_toolchain_ninja.dart';
+import 'package:native_toolchain_c/native_toolchain_c.dart';
 
 void main(List<String> arguments) async {
   await build(arguments, (input, output) async {
@@ -10,7 +10,7 @@ void main(List<String> arguments) async {
     final packageName = input.packageName;
     final targetOS = input.config.code.targetOS;
 
-    final ninjaBuilder = NinjaBuilder.library(
+    final cBuilder = CBuilder.library(
       name: packageName,
       assetName: "src/ffi_bindings.g.dart",
       sources: [
@@ -109,6 +109,6 @@ void main(List<String> arguments) async {
       ..level = .WARNING
       // ignore: avoid_print
       ..onRecord.listen((r) => print(r.message));
-    await ninjaBuilder.run(input: input, output: output, logger: logger);
+    await cBuilder.run(input: input, output: output, logger: logger);
   });
 }

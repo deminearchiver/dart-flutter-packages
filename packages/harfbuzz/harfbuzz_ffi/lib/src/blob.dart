@@ -33,16 +33,14 @@ extension type const HarfbuzzMemoryMode._(hb_memory_mode_t _)
   ];
 }
 
-sealed class HarfbuzzBlob {
-  HarfbuzzBlob._(Pointer<hb_blob_t> nativeBlob, bool attach)
-    : assert(nativeBlob != nullptr),
-      _nativeBlob = nativeBlob {
+sealed class HarfbuzzBlob._(Pointer<hb_blob_t> nativeBlob, bool attach) {
+  this : assert(nativeBlob != nullptr) {
     if (attach) _attach();
   }
 
-  factory HarfbuzzBlob.empty() = HarfbuzzImmutableBlob.empty;
+  factory empty() = HarfbuzzImmutableBlob.empty;
 
-  final Pointer<hb_blob_t> _nativeBlob;
+  final Pointer<hb_blob_t> _nativeBlob = nativeBlob;
 
   Pointer<hb_blob_t> get asNativeBlob {
     _checkNotDisposed();
@@ -131,11 +129,11 @@ sealed class HarfbuzzBlob {
   static HarfbuzzImmutableBlob? tryFromFile(String path) => .tryFromFile(path);
 }
 
-final class HarfbuzzImmutableBlob extends HarfbuzzBlob {
-  HarfbuzzImmutableBlob._(super.nativeBlob, super.attach) : super._();
+final class HarfbuzzImmutableBlob._(super.nativeBlob, super.attach)
+    extends HarfbuzzBlob {
+  this : super._();
 
-  factory HarfbuzzImmutableBlob.empty() =>
-      HarfbuzzImmutableBlob._(HarfbuzzBlob._empty(), false);
+  factory empty() => ._(HarfbuzzBlob._empty(), false);
 
   @override
   bool get isImmutable {
@@ -168,8 +166,9 @@ final class HarfbuzzImmutableBlob extends HarfbuzzBlob {
   }
 }
 
-final class HarfbuzzMutableBlob extends HarfbuzzBlob {
-  HarfbuzzMutableBlob._(super.nativeBlob, super.attach) : super._();
+final class HarfbuzzMutableBlob._(super.nativeBlob, super.attach)
+    extends HarfbuzzBlob {
+  this : super._();
 
   @override
   bool get isImmutable {
