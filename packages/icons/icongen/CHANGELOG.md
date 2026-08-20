@@ -1,13 +1,16 @@
-## Unreleased
+## 0.6.0
 
 - Bumped minimum SDK version to Dart 3.13.
   - Refactored classes and extension types to use Dart 3.13 [primary constructors](https://dart.dev/language/primary-constructors) and [concise constructor syntax](https://dart.dev/language/constructors#concise-constructor-syntax).
   - Reformatted the library with [Dart 3.13 formatter changes](https://dart.dev/blog/announcing-dart-3-13#dart-formatter).
 
 - Bumped dependency constraints.
-  - `freezed` to `^4.0.0-dev.3`.
+  - `dart_style` to `^3.1.12`.
+  - `freezed_annotation` to `^3.1.0`.
   - `harfbuzz_ffi` to `^0.5.0`.
+  - `meta` to `^1.19.0`.
   - `woff2_ffi` to `^0.2.0`.
+  - `dev:freezed` to `^4.0.0-dev.3`.
 
 ## 0.5.2
 
