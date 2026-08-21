@@ -124,6 +124,9 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "arrow_circle_up".
   static const IconData arrow_circle_up = IconData(0xf182, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "arrow_down_ios".
+  static const IconData arrow_down_ios = IconData(0xffec3, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "arrow_downward".
   static const IconData arrow_downward = IconData(0xe5db, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -325,6 +328,9 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "close_small".
   static const IconData close_small = IconData(0xf508, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "closed_caption".
+  static const IconData closed_caption = IconData(0xe01c, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "code".
   static const IconData code = IconData(0xe86f, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -399,6 +405,9 @@ abstract final class LuminousSymbols {
 
   /// Luminous Symbols icon named "deep_research".
   static const IconData deep_research = IconData(0xfff4b, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "deep_think".
+  static const IconData deep_think = IconData(0xffebf, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "delete".
   static const IconData delete = IconData(0xe872, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -535,6 +544,12 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "expand".
   static const IconData expand = IconData(0xe94f, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "expand_all".
+  static const IconData expand_all = IconData(0xe946, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "expand_all_2".
+  static const IconData expand_all_2 = IconData(0xffec2, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "expand_content".
   static const IconData expand_content = IconData(0xf830, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -601,14 +616,29 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "filter_alt".
   static const IconData filter_alt = IconData(0xef4f, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "filter_list".
+  static const IconData filter_list = IconData(0xe152, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "filter_list_off".
+  static const IconData filter_list_off = IconData(0xeb57, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "filter_list_spark".
+  static const IconData filter_list_spark = IconData(0xf272, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "filter_none".
   static const IconData filter_none = IconData(0xe3e0, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "finance_mode".
+  static const IconData finance_mode = IconData(0xef92, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "fitbit_move".
   static const IconData fitbit_move = IconData(0xf664, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "flag".
   static const IconData flag = IconData(0xe153, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "flag_check".
+  static const IconData flag_check = IconData(0xf3d8, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "flash_off".
   static const IconData flash_off = IconData(0xe3e6, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -1039,6 +1069,9 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "pause".
   static const IconData pause = IconData(0xe034, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "pause_2".
+  static const IconData pause_2 = IconData(0xffec0, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "pause_circle".
   static const IconData pause_circle = IconData(0xe1a2, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -1270,6 +1303,15 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "sentiment_dissatisfied".
   static const IconData sentiment_dissatisfied = IconData(0xe811, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "sentiment_neutral".
+  static const IconData sentiment_neutral = IconData(0xe812, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "sentiment_very_dissatisfied".
+  static const IconData sentiment_very_dissatisfied = IconData(0xe814, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "sentiment_very_satisfied".
+  static const IconData sentiment_very_satisfied = IconData(0xe815, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "settings".
   static const IconData settings = IconData(0xe8b8, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -1480,8 +1522,14 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "thumb_down".
   static const IconData thumb_down = IconData(0xe8db, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "thumb_down_2".
+  static const IconData thumb_down_2 = IconData(0xffec4, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "thumb_up".
   static const IconData thumb_up = IconData(0xe8dc, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "thumb_up_2".
+  static const IconData thumb_up_2 = IconData(0xffec5, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "thumbs_up_down".
   static const IconData thumbs_up_down = IconData(0xe8dd, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -1509,6 +1557,9 @@ abstract final class LuminousSymbols {
 
   /// Luminous Symbols icon named "travel_explore".
   static const IconData travel_explore = IconData(0xe2db, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "trending_up".
+  static const IconData trending_up = IconData(0xe8e5, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "trip".
   static const IconData trip = IconData(0xe6fb, fontFamily: fontFamily, fontPackage: fontPackage);

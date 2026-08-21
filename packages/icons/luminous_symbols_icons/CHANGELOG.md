@@ -1,3 +1,8 @@
+## 0.1.4
+
+- Rolled the Luminous Symbols font from `v49` to `v50`.
+  - This update introduces 17 new icons: `arrow_down_ios`, `closed_caption`, `deep_think`, `expand_all`, `expand_all_2`, `filter_list`, `filter_list_off`, `filter_list_spark`, `finance_mode`, `flag_check`, `pause_2`, `sentiment_neutral`, `sentiment_very_dissatisfied`, `sentiment_very_satisfied`, `thumb_down_2`, `thumb_up_2`, `trending_up`.
+
 ## 0.1.3
 
 - Rolled the Luminous Symbols font from `v46` to `v49`.
