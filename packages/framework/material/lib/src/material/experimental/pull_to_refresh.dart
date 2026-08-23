@@ -838,25 +838,16 @@ class _PullToRefreshLoadingIndicatorState
 
     final Widget determinateActiveIndicator = ValueListenableBuilder(
       valueListenable: widget.states,
-      builder: (context, states, _) {
-        final progress = math.max(0.0, states.distanceFraction);
-        return Transform.rotate(
-          // Start the rotation on progress - 1 (i.e. 0) to avoid a jump
-          // that would be more noticeable on some LoadingIndicator shapes.
-          angle: progress > 1.0 ? -(progress - 1.0) * math.pi : 0.0,
-          transformHitTests: false,
-          child: DeterminateLoadingIndicator(
-            indicatorPolygons: widget.determinateIndicatorPolygons,
-            contained: false,
-            containerShape: const .all(RoundedRectangleBorder()),
-            containerColor: const .all(Colors.transparent),
-            containerOutline: const .all(.from()),
-            activeIndicatorColor: .all(_resolvedActiveIndicatorColor),
-            activeIndicatorOutline: .all(_resolvedActiveIndicatorOutline),
-            progress: clampDouble(states.distanceFraction, 0.0, 1.0),
-          ),
-        );
-      },
+      builder: (context, states, _) => DeterminateLoadingIndicator(
+        indicatorPolygons: widget.determinateIndicatorPolygons,
+        contained: false,
+        containerShape: const .all(RoundedRectangleBorder()),
+        containerColor: const .all(Colors.transparent),
+        containerOutline: const .all(.from()),
+        activeIndicatorColor: .all(_resolvedActiveIndicatorColor),
+        activeIndicatorOutline: .all(_resolvedActiveIndicatorOutline),
+        progress: states.distanceFraction,
+      ),
     );
 
     final Widget indeterminateActiveIndicator = ListenableBuilder(

@@ -70,8 +70,7 @@ class DeterminateLoadingIndicator extends StatefulWidget {
     this.activeIndicatorColor,
     this.activeIndicatorOutline,
     this.forEachPolygon = defaultForEachPolygon,
-  }) : assert(progress >= 0.0 && progress <= 1.0),
-       assert(
+  }) : assert(
          indicatorPolygons == null || indicatorPolygons.length >= 2,
          "indicatorPolygons should have, at least, two RoundedPolygons",
        );
@@ -107,8 +106,6 @@ class DeterminateLoadingIndicator extends StatefulWidget {
 
 class _DeterminateLoadingIndicatorState
     extends State<DeterminateLoadingIndicator> {
-  double get _progressValue => widget.progress;
-
   final _matrix = Matrix4.zero();
 
   late List<Morph> _morphSequence;
@@ -183,29 +180,33 @@ class _DeterminateLoadingIndicatorState
         .resolve(states)
         .maybeMerge(widget.activeIndicatorOutline?.resolve(states));
 
+    final progressFraction = widget.progress;
+    final clampedProgressFraction = clampDouble(progressFraction, 0.0, 1.0);
+
     // Adjust the active morph index according to the progress.
     final activeMorphIndex = math.min(
-      (_morphSequence.length * _progressValue).toInt(),
+      (_morphSequence.length * clampedProgressFraction).toInt(),
       _morphSequence.length - 1,
     );
 
     // Prepare the progress value that will be used for the active Morph.
     final adjustedProgressValue =
-        _progressValue == 1.0 && activeMorphIndex == _morphSequence.length - 1
+        clampedProgressFraction == 1.0 &&
+            activeMorphIndex == _morphSequence.length - 1
         // Prevents a zero when the progress is one and we are at the last
         // shape morph.
         ? 1.0
-        : (_progressValue * _morphSequence.length) % 1.0;
+        : (clampedProgressFraction * _morphSequence.length) % 1.0;
 
     final currentMorph = _morphSequence[activeMorphIndex];
 
     // Rotate counterclockwise.
-    final rotation = -_progressValue * math.pi;
+    final rotation = -progressFraction * math.pi;
 
     return RepaintBoundary(
       child: Semantics(
-        label: "$_progressValue",
-        value: "$_progressValue",
+        label: "$progressFraction",
+        value: "$progressFraction",
         child: ConstrainedBox(
           constraints: const BoxConstraints(
             minWidth: _kContainerWidth,
