@@ -925,9 +925,9 @@ class _PullToRefreshLoadingIndicatorCrossFadeState
     );
 
     if (newValue >= oldValue) {
-      unawaited(_crossFadeController.animateWith(simulation));
+      _crossFadeController.animateWith(simulation);
     } else {
-      unawaited(_crossFadeController.animateBackWith(simulation));
+      _crossFadeController.animateBackWith(simulation);
     }
   }
 
