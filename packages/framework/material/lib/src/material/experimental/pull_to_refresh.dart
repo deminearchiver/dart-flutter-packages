@@ -283,6 +283,31 @@ abstract class PullToRefreshController<
     notifyListeners();
   }
 
+  var _nearEdgeOverscroll = 0.0;
+
+  @protected
+  double get nearEdgeOverscroll => _nearEdgeOverscroll;
+
+  @protected
+  set nearEdgeOverscroll(double value) {
+    if (value < 0.0) value = 0.0;
+    if (_nearEdgeOverscroll == value) return;
+    _nearEdgeOverscroll = value;
+    notifyListeners();
+  }
+
+  var _nearEdgeOverscrollConsumed = 0.0;
+
+  @protected
+  double get nearEdgeOverscrollConsumed => _nearEdgeOverscrollConsumed;
+
+  @protected
+  set nearEdgeOverscrollConsumed(double value) {
+    if (value < 0.0) value = 0.0;
+    _nearEdgeOverscrollConsumed = value;
+  }
+
+  @factory
   ScrollPhysics createScrollPhysics({ScrollPhysics? parent}) =>
       _PullToRefreshDefaultScrollPhysics(parent: parent, controller: this);
 
@@ -290,6 +315,8 @@ abstract class PullToRefreshController<
   double consumeAvailableOffset(double availableOffset) {
     if (!enabled || isRefreshing || isAnimating) return 0.0;
     farEdgeOverscroll = 0.0;
+    nearEdgeOverscroll = 0.0;
+    nearEdgeOverscrollConsumed = 0.0;
     final newOffset = math.max(0.0, distancePulled + availableOffset);
     final dragConsumed = newOffset - distancePulled;
     distancePulled = newOffset;
@@ -415,57 +442,96 @@ class _PullToRefreshDefaultScrollPhysics extends ScrollPhysics {
   _PullToRefreshDefaultScrollPhysics applyTo(ScrollPhysics? ancestor) =>
       .new(parent: buildParent(ancestor), controller: controller);
 
-  double _applyPhysicsToUserOffsetSuper(ScrollMetrics position, double offset) {
-    if (offset == 0.0) return 0.0;
-    return super.applyPhysicsToUserOffset(position, offset);
-  }
-
   @override
   double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
     if (offset == 0.0) return 0.0;
-    if (!controller.enabled ||
-        controller.isRefreshing ||
-        controller.isAnimating) {
-      if (position.pixels < position.maxScrollExtent) {
-        controller.farEdgeOverscroll = 0.0;
-      }
-      return _applyPhysicsToUserOffsetSuper(position, offset);
-    }
     if (position.pixels < position.maxScrollExtent) {
       controller.farEdgeOverscroll = 0.0;
     }
-    if (offset < 0.0 && controller.distancePulled > 0.0) {
-      final consumed = controller.consumeAvailableOffset(offset);
-      final delta = offset - consumed;
-      return _applyPhysicsToUserOffsetSuper(position, delta);
+    if (position.pixels > position.minScrollExtent) {
+      controller.nearEdgeOverscroll = 0.0;
+    }
+    if (!controller.enabled ||
+        controller.isRefreshing ||
+        controller.isAnimating) {
+      if (offset > 0.0) {
+        var remainingOffset = offset;
+        if (controller.farEdgeOverscroll > 0.0) {
+          final farEdgeOverscrollConsumed = math.min(
+            controller.farEdgeOverscroll,
+            remainingOffset,
+          );
+          controller.farEdgeOverscroll -= farEdgeOverscrollConsumed;
+          remainingOffset -= farEdgeOverscrollConsumed;
+        }
+        if (remainingOffset > 0.0 &&
+            position.pixels <= position.minScrollExtent) {
+          controller.nearEdgeOverscroll += remainingOffset;
+        }
+      } else if (offset < 0.0) {
+        if (controller.nearEdgeOverscroll > 0.0) {
+          final nearEdgeOverscrollConsumed = math.min(
+            controller.nearEdgeOverscroll,
+            -offset,
+          );
+          controller.nearEdgeOverscroll -= nearEdgeOverscrollConsumed;
+          controller.nearEdgeOverscrollConsumed = nearEdgeOverscrollConsumed;
+        }
+      }
+      return super.applyPhysicsToUserOffset(position, offset);
+    }
+    if (offset < 0.0) {
+      if (controller.distancePulled > 0.0) {
+        final consumed = controller.consumeAvailableOffset(offset);
+        final delta = offset - consumed;
+        if (delta == 0.0) return 0.0;
+        return super.applyPhysicsToUserOffset(position, delta);
+      }
+      if (controller.nearEdgeOverscroll > 0.0) {
+        final nearEdgeOverscrollConsumed = math.min(
+          controller.nearEdgeOverscroll,
+          -offset,
+        );
+        controller.nearEdgeOverscroll -= nearEdgeOverscrollConsumed;
+        controller.nearEdgeOverscrollConsumed = nearEdgeOverscrollConsumed;
+      }
+      return super.applyPhysicsToUserOffset(position, offset);
     }
     if (offset > 0.0) {
+      if (controller.nearEdgeOverscroll > 0.0) {
+        controller.nearEdgeOverscroll += offset;
+        return super.applyPhysicsToUserOffset(position, offset);
+      }
       var remainingOffset = offset;
+      var farEdgeOverscrollConsumed = 0.0;
       if (controller.farEdgeOverscroll > 0.0) {
-        final overscrollConsumed = math.min(
+        farEdgeOverscrollConsumed = math.min(
           controller.farEdgeOverscroll,
           remainingOffset,
         );
-        controller.farEdgeOverscroll -= overscrollConsumed;
-        remainingOffset -= overscrollConsumed;
-        if (remainingOffset <= 0.0) {
-          return _applyPhysicsToUserOffsetSuper(position, offset);
-        }
+        controller.farEdgeOverscroll -= farEdgeOverscrollConsumed;
+        remainingOffset -= farEdgeOverscrollConsumed;
       }
       final delta = position.pixels - position.minScrollExtent;
       if (delta <= 0.0) {
-        controller.consumeAvailableOffset(remainingOffset);
-        return _applyPhysicsToUserOffsetSuper(
+        if (remainingOffset > 0.0) {
+          controller.consumeAvailableOffset(remainingOffset);
+        }
+        if (farEdgeOverscrollConsumed == 0.0) return 0.0;
+        return super.applyPhysicsToUserOffset(
           position,
-          offset - remainingOffset,
+          farEdgeOverscrollConsumed,
         );
       } else if (remainingOffset > delta) {
         final overscroll = remainingOffset - delta;
         controller.consumeAvailableOffset(overscroll);
-        return _applyPhysicsToUserOffsetSuper(position, offset - overscroll);
+        final clamped = offset - overscroll;
+        if (clamped == 0.0) return 0.0;
+        return super.applyPhysicsToUserOffset(position, clamped);
       }
+      return super.applyPhysicsToUserOffset(position, offset);
     }
-    return _applyPhysicsToUserOffsetSuper(position, offset);
+    return super.applyPhysicsToUserOffset(position, offset);
   }
 
   @override
@@ -480,7 +546,14 @@ class _PullToRefreshDefaultScrollPhysics extends ScrollPhysics {
     }
     final overscroll = super.applyBoundaryConditions(position, value);
     if (overscroll > 0.0) {
-      controller.farEdgeOverscroll += overscroll;
+      final farEdgeOverscroll = math.max(
+        0.0,
+        overscroll - controller.nearEdgeOverscrollConsumed,
+      );
+      controller.nearEdgeOverscrollConsumed = 0.0;
+      if (farEdgeOverscroll > 0.0) {
+        controller.farEdgeOverscroll += farEdgeOverscroll;
+      }
     }
     return overscroll;
   }
@@ -490,8 +563,12 @@ class _PullToRefreshDefaultScrollPhysics extends ScrollPhysics {
     ScrollMetrics position,
     double velocity,
   ) {
-    if (position.pixels < position.maxScrollExtent) {
+    if (!controller.isRefreshing &&
+        !controller.isAnimating &&
+        controller.distancePulled == 0.0) {
       controller.farEdgeOverscroll = 0.0;
+      controller.nearEdgeOverscroll = 0.0;
+      controller.nearEdgeOverscrollConsumed = 0.0;
     }
     if (controller.enabled &&
         !controller.isRefreshing &&
@@ -500,12 +577,11 @@ class _PullToRefreshDefaultScrollPhysics extends ScrollPhysics {
       controller.onRelease(velocity);
     }
     if (position.pixels <= position.minScrollExtent &&
+        velocity <= 0.0 &&
         (controller.isRefreshing ||
             controller.isAnimating ||
             controller.verticalOffset > 0.0)) {
-      if (velocity <= 0.0) {
-        return null;
-      }
+      return null;
     }
     return super.createBallisticSimulation(position, velocity);
   }
