@@ -1,3 +1,7 @@
 include:
   - package:deminearchiver_lints/analysis_options_flutter.yaml
   - package:deminearchiver_lints/package/loose.yaml
+
+analyzer:
+  errors:
+    unused_element_parameter: ignore
