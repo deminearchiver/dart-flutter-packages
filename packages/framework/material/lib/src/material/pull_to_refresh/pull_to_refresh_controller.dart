@@ -7,22 +7,19 @@ import 'package:material/src/material/flutter.dart';
 const _kDragMultiplier = 0.5;
 
 mixin PullToRefreshStates {
+  // ////////////////////////////////////////////////////////////////
+  // Refresh //
+  // ////////////////////////////////////////////////////////////////
+
   bool get enabled;
 
   double get threshold;
 
   bool get isRefreshing;
 
-  /// Distance percentage towards the refresh threshold.
-  ///
-  /// * `0.0` indicates no distance.
-  /// * `1.0` indicates being at the threshold offset.
-  /// * `> 1.0` indicates overshoot beyond the provided threshold.
-  double get distanceFraction;
-
-  /// Whether the indicator is currently animating to the
-  /// threshold offset, or back to the hidden offset.
-  bool get isAnimating;
+  // ////////////////////////////////////////////////////////////////
+  // Scroll //
+  // ////////////////////////////////////////////////////////////////
 
   double get verticalOffset;
 
@@ -31,6 +28,21 @@ mixin PullToRefreshStates {
   double get adjustedDistancePulled;
 
   double get progress;
+
+  // ////////////////////////////////////////////////////////////////
+  // Animation //
+  // ////////////////////////////////////////////////////////////////
+
+  /// Whether the indicator is currently animating to the
+  /// threshold offset, or back to the hidden offset.
+  bool get isAnimating;
+
+  /// Distance percentage towards the refresh threshold.
+  ///
+  /// * `0.0` indicates no distance.
+  /// * `1.0` indicates being at the threshold offset.
+  /// * `> 1.0` indicates overshoot beyond the provided threshold.
+  double get distanceFraction;
 }
 
 abstract class const PullToRefreshDelegate() {
@@ -47,14 +59,6 @@ class PullToRefreshDefaultDelegate({
   required TickerProvider vsync,
   SpringDescription? spring,
 }) extends PullToRefreshDelegate {
-  final AnimationController _animationController = .new(
-    vsync: vsync,
-    lowerBound: 0.0,
-    upperBound: .infinity,
-    animationBehavior: .preserve,
-    debugLabel: "PullToRefreshDefaultDelegate",
-  );
-
   SpringDescription _spring = spring ?? defaultSpring;
 
   SpringDescription get spring => _spring;
@@ -63,6 +67,14 @@ class PullToRefreshDefaultDelegate({
     if (_spring == value) return;
     _spring = value;
   }
+
+  final AnimationController _animationController = .new(
+    vsync: vsync,
+    lowerBound: 0.0,
+    upperBound: .infinity,
+    animationBehavior: .preserve,
+    debugLabel: "PullToRefreshDefaultDelegate",
+  );
 
   @override
   Animation<double> get distanceFraction => _animationController.view;
@@ -179,12 +191,6 @@ abstract class PullToRefreshController<
       unawaited(animateToHidden());
     }
   }
-
-  @override
-  double get distanceFraction => delegate.distanceFraction.value;
-
-  @override
-  bool get isAnimating => delegate.distanceFraction.isAnimating;
 
   double _verticalOffset = 0.0;
 
@@ -307,21 +313,10 @@ abstract class PullToRefreshController<
   }
 
   @override
-  void notifyListeners() {
-    if (_isDisposed) return;
-    final schedulerBinding = SchedulerBinding.instance;
-    switch (schedulerBinding.schedulerPhase) {
-      // We check scheduler phase here because this method could be called
-      // during layout phase potentially (scroll physics).
-      case .persistentCallbacks:
-        schedulerBinding.addPostFrameCallback((_) {
-          if (_isDisposed) return;
-          super.notifyListeners();
-        });
-      default:
-        super.notifyListeners();
-    }
-  }
+  bool get isAnimating => delegate.distanceFraction.isAnimating;
+
+  @override
+  double get distanceFraction => delegate.distanceFraction.value;
 
   @protected
   Future<void> animateToThreshold() async {
@@ -362,6 +357,23 @@ abstract class PullToRefreshController<
   void _animationListener() {
     _verticalOffset = calculateVerticalOffset();
     notifyListeners();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_isDisposed) return;
+    final schedulerBinding = SchedulerBinding.instance;
+    switch (schedulerBinding.schedulerPhase) {
+      // We check scheduler phase here because this method could be called
+      // during layout phase potentially (scroll physics).
+      case .persistentCallbacks:
+        schedulerBinding.addPostFrameCallback((_) {
+          if (_isDisposed) return;
+          super.notifyListeners();
+        });
+      default:
+        super.notifyListeners();
+    }
   }
 
   var _isDisposed = false;
