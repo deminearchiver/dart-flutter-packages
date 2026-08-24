@@ -401,7 +401,12 @@ class PullToRefreshDefaultController<
   PullToRefreshStates get value => this;
 }
 
-// TODO: check if this works in reverse scroll views (spoiler: it doesn't?)
+// It doesn't make sense for this class to be public or internal,
+// because it doesn't expose any new APIs for overriding,
+// and interfaces with the controller using only the public APIs
+// of PulToRefreshController, no private member access to prevent runtime
+// errors.
+
 class const _PullToRefreshDefaultScrollPhysics({
   super.parent,
   required final PullToRefreshController controller,
@@ -409,6 +414,8 @@ class const _PullToRefreshDefaultScrollPhysics({
   @override
   _PullToRefreshDefaultScrollPhysics applyTo(ScrollPhysics? ancestor) =>
       .new(parent: buildParent(ancestor), controller: controller);
+
+  // TODO: check if works in reverse scroll views (spoiler: it doesn't?)
 
   @override
   double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
