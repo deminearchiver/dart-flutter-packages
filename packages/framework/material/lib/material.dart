@@ -65,13 +65,14 @@ export 'src/material/experimental/stateful_custom_painter.dart';
 export 'src/material/experimental/shape_borders.dart';
 export 'src/material/experimental/nested_new.dart';
 export 'src/material/experimental/combining_builder.dart';
-export 'src/material/experimental/pull_to_refresh.dart';
 
 export 'src/material/keyed_persistent_hash_map.dart';
 
 export 'src/material/icon/google_symbols_icons.dart';
 export 'src/material/icon/luminous_symbols_icons.dart';
 export 'src/material/icon/material_symbols_icons.dart';
+
+export 'src/material/pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:material/src/material/flutter.dart';
 
