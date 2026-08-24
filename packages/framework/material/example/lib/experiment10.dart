@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:material_example/flutter.dart';
-
-const _kIndicatorMaxDistance = 80.0;
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Experiment10View extends StatefulWidget {
   const Experiment10View({super.key});
@@ -32,9 +31,9 @@ class _Experiment10ViewState extends State<Experiment10View>
             parent: controller.createScrollPhysics(),
           ),
           slivers: [
-            ValueListenableBuilder(
-              valueListenable: controller,
-              builder: (context, states, child) => SliverAppBar(
+            ListenableBuilder(
+              listenable: controller,
+              builder: (context, child) => SliverAppBar(
                 clipBehavior: .none,
                 pinned: true,
                 backgroundColor: colorTheme.surfaceContainer,
@@ -43,7 +42,7 @@ class _Experiment10ViewState extends State<Experiment10View>
                 title: const Text("Pull to refresh!"),
                 bottom: buildBottomPullToRefresh(
                   context: context,
-                  states: states,
+                  states: controller,
                   child: child!,
                 ),
               ),
@@ -121,7 +120,7 @@ class _Experiment10ViewState extends State<Experiment10View>
 PreferredSizeWidget buildBottomPullToRefresh({
   required BuildContext context,
   required CustomPullToRefreshStates states,
-  double maxHeight = CustomPullToRefresh.defaultThreshold,
+  double maxHeight = PullToRefreshController.defaultThreshold,
   required Widget child,
 }) {
   final isRefreshing = states.isRefreshing;
@@ -149,92 +148,92 @@ PreferredSizeWidget buildBottomPullToRefresh({
   );
 }
 
-class CustomPullToRefreshDelegate extends PullToRefreshDefaultDelegate {
-  CustomPullToRefreshDelegate({required super.vsync, super.spring})
-    : _layoutController = .new(
-        vsync: vsync,
-        lowerBound: 0.0,
-        upperBound: .infinity,
-        animationBehavior: .preserve,
-      );
-
-  final AnimationController _layoutController;
-
-  var _isActive = false;
-
-  Animation<double> get layoutFraction => _layoutController.view;
-
-  SpringSimulation _createSimulation(double targetValue) => .new(
-    spring,
-    _layoutController.value,
-    targetValue,
-    _layoutController.velocity,
-    snapToEnd: true,
-  );
-
-  @override
-  void snapTo(double targetValue) {
-    super.snapTo(targetValue);
-    if (!_isActive) {
-      _layoutController.value = targetValue;
-    }
-  }
-
-  @override
-  TickerFuture animateToThreshold() {
-    _isActive = true;
-    unawaited(_layoutController.animateWith(_createSimulation(0.0)));
-    return super.animateToThreshold();
-  }
-
-  @override
-  TickerFuture animateToHidden() {
-    _isActive = false;
-    unawaited(_layoutController.animateWith(_createSimulation(0.0)));
-    return super.animateToHidden();
-  }
-
-  @override
-  void dispose() {
-    _layoutController.dispose();
-    super.dispose();
-  }
-}
-
 mixin CustomPullToRefreshStates implements PullToRefreshStates {
   double get layoutFraction;
 
   double get layoutHeight;
 }
 
-class CustomPullToRefreshController
-    extends PullToRefreshController<CustomPullToRefreshDelegate>
-    implements
-        CustomPullToRefreshStates,
-        ValueListenable<CustomPullToRefreshStates> {
+class CustomPullToRefreshController extends PullToRefreshSpringController
+    implements CustomPullToRefreshStates {
   CustomPullToRefreshController({
     super.onRefresh,
     super.enabled,
-    required super.delegate,
     super.threshold,
     super.isRefreshing,
-  }) {
-    delegate.layoutFraction.addListener(notifyListeners);
+    required super.vsync,
+    super.spring,
+    super.debugLabel,
+  });
+
+  Simulation? _simulation;
+
+  double get _velocity {
+    if (_simulation case final simulation? when isAnimating) {
+      return simulation.dx(
+        lastElapsedDuration.inMicroseconds / Duration.microsecondsPerSecond,
+      );
+    }
+    return 0.0;
   }
 
+  double _layoutFraction = 0.0;
+
   @override
-  double get layoutFraction => delegate.layoutFraction.value;
+  double get layoutFraction => _layoutFraction;
 
   @override
   double get layoutHeight => layoutFraction * threshold;
 
-  @override
-  CustomPullToRefreshStates get value => this;
+  Simulation _createSimulation(double targetValue) => SpringSimulation(
+    spring,
+    _layoutFraction,
+    targetValue,
+    _velocity,
+    snapToEnd: true,
+  );
 
   @override
-  void dispose() {
-    delegate.layoutFraction.removeListener(notifyListeners);
-    super.dispose();
+  void tick() {
+    super.tick();
+    if (_simulation case final simulation?) {
+      _layoutFraction = simulation.x(lastElapsedInSeconds);
+      if (simulation.isDone(lastElapsedInSeconds)) {
+        _simulation = null;
+      }
+    }
+  }
+
+  @override
+  void animateToThreshold() {
+    final simulation = _createSimulation(0.0);
+    super.animateToThreshold();
+    _simulation = simulation;
+    _layoutFraction = simulation.x(0.0);
+  }
+
+  @override
+  void animateToHidden() {
+    final simulation = _createSimulation(0.0);
+    super.animateToHidden();
+    _simulation = simulation;
+    _layoutFraction = simulation.x(0.0);
+  }
+
+  @override
+  void snapTo(double targetValue) {
+    super.snapTo(targetValue);
+    if (!isRefreshing) {
+      _simulation = null;
+      _layoutFraction = targetValue;
+    }
+  }
+
+  @mustCallSuper
+  @override
+  void stop({bool canceled = true}) {
+    super.stop(canceled: canceled);
+    _simulation = null;
   }
 }
 
@@ -250,7 +249,7 @@ class CustomPullToRefresh extends StatefulWidget {
     required this.onRefresh,
     this.enabled = true,
     this.spring,
-    this.threshold = defaultThreshold,
+    this.threshold = PullToRefreshController.defaultThreshold,
     required this.builder,
   });
 
@@ -266,17 +265,11 @@ class CustomPullToRefresh extends StatefulWidget {
 
   @override
   CustomPullToRefreshState createState() => CustomPullToRefreshState();
-
-  static final defaultSpring = PullToRefreshDefaultDelegate.defaultSpring;
-
-  static const defaultThreshold = 80.0;
 }
 
 class CustomPullToRefreshState extends State<CustomPullToRefresh>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late CustomPullToRefreshController _controller;
-
-  late CustomPullToRefreshDelegate _delegate;
 
   Future<void>? _refreshFuture;
 
@@ -303,7 +296,7 @@ class CustomPullToRefreshState extends State<CustomPullToRefresh>
     );
   }
 
-  ValueListenable<CustomPullToRefreshStates> get states => _controller;
+  // ValueListenable<PullToRefreshStates> get states => _controller;
 
   Future<void> show() {
     if (!mounted) return Future.value();
@@ -320,16 +313,12 @@ class CustomPullToRefreshState extends State<CustomPullToRefresh>
   @override
   void initState() {
     super.initState();
-    _delegate = .new(
-      vsync: this,
-      spring: widget.spring ?? CustomPullToRefresh.defaultSpring,
-    );
-    _controller = .new(
+    _controller = CustomPullToRefreshController(
       onRefresh: _onRefresh,
       enabled: widget.enabled,
-      delegate: _delegate,
       threshold: widget.threshold,
-      isRefreshing: false,
+      vsync: this,
+      spring: widget.spring ?? PullToRefreshSpringController.defaultSpring,
     );
   }
 
@@ -337,7 +326,8 @@ class CustomPullToRefreshState extends State<CustomPullToRefresh>
   void didUpdateWidget(covariant CustomPullToRefresh oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.spring != oldWidget.spring) {
-      _delegate.spring = widget.spring ?? CustomPullToRefresh.defaultSpring;
+      _controller.spring =
+          widget.spring ?? PullToRefreshSpringController.defaultSpring;
     }
     _controller.enabled = widget.enabled;
     _controller.threshold = widget.threshold;
@@ -346,7 +336,6 @@ class CustomPullToRefreshState extends State<CustomPullToRefresh>
   @override
   void dispose() {
     _controller.dispose();
-    _delegate.dispose();
     super.dispose();
   }
 

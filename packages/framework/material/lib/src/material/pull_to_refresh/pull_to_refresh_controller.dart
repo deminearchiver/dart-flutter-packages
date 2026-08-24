@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/scheduler.dart';
 import 'package:material/src/material/flutter.dart';
 
 const _kDragMultiplier = 0.5;
@@ -45,101 +43,33 @@ mixin PullToRefreshStates {
   double get distanceFraction;
 }
 
-abstract class const PullToRefreshDelegate() {
-  Animation<double> get distanceFraction;
-
-  TickerFuture animateToThreshold();
-
-  TickerFuture animateToHidden();
-
-  void snapTo(double targetValue);
-}
-
-class PullToRefreshDefaultDelegate({
-  required TickerProvider vsync,
-  SpringDescription? spring,
-}) extends PullToRefreshDelegate {
-  SpringDescription _spring = spring ?? defaultSpring;
-
-  SpringDescription get spring => _spring;
-
-  set spring(SpringDescription value) {
-    if (_spring == value) return;
-    _spring = value;
-  }
-
-  final AnimationController _animationController = .new(
-    vsync: vsync,
-    lowerBound: 0.0,
-    upperBound: .infinity,
-    animationBehavior: .preserve,
-    debugLabel: "PullToRefreshDefaultDelegate",
-  );
-
-  @override
-  Animation<double> get distanceFraction => _animationController.view;
-
-  SpringSimulation _createSimulation(double targetValue) => .new(
-    spring,
-    _animationController.value,
-    targetValue,
-    _animationController.velocity,
-    snapToEnd: true,
-  );
-
-  @override
-  TickerFuture animateToThreshold() =>
-      _animationController.animateWith(_createSimulation(1.0));
-
-  @override
-  TickerFuture animateToHidden() =>
-      _animationController.animateWith(_createSimulation(0.0));
-
-  @override
-  void snapTo(double targetValue) {
-    _animationController.value = targetValue;
-  }
-
-  @mustCallSuper
-  void dispose() {
-    _animationController.dispose();
-  }
-
-  @override
-  String toString() =>
-      "${describeIdentity(this)}("
-      "spring: $spring,"
-      "distanceFraction: ${distanceFraction.value}"
-      ")";
-
-  static final defaultSpring = SpringDescription.withDampingRatio(
-    mass: 1.0,
-    stiffness: 1500.0,
-    ratio: 1.0,
-  );
-}
-
-@optionalTypeArgs
-abstract class PullToRefreshController<
-  DelegateType extends PullToRefreshDelegate
->({
-  var VoidCallback _onRefresh = _defaultOnRefresh,
+abstract class PullToRefreshController({
+  var VoidCallback _onRefresh = defaultOnRefresh,
   var bool _enabled = true,
-  required var DelegateType _delegate,
   var double _threshold = defaultThreshold,
   var bool _isRefreshing = false,
-}) with ChangeNotifier implements PullToRefreshStates {
+}) implements
+    PullToRefreshStates,
+    ValueListenable<PullToRefreshStates>,
+    AnimationEagerListenerMixin,
+    AnimationLocalListenersMixin,
+    ChangeNotifier {
   this {
-    if (kFlutterMemoryAllocationsEnabled) {
-      ChangeNotifier.maybeDispatchObjectCreation(this);
-    }
+    // TODO: add back manually (see material_ui for reference)
+    // if (kFlutterMemoryAllocationsEnabled) {
+    //   ChangeNotifier.maybeDispatchObjectCreation(this);
+    // }
+
     if (isRefreshing) {
       _distancePulled = threshold;
-      _delegate.snapTo(1.0);
-      _verticalOffset = calculateVerticalOffset();
+      snapTo(1.0);
+      markNeedsVerticalOffsetUpdate();
     }
-    delegate.distanceFraction.addListener(_animationListener);
   }
+
+  // ////////////////////////////////////////////////////////////////
+  // Refresh //
+  // ////////////////////////////////////////////////////////////////
 
   VoidCallback get onRefresh => _onRefresh;
   set onRefresh(VoidCallback value) {
@@ -155,27 +85,14 @@ abstract class PullToRefreshController<
     notifyListeners();
   }
 
-  DelegateType get delegate => _delegate;
-  set delegate(DelegateType value) {
-    if (_delegate == value) return;
-    _delegate.distanceFraction.removeListener(_animationListener);
-    _delegate = value;
-    _delegate.distanceFraction.addListener(_animationListener);
-    _verticalOffset = calculateVerticalOffset();
-    if (!isAnimating && !isRefreshing) {
-      _delegate.snapTo(verticalOffset / threshold);
-    }
-    notifyListeners();
-  }
-
   @override
   double get threshold => _threshold;
   set threshold(double value) {
     if (_threshold == value) return;
     _threshold = value;
-    _verticalOffset = calculateVerticalOffset();
+    markNeedsVerticalOffsetUpdate();
     if (!isAnimating && !isRefreshing) {
-      delegate.snapTo(verticalOffset / _threshold);
+      snapTo(verticalOffset / _threshold);
     }
     notifyListeners();
   }
@@ -186,27 +103,36 @@ abstract class PullToRefreshController<
     if (_isRefreshing == value) return;
     _isRefreshing = value;
     if (_isRefreshing) {
-      unawaited(animateToThreshold());
+      animateToThreshold();
     } else {
-      unawaited(animateToHidden());
+      animateToHidden();
     }
   }
 
-  double _verticalOffset = 0.0;
+  // ////////////////////////////////////////////////////////////////
+  // Scroll //
+  // ////////////////////////////////////////////////////////////////
+
+  double? _verticalOffset;
 
   @override
-  double get verticalOffset => _verticalOffset;
+  double get verticalOffset => _verticalOffset ??= computeVerticalOffset();
 
   @protected
-  double calculateVerticalOffset() {
+  void markNeedsVerticalOffsetUpdate() {
+    _verticalOffset = null;
+  }
+
+  @visibleForOverriding
+  double computeVerticalOffset() {
     if (isRefreshing || isAnimating) {
       return distanceFraction * threshold;
     }
 
     // If drag hasn't gone past the threshold,
     // the position is adjustedDistancePulled.
-    final adjustedDistancePulled = this.adjustedDistancePulled;
-    if (adjustedDistancePulled <= threshold) {
+    if (adjustedDistancePulled case final adjustedDistancePulled
+        when adjustedDistancePulled <= threshold) {
       return adjustedDistancePulled;
     }
 
@@ -227,7 +153,7 @@ abstract class PullToRefreshController<
     return threshold + extraOffset;
   }
 
-  var _distancePulled = 0.0;
+  double _distancePulled = 0.0;
 
   @override
   double get distancePulled => _distancePulled;
@@ -236,9 +162,10 @@ abstract class PullToRefreshController<
   set distancePulled(double value) {
     if (_distancePulled == value) return;
     _distancePulled = math.max(0.0, value);
-    _verticalOffset = calculateVerticalOffset();
+
+    markNeedsVerticalOffsetUpdate();
     if (!isAnimating && !isRefreshing) {
-      delegate.snapTo(verticalOffset / threshold);
+      snapTo(verticalOffset / threshold);
     }
     notifyListeners();
   }
@@ -249,7 +176,7 @@ abstract class PullToRefreshController<
   @override
   double get progress => adjustedDistancePulled / threshold;
 
-  var _farEdgeOverscroll = 0.0;
+  double _farEdgeOverscroll = 0.0;
 
   @protected
   double get farEdgeOverscroll => _farEdgeOverscroll;
@@ -262,7 +189,7 @@ abstract class PullToRefreshController<
     notifyListeners();
   }
 
-  var _nearEdgeOverscroll = 0.0;
+  double _nearEdgeOverscroll = 0.0;
 
   @protected
   double get nearEdgeOverscroll => _nearEdgeOverscroll;
@@ -275,7 +202,7 @@ abstract class PullToRefreshController<
     notifyListeners();
   }
 
-  var _nearEdgeOverscrollConsumed = 0.0;
+  double _nearEdgeOverscrollConsumed = 0.0;
 
   @protected
   double get nearEdgeOverscrollConsumed => _nearEdgeOverscrollConsumed;
@@ -283,16 +210,14 @@ abstract class PullToRefreshController<
   @protected
   set nearEdgeOverscrollConsumed(double value) {
     if (value < 0.0) value = 0.0;
+    if (_nearEdgeOverscrollConsumed == value) return;
     _nearEdgeOverscrollConsumed = value;
+    notifyListeners();
   }
-
-  @factory
-  ScrollPhysics createScrollPhysics({ScrollPhysics? parent}) =>
-      _PullToRefreshDefaultScrollPhysics(parent: parent, controller: this);
 
   @protected
   double consumeAvailableOffset(double availableOffset) {
-    if (!enabled || isRefreshing || isAnimating) return 0.0;
+    if (isDisposed || !enabled || isRefreshing || isAnimating) return 0.0;
     farEdgeOverscroll = 0.0;
     nearEdgeOverscroll = 0.0;
     nearEdgeOverscrollConsumed = 0.0;
@@ -304,113 +229,106 @@ abstract class PullToRefreshController<
 
   @protected
   void onRelease(double velocity) {
-    if (_isDisposed || !enabled || isRefreshing || isAnimating) return;
+    if (isDisposed || !enabled || isRefreshing || isAnimating) return;
     if (adjustedDistancePulled >= threshold) {
       onRefresh();
     } else {
-      unawaited(animateToHidden());
+      animateToHidden();
     }
   }
 
-  @override
-  bool get isAnimating => delegate.distanceFraction.isAnimating;
+  @factory
+  ScrollPhysics createScrollPhysics({ScrollPhysics? parent}) =>
+      _PullToRefreshScrollPhysics(parent: parent, controller: this);
+
+  // ////////////////////////////////////////////////////////////////
+  // Animation //
+  // ////////////////////////////////////////////////////////////////
 
   @override
-  double get distanceFraction => delegate.distanceFraction.value;
+  bool get isAnimating;
 
+  @override
+  double get distanceFraction;
+
+  @mustCallSuper
   @protected
-  Future<void> animateToThreshold() async {
+  void animateToThreshold() {
     _isRefreshing = true;
     _distancePulled = threshold;
-    _verticalOffset = calculateVerticalOffset();
-    notifyListeners();
-    try {
-      await delegate.animateToThreshold();
-    } finally {
-      if (!_isDisposed) {
-        _distancePulled = threshold;
-        delegate.snapTo(1.0);
-        _verticalOffset = calculateVerticalOffset();
-        notifyListeners();
-      }
-    }
+    markNeedsVerticalOffsetUpdate();
   }
 
+  @mustCallSuper
   @protected
-  Future<void> animateToHidden() async {
+  void animateToHidden() {
     _isRefreshing = false;
     _distancePulled = 0.0;
-    _verticalOffset = calculateVerticalOffset();
-    notifyListeners();
-    try {
-      await delegate.animateToHidden();
-    } finally {
-      if (!_isDisposed) {
-        _distancePulled = 0.0;
-        delegate.snapTo(0.0);
-        _verticalOffset = calculateVerticalOffset();
-        notifyListeners();
-      }
-    }
+    markNeedsVerticalOffsetUpdate();
   }
 
-  void _animationListener() {
-    _verticalOffset = calculateVerticalOffset();
-    notifyListeners();
-  }
+  @mustCallSuper
+  @protected
+  void snapTo(double targetValue);
+
+  // ////////////////////////////////////////////////////////////////
+  // AnimationEagerListenerMixin, AnimationLocalListenersMixin, ChangeNotifier //
+  // ////////////////////////////////////////////////////////////////
+
+  @protected
+  @override
+  bool get hasListeners;
 
   @override
-  void notifyListeners() {
-    if (_isDisposed) return;
-    final schedulerBinding = SchedulerBinding.instance;
-    switch (schedulerBinding.schedulerPhase) {
-      // We check scheduler phase here because this method could be called
-      // during layout phase potentially (scroll physics).
-      case .persistentCallbacks:
-        schedulerBinding.addPostFrameCallback((_) {
-          if (_isDisposed) return;
-          super.notifyListeners();
-        });
-      default:
-        super.notifyListeners();
-    }
-  }
+  void addListener(VoidCallback listener);
+
+  @override
+  void removeListener(VoidCallback listener);
+
+  @protected
+  @override
+  void clearListeners();
+
+  @protected
+  @override
+  void didRegisterListener() {}
+
+  @protected
+  @override
+  void didUnregisterListener() {}
+
+  @protected
+  @override
+  void notifyListeners();
 
   var _isDisposed = false;
 
+  bool get isDisposed => _isDisposed;
+
+  @mustCallSuper
   @override
   void dispose() {
     _isDisposed = true;
-    delegate.distanceFraction.removeListener(_animationListener);
-    super.dispose();
+    clearListeners();
   }
 
+  // ////////////////////////////////////////////////////////////////
+  // ValueListenable //
+  // ////////////////////////////////////////////////////////////////
+
   @override
-  String toString() =>
-      "${describeIdentity(this)}("
-      "enabled: $enabled,"
-      "delegate: $delegate,"
-      "threshold: $threshold"
-      ")";
+  PullToRefreshStates get value => this;
+
+  @override
+  String toString() => describeIdentity(this);
+
+  // ////////////////////////////////////////////////////////////////
+  // Defaults //
+  // ////////////////////////////////////////////////////////////////
 
   static const defaultThreshold = 80.0;
 
-  static void _defaultOnRefresh() {}
-}
-
-@optionalTypeArgs
-class PullToRefreshDefaultController<
-  DelegateType extends PullToRefreshDelegate
->({
-  super.onRefresh,
-  super.enabled,
-  required super.delegate,
-  super.threshold,
-  super.isRefreshing,
-}) extends PullToRefreshController<DelegateType>
-    implements ValueListenable<PullToRefreshStates> {
-  @override
-  PullToRefreshStates get value => this;
+  static void defaultOnRefresh() {}
 }
 
 // It doesn't make sense for this class to be public or internal,
@@ -419,12 +337,12 @@ class PullToRefreshDefaultController<
 // of PulToRefreshController, no private member access to prevent runtime
 // errors.
 
-class const _PullToRefreshDefaultScrollPhysics({
+class const _PullToRefreshScrollPhysics({
   super.parent,
   required final PullToRefreshController controller,
 }) extends ScrollPhysics {
   @override
-  _PullToRefreshDefaultScrollPhysics applyTo(ScrollPhysics? ancestor) =>
+  _PullToRefreshScrollPhysics applyTo(ScrollPhysics? ancestor) =>
       .new(parent: buildParent(ancestor), controller: controller);
 
   // TODO: check if works in reverse scroll views (spoiler: it doesn't?)
