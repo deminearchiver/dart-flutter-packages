@@ -72,7 +72,11 @@ export 'src/material/icon/google_symbols_icons.dart';
 export 'src/material/icon/luminous_symbols_icons.dart';
 export 'src/material/icon/material_symbols_icons.dart';
 
-export 'src/material/pull_to_refresh/pull_to_refresh.dart';
+export 'src/material/pull_to_refresh/pull_to_refresh_controller.dart';
+export 'src/material/pull_to_refresh/pull_to_refresh_default_layout.dart';
+export 'src/material/pull_to_refresh/pull_to_refresh_fade_transition.dart';
+export 'src/material/pull_to_refresh/pull_to_refresh_loading_indicator.dart';
+export 'src/material/pull_to_refresh/pull_to_refresh_progress_indicator.dart';
 
 import 'package:material/src/material/flutter.dart';
 
