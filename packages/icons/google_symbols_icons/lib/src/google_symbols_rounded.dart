@@ -1912,6 +1912,9 @@ abstract final class GoogleSymbolsRounded {
   /// Google Symbols Rounded icon named "build_circle".
   static const IconData build_circle = IconData(0xef48, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Rounded icon named "bullet_chart".
+  static const IconData bullet_chart = IconData(0xffec7, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Rounded icon named "bungalow".
   static const IconData bungalow = IconData(0xe591, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -3624,6 +3627,9 @@ abstract final class GoogleSymbolsRounded {
 
   /// Google Symbols Rounded icon named "domain_disabled".
   static const IconData domain_disabled = IconData(0xe0ef, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Rounded icon named "domain_disabled_check".
+  static const IconData domain_disabled_check = IconData(0xffec6, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Rounded icon named "domain_verification".
   static const IconData domain_verification = IconData(0xef4c, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -11448,6 +11454,9 @@ abstract final class GoogleSymbolsRounded {
 
   /// Google Symbols Rounded icon named "sim_card_download".
   static const IconData sim_card_download = IconData(0xe71f, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Rounded icon named "sim_card_lock".
+  static const IconData sim_card_lock = IconData(0xffec1, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Rounded icon named "simulation".
   static const IconData simulation = IconData(0xf3e1, fontFamily: fontFamily, fontPackage: fontPackage);

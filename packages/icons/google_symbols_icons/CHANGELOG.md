@@ -1,3 +1,8 @@
+## 0.1.4
+
+- Rolled the Google Symbols font from `v454` to `v455`.
+  - This update introduces 3 new icons: `bullet_chart`, `domain_disabled_check`, `sim_card_lock`.
+
 ## 0.1.3
 
 - Rolled the Google Symbols font from `v451` to `v454`.
