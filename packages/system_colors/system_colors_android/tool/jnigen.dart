@@ -18,8 +18,28 @@ void main(List<String> args) async {
       ),
       sourcePath: [packageRoot.resolve("android/src/main/kotlin")],
       classes: [
-        "io.qzz.deminearchiver.system_colors_android.SystemColorsAndroidPlugin",
+        "io.qzz.deminearchiver.system_colors_android.SystemColorsPlugin",
+        "io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes",
+        "io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme",
       ],
+      generateStubs: false,
+      visitors: [_CompanionVisitor()],
     ),
   );
+}
+
+class _CompanionVisitor extends Visitor {
+  @override
+  void visitClass(ClassDecl c) {
+    if (c.binaryName.endsWith(r"$Companion")) {
+      c.isExcluded = true;
+    }
+  }
+
+  @override
+  void visitField(Field field) {
+    if (field.name == "Companion" || field.originalName == "Companion") {
+      field.isExcluded = true;
+    }
+  }
 }
