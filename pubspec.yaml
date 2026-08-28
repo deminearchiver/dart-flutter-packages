@@ -40,6 +40,7 @@ workspace:
   - packages/permissions_ffi/example
   - packages/screen_corners_ffi
   - packages/screen_corners_ffi/example
+  - packages/system_colors/system_colors_platform_interface
   - packages/touch_targets
   - packages/touch_targets/example
   - packages/woff2/woff
