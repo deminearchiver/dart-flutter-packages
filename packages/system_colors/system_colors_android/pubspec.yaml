@@ -1,0 +1,29 @@
+name: system_colors_android
+description: Android implementation of the system_colors plugin.
+version: 0.2.0
+homepage: https://github.com/deminearchiver/dart-flutter-packages
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/system_colors/system_colors_android
+issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
+resolution: workspace
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  meta: ^1.19.0
+  system_colors_platform_interface: ^0.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  deminearchiver_lints: ^3.1.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: io.qzz.deminearchiver.system_colors_android
+        pluginClass: SystemColorsAndroidPlugin
