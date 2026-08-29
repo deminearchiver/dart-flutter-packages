@@ -427,46 +427,6 @@ extension type SystemColorsTonalPalettes._(jni$_.JObject _$this)
       i,
     ).object<SystemColorsTonalPalettes>();
   }
-
-  static final _id_new$ = _class.constructorId(
-    r'(ILkotlin/jvm/internal/DefaultConstructorMarker;)V',
-  );
-
-  static final _new$ =
-      jni$_.ProtectedJniExtensions.lookup<
-            jni$_.NativeFunction<
-              jni$_.JniResult Function(
-                jni$_.Pointer<jni$_.Void>,
-                jni$_.JMethodIDPtr,
-                jni$_.VarArgs<(jni$_.Int32, jni$_.Pointer<jni$_.Void>)>,
-              )
-            >
-          >('globalEnv_NewObject')
-          .asFunction<
-            jni$_.JniResult Function(
-              jni$_.Pointer<jni$_.Void>,
-              jni$_.JMethodIDPtr,
-              core$_.int,
-              jni$_.Pointer<jni$_.Void>,
-            )
-          >();
-
-  /// from: `synthetic public void <init>(int i, kotlin.jvm.internal.DefaultConstructorMarker defaultConstructorMarker)`
-  /// The returned object must be released after use, by calling the [release] method.
-  factory SystemColorsTonalPalettes(
-    core$_.int i,
-    jni$_.JObject? defaultConstructorMarker,
-  ) {
-    final _$$classRef = _class.reference;
-    final _$defaultConstructorMarker =
-        defaultConstructorMarker?.reference ?? jni$_.jNullReference;
-    return _new$(
-      _$$classRef.pointer,
-      _id_new$.pointer,
-      i,
-      _$defaultConstructorMarker.pointer,
-    ).object<SystemColorsTonalPalettes>();
-  }
 }
 
 extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
@@ -475,933 +435,622 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
     r'I',
   );
 
-  /// from: `public int primary0`
+  /// from: `public final int primary0`
   core$_.int get primary0 =>
       _id_primary0.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary0`
-  set primary0(core$_.int value) =>
-      _id_primary0.set(this, jni$_.jint.type, value);
 
   static final _id_primary10 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary10',
     r'I',
   );
 
-  /// from: `public int primary10`
+  /// from: `public final int primary10`
   core$_.int get primary10 =>
       _id_primary10.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary10`
-  set primary10(core$_.int value) =>
-      _id_primary10.set(this, jni$_.jint.type, value);
 
   static final _id_primary20 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary20',
     r'I',
   );
 
-  /// from: `public int primary20`
+  /// from: `public final int primary20`
   core$_.int get primary20 =>
       _id_primary20.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary20`
-  set primary20(core$_.int value) =>
-      _id_primary20.set(this, jni$_.jint.type, value);
 
   static final _id_primary30 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary30',
     r'I',
   );
 
-  /// from: `public int primary30`
+  /// from: `public final int primary30`
   core$_.int get primary30 =>
       _id_primary30.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary30`
-  set primary30(core$_.int value) =>
-      _id_primary30.set(this, jni$_.jint.type, value);
 
   static final _id_primary40 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary40',
     r'I',
   );
 
-  /// from: `public int primary40`
+  /// from: `public final int primary40`
   core$_.int get primary40 =>
       _id_primary40.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary40`
-  set primary40(core$_.int value) =>
-      _id_primary40.set(this, jni$_.jint.type, value);
 
   static final _id_primary50 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary50',
     r'I',
   );
 
-  /// from: `public int primary50`
+  /// from: `public final int primary50`
   core$_.int get primary50 =>
       _id_primary50.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary50`
-  set primary50(core$_.int value) =>
-      _id_primary50.set(this, jni$_.jint.type, value);
 
   static final _id_primary60 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary60',
     r'I',
   );
 
-  /// from: `public int primary60`
+  /// from: `public final int primary60`
   core$_.int get primary60 =>
       _id_primary60.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary60`
-  set primary60(core$_.int value) =>
-      _id_primary60.set(this, jni$_.jint.type, value);
 
   static final _id_primary70 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary70',
     r'I',
   );
 
-  /// from: `public int primary70`
+  /// from: `public final int primary70`
   core$_.int get primary70 =>
       _id_primary70.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary70`
-  set primary70(core$_.int value) =>
-      _id_primary70.set(this, jni$_.jint.type, value);
 
   static final _id_primary80 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary80',
     r'I',
   );
 
-  /// from: `public int primary80`
+  /// from: `public final int primary80`
   core$_.int get primary80 =>
       _id_primary80.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary80`
-  set primary80(core$_.int value) =>
-      _id_primary80.set(this, jni$_.jint.type, value);
 
   static final _id_primary90 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary90',
     r'I',
   );
 
-  /// from: `public int primary90`
+  /// from: `public final int primary90`
   core$_.int get primary90 =>
       _id_primary90.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary90`
-  set primary90(core$_.int value) =>
-      _id_primary90.set(this, jni$_.jint.type, value);
 
   static final _id_primary95 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary95',
     r'I',
   );
 
-  /// from: `public int primary95`
+  /// from: `public final int primary95`
   core$_.int get primary95 =>
       _id_primary95.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary95`
-  set primary95(core$_.int value) =>
-      _id_primary95.set(this, jni$_.jint.type, value);
 
   static final _id_primary99 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary99',
     r'I',
   );
 
-  /// from: `public int primary99`
+  /// from: `public final int primary99`
   core$_.int get primary99 =>
       _id_primary99.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary99`
-  set primary99(core$_.int value) =>
-      _id_primary99.set(this, jni$_.jint.type, value);
 
   static final _id_primary100 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'primary100', r'I');
 
-  /// from: `public int primary100`
+  /// from: `public final int primary100`
   core$_.int get primary100 =>
       _id_primary100.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary100`
-  set primary100(core$_.int value) =>
-      _id_primary100.set(this, jni$_.jint.type, value);
 
   static final _id_secondary0 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary0', r'I');
 
-  /// from: `public int secondary0`
+  /// from: `public final int secondary0`
   core$_.int get secondary0 =>
       _id_secondary0.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary0`
-  set secondary0(core$_.int value) =>
-      _id_secondary0.set(this, jni$_.jint.type, value);
 
   static final _id_secondary10 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary10', r'I');
 
-  /// from: `public int secondary10`
+  /// from: `public final int secondary10`
   core$_.int get secondary10 =>
       _id_secondary10.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary10`
-  set secondary10(core$_.int value) =>
-      _id_secondary10.set(this, jni$_.jint.type, value);
 
   static final _id_secondary20 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary20', r'I');
 
-  /// from: `public int secondary20`
+  /// from: `public final int secondary20`
   core$_.int get secondary20 =>
       _id_secondary20.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary20`
-  set secondary20(core$_.int value) =>
-      _id_secondary20.set(this, jni$_.jint.type, value);
 
   static final _id_secondary30 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary30', r'I');
 
-  /// from: `public int secondary30`
+  /// from: `public final int secondary30`
   core$_.int get secondary30 =>
       _id_secondary30.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary30`
-  set secondary30(core$_.int value) =>
-      _id_secondary30.set(this, jni$_.jint.type, value);
 
   static final _id_secondary40 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary40', r'I');
 
-  /// from: `public int secondary40`
+  /// from: `public final int secondary40`
   core$_.int get secondary40 =>
       _id_secondary40.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary40`
-  set secondary40(core$_.int value) =>
-      _id_secondary40.set(this, jni$_.jint.type, value);
 
   static final _id_secondary50 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary50', r'I');
 
-  /// from: `public int secondary50`
+  /// from: `public final int secondary50`
   core$_.int get secondary50 =>
       _id_secondary50.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary50`
-  set secondary50(core$_.int value) =>
-      _id_secondary50.set(this, jni$_.jint.type, value);
 
   static final _id_secondary60 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary60', r'I');
 
-  /// from: `public int secondary60`
+  /// from: `public final int secondary60`
   core$_.int get secondary60 =>
       _id_secondary60.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary60`
-  set secondary60(core$_.int value) =>
-      _id_secondary60.set(this, jni$_.jint.type, value);
 
   static final _id_secondary70 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary70', r'I');
 
-  /// from: `public int secondary70`
+  /// from: `public final int secondary70`
   core$_.int get secondary70 =>
       _id_secondary70.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary70`
-  set secondary70(core$_.int value) =>
-      _id_secondary70.set(this, jni$_.jint.type, value);
 
   static final _id_secondary80 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary80', r'I');
 
-  /// from: `public int secondary80`
+  /// from: `public final int secondary80`
   core$_.int get secondary80 =>
       _id_secondary80.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary80`
-  set secondary80(core$_.int value) =>
-      _id_secondary80.set(this, jni$_.jint.type, value);
 
   static final _id_secondary90 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary90', r'I');
 
-  /// from: `public int secondary90`
+  /// from: `public final int secondary90`
   core$_.int get secondary90 =>
       _id_secondary90.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary90`
-  set secondary90(core$_.int value) =>
-      _id_secondary90.set(this, jni$_.jint.type, value);
 
   static final _id_secondary95 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary95', r'I');
 
-  /// from: `public int secondary95`
+  /// from: `public final int secondary95`
   core$_.int get secondary95 =>
       _id_secondary95.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary95`
-  set secondary95(core$_.int value) =>
-      _id_secondary95.set(this, jni$_.jint.type, value);
 
   static final _id_secondary99 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary99', r'I');
 
-  /// from: `public int secondary99`
+  /// from: `public final int secondary99`
   core$_.int get secondary99 =>
       _id_secondary99.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary99`
-  set secondary99(core$_.int value) =>
-      _id_secondary99.set(this, jni$_.jint.type, value);
 
   static final _id_secondary100 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'secondary100', r'I');
 
-  /// from: `public int secondary100`
+  /// from: `public final int secondary100`
   core$_.int get secondary100 =>
       _id_secondary100.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary100`
-  set secondary100(core$_.int value) =>
-      _id_secondary100.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary0 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'tertiary0',
     r'I',
   );
 
-  /// from: `public int tertiary0`
+  /// from: `public final int tertiary0`
   core$_.int get tertiary0 =>
       _id_tertiary0.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary0`
-  set tertiary0(core$_.int value) =>
-      _id_tertiary0.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary10 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary10', r'I');
 
-  /// from: `public int tertiary10`
+  /// from: `public final int tertiary10`
   core$_.int get tertiary10 =>
       _id_tertiary10.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary10`
-  set tertiary10(core$_.int value) =>
-      _id_tertiary10.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary20 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary20', r'I');
 
-  /// from: `public int tertiary20`
+  /// from: `public final int tertiary20`
   core$_.int get tertiary20 =>
       _id_tertiary20.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary20`
-  set tertiary20(core$_.int value) =>
-      _id_tertiary20.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary30 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary30', r'I');
 
-  /// from: `public int tertiary30`
+  /// from: `public final int tertiary30`
   core$_.int get tertiary30 =>
       _id_tertiary30.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary30`
-  set tertiary30(core$_.int value) =>
-      _id_tertiary30.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary40 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary40', r'I');
 
-  /// from: `public int tertiary40`
+  /// from: `public final int tertiary40`
   core$_.int get tertiary40 =>
       _id_tertiary40.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary40`
-  set tertiary40(core$_.int value) =>
-      _id_tertiary40.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary50 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary50', r'I');
 
-  /// from: `public int tertiary50`
+  /// from: `public final int tertiary50`
   core$_.int get tertiary50 =>
       _id_tertiary50.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary50`
-  set tertiary50(core$_.int value) =>
-      _id_tertiary50.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary60 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary60', r'I');
 
-  /// from: `public int tertiary60`
+  /// from: `public final int tertiary60`
   core$_.int get tertiary60 =>
       _id_tertiary60.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary60`
-  set tertiary60(core$_.int value) =>
-      _id_tertiary60.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary70 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary70', r'I');
 
-  /// from: `public int tertiary70`
+  /// from: `public final int tertiary70`
   core$_.int get tertiary70 =>
       _id_tertiary70.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary70`
-  set tertiary70(core$_.int value) =>
-      _id_tertiary70.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary80 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary80', r'I');
 
-  /// from: `public int tertiary80`
+  /// from: `public final int tertiary80`
   core$_.int get tertiary80 =>
       _id_tertiary80.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary80`
-  set tertiary80(core$_.int value) =>
-      _id_tertiary80.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary90 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary90', r'I');
 
-  /// from: `public int tertiary90`
+  /// from: `public final int tertiary90`
   core$_.int get tertiary90 =>
       _id_tertiary90.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary90`
-  set tertiary90(core$_.int value) =>
-      _id_tertiary90.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary95 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary95', r'I');
 
-  /// from: `public int tertiary95`
+  /// from: `public final int tertiary95`
   core$_.int get tertiary95 =>
       _id_tertiary95.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary95`
-  set tertiary95(core$_.int value) =>
-      _id_tertiary95.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary99 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary99', r'I');
 
-  /// from: `public int tertiary99`
+  /// from: `public final int tertiary99`
   core$_.int get tertiary99 =>
       _id_tertiary99.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary99`
-  set tertiary99(core$_.int value) =>
-      _id_tertiary99.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary100 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'tertiary100', r'I');
 
-  /// from: `public int tertiary100`
+  /// from: `public final int tertiary100`
   core$_.int get tertiary100 =>
       _id_tertiary100.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary100`
-  set tertiary100(core$_.int value) =>
-      _id_tertiary100.set(this, jni$_.jint.type, value);
 
   static final _id_neutral0 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral0',
     r'I',
   );
 
-  /// from: `public int neutral0`
+  /// from: `public final int neutral0`
   core$_.int get neutral0 =>
       _id_neutral0.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral0`
-  set neutral0(core$_.int value) =>
-      _id_neutral0.set(this, jni$_.jint.type, value);
 
   static final _id_neutral10 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral10',
     r'I',
   );
 
-  /// from: `public int neutral10`
+  /// from: `public final int neutral10`
   core$_.int get neutral10 =>
       _id_neutral10.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral10`
-  set neutral10(core$_.int value) =>
-      _id_neutral10.set(this, jni$_.jint.type, value);
 
   static final _id_neutral20 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral20',
     r'I',
   );
 
-  /// from: `public int neutral20`
+  /// from: `public final int neutral20`
   core$_.int get neutral20 =>
       _id_neutral20.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral20`
-  set neutral20(core$_.int value) =>
-      _id_neutral20.set(this, jni$_.jint.type, value);
 
   static final _id_neutral30 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral30',
     r'I',
   );
 
-  /// from: `public int neutral30`
+  /// from: `public final int neutral30`
   core$_.int get neutral30 =>
       _id_neutral30.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral30`
-  set neutral30(core$_.int value) =>
-      _id_neutral30.set(this, jni$_.jint.type, value);
 
   static final _id_neutral40 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral40',
     r'I',
   );
 
-  /// from: `public int neutral40`
+  /// from: `public final int neutral40`
   core$_.int get neutral40 =>
       _id_neutral40.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral40`
-  set neutral40(core$_.int value) =>
-      _id_neutral40.set(this, jni$_.jint.type, value);
 
   static final _id_neutral50 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral50',
     r'I',
   );
 
-  /// from: `public int neutral50`
+  /// from: `public final int neutral50`
   core$_.int get neutral50 =>
       _id_neutral50.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral50`
-  set neutral50(core$_.int value) =>
-      _id_neutral50.set(this, jni$_.jint.type, value);
 
   static final _id_neutral60 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral60',
     r'I',
   );
 
-  /// from: `public int neutral60`
+  /// from: `public final int neutral60`
   core$_.int get neutral60 =>
       _id_neutral60.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral60`
-  set neutral60(core$_.int value) =>
-      _id_neutral60.set(this, jni$_.jint.type, value);
 
   static final _id_neutral70 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral70',
     r'I',
   );
 
-  /// from: `public int neutral70`
+  /// from: `public final int neutral70`
   core$_.int get neutral70 =>
       _id_neutral70.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral70`
-  set neutral70(core$_.int value) =>
-      _id_neutral70.set(this, jni$_.jint.type, value);
 
   static final _id_neutral80 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral80',
     r'I',
   );
 
-  /// from: `public int neutral80`
+  /// from: `public final int neutral80`
   core$_.int get neutral80 =>
       _id_neutral80.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral80`
-  set neutral80(core$_.int value) =>
-      _id_neutral80.set(this, jni$_.jint.type, value);
 
   static final _id_neutral90 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral90',
     r'I',
   );
 
-  /// from: `public int neutral90`
+  /// from: `public final int neutral90`
   core$_.int get neutral90 =>
       _id_neutral90.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral90`
-  set neutral90(core$_.int value) =>
-      _id_neutral90.set(this, jni$_.jint.type, value);
 
   static final _id_neutral95 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral95',
     r'I',
   );
 
-  /// from: `public int neutral95`
+  /// from: `public final int neutral95`
   core$_.int get neutral95 =>
       _id_neutral95.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral95`
-  set neutral95(core$_.int value) =>
-      _id_neutral95.set(this, jni$_.jint.type, value);
 
   static final _id_neutral99 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'neutral99',
     r'I',
   );
 
-  /// from: `public int neutral99`
+  /// from: `public final int neutral99`
   core$_.int get neutral99 =>
       _id_neutral99.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral99`
-  set neutral99(core$_.int value) =>
-      _id_neutral99.set(this, jni$_.jint.type, value);
 
   static final _id_neutral100 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutral100', r'I');
 
-  /// from: `public int neutral100`
+  /// from: `public final int neutral100`
   core$_.int get neutral100 =>
       _id_neutral100.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutral100`
-  set neutral100(core$_.int value) =>
-      _id_neutral100.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant0 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant0', r'I');
 
-  /// from: `public int neutralVariant0`
+  /// from: `public final int neutralVariant0`
   core$_.int get neutralVariant0 =>
       _id_neutralVariant0.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant0`
-  set neutralVariant0(core$_.int value) =>
-      _id_neutralVariant0.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant10 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant10', r'I');
 
-  /// from: `public int neutralVariant10`
+  /// from: `public final int neutralVariant10`
   core$_.int get neutralVariant10 =>
       _id_neutralVariant10.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant10`
-  set neutralVariant10(core$_.int value) =>
-      _id_neutralVariant10.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant20 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant20', r'I');
 
-  /// from: `public int neutralVariant20`
+  /// from: `public final int neutralVariant20`
   core$_.int get neutralVariant20 =>
       _id_neutralVariant20.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant20`
-  set neutralVariant20(core$_.int value) =>
-      _id_neutralVariant20.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant30 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant30', r'I');
 
-  /// from: `public int neutralVariant30`
+  /// from: `public final int neutralVariant30`
   core$_.int get neutralVariant30 =>
       _id_neutralVariant30.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant30`
-  set neutralVariant30(core$_.int value) =>
-      _id_neutralVariant30.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant40 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant40', r'I');
 
-  /// from: `public int neutralVariant40`
+  /// from: `public final int neutralVariant40`
   core$_.int get neutralVariant40 =>
       _id_neutralVariant40.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant40`
-  set neutralVariant40(core$_.int value) =>
-      _id_neutralVariant40.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant50 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant50', r'I');
 
-  /// from: `public int neutralVariant50`
+  /// from: `public final int neutralVariant50`
   core$_.int get neutralVariant50 =>
       _id_neutralVariant50.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant50`
-  set neutralVariant50(core$_.int value) =>
-      _id_neutralVariant50.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant60 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant60', r'I');
 
-  /// from: `public int neutralVariant60`
+  /// from: `public final int neutralVariant60`
   core$_.int get neutralVariant60 =>
       _id_neutralVariant60.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant60`
-  set neutralVariant60(core$_.int value) =>
-      _id_neutralVariant60.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant70 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant70', r'I');
 
-  /// from: `public int neutralVariant70`
+  /// from: `public final int neutralVariant70`
   core$_.int get neutralVariant70 =>
       _id_neutralVariant70.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant70`
-  set neutralVariant70(core$_.int value) =>
-      _id_neutralVariant70.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant80 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant80', r'I');
 
-  /// from: `public int neutralVariant80`
+  /// from: `public final int neutralVariant80`
   core$_.int get neutralVariant80 =>
       _id_neutralVariant80.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant80`
-  set neutralVariant80(core$_.int value) =>
-      _id_neutralVariant80.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant90 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant90', r'I');
 
-  /// from: `public int neutralVariant90`
+  /// from: `public final int neutralVariant90`
   core$_.int get neutralVariant90 =>
       _id_neutralVariant90.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant90`
-  set neutralVariant90(core$_.int value) =>
-      _id_neutralVariant90.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant95 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant95', r'I');
 
-  /// from: `public int neutralVariant95`
+  /// from: `public final int neutralVariant95`
   core$_.int get neutralVariant95 =>
       _id_neutralVariant95.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant95`
-  set neutralVariant95(core$_.int value) =>
-      _id_neutralVariant95.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant99 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant99', r'I');
 
-  /// from: `public int neutralVariant99`
+  /// from: `public final int neutralVariant99`
   core$_.int get neutralVariant99 =>
       _id_neutralVariant99.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant99`
-  set neutralVariant99(core$_.int value) =>
-      _id_neutralVariant99.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariant100 = SystemColorsTonalPalettes._class
       .instanceFieldId(r'neutralVariant100', r'I');
 
-  /// from: `public int neutralVariant100`
+  /// from: `public final int neutralVariant100`
   core$_.int get neutralVariant100 =>
       _id_neutralVariant100.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int neutralVariant100`
-  set neutralVariant100(core$_.int value) =>
-      _id_neutralVariant100.set(this, jni$_.jint.type, value);
 
   static final _id_error0 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error0',
     r'I',
   );
 
-  /// from: `public int error0`
+  /// from: `public final int error0`
   core$_.int get error0 =>
       _id_error0.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error0`
-  set error0(core$_.int value) => _id_error0.set(this, jni$_.jint.type, value);
 
   static final _id_error10 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error10',
     r'I',
   );
 
-  /// from: `public int error10`
+  /// from: `public final int error10`
   core$_.int get error10 =>
       _id_error10.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error10`
-  set error10(core$_.int value) =>
-      _id_error10.set(this, jni$_.jint.type, value);
 
   static final _id_error20 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error20',
     r'I',
   );
 
-  /// from: `public int error20`
+  /// from: `public final int error20`
   core$_.int get error20 =>
       _id_error20.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error20`
-  set error20(core$_.int value) =>
-      _id_error20.set(this, jni$_.jint.type, value);
 
   static final _id_error30 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error30',
     r'I',
   );
 
-  /// from: `public int error30`
+  /// from: `public final int error30`
   core$_.int get error30 =>
       _id_error30.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error30`
-  set error30(core$_.int value) =>
-      _id_error30.set(this, jni$_.jint.type, value);
 
   static final _id_error40 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error40',
     r'I',
   );
 
-  /// from: `public int error40`
+  /// from: `public final int error40`
   core$_.int get error40 =>
       _id_error40.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error40`
-  set error40(core$_.int value) =>
-      _id_error40.set(this, jni$_.jint.type, value);
 
   static final _id_error50 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error50',
     r'I',
   );
 
-  /// from: `public int error50`
+  /// from: `public final int error50`
   core$_.int get error50 =>
       _id_error50.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error50`
-  set error50(core$_.int value) =>
-      _id_error50.set(this, jni$_.jint.type, value);
 
   static final _id_error60 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error60',
     r'I',
   );
 
-  /// from: `public int error60`
+  /// from: `public final int error60`
   core$_.int get error60 =>
       _id_error60.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error60`
-  set error60(core$_.int value) =>
-      _id_error60.set(this, jni$_.jint.type, value);
 
   static final _id_error70 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error70',
     r'I',
   );
 
-  /// from: `public int error70`
+  /// from: `public final int error70`
   core$_.int get error70 =>
       _id_error70.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error70`
-  set error70(core$_.int value) =>
-      _id_error70.set(this, jni$_.jint.type, value);
 
   static final _id_error80 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error80',
     r'I',
   );
 
-  /// from: `public int error80`
+  /// from: `public final int error80`
   core$_.int get error80 =>
       _id_error80.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error80`
-  set error80(core$_.int value) =>
-      _id_error80.set(this, jni$_.jint.type, value);
 
   static final _id_error90 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error90',
     r'I',
   );
 
-  /// from: `public int error90`
+  /// from: `public final int error90`
   core$_.int get error90 =>
       _id_error90.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error90`
-  set error90(core$_.int value) =>
-      _id_error90.set(this, jni$_.jint.type, value);
 
   static final _id_error95 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error95',
     r'I',
   );
 
-  /// from: `public int error95`
+  /// from: `public final int error95`
   core$_.int get error95 =>
       _id_error95.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error95`
-  set error95(core$_.int value) =>
-      _id_error95.set(this, jni$_.jint.type, value);
 
   static final _id_error99 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error99',
     r'I',
   );
 
-  /// from: `public int error99`
+  /// from: `public final int error99`
   core$_.int get error99 =>
       _id_error99.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error99`
-  set error99(core$_.int value) =>
-      _id_error99.set(this, jni$_.jint.type, value);
 
   static final _id_error100 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'error100',
     r'I',
   );
 
-  /// from: `public int error100`
+  /// from: `public final int error100`
   core$_.int get error100 =>
       _id_error100.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error100`
-  set error100(core$_.int value) =>
-      _id_error100.set(this, jni$_.jint.type, value);
 }
 
 final class $SystemColorsTonalPalettes$Type$
@@ -1717,799 +1366,502 @@ extension type SystemColorsDynamicScheme._(jni$_.JObject _$this)
       i,
     ).object<SystemColorsDynamicScheme>();
   }
-
-  static final _id_new$ = _class.constructorId(
-    r'(ILkotlin/jvm/internal/DefaultConstructorMarker;)V',
-  );
-
-  static final _new$ =
-      jni$_.ProtectedJniExtensions.lookup<
-            jni$_.NativeFunction<
-              jni$_.JniResult Function(
-                jni$_.Pointer<jni$_.Void>,
-                jni$_.JMethodIDPtr,
-                jni$_.VarArgs<(jni$_.Int32, jni$_.Pointer<jni$_.Void>)>,
-              )
-            >
-          >('globalEnv_NewObject')
-          .asFunction<
-            jni$_.JniResult Function(
-              jni$_.Pointer<jni$_.Void>,
-              jni$_.JMethodIDPtr,
-              core$_.int,
-              jni$_.Pointer<jni$_.Void>,
-            )
-          >();
-
-  /// from: `synthetic public void <init>(int i, kotlin.jvm.internal.DefaultConstructorMarker defaultConstructorMarker)`
-  /// The returned object must be released after use, by calling the [release] method.
-  factory SystemColorsDynamicScheme(
-    core$_.int i,
-    jni$_.JObject? defaultConstructorMarker,
-  ) {
-    final _$$classRef = _class.reference;
-    final _$defaultConstructorMarker =
-        defaultConstructorMarker?.reference ?? jni$_.jNullReference;
-    return _new$(
-      _$$classRef.pointer,
-      _id_new$.pointer,
-      i,
-      _$defaultConstructorMarker.pointer,
-    ).object<SystemColorsDynamicScheme>();
-  }
 }
 
 extension SystemColorsDynamicScheme$$Methods on SystemColorsDynamicScheme {
   static final _id_primaryPaletteKeyColor = SystemColorsDynamicScheme._class
       .instanceFieldId(r'primaryPaletteKeyColor', r'I');
 
-  /// from: `public int primaryPaletteKeyColor`
+  /// from: `public final int primaryPaletteKeyColor`
   core$_.int get primaryPaletteKeyColor =>
       _id_primaryPaletteKeyColor.getNullable(this, jni$_.jint.type)
           as core$_.int;
 
-  /// from: `public int primaryPaletteKeyColor`
-  set primaryPaletteKeyColor(core$_.int value) =>
-      _id_primaryPaletteKeyColor.set(this, jni$_.jint.type, value);
-
   static final _id_secondaryPaletteKeyColor = SystemColorsDynamicScheme._class
       .instanceFieldId(r'secondaryPaletteKeyColor', r'I');
 
-  /// from: `public int secondaryPaletteKeyColor`
+  /// from: `public final int secondaryPaletteKeyColor`
   core$_.int get secondaryPaletteKeyColor =>
       _id_secondaryPaletteKeyColor.getNullable(this, jni$_.jint.type)
           as core$_.int;
 
-  /// from: `public int secondaryPaletteKeyColor`
-  set secondaryPaletteKeyColor(core$_.int value) =>
-      _id_secondaryPaletteKeyColor.set(this, jni$_.jint.type, value);
-
   static final _id_tertiaryPaletteKeyColor = SystemColorsDynamicScheme._class
       .instanceFieldId(r'tertiaryPaletteKeyColor', r'I');
 
-  /// from: `public int tertiaryPaletteKeyColor`
+  /// from: `public final int tertiaryPaletteKeyColor`
   core$_.int get tertiaryPaletteKeyColor =>
       _id_tertiaryPaletteKeyColor.getNullable(this, jni$_.jint.type)
           as core$_.int;
 
-  /// from: `public int tertiaryPaletteKeyColor`
-  set tertiaryPaletteKeyColor(core$_.int value) =>
-      _id_tertiaryPaletteKeyColor.set(this, jni$_.jint.type, value);
-
   static final _id_neutralPaletteKeyColor = SystemColorsDynamicScheme._class
       .instanceFieldId(r'neutralPaletteKeyColor', r'I');
 
-  /// from: `public int neutralPaletteKeyColor`
+  /// from: `public final int neutralPaletteKeyColor`
   core$_.int get neutralPaletteKeyColor =>
       _id_neutralPaletteKeyColor.getNullable(this, jni$_.jint.type)
           as core$_.int;
-
-  /// from: `public int neutralPaletteKeyColor`
-  set neutralPaletteKeyColor(core$_.int value) =>
-      _id_neutralPaletteKeyColor.set(this, jni$_.jint.type, value);
 
   static final _id_neutralVariantPaletteKeyColor = SystemColorsDynamicScheme
       ._class
       .instanceFieldId(r'neutralVariantPaletteKeyColor', r'I');
 
-  /// from: `public int neutralVariantPaletteKeyColor`
+  /// from: `public final int neutralVariantPaletteKeyColor`
   core$_.int get neutralVariantPaletteKeyColor =>
       _id_neutralVariantPaletteKeyColor.getNullable(this, jni$_.jint.type)
           as core$_.int;
 
-  /// from: `public int neutralVariantPaletteKeyColor`
-  set neutralVariantPaletteKeyColor(core$_.int value) =>
-      _id_neutralVariantPaletteKeyColor.set(this, jni$_.jint.type, value);
-
   static final _id_errorPaletteKeyColor = SystemColorsDynamicScheme._class
       .instanceFieldId(r'errorPaletteKeyColor', r'I');
 
-  /// from: `public int errorPaletteKeyColor`
+  /// from: `public final int errorPaletteKeyColor`
   core$_.int get errorPaletteKeyColor =>
       _id_errorPaletteKeyColor.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int errorPaletteKeyColor`
-  set errorPaletteKeyColor(core$_.int value) =>
-      _id_errorPaletteKeyColor.set(this, jni$_.jint.type, value);
 
   static final _id_background = SystemColorsDynamicScheme._class
       .instanceFieldId(r'background', r'I');
 
-  /// from: `public int background`
+  /// from: `public final int background`
   core$_.int get background =>
       _id_background.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int background`
-  set background(core$_.int value) =>
-      _id_background.set(this, jni$_.jint.type, value);
 
   static final _id_onBackground = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onBackground', r'I');
 
-  /// from: `public int onBackground`
+  /// from: `public final int onBackground`
   core$_.int get onBackground =>
       _id_onBackground.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onBackground`
-  set onBackground(core$_.int value) =>
-      _id_onBackground.set(this, jni$_.jint.type, value);
 
   static final _id_surface = SystemColorsDynamicScheme._class.instanceFieldId(
     r'surface',
     r'I',
   );
 
-  /// from: `public int surface`
+  /// from: `public final int surface`
   core$_.int get surface =>
       _id_surface.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int surface`
-  set surface(core$_.int value) =>
-      _id_surface.set(this, jni$_.jint.type, value);
 
   static final _id_surfaceDim = SystemColorsDynamicScheme._class
       .instanceFieldId(r'surfaceDim', r'I');
 
-  /// from: `public int surfaceDim`
+  /// from: `public final int surfaceDim`
   core$_.int get surfaceDim =>
       _id_surfaceDim.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int surfaceDim`
-  set surfaceDim(core$_.int value) =>
-      _id_surfaceDim.set(this, jni$_.jint.type, value);
 
   static final _id_surfaceBright = SystemColorsDynamicScheme._class
       .instanceFieldId(r'surfaceBright', r'I');
 
-  /// from: `public int surfaceBright`
+  /// from: `public final int surfaceBright`
   core$_.int get surfaceBright =>
       _id_surfaceBright.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int surfaceBright`
-  set surfaceBright(core$_.int value) =>
-      _id_surfaceBright.set(this, jni$_.jint.type, value);
 
   static final _id_surfaceContainerLowest = SystemColorsDynamicScheme._class
       .instanceFieldId(r'surfaceContainerLowest', r'I');
 
-  /// from: `public int surfaceContainerLowest`
+  /// from: `public final int surfaceContainerLowest`
   core$_.int get surfaceContainerLowest =>
       _id_surfaceContainerLowest.getNullable(this, jni$_.jint.type)
           as core$_.int;
 
-  /// from: `public int surfaceContainerLowest`
-  set surfaceContainerLowest(core$_.int value) =>
-      _id_surfaceContainerLowest.set(this, jni$_.jint.type, value);
-
   static final _id_surfaceContainerLow = SystemColorsDynamicScheme._class
       .instanceFieldId(r'surfaceContainerLow', r'I');
 
-  /// from: `public int surfaceContainerLow`
+  /// from: `public final int surfaceContainerLow`
   core$_.int get surfaceContainerLow =>
       _id_surfaceContainerLow.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int surfaceContainerLow`
-  set surfaceContainerLow(core$_.int value) =>
-      _id_surfaceContainerLow.set(this, jni$_.jint.type, value);
 
   static final _id_surfaceContainer = SystemColorsDynamicScheme._class
       .instanceFieldId(r'surfaceContainer', r'I');
 
-  /// from: `public int surfaceContainer`
+  /// from: `public final int surfaceContainer`
   core$_.int get surfaceContainer =>
       _id_surfaceContainer.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int surfaceContainer`
-  set surfaceContainer(core$_.int value) =>
-      _id_surfaceContainer.set(this, jni$_.jint.type, value);
 
   static final _id_surfaceContainerHigh = SystemColorsDynamicScheme._class
       .instanceFieldId(r'surfaceContainerHigh', r'I');
 
-  /// from: `public int surfaceContainerHigh`
+  /// from: `public final int surfaceContainerHigh`
   core$_.int get surfaceContainerHigh =>
       _id_surfaceContainerHigh.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int surfaceContainerHigh`
-  set surfaceContainerHigh(core$_.int value) =>
-      _id_surfaceContainerHigh.set(this, jni$_.jint.type, value);
 
   static final _id_surfaceContainerHighest = SystemColorsDynamicScheme._class
       .instanceFieldId(r'surfaceContainerHighest', r'I');
 
-  /// from: `public int surfaceContainerHighest`
+  /// from: `public final int surfaceContainerHighest`
   core$_.int get surfaceContainerHighest =>
       _id_surfaceContainerHighest.getNullable(this, jni$_.jint.type)
           as core$_.int;
-
-  /// from: `public int surfaceContainerHighest`
-  set surfaceContainerHighest(core$_.int value) =>
-      _id_surfaceContainerHighest.set(this, jni$_.jint.type, value);
 
   static final _id_onSurface = SystemColorsDynamicScheme._class.instanceFieldId(
     r'onSurface',
     r'I',
   );
 
-  /// from: `public int onSurface`
+  /// from: `public final int onSurface`
   core$_.int get onSurface =>
       _id_onSurface.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onSurface`
-  set onSurface(core$_.int value) =>
-      _id_onSurface.set(this, jni$_.jint.type, value);
 
   static final _id_surfaceVariant = SystemColorsDynamicScheme._class
       .instanceFieldId(r'surfaceVariant', r'I');
 
-  /// from: `public int surfaceVariant`
+  /// from: `public final int surfaceVariant`
   core$_.int get surfaceVariant =>
       _id_surfaceVariant.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int surfaceVariant`
-  set surfaceVariant(core$_.int value) =>
-      _id_surfaceVariant.set(this, jni$_.jint.type, value);
 
   static final _id_onSurfaceVariant = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onSurfaceVariant', r'I');
 
-  /// from: `public int onSurfaceVariant`
+  /// from: `public final int onSurfaceVariant`
   core$_.int get onSurfaceVariant =>
       _id_onSurfaceVariant.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onSurfaceVariant`
-  set onSurfaceVariant(core$_.int value) =>
-      _id_onSurfaceVariant.set(this, jni$_.jint.type, value);
 
   static final _id_outline = SystemColorsDynamicScheme._class.instanceFieldId(
     r'outline',
     r'I',
   );
 
-  /// from: `public int outline`
+  /// from: `public final int outline`
   core$_.int get outline =>
       _id_outline.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int outline`
-  set outline(core$_.int value) =>
-      _id_outline.set(this, jni$_.jint.type, value);
 
   static final _id_outlineVariant = SystemColorsDynamicScheme._class
       .instanceFieldId(r'outlineVariant', r'I');
 
-  /// from: `public int outlineVariant`
+  /// from: `public final int outlineVariant`
   core$_.int get outlineVariant =>
       _id_outlineVariant.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int outlineVariant`
-  set outlineVariant(core$_.int value) =>
-      _id_outlineVariant.set(this, jni$_.jint.type, value);
 
   static final _id_inverseSurface = SystemColorsDynamicScheme._class
       .instanceFieldId(r'inverseSurface', r'I');
 
-  /// from: `public int inverseSurface`
+  /// from: `public final int inverseSurface`
   core$_.int get inverseSurface =>
       _id_inverseSurface.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int inverseSurface`
-  set inverseSurface(core$_.int value) =>
-      _id_inverseSurface.set(this, jni$_.jint.type, value);
 
   static final _id_inverseOnSurface = SystemColorsDynamicScheme._class
       .instanceFieldId(r'inverseOnSurface', r'I');
 
-  /// from: `public int inverseOnSurface`
+  /// from: `public final int inverseOnSurface`
   core$_.int get inverseOnSurface =>
       _id_inverseOnSurface.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int inverseOnSurface`
-  set inverseOnSurface(core$_.int value) =>
-      _id_inverseOnSurface.set(this, jni$_.jint.type, value);
 
   static final _id_shadow = SystemColorsDynamicScheme._class.instanceFieldId(
     r'shadow',
     r'I',
   );
 
-  /// from: `public int shadow`
+  /// from: `public final int shadow`
   core$_.int get shadow =>
       _id_shadow.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int shadow`
-  set shadow(core$_.int value) => _id_shadow.set(this, jni$_.jint.type, value);
 
   static final _id_scrim = SystemColorsDynamicScheme._class.instanceFieldId(
     r'scrim',
     r'I',
   );
 
-  /// from: `public int scrim`
+  /// from: `public final int scrim`
   core$_.int get scrim =>
       _id_scrim.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int scrim`
-  set scrim(core$_.int value) => _id_scrim.set(this, jni$_.jint.type, value);
 
   static final _id_surfaceTint = SystemColorsDynamicScheme._class
       .instanceFieldId(r'surfaceTint', r'I');
 
-  /// from: `public int surfaceTint`
+  /// from: `public final int surfaceTint`
   core$_.int get surfaceTint =>
       _id_surfaceTint.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int surfaceTint`
-  set surfaceTint(core$_.int value) =>
-      _id_surfaceTint.set(this, jni$_.jint.type, value);
 
   static final _id_primary = SystemColorsDynamicScheme._class.instanceFieldId(
     r'primary',
     r'I',
   );
 
-  /// from: `public int primary`
+  /// from: `public final int primary`
   core$_.int get primary =>
       _id_primary.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primary`
-  set primary(core$_.int value) =>
-      _id_primary.set(this, jni$_.jint.type, value);
 
   static final _id_primaryDim = SystemColorsDynamicScheme._class
       .instanceFieldId(r'primaryDim', r'I');
 
-  /// from: `public int primaryDim`
+  /// from: `public final int primaryDim`
   core$_.int get primaryDim =>
       _id_primaryDim.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primaryDim`
-  set primaryDim(core$_.int value) =>
-      _id_primaryDim.set(this, jni$_.jint.type, value);
 
   static final _id_onPrimary = SystemColorsDynamicScheme._class.instanceFieldId(
     r'onPrimary',
     r'I',
   );
 
-  /// from: `public int onPrimary`
+  /// from: `public final int onPrimary`
   core$_.int get onPrimary =>
       _id_onPrimary.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onPrimary`
-  set onPrimary(core$_.int value) =>
-      _id_onPrimary.set(this, jni$_.jint.type, value);
 
   static final _id_primaryContainer = SystemColorsDynamicScheme._class
       .instanceFieldId(r'primaryContainer', r'I');
 
-  /// from: `public int primaryContainer`
+  /// from: `public final int primaryContainer`
   core$_.int get primaryContainer =>
       _id_primaryContainer.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primaryContainer`
-  set primaryContainer(core$_.int value) =>
-      _id_primaryContainer.set(this, jni$_.jint.type, value);
 
   static final _id_onPrimaryContainer = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onPrimaryContainer', r'I');
 
-  /// from: `public int onPrimaryContainer`
+  /// from: `public final int onPrimaryContainer`
   core$_.int get onPrimaryContainer =>
       _id_onPrimaryContainer.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onPrimaryContainer`
-  set onPrimaryContainer(core$_.int value) =>
-      _id_onPrimaryContainer.set(this, jni$_.jint.type, value);
 
   static final _id_primaryFixed = SystemColorsDynamicScheme._class
       .instanceFieldId(r'primaryFixed', r'I');
 
-  /// from: `public int primaryFixed`
+  /// from: `public final int primaryFixed`
   core$_.int get primaryFixed =>
       _id_primaryFixed.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primaryFixed`
-  set primaryFixed(core$_.int value) =>
-      _id_primaryFixed.set(this, jni$_.jint.type, value);
 
   static final _id_primaryFixedDim = SystemColorsDynamicScheme._class
       .instanceFieldId(r'primaryFixedDim', r'I');
 
-  /// from: `public int primaryFixedDim`
+  /// from: `public final int primaryFixedDim`
   core$_.int get primaryFixedDim =>
       _id_primaryFixedDim.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int primaryFixedDim`
-  set primaryFixedDim(core$_.int value) =>
-      _id_primaryFixedDim.set(this, jni$_.jint.type, value);
 
   static final _id_onPrimaryFixed = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onPrimaryFixed', r'I');
 
-  /// from: `public int onPrimaryFixed`
+  /// from: `public final int onPrimaryFixed`
   core$_.int get onPrimaryFixed =>
       _id_onPrimaryFixed.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onPrimaryFixed`
-  set onPrimaryFixed(core$_.int value) =>
-      _id_onPrimaryFixed.set(this, jni$_.jint.type, value);
 
   static final _id_onPrimaryFixedVariant = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onPrimaryFixedVariant', r'I');
 
-  /// from: `public int onPrimaryFixedVariant`
+  /// from: `public final int onPrimaryFixedVariant`
   core$_.int get onPrimaryFixedVariant =>
       _id_onPrimaryFixedVariant.getNullable(this, jni$_.jint.type)
           as core$_.int;
 
-  /// from: `public int onPrimaryFixedVariant`
-  set onPrimaryFixedVariant(core$_.int value) =>
-      _id_onPrimaryFixedVariant.set(this, jni$_.jint.type, value);
-
   static final _id_inversePrimary = SystemColorsDynamicScheme._class
       .instanceFieldId(r'inversePrimary', r'I');
 
-  /// from: `public int inversePrimary`
+  /// from: `public final int inversePrimary`
   core$_.int get inversePrimary =>
       _id_inversePrimary.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int inversePrimary`
-  set inversePrimary(core$_.int value) =>
-      _id_inversePrimary.set(this, jni$_.jint.type, value);
 
   static final _id_secondary = SystemColorsDynamicScheme._class.instanceFieldId(
     r'secondary',
     r'I',
   );
 
-  /// from: `public int secondary`
+  /// from: `public final int secondary`
   core$_.int get secondary =>
       _id_secondary.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondary`
-  set secondary(core$_.int value) =>
-      _id_secondary.set(this, jni$_.jint.type, value);
 
   static final _id_secondaryDim = SystemColorsDynamicScheme._class
       .instanceFieldId(r'secondaryDim', r'I');
 
-  /// from: `public int secondaryDim`
+  /// from: `public final int secondaryDim`
   core$_.int get secondaryDim =>
       _id_secondaryDim.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondaryDim`
-  set secondaryDim(core$_.int value) =>
-      _id_secondaryDim.set(this, jni$_.jint.type, value);
 
   static final _id_onSecondary = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onSecondary', r'I');
 
-  /// from: `public int onSecondary`
+  /// from: `public final int onSecondary`
   core$_.int get onSecondary =>
       _id_onSecondary.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onSecondary`
-  set onSecondary(core$_.int value) =>
-      _id_onSecondary.set(this, jni$_.jint.type, value);
 
   static final _id_secondaryContainer = SystemColorsDynamicScheme._class
       .instanceFieldId(r'secondaryContainer', r'I');
 
-  /// from: `public int secondaryContainer`
+  /// from: `public final int secondaryContainer`
   core$_.int get secondaryContainer =>
       _id_secondaryContainer.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondaryContainer`
-  set secondaryContainer(core$_.int value) =>
-      _id_secondaryContainer.set(this, jni$_.jint.type, value);
 
   static final _id_onSecondaryContainer = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onSecondaryContainer', r'I');
 
-  /// from: `public int onSecondaryContainer`
+  /// from: `public final int onSecondaryContainer`
   core$_.int get onSecondaryContainer =>
       _id_onSecondaryContainer.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onSecondaryContainer`
-  set onSecondaryContainer(core$_.int value) =>
-      _id_onSecondaryContainer.set(this, jni$_.jint.type, value);
 
   static final _id_secondaryFixed = SystemColorsDynamicScheme._class
       .instanceFieldId(r'secondaryFixed', r'I');
 
-  /// from: `public int secondaryFixed`
+  /// from: `public final int secondaryFixed`
   core$_.int get secondaryFixed =>
       _id_secondaryFixed.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondaryFixed`
-  set secondaryFixed(core$_.int value) =>
-      _id_secondaryFixed.set(this, jni$_.jint.type, value);
 
   static final _id_secondaryFixedDim = SystemColorsDynamicScheme._class
       .instanceFieldId(r'secondaryFixedDim', r'I');
 
-  /// from: `public int secondaryFixedDim`
+  /// from: `public final int secondaryFixedDim`
   core$_.int get secondaryFixedDim =>
       _id_secondaryFixedDim.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int secondaryFixedDim`
-  set secondaryFixedDim(core$_.int value) =>
-      _id_secondaryFixedDim.set(this, jni$_.jint.type, value);
 
   static final _id_onSecondaryFixed = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onSecondaryFixed', r'I');
 
-  /// from: `public int onSecondaryFixed`
+  /// from: `public final int onSecondaryFixed`
   core$_.int get onSecondaryFixed =>
       _id_onSecondaryFixed.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onSecondaryFixed`
-  set onSecondaryFixed(core$_.int value) =>
-      _id_onSecondaryFixed.set(this, jni$_.jint.type, value);
 
   static final _id_onSecondaryFixedVariant = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onSecondaryFixedVariant', r'I');
 
-  /// from: `public int onSecondaryFixedVariant`
+  /// from: `public final int onSecondaryFixedVariant`
   core$_.int get onSecondaryFixedVariant =>
       _id_onSecondaryFixedVariant.getNullable(this, jni$_.jint.type)
           as core$_.int;
-
-  /// from: `public int onSecondaryFixedVariant`
-  set onSecondaryFixedVariant(core$_.int value) =>
-      _id_onSecondaryFixedVariant.set(this, jni$_.jint.type, value);
 
   static final _id_tertiary = SystemColorsDynamicScheme._class.instanceFieldId(
     r'tertiary',
     r'I',
   );
 
-  /// from: `public int tertiary`
+  /// from: `public final int tertiary`
   core$_.int get tertiary =>
       _id_tertiary.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiary`
-  set tertiary(core$_.int value) =>
-      _id_tertiary.set(this, jni$_.jint.type, value);
 
   static final _id_tertiaryDim = SystemColorsDynamicScheme._class
       .instanceFieldId(r'tertiaryDim', r'I');
 
-  /// from: `public int tertiaryDim`
+  /// from: `public final int tertiaryDim`
   core$_.int get tertiaryDim =>
       _id_tertiaryDim.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiaryDim`
-  set tertiaryDim(core$_.int value) =>
-      _id_tertiaryDim.set(this, jni$_.jint.type, value);
 
   static final _id_onTertiary = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onTertiary', r'I');
 
-  /// from: `public int onTertiary`
+  /// from: `public final int onTertiary`
   core$_.int get onTertiary =>
       _id_onTertiary.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onTertiary`
-  set onTertiary(core$_.int value) =>
-      _id_onTertiary.set(this, jni$_.jint.type, value);
 
   static final _id_tertiaryContainer = SystemColorsDynamicScheme._class
       .instanceFieldId(r'tertiaryContainer', r'I');
 
-  /// from: `public int tertiaryContainer`
+  /// from: `public final int tertiaryContainer`
   core$_.int get tertiaryContainer =>
       _id_tertiaryContainer.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiaryContainer`
-  set tertiaryContainer(core$_.int value) =>
-      _id_tertiaryContainer.set(this, jni$_.jint.type, value);
 
   static final _id_onTertiaryContainer = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onTertiaryContainer', r'I');
 
-  /// from: `public int onTertiaryContainer`
+  /// from: `public final int onTertiaryContainer`
   core$_.int get onTertiaryContainer =>
       _id_onTertiaryContainer.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onTertiaryContainer`
-  set onTertiaryContainer(core$_.int value) =>
-      _id_onTertiaryContainer.set(this, jni$_.jint.type, value);
 
   static final _id_tertiaryFixed = SystemColorsDynamicScheme._class
       .instanceFieldId(r'tertiaryFixed', r'I');
 
-  /// from: `public int tertiaryFixed`
+  /// from: `public final int tertiaryFixed`
   core$_.int get tertiaryFixed =>
       _id_tertiaryFixed.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiaryFixed`
-  set tertiaryFixed(core$_.int value) =>
-      _id_tertiaryFixed.set(this, jni$_.jint.type, value);
 
   static final _id_tertiaryFixedDim = SystemColorsDynamicScheme._class
       .instanceFieldId(r'tertiaryFixedDim', r'I');
 
-  /// from: `public int tertiaryFixedDim`
+  /// from: `public final int tertiaryFixedDim`
   core$_.int get tertiaryFixedDim =>
       _id_tertiaryFixedDim.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int tertiaryFixedDim`
-  set tertiaryFixedDim(core$_.int value) =>
-      _id_tertiaryFixedDim.set(this, jni$_.jint.type, value);
 
   static final _id_onTertiaryFixed = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onTertiaryFixed', r'I');
 
-  /// from: `public int onTertiaryFixed`
+  /// from: `public final int onTertiaryFixed`
   core$_.int get onTertiaryFixed =>
       _id_onTertiaryFixed.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onTertiaryFixed`
-  set onTertiaryFixed(core$_.int value) =>
-      _id_onTertiaryFixed.set(this, jni$_.jint.type, value);
 
   static final _id_onTertiaryFixedVariant = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onTertiaryFixedVariant', r'I');
 
-  /// from: `public int onTertiaryFixedVariant`
+  /// from: `public final int onTertiaryFixedVariant`
   core$_.int get onTertiaryFixedVariant =>
       _id_onTertiaryFixedVariant.getNullable(this, jni$_.jint.type)
           as core$_.int;
-
-  /// from: `public int onTertiaryFixedVariant`
-  set onTertiaryFixedVariant(core$_.int value) =>
-      _id_onTertiaryFixedVariant.set(this, jni$_.jint.type, value);
 
   static final _id_error = SystemColorsDynamicScheme._class.instanceFieldId(
     r'error',
     r'I',
   );
 
-  /// from: `public int error`
+  /// from: `public final int error`
   core$_.int get error =>
       _id_error.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int error`
-  set error(core$_.int value) => _id_error.set(this, jni$_.jint.type, value);
 
   static final _id_errorDim = SystemColorsDynamicScheme._class.instanceFieldId(
     r'errorDim',
     r'I',
   );
 
-  /// from: `public int errorDim`
+  /// from: `public final int errorDim`
   core$_.int get errorDim =>
       _id_errorDim.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int errorDim`
-  set errorDim(core$_.int value) =>
-      _id_errorDim.set(this, jni$_.jint.type, value);
 
   static final _id_onError = SystemColorsDynamicScheme._class.instanceFieldId(
     r'onError',
     r'I',
   );
 
-  /// from: `public int onError`
+  /// from: `public final int onError`
   core$_.int get onError =>
       _id_onError.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onError`
-  set onError(core$_.int value) =>
-      _id_onError.set(this, jni$_.jint.type, value);
 
   static final _id_errorContainer = SystemColorsDynamicScheme._class
       .instanceFieldId(r'errorContainer', r'I');
 
-  /// from: `public int errorContainer`
+  /// from: `public final int errorContainer`
   core$_.int get errorContainer =>
       _id_errorContainer.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int errorContainer`
-  set errorContainer(core$_.int value) =>
-      _id_errorContainer.set(this, jni$_.jint.type, value);
 
   static final _id_onErrorContainer = SystemColorsDynamicScheme._class
       .instanceFieldId(r'onErrorContainer', r'I');
 
-  /// from: `public int onErrorContainer`
+  /// from: `public final int onErrorContainer`
   core$_.int get onErrorContainer =>
       _id_onErrorContainer.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int onErrorContainer`
-  set onErrorContainer(core$_.int value) =>
-      _id_onErrorContainer.set(this, jni$_.jint.type, value);
 
   static final _id_controlActivated = SystemColorsDynamicScheme._class
       .instanceFieldId(r'controlActivated', r'I');
 
-  /// from: `public int controlActivated`
+  /// from: `public final int controlActivated`
   core$_.int get controlActivated =>
       _id_controlActivated.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int controlActivated`
-  set controlActivated(core$_.int value) =>
-      _id_controlActivated.set(this, jni$_.jint.type, value);
 
   static final _id_controlNormal = SystemColorsDynamicScheme._class
       .instanceFieldId(r'controlNormal', r'I');
 
-  /// from: `public int controlNormal`
+  /// from: `public final int controlNormal`
   core$_.int get controlNormal =>
       _id_controlNormal.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int controlNormal`
-  set controlNormal(core$_.int value) =>
-      _id_controlNormal.set(this, jni$_.jint.type, value);
 
   static final _id_controlHighlight = SystemColorsDynamicScheme._class
       .instanceFieldId(r'controlHighlight', r'I');
 
-  /// from: `public int controlHighlight`
+  /// from: `public final int controlHighlight`
   core$_.int get controlHighlight =>
       _id_controlHighlight.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int controlHighlight`
-  set controlHighlight(core$_.int value) =>
-      _id_controlHighlight.set(this, jni$_.jint.type, value);
 
   static final _id_textPrimaryInverse = SystemColorsDynamicScheme._class
       .instanceFieldId(r'textPrimaryInverse', r'I');
 
-  /// from: `public int textPrimaryInverse`
+  /// from: `public final int textPrimaryInverse`
   core$_.int get textPrimaryInverse =>
       _id_textPrimaryInverse.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int textPrimaryInverse`
-  set textPrimaryInverse(core$_.int value) =>
-      _id_textPrimaryInverse.set(this, jni$_.jint.type, value);
 
   static final _id_textSecondaryAndTertiaryInverse = SystemColorsDynamicScheme
       ._class
       .instanceFieldId(r'textSecondaryAndTertiaryInverse', r'I');
 
-  /// from: `public int textSecondaryAndTertiaryInverse`
+  /// from: `public final int textSecondaryAndTertiaryInverse`
   core$_.int get textSecondaryAndTertiaryInverse =>
       _id_textSecondaryAndTertiaryInverse.getNullable(this, jni$_.jint.type)
           as core$_.int;
-
-  /// from: `public int textSecondaryAndTertiaryInverse`
-  set textSecondaryAndTertiaryInverse(core$_.int value) =>
-      _id_textSecondaryAndTertiaryInverse.set(this, jni$_.jint.type, value);
 
   static final _id_textPrimaryInverseDisableOnly = SystemColorsDynamicScheme
       ._class
       .instanceFieldId(r'textPrimaryInverseDisableOnly', r'I');
 
-  /// from: `public int textPrimaryInverseDisableOnly`
+  /// from: `public final int textPrimaryInverseDisableOnly`
   core$_.int get textPrimaryInverseDisableOnly =>
       _id_textPrimaryInverseDisableOnly.getNullable(this, jni$_.jint.type)
           as core$_.int;
-
-  /// from: `public int textPrimaryInverseDisableOnly`
-  set textPrimaryInverseDisableOnly(core$_.int value) =>
-      _id_textPrimaryInverseDisableOnly.set(this, jni$_.jint.type, value);
 
   static final _id_textSecondaryAndTertiaryInverseDisabled =
       SystemColorsDynamicScheme._class.instanceFieldId(
@@ -2517,31 +1869,19 @@ extension SystemColorsDynamicScheme$$Methods on SystemColorsDynamicScheme {
         r'I',
       );
 
-  /// from: `public int textSecondaryAndTertiaryInverseDisabled`
+  /// from: `public final int textSecondaryAndTertiaryInverseDisabled`
   core$_.int get textSecondaryAndTertiaryInverseDisabled =>
       _id_textSecondaryAndTertiaryInverseDisabled.getNullable(
         this,
         jni$_.jint.type,
       ) as core$_.int;
 
-  /// from: `public int textSecondaryAndTertiaryInverseDisabled`
-  set textSecondaryAndTertiaryInverseDisabled(core$_.int value) =>
-      _id_textSecondaryAndTertiaryInverseDisabled.set(
-        this,
-        jni$_.jint.type,
-        value,
-      );
-
   static final _id_textHintInverse = SystemColorsDynamicScheme._class
       .instanceFieldId(r'textHintInverse', r'I');
 
-  /// from: `public int textHintInverse`
+  /// from: `public final int textHintInverse`
   core$_.int get textHintInverse =>
       _id_textHintInverse.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int textHintInverse`
-  set textHintInverse(core$_.int value) =>
-      _id_textHintInverse.set(this, jni$_.jint.type, value);
 }
 
 final class $SystemColorsDynamicScheme$Type$

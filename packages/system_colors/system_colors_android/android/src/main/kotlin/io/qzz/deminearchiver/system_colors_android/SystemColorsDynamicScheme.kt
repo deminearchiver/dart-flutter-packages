@@ -6,74 +6,213 @@ import androidx.annotation.Keep
 
 
 @Keep
-class SystemColorsDynamicScheme private constructor(sentinel: Int) {
-    @ColorInt @JvmField var primaryPaletteKeyColor: Int = sentinel
-    @ColorInt @JvmField var secondaryPaletteKeyColor: Int = sentinel
-    @ColorInt @JvmField var tertiaryPaletteKeyColor: Int = sentinel
-    @ColorInt @JvmField var neutralPaletteKeyColor: Int = sentinel
-    @ColorInt @JvmField var neutralVariantPaletteKeyColor: Int = sentinel
-    @ColorInt @JvmField var errorPaletteKeyColor: Int = sentinel
-    @ColorInt @JvmField var background: Int = sentinel
-    @ColorInt @JvmField var onBackground: Int = sentinel
-    @ColorInt @JvmField var surface: Int = sentinel
-    @ColorInt @JvmField var surfaceDim: Int = sentinel
-    @ColorInt @JvmField var surfaceBright: Int = sentinel
-    @ColorInt @JvmField var surfaceContainerLowest: Int = sentinel
-    @ColorInt @JvmField var surfaceContainerLow: Int = sentinel
-    @ColorInt @JvmField var surfaceContainer: Int = sentinel
-    @ColorInt @JvmField var surfaceContainerHigh: Int = sentinel
-    @ColorInt @JvmField var surfaceContainerHighest: Int = sentinel
-    @ColorInt @JvmField var onSurface: Int = sentinel
-    @ColorInt @JvmField var surfaceVariant: Int = sentinel
-    @ColorInt @JvmField var onSurfaceVariant: Int = sentinel
-    @ColorInt @JvmField var outline: Int = sentinel
-    @ColorInt @JvmField var outlineVariant: Int = sentinel
-    @ColorInt @JvmField var inverseSurface: Int = sentinel
-    @ColorInt @JvmField var inverseOnSurface: Int = sentinel
-    @ColorInt @JvmField var shadow: Int = sentinel
-    @ColorInt @JvmField var scrim: Int = sentinel
-    @ColorInt @JvmField var surfaceTint: Int = sentinel
-    @ColorInt @JvmField var primary: Int = sentinel
-    @ColorInt @JvmField var primaryDim: Int = sentinel
-    @ColorInt @JvmField var onPrimary: Int = sentinel
-    @ColorInt @JvmField var primaryContainer: Int = sentinel
-    @ColorInt @JvmField var onPrimaryContainer: Int = sentinel
-    @ColorInt @JvmField var primaryFixed: Int = sentinel
-    @ColorInt @JvmField var primaryFixedDim: Int = sentinel
-    @ColorInt @JvmField var onPrimaryFixed: Int = sentinel
-    @ColorInt @JvmField var onPrimaryFixedVariant: Int = sentinel
-    @ColorInt @JvmField var inversePrimary: Int = sentinel
-    @ColorInt @JvmField var secondary: Int = sentinel
-    @ColorInt @JvmField var secondaryDim: Int = sentinel
-    @ColorInt @JvmField var onSecondary: Int = sentinel
-    @ColorInt @JvmField var secondaryContainer: Int = sentinel
-    @ColorInt @JvmField var onSecondaryContainer: Int = sentinel
-    @ColorInt @JvmField var secondaryFixed: Int = sentinel
-    @ColorInt @JvmField var secondaryFixedDim: Int = sentinel
-    @ColorInt @JvmField var onSecondaryFixed: Int = sentinel
-    @ColorInt @JvmField var onSecondaryFixedVariant: Int = sentinel
-    @ColorInt @JvmField var tertiary: Int = sentinel
-    @ColorInt @JvmField var tertiaryDim: Int = sentinel
-    @ColorInt @JvmField var onTertiary: Int = sentinel
-    @ColorInt @JvmField var tertiaryContainer: Int = sentinel
-    @ColorInt @JvmField var onTertiaryContainer: Int = sentinel
-    @ColorInt @JvmField var tertiaryFixed: Int = sentinel
-    @ColorInt @JvmField var tertiaryFixedDim: Int = sentinel
-    @ColorInt @JvmField var onTertiaryFixed: Int = sentinel
-    @ColorInt @JvmField var onTertiaryFixedVariant: Int = sentinel
-    @ColorInt @JvmField var error: Int = sentinel
-    @ColorInt @JvmField var errorDim: Int = sentinel
-    @ColorInt @JvmField var onError: Int = sentinel
-    @ColorInt @JvmField var errorContainer: Int = sentinel
-    @ColorInt @JvmField var onErrorContainer: Int = sentinel
-    @ColorInt @JvmField var controlActivated: Int = sentinel
-    @ColorInt @JvmField var controlNormal: Int = sentinel
-    @ColorInt @JvmField var controlHighlight: Int = sentinel
-    @ColorInt @JvmField var textPrimaryInverse: Int = sentinel
-    @ColorInt @JvmField var textSecondaryAndTertiaryInverse: Int = sentinel
-    @ColorInt @JvmField var textPrimaryInverseDisableOnly: Int = sentinel
-    @ColorInt @JvmField var textSecondaryAndTertiaryInverseDisabled: Int = sentinel
-    @ColorInt @JvmField var textHintInverse: Int = sentinel
+class SystemColorsDynamicScheme private constructor(
+    @param:ColorInt @field:ColorInt @field:JvmField val primaryPaletteKeyColor: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondaryPaletteKeyColor: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiaryPaletteKeyColor: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralPaletteKeyColor: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariantPaletteKeyColor: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val errorPaletteKeyColor: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val background: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onBackground: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val surface: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val surfaceDim: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val surfaceBright: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val surfaceContainerLowest: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val surfaceContainerLow: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val surfaceContainer: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val surfaceContainerHigh: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val surfaceContainerHighest: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onSurface: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val surfaceVariant: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onSurfaceVariant: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val outline: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val outlineVariant: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val inverseSurface: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val inverseOnSurface: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val shadow: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val scrim: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val surfaceTint: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primaryDim: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onPrimary: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primaryContainer: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onPrimaryContainer: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primaryFixed: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primaryFixedDim: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onPrimaryFixed: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onPrimaryFixedVariant: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val inversePrimary: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondaryDim: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onSecondary: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondaryContainer: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onSecondaryContainer: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondaryFixed: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondaryFixedDim: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onSecondaryFixed: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onSecondaryFixedVariant: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiaryDim: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onTertiary: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiaryContainer: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onTertiaryContainer: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiaryFixed: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiaryFixedDim: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onTertiaryFixed: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onTertiaryFixedVariant: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val errorDim: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onError: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val errorContainer: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val onErrorContainer: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val controlActivated: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val controlNormal: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val controlHighlight: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val textPrimaryInverse: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val textSecondaryAndTertiaryInverse: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val textPrimaryInverseDisableOnly: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val textSecondaryAndTertiaryInverseDisabled: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val textHintInverse: Int,
+) {
+    private constructor(
+        sentinel: Int,
+        primaryPaletteKeyColor: Int = sentinel,
+        secondaryPaletteKeyColor: Int = sentinel,
+        tertiaryPaletteKeyColor: Int = sentinel,
+        neutralPaletteKeyColor: Int = sentinel,
+        neutralVariantPaletteKeyColor: Int = sentinel,
+        errorPaletteKeyColor: Int = sentinel,
+        background: Int = sentinel,
+        onBackground: Int = sentinel,
+        surface: Int = sentinel,
+        surfaceDim: Int = sentinel,
+        surfaceBright: Int = sentinel,
+        surfaceContainerLowest: Int = sentinel,
+        surfaceContainerLow: Int = sentinel,
+        surfaceContainer: Int = sentinel,
+        surfaceContainerHigh: Int = sentinel,
+        surfaceContainerHighest: Int = sentinel,
+        onSurface: Int = sentinel,
+        surfaceVariant: Int = sentinel,
+        onSurfaceVariant: Int = sentinel,
+        outline: Int = sentinel,
+        outlineVariant: Int = sentinel,
+        inverseSurface: Int = sentinel,
+        inverseOnSurface: Int = sentinel,
+        shadow: Int = sentinel,
+        scrim: Int = sentinel,
+        surfaceTint: Int = sentinel,
+        primary: Int = sentinel,
+        primaryDim: Int = sentinel,
+        onPrimary: Int = sentinel,
+        primaryContainer: Int = sentinel,
+        onPrimaryContainer: Int = sentinel,
+        primaryFixed: Int = sentinel,
+        primaryFixedDim: Int = sentinel,
+        onPrimaryFixed: Int = sentinel,
+        onPrimaryFixedVariant: Int = sentinel,
+        inversePrimary: Int = sentinel,
+        secondary: Int = sentinel,
+        secondaryDim: Int = sentinel,
+        onSecondary: Int = sentinel,
+        secondaryContainer: Int = sentinel,
+        onSecondaryContainer: Int = sentinel,
+        secondaryFixed: Int = sentinel,
+        secondaryFixedDim: Int = sentinel,
+        onSecondaryFixed: Int = sentinel,
+        onSecondaryFixedVariant: Int = sentinel,
+        tertiary: Int = sentinel,
+        tertiaryDim: Int = sentinel,
+        onTertiary: Int = sentinel,
+        tertiaryContainer: Int = sentinel,
+        onTertiaryContainer: Int = sentinel,
+        tertiaryFixed: Int = sentinel,
+        tertiaryFixedDim: Int = sentinel,
+        onTertiaryFixed: Int = sentinel,
+        onTertiaryFixedVariant: Int = sentinel,
+        error: Int = sentinel,
+        errorDim: Int = sentinel,
+        onError: Int = sentinel,
+        errorContainer: Int = sentinel,
+        onErrorContainer: Int = sentinel,
+        controlActivated: Int = sentinel,
+        controlNormal: Int = sentinel,
+        controlHighlight: Int = sentinel,
+        textPrimaryInverse: Int = sentinel,
+        textSecondaryAndTertiaryInverse: Int = sentinel,
+        textPrimaryInverseDisableOnly: Int = sentinel,
+        textSecondaryAndTertiaryInverseDisabled: Int = sentinel,
+        textHintInverse: Int = sentinel,
+    ) : this(
+        primaryPaletteKeyColor = primaryPaletteKeyColor,
+        secondaryPaletteKeyColor = secondaryPaletteKeyColor,
+        tertiaryPaletteKeyColor = tertiaryPaletteKeyColor,
+        neutralPaletteKeyColor = neutralPaletteKeyColor,
+        neutralVariantPaletteKeyColor = neutralVariantPaletteKeyColor,
+        errorPaletteKeyColor = errorPaletteKeyColor,
+        background = background,
+        onBackground = onBackground,
+        surface = surface,
+        surfaceDim = surfaceDim,
+        surfaceBright = surfaceBright,
+        surfaceContainerLowest = surfaceContainerLowest,
+        surfaceContainerLow = surfaceContainerLow,
+        surfaceContainer = surfaceContainer,
+        surfaceContainerHigh = surfaceContainerHigh,
+        surfaceContainerHighest = surfaceContainerHighest,
+        onSurface = onSurface,
+        surfaceVariant = surfaceVariant,
+        onSurfaceVariant = onSurfaceVariant,
+        outline = outline,
+        outlineVariant = outlineVariant,
+        inverseSurface = inverseSurface,
+        inverseOnSurface = inverseOnSurface,
+        shadow = shadow,
+        scrim = scrim,
+        surfaceTint = surfaceTint,
+        primary = primary,
+        primaryDim = primaryDim,
+        onPrimary = onPrimary,
+        primaryContainer = primaryContainer,
+        onPrimaryContainer = onPrimaryContainer,
+        primaryFixed = primaryFixed,
+        primaryFixedDim = primaryFixedDim,
+        onPrimaryFixed = onPrimaryFixed,
+        onPrimaryFixedVariant = onPrimaryFixedVariant,
+        inversePrimary = inversePrimary,
+        secondary = secondary,
+        secondaryDim = secondaryDim,
+        onSecondary = onSecondary,
+        secondaryContainer = secondaryContainer,
+        onSecondaryContainer = onSecondaryContainer,
+        secondaryFixed = secondaryFixed,
+        secondaryFixedDim = secondaryFixedDim,
+        onSecondaryFixed = onSecondaryFixed,
+        onSecondaryFixedVariant = onSecondaryFixedVariant,
+        tertiary = tertiary,
+        tertiaryDim = tertiaryDim,
+        onTertiary = onTertiary,
+        tertiaryContainer = tertiaryContainer,
+        onTertiaryContainer = onTertiaryContainer,
+        tertiaryFixed = tertiaryFixed,
+        tertiaryFixedDim = tertiaryFixedDim,
+        onTertiaryFixed = onTertiaryFixed,
+        onTertiaryFixedVariant = onTertiaryFixedVariant,
+        error = error,
+        errorDim = errorDim,
+        onError = onError,
+        errorContainer = errorContainer,
+        onErrorContainer = onErrorContainer,
+        controlActivated = controlActivated,
+        controlNormal = controlNormal,
+        controlHighlight = controlHighlight,
+        textPrimaryInverse = textPrimaryInverse,
+        textSecondaryAndTertiaryInverse = textSecondaryAndTertiaryInverse,
+        textPrimaryInverseDisableOnly = textPrimaryInverseDisableOnly,
+        textSecondaryAndTertiaryInverseDisabled = textSecondaryAndTertiaryInverseDisabled,
+        textHintInverse = textHintInverse,
+    )
 
     companion object {
         @JvmStatic
@@ -90,5 +229,3 @@ class SystemColorsDynamicScheme private constructor(sentinel: Int) {
         }
     }
 }
-
-

@@ -6,86 +6,246 @@ import androidx.annotation.Keep
 
 
 @Keep
-class SystemColorsTonalPalettes private constructor(sentinel: Int) {
-    @ColorInt @JvmField var primary0: Int = sentinel
-    @ColorInt @JvmField var primary10: Int = sentinel
-    @ColorInt @JvmField var primary20: Int = sentinel
-    @ColorInt @JvmField var primary30: Int = sentinel
-    @ColorInt @JvmField var primary40: Int = sentinel
-    @ColorInt @JvmField var primary50: Int = sentinel
-    @ColorInt @JvmField var primary60: Int = sentinel
-    @ColorInt @JvmField var primary70: Int = sentinel
-    @ColorInt @JvmField var primary80: Int = sentinel
-    @ColorInt @JvmField var primary90: Int = sentinel
-    @ColorInt @JvmField var primary95: Int = sentinel
-    @ColorInt @JvmField var primary99: Int = sentinel
-    @ColorInt @JvmField var primary100: Int = sentinel
-    @ColorInt @JvmField var secondary0: Int = sentinel
-    @ColorInt @JvmField var secondary10: Int = sentinel
-    @ColorInt @JvmField var secondary20: Int = sentinel
-    @ColorInt @JvmField var secondary30: Int = sentinel
-    @ColorInt @JvmField var secondary40: Int = sentinel
-    @ColorInt @JvmField var secondary50: Int = sentinel
-    @ColorInt @JvmField var secondary60: Int = sentinel
-    @ColorInt @JvmField var secondary70: Int = sentinel
-    @ColorInt @JvmField var secondary80: Int = sentinel
-    @ColorInt @JvmField var secondary90: Int = sentinel
-    @ColorInt @JvmField var secondary95: Int = sentinel
-    @ColorInt @JvmField var secondary99: Int = sentinel
-    @ColorInt @JvmField var secondary100: Int = sentinel
-    @ColorInt @JvmField var tertiary0: Int = sentinel
-    @ColorInt @JvmField var tertiary10: Int = sentinel
-    @ColorInt @JvmField var tertiary20: Int = sentinel
-    @ColorInt @JvmField var tertiary30: Int = sentinel
-    @ColorInt @JvmField var tertiary40: Int = sentinel
-    @ColorInt @JvmField var tertiary50: Int = sentinel
-    @ColorInt @JvmField var tertiary60: Int = sentinel
-    @ColorInt @JvmField var tertiary70: Int = sentinel
-    @ColorInt @JvmField var tertiary80: Int = sentinel
-    @ColorInt @JvmField var tertiary90: Int = sentinel
-    @ColorInt @JvmField var tertiary95: Int = sentinel
-    @ColorInt @JvmField var tertiary99: Int = sentinel
-    @ColorInt @JvmField var tertiary100: Int = sentinel
-    @ColorInt @JvmField var neutral0: Int = sentinel
-    @ColorInt @JvmField var neutral10: Int = sentinel
-    @ColorInt @JvmField var neutral20: Int = sentinel
-    @ColorInt @JvmField var neutral30: Int = sentinel
-    @ColorInt @JvmField var neutral40: Int = sentinel
-    @ColorInt @JvmField var neutral50: Int = sentinel
-    @ColorInt @JvmField var neutral60: Int = sentinel
-    @ColorInt @JvmField var neutral70: Int = sentinel
-    @ColorInt @JvmField var neutral80: Int = sentinel
-    @ColorInt @JvmField var neutral90: Int = sentinel
-    @ColorInt @JvmField var neutral95: Int = sentinel
-    @ColorInt @JvmField var neutral99: Int = sentinel
-    @ColorInt @JvmField var neutral100: Int = sentinel
-    @ColorInt @JvmField var neutralVariant0: Int = sentinel
-    @ColorInt @JvmField var neutralVariant10: Int = sentinel
-    @ColorInt @JvmField var neutralVariant20: Int = sentinel
-    @ColorInt @JvmField var neutralVariant30: Int = sentinel
-    @ColorInt @JvmField var neutralVariant40: Int = sentinel
-    @ColorInt @JvmField var neutralVariant50: Int = sentinel
-    @ColorInt @JvmField var neutralVariant60: Int = sentinel
-    @ColorInt @JvmField var neutralVariant70: Int = sentinel
-    @ColorInt @JvmField var neutralVariant80: Int = sentinel
-    @ColorInt @JvmField var neutralVariant90: Int = sentinel
-    @ColorInt @JvmField var neutralVariant95: Int = sentinel
-    @ColorInt @JvmField var neutralVariant99: Int = sentinel
-    @ColorInt @JvmField var neutralVariant100: Int = sentinel
-    @ColorInt @JvmField var error0: Int = sentinel
-    @ColorInt @JvmField var error10: Int = sentinel
-    @ColorInt @JvmField var error20: Int = sentinel
-    @ColorInt @JvmField var error30: Int = sentinel
-    @ColorInt @JvmField var error40: Int = sentinel
-    @ColorInt @JvmField var error50: Int = sentinel
-    @ColorInt @JvmField var error60: Int = sentinel
-    @ColorInt @JvmField var error70: Int = sentinel
-    @ColorInt @JvmField var error80: Int = sentinel
-    @ColorInt @JvmField var error90: Int = sentinel
-    @ColorInt @JvmField var error95: Int = sentinel
-    @ColorInt @JvmField var error99: Int = sentinel
-    @ColorInt @JvmField var error100: Int = sentinel
-
+class SystemColorsTonalPalettes private constructor(
+    @param:ColorInt @field:ColorInt @field:JvmField val primary0: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary10: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary20: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary30: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary40: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary50: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary60: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary70: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary80: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary90: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary95: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary99: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val primary100: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary0: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary10: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary20: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary30: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary40: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary50: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary60: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary70: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary80: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary90: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary95: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary99: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val secondary100: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary0: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary10: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary20: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary30: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary40: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary50: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary60: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary70: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary80: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary90: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary95: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary99: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val tertiary100: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral0: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral10: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral20: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral30: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral40: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral50: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral60: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral70: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral80: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral90: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral95: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral99: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutral100: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant0: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant10: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant20: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant30: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant40: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant50: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant60: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant70: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant80: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant90: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant95: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant99: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val neutralVariant100: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error0: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error10: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error20: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error30: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error40: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error50: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error60: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error70: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error80: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error90: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error95: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error99: Int,
+    @param:ColorInt @field:ColorInt @field:JvmField val error100: Int,
+) {
+    private constructor(
+        sentinel: Int,
+        @ColorInt primary0: Int = sentinel,
+        @ColorInt primary10: Int = sentinel,
+        @ColorInt primary20: Int = sentinel,
+        @ColorInt primary30: Int = sentinel,
+        @ColorInt primary40: Int = sentinel,
+        @ColorInt primary50: Int = sentinel,
+        @ColorInt primary60: Int = sentinel,
+        @ColorInt primary70: Int = sentinel,
+        @ColorInt primary80: Int = sentinel,
+        @ColorInt primary90: Int = sentinel,
+        @ColorInt primary95: Int = sentinel,
+        @ColorInt primary99: Int = sentinel,
+        @ColorInt primary100: Int = sentinel,
+        @ColorInt secondary0: Int = sentinel,
+        @ColorInt secondary10: Int = sentinel,
+        @ColorInt secondary20: Int = sentinel,
+        @ColorInt secondary30: Int = sentinel,
+        @ColorInt secondary40: Int = sentinel,
+        @ColorInt secondary50: Int = sentinel,
+        @ColorInt secondary60: Int = sentinel,
+        @ColorInt secondary70: Int = sentinel,
+        @ColorInt secondary80: Int = sentinel,
+        @ColorInt secondary90: Int = sentinel,
+        @ColorInt secondary95: Int = sentinel,
+        @ColorInt secondary99: Int = sentinel,
+        @ColorInt secondary100: Int = sentinel,
+        @ColorInt tertiary0: Int = sentinel,
+        @ColorInt tertiary10: Int = sentinel,
+        @ColorInt tertiary20: Int = sentinel,
+        @ColorInt tertiary30: Int = sentinel,
+        @ColorInt tertiary40: Int = sentinel,
+        @ColorInt tertiary50: Int = sentinel,
+        @ColorInt tertiary60: Int = sentinel,
+        @ColorInt tertiary70: Int = sentinel,
+        @ColorInt tertiary80: Int = sentinel,
+        @ColorInt tertiary90: Int = sentinel,
+        @ColorInt tertiary95: Int = sentinel,
+        @ColorInt tertiary99: Int = sentinel,
+        @ColorInt tertiary100: Int = sentinel,
+        @ColorInt neutral0: Int = sentinel,
+        @ColorInt neutral10: Int = sentinel,
+        @ColorInt neutral20: Int = sentinel,
+        @ColorInt neutral30: Int = sentinel,
+        @ColorInt neutral40: Int = sentinel,
+        @ColorInt neutral50: Int = sentinel,
+        @ColorInt neutral60: Int = sentinel,
+        @ColorInt neutral70: Int = sentinel,
+        @ColorInt neutral80: Int = sentinel,
+        @ColorInt neutral90: Int = sentinel,
+        @ColorInt neutral95: Int = sentinel,
+        @ColorInt neutral99: Int = sentinel,
+        @ColorInt neutral100: Int = sentinel,
+        @ColorInt neutralVariant0: Int = sentinel,
+        @ColorInt neutralVariant10: Int = sentinel,
+        @ColorInt neutralVariant20: Int = sentinel,
+        @ColorInt neutralVariant30: Int = sentinel,
+        @ColorInt neutralVariant40: Int = sentinel,
+        @ColorInt neutralVariant50: Int = sentinel,
+        @ColorInt neutralVariant60: Int = sentinel,
+        @ColorInt neutralVariant70: Int = sentinel,
+        @ColorInt neutralVariant80: Int = sentinel,
+        @ColorInt neutralVariant90: Int = sentinel,
+        @ColorInt neutralVariant95: Int = sentinel,
+        @ColorInt neutralVariant99: Int = sentinel,
+        @ColorInt neutralVariant100: Int = sentinel,
+        @ColorInt error0: Int = sentinel,
+        @ColorInt error10: Int = sentinel,
+        @ColorInt error20: Int = sentinel,
+        @ColorInt error30: Int = sentinel,
+        @ColorInt error40: Int = sentinel,
+        @ColorInt error50: Int = sentinel,
+        @ColorInt error60: Int = sentinel,
+        @ColorInt error70: Int = sentinel,
+        @ColorInt error80: Int = sentinel,
+        @ColorInt error90: Int = sentinel,
+        @ColorInt error95: Int = sentinel,
+        @ColorInt error99: Int = sentinel,
+        @ColorInt error100: Int = sentinel,
+    ) : this(
+        primary0 = primary0,
+        primary10 = primary10,
+        primary20 = primary20,
+        primary30 = primary30,
+        primary40 = primary40,
+        primary50 = primary50,
+        primary60 = primary60,
+        primary70 = primary70,
+        primary80 = primary80,
+        primary90 = primary90,
+        primary95 = primary95,
+        primary99 = primary99,
+        primary100 = primary100,
+        secondary0 = secondary0,
+        secondary10 = secondary10,
+        secondary20 = secondary20,
+        secondary30 = secondary30,
+        secondary40 = secondary40,
+        secondary50 = secondary50,
+        secondary60 = secondary60,
+        secondary70 = secondary70,
+        secondary80 = secondary80,
+        secondary90 = secondary90,
+        secondary95 = secondary95,
+        secondary99 = secondary99,
+        secondary100 = secondary100,
+        tertiary0 = tertiary0,
+        tertiary10 = tertiary10,
+        tertiary20 = tertiary20,
+        tertiary30 = tertiary30,
+        tertiary40 = tertiary40,
+        tertiary50 = tertiary50,
+        tertiary60 = tertiary60,
+        tertiary70 = tertiary70,
+        tertiary80 = tertiary80,
+        tertiary90 = tertiary90,
+        tertiary95 = tertiary95,
+        tertiary99 = tertiary99,
+        tertiary100 = tertiary100,
+        neutral0 = neutral0,
+        neutral10 = neutral10,
+        neutral20 = neutral20,
+        neutral30 = neutral30,
+        neutral40 = neutral40,
+        neutral50 = neutral50,
+        neutral60 = neutral60,
+        neutral70 = neutral70,
+        neutral80 = neutral80,
+        neutral90 = neutral90,
+        neutral95 = neutral95,
+        neutral99 = neutral99,
+        neutral100 = neutral100,
+        neutralVariant0 = neutralVariant0,
+        neutralVariant10 = neutralVariant10,
+        neutralVariant20 = neutralVariant20,
+        neutralVariant30 = neutralVariant30,
+        neutralVariant40 = neutralVariant40,
+        neutralVariant50 = neutralVariant50,
+        neutralVariant60 = neutralVariant60,
+        neutralVariant70 = neutralVariant70,
+        neutralVariant80 = neutralVariant80,
+        neutralVariant90 = neutralVariant90,
+        neutralVariant95 = neutralVariant95,
+        neutralVariant99 = neutralVariant99,
+        neutralVariant100 = neutralVariant100,
+        error0 = error0,
+        error10 = error10,
+        error20 = error20,
+        error30 = error30,
+        error40 = error40,
+        error50 = error50,
+        error60 = error60,
+        error70 = error70,
+        error80 = error80,
+        error90 = error90,
+        error95 = error95,
+        error99 = error99,
+        error100 = error100,
+    )
 
     companion object {
         @JvmStatic
@@ -97,4 +257,5 @@ class SystemColorsTonalPalettes private constructor(sentinel: Int) {
         }
     }
 }
+
 
