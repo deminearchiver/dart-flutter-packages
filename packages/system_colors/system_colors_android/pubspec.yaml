@@ -28,5 +28,4 @@ flutter:
   plugin:
     platforms:
       android:
-        package: io.qzz.deminearchiver.system_colors_android
-        pluginClass: SystemColorsAndroidPlugin
+        ffiPlugin: true
