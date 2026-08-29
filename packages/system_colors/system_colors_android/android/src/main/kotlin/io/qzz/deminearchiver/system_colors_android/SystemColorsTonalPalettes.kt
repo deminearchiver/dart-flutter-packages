@@ -6,7 +6,7 @@ import androidx.annotation.Keep
 
 
 @Keep
-class SystemColorsTonalPalettes private constructor(@field:JvmField var sentinel: Int) {
+class SystemColorsTonalPalettes private constructor(sentinel: Int) {
     @ColorInt @JvmField var primary0: Int = sentinel
     @ColorInt @JvmField var primary10: Int = sentinel
     @ColorInt @JvmField var primary20: Int = sentinel
@@ -87,11 +87,13 @@ class SystemColorsTonalPalettes private constructor(@field:JvmField var sentinel
     @ColorInt @JvmField var error100: Int = sentinel
 
 
-    internal companion object {
-        internal fun empty(sentinel: Int) = SystemColorsTonalPalettes(sentinel)
+    companion object {
+        @JvmStatic
+        fun empty(sentinel: Int) = SystemColorsTonalPalettes(sentinel)
 
-        internal fun fromContext(context: Context, sentinel: Int) {
-
+        @JvmStatic
+        fun fromContext(context: Context, sentinel: Int): SystemColorsTonalPalettes {
+            return empty(sentinel)
         }
     }
 }

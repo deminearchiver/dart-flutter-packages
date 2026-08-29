@@ -48,15 +48,35 @@ extension type SystemColorsPlugin._(jni$_.JObject _$this)
   /// The type which includes information such as the signature of this class.
   static const jni$_.JType<SystemColorsPlugin> type =
       $SystemColorsPlugin$Type$();
-  static final _id_INSTANCE = _class.staticFieldId(
-    r'INSTANCE',
-    r'Lio/qzz/deminearchiver/system_colors_android/SystemColorsPlugin;',
+  static final _id_get$isDynamicColorAvailable = _class.staticMethodId(
+    r'isDynamicColorAvailable',
+    r'()Z',
   );
 
-  /// from: `static public final io.qzz.deminearchiver.system_colors_android.SystemColorsPlugin INSTANCE`
-  /// The returned object must be released after use, by calling the [release] method.
-  static SystemColorsPlugin get INSTANCE =>
-      _id_INSTANCE.get(_class, SystemColorsPlugin.type) as SystemColorsPlugin;
+  static final _get$isDynamicColorAvailable =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+              )
+            >
+          >('globalEnv_CallStaticBooleanMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+            )
+          >();
+
+  /// from: `public fun isDynamicColorAvailable(): kotlin.Boolean`
+  static core$_.bool get isDynamicColorAvailable {
+    final _$$classRef = _class.reference;
+    return _get$isDynamicColorAvailable(
+      _$$classRef.pointer,
+      _id_get$isDynamicColorAvailable.pointer,
+    ).boolean;
+  }
 
   static final _id_tonalPalettes = _class.staticMethodId(
     r'tonalPalettes',
@@ -97,6 +117,86 @@ extension type SystemColorsPlugin._(jni$_.JObject _$this)
       i,
     ).object<SystemColorsTonalPalettes>();
   }
+
+  static final _id_lightColorScheme = _class.staticMethodId(
+    r'lightColorScheme',
+    r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
+  );
+
+  static final _lightColorScheme =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Pointer<jni$_.Void>, jni$_.Int32)>,
+              )
+            >
+          >('globalEnv_CallStaticObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+              core$_.int,
+            )
+          >();
+
+  /// from: `public fun lightColorScheme(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
+  /// The returned object must be released after use, by calling the [release] method.
+  static SystemColorsDynamicScheme lightColorScheme(
+    jni$_.JObject context,
+    core$_.int i,
+  ) {
+    final _$$classRef = _class.reference;
+    final _$context = context.reference;
+    return _lightColorScheme(
+      _$$classRef.pointer,
+      _id_lightColorScheme.pointer,
+      _$context.pointer,
+      i,
+    ).object<SystemColorsDynamicScheme>();
+  }
+
+  static final _id_darkColorScheme = _class.staticMethodId(
+    r'darkColorScheme',
+    r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
+  );
+
+  static final _darkColorScheme =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Pointer<jni$_.Void>, jni$_.Int32)>,
+              )
+            >
+          >('globalEnv_CallStaticObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+              core$_.int,
+            )
+          >();
+
+  /// from: `public fun darkColorScheme(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
+  /// The returned object must be released after use, by calling the [release] method.
+  static SystemColorsDynamicScheme darkColorScheme(
+    jni$_.JObject context,
+    core$_.int i,
+  ) {
+    final _$$classRef = _class.reference;
+    final _$context = context.reference;
+    return _darkColorScheme(
+      _$$classRef.pointer,
+      _id_darkColorScheme.pointer,
+      _$context.pointer,
+      i,
+    ).object<SystemColorsDynamicScheme>();
+  }
 }
 
 final class $SystemColorsPlugin$Type$ extends jni$_.JType<SystemColorsPlugin> {
@@ -109,6 +209,141 @@ final class $SystemColorsPlugin$Type$ extends jni$_.JType<SystemColorsPlugin> {
       r'Lio/qzz/deminearchiver/system_colors_android/SystemColorsPlugin;';
 }
 
+/// from: `io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes$Companion`
+extension type SystemColorsTonalPalettes$Companion._(jni$_.JObject _$this)
+    implements jni$_.JObject {
+  static final _class = jni$_.JClass.forName(
+    r'io/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes$Companion',
+  );
+
+  /// The type which includes information such as the signature of this class.
+  static const jni$_.JType<SystemColorsTonalPalettes$Companion> type =
+      $SystemColorsTonalPalettes$Companion$Type$();
+  static final _id_new$ = _class.constructorId(
+    r'(Lkotlin/jvm/internal/DefaultConstructorMarker;)V',
+  );
+
+  static final _new$ =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Pointer<jni$_.Void>,)>,
+              )
+            >
+          >('globalEnv_NewObject')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+            )
+          >();
+
+  /// from: `synthetic public void <init>(kotlin.jvm.internal.DefaultConstructorMarker defaultConstructorMarker)`
+  /// The returned object must be released after use, by calling the [release] method.
+  factory SystemColorsTonalPalettes$Companion(
+    jni$_.JObject? defaultConstructorMarker,
+  ) {
+    final _$$classRef = _class.reference;
+    final _$defaultConstructorMarker =
+        defaultConstructorMarker?.reference ?? jni$_.jNullReference;
+    return _new$(
+      _$$classRef.pointer,
+      _id_new$.pointer,
+      _$defaultConstructorMarker.pointer,
+    ).object<SystemColorsTonalPalettes$Companion>();
+  }
+}
+
+extension SystemColorsTonalPalettes$Companion$$Methods
+    on SystemColorsTonalPalettes$Companion {
+  static final _id_empty = SystemColorsTonalPalettes$Companion._class
+      .instanceMethodId(
+        r'empty',
+        r'(I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes;',
+      );
+
+  static final _empty =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Int32,)>,
+              )
+            >
+          >('globalEnv_CallObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              core$_.int,
+            )
+          >();
+
+  /// from: `public fun empty(sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes`
+  /// The returned object must be released after use, by calling the [release] method.
+  SystemColorsTonalPalettes empty(core$_.int i) {
+    final _$$selfRef = reference;
+    return _empty(
+      _$$selfRef.pointer,
+      _id_empty.pointer,
+      i,
+    ).object<SystemColorsTonalPalettes>();
+  }
+
+  static final _id_fromContext = SystemColorsTonalPalettes$Companion._class
+      .instanceMethodId(
+        r'fromContext',
+        r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes;',
+      );
+
+  static final _fromContext =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Pointer<jni$_.Void>, jni$_.Int32)>,
+              )
+            >
+          >('globalEnv_CallObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+              core$_.int,
+            )
+          >();
+
+  /// from: `public fun fromContext(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes`
+  /// The returned object must be released after use, by calling the [release] method.
+  SystemColorsTonalPalettes fromContext(jni$_.JObject context, core$_.int i) {
+    final _$$selfRef = reference;
+    final _$context = context.reference;
+    return _fromContext(
+      _$$selfRef.pointer,
+      _id_fromContext.pointer,
+      _$context.pointer,
+      i,
+    ).object<SystemColorsTonalPalettes>();
+  }
+}
+
+final class $SystemColorsTonalPalettes$Companion$Type$
+    extends jni$_.JType<SystemColorsTonalPalettes$Companion> {
+  @jni$_.internal
+  const $SystemColorsTonalPalettes$Companion$Type$();
+
+  @jni$_.internal
+  @core$_.override
+  String get signature =>
+      r'Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes$Companion;';
+}
+
 /// from: `io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes`
 extension type SystemColorsTonalPalettes._(jni$_.JObject _$this)
     implements jni$_.JObject {
@@ -119,6 +354,80 @@ extension type SystemColorsTonalPalettes._(jni$_.JObject _$this)
   /// The type which includes information such as the signature of this class.
   static const jni$_.JType<SystemColorsTonalPalettes> type =
       $SystemColorsTonalPalettes$Type$();
+  static final _id_empty = _class.staticMethodId(
+    r'empty',
+    r'(I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes;',
+  );
+
+  static final _empty =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Int32,)>,
+              )
+            >
+          >('globalEnv_CallStaticObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              core$_.int,
+            )
+          >();
+
+  /// from: `static public final io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes empty(int i)`
+  /// The returned object must be released after use, by calling the [release] method.
+  static SystemColorsTonalPalettes empty(core$_.int i) {
+    final _$$classRef = _class.reference;
+    return _empty(
+      _$$classRef.pointer,
+      _id_empty.pointer,
+      i,
+    ).object<SystemColorsTonalPalettes>();
+  }
+
+  static final _id_fromContext = _class.staticMethodId(
+    r'fromContext',
+    r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes;',
+  );
+
+  static final _fromContext =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Pointer<jni$_.Void>, jni$_.Int32)>,
+              )
+            >
+          >('globalEnv_CallStaticObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+              core$_.int,
+            )
+          >();
+
+  /// from: `static public final io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes fromContext(android.content.Context context, int i)`
+  /// The returned object must be released after use, by calling the [release] method.
+  static SystemColorsTonalPalettes fromContext(
+    jni$_.JObject context,
+    core$_.int i,
+  ) {
+    final _$$classRef = _class.reference;
+    final _$context = context.reference;
+    return _fromContext(
+      _$$classRef.pointer,
+      _id_fromContext.pointer,
+      _$context.pointer,
+      i,
+    ).object<SystemColorsTonalPalettes>();
+  }
+
   static final _id_new$ = _class.constructorId(
     r'(ILkotlin/jvm/internal/DefaultConstructorMarker;)V',
   );
@@ -161,19 +470,6 @@ extension type SystemColorsTonalPalettes._(jni$_.JObject _$this)
 }
 
 extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
-  static final _id_sentinel = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'sentinel',
-    r'I',
-  );
-
-  /// from: `public int sentinel`
-  core$_.int get sentinel =>
-      _id_sentinel.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int sentinel`
-  set sentinel(core$_.int value) =>
-      _id_sentinel.set(this, jni$_.jint.type, value);
-
   static final _id_primary0 = SystemColorsTonalPalettes._class.instanceFieldId(
     r'primary0',
     r'I',
@@ -1119,6 +1415,185 @@ final class $SystemColorsTonalPalettes$Type$
       r'Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes;';
 }
 
+/// from: `io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme$Companion`
+extension type SystemColorsDynamicScheme$Companion._(jni$_.JObject _$this)
+    implements jni$_.JObject {
+  static final _class = jni$_.JClass.forName(
+    r'io/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme$Companion',
+  );
+
+  /// The type which includes information such as the signature of this class.
+  static const jni$_.JType<SystemColorsDynamicScheme$Companion> type =
+      $SystemColorsDynamicScheme$Companion$Type$();
+  static final _id_new$ = _class.constructorId(
+    r'(Lkotlin/jvm/internal/DefaultConstructorMarker;)V',
+  );
+
+  static final _new$ =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Pointer<jni$_.Void>,)>,
+              )
+            >
+          >('globalEnv_NewObject')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+            )
+          >();
+
+  /// from: `synthetic public void <init>(kotlin.jvm.internal.DefaultConstructorMarker defaultConstructorMarker)`
+  /// The returned object must be released after use, by calling the [release] method.
+  factory SystemColorsDynamicScheme$Companion(
+    jni$_.JObject? defaultConstructorMarker,
+  ) {
+    final _$$classRef = _class.reference;
+    final _$defaultConstructorMarker =
+        defaultConstructorMarker?.reference ?? jni$_.jNullReference;
+    return _new$(
+      _$$classRef.pointer,
+      _id_new$.pointer,
+      _$defaultConstructorMarker.pointer,
+    ).object<SystemColorsDynamicScheme$Companion>();
+  }
+}
+
+extension SystemColorsDynamicScheme$Companion$$Methods
+    on SystemColorsDynamicScheme$Companion {
+  static final _id_empty = SystemColorsDynamicScheme$Companion._class
+      .instanceMethodId(
+        r'empty',
+        r'(I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
+      );
+
+  static final _empty =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Int32,)>,
+              )
+            >
+          >('globalEnv_CallObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              core$_.int,
+            )
+          >();
+
+  /// from: `public fun empty(sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
+  /// The returned object must be released after use, by calling the [release] method.
+  SystemColorsDynamicScheme empty(core$_.int i) {
+    final _$$selfRef = reference;
+    return _empty(
+      _$$selfRef.pointer,
+      _id_empty.pointer,
+      i,
+    ).object<SystemColorsDynamicScheme>();
+  }
+
+  static final _id_lightFromContext = SystemColorsDynamicScheme$Companion._class
+      .instanceMethodId(
+        r'lightFromContext',
+        r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
+      );
+
+  static final _lightFromContext =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Pointer<jni$_.Void>, jni$_.Int32)>,
+              )
+            >
+          >('globalEnv_CallObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+              core$_.int,
+            )
+          >();
+
+  /// from: `public fun lightFromContext(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
+  /// The returned object must be released after use, by calling the [release] method.
+  SystemColorsDynamicScheme lightFromContext(
+    jni$_.JObject context,
+    core$_.int i,
+  ) {
+    final _$$selfRef = reference;
+    final _$context = context.reference;
+    return _lightFromContext(
+      _$$selfRef.pointer,
+      _id_lightFromContext.pointer,
+      _$context.pointer,
+      i,
+    ).object<SystemColorsDynamicScheme>();
+  }
+
+  static final _id_darkFromContext = SystemColorsDynamicScheme$Companion._class
+      .instanceMethodId(
+        r'darkFromContext',
+        r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
+      );
+
+  static final _darkFromContext =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Pointer<jni$_.Void>, jni$_.Int32)>,
+              )
+            >
+          >('globalEnv_CallObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+              core$_.int,
+            )
+          >();
+
+  /// from: `public fun darkFromContext(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
+  /// The returned object must be released after use, by calling the [release] method.
+  SystemColorsDynamicScheme darkFromContext(
+    jni$_.JObject context,
+    core$_.int i,
+  ) {
+    final _$$selfRef = reference;
+    final _$context = context.reference;
+    return _darkFromContext(
+      _$$selfRef.pointer,
+      _id_darkFromContext.pointer,
+      _$context.pointer,
+      i,
+    ).object<SystemColorsDynamicScheme>();
+  }
+}
+
+final class $SystemColorsDynamicScheme$Companion$Type$
+    extends jni$_.JType<SystemColorsDynamicScheme$Companion> {
+  @jni$_.internal
+  const $SystemColorsDynamicScheme$Companion$Type$();
+
+  @jni$_.internal
+  @core$_.override
+  String get signature =>
+      r'Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme$Companion;';
+}
+
 /// from: `io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
 extension type SystemColorsDynamicScheme._(jni$_.JObject _$this)
     implements jni$_.JObject {
@@ -1129,6 +1604,120 @@ extension type SystemColorsDynamicScheme._(jni$_.JObject _$this)
   /// The type which includes information such as the signature of this class.
   static const jni$_.JType<SystemColorsDynamicScheme> type =
       $SystemColorsDynamicScheme$Type$();
+  static final _id_empty = _class.staticMethodId(
+    r'empty',
+    r'(I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
+  );
+
+  static final _empty =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Int32,)>,
+              )
+            >
+          >('globalEnv_CallStaticObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              core$_.int,
+            )
+          >();
+
+  /// from: `static public final io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme empty(int i)`
+  /// The returned object must be released after use, by calling the [release] method.
+  static SystemColorsDynamicScheme empty(core$_.int i) {
+    final _$$classRef = _class.reference;
+    return _empty(
+      _$$classRef.pointer,
+      _id_empty.pointer,
+      i,
+    ).object<SystemColorsDynamicScheme>();
+  }
+
+  static final _id_lightFromContext = _class.staticMethodId(
+    r'lightFromContext',
+    r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
+  );
+
+  static final _lightFromContext =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Pointer<jni$_.Void>, jni$_.Int32)>,
+              )
+            >
+          >('globalEnv_CallStaticObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+              core$_.int,
+            )
+          >();
+
+  /// from: `static public final io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme lightFromContext(android.content.Context context, int i)`
+  /// The returned object must be released after use, by calling the [release] method.
+  static SystemColorsDynamicScheme lightFromContext(
+    jni$_.JObject context,
+    core$_.int i,
+  ) {
+    final _$$classRef = _class.reference;
+    final _$context = context.reference;
+    return _lightFromContext(
+      _$$classRef.pointer,
+      _id_lightFromContext.pointer,
+      _$context.pointer,
+      i,
+    ).object<SystemColorsDynamicScheme>();
+  }
+
+  static final _id_darkFromContext = _class.staticMethodId(
+    r'darkFromContext',
+    r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
+  );
+
+  static final _darkFromContext =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<(jni$_.Pointer<jni$_.Void>, jni$_.Int32)>,
+              )
+            >
+          >('globalEnv_CallStaticObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+              core$_.int,
+            )
+          >();
+
+  /// from: `static public final io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme darkFromContext(android.content.Context context, int i)`
+  /// The returned object must be released after use, by calling the [release] method.
+  static SystemColorsDynamicScheme darkFromContext(
+    jni$_.JObject context,
+    core$_.int i,
+  ) {
+    final _$$classRef = _class.reference;
+    final _$context = context.reference;
+    return _darkFromContext(
+      _$$classRef.pointer,
+      _id_darkFromContext.pointer,
+      _$context.pointer,
+      i,
+    ).object<SystemColorsDynamicScheme>();
+  }
+
   static final _id_new$ = _class.constructorId(
     r'(ILkotlin/jvm/internal/DefaultConstructorMarker;)V',
   );
@@ -1171,19 +1760,6 @@ extension type SystemColorsDynamicScheme._(jni$_.JObject _$this)
 }
 
 extension SystemColorsDynamicScheme$$Methods on SystemColorsDynamicScheme {
-  static final _id_sentinel = SystemColorsDynamicScheme._class.instanceFieldId(
-    r'sentinel',
-    r'I',
-  );
-
-  /// from: `public int sentinel`
-  core$_.int get sentinel =>
-      _id_sentinel.getNullable(this, jni$_.jint.type) as core$_.int;
-
-  /// from: `public int sentinel`
-  set sentinel(core$_.int value) =>
-      _id_sentinel.set(this, jni$_.jint.type, value);
-
   static final _id_primaryPaletteKeyColor = SystemColorsDynamicScheme._class
       .instanceFieldId(r'primaryPaletteKeyColor', r'I');
 

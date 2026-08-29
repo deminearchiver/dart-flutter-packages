@@ -6,7 +6,7 @@ import androidx.annotation.Keep
 
 
 @Keep
-class SystemColorsDynamicScheme private constructor(@field:JvmField var sentinel: Int) {
+class SystemColorsDynamicScheme private constructor(sentinel: Int) {
     @ColorInt @JvmField var primaryPaletteKeyColor: Int = sentinel
     @ColorInt @JvmField var secondaryPaletteKeyColor: Int = sentinel
     @ColorInt @JvmField var tertiaryPaletteKeyColor: Int = sentinel
@@ -75,15 +75,18 @@ class SystemColorsDynamicScheme private constructor(@field:JvmField var sentinel
     @ColorInt @JvmField var textSecondaryAndTertiaryInverseDisabled: Int = sentinel
     @ColorInt @JvmField var textHintInverse: Int = sentinel
 
-    internal companion object {
-        internal fun empty(sentinel: Int) = SystemColorsDynamicScheme(sentinel)
+    companion object {
+        @JvmStatic
+        fun empty(sentinel: Int) = SystemColorsDynamicScheme(sentinel)
 
-        internal fun lightFromContext(context: Context, sentinel: Int) {
-
+        @JvmStatic
+        fun lightFromContext(context: Context, sentinel: Int): SystemColorsDynamicScheme {
+            return empty(sentinel)
         }
 
-        internal fun darkFromContext(context: Context, sentinel: Int) {
-
+        @JvmStatic
+        fun darkFromContext(context: Context, sentinel: Int): SystemColorsDynamicScheme {
+            return empty(sentinel)
         }
     }
 }

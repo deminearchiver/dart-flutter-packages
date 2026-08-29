@@ -12,9 +12,14 @@ import androidx.annotation.Keep
 @Keep
 object SystemColorsPlugin {
     @JvmStatic
-    fun tonalPalettes(context: Context, sentinel: Int): SystemColorsTonalPalettes {
-        return SystemColorsTonalPalettes.empty(sentinel)
-    }
+    fun isDynamicColorAvailable() = true
 
+    @JvmStatic
+    fun tonalPalettes(context: Context, sentinel: Int) = SystemColorsTonalPalettes.fromContext(context, sentinel)
 
+    @JvmStatic
+    fun lightColorScheme(context: Context, sentinel: Int) = SystemColorsDynamicScheme.lightFromContext(context, sentinel)
+
+    @JvmStatic
+    fun darkColorScheme(context: Context, sentinel: Int) = SystemColorsDynamicScheme.darkFromContext(context, sentinel)
 }

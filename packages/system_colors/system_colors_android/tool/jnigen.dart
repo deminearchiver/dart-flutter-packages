@@ -30,15 +30,11 @@ void main(List<String> args) async {
 
 class _CompanionVisitor extends Visitor {
   @override
-  void visitClass(ClassDecl c) {
-    if (c.binaryName.endsWith(r"$Companion")) {
-      c.isExcluded = true;
-    }
-  }
-
-  @override
   void visitField(Field field) {
-    if (field.name == "Companion" || field.originalName == "Companion") {
+    const exclude = <String>["INSTANCE", "Companion"];
+    if (exclude.any(
+      (name) => field.name == name || field.originalName == name,
+    )) {
       field.isExcluded = true;
     }
   }
