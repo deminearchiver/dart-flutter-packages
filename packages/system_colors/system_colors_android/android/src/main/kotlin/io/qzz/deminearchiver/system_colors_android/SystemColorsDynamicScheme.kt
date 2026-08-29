@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package io.qzz.deminearchiver.system_colors_android
 
 import android.content.Context
