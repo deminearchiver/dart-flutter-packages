@@ -220,6 +220,11 @@ class SystemColorsDynamicScheme private constructor(
         @JvmStatic
         fun empty(@ColorInt sentinel: Int) = SystemColorsDynamicScheme(sentinel)
 
+
+        @JvmStatic
+        fun fromContext(context: Context, isDark: Boolean, @ColorInt sentinel: Int) =
+            if (isDark) darkFromContext(context, sentinel) else lightFromContext(context, sentinel)
+
         @JvmStatic
         fun lightFromContext(context: Context, @ColorInt sentinel: Int): SystemColorsDynamicScheme {
             return empty(sentinel)

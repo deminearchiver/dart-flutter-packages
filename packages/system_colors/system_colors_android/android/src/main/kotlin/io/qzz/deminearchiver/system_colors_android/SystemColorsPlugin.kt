@@ -20,6 +20,10 @@ object SystemColorsPlugin {
         SystemColorsTonalPalettes.fromContext(context, sentinel)
 
     @JvmStatic
+    fun colorScheme(context: Context, isDark: Boolean, @ColorInt sentinel: Int) =
+        SystemColorsDynamicScheme.fromContext(context, isDark, sentinel)
+
+    @JvmStatic
     fun lightColorScheme(context: Context, @ColorInt sentinel: Int) =
         SystemColorsDynamicScheme.lightFromContext(context, sentinel)
 

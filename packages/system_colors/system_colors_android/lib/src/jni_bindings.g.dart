@@ -118,6 +118,51 @@ extension type SystemColorsPlugin._(jni$_.JObject _$this)
     ).object<SystemColorsTonalPalettes>();
   }
 
+  static final _id_colorScheme = _class.staticMethodId(
+    r'colorScheme',
+    r'(Landroid/content/Context;ZI)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
+  );
+
+  static final _colorScheme =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<
+                  (jni$_.Pointer<jni$_.Void>, jni$_.Int32, jni$_.Int32)
+                >,
+              )
+            >
+          >('globalEnv_CallStaticObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+              core$_.int,
+              core$_.int,
+            )
+          >();
+
+  /// from: `public fun colorScheme(context: android.content.Context, isDark: kotlin.Boolean, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
+  /// The returned object must be released after use, by calling the [release] method.
+  static SystemColorsDynamicScheme colorScheme(
+    jni$_.JObject context,
+    core$_.bool z,
+    core$_.int i,
+  ) {
+    final _$$classRef = _class.reference;
+    final _$context = context.reference;
+    return _colorScheme(
+      _$$classRef.pointer,
+      _id_colorScheme.pointer,
+      _$context.pointer,
+      z ? 1 : 0,
+      i,
+    ).object<SystemColorsDynamicScheme>();
+  }
+
   static final _id_lightColorScheme = _class.staticMethodId(
     r'lightColorScheme',
     r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
@@ -1149,6 +1194,52 @@ extension SystemColorsDynamicScheme$Companion$$Methods
     ).object<SystemColorsDynamicScheme>();
   }
 
+  static final _id_fromContext = SystemColorsDynamicScheme$Companion._class
+      .instanceMethodId(
+        r'fromContext',
+        r'(Landroid/content/Context;ZI)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
+      );
+
+  static final _fromContext =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<
+                  (jni$_.Pointer<jni$_.Void>, jni$_.Int32, jni$_.Int32)
+                >,
+              )
+            >
+          >('globalEnv_CallObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+              core$_.int,
+              core$_.int,
+            )
+          >();
+
+  /// from: `public fun fromContext(context: android.content.Context, isDark: kotlin.Boolean, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
+  /// The returned object must be released after use, by calling the [release] method.
+  SystemColorsDynamicScheme fromContext(
+    jni$_.JObject context,
+    core$_.bool z,
+    core$_.int i,
+  ) {
+    final _$$selfRef = reference;
+    final _$context = context.reference;
+    return _fromContext(
+      _$$selfRef.pointer,
+      _id_fromContext.pointer,
+      _$context.pointer,
+      z ? 1 : 0,
+      i,
+    ).object<SystemColorsDynamicScheme>();
+  }
+
   static final _id_lightFromContext = SystemColorsDynamicScheme$Companion._class
       .instanceMethodId(
         r'lightFromContext',
@@ -1283,6 +1374,51 @@ extension type SystemColorsDynamicScheme._(jni$_.JObject _$this)
     return _empty(
       _$$classRef.pointer,
       _id_empty.pointer,
+      i,
+    ).object<SystemColorsDynamicScheme>();
+  }
+
+  static final _id_fromContext = _class.staticMethodId(
+    r'fromContext',
+    r'(Landroid/content/Context;ZI)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
+  );
+
+  static final _fromContext =
+      jni$_.ProtectedJniExtensions.lookup<
+            jni$_.NativeFunction<
+              jni$_.JniResult Function(
+                jni$_.Pointer<jni$_.Void>,
+                jni$_.JMethodIDPtr,
+                jni$_.VarArgs<
+                  (jni$_.Pointer<jni$_.Void>, jni$_.Int32, jni$_.Int32)
+                >,
+              )
+            >
+          >('globalEnv_CallStaticObjectMethod')
+          .asFunction<
+            jni$_.JniResult Function(
+              jni$_.Pointer<jni$_.Void>,
+              jni$_.JMethodIDPtr,
+              jni$_.Pointer<jni$_.Void>,
+              core$_.int,
+              core$_.int,
+            )
+          >();
+
+  /// from: `static public final io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme fromContext(android.content.Context context, boolean z, int i)`
+  /// The returned object must be released after use, by calling the [release] method.
+  static SystemColorsDynamicScheme fromContext(
+    jni$_.JObject context,
+    core$_.bool z,
+    core$_.int i,
+  ) {
+    final _$$classRef = _class.reference;
+    final _$context = context.reference;
+    return _fromContext(
+      _$$classRef.pointer,
+      _id_fromContext.pointer,
+      _$context.pointer,
+      z ? 1 : 0,
       i,
     ).object<SystemColorsDynamicScheme>();
   }
