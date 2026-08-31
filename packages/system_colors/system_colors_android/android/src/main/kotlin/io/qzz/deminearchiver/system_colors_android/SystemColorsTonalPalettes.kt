@@ -3,8 +3,11 @@
 package io.qzz.deminearchiver.system_colors_android
 
 import android.content.Context
+import android.os.Build
 import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.Keep
+import androidx.annotation.RequiresApi
 
 @Keep
 class SystemColorsTonalPalettes private constructor(
@@ -248,13 +251,247 @@ class SystemColorsTonalPalettes private constructor(
         error100 = error100,
     )
 
+    private class Builder {
+        @ColorInt var primary0: Int? = null
+        @ColorInt var primary10: Int? = null
+        @ColorInt var primary20: Int? = null
+        @ColorInt var primary30: Int? = null
+        @ColorInt var primary40: Int? = null
+        @ColorInt var primary50: Int? = null
+        @ColorInt var primary60: Int? = null
+        @ColorInt var primary70: Int? = null
+        @ColorInt var primary80: Int? = null
+        @ColorInt var primary90: Int? = null
+        @ColorInt var primary95: Int? = null
+        @ColorInt var primary99: Int? = null
+        @ColorInt var primary100: Int? = null
+        @ColorInt var secondary0: Int? = null
+        @ColorInt var secondary10: Int? = null
+        @ColorInt var secondary20: Int? = null
+        @ColorInt var secondary30: Int? = null
+        @ColorInt var secondary40: Int? = null
+        @ColorInt var secondary50: Int? = null
+        @ColorInt var secondary60: Int? = null
+        @ColorInt var secondary70: Int? = null
+        @ColorInt var secondary80: Int? = null
+        @ColorInt var secondary90: Int? = null
+        @ColorInt var secondary95: Int? = null
+        @ColorInt var secondary99: Int? = null
+        @ColorInt var secondary100: Int? = null
+        @ColorInt var tertiary0: Int? = null
+        @ColorInt var tertiary10: Int? = null
+        @ColorInt var tertiary20: Int? = null
+        @ColorInt var tertiary30: Int? = null
+        @ColorInt var tertiary40: Int? = null
+        @ColorInt var tertiary50: Int? = null
+        @ColorInt var tertiary60: Int? = null
+        @ColorInt var tertiary70: Int? = null
+        @ColorInt var tertiary80: Int? = null
+        @ColorInt var tertiary90: Int? = null
+        @ColorInt var tertiary95: Int? = null
+        @ColorInt var tertiary99: Int? = null
+        @ColorInt var tertiary100: Int? = null
+        @ColorInt var neutral0: Int? = null
+        @ColorInt var neutral10: Int? = null
+        @ColorInt var neutral20: Int? = null
+        @ColorInt var neutral30: Int? = null
+        @ColorInt var neutral40: Int? = null
+        @ColorInt var neutral50: Int? = null
+        @ColorInt var neutral60: Int? = null
+        @ColorInt var neutral70: Int? = null
+        @ColorInt var neutral80: Int? = null
+        @ColorInt var neutral90: Int? = null
+        @ColorInt var neutral95: Int? = null
+        @ColorInt var neutral99: Int? = null
+        @ColorInt var neutral100: Int? = null
+        @ColorInt var neutralVariant0: Int? = null
+        @ColorInt var neutralVariant10: Int? = null
+        @ColorInt var neutralVariant20: Int? = null
+        @ColorInt var neutralVariant30: Int? = null
+        @ColorInt var neutralVariant40: Int? = null
+        @ColorInt var neutralVariant50: Int? = null
+        @ColorInt var neutralVariant60: Int? = null
+        @ColorInt var neutralVariant70: Int? = null
+        @ColorInt var neutralVariant80: Int? = null
+        @ColorInt var neutralVariant90: Int? = null
+        @ColorInt var neutralVariant95: Int? = null
+        @ColorInt var neutralVariant99: Int? = null
+        @ColorInt var neutralVariant100: Int? = null
+        @ColorInt var error0: Int? = null
+        @ColorInt var error10: Int? = null
+        @ColorInt var error20: Int? = null
+        @ColorInt var error30: Int? = null
+        @ColorInt var error40: Int? = null
+        @ColorInt var error50: Int? = null
+        @ColorInt var error60: Int? = null
+        @ColorInt var error70: Int? = null
+        @ColorInt var error80: Int? = null
+        @ColorInt var error90: Int? = null
+        @ColorInt var error95: Int? = null
+        @ColorInt var error99: Int? = null
+        @ColorInt var error100: Int? = null
+
+        fun build(@ColorInt sentinel: Int) = SystemColorsTonalPalettes(
+            primary0 = primary0 ?: sentinel,
+            primary10 = primary10 ?: sentinel,
+            primary20 = primary20 ?: sentinel,
+            primary30 = primary30 ?: sentinel,
+            primary40 = primary40 ?: sentinel,
+            primary50 = primary50 ?: sentinel,
+            primary60 = primary60 ?: sentinel,
+            primary70 = primary70 ?: sentinel,
+            primary80 = primary80 ?: sentinel,
+            primary90 = primary90 ?: sentinel,
+            primary95 = primary95 ?: sentinel,
+            primary99 = primary99 ?: sentinel,
+            primary100 = primary100 ?: sentinel,
+            secondary0 = secondary0 ?: sentinel,
+            secondary10 = secondary10 ?: sentinel,
+            secondary20 = secondary20 ?: sentinel,
+            secondary30 = secondary30 ?: sentinel,
+            secondary40 = secondary40 ?: sentinel,
+            secondary50 = secondary50 ?: sentinel,
+            secondary60 = secondary60 ?: sentinel,
+            secondary70 = secondary70 ?: sentinel,
+            secondary80 = secondary80 ?: sentinel,
+            secondary90 = secondary90 ?: sentinel,
+            secondary95 = secondary95 ?: sentinel,
+            secondary99 = secondary99 ?: sentinel,
+            secondary100 = secondary100 ?: sentinel,
+            tertiary0 = tertiary0 ?: sentinel,
+            tertiary10 = tertiary10 ?: sentinel,
+            tertiary20 = tertiary20 ?: sentinel,
+            tertiary30 = tertiary30 ?: sentinel,
+            tertiary40 = tertiary40 ?: sentinel,
+            tertiary50 = tertiary50 ?: sentinel,
+            tertiary60 = tertiary60 ?: sentinel,
+            tertiary70 = tertiary70 ?: sentinel,
+            tertiary80 = tertiary80 ?: sentinel,
+            tertiary90 = tertiary90 ?: sentinel,
+            tertiary95 = tertiary95 ?: sentinel,
+            tertiary99 = tertiary99 ?: sentinel,
+            tertiary100 = tertiary100 ?: sentinel,
+            neutral0 = neutral0 ?: sentinel,
+            neutral10 = neutral10 ?: sentinel,
+            neutral20 = neutral20 ?: sentinel,
+            neutral30 = neutral30 ?: sentinel,
+            neutral40 = neutral40 ?: sentinel,
+            neutral50 = neutral50 ?: sentinel,
+            neutral60 = neutral60 ?: sentinel,
+            neutral70 = neutral70 ?: sentinel,
+            neutral80 = neutral80 ?: sentinel,
+            neutral90 = neutral90 ?: sentinel,
+            neutral95 = neutral95 ?: sentinel,
+            neutral99 = neutral99 ?: sentinel,
+            neutral100 = neutral100 ?: sentinel,
+            neutralVariant0 = neutralVariant0 ?: sentinel,
+            neutralVariant10 = neutralVariant10 ?: sentinel,
+            neutralVariant20 = neutralVariant20 ?: sentinel,
+            neutralVariant30 = neutralVariant30 ?: sentinel,
+            neutralVariant40 = neutralVariant40 ?: sentinel,
+            neutralVariant50 = neutralVariant50 ?: sentinel,
+            neutralVariant60 = neutralVariant60 ?: sentinel,
+            neutralVariant70 = neutralVariant70 ?: sentinel,
+            neutralVariant80 = neutralVariant80 ?: sentinel,
+            neutralVariant90 = neutralVariant90 ?: sentinel,
+            neutralVariant95 = neutralVariant95 ?: sentinel,
+            neutralVariant99 = neutralVariant99 ?: sentinel,
+            neutralVariant100 = neutralVariant100 ?: sentinel,
+            error0 = error0 ?: sentinel,
+            error10 = error10 ?: sentinel,
+            error20 = error20 ?: sentinel,
+            error30 = error30 ?: sentinel,
+            error40 = error40 ?: sentinel,
+            error50 = error50 ?: sentinel,
+            error60 = error60 ?: sentinel,
+            error70 = error70 ?: sentinel,
+            error80 = error80 ?: sentinel,
+            error90 = error90 ?: sentinel,
+            error95 = error95 ?: sentinel,
+            error99 = error99 ?: sentinel,
+            error100 = error100 ?: sentinel,
+        )
+    }
+
     companion object {
+        private fun build(sentinel: Int, block: Builder.() -> Unit) = Builder().apply(block).build(sentinel)
+
         @JvmStatic
         fun empty(@ColorInt sentinel: Int) = SystemColorsTonalPalettes(sentinel)
 
         @JvmStatic
-        fun fromContext(context: Context, @ColorInt sentinel: Int): SystemColorsTonalPalettes {
-            return empty(sentinel)
+        fun fromContext(context: Context, @ColorInt sentinel: Int) = build(sentinel) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return@build
+
+            primary0 = ColorResourceHelper.getById(context, android.R.color.system_accent1_1000)
+            primary10 = ColorResourceHelper.getById(context, android.R.color.system_accent1_900)
+            primary20 = ColorResourceHelper.getById(context, android.R.color.system_accent1_800)
+            primary30 = ColorResourceHelper.getById(context, android.R.color.system_accent1_700)
+            primary40 = ColorResourceHelper.getById(context, android.R.color.system_accent1_600)
+            primary50 = ColorResourceHelper.getById(context, android.R.color.system_accent1_500)
+            primary60 = ColorResourceHelper.getById(context, android.R.color.system_accent1_400)
+            primary70 = ColorResourceHelper.getById(context, android.R.color.system_accent1_300)
+            primary80 = ColorResourceHelper.getById(context, android.R.color.system_accent1_200)
+            primary90 = ColorResourceHelper.getById(context, android.R.color.system_accent1_100)
+            primary95 = ColorResourceHelper.getById(context, android.R.color.system_accent1_50)
+            primary99 = ColorResourceHelper.getById(context, android.R.color.system_accent1_10)
+            primary100 = ColorResourceHelper.getById(context, android.R.color.system_accent1_0)
+
+            secondary0 = ColorResourceHelper.getById(context, android.R.color.system_accent2_1000)
+            secondary10 = ColorResourceHelper.getById(context, android.R.color.system_accent2_900)
+            secondary20 = ColorResourceHelper.getById(context, android.R.color.system_accent2_800)
+            secondary30 = ColorResourceHelper.getById(context, android.R.color.system_accent2_700)
+            secondary40 = ColorResourceHelper.getById(context, android.R.color.system_accent2_600)
+            secondary50 = ColorResourceHelper.getById(context, android.R.color.system_accent2_500)
+            secondary60 = ColorResourceHelper.getById(context, android.R.color.system_accent2_400)
+            secondary70 = ColorResourceHelper.getById(context, android.R.color.system_accent2_300)
+            secondary80 = ColorResourceHelper.getById(context, android.R.color.system_accent2_200)
+            secondary90 = ColorResourceHelper.getById(context, android.R.color.system_accent2_100)
+            secondary95 = ColorResourceHelper.getById(context, android.R.color.system_accent2_50)
+            secondary99 = ColorResourceHelper.getById(context, android.R.color.system_accent2_10)
+            secondary100 = ColorResourceHelper.getById(context, android.R.color.system_accent2_0)
+
+            tertiary0 = ColorResourceHelper.getById(context, android.R.color.system_accent3_1000)
+            tertiary10 = ColorResourceHelper.getById(context, android.R.color.system_accent3_900)
+            tertiary20 = ColorResourceHelper.getById(context, android.R.color.system_accent3_800)
+            tertiary30 = ColorResourceHelper.getById(context, android.R.color.system_accent3_700)
+            tertiary40 = ColorResourceHelper.getById(context, android.R.color.system_accent3_600)
+            tertiary50 = ColorResourceHelper.getById(context, android.R.color.system_accent3_500)
+            tertiary60 = ColorResourceHelper.getById(context, android.R.color.system_accent3_400)
+            tertiary70 = ColorResourceHelper.getById(context, android.R.color.system_accent3_300)
+            tertiary80 = ColorResourceHelper.getById(context, android.R.color.system_accent3_200)
+            tertiary90 = ColorResourceHelper.getById(context, android.R.color.system_accent3_100)
+            tertiary95 = ColorResourceHelper.getById(context, android.R.color.system_accent3_50)
+            tertiary99 = ColorResourceHelper.getById(context, android.R.color.system_accent3_10)
+            tertiary100 = ColorResourceHelper.getById(context, android.R.color.system_accent3_0)
+
+            neutral0 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_1000)
+            neutral10 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_900)
+            neutral20 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_800)
+            neutral30 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_700)
+            neutral40 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_600)
+            neutral50 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_500)
+            neutral60 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_400)
+            neutral70 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_300)
+            neutral80 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_200)
+            neutral90 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_100)
+            neutral95 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_50)
+            neutral99 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_10)
+            neutral100 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_0)
+
+            neutralVariant0 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_1000)
+            neutralVariant10 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_900)
+            neutralVariant20 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_800)
+            neutralVariant30 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_700)
+            neutralVariant40 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_600)
+            neutralVariant50 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_500)
+            neutralVariant60 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_400)
+            neutralVariant70 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_300)
+            neutralVariant80 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_200)
+            neutralVariant90 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_100)
+            neutralVariant95 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_50)
+            neutralVariant99 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_10)
+            neutralVariant100 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_0)
         }
     }
 }
