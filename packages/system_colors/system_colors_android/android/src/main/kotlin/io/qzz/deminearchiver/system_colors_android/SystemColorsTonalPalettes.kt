@@ -5,9 +5,7 @@ package io.qzz.deminearchiver.system_colors_android
 import android.content.Context
 import android.os.Build
 import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import androidx.annotation.Keep
-import androidx.annotation.RequiresApi
 
 @Keep
 class SystemColorsTonalPalettes private constructor(
@@ -90,246 +88,240 @@ class SystemColorsTonalPalettes private constructor(
     @param:ColorInt @field:ColorInt @field:JvmField val error99: Int,
     @param:ColorInt @field:ColorInt @field:JvmField val error100: Int,
 ) {
-    private constructor(
-        @ColorInt sentinel: Int,
-        @ColorInt primary0: Int = sentinel,
-        @ColorInt primary10: Int = sentinel,
-        @ColorInt primary20: Int = sentinel,
-        @ColorInt primary30: Int = sentinel,
-        @ColorInt primary40: Int = sentinel,
-        @ColorInt primary50: Int = sentinel,
-        @ColorInt primary60: Int = sentinel,
-        @ColorInt primary70: Int = sentinel,
-        @ColorInt primary80: Int = sentinel,
-        @ColorInt primary90: Int = sentinel,
-        @ColorInt primary95: Int = sentinel,
-        @ColorInt primary99: Int = sentinel,
-        @ColorInt primary100: Int = sentinel,
-        @ColorInt secondary0: Int = sentinel,
-        @ColorInt secondary10: Int = sentinel,
-        @ColorInt secondary20: Int = sentinel,
-        @ColorInt secondary30: Int = sentinel,
-        @ColorInt secondary40: Int = sentinel,
-        @ColorInt secondary50: Int = sentinel,
-        @ColorInt secondary60: Int = sentinel,
-        @ColorInt secondary70: Int = sentinel,
-        @ColorInt secondary80: Int = sentinel,
-        @ColorInt secondary90: Int = sentinel,
-        @ColorInt secondary95: Int = sentinel,
-        @ColorInt secondary99: Int = sentinel,
-        @ColorInt secondary100: Int = sentinel,
-        @ColorInt tertiary0: Int = sentinel,
-        @ColorInt tertiary10: Int = sentinel,
-        @ColorInt tertiary20: Int = sentinel,
-        @ColorInt tertiary30: Int = sentinel,
-        @ColorInt tertiary40: Int = sentinel,
-        @ColorInt tertiary50: Int = sentinel,
-        @ColorInt tertiary60: Int = sentinel,
-        @ColorInt tertiary70: Int = sentinel,
-        @ColorInt tertiary80: Int = sentinel,
-        @ColorInt tertiary90: Int = sentinel,
-        @ColorInt tertiary95: Int = sentinel,
-        @ColorInt tertiary99: Int = sentinel,
-        @ColorInt tertiary100: Int = sentinel,
-        @ColorInt neutral0: Int = sentinel,
-        @ColorInt neutral10: Int = sentinel,
-        @ColorInt neutral20: Int = sentinel,
-        @ColorInt neutral30: Int = sentinel,
-        @ColorInt neutral40: Int = sentinel,
-        @ColorInt neutral50: Int = sentinel,
-        @ColorInt neutral60: Int = sentinel,
-        @ColorInt neutral70: Int = sentinel,
-        @ColorInt neutral80: Int = sentinel,
-        @ColorInt neutral90: Int = sentinel,
-        @ColorInt neutral95: Int = sentinel,
-        @ColorInt neutral99: Int = sentinel,
-        @ColorInt neutral100: Int = sentinel,
-        @ColorInt neutralVariant0: Int = sentinel,
-        @ColorInt neutralVariant10: Int = sentinel,
-        @ColorInt neutralVariant20: Int = sentinel,
-        @ColorInt neutralVariant30: Int = sentinel,
-        @ColorInt neutralVariant40: Int = sentinel,
-        @ColorInt neutralVariant50: Int = sentinel,
-        @ColorInt neutralVariant60: Int = sentinel,
-        @ColorInt neutralVariant70: Int = sentinel,
-        @ColorInt neutralVariant80: Int = sentinel,
-        @ColorInt neutralVariant90: Int = sentinel,
-        @ColorInt neutralVariant95: Int = sentinel,
-        @ColorInt neutralVariant99: Int = sentinel,
-        @ColorInt neutralVariant100: Int = sentinel,
-        @ColorInt error0: Int = sentinel,
-        @ColorInt error10: Int = sentinel,
-        @ColorInt error20: Int = sentinel,
-        @ColorInt error30: Int = sentinel,
-        @ColorInt error40: Int = sentinel,
-        @ColorInt error50: Int = sentinel,
-        @ColorInt error60: Int = sentinel,
-        @ColorInt error70: Int = sentinel,
-        @ColorInt error80: Int = sentinel,
-        @ColorInt error90: Int = sentinel,
-        @ColorInt error95: Int = sentinel,
-        @ColorInt error99: Int = sentinel,
-        @ColorInt error100: Int = sentinel,
-    ) : this(
-        primary0 = primary0,
-        primary10 = primary10,
-        primary20 = primary20,
-        primary30 = primary30,
-        primary40 = primary40,
-        primary50 = primary50,
-        primary60 = primary60,
-        primary70 = primary70,
-        primary80 = primary80,
-        primary90 = primary90,
-        primary95 = primary95,
-        primary99 = primary99,
-        primary100 = primary100,
-        secondary0 = secondary0,
-        secondary10 = secondary10,
-        secondary20 = secondary20,
-        secondary30 = secondary30,
-        secondary40 = secondary40,
-        secondary50 = secondary50,
-        secondary60 = secondary60,
-        secondary70 = secondary70,
-        secondary80 = secondary80,
-        secondary90 = secondary90,
-        secondary95 = secondary95,
-        secondary99 = secondary99,
-        secondary100 = secondary100,
-        tertiary0 = tertiary0,
-        tertiary10 = tertiary10,
-        tertiary20 = tertiary20,
-        tertiary30 = tertiary30,
-        tertiary40 = tertiary40,
-        tertiary50 = tertiary50,
-        tertiary60 = tertiary60,
-        tertiary70 = tertiary70,
-        tertiary80 = tertiary80,
-        tertiary90 = tertiary90,
-        tertiary95 = tertiary95,
-        tertiary99 = tertiary99,
-        tertiary100 = tertiary100,
-        neutral0 = neutral0,
-        neutral10 = neutral10,
-        neutral20 = neutral20,
-        neutral30 = neutral30,
-        neutral40 = neutral40,
-        neutral50 = neutral50,
-        neutral60 = neutral60,
-        neutral70 = neutral70,
-        neutral80 = neutral80,
-        neutral90 = neutral90,
-        neutral95 = neutral95,
-        neutral99 = neutral99,
-        neutral100 = neutral100,
-        neutralVariant0 = neutralVariant0,
-        neutralVariant10 = neutralVariant10,
-        neutralVariant20 = neutralVariant20,
-        neutralVariant30 = neutralVariant30,
-        neutralVariant40 = neutralVariant40,
-        neutralVariant50 = neutralVariant50,
-        neutralVariant60 = neutralVariant60,
-        neutralVariant70 = neutralVariant70,
-        neutralVariant80 = neutralVariant80,
-        neutralVariant90 = neutralVariant90,
-        neutralVariant95 = neutralVariant95,
-        neutralVariant99 = neutralVariant99,
-        neutralVariant100 = neutralVariant100,
-        error0 = error0,
-        error10 = error10,
-        error20 = error20,
-        error30 = error30,
-        error40 = error40,
-        error50 = error50,
-        error60 = error60,
-        error70 = error70,
-        error80 = error80,
-        error90 = error90,
-        error95 = error95,
-        error99 = error99,
-        error100 = error100,
-    )
-
     private class Builder {
-        @ColorInt var primary0: Int? = null
-        @ColorInt var primary10: Int? = null
-        @ColorInt var primary20: Int? = null
-        @ColorInt var primary30: Int? = null
-        @ColorInt var primary40: Int? = null
-        @ColorInt var primary50: Int? = null
-        @ColorInt var primary60: Int? = null
-        @ColorInt var primary70: Int? = null
-        @ColorInt var primary80: Int? = null
-        @ColorInt var primary90: Int? = null
-        @ColorInt var primary95: Int? = null
-        @ColorInt var primary99: Int? = null
-        @ColorInt var primary100: Int? = null
-        @ColorInt var secondary0: Int? = null
-        @ColorInt var secondary10: Int? = null
-        @ColorInt var secondary20: Int? = null
-        @ColorInt var secondary30: Int? = null
-        @ColorInt var secondary40: Int? = null
-        @ColorInt var secondary50: Int? = null
-        @ColorInt var secondary60: Int? = null
-        @ColorInt var secondary70: Int? = null
-        @ColorInt var secondary80: Int? = null
-        @ColorInt var secondary90: Int? = null
-        @ColorInt var secondary95: Int? = null
-        @ColorInt var secondary99: Int? = null
-        @ColorInt var secondary100: Int? = null
-        @ColorInt var tertiary0: Int? = null
-        @ColorInt var tertiary10: Int? = null
-        @ColorInt var tertiary20: Int? = null
-        @ColorInt var tertiary30: Int? = null
-        @ColorInt var tertiary40: Int? = null
-        @ColorInt var tertiary50: Int? = null
-        @ColorInt var tertiary60: Int? = null
-        @ColorInt var tertiary70: Int? = null
-        @ColorInt var tertiary80: Int? = null
-        @ColorInt var tertiary90: Int? = null
-        @ColorInt var tertiary95: Int? = null
-        @ColorInt var tertiary99: Int? = null
-        @ColorInt var tertiary100: Int? = null
-        @ColorInt var neutral0: Int? = null
-        @ColorInt var neutral10: Int? = null
-        @ColorInt var neutral20: Int? = null
-        @ColorInt var neutral30: Int? = null
-        @ColorInt var neutral40: Int? = null
-        @ColorInt var neutral50: Int? = null
-        @ColorInt var neutral60: Int? = null
-        @ColorInt var neutral70: Int? = null
-        @ColorInt var neutral80: Int? = null
-        @ColorInt var neutral90: Int? = null
-        @ColorInt var neutral95: Int? = null
-        @ColorInt var neutral99: Int? = null
-        @ColorInt var neutral100: Int? = null
-        @ColorInt var neutralVariant0: Int? = null
-        @ColorInt var neutralVariant10: Int? = null
-        @ColorInt var neutralVariant20: Int? = null
-        @ColorInt var neutralVariant30: Int? = null
-        @ColorInt var neutralVariant40: Int? = null
-        @ColorInt var neutralVariant50: Int? = null
-        @ColorInt var neutralVariant60: Int? = null
-        @ColorInt var neutralVariant70: Int? = null
-        @ColorInt var neutralVariant80: Int? = null
-        @ColorInt var neutralVariant90: Int? = null
-        @ColorInt var neutralVariant95: Int? = null
-        @ColorInt var neutralVariant99: Int? = null
-        @ColorInt var neutralVariant100: Int? = null
-        @ColorInt var error0: Int? = null
-        @ColorInt var error10: Int? = null
-        @ColorInt var error20: Int? = null
-        @ColorInt var error30: Int? = null
-        @ColorInt var error40: Int? = null
-        @ColorInt var error50: Int? = null
-        @ColorInt var error60: Int? = null
-        @ColorInt var error70: Int? = null
-        @ColorInt var error80: Int? = null
-        @ColorInt var error90: Int? = null
-        @ColorInt var error95: Int? = null
-        @ColorInt var error99: Int? = null
-        @ColorInt var error100: Int? = null
+        @ColorInt
+        var primary0: Int? = null
+
+        @ColorInt
+        var primary10: Int? = null
+
+        @ColorInt
+        var primary20: Int? = null
+
+        @ColorInt
+        var primary30: Int? = null
+
+        @ColorInt
+        var primary40: Int? = null
+
+        @ColorInt
+        var primary50: Int? = null
+
+        @ColorInt
+        var primary60: Int? = null
+
+        @ColorInt
+        var primary70: Int? = null
+
+        @ColorInt
+        var primary80: Int? = null
+
+        @ColorInt
+        var primary90: Int? = null
+
+        @ColorInt
+        var primary95: Int? = null
+
+        @ColorInt
+        var primary99: Int? = null
+
+        @ColorInt
+        var primary100: Int? = null
+
+        @ColorInt
+        var secondary0: Int? = null
+
+        @ColorInt
+        var secondary10: Int? = null
+
+        @ColorInt
+        var secondary20: Int? = null
+
+        @ColorInt
+        var secondary30: Int? = null
+
+        @ColorInt
+        var secondary40: Int? = null
+
+        @ColorInt
+        var secondary50: Int? = null
+
+        @ColorInt
+        var secondary60: Int? = null
+
+        @ColorInt
+        var secondary70: Int? = null
+
+        @ColorInt
+        var secondary80: Int? = null
+
+        @ColorInt
+        var secondary90: Int? = null
+
+        @ColorInt
+        var secondary95: Int? = null
+
+        @ColorInt
+        var secondary99: Int? = null
+
+        @ColorInt
+        var secondary100: Int? = null
+
+        @ColorInt
+        var tertiary0: Int? = null
+
+        @ColorInt
+        var tertiary10: Int? = null
+
+        @ColorInt
+        var tertiary20: Int? = null
+
+        @ColorInt
+        var tertiary30: Int? = null
+
+        @ColorInt
+        var tertiary40: Int? = null
+
+        @ColorInt
+        var tertiary50: Int? = null
+
+        @ColorInt
+        var tertiary60: Int? = null
+
+        @ColorInt
+        var tertiary70: Int? = null
+
+        @ColorInt
+        var tertiary80: Int? = null
+
+        @ColorInt
+        var tertiary90: Int? = null
+
+        @ColorInt
+        var tertiary95: Int? = null
+
+        @ColorInt
+        var tertiary99: Int? = null
+
+        @ColorInt
+        var tertiary100: Int? = null
+
+        @ColorInt
+        var neutral0: Int? = null
+
+        @ColorInt
+        var neutral10: Int? = null
+
+        @ColorInt
+        var neutral20: Int? = null
+
+        @ColorInt
+        var neutral30: Int? = null
+
+        @ColorInt
+        var neutral40: Int? = null
+
+        @ColorInt
+        var neutral50: Int? = null
+
+        @ColorInt
+        var neutral60: Int? = null
+
+        @ColorInt
+        var neutral70: Int? = null
+
+        @ColorInt
+        var neutral80: Int? = null
+
+        @ColorInt
+        var neutral90: Int? = null
+
+        @ColorInt
+        var neutral95: Int? = null
+
+        @ColorInt
+        var neutral99: Int? = null
+
+        @ColorInt
+        var neutral100: Int? = null
+
+        @ColorInt
+        var neutralVariant0: Int? = null
+
+        @ColorInt
+        var neutralVariant10: Int? = null
+
+        @ColorInt
+        var neutralVariant20: Int? = null
+
+        @ColorInt
+        var neutralVariant30: Int? = null
+
+        @ColorInt
+        var neutralVariant40: Int? = null
+
+        @ColorInt
+        var neutralVariant50: Int? = null
+
+        @ColorInt
+        var neutralVariant60: Int? = null
+
+        @ColorInt
+        var neutralVariant70: Int? = null
+
+        @ColorInt
+        var neutralVariant80: Int? = null
+
+        @ColorInt
+        var neutralVariant90: Int? = null
+
+        @ColorInt
+        var neutralVariant95: Int? = null
+
+        @ColorInt
+        var neutralVariant99: Int? = null
+
+        @ColorInt
+        var neutralVariant100: Int? = null
+
+        @ColorInt
+        var error0: Int? = null
+
+        @ColorInt
+        var error10: Int? = null
+
+        @ColorInt
+        var error20: Int? = null
+
+        @ColorInt
+        var error30: Int? = null
+
+        @ColorInt
+        var error40: Int? = null
+
+        @ColorInt
+        var error50: Int? = null
+
+        @ColorInt
+        var error60: Int? = null
+
+        @ColorInt
+        var error70: Int? = null
+
+        @ColorInt
+        var error80: Int? = null
+
+        @ColorInt
+        var error90: Int? = null
+
+        @ColorInt
+        var error95: Int? = null
+
+        @ColorInt
+        var error99: Int? = null
+
+        @ColorInt
+        var error100: Int? = null
 
         fun build(@ColorInt sentinel: Int) = SystemColorsTonalPalettes(
             primary0 = primary0 ?: sentinel,
@@ -417,11 +409,12 @@ class SystemColorsTonalPalettes private constructor(
         private fun build(sentinel: Int, block: Builder.() -> Unit) = Builder().apply(block).build(sentinel)
 
         @JvmStatic
-        fun empty(@ColorInt sentinel: Int) = SystemColorsTonalPalettes(sentinel)
+        fun empty(@ColorInt sentinel: Int) = build(sentinel) {}
 
         @JvmStatic
         fun fromContext(context: Context, @ColorInt sentinel: Int) = build(sentinel) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return@build
+
 
             primary0 = ColorResourceHelper.getById(context, android.R.color.system_accent1_1000)
             primary10 = ColorResourceHelper.getById(context, android.R.color.system_accent1_900)
@@ -492,6 +485,22 @@ class SystemColorsTonalPalettes private constructor(
             neutralVariant95 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_50)
             neutralVariant99 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_10)
             neutralVariant100 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_0)
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return@build
+
+            error0 = ColorResourceHelper.getById(context, android.R.color.system_error_1000)
+            error10 = ColorResourceHelper.getById(context, android.R.color.system_error_900)
+            error20 = ColorResourceHelper.getById(context, android.R.color.system_error_800)
+            error30 = ColorResourceHelper.getById(context, android.R.color.system_error_700)
+            error40 = ColorResourceHelper.getById(context, android.R.color.system_error_600)
+            error50 = ColorResourceHelper.getById(context, android.R.color.system_error_500)
+            error60 = ColorResourceHelper.getById(context, android.R.color.system_error_400)
+            error70 = ColorResourceHelper.getById(context, android.R.color.system_error_300)
+            error80 = ColorResourceHelper.getById(context, android.R.color.system_error_200)
+            error90 = ColorResourceHelper.getById(context, android.R.color.system_error_100)
+            error95 = ColorResourceHelper.getById(context, android.R.color.system_error_50)
+            error99 = ColorResourceHelper.getById(context, android.R.color.system_error_10)
+            error100 = ColorResourceHelper.getById(context, android.R.color.system_error_0)
         }
     }
 }

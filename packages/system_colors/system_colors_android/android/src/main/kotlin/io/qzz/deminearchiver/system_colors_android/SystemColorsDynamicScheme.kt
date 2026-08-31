@@ -7,7 +7,6 @@ import android.os.Build
 import androidx.annotation.ColorInt
 import androidx.annotation.Keep
 
-
 @Keep
 class SystemColorsDynamicScheme private constructor(
     @param:ColorInt @field:ColorInt @field:JvmField val primaryPaletteKeyColor: Int,
@@ -78,145 +77,6 @@ class SystemColorsDynamicScheme private constructor(
     @param:ColorInt @field:ColorInt @field:JvmField val textSecondaryAndTertiaryInverseDisabled: Int,
     @param:ColorInt @field:ColorInt @field:JvmField val textHintInverse: Int,
 ) {
-    private constructor(
-        @ColorInt sentinel: Int,
-        @ColorInt primaryPaletteKeyColor: Int = sentinel,
-        @ColorInt secondaryPaletteKeyColor: Int = sentinel,
-        @ColorInt tertiaryPaletteKeyColor: Int = sentinel,
-        @ColorInt neutralPaletteKeyColor: Int = sentinel,
-        @ColorInt neutralVariantPaletteKeyColor: Int = sentinel,
-        @ColorInt errorPaletteKeyColor: Int = sentinel,
-        @ColorInt background: Int = sentinel,
-        @ColorInt onBackground: Int = sentinel,
-        @ColorInt surface: Int = sentinel,
-        @ColorInt surfaceDim: Int = sentinel,
-        @ColorInt surfaceBright: Int = sentinel,
-        @ColorInt surfaceContainerLowest: Int = sentinel,
-        @ColorInt surfaceContainerLow: Int = sentinel,
-        @ColorInt surfaceContainer: Int = sentinel,
-        @ColorInt surfaceContainerHigh: Int = sentinel,
-        @ColorInt surfaceContainerHighest: Int = sentinel,
-        @ColorInt onSurface: Int = sentinel,
-        @ColorInt surfaceVariant: Int = sentinel,
-        @ColorInt onSurfaceVariant: Int = sentinel,
-        @ColorInt outline: Int = sentinel,
-        @ColorInt outlineVariant: Int = sentinel,
-        @ColorInt inverseSurface: Int = sentinel,
-        @ColorInt inverseOnSurface: Int = sentinel,
-        @ColorInt shadow: Int = sentinel,
-        @ColorInt scrim: Int = sentinel,
-        @ColorInt surfaceTint: Int = sentinel,
-        @ColorInt primary: Int = sentinel,
-        @ColorInt primaryDim: Int = sentinel,
-        @ColorInt onPrimary: Int = sentinel,
-        @ColorInt primaryContainer: Int = sentinel,
-        @ColorInt onPrimaryContainer: Int = sentinel,
-        @ColorInt primaryFixed: Int = sentinel,
-        @ColorInt primaryFixedDim: Int = sentinel,
-        @ColorInt onPrimaryFixed: Int = sentinel,
-        @ColorInt onPrimaryFixedVariant: Int = sentinel,
-        @ColorInt inversePrimary: Int = sentinel,
-        @ColorInt secondary: Int = sentinel,
-        @ColorInt secondaryDim: Int = sentinel,
-        @ColorInt onSecondary: Int = sentinel,
-        @ColorInt secondaryContainer: Int = sentinel,
-        @ColorInt onSecondaryContainer: Int = sentinel,
-        @ColorInt secondaryFixed: Int = sentinel,
-        @ColorInt secondaryFixedDim: Int = sentinel,
-        @ColorInt onSecondaryFixed: Int = sentinel,
-        @ColorInt onSecondaryFixedVariant: Int = sentinel,
-        @ColorInt tertiary: Int = sentinel,
-        @ColorInt tertiaryDim: Int = sentinel,
-        @ColorInt onTertiary: Int = sentinel,
-        @ColorInt tertiaryContainer: Int = sentinel,
-        @ColorInt onTertiaryContainer: Int = sentinel,
-        @ColorInt tertiaryFixed: Int = sentinel,
-        @ColorInt tertiaryFixedDim: Int = sentinel,
-        @ColorInt onTertiaryFixed: Int = sentinel,
-        @ColorInt onTertiaryFixedVariant: Int = sentinel,
-        @ColorInt error: Int = sentinel,
-        @ColorInt errorDim: Int = sentinel,
-        @ColorInt onError: Int = sentinel,
-        @ColorInt errorContainer: Int = sentinel,
-        @ColorInt onErrorContainer: Int = sentinel,
-        @ColorInt controlActivated: Int = sentinel,
-        @ColorInt controlNormal: Int = sentinel,
-        @ColorInt controlHighlight: Int = sentinel,
-        @ColorInt textPrimaryInverse: Int = sentinel,
-        @ColorInt textSecondaryAndTertiaryInverse: Int = sentinel,
-        @ColorInt textPrimaryInverseDisableOnly: Int = sentinel,
-        @ColorInt textSecondaryAndTertiaryInverseDisabled: Int = sentinel,
-        @ColorInt textHintInverse: Int = sentinel,
-    ) : this(
-        primaryPaletteKeyColor = primaryPaletteKeyColor,
-        secondaryPaletteKeyColor = secondaryPaletteKeyColor,
-        tertiaryPaletteKeyColor = tertiaryPaletteKeyColor,
-        neutralPaletteKeyColor = neutralPaletteKeyColor,
-        neutralVariantPaletteKeyColor = neutralVariantPaletteKeyColor,
-        errorPaletteKeyColor = errorPaletteKeyColor,
-        background = background,
-        onBackground = onBackground,
-        surface = surface,
-        surfaceDim = surfaceDim,
-        surfaceBright = surfaceBright,
-        surfaceContainerLowest = surfaceContainerLowest,
-        surfaceContainerLow = surfaceContainerLow,
-        surfaceContainer = surfaceContainer,
-        surfaceContainerHigh = surfaceContainerHigh,
-        surfaceContainerHighest = surfaceContainerHighest,
-        onSurface = onSurface,
-        surfaceVariant = surfaceVariant,
-        onSurfaceVariant = onSurfaceVariant,
-        outline = outline,
-        outlineVariant = outlineVariant,
-        inverseSurface = inverseSurface,
-        inverseOnSurface = inverseOnSurface,
-        shadow = shadow,
-        scrim = scrim,
-        surfaceTint = surfaceTint,
-        primary = primary,
-        primaryDim = primaryDim,
-        onPrimary = onPrimary,
-        primaryContainer = primaryContainer,
-        onPrimaryContainer = onPrimaryContainer,
-        primaryFixed = primaryFixed,
-        primaryFixedDim = primaryFixedDim,
-        onPrimaryFixed = onPrimaryFixed,
-        onPrimaryFixedVariant = onPrimaryFixedVariant,
-        inversePrimary = inversePrimary,
-        secondary = secondary,
-        secondaryDim = secondaryDim,
-        onSecondary = onSecondary,
-        secondaryContainer = secondaryContainer,
-        onSecondaryContainer = onSecondaryContainer,
-        secondaryFixed = secondaryFixed,
-        secondaryFixedDim = secondaryFixedDim,
-        onSecondaryFixed = onSecondaryFixed,
-        onSecondaryFixedVariant = onSecondaryFixedVariant,
-        tertiary = tertiary,
-        tertiaryDim = tertiaryDim,
-        onTertiary = onTertiary,
-        tertiaryContainer = tertiaryContainer,
-        onTertiaryContainer = onTertiaryContainer,
-        tertiaryFixed = tertiaryFixed,
-        tertiaryFixedDim = tertiaryFixedDim,
-        onTertiaryFixed = onTertiaryFixed,
-        onTertiaryFixedVariant = onTertiaryFixedVariant,
-        error = error,
-        errorDim = errorDim,
-        onError = onError,
-        errorContainer = errorContainer,
-        onErrorContainer = onErrorContainer,
-        controlActivated = controlActivated,
-        controlNormal = controlNormal,
-        controlHighlight = controlHighlight,
-        textPrimaryInverse = textPrimaryInverse,
-        textSecondaryAndTertiaryInverse = textSecondaryAndTertiaryInverse,
-        textPrimaryInverseDisableOnly = textPrimaryInverseDisableOnly,
-        textSecondaryAndTertiaryInverseDisabled = textSecondaryAndTertiaryInverseDisabled,
-        textHintInverse = textHintInverse,
-    )
-
     private class Builder {
         @ColorInt
         var primaryPaletteKeyColor: Int? = null
@@ -494,7 +354,7 @@ class SystemColorsDynamicScheme private constructor(
         private fun build(sentinel: Int, block: Builder.() -> Unit) = Builder().apply(block).build(sentinel)
 
         @JvmStatic
-        fun empty(@ColorInt sentinel: Int) = SystemColorsDynamicScheme(sentinel)
+        fun empty(@ColorInt sentinel: Int) = build(sentinel) {}
 
         @JvmStatic
         fun fromContext(context: Context, isDark: Boolean, @ColorInt sentinel: Int) =
@@ -509,82 +369,8 @@ class SystemColorsDynamicScheme private constructor(
                 secondaryPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_secondary_light)
                 tertiaryPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_tertiary_light)
                 neutralPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_neutral_light)
-                neutralVariantPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_neutral_variant_light)
-    //                errorPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_error_light)
-                background = getById(context, android.R.color.system_background_light)
-                onBackground = getById(context, android.R.color.system_on_background_light)
-                surface = getById(context, android.R.color.system_surface_light)
-                surfaceDim = getById(context, android.R.color.system_surface_dim_light)
-                surfaceBright = getById(context, android.R.color.system_surface_bright_light)
-                surfaceContainerLowest = getById(context, android.R.color.system_surface_container_lowest_light)
-                surfaceContainerLow = getById(context, android.R.color.system_surface_container_low_light)
-                surfaceContainer = getById(context, android.R.color.system_surface_container_light)
-                surfaceContainerHigh = getById(context, android.R.color.system_surface_container_high_light)
-                surfaceContainerHighest = getById(context, android.R.color.system_surface_container_highest_light)
-                onSurface = getById(context, android.R.color.system_on_surface_light)
-                surfaceVariant = getById(context, android.R.color.system_surface_variant_light)
-                onSurfaceVariant = getById(context, android.R.color.system_on_surface_variant_light)
-                outline = getById(context, android.R.color.system_outline_light)
-                outlineVariant = getById(context, android.R.color.system_outline_variant_light)
-                inverseSurface = getById(context, android.R.color.system_surface_dark)
-                inverseOnSurface = getById(context, android.R.color.system_on_surface_dark)
-    //                shadow = getById(context, android.R.color.system_shadow_light)
-    //                scrim = getById(context, android.R.color.system_scrim_light)
-                surfaceTint = getById(context, android.R.color.system_primary_light)
-                primary = getById(context, android.R.color.system_primary_light)
-    //                primaryDim = getById(context, android.R.color.system_primary_dim_light)
-                onPrimary = getById(context, android.R.color.system_on_primary_light)
-                primaryContainer = getById(context, android.R.color.system_primary_container_light)
-                onPrimaryContainer = getById(context, android.R.color.system_on_primary_container_light)
-                primaryFixed = getById(context, android.R.color.system_primary_fixed)
-                primaryFixedDim = getById(context, android.R.color.system_primary_fixed_dim)
-                onPrimaryFixed = getById(context, android.R.color.system_on_primary_fixed)
-                onPrimaryFixedVariant = getById(context, android.R.color.system_on_primary_fixed_variant)
-                inversePrimary = getById(context, android.R.color.system_primary_dark)
-                secondary = getById(context, android.R.color.system_secondary_light)
-    //                secondaryDim = getById(context, android.R.color.system_secondary_dim_light)
-                onSecondary = getById(context, android.R.color.system_on_secondary_light)
-                secondaryContainer = getById(context, android.R.color.system_secondary_container_light)
-                onSecondaryContainer = getById(context, android.R.color.system_on_secondary_container_light)
-                secondaryFixed = getById(context, android.R.color.system_secondary_fixed)
-                secondaryFixedDim = getById(context, android.R.color.system_secondary_fixed_dim)
-                onSecondaryFixed = getById(context, android.R.color.system_on_secondary_fixed)
-                onSecondaryFixedVariant = getById(context, android.R.color.system_on_secondary_fixed_variant)
-                tertiary = getById(context, android.R.color.system_tertiary_light)
-    //                tertiaryDim = getById(context, android.R.color.system_tertiary_dim_light)
-                onTertiary = getById(context, android.R.color.system_on_tertiary_light)
-                tertiaryContainer = getById(context, android.R.color.system_tertiary_container_light)
-                onTertiaryContainer = getById(context, android.R.color.system_on_tertiary_container_light)
-                tertiaryFixed = getById(context, android.R.color.system_tertiary_fixed)
-                tertiaryFixedDim = getById(context, android.R.color.system_tertiary_fixed_dim)
-                onTertiaryFixed = getById(context, android.R.color.system_on_tertiary_fixed)
-                onTertiaryFixedVariant = getById(context, android.R.color.system_on_tertiary_fixed_variant)
-                error = getById(context, android.R.color.system_error_light)
-    //                errorDim = getById(context, android.R.color.system_error_dim_light)
-                onError = getById(context, android.R.color.system_on_error_light)
-                errorContainer = getById(context, android.R.color.system_error_container_light)
-                onErrorContainer = getById(context, android.R.color.system_on_error_container_light)
-                controlActivated = getById(context, android.R.color.system_control_activated_light)
-                controlNormal = getById(context, android.R.color.system_control_normal_light)
-                controlHighlight = getById(context, android.R.color.system_control_highlight_light)
-                textPrimaryInverse = getById(context, android.R.color.system_text_primary_inverse_light)
-                textSecondaryAndTertiaryInverse = getById(context, android.R.color.system_text_secondary_and_tertiary_inverse_light)
-                textPrimaryInverseDisableOnly = getById(context, android.R.color.system_text_primary_inverse_disable_only_light)
-                textSecondaryAndTertiaryInverseDisabled = getById(context, android.R.color.system_text_secondary_and_tertiary_inverse_disabled_light)
-                textHintInverse = getById(context, android.R.color.system_text_hint_inverse_light)
-            }
-        }
-
-        @JvmStatic
-        fun darkFromContext(context: Context, @ColorInt sentinel: Int) = build(sentinel) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) return@build
-
-            ColorResourceHelper.run {
-                primaryPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_primary_light)
-                secondaryPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_secondary_light)
-                tertiaryPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_tertiary_light)
-                neutralPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_neutral_light)
-                neutralVariantPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_neutral_variant_light)
+                neutralVariantPaletteKeyColor =
+                    getById(context, android.R.color.system_palette_key_color_neutral_variant_light)
                 //                errorPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_error_light)
                 background = getById(context, android.R.color.system_background_light)
                 onBackground = getById(context, android.R.color.system_on_background_light)
@@ -643,9 +429,91 @@ class SystemColorsDynamicScheme private constructor(
                 controlNormal = getById(context, android.R.color.system_control_normal_light)
                 controlHighlight = getById(context, android.R.color.system_control_highlight_light)
                 textPrimaryInverse = getById(context, android.R.color.system_text_primary_inverse_light)
-                textSecondaryAndTertiaryInverse = getById(context, android.R.color.system_text_secondary_and_tertiary_inverse_light)
-                textPrimaryInverseDisableOnly = getById(context, android.R.color.system_text_primary_inverse_disable_only_light)
-                textSecondaryAndTertiaryInverseDisabled = getById(context, android.R.color.system_text_secondary_and_tertiary_inverse_disabled_light)
+                textSecondaryAndTertiaryInverse =
+                    getById(context, android.R.color.system_text_secondary_and_tertiary_inverse_light)
+                textPrimaryInverseDisableOnly =
+                    getById(context, android.R.color.system_text_primary_inverse_disable_only_light)
+                textSecondaryAndTertiaryInverseDisabled =
+                    getById(context, android.R.color.system_text_secondary_and_tertiary_inverse_disabled_light)
+                textHintInverse = getById(context, android.R.color.system_text_hint_inverse_light)
+            }
+        }
+
+        @JvmStatic
+        fun darkFromContext(context: Context, @ColorInt sentinel: Int) = build(sentinel) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) return@build
+
+            ColorResourceHelper.run {
+                primaryPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_primary_light)
+                secondaryPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_secondary_light)
+                tertiaryPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_tertiary_light)
+                neutralPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_neutral_light)
+                neutralVariantPaletteKeyColor =
+                    getById(context, android.R.color.system_palette_key_color_neutral_variant_light)
+                //                errorPaletteKeyColor = getById(context, android.R.color.system_palette_key_color_error_light)
+                background = getById(context, android.R.color.system_background_light)
+                onBackground = getById(context, android.R.color.system_on_background_light)
+                surface = getById(context, android.R.color.system_surface_light)
+                surfaceDim = getById(context, android.R.color.system_surface_dim_light)
+                surfaceBright = getById(context, android.R.color.system_surface_bright_light)
+                surfaceContainerLowest = getById(context, android.R.color.system_surface_container_lowest_light)
+                surfaceContainerLow = getById(context, android.R.color.system_surface_container_low_light)
+                surfaceContainer = getById(context, android.R.color.system_surface_container_light)
+                surfaceContainerHigh = getById(context, android.R.color.system_surface_container_high_light)
+                surfaceContainerHighest = getById(context, android.R.color.system_surface_container_highest_light)
+                onSurface = getById(context, android.R.color.system_on_surface_light)
+                surfaceVariant = getById(context, android.R.color.system_surface_variant_light)
+                onSurfaceVariant = getById(context, android.R.color.system_on_surface_variant_light)
+                outline = getById(context, android.R.color.system_outline_light)
+                outlineVariant = getById(context, android.R.color.system_outline_variant_light)
+                inverseSurface = getById(context, android.R.color.system_surface_dark)
+                inverseOnSurface = getById(context, android.R.color.system_on_surface_dark)
+                //                shadow = getById(context, android.R.color.system_shadow_light)
+                //                scrim = getById(context, android.R.color.system_scrim_light)
+                surfaceTint = getById(context, android.R.color.system_primary_light)
+                primary = getById(context, android.R.color.system_primary_light)
+                //                primaryDim = getById(context, android.R.color.system_primary_dim_light)
+                onPrimary = getById(context, android.R.color.system_on_primary_light)
+                primaryContainer = getById(context, android.R.color.system_primary_container_light)
+                onPrimaryContainer = getById(context, android.R.color.system_on_primary_container_light)
+                primaryFixed = getById(context, android.R.color.system_primary_fixed)
+                primaryFixedDim = getById(context, android.R.color.system_primary_fixed_dim)
+                onPrimaryFixed = getById(context, android.R.color.system_on_primary_fixed)
+                onPrimaryFixedVariant = getById(context, android.R.color.system_on_primary_fixed_variant)
+                inversePrimary = getById(context, android.R.color.system_primary_dark)
+                secondary = getById(context, android.R.color.system_secondary_light)
+                //                secondaryDim = getById(context, android.R.color.system_secondary_dim_light)
+                onSecondary = getById(context, android.R.color.system_on_secondary_light)
+                secondaryContainer = getById(context, android.R.color.system_secondary_container_light)
+                onSecondaryContainer = getById(context, android.R.color.system_on_secondary_container_light)
+                secondaryFixed = getById(context, android.R.color.system_secondary_fixed)
+                secondaryFixedDim = getById(context, android.R.color.system_secondary_fixed_dim)
+                onSecondaryFixed = getById(context, android.R.color.system_on_secondary_fixed)
+                onSecondaryFixedVariant = getById(context, android.R.color.system_on_secondary_fixed_variant)
+                tertiary = getById(context, android.R.color.system_tertiary_light)
+                //                tertiaryDim = getById(context, android.R.color.system_tertiary_dim_light)
+                onTertiary = getById(context, android.R.color.system_on_tertiary_light)
+                tertiaryContainer = getById(context, android.R.color.system_tertiary_container_light)
+                onTertiaryContainer = getById(context, android.R.color.system_on_tertiary_container_light)
+                tertiaryFixed = getById(context, android.R.color.system_tertiary_fixed)
+                tertiaryFixedDim = getById(context, android.R.color.system_tertiary_fixed_dim)
+                onTertiaryFixed = getById(context, android.R.color.system_on_tertiary_fixed)
+                onTertiaryFixedVariant = getById(context, android.R.color.system_on_tertiary_fixed_variant)
+                error = getById(context, android.R.color.system_error_light)
+                //                errorDim = getById(context, android.R.color.system_error_dim_light)
+                onError = getById(context, android.R.color.system_on_error_light)
+                errorContainer = getById(context, android.R.color.system_error_container_light)
+                onErrorContainer = getById(context, android.R.color.system_on_error_container_light)
+                controlActivated = getById(context, android.R.color.system_control_activated_light)
+                controlNormal = getById(context, android.R.color.system_control_normal_light)
+                controlHighlight = getById(context, android.R.color.system_control_highlight_light)
+                textPrimaryInverse = getById(context, android.R.color.system_text_primary_inverse_light)
+                textSecondaryAndTertiaryInverse =
+                    getById(context, android.R.color.system_text_secondary_and_tertiary_inverse_light)
+                textPrimaryInverseDisableOnly =
+                    getById(context, android.R.color.system_text_primary_inverse_disable_only_light)
+                textSecondaryAndTertiaryInverseDisabled =
+                    getById(context, android.R.color.system_text_secondary_and_tertiary_inverse_disabled_light)
                 textHintInverse = getById(context, android.R.color.system_text_hint_inverse_light)
             }
         }
