@@ -3,6 +3,7 @@
 package io.qzz.deminearchiver.system_colors_android
 
 import android.content.Context
+import androidx.annotation.ColorInt
 import androidx.annotation.Keep
 
 // Avoid exposing overrides: they get ugly $1, $2 suffixes or something similar.
@@ -15,11 +16,14 @@ object SystemColorsPlugin {
     fun isDynamicColorAvailable() = true
 
     @JvmStatic
-    fun tonalPalettes(context: Context, sentinel: Int) = SystemColorsTonalPalettes.fromContext(context, sentinel)
+    fun tonalPalettes(context: Context, @ColorInt sentinel: Int) =
+        SystemColorsTonalPalettes.fromContext(context, sentinel)
 
     @JvmStatic
-    fun lightColorScheme(context: Context, sentinel: Int) = SystemColorsDynamicScheme.lightFromContext(context, sentinel)
+    fun lightColorScheme(context: Context, @ColorInt sentinel: Int) =
+        SystemColorsDynamicScheme.lightFromContext(context, sentinel)
 
     @JvmStatic
-    fun darkColorScheme(context: Context, sentinel: Int) = SystemColorsDynamicScheme.darkFromContext(context, sentinel)
+    fun darkColorScheme(context: Context, @ColorInt sentinel: Int) =
+        SystemColorsDynamicScheme.darkFromContext(context, sentinel)
 }

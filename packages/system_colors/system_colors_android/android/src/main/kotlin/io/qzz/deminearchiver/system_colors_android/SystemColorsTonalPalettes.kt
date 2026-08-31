@@ -88,7 +88,7 @@ class SystemColorsTonalPalettes private constructor(
     @param:ColorInt @field:ColorInt @field:JvmField val error100: Int,
 ) {
     private constructor(
-        sentinel: Int,
+        @ColorInt sentinel: Int,
         @ColorInt primary0: Int = sentinel,
         @ColorInt primary10: Int = sentinel,
         @ColorInt primary20: Int = sentinel,
@@ -250,10 +250,10 @@ class SystemColorsTonalPalettes private constructor(
 
     companion object {
         @JvmStatic
-        fun empty(sentinel: Int) = SystemColorsTonalPalettes(sentinel)
+        fun empty(@ColorInt sentinel: Int) = SystemColorsTonalPalettes(sentinel)
 
         @JvmStatic
-        fun fromContext(context: Context, sentinel: Int): SystemColorsTonalPalettes {
+        fun fromContext(context: Context, @ColorInt sentinel: Int): SystemColorsTonalPalettes {
             return empty(sentinel)
         }
     }

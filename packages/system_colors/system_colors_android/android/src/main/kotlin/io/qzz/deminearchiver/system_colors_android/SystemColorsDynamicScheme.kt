@@ -78,7 +78,7 @@ class SystemColorsDynamicScheme private constructor(
     @param:ColorInt @field:ColorInt @field:JvmField val textHintInverse: Int,
 ) {
     private constructor(
-        sentinel: Int,
+        @ColorInt sentinel: Int,
         primaryPaletteKeyColor: Int = sentinel,
         secondaryPaletteKeyColor: Int = sentinel,
         tertiaryPaletteKeyColor: Int = sentinel,
@@ -218,15 +218,15 @@ class SystemColorsDynamicScheme private constructor(
 
     companion object {
         @JvmStatic
-        fun empty(sentinel: Int) = SystemColorsDynamicScheme(sentinel)
+        fun empty(@ColorInt sentinel: Int) = SystemColorsDynamicScheme(sentinel)
 
         @JvmStatic
-        fun lightFromContext(context: Context, sentinel: Int): SystemColorsDynamicScheme {
+        fun lightFromContext(context: Context, @ColorInt sentinel: Int): SystemColorsDynamicScheme {
             return empty(sentinel)
         }
 
         @JvmStatic
-        fun darkFromContext(context: Context, sentinel: Int): SystemColorsDynamicScheme {
+        fun darkFromContext(context: Context, @ColorInt sentinel: Int): SystemColorsDynamicScheme {
             return empty(sentinel)
         }
     }
