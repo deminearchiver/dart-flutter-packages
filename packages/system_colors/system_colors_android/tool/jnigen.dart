@@ -19,7 +19,7 @@ void main(List<String> args) async {
       sourcePath: [packageRoot.resolve("android/src/main/kotlin")],
       classes: [
         "io.qzz.deminearchiver.system_colors_android.SystemColorsPlugin",
-        "io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes",
+        "io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicPalette",
         "io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme",
       ],
       generateStubs: false,

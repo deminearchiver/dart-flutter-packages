@@ -8,7 +8,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Keep
 
 @Keep
-class SystemColorsTonalPalettes private constructor(
+class SystemColorsDynamicPalette private constructor(
     @param:ColorInt @field:ColorInt @field:JvmField val primary0: Int,
     @param:ColorInt @field:ColorInt @field:JvmField val primary10: Int,
     @param:ColorInt @field:ColorInt @field:JvmField val primary20: Int,
@@ -323,7 +323,7 @@ class SystemColorsTonalPalettes private constructor(
         @ColorInt
         var error100: Int? = null
 
-        fun build(@ColorInt sentinel: Int) = SystemColorsTonalPalettes(
+        fun build(@ColorInt sentinel: Int) = SystemColorsDynamicPalette(
             primary0 = primary0 ?: sentinel,
             primary10 = primary10 ?: sentinel,
             primary20 = primary20 ?: sentinel,

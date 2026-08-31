@@ -16,18 +16,18 @@ object SystemColorsPlugin {
     fun isDynamicColorAvailable() = true
 
     @JvmStatic
-    fun tonalPalettes(context: Context, @ColorInt sentinel: Int) =
-        SystemColorsTonalPalettes.fromContext(context, sentinel)
+    fun dynamicPalette(context: Context, @ColorInt sentinel: Int) =
+        SystemColorsDynamicPalette.fromContext(context, sentinel)
 
     @JvmStatic
-    fun colorScheme(context: Context, isDark: Boolean, @ColorInt sentinel: Int) =
+    fun dynamicScheme(context: Context, isDark: Boolean, @ColorInt sentinel: Int) =
         SystemColorsDynamicScheme.fromContext(context, isDark, sentinel)
 
     @JvmStatic
-    fun lightColorScheme(context: Context, @ColorInt sentinel: Int) =
+    fun lightDynamicScheme(context: Context, @ColorInt sentinel: Int) =
         SystemColorsDynamicScheme.lightFromContext(context, sentinel)
 
     @JvmStatic
-    fun darkColorScheme(context: Context, @ColorInt sentinel: Int) =
+    fun darkDynamicScheme(context: Context, @ColorInt sentinel: Int) =
         SystemColorsDynamicScheme.darkFromContext(context, sentinel)
 }

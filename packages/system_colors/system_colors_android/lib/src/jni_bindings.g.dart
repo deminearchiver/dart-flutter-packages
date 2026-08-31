@@ -78,12 +78,12 @@ extension type SystemColorsPlugin._(jni$_.JObject _$this)
     ).boolean;
   }
 
-  static final _id_tonalPalettes = _class.staticMethodId(
-    r'tonalPalettes',
-    r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes;',
+  static final _id_dynamicPalette = _class.staticMethodId(
+    r'dynamicPalette',
+    r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicPalette;',
   );
 
-  static final _tonalPalettes =
+  static final _dynamicPalette =
       jni$_.ProtectedJniExtensions.lookup<
             jni$_.NativeFunction<
               jni$_.JniResult Function(
@@ -102,28 +102,28 @@ extension type SystemColorsPlugin._(jni$_.JObject _$this)
             )
           >();
 
-  /// from: `public fun tonalPalettes(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes`
+  /// from: `public fun dynamicPalette(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicPalette`
   /// The returned object must be released after use, by calling the [release] method.
-  static SystemColorsTonalPalettes tonalPalettes(
+  static SystemColorsDynamicPalette dynamicPalette(
     jni$_.JObject context,
     core$_.int i,
   ) {
     final _$$classRef = _class.reference;
     final _$context = context.reference;
-    return _tonalPalettes(
+    return _dynamicPalette(
       _$$classRef.pointer,
-      _id_tonalPalettes.pointer,
+      _id_dynamicPalette.pointer,
       _$context.pointer,
       i,
-    ).object<SystemColorsTonalPalettes>();
+    ).object<SystemColorsDynamicPalette>();
   }
 
-  static final _id_colorScheme = _class.staticMethodId(
-    r'colorScheme',
+  static final _id_dynamicScheme = _class.staticMethodId(
+    r'dynamicScheme',
     r'(Landroid/content/Context;ZI)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
   );
 
-  static final _colorScheme =
+  static final _dynamicScheme =
       jni$_.ProtectedJniExtensions.lookup<
             jni$_.NativeFunction<
               jni$_.JniResult Function(
@@ -145,30 +145,30 @@ extension type SystemColorsPlugin._(jni$_.JObject _$this)
             )
           >();
 
-  /// from: `public fun colorScheme(context: android.content.Context, isDark: kotlin.Boolean, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
+  /// from: `public fun dynamicScheme(context: android.content.Context, isDark: kotlin.Boolean, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
   /// The returned object must be released after use, by calling the [release] method.
-  static SystemColorsDynamicScheme colorScheme(
+  static SystemColorsDynamicScheme dynamicScheme(
     jni$_.JObject context,
     core$_.bool z,
     core$_.int i,
   ) {
     final _$$classRef = _class.reference;
     final _$context = context.reference;
-    return _colorScheme(
+    return _dynamicScheme(
       _$$classRef.pointer,
-      _id_colorScheme.pointer,
+      _id_dynamicScheme.pointer,
       _$context.pointer,
       z ? 1 : 0,
       i,
     ).object<SystemColorsDynamicScheme>();
   }
 
-  static final _id_lightColorScheme = _class.staticMethodId(
-    r'lightColorScheme',
+  static final _id_lightDynamicScheme = _class.staticMethodId(
+    r'lightDynamicScheme',
     r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
   );
 
-  static final _lightColorScheme =
+  static final _lightDynamicScheme =
       jni$_.ProtectedJniExtensions.lookup<
             jni$_.NativeFunction<
               jni$_.JniResult Function(
@@ -187,28 +187,28 @@ extension type SystemColorsPlugin._(jni$_.JObject _$this)
             )
           >();
 
-  /// from: `public fun lightColorScheme(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
+  /// from: `public fun lightDynamicScheme(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
   /// The returned object must be released after use, by calling the [release] method.
-  static SystemColorsDynamicScheme lightColorScheme(
+  static SystemColorsDynamicScheme lightDynamicScheme(
     jni$_.JObject context,
     core$_.int i,
   ) {
     final _$$classRef = _class.reference;
     final _$context = context.reference;
-    return _lightColorScheme(
+    return _lightDynamicScheme(
       _$$classRef.pointer,
-      _id_lightColorScheme.pointer,
+      _id_lightDynamicScheme.pointer,
       _$context.pointer,
       i,
     ).object<SystemColorsDynamicScheme>();
   }
 
-  static final _id_darkColorScheme = _class.staticMethodId(
-    r'darkColorScheme',
+  static final _id_darkDynamicScheme = _class.staticMethodId(
+    r'darkDynamicScheme',
     r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicScheme;',
   );
 
-  static final _darkColorScheme =
+  static final _darkDynamicScheme =
       jni$_.ProtectedJniExtensions.lookup<
             jni$_.NativeFunction<
               jni$_.JniResult Function(
@@ -227,17 +227,17 @@ extension type SystemColorsPlugin._(jni$_.JObject _$this)
             )
           >();
 
-  /// from: `public fun darkColorScheme(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
+  /// from: `public fun darkDynamicScheme(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme`
   /// The returned object must be released after use, by calling the [release] method.
-  static SystemColorsDynamicScheme darkColorScheme(
+  static SystemColorsDynamicScheme darkDynamicScheme(
     jni$_.JObject context,
     core$_.int i,
   ) {
     final _$$classRef = _class.reference;
     final _$context = context.reference;
-    return _darkColorScheme(
+    return _darkDynamicScheme(
       _$$classRef.pointer,
-      _id_darkColorScheme.pointer,
+      _id_darkDynamicScheme.pointer,
       _$context.pointer,
       i,
     ).object<SystemColorsDynamicScheme>();
@@ -254,24 +254,24 @@ final class $SystemColorsPlugin$Type$ extends jni$_.JType<SystemColorsPlugin> {
       r'Lio/qzz/deminearchiver/system_colors_android/SystemColorsPlugin;';
 }
 
-/// from: `io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes$Companion`
-extension type SystemColorsTonalPalettes$Companion._(jni$_.JObject _$this)
+/// from: `io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicPalette$Companion`
+extension type SystemColorsDynamicPalette$Companion._(jni$_.JObject _$this)
     implements jni$_.JObject {
   static final _class = jni$_.JClass.forName(
-    r'io/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes$Companion',
+    r'io/qzz/deminearchiver/system_colors_android/SystemColorsDynamicPalette$Companion',
   );
 
   /// The type which includes information such as the signature of this class.
-  static const jni$_.JType<SystemColorsTonalPalettes$Companion> type =
-      $SystemColorsTonalPalettes$Companion$Type$();
+  static const jni$_.JType<SystemColorsDynamicPalette$Companion> type =
+      $SystemColorsDynamicPalette$Companion$Type$();
 }
 
-extension SystemColorsTonalPalettes$Companion$$Methods
-    on SystemColorsTonalPalettes$Companion {
-  static final _id_empty = SystemColorsTonalPalettes$Companion._class
+extension SystemColorsDynamicPalette$Companion$$Methods
+    on SystemColorsDynamicPalette$Companion {
+  static final _id_empty = SystemColorsDynamicPalette$Companion._class
       .instanceMethodId(
         r'empty',
-        r'(I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes;',
+        r'(I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicPalette;',
       );
 
   static final _empty =
@@ -292,21 +292,21 @@ extension SystemColorsTonalPalettes$Companion$$Methods
             )
           >();
 
-  /// from: `public fun empty(sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes`
+  /// from: `public fun empty(sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicPalette`
   /// The returned object must be released after use, by calling the [release] method.
-  SystemColorsTonalPalettes empty(core$_.int i) {
+  SystemColorsDynamicPalette empty(core$_.int i) {
     final _$$selfRef = reference;
     return _empty(
       _$$selfRef.pointer,
       _id_empty.pointer,
       i,
-    ).object<SystemColorsTonalPalettes>();
+    ).object<SystemColorsDynamicPalette>();
   }
 
-  static final _id_fromContext = SystemColorsTonalPalettes$Companion._class
+  static final _id_fromContext = SystemColorsDynamicPalette$Companion._class
       .instanceMethodId(
         r'fromContext',
-        r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes;',
+        r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicPalette;',
       );
 
   static final _fromContext =
@@ -328,9 +328,9 @@ extension SystemColorsTonalPalettes$Companion$$Methods
             )
           >();
 
-  /// from: `public fun fromContext(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes`
+  /// from: `public fun fromContext(context: android.content.Context, sentinel: kotlin.Int): io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicPalette`
   /// The returned object must be released after use, by calling the [release] method.
-  SystemColorsTonalPalettes fromContext(jni$_.JObject context, core$_.int i) {
+  SystemColorsDynamicPalette fromContext(jni$_.JObject context, core$_.int i) {
     final _$$selfRef = reference;
     final _$context = context.reference;
     return _fromContext(
@@ -338,34 +338,34 @@ extension SystemColorsTonalPalettes$Companion$$Methods
       _id_fromContext.pointer,
       _$context.pointer,
       i,
-    ).object<SystemColorsTonalPalettes>();
+    ).object<SystemColorsDynamicPalette>();
   }
 }
 
-final class $SystemColorsTonalPalettes$Companion$Type$
-    extends jni$_.JType<SystemColorsTonalPalettes$Companion> {
+final class $SystemColorsDynamicPalette$Companion$Type$
+    extends jni$_.JType<SystemColorsDynamicPalette$Companion> {
   @jni$_.internal
-  const $SystemColorsTonalPalettes$Companion$Type$();
+  const $SystemColorsDynamicPalette$Companion$Type$();
 
   @jni$_.internal
   @core$_.override
   String get signature =>
-      r'Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes$Companion;';
+      r'Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicPalette$Companion;';
 }
 
-/// from: `io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes`
-extension type SystemColorsTonalPalettes._(jni$_.JObject _$this)
+/// from: `io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicPalette`
+extension type SystemColorsDynamicPalette._(jni$_.JObject _$this)
     implements jni$_.JObject {
   static final _class = jni$_.JClass.forName(
-    r'io/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes',
+    r'io/qzz/deminearchiver/system_colors_android/SystemColorsDynamicPalette',
   );
 
   /// The type which includes information such as the signature of this class.
-  static const jni$_.JType<SystemColorsTonalPalettes> type =
-      $SystemColorsTonalPalettes$Type$();
+  static const jni$_.JType<SystemColorsDynamicPalette> type =
+      $SystemColorsDynamicPalette$Type$();
   static final _id_empty = _class.staticMethodId(
     r'empty',
-    r'(I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes;',
+    r'(I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicPalette;',
   );
 
   static final _empty =
@@ -386,20 +386,20 @@ extension type SystemColorsTonalPalettes._(jni$_.JObject _$this)
             )
           >();
 
-  /// from: `static public final io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes empty(int i)`
+  /// from: `static public final io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicPalette empty(int i)`
   /// The returned object must be released after use, by calling the [release] method.
-  static SystemColorsTonalPalettes empty(core$_.int i) {
+  static SystemColorsDynamicPalette empty(core$_.int i) {
     final _$$classRef = _class.reference;
     return _empty(
       _$$classRef.pointer,
       _id_empty.pointer,
       i,
-    ).object<SystemColorsTonalPalettes>();
+    ).object<SystemColorsDynamicPalette>();
   }
 
   static final _id_fromContext = _class.staticMethodId(
     r'fromContext',
-    r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes;',
+    r'(Landroid/content/Context;I)Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicPalette;',
   );
 
   static final _fromContext =
@@ -421,9 +421,9 @@ extension type SystemColorsTonalPalettes._(jni$_.JObject _$this)
             )
           >();
 
-  /// from: `static public final io.qzz.deminearchiver.system_colors_android.SystemColorsTonalPalettes fromContext(android.content.Context context, int i)`
+  /// from: `static public final io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicPalette fromContext(android.content.Context context, int i)`
   /// The returned object must be released after use, by calling the [release] method.
-  static SystemColorsTonalPalettes fromContext(
+  static SystemColorsDynamicPalette fromContext(
     jni$_.JObject context,
     core$_.int i,
   ) {
@@ -434,12 +434,12 @@ extension type SystemColorsTonalPalettes._(jni$_.JObject _$this)
       _id_fromContext.pointer,
       _$context.pointer,
       i,
-    ).object<SystemColorsTonalPalettes>();
+    ).object<SystemColorsDynamicPalette>();
   }
 }
 
-extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
-  static final _id_primary0 = SystemColorsTonalPalettes._class.instanceFieldId(
+extension SystemColorsDynamicPalette$$Methods on SystemColorsDynamicPalette {
+  static final _id_primary0 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'primary0',
     r'I',
   );
@@ -448,297 +448,273 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get primary0 =>
       _id_primary0.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary10 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'primary10',
-    r'I',
-  );
+  static final _id_primary10 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'primary10', r'I');
 
   /// from: `public final int primary10`
   core$_.int get primary10 =>
       _id_primary10.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary20 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'primary20',
-    r'I',
-  );
+  static final _id_primary20 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'primary20', r'I');
 
   /// from: `public final int primary20`
   core$_.int get primary20 =>
       _id_primary20.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary30 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'primary30',
-    r'I',
-  );
+  static final _id_primary30 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'primary30', r'I');
 
   /// from: `public final int primary30`
   core$_.int get primary30 =>
       _id_primary30.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary40 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'primary40',
-    r'I',
-  );
+  static final _id_primary40 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'primary40', r'I');
 
   /// from: `public final int primary40`
   core$_.int get primary40 =>
       _id_primary40.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary50 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'primary50',
-    r'I',
-  );
+  static final _id_primary50 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'primary50', r'I');
 
   /// from: `public final int primary50`
   core$_.int get primary50 =>
       _id_primary50.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary60 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'primary60',
-    r'I',
-  );
+  static final _id_primary60 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'primary60', r'I');
 
   /// from: `public final int primary60`
   core$_.int get primary60 =>
       _id_primary60.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary70 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'primary70',
-    r'I',
-  );
+  static final _id_primary70 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'primary70', r'I');
 
   /// from: `public final int primary70`
   core$_.int get primary70 =>
       _id_primary70.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary80 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'primary80',
-    r'I',
-  );
+  static final _id_primary80 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'primary80', r'I');
 
   /// from: `public final int primary80`
   core$_.int get primary80 =>
       _id_primary80.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary90 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'primary90',
-    r'I',
-  );
+  static final _id_primary90 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'primary90', r'I');
 
   /// from: `public final int primary90`
   core$_.int get primary90 =>
       _id_primary90.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary95 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'primary95',
-    r'I',
-  );
+  static final _id_primary95 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'primary95', r'I');
 
   /// from: `public final int primary95`
   core$_.int get primary95 =>
       _id_primary95.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary99 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'primary99',
-    r'I',
-  );
+  static final _id_primary99 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'primary99', r'I');
 
   /// from: `public final int primary99`
   core$_.int get primary99 =>
       _id_primary99.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_primary100 = SystemColorsTonalPalettes._class
+  static final _id_primary100 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'primary100', r'I');
 
   /// from: `public final int primary100`
   core$_.int get primary100 =>
       _id_primary100.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary0 = SystemColorsTonalPalettes._class
+  static final _id_secondary0 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary0', r'I');
 
   /// from: `public final int secondary0`
   core$_.int get secondary0 =>
       _id_secondary0.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary10 = SystemColorsTonalPalettes._class
+  static final _id_secondary10 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary10', r'I');
 
   /// from: `public final int secondary10`
   core$_.int get secondary10 =>
       _id_secondary10.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary20 = SystemColorsTonalPalettes._class
+  static final _id_secondary20 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary20', r'I');
 
   /// from: `public final int secondary20`
   core$_.int get secondary20 =>
       _id_secondary20.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary30 = SystemColorsTonalPalettes._class
+  static final _id_secondary30 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary30', r'I');
 
   /// from: `public final int secondary30`
   core$_.int get secondary30 =>
       _id_secondary30.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary40 = SystemColorsTonalPalettes._class
+  static final _id_secondary40 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary40', r'I');
 
   /// from: `public final int secondary40`
   core$_.int get secondary40 =>
       _id_secondary40.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary50 = SystemColorsTonalPalettes._class
+  static final _id_secondary50 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary50', r'I');
 
   /// from: `public final int secondary50`
   core$_.int get secondary50 =>
       _id_secondary50.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary60 = SystemColorsTonalPalettes._class
+  static final _id_secondary60 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary60', r'I');
 
   /// from: `public final int secondary60`
   core$_.int get secondary60 =>
       _id_secondary60.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary70 = SystemColorsTonalPalettes._class
+  static final _id_secondary70 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary70', r'I');
 
   /// from: `public final int secondary70`
   core$_.int get secondary70 =>
       _id_secondary70.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary80 = SystemColorsTonalPalettes._class
+  static final _id_secondary80 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary80', r'I');
 
   /// from: `public final int secondary80`
   core$_.int get secondary80 =>
       _id_secondary80.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary90 = SystemColorsTonalPalettes._class
+  static final _id_secondary90 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary90', r'I');
 
   /// from: `public final int secondary90`
   core$_.int get secondary90 =>
       _id_secondary90.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary95 = SystemColorsTonalPalettes._class
+  static final _id_secondary95 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary95', r'I');
 
   /// from: `public final int secondary95`
   core$_.int get secondary95 =>
       _id_secondary95.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary99 = SystemColorsTonalPalettes._class
+  static final _id_secondary99 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary99', r'I');
 
   /// from: `public final int secondary99`
   core$_.int get secondary99 =>
       _id_secondary99.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_secondary100 = SystemColorsTonalPalettes._class
+  static final _id_secondary100 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'secondary100', r'I');
 
   /// from: `public final int secondary100`
   core$_.int get secondary100 =>
       _id_secondary100.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary0 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'tertiary0',
-    r'I',
-  );
+  static final _id_tertiary0 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'tertiary0', r'I');
 
   /// from: `public final int tertiary0`
   core$_.int get tertiary0 =>
       _id_tertiary0.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary10 = SystemColorsTonalPalettes._class
+  static final _id_tertiary10 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary10', r'I');
 
   /// from: `public final int tertiary10`
   core$_.int get tertiary10 =>
       _id_tertiary10.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary20 = SystemColorsTonalPalettes._class
+  static final _id_tertiary20 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary20', r'I');
 
   /// from: `public final int tertiary20`
   core$_.int get tertiary20 =>
       _id_tertiary20.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary30 = SystemColorsTonalPalettes._class
+  static final _id_tertiary30 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary30', r'I');
 
   /// from: `public final int tertiary30`
   core$_.int get tertiary30 =>
       _id_tertiary30.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary40 = SystemColorsTonalPalettes._class
+  static final _id_tertiary40 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary40', r'I');
 
   /// from: `public final int tertiary40`
   core$_.int get tertiary40 =>
       _id_tertiary40.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary50 = SystemColorsTonalPalettes._class
+  static final _id_tertiary50 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary50', r'I');
 
   /// from: `public final int tertiary50`
   core$_.int get tertiary50 =>
       _id_tertiary50.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary60 = SystemColorsTonalPalettes._class
+  static final _id_tertiary60 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary60', r'I');
 
   /// from: `public final int tertiary60`
   core$_.int get tertiary60 =>
       _id_tertiary60.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary70 = SystemColorsTonalPalettes._class
+  static final _id_tertiary70 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary70', r'I');
 
   /// from: `public final int tertiary70`
   core$_.int get tertiary70 =>
       _id_tertiary70.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary80 = SystemColorsTonalPalettes._class
+  static final _id_tertiary80 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary80', r'I');
 
   /// from: `public final int tertiary80`
   core$_.int get tertiary80 =>
       _id_tertiary80.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary90 = SystemColorsTonalPalettes._class
+  static final _id_tertiary90 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary90', r'I');
 
   /// from: `public final int tertiary90`
   core$_.int get tertiary90 =>
       _id_tertiary90.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary95 = SystemColorsTonalPalettes._class
+  static final _id_tertiary95 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary95', r'I');
 
   /// from: `public final int tertiary95`
   core$_.int get tertiary95 =>
       _id_tertiary95.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary99 = SystemColorsTonalPalettes._class
+  static final _id_tertiary99 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary99', r'I');
 
   /// from: `public final int tertiary99`
   core$_.int get tertiary99 =>
       _id_tertiary99.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_tertiary100 = SystemColorsTonalPalettes._class
+  static final _id_tertiary100 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'tertiary100', r'I');
 
   /// from: `public final int tertiary100`
   core$_.int get tertiary100 =>
       _id_tertiary100.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral0 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_neutral0 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'neutral0',
     r'I',
   );
@@ -747,204 +723,182 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get neutral0 =>
       _id_neutral0.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral10 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'neutral10',
-    r'I',
-  );
+  static final _id_neutral10 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'neutral10', r'I');
 
   /// from: `public final int neutral10`
   core$_.int get neutral10 =>
       _id_neutral10.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral20 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'neutral20',
-    r'I',
-  );
+  static final _id_neutral20 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'neutral20', r'I');
 
   /// from: `public final int neutral20`
   core$_.int get neutral20 =>
       _id_neutral20.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral30 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'neutral30',
-    r'I',
-  );
+  static final _id_neutral30 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'neutral30', r'I');
 
   /// from: `public final int neutral30`
   core$_.int get neutral30 =>
       _id_neutral30.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral40 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'neutral40',
-    r'I',
-  );
+  static final _id_neutral40 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'neutral40', r'I');
 
   /// from: `public final int neutral40`
   core$_.int get neutral40 =>
       _id_neutral40.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral50 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'neutral50',
-    r'I',
-  );
+  static final _id_neutral50 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'neutral50', r'I');
 
   /// from: `public final int neutral50`
   core$_.int get neutral50 =>
       _id_neutral50.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral60 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'neutral60',
-    r'I',
-  );
+  static final _id_neutral60 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'neutral60', r'I');
 
   /// from: `public final int neutral60`
   core$_.int get neutral60 =>
       _id_neutral60.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral70 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'neutral70',
-    r'I',
-  );
+  static final _id_neutral70 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'neutral70', r'I');
 
   /// from: `public final int neutral70`
   core$_.int get neutral70 =>
       _id_neutral70.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral80 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'neutral80',
-    r'I',
-  );
+  static final _id_neutral80 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'neutral80', r'I');
 
   /// from: `public final int neutral80`
   core$_.int get neutral80 =>
       _id_neutral80.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral90 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'neutral90',
-    r'I',
-  );
+  static final _id_neutral90 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'neutral90', r'I');
 
   /// from: `public final int neutral90`
   core$_.int get neutral90 =>
       _id_neutral90.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral95 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'neutral95',
-    r'I',
-  );
+  static final _id_neutral95 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'neutral95', r'I');
 
   /// from: `public final int neutral95`
   core$_.int get neutral95 =>
       _id_neutral95.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral99 = SystemColorsTonalPalettes._class.instanceFieldId(
-    r'neutral99',
-    r'I',
-  );
+  static final _id_neutral99 = SystemColorsDynamicPalette._class
+      .instanceFieldId(r'neutral99', r'I');
 
   /// from: `public final int neutral99`
   core$_.int get neutral99 =>
       _id_neutral99.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutral100 = SystemColorsTonalPalettes._class
+  static final _id_neutral100 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutral100', r'I');
 
   /// from: `public final int neutral100`
   core$_.int get neutral100 =>
       _id_neutral100.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant0 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant0 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant0', r'I');
 
   /// from: `public final int neutralVariant0`
   core$_.int get neutralVariant0 =>
       _id_neutralVariant0.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant10 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant10 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant10', r'I');
 
   /// from: `public final int neutralVariant10`
   core$_.int get neutralVariant10 =>
       _id_neutralVariant10.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant20 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant20 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant20', r'I');
 
   /// from: `public final int neutralVariant20`
   core$_.int get neutralVariant20 =>
       _id_neutralVariant20.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant30 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant30 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant30', r'I');
 
   /// from: `public final int neutralVariant30`
   core$_.int get neutralVariant30 =>
       _id_neutralVariant30.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant40 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant40 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant40', r'I');
 
   /// from: `public final int neutralVariant40`
   core$_.int get neutralVariant40 =>
       _id_neutralVariant40.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant50 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant50 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant50', r'I');
 
   /// from: `public final int neutralVariant50`
   core$_.int get neutralVariant50 =>
       _id_neutralVariant50.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant60 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant60 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant60', r'I');
 
   /// from: `public final int neutralVariant60`
   core$_.int get neutralVariant60 =>
       _id_neutralVariant60.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant70 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant70 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant70', r'I');
 
   /// from: `public final int neutralVariant70`
   core$_.int get neutralVariant70 =>
       _id_neutralVariant70.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant80 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant80 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant80', r'I');
 
   /// from: `public final int neutralVariant80`
   core$_.int get neutralVariant80 =>
       _id_neutralVariant80.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant90 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant90 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant90', r'I');
 
   /// from: `public final int neutralVariant90`
   core$_.int get neutralVariant90 =>
       _id_neutralVariant90.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant95 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant95 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant95', r'I');
 
   /// from: `public final int neutralVariant95`
   core$_.int get neutralVariant95 =>
       _id_neutralVariant95.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant99 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant99 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant99', r'I');
 
   /// from: `public final int neutralVariant99`
   core$_.int get neutralVariant99 =>
       _id_neutralVariant99.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_neutralVariant100 = SystemColorsTonalPalettes._class
+  static final _id_neutralVariant100 = SystemColorsDynamicPalette._class
       .instanceFieldId(r'neutralVariant100', r'I');
 
   /// from: `public final int neutralVariant100`
   core$_.int get neutralVariant100 =>
       _id_neutralVariant100.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error0 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error0 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error0',
     r'I',
   );
@@ -953,7 +907,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error0 =>
       _id_error0.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error10 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error10 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error10',
     r'I',
   );
@@ -962,7 +916,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error10 =>
       _id_error10.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error20 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error20 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error20',
     r'I',
   );
@@ -971,7 +925,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error20 =>
       _id_error20.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error30 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error30 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error30',
     r'I',
   );
@@ -980,7 +934,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error30 =>
       _id_error30.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error40 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error40 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error40',
     r'I',
   );
@@ -989,7 +943,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error40 =>
       _id_error40.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error50 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error50 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error50',
     r'I',
   );
@@ -998,7 +952,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error50 =>
       _id_error50.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error60 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error60 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error60',
     r'I',
   );
@@ -1007,7 +961,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error60 =>
       _id_error60.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error70 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error70 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error70',
     r'I',
   );
@@ -1016,7 +970,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error70 =>
       _id_error70.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error80 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error80 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error80',
     r'I',
   );
@@ -1025,7 +979,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error80 =>
       _id_error80.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error90 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error90 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error90',
     r'I',
   );
@@ -1034,7 +988,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error90 =>
       _id_error90.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error95 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error95 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error95',
     r'I',
   );
@@ -1043,7 +997,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error95 =>
       _id_error95.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error99 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error99 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error99',
     r'I',
   );
@@ -1052,7 +1006,7 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
   core$_.int get error99 =>
       _id_error99.getNullable(this, jni$_.jint.type) as core$_.int;
 
-  static final _id_error100 = SystemColorsTonalPalettes._class.instanceFieldId(
+  static final _id_error100 = SystemColorsDynamicPalette._class.instanceFieldId(
     r'error100',
     r'I',
   );
@@ -1062,15 +1016,15 @@ extension SystemColorsTonalPalettes$$Methods on SystemColorsTonalPalettes {
       _id_error100.getNullable(this, jni$_.jint.type) as core$_.int;
 }
 
-final class $SystemColorsTonalPalettes$Type$
-    extends jni$_.JType<SystemColorsTonalPalettes> {
+final class $SystemColorsDynamicPalette$Type$
+    extends jni$_.JType<SystemColorsDynamicPalette> {
   @jni$_.internal
-  const $SystemColorsTonalPalettes$Type$();
+  const $SystemColorsDynamicPalette$Type$();
 
   @jni$_.internal
   @core$_.override
   String get signature =>
-      r'Lio/qzz/deminearchiver/system_colors_android/SystemColorsTonalPalettes;';
+      r'Lio/qzz/deminearchiver/system_colors_android/SystemColorsDynamicPalette;';
 }
 
 /// from: `io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme$Companion`
