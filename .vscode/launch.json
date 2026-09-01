@@ -56,6 +56,33 @@
       "program": "lib/main.dart"
     },
     {
+      "name": "system_colors_android/example (debug)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "args": [],
+      "cwd": "packages/system_colors/system_colors_android/example",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "system_colors_android/example (profile)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": [],
+      "cwd": "packages/system_colors/system_colors_android/example",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "system_colors_android/example (release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": [],
+      "cwd": "packages/system_colors/system_colors_android/example",
+      "program": "lib/main.dart"
+    },
+    {
       "name": "touch_targets/example (debug)",
       "request": "launch",
       "type": "dart",
