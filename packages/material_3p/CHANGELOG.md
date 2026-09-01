@@ -41,7 +41,6 @@
 - Fixed pull-to-refresh `ScrollPhysics` incorrectly handling zero user offsets.
   - Now pull-to-refresh should work with `BouncingScrollPhysics` without any issues.
 
-
 ## 0.3.0
 
 - Removed `material_loading_indicator` library. Replaced by `material` library.
@@ -74,7 +73,6 @@
 - Removed dependency on the `meta` package.
 
 - Improved package file structure.
-
 
 ## 0.1.0
 
