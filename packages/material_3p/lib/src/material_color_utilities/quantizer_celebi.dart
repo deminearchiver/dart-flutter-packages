@@ -10,9 +10,7 @@ import 'package:material_3p/material_color_utilities.dart';
 /// and was found in their 2011 paper,
 /// Improving the Performance of K-Means for Color Quantization.
 /// https://arxiv.org/abs/1101.0395
-final class QuantizerCelebi implements Quantizer {
-  const QuantizerCelebi();
-
+final class const QuantizerCelebi() implements Quantizer {
   /// Reduce the number of colors needed to represented the input, minimizing
   /// the difference between the original image and the recolored image.
   ///
@@ -31,7 +29,6 @@ final class QuantizerCelebi implements Quantizer {
       pixels,
       maxColors,
       startingClusters: wuResult.colorToCount.keys.toList(),
-      pointProvider: const PointProviderLab(),
       returnInputPixelToClusterPixel: returnInputPixelToClusterPixel,
     );
     return wsmeansResult;

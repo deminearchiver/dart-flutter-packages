@@ -402,25 +402,25 @@ final class AndroidDynamicColors._() {
     double lowerBound = 0.0,
     double upperBound = 100.0,
     double chromaMultiplier = 1.0,
-  ]) => MathUtils.clampDouble(
-    lowerBound,
-    upperBound,
+  ]) => MathUtils.clamp(
     _findBestToneForChroma(
       palette.hue,
       palette.chroma * chromaMultiplier,
       100.0,
       true,
     ),
+    lowerBound,
+    upperBound,
   );
 
   static double _tMinC(
     TonalPalette palette, [
     double lowerBound = 0.0,
     double upperBound = 100.0,
-  ]) => MathUtils.clampDouble(
+  ]) => MathUtils.clamp(
+    _findBestToneForChroma(palette.hue, palette.chroma, 0.0, false),
     lowerBound,
     upperBound,
-    _findBestToneForChroma(palette.hue, palette.chroma, 0.0, false),
   );
 }
 

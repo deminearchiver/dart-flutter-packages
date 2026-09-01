@@ -32,9 +32,9 @@ final class const QuantizerWsmeans() implements Quantizer {
     final random = math.Random(0x42688);
 
     final pixelToCount = <int, int>{};
-    final points = List<List<double>>.generate(
+    final points = List<(double, double, double)>.generate(
       inputPixels.length,
-      (index) => [],
+      (index) => (0.0, 0.0, 0.0),
     );
     final pixels = List<int>.filled(inputPixels.length, 0);
     const pointProvider = PointProviderLab();
@@ -151,23 +151,21 @@ final class const QuantizerWsmeans() implements Quantizer {
         final point = points[i];
         final count = counts[i];
         pixelCountSums[clusterIndex] += count;
-        componentASums[clusterIndex] += point[0] * count;
-        componentBSums[clusterIndex] += point[1] * count;
-        componentCSums[clusterIndex] += point[2] * count;
+        componentASums[clusterIndex] += point.$1 * count;
+        componentBSums[clusterIndex] += point.$2 * count;
+        componentCSums[clusterIndex] += point.$3 * count;
       }
 
       for (var i = 0; i < clusterCount; i++) {
         final count = pixelCountSums[i];
         if (count == 0) {
-          clusters[i] = [0.0, 0.0, 0.0];
+          clusters[i] = (0.0, 0.0, 0.0);
           continue;
         }
         final a = componentASums[i] / count;
         final b = componentBSums[i] / count;
         final c = componentCSums[i] / count;
-        clusters[i][0] = a;
-        clusters[i][1] = b;
-        clusters[i][2] = c;
+        clusters[i] = (a, b, c);
       }
     }
     final argbToPopulation = <int, int>{};

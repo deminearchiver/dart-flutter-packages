@@ -25,12 +25,32 @@
   - Added `DynamicScheme.raw()` constructor for creating potentially logically impossible scheme configurations.
   - Removed ARGB dynamic color value getters from the class and replaced with extension methods instead: `MaterialDynamicSchemeColorsExtension` and `AndroidDynamicSchemeColorsExtension` (on `DynamicScheme`).
 
-- Aligning the library with Dart best practices.
+- Removed `ColorSpecs` in favor of `ColorSpec.fromSpecVersion()` factory constructor.
+
+- Changed returns types of functions that work with color spaces from `List<double>` to use [Dart records](https://dart.dev/language/records).
+  - This affects some helpers from `ColorUtils` and other classes.
+
+- Removed `MathUtils.matrixMultiply` and inlined matrix calculations.
+  - The function was able to only multiply 3-component vectors with matrices.
+  - It was removed as part of moving away from `List<double>`.
+
+- Merged `MathUtils.clampInt(...)` and `MathUtils.clampDouble(...)` into `MathUtils.clamp()`.
+  - The new implementation is generic, allowing to use either `int` or `double` type.
+  - Moved the value parameter to the front of the argument list.
+
+- Optimized and merged `MathUtils.sanitizeDegreesInt()` and `MathUtils.sanitizeDegreesDouble()` into `MathUtils.sanitizeDegrees()`.
+  - The new implementation is generic, allowing to use either `int` or `double` type.
+  - Eliminated an unneeded negative input check, because [Dart modulo operator is euclidean](https://api.flutter.dev/flutter/dart-core/num/operator_modulo.html).
+
+- Changed `PointerProvider` to have a generic parameter instead of a `List<double>`.
+  - Now, `PointerProviderLab` implements `PointerProvider<(double, double, double)>`.
+
+- Added `year` property to `SpecVersion` and implemented `Comparable<SpecVersion>` in order to make spec versions orderable.
+
+- Aligned the library with Dart best practices.
   - Renamed `TemperatureCache.getComplement()` to `TemperatureCache.complement` and made it a getter.
   - Changed `Score.score()` positional parameters to be named instead.
   - Made `Hct` immutable to avoid issues with value equality in collections: removed `hue`, `chroma` and `tone` setters and added a new `copyWith` method.
-  - Added `year` property to `SpecVersion` and implemented `Comparable<SpecVersion>` in order to make spec versions orderable.
-  - Removed `ColorSpecs` in favor of `ColorSpec.fromSpecVersion()` factory constructor.
   - Renamed `ViewingConditions.srgb` to `ViewingConditions.sRgb`.
 
 - Bumped minimum SDK version to Dart 3.13.

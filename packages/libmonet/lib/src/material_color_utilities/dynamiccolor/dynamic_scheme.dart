@@ -380,7 +380,7 @@ class const DynamicScheme.raw({
     final sourceHue = sourceColorHct.hue;
     for (var i = 0; i < size; i++) {
       if (sourceHue >= hueBreakpoints[i] && sourceHue < hueBreakpoints[i + 1]) {
-        return MathUtils.sanitizeDegreesDouble(hues[i]);
+        return MathUtils.sanitizeDegrees(hues[i]);
       }
     }
     // No condition matched, return the source value.
@@ -397,7 +397,7 @@ class const DynamicScheme.raw({
       // No condition matched, return the source hue.
       rotation = 0.0;
     }
-    return MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + rotation);
+    return MathUtils.sanitizeDegrees(sourceColorHct.hue + rotation);
   }
 }
 

@@ -275,8 +275,8 @@ class const ColorSpec2026() extends ColorSpec2025 {
       tone: (scheme) => !scheme.isDark && scheme.sourceColorHct.chroma <= 12
           ? 90.0
           : scheme.sourceColorHct.tone > 55
-          ? MathUtils.clampDouble(61.0, 90.0, scheme.sourceColorHct.tone)
-          : MathUtils.clampDouble(30.0, 49.0, scheme.sourceColorHct.tone),
+          ? MathUtils.clamp(scheme.sourceColorHct.tone, 61.0, 90.0)
+          : MathUtils.clamp(scheme.sourceColorHct.tone, 30.0, 49.0),
       isBackground: true,
       background: highestSurface,
       contrastCurve: (scheme) =>
@@ -544,8 +544,8 @@ class const ColorSpec2026() extends ColorSpec2025 {
             scheme.sourceColorHctList.elementAtOrNull(1) ??
             scheme.sourceColorHct;
         return secondarySourceColorHct.tone > 55.0
-            ? MathUtils.clampDouble(61.0, 90.0, secondarySourceColorHct.tone)
-            : MathUtils.clampDouble(20.0, 49.0, secondarySourceColorHct.tone);
+            ? MathUtils.clamp(secondarySourceColorHct.tone, 61.0, 90.0)
+            : MathUtils.clamp(secondarySourceColorHct.tone, 20.0, 49.0);
       },
       isBackground: true,
       background: highestSurface,
@@ -854,25 +854,25 @@ class const ColorSpec2026() extends ColorSpec2025 {
     double lowerBound = 0.0,
     double upperBound = 100.0,
     double chromaMultiplier = 1.0,
-  ]) => MathUtils.clampDouble(
-    lowerBound,
-    upperBound,
+  ]) => MathUtils.clamp(
     _findBestToneForChroma(
       palette.hue,
       palette.chroma * chromaMultiplier,
       100.0,
       true,
     ),
+    lowerBound,
+    upperBound,
   );
 
   static double _tMinC(
     TonalPalette palette, [
     double lowerBound = 0.0,
     double upperBound = 100.0,
-  ]) => MathUtils.clampDouble(
+  ]) => MathUtils.clamp(
+    _findBestToneForChroma(palette.hue, palette.chroma, 0.0, false),
     lowerBound,
     upperBound,
-    _findBestToneForChroma(palette.hue, palette.chroma, 0.0, false),
   );
 
   @pragma("wasm:prefer-inline")

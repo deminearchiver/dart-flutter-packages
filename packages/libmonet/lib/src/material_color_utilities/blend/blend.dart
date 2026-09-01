@@ -21,7 +21,7 @@ abstract final class Blend {
       toHct.hue,
     );
     final rotationDegrees = math.min(differenceDegrees * 0.5, 15.0);
-    final outputHue = MathUtils.sanitizeDegreesDouble(
+    final outputHue = MathUtils.sanitizeDegrees(
       fromHct.hue +
           rotationDegrees * MathUtils.rotationDirection(fromHct.hue, toHct.hue),
     );

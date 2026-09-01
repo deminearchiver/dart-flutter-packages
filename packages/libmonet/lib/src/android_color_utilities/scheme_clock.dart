@@ -17,7 +17,7 @@ class SchemeClock({
         ),
         secondaryPalette: .fromHueAndChroma(
           sourceColor.asHct.hue + 10.0,
-          MathUtils.clampDouble(17.0, 40.0, sourceColor.asHct.chroma * 0.85),
+          MathUtils.clamp(sourceColor.asHct.chroma * 0.85, 17.0, 40.0),
         ),
         tertiaryPalette: .fromHueAndChroma(
           sourceColor.asHct.hue + 20.0,

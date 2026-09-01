@@ -35,7 +35,7 @@ dependencies:
   json_annotation: ^4.12.0
   linked_layouts: ^0.6.0
   markdown: ^7.3.1
-  material_ui: ^1.0.0
+  material_ui: ^1.1.0
   meta: ^1.18.0
   motor: ^1.1.0
   skeletonizer: ^2.1.3

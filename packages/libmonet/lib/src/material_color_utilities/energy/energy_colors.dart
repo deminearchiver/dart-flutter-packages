@@ -75,7 +75,7 @@ abstract final class EnergyColors {
         baseColorRole ?? (isTertiary ? .tertiary : .others);
     final endColor = _energyEndColor(
       baseColor,
-      MathUtils.sanitizeDegreesDouble(endHue),
+      MathUtils.sanitizeDegrees(endHue),
       isDark,
       isBaseline,
       effectiveBaseColorRole,
@@ -83,7 +83,7 @@ abstract final class EnergyColors {
     final middleColor = _energyMiddleColor(
       baseColor,
       endColor,
-      MathUtils.sanitizeDegreesDouble(middleHue),
+      MathUtils.sanitizeDegrees(middleHue),
       isBaseline,
     );
     return (middleColor, endColor);
@@ -120,10 +120,10 @@ abstract final class EnergyColors {
     double middleHueRotation,
   ) {
     final direction = rotationDirection.sign;
-    final endHue = MathUtils.sanitizeDegreesDouble(
+    final endHue = MathUtils.sanitizeDegrees(
       baseColor.hue + endHueRotation * direction,
     );
-    final middleHue = MathUtils.sanitizeDegreesDouble(
+    final middleHue = MathUtils.sanitizeDegrees(
       baseColor.hue + middleHueRotation * direction,
     );
     return withHueValuesHct(baseColor, isDark, endHue, middleHue);

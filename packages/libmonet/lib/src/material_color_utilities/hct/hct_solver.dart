@@ -321,14 +321,23 @@ abstract final class HctSolver {
 
   /// Returns the hue of a linear RGB color in CAM16.
   @internal
-  static double hueOf(List<double> linrgb) {
-    final scaledDiscount = MathUtils.matrixMultiply(
-      linrgb,
-      scaledDiscountFromLinrgb,
-    );
-    final rA = chromaticAdaptation(scaledDiscount[0]);
-    final gA = chromaticAdaptation(scaledDiscount[1]);
-    final bA = chromaticAdaptation(scaledDiscount[2]);
+  static double hueOf(double linearR, double linearG, double linearB) {
+    const matrix = scaledDiscountFromLinrgb;
+    final scaledDiscountR =
+        linearR * matrix[0][0] +
+        linearG * matrix[0][1] +
+        linearB * matrix[0][2];
+    final scaledDiscountG =
+        linearR * matrix[1][0] +
+        linearG * matrix[1][1] +
+        linearB * matrix[1][2];
+    final scaledDiscountB =
+        linearR * matrix[2][0] +
+        linearG * matrix[2][1] +
+        linearB * matrix[2][2];
+    final rA = chromaticAdaptation(scaledDiscountR);
+    final gA = chromaticAdaptation(scaledDiscountG);
+    final bA = chromaticAdaptation(scaledDiscountB);
     // redness-greenness
     final a = (11.0 * rA + -12.0 * gA + bA) / 11.0;
     // yellowness-blueness
@@ -361,28 +370,40 @@ abstract final class HctSolver {
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")
   @internal
-  static List<double> lerpPoint(
-    List<double> source,
+  static (double, double, double) lerpPoint(
+    (double, double, double) source,
     double t,
-    List<double> target,
-  ) => [
-    source[0] + (target[0] - source[0]) * t,
-    source[1] + (target[1] - source[1]) * t,
-    source[2] + (target[2] - source[2]) * t,
-  ];
+    (double, double, double) target,
+  ) => (
+    source.$1 + (target.$1 - source.$1) * t,
+    source.$2 + (target.$2 - source.$2) * t,
+    source.$3 + (target.$3 - source.$3) * t,
+  );
 
   /// Intersects a segment with a plane.
   @internal
-  static List<double> setCoordinate(
-    List<double> source,
+  static (double, double, double) setCoordinate(
+    (double, double, double) source,
     double coordinate,
-    List<double> target,
+    (double, double, double) target,
     int axis,
+  ) => _setCoordinate(source, coordinate, target, _axes[axis]);
+
+  static (double, double, double) _setCoordinate(
+    (double, double, double) source,
+    double coordinate,
+    (double, double, double) target,
+    double Function((double, double, double)) axis,
   ) => lerpPoint(
     source,
-    intercept(source[axis], coordinate, target[axis]),
+    intercept(axis(source), coordinate, axis(target)),
     target,
   );
+
+  static double _axis0((double, double, double) point) => point.$1;
+  static double _axis1((double, double, double) point) => point.$2;
+  static double _axis2((double, double, double) point) => point.$3;
+  static const _axes = [_axis0, _axis1, _axis2];
 
   /// Ensure X is between 0 and 100.
   @pragma("wasm:prefer-inline")
@@ -393,7 +414,7 @@ abstract final class HctSolver {
 
   /// Returns the nth possible vertex of the polygonal intersection.
   @internal
-  static List<double>? nthVertex(double y, int n) {
+  static (double, double, double)? nthVertex(double y, int n) {
     final kR = yFromLinrgb[0];
     final kG = yFromLinrgb[1];
     final kB = yFromLinrgb[2];
@@ -403,24 +424,27 @@ abstract final class HctSolver {
       final g = coordA;
       final b = coordB;
       final r = (y - g * kG - b * kB) / kR;
-      return isBounded(r) ? [r, g, b] : null;
+      return isBounded(r) ? (r, g, b) : null;
     } else if (n < 8) {
       final b = coordA;
       final r = coordB;
       final g = (y - r * kR - b * kB) / kG;
-      return isBounded(g) ? [r, g, b] : null;
+      return isBounded(g) ? (r, g, b) : null;
     } else {
       final r = coordA;
       final g = coordB;
       final b = (y - r * kR - g * kG) / kB;
-      return isBounded(b) ? [r, g, b] : null;
+      return isBounded(b) ? (r, g, b) : null;
     }
   }
 
   /// Finds the segment containing the desired color.
   @internal
-  static List<List<double>> bisectToSegment(double y, double targetHue) {
-    List<double>? left;
+  static List<(double, double, double)> bisectToSegment(
+    double y,
+    double targetHue,
+  ) {
+    (double, double, double)? left;
     var right = left;
     var leftHue = 0.0;
     var rightHue = 0.0;
@@ -429,7 +453,7 @@ abstract final class HctSolver {
     for (var n = 0; n < 12; n++) {
       final mid = nthVertex(y, n);
       if (mid != null) {
-        final midHue = hueOf(mid);
+        final midHue = hueOf(mid.$1, mid.$2, mid.$3);
         if (!initialized) {
           left = mid;
           right = mid;
@@ -455,11 +479,10 @@ abstract final class HctSolver {
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")
   @internal
-  static List<double> midpoint(List<double> a, List<double> b) => [
-    (a[0] + b[0]) / 2,
-    (a[1] + b[1]) / 2,
-    (a[2] + b[2]) / 2,
-  ];
+  static (double, double, double) midpoint(
+    (double, double, double) a,
+    (double, double, double) b,
+  ) => ((a.$1 + b.$1) / 2.0, (a.$2 + b.$2) / 2.0, (a.$3 + b.$3) / 2.0);
 
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
@@ -475,21 +498,21 @@ abstract final class HctSolver {
 
   /// Finds a color with the given Y and hue on the boundary of the cube.
   @internal
-  static List<double> bisectToLimit(double y, double targetHue) {
+  static (double, double, double) bisectToLimit(double y, double targetHue) {
     final segment = bisectToSegment(y, targetHue);
     var left = segment[0];
-    var leftHue = hueOf(left);
+    var leftHue = hueOf(left.$1, left.$2, left.$3);
     var right = segment[1];
-    for (var axis = 0; axis < 3; axis++) {
-      if (left[axis] != right[axis]) {
+    for (final axis in _axes) {
+      if (axis(left) != axis(right)) {
         var lPlane = -1;
         var rPlane = 255;
-        if (left[axis] < right[axis]) {
-          lPlane = criticalPlaneBelow(trueDelinearized(left[axis]));
-          rPlane = criticalPlaneAbove(trueDelinearized(right[axis]));
+        if (axis(left) < axis(right)) {
+          lPlane = criticalPlaneBelow(trueDelinearized(axis(left)));
+          rPlane = criticalPlaneAbove(trueDelinearized(axis(right)));
         } else {
-          lPlane = criticalPlaneAbove(trueDelinearized(left[axis]));
-          rPlane = criticalPlaneBelow(trueDelinearized(right[axis]));
+          lPlane = criticalPlaneAbove(trueDelinearized(axis(left)));
+          rPlane = criticalPlaneBelow(trueDelinearized(axis(right)));
         }
         for (var i = 0; i < 8; i++) {
           if ((rPlane - lPlane).abs() <= 1.0) {
@@ -497,8 +520,8 @@ abstract final class HctSolver {
           } else {
             final mPlane = ((lPlane + rPlane) / 2.0).floor();
             final midPlaneCoordinate = criticalPlanes[mPlane];
-            final mid = setCoordinate(left, midPlaneCoordinate, right, axis);
-            final midHue = hueOf(mid);
+            final mid = _setCoordinate(left, midPlaneCoordinate, right, axis);
+            final midHue = hueOf(mid.$1, mid.$2, mid.$3);
             if (areInCyclicOrder(leftHue, targetHue, midHue)) {
               right = mid;
               rPlane = mPlane;
@@ -568,29 +591,37 @@ abstract final class HctSolver {
       final rCScaled = inverseChromaticAdaptation(rA);
       final gCScaled = inverseChromaticAdaptation(gA);
       final bCScaled = inverseChromaticAdaptation(bA);
-      final linrgb = MathUtils.matrixMultiply([
-        rCScaled,
-        gCScaled,
-        bCScaled,
-      ], linrgbFromScaledDiscount);
+      const matrix = linrgbFromScaledDiscount;
+      final linearR =
+          rCScaled * matrix[0][0] +
+          gCScaled * matrix[0][1] +
+          bCScaled * matrix[0][2];
+      final linearG =
+          rCScaled * matrix[1][0] +
+          gCScaled * matrix[1][1] +
+          bCScaled * matrix[1][2];
+      final linearB =
+          rCScaled * matrix[2][0] +
+          gCScaled * matrix[2][1] +
+          bCScaled * matrix[2][2];
       // ===========================================================
       // Operations inlined from Cam16 to avoid repeated calculation
       // ===========================================================
-      if (linrgb[0] < 0.0 || linrgb[1] < 0.0 || linrgb[2] < 0.0) {
+      if (linearR < 0.0 || linearG < 0.0 || linearB < 0.0) {
         return 0;
       }
       final kR = yFromLinrgb[0];
       final kG = yFromLinrgb[1];
       final kB = yFromLinrgb[2];
-      final fnj = kR * linrgb[0] + kG * linrgb[1] + kB * linrgb[2];
+      final fnj = kR * linearR + kG * linearG + kB * linearB;
       if (fnj <= 0.0) {
         return 0;
       }
       if (iterationRound == 4 || (fnj - y).abs() < 0.002) {
-        if (linrgb[0] > 100.01 || linrgb[1] > 100.01 || linrgb[2] > 100.01) {
+        if (linearR > 100.01 || linearG > 100.01 || linearB > 100.01) {
           return 0;
         }
-        return ColorUtils.argbFromLinrgb(linrgb);
+        return ColorUtils.argbFromLinrgb(linearR, linearG, linearB);
       }
       // Iterates with Newton method,
       // Using 2 * fn(j) / j as the approximation of fn'(j)
@@ -604,13 +635,13 @@ abstract final class HctSolver {
     if (chroma < 0.0001 || lstar < 0.0001 || lstar > 99.9999) {
       return ColorUtils.argbFromLstar(lstar);
     }
-    hueDegrees = MathUtils.sanitizeDegreesDouble(hueDegrees);
+    hueDegrees = MathUtils.sanitizeDegrees(hueDegrees);
     final hueRadians = hueDegrees / 180.0 * math.pi;
     final y = ColorUtils.yFromLstar(lstar);
     final exactAnswer = findResultByJ(hueRadians, chroma, y);
     if (exactAnswer != 0) return exactAnswer;
-    final linrgb = bisectToLimit(y, hueRadians);
-    return ColorUtils.argbFromLinrgb(linrgb);
+    final (linearR, linearG, linearB) = bisectToLimit(y, hueRadians);
+    return ColorUtils.argbFromLinrgb(linearR, linearG, linearB);
   }
 
   /// Finds an sRGB color with the given hue, chroma, and L*, if possible.

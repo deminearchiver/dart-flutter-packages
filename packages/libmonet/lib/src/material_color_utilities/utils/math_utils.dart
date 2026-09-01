@@ -10,66 +10,28 @@ abstract final class MathUtils {
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")
-  static int clampInt(int min, int max, int input) => input < min
+  static T clamp<T extends num>(T value, T min, T max) => value < min
       ? min
-      : input > max
+      : value > max
       ? max
-      : input;
+      : value;
 
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")
-  static double clampDouble(double min, double max, double input) => input < min
-      ? min
-      : input > max
-      ? max
-      : input;
-
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
-  static int sanitizeDegreesInt(int degrees) {
-    degrees = degrees % 360;
-    if (degrees < 0) {
-      degrees = degrees + 360;
-    }
-    return degrees;
-  }
-
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
-  static double sanitizeDegreesDouble(double degrees) {
-    degrees = degrees % 360.0;
-    if (degrees < 0.0) {
-      degrees = degrees + 360.0;
-    }
-    return degrees;
-  }
+  static T sanitizeDegrees<T extends num>(T degrees) => degrees % 360 as T;
 
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")
   static double rotationDirection(double from, double to) =>
-      sanitizeDegreesDouble(to - from) <= 180.0 ? 1.0 : -1.0;
+      sanitizeDegrees(to - from) <= 180.0 ? 1.0 : -1.0;
 
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
   @pragma("dart2js:prefer-inline")
   static double differenceDegrees(double a, double b) =>
       180.0 - ((a - b).abs() - 180.0).abs();
-
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
-  static List<double> matrixMultiply(
-    List<double> row,
-    List<List<double>> matrix,
-  ) => [
-    row[0] * matrix[0][0] + row[1] * matrix[0][1] + row[2] * matrix[0][2],
-    row[0] * matrix[1][0] + row[1] * matrix[1][1] + row[2] * matrix[1][2],
-    row[0] * matrix[2][0] + row[1] * matrix[2][1] + row[2] * matrix[2][2],
-  ];
 
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")

@@ -140,11 +140,7 @@ final class DynamicColor({
     final argb = getHct(scheme).toInt();
     final opacityPercentage = opacity?.call(scheme);
     if (opacityPercentage == null) return argb;
-    final alpha = MathUtils.clampInt(
-      0,
-      255,
-      (opacityPercentage * 255.0).round(),
-    );
+    final alpha = MathUtils.clamp((opacityPercentage * 255.0).round(), 0, 255);
     return (argb & 0x00ffffff) | (alpha << 24);
   }
 

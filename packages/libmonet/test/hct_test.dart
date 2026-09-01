@@ -114,9 +114,9 @@ void main() {
       expect(vc.ncb, closeToWithPrecision(1.017, 3));
       expect(vc.c, closeToWithPrecision(0.69, 3));
       expect(vc.nc, closeToWithPrecision(1.0, 3));
-      expect(vc.rgbD[0], closeToWithPrecision(1.021, 3));
-      expect(vc.rgbD[1], closeToWithPrecision(0.986, 3));
-      expect(vc.rgbD[2], closeToWithPrecision(0.934, 3));
+      expect(vc.rgbD.$1, closeToWithPrecision(1.021, 3));
+      expect(vc.rgbD.$2, closeToWithPrecision(0.986, 3));
+      expect(vc.rgbD.$3, closeToWithPrecision(0.934, 3));
       expect(vc.fl, closeToWithPrecision(0.388, 3));
       expect(vc.flRoot, closeToWithPrecision(0.789, 3));
       expect(vc.z, closeToWithPrecision(1.909, 3));

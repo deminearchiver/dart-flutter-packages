@@ -19,7 +19,7 @@ abstract final class ColorUtils {
     [0.05562093689691305, -0.20395524564742123, 1.0571799111220335],
   ];
 
-  static const whitePointD65 = <double>[95.047, 100.0, 108.883];
+  static const whitePointD65 = (95.047, 100.0, 108.883);
 
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
@@ -27,12 +27,12 @@ abstract final class ColorUtils {
   static int argbFromRgb(int red, int green, int blue) =>
       (255 << 24) | ((red & 255) << 16) | ((green & 255) << 8) | (blue & 255);
 
-  static int argbFromLinrgb(List<double> linrgb) {
-    final r = delinearized(linrgb[0]);
-    final g = delinearized(linrgb[1]);
-    final b = delinearized(linrgb[2]);
-    return argbFromRgb(r, g, b);
-  }
+  static int argbFromLinrgb(double linearR, double linearG, double linearB) =>
+      argbFromRgb(
+        delinearized(linearR),
+        delinearized(linearG),
+        delinearized(linearB),
+      );
 
   @pragma("wasm:prefer-inline")
   @pragma("vm:prefer-inline")
@@ -70,11 +70,16 @@ abstract final class ColorUtils {
     return argbFromRgb(r, g, b);
   }
 
-  static List<double> xyzFromArgb(int argb) {
+  static (double x, double y, double z) xyzFromArgb(int argb) {
     final r = linearized(redFromArgb(argb));
     final g = linearized(greenFromArgb(argb));
     final b = linearized(blueFromArgb(argb));
-    return MathUtils.matrixMultiply([r, g, b], srgbToXyz);
+    const matrix = srgbToXyz;
+    return (
+      matrix[0][0] * r + matrix[0][1] * g + matrix[0][2] * b,
+      matrix[1][0] * r + matrix[1][1] * g + matrix[1][2] * b,
+      matrix[2][0] * r + matrix[2][1] * g + matrix[2][2] * b,
+    );
   }
 
   static int argbFromLab(double l, double a, double b) {
@@ -84,13 +89,13 @@ abstract final class ColorUtils {
     final xNormalized = _labInvf(fx);
     final yNormalized = _labInvf(fy);
     final zNormalized = _labInvf(fz);
-    final x = xNormalized * whitePointD65[0];
-    final y = yNormalized * whitePointD65[1];
-    final z = zNormalized * whitePointD65[2];
+    final x = xNormalized * whitePointD65.$1;
+    final y = yNormalized * whitePointD65.$2;
+    final z = zNormalized * whitePointD65.$3;
     return argbFromXyz(x, y, z);
   }
 
-  static List<double> labFromArgb(int argb) {
+  static (double l, double a, double b) labFromArgb(int argb) {
     final linearR = linearized(redFromArgb(argb));
     final linearG = linearized(greenFromArgb(argb));
     final linearB = linearized(blueFromArgb(argb));
@@ -107,16 +112,16 @@ abstract final class ColorUtils {
         matrix[2][0] * linearR +
         matrix[2][1] * linearG +
         matrix[2][2] * linearB;
-    final xNormalized = x / whitePointD65[0];
-    final yNormalized = y / whitePointD65[1];
-    final zNormalized = z / whitePointD65[2];
+    final xNormalized = x / whitePointD65.$1;
+    final yNormalized = y / whitePointD65.$2;
+    final zNormalized = z / whitePointD65.$3;
     final fx = _labF(xNormalized);
     final fy = _labF(yNormalized);
     final fz = _labF(zNormalized);
     final l = 116.0 * fy - 16.0;
     final a = 500.0 * (fx - fy);
     final b = 200.0 * (fy - fz);
-    return [l, a, b];
+    return (l, a, b);
   }
 
   static int argbFromLstar(double lstar) {
@@ -126,7 +131,7 @@ abstract final class ColorUtils {
   }
 
   static double lstarFromArgb(int argb) {
-    final y = xyzFromArgb(argb)[1];
+    final (_, y, _) = xyzFromArgb(argb);
     return 116.0 * _labF(y / 100.0) - 16.0;
   }
 
@@ -147,7 +152,7 @@ abstract final class ColorUtils {
     final delinearized = normalized <= 0.0031308
         ? normalized * 12.92
         : 1.055 * math.pow(normalized, 1.0 / 2.4) - 0.055;
-    return MathUtils.clampInt(0, 255, (delinearized * 255.0).round());
+    return MathUtils.clamp((delinearized * 255.0).round(), 0, 255);
   }
 
   static double _labF(double t) {

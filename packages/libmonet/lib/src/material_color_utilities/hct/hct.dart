@@ -35,9 +35,9 @@ final class Hct._fromCam({required final int _argb, required Cam16 cam}) {
 
     // 2. Create CAM16 of those XYZ coordinates in default VC.
     final recastInVc = Cam16.fromXyzInViewingConditions(
-      viewedInVc[0],
-      viewedInVc[1],
-      viewedInVc[2],
+      viewedInVc.$1,
+      viewedInVc.$2,
+      viewedInVc.$3,
       .sRgb,
     );
 
@@ -47,7 +47,7 @@ final class Hct._fromCam({required final int _argb, required Cam16 cam}) {
     return .from(
       recastInVc.hue,
       recastInVc.chroma,
-      ColorUtils.lstarFromY(viewedInVc[1]),
+      ColorUtils.lstarFromY(viewedInVc.$2),
     );
   }
 

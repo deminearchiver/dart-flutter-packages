@@ -4,7 +4,7 @@
   - Make sure to import `package:material_ui/material_ui.dart` instead of `package:flutter/material.dart` in your code.
 
 - Upgraded hosted dependencies.
-  - `libmonet` to `^2.0.0-dev.20`.
+  - `libmonet` to `2.0.0-dev.21`.
 
 ## 0.5.0
 

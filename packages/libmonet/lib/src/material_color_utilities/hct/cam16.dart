@@ -78,9 +78,9 @@ final class const Cam16._(
     final bT = (x * matrix[2][0]) + (y * matrix[2][1]) + (z * matrix[2][2]);
 
     // Discount illuminant
-    final rD = viewingConditions.rgbD[0] * rT;
-    final gD = viewingConditions.rgbD[1] * gT;
-    final bD = viewingConditions.rgbD[2] * bT;
+    final rD = viewingConditions.rgbD.$1 * rT;
+    final gD = viewingConditions.rgbD.$2 * gT;
+    final bD = viewingConditions.rgbD.$3 * bT;
 
     // Chromatic adaptation
     final rAF =
@@ -105,7 +105,7 @@ final class const Cam16._(
     // hue
     final atan2 = math.atan2(b, a);
     final atanDegrees = MathUtils.toDegrees(atan2);
-    final hue = MathUtils.sanitizeDegreesDouble(atanDegrees);
+    final hue = MathUtils.sanitizeDegrees(atanDegrees);
     final hueRadians = MathUtils.toRadians(hue);
 
     // achromatic response to color
@@ -240,7 +240,9 @@ final class const Cam16._(
     return dE;
   }
 
-  List<double> xyzInViewingConditions(ViewingConditions viewingConditions) {
+  (double, double, double) xyzInViewingConditions(
+    ViewingConditions viewingConditions,
+  ) {
     final alpha = (chroma == 0.0 || j == 0.0)
         ? 0.0
         : chroma / math.sqrt(j / 100.0);
@@ -282,21 +284,21 @@ final class const Cam16._(
     final bCBase = math.max(0, (27.13 * bA.abs()) / (400.0 - bA.abs()));
     final bC =
         bA.sign * (100.0 / viewingConditions.fl) * math.pow(bCBase, 1.0 / 0.42);
-    final rF = rC / viewingConditions.rgbD[0];
-    final gF = gC / viewingConditions.rgbD[1];
-    final bF = bC / viewingConditions.rgbD[2];
+    final rF = rC / viewingConditions.rgbD.$1;
+    final gF = gC / viewingConditions.rgbD.$2;
+    final bF = bC / viewingConditions.rgbD.$3;
 
     const matrix = cam16rgbToXyz;
     final x = (rF * matrix[0][0]) + (gF * matrix[0][1]) + (bF * matrix[0][2]);
     final y = (rF * matrix[1][0]) + (gF * matrix[1][1]) + (bF * matrix[1][2]);
     final z = (rF * matrix[2][0]) + (gF * matrix[2][1]) + (bF * matrix[2][2]);
-    return [x, y, z];
+    return (x, y, z);
   }
 
   /// ARGB representation of the color, in defined viewing conditions.
   int viewed(ViewingConditions viewingConditions) {
-    final xyz = xyzInViewingConditions(viewingConditions);
-    return ColorUtils.argbFromXyz(xyz[0], xyz[1], xyz[2]);
+    final (x, y, z) = xyzInViewingConditions(viewingConditions);
+    return ColorUtils.argbFromXyz(x, y, z);
   }
 
   int viewedInSrgb() => viewed(.sRgb);

@@ -23,7 +23,7 @@ final class const ViewingConditions._(
   final double ncb,
   final double c,
   final double nc,
-  final List<double> rgbD,
+  final (double, double, double) rgbD,
   final double fl,
   final double flRoot,
   final double z,
@@ -38,7 +38,7 @@ final class const ViewingConditions._(
 
   /// Create ViewingConditions from a simple, physically relevant, set of parameters.
   factory make(
-    List<double> whitePoint,
+    (double x, double y, double z) whitePoint,
     double adaptingLuminance,
     double backgroundLstar,
     double surround,
@@ -51,17 +51,11 @@ final class const ViewingConditions._(
     const matrix = Cam16.xyzToCam16rgb;
     final xyz = whitePoint;
     final rW =
-        (xyz[0] * matrix[0][0]) +
-        (xyz[1] * matrix[0][1]) +
-        (xyz[2] * matrix[0][2]);
+        xyz.$1 * matrix[0][0] + xyz.$2 * matrix[0][1] + xyz.$3 * matrix[0][2];
     final gW =
-        (xyz[0] * matrix[1][0]) +
-        (xyz[1] * matrix[1][1]) +
-        (xyz[2] * matrix[1][2]);
+        xyz.$1 * matrix[1][0] + xyz.$2 * matrix[1][1] + xyz.$3 * matrix[1][2];
     final bW =
-        (xyz[0] * matrix[2][0]) +
-        (xyz[1] * matrix[2][1]) +
-        (xyz[2] * matrix[2][2]);
+        xyz.$1 * matrix[2][0] + xyz.$2 * matrix[2][1] + xyz.$3 * matrix[2][2];
     final f = 0.8 + (surround / 10.0);
     final c = (f >= 0.9)
         ? MathUtils.lerp(0.59, 0.69, (f - 0.9) * 10.0)
@@ -71,27 +65,27 @@ final class const ViewingConditions._(
         : f *
               (1.0 -
                   ((1.0 / 3.6) * math.exp((-adaptingLuminance - 42.0) / 92.0)));
-    d = MathUtils.clampDouble(0.0, 1.0, d);
+    d = MathUtils.clamp(d, 0.0, 1.0);
     final nc = f;
-    final rgbD = <double>[
+    final rgbD = (
       d * (100.0 / rW) + 1.0 - d,
       d * (100.0 / gW) + 1.0 - d,
       d * (100.0 / bW) + 1.0 - d,
-    ];
+    );
     final k = 1.0 / (5.0 * adaptingLuminance + 1.0);
     final k4 = k * k * k * k;
     final k4F = 1.0 - k4;
     final fl =
         (k4 * adaptingLuminance) +
         (0.1 * k4F * k4F * math.pow(5.0 * adaptingLuminance, 1.0 / 3.0));
-    final n = ColorUtils.yFromLstar(backgroundLstar) / whitePoint[1];
+    final n = ColorUtils.yFromLstar(backgroundLstar) / whitePoint.$2;
     final z = 1.48 + math.sqrt(n);
     final nbb = 0.725 / math.pow(n, 0.2);
     final ncb = nbb;
     final rgbAFactors = <double>[
-      math.pow(fl * rgbD[0] * rW / 100.0, 0.42) as double,
-      math.pow(fl * rgbD[1] * gW / 100.0, 0.42) as double,
-      math.pow(fl * rgbD[2] * bW / 100.0, 0.42) as double,
+      math.pow(fl * rgbD.$1 * rW / 100.0, 0.42) as double,
+      math.pow(fl * rgbD.$2 * gW / 100.0, 0.42) as double,
+      math.pow(fl * rgbD.$3 * bW / 100.0, 0.42) as double,
     ];
 
     final rgbA = <double>[

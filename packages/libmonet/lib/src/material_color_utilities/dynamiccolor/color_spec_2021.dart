@@ -847,15 +847,11 @@ class const ColorSpec2021() implements ColorSpec {
       // If constraint is not satisfied, try another round.
       if ((fTone - nTone) * expansionDir < delta) {
         // 2nd round: expand farther to match delta.
-        fTone = MathUtils.clampDouble(0.0, 100.0, nTone + delta * expansionDir);
+        fTone = MathUtils.clamp(nTone + delta * expansionDir, 0.0, 100.0);
         // If constraint is not satisfied, try another round.
         if ((fTone - nTone) * expansionDir < delta) {
           // 3rd round: contract nearer to match delta.
-          nTone = MathUtils.clampDouble(
-            0.0,
-            100.0,
-            fTone - delta * expansionDir,
-          );
+          nTone = MathUtils.clamp(fTone - delta * expansionDir, 0.0, 100.0);
         }
       }
 
@@ -977,7 +973,7 @@ class const ColorSpec2021() implements ColorSpec {
       sourceColor.asHct.chroma,
     ),
     .fruitSalad => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue - 50.0),
+      MathUtils.sanitizeDegrees(sourceColor.asHct.hue - 50.0),
       48.0,
     ),
     .monochrome => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
@@ -985,7 +981,7 @@ class const ColorSpec2021() implements ColorSpec {
     .rainbow => .fromHueAndChroma(sourceColor.asHct.hue, 48.0),
     .tonalSpot => .fromHueAndChroma(sourceColor.asHct.hue, 36.0),
     .expressive => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue + 240.0),
+      MathUtils.sanitizeDegrees(sourceColor.asHct.hue + 240.0),
       40.0,
     ),
     .vibrant => .fromHueAndChroma(sourceColor.asHct.hue, 200.0),
@@ -1010,7 +1006,7 @@ class const ColorSpec2021() implements ColorSpec {
       math.max(sourceColor.asHct.chroma - 32.0, sourceColor.asHct.chroma * 0.5),
     ),
     .fruitSalad => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue - 50.0),
+      MathUtils.sanitizeDegrees(sourceColor.asHct.hue - 50.0),
       36.0,
     ),
     .monochrome => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
@@ -1063,7 +1059,7 @@ class const ColorSpec2021() implements ColorSpec {
     .monochrome => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
     .neutral => .fromHueAndChroma(sourceColor.asHct.hue, 16.0),
     .rainbow || .tonalSpot => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue + 60.0),
+      MathUtils.sanitizeDegrees(sourceColor.asHct.hue + 60.0),
       24.0,
     ),
     .expressive => .fromHueAndChroma(
@@ -1108,7 +1104,7 @@ class const ColorSpec2021() implements ColorSpec {
     .rainbow => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
     .tonalSpot => .fromHueAndChroma(sourceColor.asHct.hue, 6.0),
     .expressive => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue + 15.0),
+      MathUtils.sanitizeDegrees(sourceColor.asHct.hue + 15.0),
       8.0,
     ),
     .vibrant => .fromHueAndChroma(sourceColor.asHct.hue, 10.0),
@@ -1138,7 +1134,7 @@ class const ColorSpec2021() implements ColorSpec {
     .rainbow => .fromHueAndChroma(sourceColor.asHct.hue, 0.0),
     .tonalSpot => .fromHueAndChroma(sourceColor.asHct.hue, 8.0),
     .expressive => .fromHueAndChroma(
-      MathUtils.sanitizeDegreesDouble(sourceColor.asHct.hue + 15.0),
+      MathUtils.sanitizeDegrees(sourceColor.asHct.hue + 15.0),
       12.0,
     ),
     .vibrant => .fromHueAndChroma(sourceColor.asHct.hue, 12.0),

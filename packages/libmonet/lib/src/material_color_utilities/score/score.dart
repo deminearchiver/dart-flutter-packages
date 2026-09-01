@@ -47,7 +47,7 @@ abstract final class Score {
     for (var hue = 0; hue < 360; hue++) {
       final proportion = huePopulation[hue] / populationSum;
       for (var i = hue - 14; i < hue + 16; i++) {
-        final neighborHue = MathUtils.sanitizeDegreesInt(i);
+        final neighborHue = MathUtils.sanitizeDegrees(i);
         hueExcitedProportions[neighborHue] += proportion;
       }
     }
@@ -56,7 +56,7 @@ abstract final class Score {
     // filtering out values that do not have enough chroma or usage.
     final scoredHcts = <_ScoredHct>[];
     for (final hct in colorsHct) {
-      final hue = MathUtils.sanitizeDegreesInt(hct.hue.round());
+      final hue = MathUtils.sanitizeDegrees(hct.hue.round());
       final proportion = hueExcitedProportions[hue];
       if (filter &&
           (hct.chroma < _cutoffChroma ||

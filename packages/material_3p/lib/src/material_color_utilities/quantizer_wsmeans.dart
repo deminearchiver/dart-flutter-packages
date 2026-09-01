@@ -13,9 +13,7 @@ import 'package:material_3p/material_color_utilities.dart';
 /// and was found in their 2011 paper,
 /// Improving the Performance of K-Means for Color Quantization.
 /// https://arxiv.org/abs/1101.0395
-final class QuantizerWsmeans implements Quantizer {
-  const QuantizerWsmeans();
-
+final class const QuantizerWsmeans() implements Quantizer {
   /// Reduce the number of colors needed to represented the input, minimizing
   /// the difference between the original image and the recolored image.
   ///
@@ -26,12 +24,12 @@ final class QuantizerWsmeans implements Quantizer {
     List<int> inputPixels,
     int maxColors, {
     List<int> startingClusters = const [],
-    PointProvider pointProvider = const PointProviderLab(),
     int maxIterations = 5,
     bool returnInputPixelToClusterPixel = false,
   }) {
+    const pointProvider = PointProviderLab();
     final pixelToCount = <int, int>{};
-    final points = <List<double>>[];
+    final points = <(double, double, double)>[];
     final pixels = <int>[];
     var pointCount = 0;
     for (final inputPixel in inputPixels) {
@@ -166,20 +164,20 @@ final class QuantizerWsmeans implements Quantizer {
         final point = points[i];
         final count = counts[i];
         pixelCountSums[clusterIndex] += count;
-        componentASums[clusterIndex] += point[0] * count;
-        componentBSums[clusterIndex] += point[1] * count;
-        componentCSums[clusterIndex] += point[2] * count;
+        componentASums[clusterIndex] += point.$1 * count;
+        componentBSums[clusterIndex] += point.$2 * count;
+        componentCSums[clusterIndex] += point.$3 * count;
       }
       for (var i = 0; i < clusterCount; i++) {
         final count = pixelCountSums[i];
         if (count == 0) {
-          clusters[i] = [0.0, 0.0, 0.0];
+          clusters[i] = (0.0, 0.0, 0.0);
           continue;
         }
         final a = componentASums[i] / count;
         final b = componentBSums[i] / count;
         final c = componentCSums[i] / count;
-        clusters[i] = [a, b, c];
+        clusters[i] = (a, b, c);
       }
     }
 
@@ -218,12 +216,8 @@ final class QuantizerWsmeans implements Quantizer {
   }
 }
 
-class _DistanceAndIndex implements Comparable<_DistanceAndIndex> {
-  _DistanceAndIndex({required this.distance, required this.index});
-
-  double distance;
-  int index;
-
+class _DistanceAndIndex({required var double distance, required var int index})
+    implements Comparable<_DistanceAndIndex> {
   @override
   int compareTo(_DistanceAndIndex other) => distance.compareTo(other.distance);
 }

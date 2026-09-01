@@ -1373,45 +1373,41 @@ class const ColorSpec2025() extends ColorSpec2021 {
 
       switch (constraint) {
         case .exact:
-          selfTone = MathUtils.clampDouble(
-            0.0,
-            100.0,
-            referenceTone + relativeDelta,
-          );
+          selfTone = MathUtils.clamp(referenceTone + relativeDelta, 0.0, 100.0);
         case .nearer:
           if (relativeDelta > 0.0) {
-            selfTone = MathUtils.clampDouble(
-              0.0,
-              100.0,
-              MathUtils.clampDouble(
+            selfTone = MathUtils.clamp(
+              MathUtils.clamp(
+                selfTone,
                 referenceTone,
                 referenceTone + relativeDelta,
-                selfTone,
               ),
+              0.0,
+              100.0,
             );
           } else {
-            selfTone = MathUtils.clampDouble(
-              0.0,
-              100.0,
-              MathUtils.clampDouble(
+            selfTone = MathUtils.clamp(
+              MathUtils.clamp(
+                selfTone,
                 referenceTone + relativeDelta,
                 referenceTone,
-                selfTone,
               ),
+              0.0,
+              100.0,
             );
           }
         case .farther:
           if (relativeDelta > 0.0) {
-            selfTone = MathUtils.clampDouble(
+            selfTone = MathUtils.clamp(
+              selfTone,
               referenceTone + relativeDelta,
               100.0,
-              selfTone,
             );
           } else {
-            selfTone = MathUtils.clampDouble(
+            selfTone = MathUtils.clamp(
+              selfTone,
               0.0,
               referenceTone + relativeDelta,
-              selfTone,
             );
           }
       }
@@ -1434,9 +1430,9 @@ class const ColorSpec2025() extends ColorSpec2021 {
       // Accent fixed dim colors should not be adjusted.
       if (color.isBackground && !color.name.endsWith("_fixed_dim")) {
         if (selfTone >= 57) {
-          selfTone = MathUtils.clampDouble(65.0, 100.0, selfTone);
+          selfTone = MathUtils.clamp(selfTone, 65.0, 100.0);
         } else {
-          selfTone = MathUtils.clampDouble(0.0, 49.0, selfTone);
+          selfTone = MathUtils.clamp(selfTone, 0.0, 49.0);
         }
       }
 
@@ -1468,9 +1464,9 @@ class const ColorSpec2025() extends ColorSpec2021 {
       // Accent fixed dim colors should not be adjusted.
       if (color.isBackground && !color.name.endsWith("_fixed_dim")) {
         if (answer >= 57.0) {
-          answer = MathUtils.clampDouble(65.0, 100.0, answer);
+          answer = MathUtils.clamp(answer, 65.0, 100.0);
         } else {
-          answer = MathUtils.clampDouble(0.0, 49.0, answer);
+          answer = MathUtils.clamp(answer, 0.0, 49.0);
         }
       }
 
@@ -1820,25 +1816,25 @@ class const ColorSpec2025() extends ColorSpec2021 {
     double lowerBound = 0.0,
     double upperBound = 100.0,
     double chromaMultiplier = 1.0,
-  ]) => MathUtils.clampDouble(
-    lowerBound,
-    upperBound,
+  ]) => MathUtils.clamp(
     _findBestToneForChroma(
       palette.hue,
       palette.chroma * chromaMultiplier,
       100.0,
       true,
     ),
+    lowerBound,
+    upperBound,
   );
 
   static double _tMinC(
     TonalPalette palette, [
     double lowerBound = 0.0,
     double upperBound = 100.0,
-  ]) => MathUtils.clampDouble(
+  ]) => MathUtils.clamp(
+    _findBestToneForChroma(palette.hue, palette.chroma, 0.0, false),
     lowerBound,
     upperBound,
-    _findBestToneForChroma(palette.hue, palette.chroma, 0.0, false),
   );
 
   static double _findBestToneForChroma(

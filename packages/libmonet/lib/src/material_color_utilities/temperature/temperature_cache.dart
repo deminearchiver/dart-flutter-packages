@@ -46,7 +46,7 @@ final class TemperatureCache(final Hct input) {
     // Find the color in the other section, closest to the inverse percentile
     // of the input color. This is the complement.
     for (var hueAddend = 0.0; hueAddend <= 360.0; hueAddend += 1.0) {
-      final hue = MathUtils.sanitizeDegreesDouble(
+      final hue = MathUtils.sanitizeDegrees(
         startHue + directionOfRotation * hueAddend,
       );
       if (!_isBetween(hue, startHue, endHue)) {
@@ -81,7 +81,7 @@ final class TemperatureCache(final Hct input) {
 
     var absoluteTotalTempDelta = 0.0;
     for (var i = 0; i < 360; i++) {
-      final hue = MathUtils.sanitizeDegreesInt(startHue + i);
+      final hue = MathUtils.sanitizeDegrees(startHue + i);
       final hct = _hctsByHue[hue];
       final temp = getRelativeTemperature(hct);
       final tempDelta = (temp - lastTemp).abs();
@@ -94,7 +94,7 @@ final class TemperatureCache(final Hct input) {
     var totalTempDelta = 0.0;
     lastTemp = getRelativeTemperature(startHct);
     while (allColors.length < divisions) {
-      final hue = MathUtils.sanitizeDegreesInt(startHue + hueAddend);
+      final hue = MathUtils.sanitizeDegrees(startHue + hueAddend);
       final hct = _hctsByHue[hue];
       final temp = getRelativeTemperature(hct);
       final tempDelta = (temp - lastTemp).abs();
@@ -228,16 +228,16 @@ final class TemperatureCache(final Hct input) {
   /// - Lower bound: -9.66. Chroma is infinite. Assuming max of Lab chroma 130.
   /// - Upper bound: 8.61. Chroma is infinite. Assuming max of Lab chroma 130.
   static double rawTemperature(Hct color) {
-    final lab = ColorUtils.labFromArgb(color.toInt());
-    final hue = MathUtils.sanitizeDegreesDouble(
-      MathUtils.toDegrees(math.atan2(lab[2], lab[1])),
+    final (l, a, b) = ColorUtils.labFromArgb(color.toInt());
+    final hue = MathUtils.sanitizeDegrees(
+      MathUtils.toDegrees(math.atan2(b, a)),
     );
-    final chroma = MathUtils.hypot(lab[1], lab[2]);
+    final chroma = MathUtils.hypot(a, b);
     return -0.5 +
         0.02 *
             math.pow(chroma, 1.07) *
             math.cos(
-              MathUtils.toRadians(MathUtils.sanitizeDegreesDouble(hue - 50.0)),
+              MathUtils.toRadians(MathUtils.sanitizeDegrees(hue - 50.0)),
             );
   }
 
