@@ -3,6 +3,8 @@
 - Migrated to the official [`material_ui`](https://pub.dev/packages/material_ui) package.
   - Make sure to import `package:material_ui/material_ui.dart` instead of `package:flutter/material.dart` in your code.
 
+- Removed `PointerProvider` parameter from quantizers.
+
 - Upgraded hosted dependencies.
   - `libmonet` to `2.0.0-dev.21`.
 
