@@ -4,11 +4,12 @@ package io.qzz.deminearchiver.system_colors_android
 
 import android.content.Context
 import android.os.Build
+import android.R.color.*
 import androidx.annotation.ColorInt
 import androidx.annotation.Keep
 
 @Keep
-class SystemColorsDynamicPalette private constructor(
+class DynamicTonalPalette private constructor(
     @param:ColorInt @field:ColorInt @field:JvmField val primary0: Int,
     @param:ColorInt @field:ColorInt @field:JvmField val primary10: Int,
     @param:ColorInt @field:ColorInt @field:JvmField val primary20: Int,
@@ -323,7 +324,7 @@ class SystemColorsDynamicPalette private constructor(
         @ColorInt
         var error100: Int? = null
 
-        fun build(@ColorInt sentinel: Int) = SystemColorsDynamicPalette(
+        fun build(@ColorInt sentinel: Int) = DynamicTonalPalette(
             primary0 = primary0 ?: sentinel,
             primary10 = primary10 ?: sentinel,
             primary20 = primary20 ?: sentinel,
@@ -413,94 +414,103 @@ class SystemColorsDynamicPalette private constructor(
 
         @JvmStatic
         fun fromContext(context: Context, @ColorInt sentinel: Int) = build(sentinel) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return@build
+            ColorResourceHelper.run {
+                // Palettes are entirely unavailable on pre-31 (A12, M3) API levels.
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return@build
 
+                // Primary.
+                primary0 = getColorById(context, system_accent1_1000)
+                primary10 = getColorById(context, system_accent1_900)
+                primary20 = getColorById(context, system_accent1_800)
+                primary30 = getColorById(context, system_accent1_700)
+                primary40 = getColorById(context, system_accent1_600)
+                primary50 = getColorById(context, system_accent1_500)
+                primary60 = getColorById(context, system_accent1_400)
+                primary70 = getColorById(context, system_accent1_300)
+                primary80 = getColorById(context, system_accent1_200)
+                primary90 = getColorById(context, system_accent1_100)
+                primary95 = getColorById(context, system_accent1_50)
+                primary99 = getColorById(context, system_accent1_10)
+                primary100 = getColorById(context, system_accent1_0)
 
-            primary0 = ColorResourceHelper.getById(context, android.R.color.system_accent1_1000)
-            primary10 = ColorResourceHelper.getById(context, android.R.color.system_accent1_900)
-            primary20 = ColorResourceHelper.getById(context, android.R.color.system_accent1_800)
-            primary30 = ColorResourceHelper.getById(context, android.R.color.system_accent1_700)
-            primary40 = ColorResourceHelper.getById(context, android.R.color.system_accent1_600)
-            primary50 = ColorResourceHelper.getById(context, android.R.color.system_accent1_500)
-            primary60 = ColorResourceHelper.getById(context, android.R.color.system_accent1_400)
-            primary70 = ColorResourceHelper.getById(context, android.R.color.system_accent1_300)
-            primary80 = ColorResourceHelper.getById(context, android.R.color.system_accent1_200)
-            primary90 = ColorResourceHelper.getById(context, android.R.color.system_accent1_100)
-            primary95 = ColorResourceHelper.getById(context, android.R.color.system_accent1_50)
-            primary99 = ColorResourceHelper.getById(context, android.R.color.system_accent1_10)
-            primary100 = ColorResourceHelper.getById(context, android.R.color.system_accent1_0)
+                // Secondary.
+                secondary0 = getColorById(context, system_accent2_1000)
+                secondary10 = getColorById(context, system_accent2_900)
+                secondary20 = getColorById(context, system_accent2_800)
+                secondary30 = getColorById(context, system_accent2_700)
+                secondary40 = getColorById(context, system_accent2_600)
+                secondary50 = getColorById(context, system_accent2_500)
+                secondary60 = getColorById(context, system_accent2_400)
+                secondary70 = getColorById(context, system_accent2_300)
+                secondary80 = getColorById(context, system_accent2_200)
+                secondary90 = getColorById(context, system_accent2_100)
+                secondary95 = getColorById(context, system_accent2_50)
+                secondary99 = getColorById(context, system_accent2_10)
+                secondary100 = getColorById(context, system_accent2_0)
 
-            secondary0 = ColorResourceHelper.getById(context, android.R.color.system_accent2_1000)
-            secondary10 = ColorResourceHelper.getById(context, android.R.color.system_accent2_900)
-            secondary20 = ColorResourceHelper.getById(context, android.R.color.system_accent2_800)
-            secondary30 = ColorResourceHelper.getById(context, android.R.color.system_accent2_700)
-            secondary40 = ColorResourceHelper.getById(context, android.R.color.system_accent2_600)
-            secondary50 = ColorResourceHelper.getById(context, android.R.color.system_accent2_500)
-            secondary60 = ColorResourceHelper.getById(context, android.R.color.system_accent2_400)
-            secondary70 = ColorResourceHelper.getById(context, android.R.color.system_accent2_300)
-            secondary80 = ColorResourceHelper.getById(context, android.R.color.system_accent2_200)
-            secondary90 = ColorResourceHelper.getById(context, android.R.color.system_accent2_100)
-            secondary95 = ColorResourceHelper.getById(context, android.R.color.system_accent2_50)
-            secondary99 = ColorResourceHelper.getById(context, android.R.color.system_accent2_10)
-            secondary100 = ColorResourceHelper.getById(context, android.R.color.system_accent2_0)
+                // Tertiary.
+                tertiary0 = getColorById(context, system_accent3_1000)
+                tertiary10 = getColorById(context, system_accent3_900)
+                tertiary20 = getColorById(context, system_accent3_800)
+                tertiary30 = getColorById(context, system_accent3_700)
+                tertiary40 = getColorById(context, system_accent3_600)
+                tertiary50 = getColorById(context, system_accent3_500)
+                tertiary60 = getColorById(context, system_accent3_400)
+                tertiary70 = getColorById(context, system_accent3_300)
+                tertiary80 = getColorById(context, system_accent3_200)
+                tertiary90 = getColorById(context, system_accent3_100)
+                tertiary95 = getColorById(context, system_accent3_50)
+                tertiary99 = getColorById(context, system_accent3_10)
+                tertiary100 = getColorById(context, system_accent3_0)
 
-            tertiary0 = ColorResourceHelper.getById(context, android.R.color.system_accent3_1000)
-            tertiary10 = ColorResourceHelper.getById(context, android.R.color.system_accent3_900)
-            tertiary20 = ColorResourceHelper.getById(context, android.R.color.system_accent3_800)
-            tertiary30 = ColorResourceHelper.getById(context, android.R.color.system_accent3_700)
-            tertiary40 = ColorResourceHelper.getById(context, android.R.color.system_accent3_600)
-            tertiary50 = ColorResourceHelper.getById(context, android.R.color.system_accent3_500)
-            tertiary60 = ColorResourceHelper.getById(context, android.R.color.system_accent3_400)
-            tertiary70 = ColorResourceHelper.getById(context, android.R.color.system_accent3_300)
-            tertiary80 = ColorResourceHelper.getById(context, android.R.color.system_accent3_200)
-            tertiary90 = ColorResourceHelper.getById(context, android.R.color.system_accent3_100)
-            tertiary95 = ColorResourceHelper.getById(context, android.R.color.system_accent3_50)
-            tertiary99 = ColorResourceHelper.getById(context, android.R.color.system_accent3_10)
-            tertiary100 = ColorResourceHelper.getById(context, android.R.color.system_accent3_0)
+                // Neutral.
+                neutral0 = getColorById(context, system_neutral1_1000)
+                neutral10 = getColorById(context, system_neutral1_900)
+                neutral20 = getColorById(context, system_neutral1_800)
+                neutral30 = getColorById(context, system_neutral1_700)
+                neutral40 = getColorById(context, system_neutral1_600)
+                neutral50 = getColorById(context, system_neutral1_500)
+                neutral60 = getColorById(context, system_neutral1_400)
+                neutral70 = getColorById(context, system_neutral1_300)
+                neutral80 = getColorById(context, system_neutral1_200)
+                neutral90 = getColorById(context, system_neutral1_100)
+                neutral95 = getColorById(context, system_neutral1_50)
+                neutral99 = getColorById(context, system_neutral1_10)
+                neutral100 = getColorById(context, system_neutral1_0)
 
-            neutral0 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_1000)
-            neutral10 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_900)
-            neutral20 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_800)
-            neutral30 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_700)
-            neutral40 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_600)
-            neutral50 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_500)
-            neutral60 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_400)
-            neutral70 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_300)
-            neutral80 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_200)
-            neutral90 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_100)
-            neutral95 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_50)
-            neutral99 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_10)
-            neutral100 = ColorResourceHelper.getById(context, android.R.color.system_neutral1_0)
+                // Neutral variant.
+                neutralVariant0 = getColorById(context, system_neutral2_1000)
+                neutralVariant10 = getColorById(context, system_neutral2_900)
+                neutralVariant20 = getColorById(context, system_neutral2_800)
+                neutralVariant30 = getColorById(context, system_neutral2_700)
+                neutralVariant40 = getColorById(context, system_neutral2_600)
+                neutralVariant50 = getColorById(context, system_neutral2_500)
+                neutralVariant60 = getColorById(context, system_neutral2_400)
+                neutralVariant70 = getColorById(context, system_neutral2_300)
+                neutralVariant80 = getColorById(context, system_neutral2_200)
+                neutralVariant90 = getColorById(context, system_neutral2_100)
+                neutralVariant95 = getColorById(context, system_neutral2_50)
+                neutralVariant99 = getColorById(context, system_neutral2_10)
+                neutralVariant100 = getColorById(context, system_neutral2_0)
 
-            neutralVariant0 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_1000)
-            neutralVariant10 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_900)
-            neutralVariant20 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_800)
-            neutralVariant30 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_700)
-            neutralVariant40 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_600)
-            neutralVariant50 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_500)
-            neutralVariant60 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_400)
-            neutralVariant70 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_300)
-            neutralVariant80 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_200)
-            neutralVariant90 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_100)
-            neutralVariant95 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_50)
-            neutralVariant99 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_10)
-            neutralVariant100 = ColorResourceHelper.getById(context, android.R.color.system_neutral2_0)
+                // Error palette is unavailable on pre-35 (A15) API levels.
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return@build
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return@build
-
-            error0 = ColorResourceHelper.getById(context, android.R.color.system_error_1000)
-            error10 = ColorResourceHelper.getById(context, android.R.color.system_error_900)
-            error20 = ColorResourceHelper.getById(context, android.R.color.system_error_800)
-            error30 = ColorResourceHelper.getById(context, android.R.color.system_error_700)
-            error40 = ColorResourceHelper.getById(context, android.R.color.system_error_600)
-            error50 = ColorResourceHelper.getById(context, android.R.color.system_error_500)
-            error60 = ColorResourceHelper.getById(context, android.R.color.system_error_400)
-            error70 = ColorResourceHelper.getById(context, android.R.color.system_error_300)
-            error80 = ColorResourceHelper.getById(context, android.R.color.system_error_200)
-            error90 = ColorResourceHelper.getById(context, android.R.color.system_error_100)
-            error95 = ColorResourceHelper.getById(context, android.R.color.system_error_50)
-            error99 = ColorResourceHelper.getById(context, android.R.color.system_error_10)
-            error100 = ColorResourceHelper.getById(context, android.R.color.system_error_0)
+                // Error.
+                error0 = getColorById(context, system_error_1000)
+                error10 = getColorById(context, system_error_900)
+                error20 = getColorById(context, system_error_800)
+                error30 = getColorById(context, system_error_700)
+                error40 = getColorById(context, system_error_600)
+                error50 = getColorById(context, system_error_500)
+                error60 = getColorById(context, system_error_400)
+                error70 = getColorById(context, system_error_300)
+                error80 = getColorById(context, system_error_200)
+                error90 = getColorById(context, system_error_100)
+                error95 = getColorById(context, system_error_50)
+                error99 = getColorById(context, system_error_10)
+                error100 = getColorById(context, system_error_0)
+            }
         }
     }
 }

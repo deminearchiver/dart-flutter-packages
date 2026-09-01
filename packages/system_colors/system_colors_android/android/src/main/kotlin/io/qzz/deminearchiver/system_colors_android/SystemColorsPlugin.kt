@@ -3,6 +3,7 @@
 package io.qzz.deminearchiver.system_colors_android
 
 import android.content.Context
+import android.os.Build
 import androidx.annotation.ColorInt
 import androidx.annotation.Keep
 
@@ -12,22 +13,24 @@ import androidx.annotation.Keep
 
 @Keep
 object SystemColorsPlugin {
+    internal const val TAG = "SystemColorsPlugin"
+
     @JvmStatic
     fun isDynamicColorAvailable() = true
 
     @JvmStatic
     fun dynamicPalette(context: Context, @ColorInt sentinel: Int) =
-        SystemColorsDynamicPalette.fromContext(context, sentinel)
+        DynamicTonalPalette.fromContext(context, sentinel)
 
     @JvmStatic
     fun dynamicScheme(context: Context, isDark: Boolean, @ColorInt sentinel: Int) =
-        SystemColorsDynamicScheme.fromContext(context, isDark, sentinel)
+        DynamicColorScheme.fromContext(context, isDark, sentinel)
 
     @JvmStatic
     fun lightDynamicScheme(context: Context, @ColorInt sentinel: Int) =
-        SystemColorsDynamicScheme.lightFromContext(context, sentinel)
+        DynamicColorScheme.lightFromContext(context, sentinel)
 
     @JvmStatic
     fun darkDynamicScheme(context: Context, @ColorInt sentinel: Int) =
-        SystemColorsDynamicScheme.darkFromContext(context, sentinel)
+        DynamicColorScheme.darkFromContext(context, sentinel)
 }

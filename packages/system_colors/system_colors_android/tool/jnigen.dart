@@ -19,8 +19,8 @@ void main(List<String> args) async {
       sourcePath: [packageRoot.resolve("android/src/main/kotlin")],
       classes: [
         "io.qzz.deminearchiver.system_colors_android.SystemColorsPlugin",
-        "io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicPalette",
-        "io.qzz.deminearchiver.system_colors_android.SystemColorsDynamicScheme",
+        "io.qzz.deminearchiver.system_colors_android.DynamicTonalPalette",
+        "io.qzz.deminearchiver.system_colors_android.DynamicColorScheme",
       ],
       generateStubs: false,
       visitors: [_CompanionVisitor()],
@@ -40,9 +40,9 @@ class _CompanionVisitor extends Visitor {
 
   @override
   void visitField(Field field) {
-    // Exclude INSTANCE (object) / Companion (companion object) fields.
-    // It has been decided to treat these fields as internal.
-    const exclude = <String>["INSTANCE", "Companion"];
+    // Exclude INSTANCE (object) / Companion (companion object) / TAG (log)
+    // fields. It has been decided to treat these fields as internal.
+    const exclude = <String>["INSTANCE", "Companion", "TAG"];
     if (exclude.any(
       (name) => field.name == name || field.originalName == name,
     )) {

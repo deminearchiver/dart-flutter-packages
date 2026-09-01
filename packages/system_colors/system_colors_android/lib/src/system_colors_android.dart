@@ -6,3 +6,14 @@ class SystemColorsAndroid() extends SystemColorsPlatform {
     SystemColorsPlatform.instance = SystemColorsAndroid();
   }
 }
+
+// /// Set the luminance (tone) of this color. Chroma may decrease because chroma
+// /// has a different maximum for any given hue and luminance.
+// int _setLuminance(int argb, double newLuminance) {
+//   if (newLuminance < 0.0001 || newLuminance > 99.9999) {
+//     return ColorUtils.argbFromLstar(newLuminance);
+//   }
+//   // Base color.
+//   final baseCam = Cam16.fromInt(argb);
+//   return Cam16.getInt(baseCam.hue, baseCam.chroma, newLuminance);
+// }
