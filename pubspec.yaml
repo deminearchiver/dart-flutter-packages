@@ -40,6 +40,7 @@ workspace:
   - packages/permissions_ffi/example
   - packages/screen_corners_ffi
   - packages/screen_corners_ffi/example
+  - packages/system_colors/system_colors
   - packages/system_colors/system_colors_android
   - packages/system_colors/system_colors_android/example
   - packages/system_colors/system_colors_platform_interface

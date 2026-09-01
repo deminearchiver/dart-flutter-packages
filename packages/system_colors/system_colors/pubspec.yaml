@@ -1,8 +1,8 @@
-name: system_colors_android
-description: Android implementation of the system_colors plugin.
+name: system_colors
+description: A Flutter plugin for obtaining system color schemes.
 version: 0.2.0
 homepage: https://github.com/deminearchiver/dart-flutter-packages
-repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/system_colors/system_colors_android
+repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/system_colors/system_colors
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
 resolution: workspace
 
@@ -13,20 +13,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  jni: ^1.0.3
-  jni_flutter: ^1.0.2
   meta: ^1.19.0
+  system_colors_android: ^0.2.0
   system_colors_platform_interface: ^0.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   deminearchiver_lints: ^3.1.0
-  jnigen: ^0.17.0
 
 flutter:
   plugin:
-    implements: system_colors
     platforms:
       android:
-        ffiPlugin: true
+        default_package: system_colors_android
