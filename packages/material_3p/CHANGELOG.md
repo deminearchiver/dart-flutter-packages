@@ -6,7 +6,7 @@
 - Removed `PointerProvider` parameter from quantizers.
 
 - Upgraded hosted dependencies.
-  - `libmonet` to `2.0.0-dev.21`.
+  - `libmonet` to `2.0.0-dev.22`.
 
 ## 0.5.0
 

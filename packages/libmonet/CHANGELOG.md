@@ -47,6 +47,8 @@
 
 - Added `year` property to `SpecVersion` and implemented `Comparable<SpecVersion>` in order to make spec versions orderable.
 
+- Improved caching of colors in `MaterialDynamicColors` and `AndroidDynamicColors`.
+
 - Aligned the library with Dart best practices.
   - Renamed `TemperatureCache.getComplement()` to `TemperatureCache.complement` and made it a getter.
   - Changed `Score.score()` positional parameters to be named instead.

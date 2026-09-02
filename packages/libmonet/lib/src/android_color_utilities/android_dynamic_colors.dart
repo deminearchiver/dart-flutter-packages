@@ -12,7 +12,7 @@ final class AndroidDynamicColors._() {
   // CLOCK COLORS
 
   /// Background color recommended for most Android widgets.
-  DynamicColor get widgetBackground => DynamicColor(
+  late final DynamicColor widgetBackground = DynamicColor(
     name: "widget_background",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) => scheme.isDark ? 20.0 : 95.0,
@@ -20,7 +20,7 @@ final class AndroidDynamicColors._() {
   );
 
   /// Clock hour color
-  DynamicColor get clockHour => DynamicColor(
+  late final DynamicColor clockHour = DynamicColor(
     name: "clock_hour",
     palette: (scheme) =>
         scheme.isDark ? scheme.primaryPalette : scheme.secondaryPalette,
@@ -38,7 +38,7 @@ final class AndroidDynamicColors._() {
   );
 
   /// Clock minute color
-  DynamicColor get clockMinute => DynamicColor(
+  late final DynamicColor clockMinute = DynamicColor(
     name: "clock_minute",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 90.0 : 40.0,
@@ -48,7 +48,7 @@ final class AndroidDynamicColors._() {
   );
 
   /// Clock second color
-  DynamicColor get clockSecond => DynamicColor(
+  late final DynamicColor clockSecond = DynamicColor(
     name: "clock_second",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) => scheme.isDark ? 90.0 : 40.0,
@@ -58,7 +58,7 @@ final class AndroidDynamicColors._() {
   );
 
   /// Weather temperature color
-  DynamicColor get weatherTemp => DynamicColor(
+  late final DynamicColor weatherTemp = DynamicColor(
     name: "weather_temp",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
@@ -70,7 +70,7 @@ final class AndroidDynamicColors._() {
   // THEME APP ICONS
 
   /// Background color of monochrome launcher icons containers.
-  DynamicColor get themeApp => DynamicColor(
+  late final DynamicColor themeApp = DynamicColor(
     name: "theme_app",
     palette: (scheme) =>
         scheme.isDark ? scheme.secondaryPalette : scheme.primaryPalette,
@@ -97,7 +97,7 @@ final class AndroidDynamicColors._() {
   );
 
   /// Tint color that gets applied to monochrome launcher icons.
-  DynamicColor get onThemeApp => DynamicColor(
+  late final DynamicColor onThemeApp = DynamicColor(
     name: "on_theme_app",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 80.0 : 30.0,
@@ -107,7 +107,7 @@ final class AndroidDynamicColors._() {
   );
 
   /// App suggestion ring color.
-  DynamicColor get themeAppRing => DynamicColor(
+  late final DynamicColor themeAppRing = DynamicColor(
     name: "theme_app_ring",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => switch (scheme.variant) {
@@ -121,7 +121,7 @@ final class AndroidDynamicColors._() {
   );
 
   /// App notification badge color.
-  DynamicColor get themeNotif => DynamicColor(
+  late final DynamicColor themeNotif = DynamicColor(
     name: "theme_notif",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) => _tMinC(scheme.tertiaryPalette, 80.0, 93.0),
@@ -143,7 +143,7 @@ final class AndroidDynamicColors._() {
   /// Super G is the internal name of the multicolored Google "G" logomark.
   ///
   /// This color maps to the red part of the logo.
-  DynamicColor get brandA => DynamicColor(
+  late final DynamicColor brandA = DynamicColor(
     name: "brand_a",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
@@ -157,7 +157,7 @@ final class AndroidDynamicColors._() {
   /// Super G is the internal name of the multicolored Google "G" logomark.
   ///
   /// This color maps to the yellow part of the logo.
-  DynamicColor get brandB => DynamicColor(
+  late final DynamicColor brandB = DynamicColor(
     name: "brand_b",
     palette: (scheme) => scheme.secondaryPalette,
     tone: (scheme) => scheme.isDark ? 98.0 : 70.0,
@@ -171,7 +171,7 @@ final class AndroidDynamicColors._() {
   /// Super G is the internal name of the multicolored Google "G" logomark.
   ///
   /// This color maps to the green part of the logo.
-  DynamicColor get brandC => DynamicColor(
+  late final DynamicColor brandC = DynamicColor(
     name: "brand_c",
     palette: (scheme) => scheme.primaryPalette,
     tone: (scheme) => scheme.isDark ? 60.0 : 50.0,
@@ -185,7 +185,7 @@ final class AndroidDynamicColors._() {
   /// Super G is the internal name of the multicolored Google "G" logomark.
   ///
   /// This color maps to the blue part of the logo.
-  DynamicColor get brandD => DynamicColor(
+  late final DynamicColor brandD = DynamicColor(
     name: "brand_d",
     palette: (scheme) => scheme.tertiaryPalette,
     tone: (scheme) => scheme.isDark ? 90.0 : 59.0,
@@ -197,14 +197,14 @@ final class AndroidDynamicColors._() {
 
   // QUICK SETTING TILES
 
-  DynamicColor get underSurface => DynamicColor(
+  late final DynamicColor underSurface = DynamicColor(
     name: "under_surface",
     palette: (scheme) => scheme.primaryPalette,
     tone: (_) => 0.0,
     isBackground: true,
   );
 
-  DynamicColor get shadeActive => DynamicColor(
+  late final DynamicColor shadeActive = DynamicColor(
     name: "shade_active",
     palette: (scheme) => scheme.primaryPalette,
     tone: (_) => 90.0,
@@ -220,7 +220,7 @@ final class AndroidDynamicColors._() {
     ),
   );
 
-  DynamicColor get onShadeActive => DynamicColor(
+  late final DynamicColor onShadeActive = DynamicColor(
     name: "on_shade_active",
     palette: (scheme) => scheme.primaryPalette,
     tone: (_) => 10.0,
@@ -236,7 +236,7 @@ final class AndroidDynamicColors._() {
     ),
   );
 
-  DynamicColor get onShadeActiveVariant => DynamicColor(
+  late final DynamicColor onShadeActiveVariant = DynamicColor(
     name: "on_shade_active_variant",
     palette: (scheme) => scheme.primaryPalette,
     tone: (_) => 30.0,
@@ -245,7 +245,7 @@ final class AndroidDynamicColors._() {
     contrastCurve: (_) => const ContrastCurve(4.5, 4.5, 7.0, 11.0),
   );
 
-  DynamicColor get shadeInactive => DynamicColor(
+  late final DynamicColor shadeInactive = DynamicColor(
     name: "shade_inactive",
     palette: (scheme) => scheme.neutralPalette,
     tone: (_) => 20.0,
@@ -261,7 +261,7 @@ final class AndroidDynamicColors._() {
     ),
   );
 
-  DynamicColor get onShadeInactive => DynamicColor(
+  late final DynamicColor onShadeInactive = DynamicColor(
     name: "on_shade_inactive",
     palette: (scheme) => scheme.neutralVariantPalette,
     tone: (_) => 90.0,
@@ -277,7 +277,7 @@ final class AndroidDynamicColors._() {
     ),
   );
 
-  DynamicColor get onShadeInactiveVariant => DynamicColor(
+  late final DynamicColor onShadeInactiveVariant = DynamicColor(
     name: "on_shade_inactive_variant",
     palette: (scheme) => scheme.neutralVariantPalette,
     tone: (_) => 80.0,
@@ -286,7 +286,7 @@ final class AndroidDynamicColors._() {
     contrastCurve: (_) => const ContrastCurve(4.5, 4.5, 7.0, 11.0),
   );
 
-  DynamicColor get shadeDisabled => DynamicColor(
+  late final DynamicColor shadeDisabled = DynamicColor(
     name: "shade_disabled",
     palette: (scheme) => scheme.neutralPalette,
     tone: (_) => 4.0,
@@ -295,14 +295,14 @@ final class AndroidDynamicColors._() {
     contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 1.0, 1.0),
   );
 
-  DynamicColor get overviewBackground => DynamicColor(
+  late final DynamicColor overviewBackground = DynamicColor(
     name: "overview_background",
     palette: (scheme) => scheme.neutralVariantPalette,
     tone: (scheme) => scheme.isDark ? 35.0 : 80.0,
     isBackground: true,
   );
 
-  DynamicColor get surfaceEffect0 => DynamicColor(
+  late final DynamicColor surfaceEffect0 = DynamicColor(
     name: "surface_effect_0",
     palette: (s) => s.primaryPalette,
     tone: (s) => s.isDark ? 20.0 : 90.0,
@@ -310,7 +310,7 @@ final class AndroidDynamicColors._() {
     opacity: (s) => .5,
   );
 
-  DynamicColor get surfaceEffect1 => DynamicColor(
+  late final DynamicColor surfaceEffect1 = DynamicColor(
     name: "surface_effect_1",
     palette: (s) => s.neutralPalette,
     tone: (s) => s.isDark ? 6.0 : 98.0,
@@ -318,7 +318,7 @@ final class AndroidDynamicColors._() {
     opacity: (s) => .54,
   );
 
-  DynamicColor get surfaceEffect2 => DynamicColor(
+  late final DynamicColor surfaceEffect2 = DynamicColor(
     name: "surface_effect_2",
     palette: (s) => s.primaryPalette,
     tone: (s) => s.isDark ? 90.0 : 100.0,
@@ -326,7 +326,7 @@ final class AndroidDynamicColors._() {
     opacity: (s) => s.isDark ? .15 : .32,
   );
 
-  DynamicColor get surfaceEffect3 => DynamicColor(
+  late final DynamicColor surfaceEffect3 = DynamicColor(
     name: "surface_effect_3",
     palette: (s) => s.primaryPalette,
     tone: (s) => s.isDark ? 90.0 : 40.0,
@@ -334,7 +334,7 @@ final class AndroidDynamicColors._() {
     opacity: (s) => s.isDark ? .10 : .15,
   );
 
-  DynamicColor get surfaceEffect0Fallback => DynamicColor(
+  late final DynamicColor surfaceEffect0Fallback = DynamicColor(
     name: "surface_effect_0_fallback",
     palette: (s) => s.secondaryPalette,
     tone: (s) => s.isDark ? 20.0 : 80.0,

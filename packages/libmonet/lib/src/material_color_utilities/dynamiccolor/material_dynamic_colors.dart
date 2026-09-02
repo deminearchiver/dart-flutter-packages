@@ -12,149 +12,157 @@ final class MaterialDynamicColors._() {
   final _colorSpec = const ColorSpec2026();
 
   DynamicColor highestSurface(DynamicScheme scheme) =>
-      _colorSpec.highestSurface(scheme);
+      scheme.isDark ? surfaceBright : surfaceDim;
 
-  DynamicColor get primaryPaletteKeyColor => _colorSpec.primaryPaletteKeyColor;
+  late final DynamicColor primaryPaletteKeyColor =
+      _colorSpec.primaryPaletteKeyColor;
 
-  DynamicColor get secondaryPaletteKeyColor =>
+  late final DynamicColor secondaryPaletteKeyColor =
       _colorSpec.secondaryPaletteKeyColor;
 
-  DynamicColor get tertiaryPaletteKeyColor =>
+  late final DynamicColor tertiaryPaletteKeyColor =
       _colorSpec.tertiaryPaletteKeyColor;
 
-  DynamicColor get neutralPaletteKeyColor => _colorSpec.neutralPaletteKeyColor;
+  late final DynamicColor neutralPaletteKeyColor =
+      _colorSpec.neutralPaletteKeyColor;
 
-  DynamicColor get neutralVariantPaletteKeyColor =>
+  late final DynamicColor neutralVariantPaletteKeyColor =
       _colorSpec.neutralVariantPaletteKeyColor;
 
-  DynamicColor get errorPaletteKeyColor => _colorSpec.errorPaletteKeyColor;
+  late final DynamicColor errorPaletteKeyColor =
+      _colorSpec.errorPaletteKeyColor;
 
-  DynamicColor get background => _colorSpec.background;
+  late final DynamicColor background = _colorSpec.background;
 
-  DynamicColor get onBackground => _colorSpec.onBackground;
+  late final DynamicColor onBackground = _colorSpec.onBackground;
 
-  DynamicColor get surface => _colorSpec.surface;
+  late final DynamicColor surface = _colorSpec.surface;
 
-  DynamicColor get surfaceDim => _colorSpec.surfaceDim;
+  late final DynamicColor surfaceDim = _colorSpec.surfaceDim;
 
-  DynamicColor get surfaceBright => _colorSpec.surfaceBright;
+  late final DynamicColor surfaceBright = _colorSpec.surfaceBright;
 
-  DynamicColor get surfaceContainerLowest => _colorSpec.surfaceContainerLowest;
+  late final DynamicColor surfaceContainerLowest =
+      _colorSpec.surfaceContainerLowest;
 
-  DynamicColor get surfaceContainerLow => _colorSpec.surfaceContainerLow;
+  late final DynamicColor surfaceContainerLow = _colorSpec.surfaceContainerLow;
 
-  DynamicColor get surfaceContainer => _colorSpec.surfaceContainer;
+  late final DynamicColor surfaceContainer = _colorSpec.surfaceContainer;
 
-  DynamicColor get surfaceContainerHigh => _colorSpec.surfaceContainerHigh;
+  late final DynamicColor surfaceContainerHigh =
+      _colorSpec.surfaceContainerHigh;
 
-  DynamicColor get surfaceContainerHighest =>
+  late final DynamicColor surfaceContainerHighest =
       _colorSpec.surfaceContainerHighest;
 
-  DynamicColor get onSurface => _colorSpec.onSurface;
+  late final DynamicColor onSurface = _colorSpec.onSurface;
 
-  DynamicColor get surfaceVariant => _colorSpec.surfaceVariant;
+  late final DynamicColor surfaceVariant = _colorSpec.surfaceVariant;
 
-  DynamicColor get onSurfaceVariant => _colorSpec.onSurfaceVariant;
+  late final DynamicColor onSurfaceVariant = _colorSpec.onSurfaceVariant;
 
-  DynamicColor get inverseSurface => _colorSpec.inverseSurface;
+  late final DynamicColor inverseSurface = _colorSpec.inverseSurface;
 
-  DynamicColor get inverseOnSurface => _colorSpec.inverseOnSurface;
+  late final DynamicColor inverseOnSurface = _colorSpec.inverseOnSurface;
 
-  DynamicColor get outline => _colorSpec.outline;
+  late final DynamicColor outline = _colorSpec.outline;
 
-  DynamicColor get outlineVariant => _colorSpec.outlineVariant;
+  late final DynamicColor outlineVariant = _colorSpec.outlineVariant;
 
-  DynamicColor get shadow => _colorSpec.shadow;
+  late final DynamicColor shadow = _colorSpec.shadow;
 
-  DynamicColor get scrim => _colorSpec.scrim;
+  late final DynamicColor scrim = _colorSpec.scrim;
 
-  DynamicColor get surfaceTint => _colorSpec.surfaceTint;
+  late final DynamicColor surfaceTint = _colorSpec.surfaceTint;
 
-  DynamicColor get primary => _colorSpec.primary;
+  late final DynamicColor primary = _colorSpec.primary;
 
-  DynamicColor get primaryDim => _colorSpec.primaryDim;
+  late final DynamicColor primaryDim = _colorSpec.primaryDim;
 
-  DynamicColor get onPrimary => _colorSpec.onPrimary;
+  late final DynamicColor onPrimary = _colorSpec.onPrimary;
 
-  DynamicColor get primaryContainer => _colorSpec.primaryContainer;
+  late final DynamicColor primaryContainer = _colorSpec.primaryContainer;
 
-  DynamicColor get onPrimaryContainer => _colorSpec.onPrimaryContainer;
+  late final DynamicColor onPrimaryContainer = _colorSpec.onPrimaryContainer;
 
-  DynamicColor get inversePrimary => _colorSpec.inversePrimary;
+  late final DynamicColor inversePrimary = _colorSpec.inversePrimary;
 
-  DynamicColor get primaryFixed => _colorSpec.primaryFixed;
+  late final DynamicColor primaryFixed = _colorSpec.primaryFixed;
 
-  DynamicColor get primaryFixedDim => _colorSpec.primaryFixedDim;
+  late final DynamicColor primaryFixedDim = _colorSpec.primaryFixedDim;
 
-  DynamicColor get onPrimaryFixed => _colorSpec.onPrimaryFixed;
+  late final DynamicColor onPrimaryFixed = _colorSpec.onPrimaryFixed;
 
-  DynamicColor get onPrimaryFixedVariant => _colorSpec.onPrimaryFixedVariant;
+  late final DynamicColor onPrimaryFixedVariant =
+      _colorSpec.onPrimaryFixedVariant;
 
-  DynamicColor get secondary => _colorSpec.secondary;
+  late final DynamicColor secondary = _colorSpec.secondary;
 
-  DynamicColor get secondaryDim => _colorSpec.secondaryDim;
+  late final DynamicColor secondaryDim = _colorSpec.secondaryDim;
 
-  DynamicColor get onSecondary => _colorSpec.onSecondary;
+  late final DynamicColor onSecondary = _colorSpec.onSecondary;
 
-  DynamicColor get secondaryContainer => _colorSpec.secondaryContainer;
+  late final DynamicColor secondaryContainer = _colorSpec.secondaryContainer;
 
-  DynamicColor get onSecondaryContainer => _colorSpec.onSecondaryContainer;
+  late final DynamicColor onSecondaryContainer =
+      _colorSpec.onSecondaryContainer;
 
-  DynamicColor get secondaryFixed => _colorSpec.secondaryFixed;
+  late final DynamicColor secondaryFixed = _colorSpec.secondaryFixed;
 
-  DynamicColor get secondaryFixedDim => _colorSpec.secondaryFixedDim;
+  late final DynamicColor secondaryFixedDim = _colorSpec.secondaryFixedDim;
 
-  DynamicColor get onSecondaryFixed => _colorSpec.onSecondaryFixed;
+  late final DynamicColor onSecondaryFixed = _colorSpec.onSecondaryFixed;
 
-  DynamicColor get onSecondaryFixedVariant =>
+  late final DynamicColor onSecondaryFixedVariant =
       _colorSpec.onSecondaryFixedVariant;
 
-  DynamicColor get tertiary => _colorSpec.tertiary;
+  late final DynamicColor tertiary = _colorSpec.tertiary;
 
-  DynamicColor get tertiaryDim => _colorSpec.tertiaryDim;
+  late final DynamicColor tertiaryDim = _colorSpec.tertiaryDim;
 
-  DynamicColor get onTertiary => _colorSpec.onTertiary;
+  late final DynamicColor onTertiary = _colorSpec.onTertiary;
 
-  DynamicColor get tertiaryContainer => _colorSpec.tertiaryContainer;
+  late final DynamicColor tertiaryContainer = _colorSpec.tertiaryContainer;
 
-  DynamicColor get onTertiaryContainer => _colorSpec.onTertiaryContainer;
+  late final DynamicColor onTertiaryContainer = _colorSpec.onTertiaryContainer;
 
-  DynamicColor get tertiaryFixed => _colorSpec.tertiaryFixed;
+  late final DynamicColor tertiaryFixed = _colorSpec.tertiaryFixed;
 
-  DynamicColor get tertiaryFixedDim => _colorSpec.tertiaryFixedDim;
+  late final DynamicColor tertiaryFixedDim = _colorSpec.tertiaryFixedDim;
 
-  DynamicColor get onTertiaryFixed => _colorSpec.onTertiaryFixed;
+  late final DynamicColor onTertiaryFixed = _colorSpec.onTertiaryFixed;
 
-  DynamicColor get onTertiaryFixedVariant => _colorSpec.onTertiaryFixedVariant;
+  late final DynamicColor onTertiaryFixedVariant =
+      _colorSpec.onTertiaryFixedVariant;
 
-  DynamicColor get error => _colorSpec.error;
+  late final DynamicColor error = _colorSpec.error;
 
-  DynamicColor get errorDim => _colorSpec.errorDim;
+  late final DynamicColor errorDim = _colorSpec.errorDim;
 
-  DynamicColor get onError => _colorSpec.onError;
+  late final DynamicColor onError = _colorSpec.onError;
 
-  DynamicColor get errorContainer => _colorSpec.errorContainer;
+  late final DynamicColor errorContainer = _colorSpec.errorContainer;
 
-  DynamicColor get onErrorContainer => _colorSpec.onErrorContainer;
+  late final DynamicColor onErrorContainer = _colorSpec.onErrorContainer;
 
-  DynamicColor get controlActivated => _colorSpec.controlActivated;
+  late final DynamicColor controlActivated = _colorSpec.controlActivated;
 
-  DynamicColor get controlNormal => _colorSpec.controlNormal;
+  late final DynamicColor controlNormal = _colorSpec.controlNormal;
 
-  DynamicColor get controlHighlight => _colorSpec.controlHighlight;
+  late final DynamicColor controlHighlight = _colorSpec.controlHighlight;
 
-  DynamicColor get textPrimaryInverse => _colorSpec.textPrimaryInverse;
+  late final DynamicColor textPrimaryInverse = _colorSpec.textPrimaryInverse;
 
-  DynamicColor get textSecondaryAndTertiaryInverse =>
+  late final DynamicColor textSecondaryAndTertiaryInverse =
       _colorSpec.textSecondaryAndTertiaryInverse;
 
-  DynamicColor get textPrimaryInverseDisableOnly =>
+  late final DynamicColor textPrimaryInverseDisableOnly =
       _colorSpec.textPrimaryInverseDisableOnly;
 
-  DynamicColor get textSecondaryAndTertiaryInverseDisabled =>
+  late final DynamicColor textSecondaryAndTertiaryInverseDisabled =
       _colorSpec.textSecondaryAndTertiaryInverseDisabled;
 
-  DynamicColor get textHintInverse => _colorSpec.textHintInverse;
+  late final DynamicColor textHintInverse = _colorSpec.textHintInverse;
 
   /// All dynamic colors in Material Design system.
   ///
