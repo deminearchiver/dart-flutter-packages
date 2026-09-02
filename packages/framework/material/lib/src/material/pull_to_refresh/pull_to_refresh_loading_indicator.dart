@@ -167,12 +167,10 @@ class _PullToRefreshLoadingIndicatorState
       dimension: resolvedContainerSize,
       child: ValueListenableBuilder(
         valueListenable: widget.states,
-        builder: (context, states, _) => Surface.material(
+        builder: (context, states, _) => Surface(
           clipBehavior: .antiAlias,
-          // shape: _resolvedContainerOutline.apply(_resolvedContainerShape),
-          shape: _resolvedContainerShape,
-          backgroundDecorations: [.fillColor(_resolvedContainerColor)],
-          foregroundDecorations: [.outline(_resolvedContainerOutline)],
+          shape: _resolvedContainerOutline.apply(_resolvedContainerShape),
+          color: _resolvedContainerColor,
           child: _PullToRefreshLoadingIndicatorCrossFade(
             isRefreshing: states.isRefreshing,
             determinateChild: determinateActiveIndicator,

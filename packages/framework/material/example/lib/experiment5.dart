@@ -308,16 +308,12 @@ class _VerticalNavigationItemState extends State<_VerticalNavigationItem> {
             SizedBox(
               width: 56.0,
               height: label != null ? 32.0 : 56.0,
-              child: Surface.material(
+              child: Surface(
                 clipBehavior: .antiAlias,
                 shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
-                backgroundDecorations: [
-                  .fillColor(
-                    isSelected
-                        ? colorTheme.secondaryContainer
-                        : colorTheme.secondaryContainer.withValues(alpha: 0.0),
-                  ),
-                ],
+                color: isSelected
+                    ? colorTheme.secondaryContainer
+                    : colorTheme.secondaryContainer.withValues(alpha: 0.0),
                 child: InkWell(
                   overlayColor: WidgetStateLayerColor(
                     color: .all(

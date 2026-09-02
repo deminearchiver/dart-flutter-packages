@@ -386,12 +386,10 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
               minimumSize: const .square(_kTapTargetSize),
               child: SizedBox.square(
                 dimension: 32.0,
-                child: Surface.material(
+                child: Surface(
                   clipBehavior: .antiAlias,
                   shape: shapeTheme.applyCorners(corners: topCorners),
-                  backgroundDecorations: [
-                    .fillColor(colorTheme.surfaceContainerLow),
-                  ],
+                  color: colorTheme.surfaceContainerLow,
                   child: InkWell(
                     overlayColor: WidgetStateLayerColor(
                       color: .all(colorTheme.onSurfaceVariant),
@@ -416,13 +414,11 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
             ),
             SizedBox(
               height: 32.0,
-              child: Surface.material(
+              child: Surface(
                 shape: shapeTheme.applyCorner(
                   corner: shapeTheme.cornerExtraSmall,
                 ),
-                backgroundDecorations: [
-                  .fillColor(colorTheme.surfaceContainerLow),
-                ],
+                color: colorTheme.surfaceContainerLow,
                 child: Align.center(
                   child: Text(
                     "${widget.selectedIndex}",
@@ -437,12 +433,10 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
               minimumSize: const .square(_kTapTargetSize),
               child: SizedBox.square(
                 dimension: 32.0,
-                child: Surface.material(
+                child: Surface(
                   clipBehavior: .antiAlias,
                   shape: shapeTheme.applyCorners(corners: bottomCorners),
-                  backgroundDecorations: [
-                    .fillColor(colorTheme.surfaceContainerLow),
-                  ],
+                  color: colorTheme.surfaceContainerLow,
                   child: InkWell(
                     overlayColor: WidgetStateLayerColor(
                       color: .all(colorTheme.onSurfaceVariant),
@@ -488,10 +482,10 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
         minimumSize: const .square(_kTapTargetSize),
         child: SizedBox.square(
           dimension: 32.0,
-          child: Surface.material(
+          child: Surface(
             clipBehavior: .antiAlias,
             shape: containerShape,
-            backgroundDecorations: [.fillColor(containerColor)],
+            color: containerColor,
             child: GestureDetector(
               behavior: .translucent,
               onVerticalDragDown: _onDragDown,
@@ -529,12 +523,10 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
               minimumSize: const .square(_kTapTargetSize),
               child: SizedBox.square(
                 dimension: 32.0,
-                child: Surface.material(
+                child: Surface(
                   clipBehavior: .antiAlias,
                   shape: shapeTheme.applyCorners(corners: topCorners),
-                  backgroundDecorations: [
-                    .fillColor(colorTheme.surfaceContainerLow),
-                  ],
+                  color: colorTheme.surfaceContainerLow,
                   child: InkWell(
                     overlayColor: WidgetStateLayerColor(
                       color: .all(colorTheme.onSurfaceVariant),
@@ -564,12 +556,10 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
               minimumSize: const .square(_kTapTargetSize),
               child: SizedBox.square(
                 dimension: 32.0,
-                child: Surface.material(
+                child: Surface(
                   clipBehavior: .antiAlias,
                   shape: shapeTheme.applyCorners(corners: bottomCorners),
-                  backgroundDecorations: [
-                    .fillColor(colorTheme.surfaceContainerLow),
-                  ],
+                  color: colorTheme.surfaceContainerLow,
                   child: InkWell(
                     overlayColor: WidgetStateLayerColor(
                       color: .all(colorTheme.onSurfaceVariant),
@@ -609,14 +599,12 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
                   minimumSize: const .square(_kTapTargetSize),
                   child: SizedBox.square(
                     dimension: 32.0,
-                    child: Surface.material(
+                    child: Surface(
                       clipBehavior: .antiAlias,
                       shape: shapeTheme.applyCorner(
                         corner: shapeTheme.cornerFull,
                       ),
-                      backgroundDecorations: [
-                        .fillColor(colorTheme.surfaceContainerLow),
-                      ],
+                      color: colorTheme.surfaceContainerLow,
                       child: InkWell(
                         overlayColor: WidgetStateLayerColor(
                           color: .all(colorTheme.onSurfaceVariant),
@@ -692,26 +680,20 @@ class _DeveloperToolbarState extends State<DeveloperToolbar> {
             duration: duration,
             curve: easing,
             builder: (context, value, child) {
-              return Surface.material(
+              return Surface(
                 key: _toolbarKey,
                 clipBehavior: .antiAlias,
                 shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
-                backgroundDecorations: [
-                  .elevationShadow(
-                    lerpDouble(
-                      elevationTheme.level0,
-                      elevationTheme.level3,
-                      value,
-                    ),
-                  ),
-                  .fillColor(
-                    Color.lerp(
-                      colorTheme.surfaceContainerHigh,
-                      colorTheme.surfaceContainerLowest,
-                      value,
-                    )!,
-                  ),
-                ],
+                color: Color.lerp(
+                  colorTheme.surfaceContainerHigh,
+                  colorTheme.surfaceContainerLowest,
+                  value,
+                )!,
+                elevation: lerpDouble(
+                  elevationTheme.level0,
+                  elevationTheme.level3,
+                  value,
+                ),
                 child: IgnorePointer(
                   ignoring: value != 0.0 && value != 1.0,
                   child: child,

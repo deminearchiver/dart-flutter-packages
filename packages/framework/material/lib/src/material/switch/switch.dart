@@ -601,7 +601,7 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
         onPointerDown: !_states.isDisabled ? _onPointerDown : null,
         onPointerUp: !_states.isDisabled ? _onPointerUp : null,
         onPointerCancel: !_states.isDisabled ? _onPointerCancel : null,
-        child: RawSurfaceMaterial(
+        child: Surface.raw(
           child: InkWell(
             statesController: _statesController,
             customBorder: stateLayerShape,

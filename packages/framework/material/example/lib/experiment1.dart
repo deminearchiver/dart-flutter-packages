@@ -50,96 +50,96 @@ class _Experiment1ViewState extends State<Experiment1View> {
     final stateTheme = StateTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
 
-    final containerColor = colorTheme.primary;
-    final contentColor = colorTheme.onPrimary;
+    // final containerColor = colorTheme.primary;
+    // final contentColor = colorTheme.onPrimary;
 
-    final (middleArgb, endArgb) = EnergyColors.withAccentsArgb(
-      containerColor.toARGB32(),
-      colorTheme.primary.toARGB32(),
-      colorTheme.secondary.toARGB32(),
-      colorTheme.tertiary.toARGB32(),
-      colorTheme.surfaceContainer.toARGB32(),
-      false,
-      .primary,
-    );
-    final middleColor = Color(middleArgb);
-    final endColor = Color(endArgb);
+    // final (middleArgb, endArgb) = EnergyColors.withAccentsArgb(
+    //   containerColor.toARGB32(),
+    //   colorTheme.primary.toARGB32(),
+    //   colorTheme.secondary.toARGB32(),
+    //   colorTheme.tertiary.toARGB32(),
+    //   colorTheme.surfaceContainer.toARGB32(),
+    //   false,
+    //   .primary,
+    // );
+    // final middleColor = Color(middleArgb);
+    // final endColor = Color(endArgb);
 
-    return Scaffold(
-      body: SizedBox.expand(
-        child: Padding(
-          padding: .all(56.0),
-          child: Surface.ink(
-            shape: shapeTheme.applyCorner(corner: shapeTheme.cornerExtraLarge),
-            backgroundDecorations: [.fillColor(colorTheme.surface)],
-            // decoration: .compound(fills: [.color(colorTheme.surface)]),
-            // fills: [.color(colorTheme.surface)],
-            // outlines: [.from(color: colorTheme.outlineVariant, width: 1.0)],
-            child: Align.center(
-              child: Surface.ink(
-                clipBehavior: .antiAlias,
-                position: .background,
-                shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
-                backgroundDecorations: [
-                  .elevationShadow(
-                    24.0,
-                    color: colorTheme.primary,
-                    transparentOccluder: true,
-                  ),
-                  .fillGradient(
-                    LinearGradient(
-                      begin: .topStart,
-                      end: .bottomEnd,
-                      colors: [containerColor, middleColor, endColor],
-                    ),
-                    blendMode: switch (colorTheme.brightness) {
-                      .light => .hardLight,
-                      .dark => .screen,
-                    },
-                  ),
-                ],
-                foregroundDecorations: [
-                  // .fillColor(Colors.red),
-                  // .color(colorTheme.outlineVariant, width: 3.0),
-                  // .color(colorTheme.secondary, width: 10.0),
-                  // .color(colorTheme.onSecondary, width: 5.0),
-                  // .borderSide(.new(color: colorTheme.secondary, width: 10.0)),
-                  // .borderSide(.new(color: colorTheme.onSecondary, width: 5.0)),
-                ],
-                child: RawSurfaceInteraction(
-                  shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
-                  stateLayerColor: .all(contentColor),
-                  stateLayerOpacity: stateTheme.asWidgetStateLayerOpacity,
-                  onTap: () {},
-                  child: Padding(
-                    padding: .symmetric(horizontal: 64.0, vertical: 48.0),
-                    child: Flex.horizontal(
-                      mainAxisSize: .min,
-                      mainAxisAlignment: .center,
-                      spacing: 16.0,
-                      children: [
-                        Icon(
-                          MaterialSymbols.touch_app_rounded,
-                          fill: 1.0,
-                          opticalSize: 40.0,
-                          size: 40.0,
-                          color: contentColor,
-                        ),
-                        Text(
-                          "Button",
-                          style: typescaleTheme.headlineLargeEmphasized
-                              .toTextStyle(color: contentColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+    // return Scaffold(
+    //   body: SizedBox.expand(
+    //     child: Padding(
+    //       padding: .all(56.0),
+    //       child: Surface.ink(
+    //         shape: shapeTheme.applyCorner(corner: shapeTheme.cornerExtraLarge),
+    //         backgroundDecorations: [.fillColor(colorTheme.surface)],
+    //         // decoration: .compound(fills: [.color(colorTheme.surface)]),
+    //         // fills: [.color(colorTheme.surface)],
+    //         // outlines: [.from(color: colorTheme.outlineVariant, width: 1.0)],
+    //         child: Align.center(
+    //           child: Surface.ink(
+    //             clipBehavior: .antiAlias,
+    //             position: .background,
+    //             shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
+    //             backgroundDecorations: [
+    //               .elevationShadow(
+    //                 24.0,
+    //                 color: colorTheme.primary,
+    //                 transparentOccluder: true,
+    //               ),
+    //               .fillGradient(
+    //                 LinearGradient(
+    //                   begin: .topStart,
+    //                   end: .bottomEnd,
+    //                   colors: [containerColor, middleColor, endColor],
+    //                 ),
+    //                 blendMode: switch (colorTheme.brightness) {
+    //                   .light => .hardLight,
+    //                   .dark => .screen,
+    //                 },
+    //               ),
+    //             ],
+    //             foregroundDecorations: [
+    //               // .fillColor(Colors.red),
+    //               // .color(colorTheme.outlineVariant, width: 3.0),
+    //               // .color(colorTheme.secondary, width: 10.0),
+    //               // .color(colorTheme.onSecondary, width: 5.0),
+    //               // .borderSide(.new(color: colorTheme.secondary, width: 10.0)),
+    //               // .borderSide(.new(color: colorTheme.onSecondary, width: 5.0)),
+    //             ],
+    //             child: RawSurfaceInteraction(
+    //               shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
+    //               stateLayerColor: .all(contentColor),
+    //               stateLayerOpacity: stateTheme.asWidgetStateLayerOpacity,
+    //               onTap: () {},
+    //               child: Padding(
+    //                 padding: .symmetric(horizontal: 64.0, vertical: 48.0),
+    //                 child: Flex.horizontal(
+    //                   mainAxisSize: .min,
+    //                   mainAxisAlignment: .center,
+    //                   spacing: 16.0,
+    //                   children: [
+    //                     Icon(
+    //                       MaterialSymbols.touch_app_rounded,
+    //                       fill: 1.0,
+    //                       opticalSize: 40.0,
+    //                       size: 40.0,
+    //                       color: contentColor,
+    //                     ),
+    //                     Text(
+    //                       "Button",
+    //                       style: typescaleTheme.headlineLargeEmphasized
+    //                           .toTextStyle(color: contentColor),
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
 
     final shape = MorphBorder(
       side: BorderSide(

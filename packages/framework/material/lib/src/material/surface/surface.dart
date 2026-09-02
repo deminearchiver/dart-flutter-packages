@@ -3,6 +3,9 @@ import 'dart:collection';
 import 'package:collection/collection.dart';
 import 'package:material/src/material/flutter.dart';
 
+import 'surface_decoration.dart';
+import 'surface_material.dart';
+
 const _paintsEquality = ListEquality<SurfaceDecorationPaint>();
 
 enum SurfaceMode { material, ink }

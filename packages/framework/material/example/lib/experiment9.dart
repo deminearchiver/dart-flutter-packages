@@ -82,13 +82,13 @@ class _DockedSearchViewExampleState extends State<DockedSearchViewExample> {
         const _SearchBarWidget(),
         SizedBox(height: widget.gap),
         Flexible.loose(
-          child: Surface.ink(
+          child: Surface(
             // TODO: ideally it should work like this?
             // TODO: track active edge corner dynamically?
             // TODO: this doesn't work because corner needs to collapse
             // TODO: this could prevent overscroll stretching out of bounds
-            // clipBehavior: .antiAlias,
-            // shape: shapeTheme.applyCorner(corner: shapeTheme.cornerMedium),
+            clipBehavior: .antiAlias,
+            shape: shapeTheme.applyCorner(corner: shapeTheme.cornerMedium),
             child: CustomScrollView(
               clipBehavior: .none,
               shrinkWrap: true,
@@ -135,7 +135,7 @@ class _DockedSearchViewExampleState extends State<DockedSearchViewExample> {
     final shapeTheme = ShapeTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
     return NestedSliverBuilder(
-      builder: (context, child) => Surface.material(
+      builder: (context, child) => Surface(
         clipBehavior: .antiAlias,
         shape: shapeTheme.applyCorner(corner: shapeTheme.cornerMedium),
         // shape: RoundedPolygonBorder(
@@ -149,7 +149,7 @@ class _DockedSearchViewExampleState extends State<DockedSearchViewExample> {
         //   polygon: MaterialShapes.circle,
         //   squash: 1,
         // ),
-        backgroundDecorations: [.fillColor(colorTheme.surfaceContainerHigh)],
+        color: colorTheme.surfaceContainerHigh,
         child: child,
       ),
 
@@ -256,10 +256,10 @@ class _SearchBarWidget extends StatelessWidget {
     return SizedBox(
       width: .infinity,
       height: 56.0,
-      child: Surface.material(
+      child: Surface(
         clipBehavior: .antiAlias,
         shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
-        backgroundDecorations: [.fillColor(colorTheme.surfaceContainerHigh)],
+        color: colorTheme.surfaceContainerHigh,
         child: Flex.horizontal(
           children: [
             Padding(

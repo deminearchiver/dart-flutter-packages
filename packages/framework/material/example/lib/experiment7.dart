@@ -107,8 +107,8 @@ class __SliverHeaderState extends State<_SliverHeader> {
           fraction,
         );
 
-        return Surface.material(
-          backgroundDecorations: [.fillColor(colorTheme.surfaceContainer)],
+        return Surface(
+          color: colorTheme.surfaceContainer,
           child: Padding(
             padding: padding,
             child: SizedBox(
@@ -117,15 +117,13 @@ class __SliverHeaderState extends State<_SliverHeader> {
               child: _HeaderLayout(
                 start: SizedBox(
                   height: height,
-                  child: Surface.material(
+                  child: Surface(
                     clipBehavior: .antiAlias,
                     shape: shapeTheme.applyCorner(
                       corner: shapeTheme.cornerFull,
                     ),
-                    backgroundDecorations: [
-                      .elevationShadow(elevation),
-                      .fillColor(color),
-                    ],
+                    color: color,
+                    elevation: elevation,
                     child: Padding(
                       padding: .fromSTEB(
                         margin,
@@ -147,14 +145,12 @@ class __SliverHeaderState extends State<_SliverHeader> {
                         children: [
                           SizedBox.square(
                             dimension: containerHeight,
-                            child: Surface.material(
+                            child: Surface(
                               clipBehavior: .antiAlias,
                               shape: shapeTheme.applyCorner(
                                 corner: shapeTheme.cornerFull,
                               ),
-                              backgroundDecorations: [
-                                .fillColor(colorTheme.surfaceContainerLowest),
-                              ],
+                              color: colorTheme.surfaceContainerLowest,
                               child: Align.center(
                                 child: Text(
                                   "A",
@@ -179,15 +175,13 @@ class __SliverHeaderState extends State<_SliverHeader> {
                 ),
                 center: SizedBox(
                   height: height,
-                  child: Surface.material(
+                  child: Surface(
                     clipBehavior: .antiAlias,
                     shape: shapeTheme.applyCorner(
                       corner: shapeTheme.cornerFull,
                     ),
-                    backgroundDecorations: [
-                      .elevationShadow(elevation),
-                      .fillColor(color),
-                    ],
+                    color: color,
+                    elevation: elevation,
                     child: Padding(
                       padding: .symmetric(horizontal: margin),
                       child: Flex.horizontal(
@@ -242,25 +236,21 @@ class __SliverHeaderState extends State<_SliverHeader> {
                           SizedBox(
                             width: 1.0,
                             height: lerpDouble(24.0, 16.0, fraction),
-                            child: Surface.material(
+                            child: Surface(
                               shape: shapeTheme.applyCorner(
                                 corner: shapeTheme.cornerFull,
                               ),
-                              backgroundDecorations: [
-                                .fillColor(colorTheme.outline),
-                              ],
+                              color: colorTheme.outline,
                             ),
                           ),
                           SizedBox.square(
                             dimension: containerHeight,
-                            child: Surface.material(
+                            child: Surface(
                               clipBehavior: .antiAlias,
                               shape: shapeTheme.applyCorner(
                                 corner: shapeTheme.cornerFull,
                               ),
-                              backgroundDecorations: [
-                                .fillColor(colorTheme.tertiaryContainer),
-                              ],
+                              color: colorTheme.tertiaryContainer,
                               child: InkWell(
                                 overlayColor: WidgetStateLayerColor(
                                   color: .all(colorTheme.onSurfaceVariant),
@@ -284,15 +274,13 @@ class __SliverHeaderState extends State<_SliverHeader> {
                 ),
                 end: SizedBox(
                   height: height,
-                  child: Surface.material(
+                  child: Surface(
                     clipBehavior: .antiAlias,
                     shape: shapeTheme.applyCorner(
                       corner: shapeTheme.cornerFull,
                     ),
-                    backgroundDecorations: [
-                      .elevationShadow(elevation),
-                      .fillColor(color),
-                    ],
+                    color: color,
+                    elevation: elevation,
                     child: Padding(
                       padding: .symmetric(horizontal: margin),
                       child: Flex.horizontal(
@@ -301,7 +289,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                         children: [
                           SizedBox.square(
                             dimension: containerHeight,
-                            child: Surface.material(
+                            child: Surface(
                               clipBehavior: .antiAlias,
                               shape: shapeTheme.applyCorner(
                                 corner: shapeTheme.cornerFull,
@@ -324,7 +312,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                           ),
                           SizedBox.square(
                             dimension: containerHeight,
-                            child: Surface.material(
+                            child: Surface(
                               clipBehavior: .antiAlias,
                               shape: shapeTheme.applyCorner(
                                 corner: shapeTheme.cornerFull,
@@ -347,7 +335,7 @@ class __SliverHeaderState extends State<_SliverHeader> {
                           ),
                           SizedBox.square(
                             dimension: containerHeight,
-                            child: Surface.material(
+                            child: Surface(
                               clipBehavior: .antiAlias,
                               shape: shapeTheme.applyCorner(
                                 corner: shapeTheme.cornerFull,
@@ -442,10 +430,10 @@ class _NavigationDestinationState extends State<_NavigationDestination> {
           return SizedBox(
             width: containerWidth,
             height: widget.containerHeight,
-            child: Surface.material(
+            child: Surface(
               clipBehavior: .antiAlias,
               shape: shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
-              backgroundDecorations: [.fillColor(containerColor)],
+              color: containerColor,
               child: InkWell(
                 overlayColor: WidgetStateLayerColor(
                   color: .all(contentColor),

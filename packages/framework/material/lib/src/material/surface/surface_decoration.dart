@@ -2,6 +2,8 @@
 
 import 'package:material/src/material/flutter.dart';
 
+import 'surface_decorations.dart';
+
 abstract class SurfacePaintingContext {
   const SurfacePaintingContext();
 

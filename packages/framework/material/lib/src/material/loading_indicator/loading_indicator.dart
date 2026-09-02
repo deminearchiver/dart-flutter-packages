@@ -32,8 +32,9 @@ final _determinateIndicatorPolygons = <RoundedPolygon>[
   MaterialShapes.softBurst,
 ];
 
-typedef LoadingIndicatorForEachPolygon =
-    RoundedPolygon Function(RoundedPolygon polygon);
+typedef LoadingIndicatorForEachPolygon = RoundedPolygon Function(
+  RoundedPolygon polygon,
+);
 
 final class _LoadingIndicatorStates
     with Diagnosticable
@@ -212,11 +213,10 @@ class _DeterminateLoadingIndicatorState
             minWidth: _kContainerWidth,
             minHeight: _kContainerHeight,
           ),
-          child: Surface.material(
+          child: Surface(
             clipBehavior: .antiAlias,
-            shape: resolvedContainerShape,
-            backgroundDecorations: [.fillColor(resolvedContainerColor)],
-            foregroundDecorations: [.outline(resolvedContainerOutline)],
+            shape: resolvedContainerOutline.apply(resolvedContainerShape),
+            color: resolvedContainerColor,
             child: CustomPaint(
               painter: _DeterminateLoadingIndicatorPainter(
                 color: resolvedActiveIndicatorColor,
@@ -462,11 +462,10 @@ class _IndeterminateLoadingIndicatorState
             minWidth: _kContainerWidth,
             minHeight: _kContainerHeight,
           ),
-          child: Surface.material(
+          child: Surface(
             clipBehavior: .antiAlias,
-            shape: resolvedContainerShape,
-            backgroundDecorations: [.fillColor(resolvedContainerColor)],
-            foregroundDecorations: [.outline(resolvedContainerOutline)],
+            shape: resolvedContainerOutline.apply(resolvedContainerShape),
+            color: resolvedContainerColor,
             child: CustomPaint(painter: _painter, willChange: true),
           ),
         ),

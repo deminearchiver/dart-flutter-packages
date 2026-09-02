@@ -408,17 +408,12 @@ class SearchBarContainer extends StatelessWidget {
     return SizedBox(
       width: .infinity,
       height: height ?? 56.0,
-      child: Surface.material(
+      child: Surface(
         clipBehavior: .antiAlias,
         shape: shape ?? shapeTheme.applyCorner(corner: shapeTheme.cornerFull),
-        backgroundDecorations: [
-          .elevationShadow(
-            elevation ?? elevationTheme.level0,
-            color: shadowColor ?? colorTheme.shadow,
-            transparentOccluder: color.a < 1.0,
-          ),
-          .fillColor(color),
-        ],
+        color: color,
+        elevation: elevation ?? elevationTheme.level0,
+        shadowColor: shadowColor ?? colorTheme.shadow,
         child: child,
       ),
     );
@@ -862,8 +857,8 @@ class _AppBarWithSearchState extends State<_AppBarWithSearch> {
     //   "offstage: ${route?.offstage} / status: ${route?.animation?.status.name}",
     // );
 
-    return Surface.material(
-      backgroundDecorations: [.fillColor(colorTheme.surfaceContainer)],
+    return Surface(
+      color: colorTheme.surfaceContainer,
       child: Visibility(
         visible: visible,
         maintainState: true,
@@ -1049,16 +1044,12 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
         fit: .expand,
         children: [
           Positioned.fill(
-            child: Surface.material(
-              backgroundDecorations: [
-                .fillColor(
-                  Color.lerp(
-                    colorTheme.surfaceContainerLow.withValues(alpha: 0.0),
-                    colorTheme.surfaceContainerLow.withValues(alpha: 1.0),
-                    clampDouble(animation.value, 0.0, 1.0),
-                  )!,
-                ),
-              ],
+            child: Surface(
+              color: Color.lerp(
+                colorTheme.surfaceContainerLow.withValues(alpha: 0.0),
+                colorTheme.surfaceContainerLow.withValues(alpha: 1.0),
+                clampDouble(animation.value, 0.0, 1.0),
+              ),
             ),
           ),
           Positioned.fill(
@@ -1210,15 +1201,11 @@ class _AppBarSearchViewRoute<T extends Object?> extends PopupRoute<T> {
                               child: ListItemLayout(
                                 leading: SizedBox.square(
                                   dimension: 32.0,
-                                  child: Surface.material(
+                                  child: Surface(
                                     shape: shapeTheme.applyCorner(
                                       corner: shapeTheme.cornerFull,
                                     ),
-                                    backgroundDecorations: [
-                                      .fillColor(
-                                        colorTheme.surfaceContainerHigh,
-                                      ),
-                                    ],
+                                    color: colorTheme.surfaceContainerHigh,
                                     child: const Icon(
                                       MaterialSymbols.search_rounded,
                                       opticalSize: 20.0,

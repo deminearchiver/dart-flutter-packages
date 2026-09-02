@@ -204,14 +204,12 @@ class _Experiment4ViewState extends State<Experiment4View>
                   child: SizedBox(
                     width: 100 + sizeBonus,
                     height: 100 + sizeBonus * 0.5,
-                    child: Surface.ink(
+                    child: Surface(
                       clipBehavior: .antiAlias,
                       shape: shapeTheme.applyCorner(
                         corner: shapeTheme.cornerExtraLarge,
                       ),
-                      backgroundDecorations: [
-                        .fillColor(colorTheme.surfaceContainerLowest),
-                      ],
+                      color: colorTheme.surfaceContainerLowest,
                       child: Align.center(
                         child: Text(
                           "Leader",
@@ -277,7 +275,7 @@ class _Route extends PopupRoute<void> {
     final colorTheme = ColorTheme.of(context);
     final shapeTheme = ShapeTheme.of(context);
     final typescaleTheme = TypescaleTheme.of(context);
-    return RawSurfaceMaterial(
+    return Surface.raw(
       child: Stack(
         fit: .expand,
         children: [
@@ -286,7 +284,7 @@ class _Route extends PopupRoute<void> {
               layoutLink: link,
               animation: _curvedAnimation,
               child: IgnorePointer(
-                child: Surface.ink(
+                child: Surface(
                   shape: shapeTheme.applyCorners(
                     corners: Corners.all(
                       Corner.lerp(
@@ -296,19 +294,11 @@ class _Route extends PopupRoute<void> {
                       )!,
                     ),
                   ),
-                  backgroundDecorations: [
-                    .fillColor(
-                      Color.lerp(
-                        colorTheme.surfaceContainerLowest.withValues(
-                          alpha: 0.5,
-                        ),
-                        colorTheme.surfaceContainerLowest.withValues(
-                          alpha: 0.5,
-                        ),
-                        _curvedAnimation.value,
-                      )!,
-                    ),
-                  ],
+                  color: Color.lerp(
+                    colorTheme.surfaceContainerLowest.withValues(alpha: 0.5),
+                    colorTheme.surfaceContainerLowest.withValues(alpha: 0.5),
+                    _curvedAnimation.value,
+                  ),
                   child: Align.center(
                     child: Text(
                       "Follower",

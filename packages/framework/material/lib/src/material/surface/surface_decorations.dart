@@ -1,5 +1,7 @@
 import 'package:material/src/material/flutter.dart';
 
+import 'surface_decoration.dart';
+
 class SurfaceElevationShadow extends SurfaceDecoration {
   const SurfaceElevationShadow(
     this.elevation, {
