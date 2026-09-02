@@ -22,6 +22,8 @@ dependencies:
     # the parent directory to use the current plugin's version.
     path: ../
 
+  material_ui: ^1.0.0
+
 dev_dependencies:
   integration_test:
     sdk: flutter
