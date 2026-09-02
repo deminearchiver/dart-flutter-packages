@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:inspire_blur/inspire_blur.dart';
 import 'package:material_example/flutter.dart';
 
 class Experiment7View extends StatefulWidget {
@@ -28,8 +29,18 @@ class _Experiment7ViewState extends State<Experiment7View> {
             collapsedPadding: .all(16.0),
           ),
           SliverList.builder(
-            itemBuilder: (context, index) =>
-                ListItemLayout(headline: Text("List item")),
+            itemBuilder: (context, index) => ListItemLayout(
+              headline: Text(
+                "Lorem ipsum dolor sit amet",
+                textAlign: .center,
+                softWrap: false,
+                maxLines: 1,
+                overflow: .ellipsis,
+                style: typescaleTheme.displaySmallEmphasized.toTextStyle(
+                  color: colorTheme.onSurface,
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -107,263 +118,283 @@ class __SliverHeaderState extends State<_SliverHeader> {
           fraction,
         );
 
-        return Surface(
-          color: colorTheme.surfaceContainer,
-          child: Padding(
-            padding: padding,
-            child: SizedBox(
-              width: .infinity,
-              height: height,
-              child: _HeaderLayout(
-                start: SizedBox(
-                  height: height,
-                  child: Surface(
-                    clipBehavior: .antiAlias,
-                    shape: shapeTheme.applyCorner(
-                      corner: shapeTheme.cornerFull,
-                    ),
-                    color: color,
-                    elevation: elevation,
-                    child: Padding(
-                      padding: .fromSTEB(
-                        margin,
-                        0.0,
-                        lerpDouble(
-                          measurementTheme.space300,
-                          measurementTheme.space200,
-                          fraction,
-                        ),
-                        0.0,
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: Inspire.backdropBlur(
+                config: .topToBottom(
+                  sigma: 16.0,
+                  fadeCurve: Curves.easeOutSine,
+                ),
+                useRepaintBoundary: false,
+                clipBehavior: .hardEdge,
+              ),
+            ),
+            Padding(
+              padding: padding,
+              child: SizedBox(
+                width: .infinity,
+                height: height,
+                child: _HeaderLayout(
+                  start: SizedBox(
+                    height: height,
+                    child: Surface(
+                      clipBehavior: .antiAlias,
+                      shape: shapeTheme.applyCorner(
+                        corner: shapeTheme.cornerFull,
                       ),
-                      child: Flex.horizontal(
-                        mainAxisSize: .min,
-                        spacing: lerpDouble(
-                          measurementTheme.space100,
-                          measurementTheme.space75,
-                          fraction,
+                      color: color,
+                      elevation: elevation,
+                      child: Padding(
+                        padding: .fromSTEB(
+                          margin,
+                          0.0,
+                          lerpDouble(
+                            measurementTheme.space300,
+                            measurementTheme.space200,
+                            fraction,
+                          ),
+                          0.0,
                         ),
-                        children: [
-                          SizedBox.square(
-                            dimension: containerHeight,
-                            child: Surface(
-                              clipBehavior: .antiAlias,
-                              shape: shapeTheme.applyCorner(
-                                corner: shapeTheme.cornerFull,
-                              ),
-                              color: colorTheme.surfaceContainerLowest,
-                              child: Align.center(
-                                child: Text(
-                                  "A",
-                                  style: typescaleTheme.titleMediumEmphasized
-                                      .toTextStyle(color: colorTheme.primary),
+                        child: Flex.horizontal(
+                          mainAxisSize: .min,
+                          spacing: lerpDouble(
+                            measurementTheme.space100,
+                            measurementTheme.space75,
+                            fraction,
+                          ),
+                          children: [
+                            SizedBox.square(
+                              dimension: containerHeight,
+                              child: Surface(
+                                clipBehavior: .antiAlias,
+                                shape: shapeTheme.applyCorner(
+                                  corner: shapeTheme.cornerFull,
+                                ),
+                                color: colorTheme.surfaceContainerLowest,
+                                child: Align.center(
+                                  child: Text(
+                                    "A",
+                                    style: typescaleTheme.titleMediumEmphasized
+                                        .toTextStyle(color: colorTheme.primary),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Text(
-                            "headline",
-                            style: TextGeometry.lerp(
-                              typescaleTheme.titleLargeEmphasized,
-                              typescaleTheme.titleMediumEmphasized,
-                              fraction,
-                            ).toTextStyle(color: colorTheme.onSurface),
-                          ),
-                        ],
+                            Text(
+                              "headline",
+                              style: TextGeometry.lerp(
+                                typescaleTheme.titleLargeEmphasized,
+                                typescaleTheme.titleMediumEmphasized,
+                                fraction,
+                              ).toTextStyle(color: colorTheme.onSurface),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                center: SizedBox(
-                  height: height,
-                  child: Surface(
-                    clipBehavior: .antiAlias,
-                    shape: shapeTheme.applyCorner(
-                      corner: shapeTheme.cornerFull,
-                    ),
-                    color: color,
-                    elevation: elevation,
-                    child: Padding(
-                      padding: .symmetric(horizontal: margin),
-                      child: Flex.horizontal(
-                        mainAxisSize: .min,
-                        spacing: margin,
-                        children: [
-                          _NavigationDestination(
-                            unselectedContainerWidth: unselectedContainerWidth,
-                            selectedContainerWidth: selectedContainerWidth,
-                            containerHeight: containerHeight,
-                            iconSize: iconSize,
-                            isSelected: _selectedIndex == 0,
-                            onTap: () => setState(() => _selectedIndex = 0),
-                            icon: const Icon(MaterialSymbols.home_rounded),
-                          ),
-                          _NavigationDestination(
-                            unselectedContainerWidth: unselectedContainerWidth,
-                            selectedContainerWidth: selectedContainerWidth,
-                            containerHeight: containerHeight,
-                            iconSize: iconSize,
-                            isSelected: _selectedIndex == 1,
-                            onTap: () => setState(() => _selectedIndex = 1),
-                            icon: const Icon(MaterialSymbols.info_rounded),
-                          ),
-                          _NavigationDestination(
-                            unselectedContainerWidth: unselectedContainerWidth,
-                            selectedContainerWidth: selectedContainerWidth,
-                            containerHeight: containerHeight,
-                            iconSize: iconSize,
-                            isSelected: _selectedIndex == 2,
-                            onTap: () => setState(() => _selectedIndex = 2),
-                            icon: const Icon(MaterialSymbols.work_rounded),
-                          ),
-                          _NavigationDestination(
-                            unselectedContainerWidth: unselectedContainerWidth,
-                            selectedContainerWidth: selectedContainerWidth,
-                            containerHeight: containerHeight,
-                            iconSize: iconSize,
-                            isSelected: _selectedIndex == 3,
-                            onTap: () => setState(() => _selectedIndex = 3),
-                            icon: const Icon(MaterialSymbols.docs_rounded),
-                          ),
-                          _NavigationDestination(
-                            unselectedContainerWidth: unselectedContainerWidth,
-                            selectedContainerWidth: selectedContainerWidth,
-                            containerHeight: containerHeight,
-                            iconSize: iconSize,
-                            isSelected: _selectedIndex == 4,
-                            onTap: () => setState(() => _selectedIndex = 4),
-                            icon: const Icon(MaterialSymbols.mail_rounded),
-                          ),
-                          SizedBox(
-                            width: 1.0,
-                            height: lerpDouble(24.0, 16.0, fraction),
-                            child: Surface(
-                              shape: shapeTheme.applyCorner(
-                                corner: shapeTheme.cornerFull,
-                              ),
-                              color: colorTheme.outline,
+                  center: SizedBox(
+                    height: height,
+                    child: Surface(
+                      clipBehavior: .antiAlias,
+                      shape: shapeTheme.applyCorner(
+                        corner: shapeTheme.cornerFull,
+                      ),
+                      color: color,
+                      elevation: elevation,
+                      child: Padding(
+                        padding: .symmetric(horizontal: margin),
+                        child: Flex.horizontal(
+                          mainAxisSize: .min,
+                          spacing: margin,
+                          children: [
+                            _NavigationDestination(
+                              unselectedContainerWidth:
+                                  unselectedContainerWidth,
+                              selectedContainerWidth: selectedContainerWidth,
+                              containerHeight: containerHeight,
+                              iconSize: iconSize,
+                              isSelected: _selectedIndex == 0,
+                              onTap: () => setState(() => _selectedIndex = 0),
+                              icon: const Icon(MaterialSymbols.home_rounded),
                             ),
-                          ),
-                          SizedBox.square(
-                            dimension: containerHeight,
-                            child: Surface(
-                              clipBehavior: .antiAlias,
-                              shape: shapeTheme.applyCorner(
-                                corner: shapeTheme.cornerFull,
-                              ),
-                              color: colorTheme.tertiaryContainer,
-                              child: InkWell(
-                                overlayColor: WidgetStateLayerColor(
-                                  color: .all(colorTheme.onSurfaceVariant),
-                                  opacity: stateTheme.asWidgetStateLayerOpacity,
+                            _NavigationDestination(
+                              unselectedContainerWidth:
+                                  unselectedContainerWidth,
+                              selectedContainerWidth: selectedContainerWidth,
+                              containerHeight: containerHeight,
+                              iconSize: iconSize,
+                              isSelected: _selectedIndex == 1,
+                              onTap: () => setState(() => _selectedIndex = 1),
+                              icon: const Icon(MaterialSymbols.info_rounded),
+                            ),
+                            _NavigationDestination(
+                              unselectedContainerWidth:
+                                  unselectedContainerWidth,
+                              selectedContainerWidth: selectedContainerWidth,
+                              containerHeight: containerHeight,
+                              iconSize: iconSize,
+                              isSelected: _selectedIndex == 2,
+                              onTap: () => setState(() => _selectedIndex = 2),
+                              icon: const Icon(MaterialSymbols.work_rounded),
+                            ),
+                            _NavigationDestination(
+                              unselectedContainerWidth:
+                                  unselectedContainerWidth,
+                              selectedContainerWidth: selectedContainerWidth,
+                              containerHeight: containerHeight,
+                              iconSize: iconSize,
+                              isSelected: _selectedIndex == 3,
+                              onTap: () => setState(() => _selectedIndex = 3),
+                              icon: const Icon(MaterialSymbols.docs_rounded),
+                            ),
+                            _NavigationDestination(
+                              unselectedContainerWidth:
+                                  unselectedContainerWidth,
+                              selectedContainerWidth: selectedContainerWidth,
+                              containerHeight: containerHeight,
+                              iconSize: iconSize,
+                              isSelected: _selectedIndex == 4,
+                              onTap: () => setState(() => _selectedIndex = 4),
+                              icon: const Icon(MaterialSymbols.mail_rounded),
+                            ),
+                            SizedBox(
+                              width: 1.0,
+                              height: lerpDouble(24.0, 16.0, fraction),
+                              child: Surface(
+                                shape: shapeTheme.applyCorner(
+                                  corner: shapeTheme.cornerFull,
                                 ),
-                                onTap: () {},
-                                child: Icon(
-                                  MaterialSymbols.search_rounded,
-                                  fill: 1.0,
-                                  opticalSize: iconSize,
-                                  size: iconSize,
-                                  color: colorTheme.onTertiaryContainer,
-                                ),
+                                color: colorTheme.outline,
                               ),
                             ),
-                          ),
-                        ],
+                            SizedBox.square(
+                              dimension: containerHeight,
+                              child: Surface(
+                                clipBehavior: .antiAlias,
+                                shape: shapeTheme.applyCorner(
+                                  corner: shapeTheme.cornerFull,
+                                ),
+                                color: colorTheme.tertiaryContainer,
+                                child: InkWell(
+                                  overlayColor: WidgetStateLayerColor(
+                                    color: .all(colorTheme.onSurfaceVariant),
+                                    opacity:
+                                        stateTheme.asWidgetStateLayerOpacity,
+                                  ),
+                                  onTap: () {},
+                                  child: Icon(
+                                    MaterialSymbols.search_rounded,
+                                    fill: 1.0,
+                                    opticalSize: iconSize,
+                                    size: iconSize,
+                                    color: colorTheme.onTertiaryContainer,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                end: SizedBox(
-                  height: height,
-                  child: Surface(
-                    clipBehavior: .antiAlias,
-                    shape: shapeTheme.applyCorner(
-                      corner: shapeTheme.cornerFull,
-                    ),
-                    color: color,
-                    elevation: elevation,
-                    child: Padding(
-                      padding: .symmetric(horizontal: margin),
-                      child: Flex.horizontal(
-                        mainAxisSize: .min,
-                        spacing: margin,
-                        children: [
-                          SizedBox.square(
-                            dimension: containerHeight,
-                            child: Surface(
-                              clipBehavior: .antiAlias,
-                              shape: shapeTheme.applyCorner(
-                                corner: shapeTheme.cornerFull,
-                              ),
-                              child: InkWell(
-                                overlayColor: WidgetStateLayerColor(
-                                  color: .all(colorTheme.onSurfaceVariant),
-                                  opacity: stateTheme.asWidgetStateLayerOpacity,
+                  end: SizedBox(
+                    height: height,
+                    child: Surface(
+                      clipBehavior: .antiAlias,
+                      shape: shapeTheme.applyCorner(
+                        corner: shapeTheme.cornerFull,
+                      ),
+                      color: color,
+                      elevation: elevation,
+                      child: Padding(
+                        padding: .symmetric(horizontal: margin),
+                        child: Flex.horizontal(
+                          mainAxisSize: .min,
+                          spacing: margin,
+                          children: [
+                            SizedBox.square(
+                              dimension: containerHeight,
+                              child: Surface(
+                                clipBehavior: .antiAlias,
+                                shape: shapeTheme.applyCorner(
+                                  corner: shapeTheme.cornerFull,
                                 ),
-                                onTap: () {},
-                                child: Icon(
-                                  MaterialSymbols.link_2_rounded,
-                                  fill: 0.0,
-                                  opticalSize: iconSize,
-                                  size: iconSize,
-                                  color: colorTheme.onSurfaceVariant,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox.square(
-                            dimension: containerHeight,
-                            child: Surface(
-                              clipBehavior: .antiAlias,
-                              shape: shapeTheme.applyCorner(
-                                corner: shapeTheme.cornerFull,
-                              ),
-                              child: InkWell(
-                                overlayColor: WidgetStateLayerColor(
-                                  color: .all(colorTheme.onSurfaceVariant),
-                                  opacity: stateTheme.asWidgetStateLayerOpacity,
-                                ),
-                                onTap: () {},
-                                child: Icon(
-                                  MaterialSymbols.link_2_rounded,
-                                  fill: 0.0,
-                                  opticalSize: iconSize,
-                                  size: iconSize,
-                                  color: colorTheme.onSurfaceVariant,
+                                child: InkWell(
+                                  overlayColor: WidgetStateLayerColor(
+                                    color: .all(colorTheme.onSurfaceVariant),
+                                    opacity:
+                                        stateTheme.asWidgetStateLayerOpacity,
+                                  ),
+                                  onTap: () {},
+                                  child: Icon(
+                                    MaterialSymbols.link_2_rounded,
+                                    fill: 0.0,
+                                    opticalSize: iconSize,
+                                    size: iconSize,
+                                    color: colorTheme.onSurfaceVariant,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox.square(
-                            dimension: containerHeight,
-                            child: Surface(
-                              clipBehavior: .antiAlias,
-                              shape: shapeTheme.applyCorner(
-                                corner: shapeTheme.cornerFull,
-                              ),
-                              child: InkWell(
-                                overlayColor: WidgetStateLayerColor(
-                                  color: .all(colorTheme.onSurfaceVariant),
-                                  opacity: stateTheme.asWidgetStateLayerOpacity,
+                            SizedBox.square(
+                              dimension: containerHeight,
+                              child: Surface(
+                                clipBehavior: .antiAlias,
+                                shape: shapeTheme.applyCorner(
+                                  corner: shapeTheme.cornerFull,
                                 ),
-                                onTap: () {},
-                                child: Icon(
-                                  MaterialSymbols.link_2_rounded,
-                                  fill: 0.0,
-                                  opticalSize: iconSize,
-                                  size: iconSize,
-                                  color: colorTheme.onSurfaceVariant,
+                                child: InkWell(
+                                  overlayColor: WidgetStateLayerColor(
+                                    color: .all(colorTheme.onSurfaceVariant),
+                                    opacity:
+                                        stateTheme.asWidgetStateLayerOpacity,
+                                  ),
+                                  onTap: () {},
+                                  child: Icon(
+                                    MaterialSymbols.link_2_rounded,
+                                    fill: 0.0,
+                                    opticalSize: iconSize,
+                                    size: iconSize,
+                                    color: colorTheme.onSurfaceVariant,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                            SizedBox.square(
+                              dimension: containerHeight,
+                              child: Surface(
+                                clipBehavior: .antiAlias,
+                                shape: shapeTheme.applyCorner(
+                                  corner: shapeTheme.cornerFull,
+                                ),
+                                child: InkWell(
+                                  overlayColor: WidgetStateLayerColor(
+                                    color: .all(colorTheme.onSurfaceVariant),
+                                    opacity:
+                                        stateTheme.asWidgetStateLayerOpacity,
+                                  ),
+                                  onTap: () {},
+                                  child: Icon(
+                                    MaterialSymbols.link_2_rounded,
+                                    fill: 0.0,
+                                    opticalSize: iconSize,
+                                    size: iconSize,
+                                    color: colorTheme.onSurfaceVariant,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
+          ],
         );
       },
     );
