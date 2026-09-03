@@ -6110,6 +6110,12 @@ external void hb_set_intersect(
   ffi.Pointer<hb_set_t> other,
 );
 
+@ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
+external int hb_set_intersects(
+  ffi.Pointer<hb_set_t> set,
+  ffi.Pointer<hb_set_t> other,
+);
+
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>)>()
 external void hb_set_invert(ffi.Pointer<hb_set_t> set);
 
@@ -7409,11 +7415,11 @@ const int HB_UNICODE_MAX_DECOMPOSITION_LEN = 19;
 
 const int HB_VERSION_MAJOR = 14;
 
-const int HB_VERSION_MICRO = 1;
+const int HB_VERSION_MICRO = 0;
 
-const int HB_VERSION_MINOR = 3;
+const int HB_VERSION_MINOR = 4;
 
-const String HB_VERSION_STRING = '14.3.1';
+const String HB_VERSION_STRING = '14.4.0';
 
 final class _hb_var_int_t extends ffi.Union {
   @ffi.Uint32()

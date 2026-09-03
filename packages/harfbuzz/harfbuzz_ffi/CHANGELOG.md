@@ -1,6 +1,8 @@
 ## Unreleased
 
-- Bumped native HarfBuzz dependency to [`14.3.1`](https://github.com/harfbuzz/harfbuzz/releases/tag/14.3.1).
+- Bumped native HarfBuzz dependency to [`14.4.0`](https://github.com/harfbuzz/harfbuzz/releases/tag/14.4.0).
+
+- Fixed FFI bindings generator unable to find standard C headers on Linux.
 
 ## 0.5.0
 

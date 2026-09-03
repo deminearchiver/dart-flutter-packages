@@ -1,3 +1,7 @@
+## Unreleased
+
+- Fixed FFI bindings generator unable to find standard C headers on Linux.
+
 ## 0.2.0
 
 - Bumped minimum SDK version to Dart 3.13.

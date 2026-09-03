@@ -10,6 +10,8 @@ void main() {
   bool include(Declaration declaration) =>
       identifierRegExp.hasMatch(declaration.originalName);
 
+  final resourceDir = _clangResourceDir();
+
   FfiGenerator(
     output: Output(
       dartFile: packageRoot.resolve("lib/src/ffi_bindings.g.dart"),
@@ -21,7 +23,11 @@ void main() {
         packageRoot.resolve("third_party/harfbuzz/src/hb.h"),
         packageRoot.resolve("third_party/harfbuzz/src/hb-subset.h"),
       ],
-      compilerOptions: ["-DHB_HAS_SUBSET", "-DHB_EXPERIMENTAL_API"],
+      compilerOptions: [
+        "-DHB_HAS_SUBSET",
+        "-DHB_EXPERIMENTAL_API",
+        if (resourceDir != null) ...["-resource-dir", resourceDir],
+      ],
     ),
     functions: .new(include: include),
     enums: .new(include: include),
@@ -31,4 +37,13 @@ void main() {
     typedefs: .new(include: include),
     unions: .new(include: include),
   ).generate();
+}
+
+String? _clangResourceDir() {
+  try {
+    final result = Process.runSync("clang", const ["-print-resource-dir"]);
+    return result.exitCode == 0 ? (result.stdout as String).trim() : null;
+  } on ProcessException {
+    return null;
+  }
 }
