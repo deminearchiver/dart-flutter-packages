@@ -37,15 +37,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final light = SystemColorsAndroid().lightColorScheme().resolve();
-    final dark = SystemColorsAndroid().darkColorScheme().resolve();
+    final light = SystemColorsAndroid().lightColorScheme().resolve(
+      .withDefaults(isDark: false),
+    );
+    final dark = SystemColorsAndroid().darkColorScheme().resolve(
+      .withDefaults(isDark: true),
+    );
     return MaterialApp(
+      theme: ThemeData(colorScheme: light.toColorScheme(lazy: true)),
+      darkTheme: ThemeData(colorScheme: dark.toColorScheme(lazy: true)),
       home: Scaffold(
         appBar: AppBar(title: const Text('Plugin example app')),
-        body: ColoredBox(
-          color: light.errorDim,
-          child: Center(child: Text('Running!!!')),
-        ),
+        body: Center(child: Text('Running!!!')),
       ),
     );
   }

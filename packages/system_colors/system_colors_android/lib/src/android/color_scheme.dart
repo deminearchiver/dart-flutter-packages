@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:libmonet/libmonet.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:system_colors_android/system_colors_android.dart';
 
@@ -146,69 +147,8 @@ abstract class const AndroidColorScheme() with Diagnosticable {
   Color? get textSecondaryAndTertiaryInverseDisabled;
   Color? get textHintInverse;
 
-  MaterialColorScheme resolve() => .from(
-    brightness: brightness,
-    primaryPaletteKeyColor: primaryPaletteKeyColor ?? Colors.transparent,
-    secondaryPaletteKeyColor: secondaryPaletteKeyColor ?? Colors.transparent,
-    tertiaryPaletteKeyColor: tertiaryPaletteKeyColor ?? Colors.transparent,
-    neutralPaletteKeyColor: neutralPaletteKeyColor ?? Colors.transparent,
-    neutralVariantPaletteKeyColor:
-        neutralVariantPaletteKeyColor ?? Colors.transparent,
-    errorPaletteKeyColor: errorPaletteKeyColor ?? Colors.transparent,
-    background: background ?? Colors.transparent,
-    onBackground: onBackground ?? Colors.transparent,
-    surface: surface ?? Colors.transparent,
-    surfaceDim: surfaceDim ?? Colors.transparent,
-    surfaceBright: surfaceBright ?? Colors.transparent,
-    surfaceContainerLowest: surfaceContainerLowest ?? Colors.transparent,
-    surfaceContainerLow: surfaceContainerLow ?? Colors.transparent,
-    surfaceContainer: surfaceContainer ?? Colors.transparent,
-    surfaceContainerHigh: surfaceContainerHigh ?? Colors.transparent,
-    surfaceContainerHighest: surfaceContainerHighest ?? Colors.transparent,
-    onSurface: onSurface ?? Colors.transparent,
-    surfaceVariant: surfaceVariant ?? Colors.transparent,
-    onSurfaceVariant: onSurfaceVariant ?? Colors.transparent,
-    outline: outline ?? Colors.transparent,
-    outlineVariant: outlineVariant ?? Colors.transparent,
-    inverseSurface: inverseSurface ?? Colors.transparent,
-    inverseOnSurface: inverseOnSurface ?? Colors.transparent,
-    shadow: shadow ?? Colors.transparent,
-    scrim: scrim ?? Colors.transparent,
-    surfaceTint: surfaceTint ?? Colors.transparent,
-    primary: primary ?? Colors.transparent,
-    primaryDim: primaryDim ?? Colors.transparent,
-    onPrimary: onPrimary ?? Colors.transparent,
-    primaryContainer: primaryContainer ?? Colors.transparent,
-    onPrimaryContainer: onPrimaryContainer ?? Colors.transparent,
-    primaryFixed: primaryFixed ?? Colors.transparent,
-    primaryFixedDim: primaryFixedDim ?? Colors.transparent,
-    onPrimaryFixed: onPrimaryFixed ?? Colors.transparent,
-    onPrimaryFixedVariant: onPrimaryFixedVariant ?? Colors.transparent,
-    inversePrimary: inversePrimary ?? Colors.transparent,
-    secondary: secondary ?? Colors.transparent,
-    secondaryDim: secondaryDim ?? Colors.transparent,
-    onSecondary: onSecondary ?? Colors.transparent,
-    secondaryContainer: secondaryContainer ?? Colors.transparent,
-    onSecondaryContainer: onSecondaryContainer ?? Colors.transparent,
-    secondaryFixed: secondaryFixed ?? Colors.transparent,
-    secondaryFixedDim: secondaryFixedDim ?? Colors.transparent,
-    onSecondaryFixed: onSecondaryFixed ?? Colors.transparent,
-    onSecondaryFixedVariant: onSecondaryFixedVariant ?? Colors.transparent,
-    tertiary: tertiary ?? Colors.transparent,
-    tertiaryDim: tertiaryDim ?? Colors.transparent,
-    onTertiary: onTertiary ?? Colors.transparent,
-    tertiaryContainer: tertiaryContainer ?? Colors.transparent,
-    onTertiaryContainer: onTertiaryContainer ?? Colors.transparent,
-    tertiaryFixed: tertiaryFixed ?? Colors.transparent,
-    tertiaryFixedDim: tertiaryFixedDim ?? Colors.transparent,
-    onTertiaryFixed: onTertiaryFixed ?? Colors.transparent,
-    onTertiaryFixedVariant: onTertiaryFixedVariant ?? Colors.transparent,
-    error: error ?? Colors.transparent,
-    errorDim: errorDim ?? Colors.transparent,
-    onError: onError ?? Colors.transparent,
-    errorContainer: errorContainer ?? Colors.transparent,
-    onErrorContainer: onErrorContainer ?? Colors.transparent,
-  );
+  MaterialColorScheme resolve(DynamicScheme fallbackScheme) =>
+      .fromAndroidColorScheme(this, fallbackScheme);
 }
 
 final class const _AndroidColorScheme({
@@ -284,8 +224,7 @@ final class const _AndroidColorScheme({
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _AndroidColorScheme &&
+      other is _AndroidColorScheme &&
           brightness == other.brightness &&
           primaryPaletteKeyColor == other.primaryPaletteKeyColor &&
           secondaryPaletteKeyColor == other.secondaryPaletteKeyColor &&
