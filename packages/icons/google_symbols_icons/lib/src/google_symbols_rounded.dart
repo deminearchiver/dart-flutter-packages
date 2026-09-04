@@ -118,6 +118,9 @@ abstract final class GoogleSymbolsRounded {
   /// Google Symbols Rounded icon named "account_circle_off".
   static const IconData account_circle_off = IconData(0xf7b3, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Rounded icon named "account_circle_spark".
+  static const IconData account_circle_spark = IconData(0xffebc, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Rounded icon named "account_tree".
   static const IconData account_tree = IconData(0xe97a, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -2196,6 +2199,9 @@ abstract final class GoogleSymbolsRounded {
 
   /// Google Symbols Rounded icon named "car_repair".
   static const IconData car_repair = IconData(0xea56, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Rounded icon named "car_seat_off".
+  static const IconData car_seat_off = IconData(0xffebe, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Rounded icon named "car_spark".
   static const IconData car_spark = IconData(0xffefe, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -12123,6 +12129,9 @@ abstract final class GoogleSymbolsRounded {
 
   /// Google Symbols Rounded icon named "stateful".
   static const IconData stateful = IconData(0xf19a, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Rounded icon named "steering_wheel_cool".
+  static const IconData steering_wheel_cool = IconData(0xffebd, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Rounded icon named "steering_wheel_heat".
   static const IconData steering_wheel_heat = IconData(0xf32b, fontFamily: fontFamily, fontPackage: fontPackage);

@@ -1,3 +1,8 @@
+## 0.1.5
+
+- Rolled the Google Symbols font from `v455` to `v456`.
+  - This update introduces 3 new icons: `account_circle_spark`, `car_seat_off`, `steering_wheel_cool`.
+
 ## 0.1.4
 
 - Rolled the Google Symbols font from `v454` to `v455`.
