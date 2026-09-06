@@ -1,3 +1,7 @@
+## 0.1.5
+
+- Updated `.pubignore` to exclude all codegen-related directories.
+
 ## 0.1.4
 
 - Rolled the Luminous Symbols font from `v49` to `v50`.
