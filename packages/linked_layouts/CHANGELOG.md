@@ -1,4 +1,4 @@
-## Unreleased
+## 0.6.1
 
 - Replaced the classic LCA in transform helpers with a `RenderObject.depth`-based implementation.
   - In most cases, makes the algorithm complete earlier by preventing unnecessary ancestors traversal.
