@@ -30,5 +30,6 @@ migrate_working_dir/
 /build/
 /coverage/
 
-/lib/fonts/
-/third_party/fonts/
+/lib/fonts
+/third_party
+/tool

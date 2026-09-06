@@ -1,3 +1,7 @@
+## 0.1.6
+
+- Updated `.pubignore` to exclude all codegen-related directories.
+
 ## 0.1.5
 
 - Rolled the Google Symbols font from `v455` to `v456`.
