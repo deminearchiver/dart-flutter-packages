@@ -1,3 +1,19 @@
+## Unreleased
+
+- Replaced the classic LCA in transform helpers with a `RenderObject.depth`-based implementation.
+  - In most cases, makes the algorithm complete earlier by preventing unnecessary ancestors traversal.
+  - Less resilient due to utilizing `RenderObject.depth`, but it should remain stable without other external interferences.
+
+- Fixed `RenderSliver` (`SliverLogicalParentData`) transforms not being applied in release mode.
+
+- Replaced equality `==` with identity `identical()` checks in transform helpers.
+  - This aligns the library with standard Flutter framework practices regarding in-tree render object comparisons.
+
+- Fixed matrices multiplication order in transform helpers.
+
+- Cleaned up the `RenderObjectTransformHelper` internal utility class.
+  - Removed the now-unused `tryFindAncestorsOf()` method.
+
 ## 0.6.0
 
 This release contains a major refactor of the "layout clients" API surface. This is the biggest breaking change in this release.

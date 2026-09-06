@@ -12,51 +12,20 @@ abstract final class RenderObjectTransformHelper {
   static final _otherGlobalTransformCache = Matrix4.zero();
 
   @internal
-  static bool tryFindAncestorsOf(
-    List<RenderObject> result,
-    RenderObject descendant,
-  ) {
-    result.clear();
-    RenderObject? object = descendant;
-    while (object != null) {
-      if (!object.attached) return false;
-      result.add(object);
-
-      // We do some loop unrolling here.
-
-      final firstParent = object.parent;
-      if (firstParent == null) break;
-      if (!firstParent.attached) return false;
-      result.add(firstParent);
-
-      final secondParent = firstParent.parent;
-      if (secondParent == null) break;
-      if (!secondParent.attached) return false;
-      result.add(secondParent);
-
-      final thirdParent = secondParent.parent;
-      if (thirdParent == null) break;
-      if (!thirdParent.attached) return false;
-      result.add(thirdParent);
-
-      object = thirdParent.parent;
-    }
-    return result.isNotEmpty;
-  }
-
-  @internal
   static bool applyPaintTransformOr(
     RenderObject parent,
     RenderObject child,
     Matrix4 transform,
   ) {
+    // RenderSliver.applyPaintTransform is a no-op (assert only),
+    // so we must instead apply the fallback transform.
+    if (parent is RenderSliver && child.parentData is SliverLogicalParentData) {
+      return tryApplyFallbackTransform(parent, child, transform);
+    }
     if (tryApplyPaintTransform(parent, child, transform)) {
       return true;
     }
-    if (tryApplyFallbackTransform(parent, child, transform)) {
-      return true;
-    }
-    return false;
+    return tryApplyFallbackTransform(parent, child, transform);
   }
 
   @internal
@@ -197,7 +166,7 @@ abstract final class RenderObjectTransformHelper {
         // so we have to account for potential errors here.
         try {
           constraints = box.constraints;
-        } on Error {
+        } on StateError {
           constraints = null;
         }
       }
@@ -247,70 +216,65 @@ abstract final class RenderObjectTransformHelper {
     if (!target.attached || !other.attached) return null;
 
     final transform = (matrix?..setIdentity()) ?? .identity();
-    if (target == other) return transform;
-
-    // We do some loop unrolling here.
-    final targetParent = target.parent;
-    if (targetParent == other) {
-      applyPaintTransformOr(other, target, transform);
-      return transform;
-    }
-    final targetGrandparent = targetParent?.parent;
-    if (targetGrandparent == other) {
-      // Non-null if grandparent is non-null.
-      applyPaintTransformOr(targetParent!, target, transform);
-      applyPaintTransformOr(other, targetParent, transform);
-      return transform;
-    }
+    if (identical(target, other)) return transform;
 
     try {
-      if (!tryFindAncestorsOf(_targetAncestorsCache, target) ||
-          !tryFindAncestorsOf(_otherAncestorsCache, other)) {
-        return null;
+      _targetAncestorsCache.clear();
+      _otherAncestorsCache.clear();
+
+      var from = target;
+      var to = other;
+
+      while (!identical(from, to)) {
+        final fromDepth = from.depth;
+        final toDepth = to.depth;
+
+        if (fromDepth >= toDepth) {
+          final fromParent = from.parent;
+          if (fromParent == null || !fromParent.attached) return null;
+          _targetAncestorsCache.add(from);
+          from = fromParent;
+        }
+        if (fromDepth <= toDepth) {
+          final toParent = to.parent;
+          if (toParent == null || !toParent.attached) return null;
+          _otherAncestorsCache.add(to);
+          to = toParent;
+        }
       }
 
-      if (_targetAncestorsCache.last != _otherAncestorsCache.last) {
-        return null;
+      final targetTransform = _targetGlobalTransformCache..setIdentity();
+      if (_targetAncestorsCache.isNotEmpty) {
+        var parent = from;
+        for (
+          var index = _targetAncestorsCache.length - 1;
+          index >= 0;
+          index--
+        ) {
+          final child = _targetAncestorsCache[index];
+          applyPaintTransformOr(parent, child, targetTransform);
+          parent = child;
+        }
       }
 
-      var targetIndex = _targetAncestorsCache.length - 1;
-      var otherIndex = _otherAncestorsCache.length - 1;
-
-      while (targetIndex >= 0 &&
-          otherIndex >= 0 &&
-          _targetAncestorsCache[targetIndex] ==
-              _otherAncestorsCache[otherIndex]) {
-        targetIndex--;
-        otherIndex--;
-      }
-
-      final targetAncestorIndex = targetIndex + 1;
-      final otherAncestorIndex = otherIndex + 1;
-
-      final targetGlobalTransform = _targetGlobalTransformCache..setIdentity();
-      for (var index = 1; index <= targetAncestorIndex; index++) {
-        final child = _targetAncestorsCache[index - 1];
-        final parent = _targetAncestorsCache[index];
-        applyPaintTransformOr(parent, child, targetGlobalTransform);
-      }
-
-      if (otherAncestorIndex == 0) {
-        transform.setFrom(targetGlobalTransform);
+      if (_otherAncestorsCache.isEmpty) {
+        transform.setFrom(targetTransform);
         return transform;
       }
 
       final otherGlobalTransform = _otherGlobalTransformCache..setIdentity();
-      for (var index = 1; index <= otherAncestorIndex; index++) {
-        final child = _otherAncestorsCache[index - 1];
-        final parent = _otherAncestorsCache[index];
+      var parent = to;
+      for (var index = _otherAncestorsCache.length - 1; index >= 0; index--) {
+        final child = _otherAncestorsCache[index];
         applyPaintTransformOr(parent, child, otherGlobalTransform);
+        parent = child;
       }
 
       final determinant = otherGlobalTransform.invert();
       if (determinant == 0.0) return null;
 
-      if (targetAncestorIndex > 0) {
-        otherGlobalTransform.multiply(targetGlobalTransform);
+      if (_targetAncestorsCache.isNotEmpty) {
+        otherGlobalTransform.multiply(targetTransform);
       }
 
       transform.setFrom(otherGlobalTransform);
@@ -345,7 +309,7 @@ abstract final class RenderObjectTransformHelper {
       while (object != null) {
         if (!object.attached) return null;
         _ancestorsCache.add(object);
-        if (object == ancestor) break;
+        if (identical(object, ancestor)) break;
         object = object.parent;
       }
 
@@ -353,9 +317,9 @@ abstract final class RenderObjectTransformHelper {
 
       final transform = (result?..setIdentity()) ?? Matrix4.identity();
 
-      for (var index = 1; index < _ancestorsCache.length; index++) {
-        final child = _ancestorsCache[index - 1];
+      for (var index = _ancestorsCache.length - 1; index > 0; index--) {
         final parent = _ancestorsCache[index];
+        final child = _ancestorsCache[index - 1];
         applyPaintTransformOr(parent, child, transform);
       }
 
