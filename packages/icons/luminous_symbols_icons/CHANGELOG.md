@@ -1,3 +1,8 @@
+## 0.1.6
+
+- Rolled the Luminous Symbols font from `v50` to `v56`.
+  - This update introduces 20 new icons: `acute`, `add_a_photo`, `arrow_insert`, `attach_file_off`, `brush_spark`, `cards_stack`, `cloud`, `cloud_off`, `content_paste`, `finance_mode_2`, `gemini_chat_temp_check`, `motion_photos_on`, `play_prism`, `play_protect`, `play_store_installed`, `replay`, `search_ext`, `search_spark_ext`, `select`, `tab`.
+
 ## 0.1.5
 
 - Updated `.pubignore` to exclude all codegen-related directories.
