@@ -1,3 +1,8 @@
+## 0.1.7
+
+- Rolled the Google Symbols font from `v456` to `v459`.
+  - This update introduces 8 new icons: `device_swoosh_star`, `link_spark`, `mobile_tap`, `people_size_decrease`, `people_size_increase`, `spatial_gallery`, `speaker_3`, `target_check`.
+
 ## 0.1.6
 
 - Updated `.pubignore` to exclude all codegen-related directories.

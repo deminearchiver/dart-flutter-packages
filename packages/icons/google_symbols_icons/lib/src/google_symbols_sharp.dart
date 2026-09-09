@@ -3379,6 +3379,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "device_swoosh_spark".
   static const IconData device_swoosh_spark = IconData(0xffeef, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "device_swoosh_star".
+  static const IconData device_swoosh_star = IconData(0xffeb8, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "device_thermostat".
   static const IconData device_thermostat = IconData(0xe1ff, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -7390,6 +7393,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "link_off".
   static const IconData link_off = IconData(0xe16f, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "link_spark".
+  static const IconData link_spark = IconData(0xffeb9, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "linked_camera".
   static const IconData linked_camera = IconData(0xe438, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -8118,6 +8124,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "mobile_speaker".
   static const IconData mobile_speaker = IconData(0xf320, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "mobile_tap".
+  static const IconData mobile_tap = IconData(0xffeb2, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "mobile_text".
   static const IconData mobile_text = IconData(0xef39, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -9336,6 +9345,12 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "pentagon".
   static const IconData pentagon = IconData(0xeb50, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "people_size_decrease".
+  static const IconData people_size_decrease = IconData(0xffeb1, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "people_size_increase".
+  static const IconData people_size_increase = IconData(0xffeb0, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "percent".
   static const IconData percent = IconData(0xeb58, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -11770,6 +11785,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "spatial_audio_off".
   static const IconData spatial_audio_off = IconData(0xebe8, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "spatial_gallery".
+  static const IconData spatial_gallery = IconData(0xffeb6, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "spatial_speaker".
   static const IconData spatial_speaker = IconData(0xf4cf, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -11781,6 +11799,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "speaker_2".
   static const IconData speaker_2 = IconData(0xfff71, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "speaker_3".
+  static const IconData speaker_3 = IconData(0xffeb7, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "speaker_group".
   static const IconData speaker_group = IconData(0xe32e, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -12636,6 +12657,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "target".
   static const IconData target = IconData(0xe719, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "target_check".
+  static const IconData target_check = IconData(0xffeb3, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "task".
   static const IconData task = IconData(0xf075, fontFamily: fontFamily, fontPackage: fontPackage);
