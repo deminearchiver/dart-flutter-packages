@@ -4,6 +4,9 @@
 
 - Fixed FFI bindings generator unable to find standard C headers on Linux.
 
+- Upgraded the `package:ffigen` tool to version `^22.0.0`.
+  - Internal bindings generator has been migrated to use the newly overhauled Dart config API.
+
 ## 0.5.0
 
 - Bumped minimum SDK version to Dart 3.13.
