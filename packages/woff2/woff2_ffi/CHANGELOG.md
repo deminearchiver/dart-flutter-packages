@@ -1,4 +1,4 @@
-## Unreleased
+## 0.2.1
 
 - Fixed FFI bindings generator unable to find standard C headers on Linux.
 
