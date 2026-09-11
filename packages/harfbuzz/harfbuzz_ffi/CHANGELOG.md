@@ -1,4 +1,4 @@
-## Unreleased
+## 0.5.1
 
 - Bumped native HarfBuzz dependency to [`14.4.0`](https://github.com/harfbuzz/harfbuzz/releases/tag/14.4.0).
 
