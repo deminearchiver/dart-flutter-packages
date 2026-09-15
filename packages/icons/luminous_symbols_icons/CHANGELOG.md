@@ -1,3 +1,8 @@
+## 0.1.7
+
+- Rolled the Luminous Symbols font from `v56` to `v57`.
+  - This update introduces 9 new icons: `accessible_forward`, `arrow_selector_spark`, `bar_chart`, `bus_railway`, `cards_star`, `checkroom`, `child_care`, `reply`, `spatial_gallery`.
+
 ## 0.1.6
 
 - Rolled the Luminous Symbols font from `v50` to `v56`.
