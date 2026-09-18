@@ -6028,6 +6028,15 @@ abstract final class GoogleSymbolsOutlined {
   /// Google Symbols Outlined icon named "google_spaces".
   static const IconData google_spaces = IconData(0xe6af, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Outlined icon named "google_task".
+  static const IconData google_task = IconData(0xffeaf, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Outlined icon named "google_task_add".
+  static const IconData google_task_add = IconData(0xffeae, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Outlined icon named "google_task_spark".
+  static const IconData google_task_spark = IconData(0xffead, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Outlined icon named "google_travel".
   static const IconData google_travel = IconData(0xf110, fontFamily: fontFamily, fontPackage: fontPackage);
 

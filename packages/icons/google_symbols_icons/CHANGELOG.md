@@ -1,3 +1,8 @@
+## 0.1.8
+
+- Rolled the Google Symbols font from `v459` to `v461`.
+  - This update introduces 3 new icons: `google_task`, `google_task_add`, `google_task_spark`.
+
 ## 0.1.7
 
 - Rolled the Google Symbols font from `v456` to `v459`.
