@@ -4,11 +4,15 @@
 // ignore_for_file: type=lint, unused_import, unused_element, deprecated_member_use_from_same_package
 import 'dart:ffi' as ffi;
 
+import 'package:meta/meta.dart' as meta;
+
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_blob_t>)>()
 external ffi.Pointer<hb_blob_t> hb_blob_copy_writable_or_fail(
   ffi.Pointer<hb_blob_t> blob,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_blob_t> Function(
     ffi.Pointer<ffi.Char>,
@@ -36,16 +40,19 @@ ffi.Pointer<hb_blob_t> hb_blob_create(
   return _hb_blob_create(data, length, mode.value, user_data, destroy);
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<ffi.Char>)>()
 external ffi.Pointer<hb_blob_t> hb_blob_create_from_file(
   ffi.Pointer<ffi.Char> file_name,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<ffi.Char>)>()
 external ffi.Pointer<hb_blob_t> hb_blob_create_from_file_or_fail(
   ffi.Pointer<ffi.Char> file_name,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_blob_t> Function(
     ffi.Pointer<ffi.Char>,
@@ -78,6 +85,7 @@ ffi.Pointer<hb_blob_t> hb_blob_create_or_fail(
 /// want the user of the sub-blob to be able to
 /// modify the parent data as that data may be
 /// shared among multiple sub-blobs.
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_blob_t> Function(
     ffi.Pointer<hb_blob_t>,
@@ -91,9 +99,11 @@ external ffi.Pointer<hb_blob_t> hb_blob_create_sub_blob(
   int length,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_blob_t>)>()
 external void hb_blob_destroy(ffi.Pointer<hb_blob_t> blob);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Char> Function(
     ffi.Pointer<hb_blob_t>,
@@ -105,6 +115,7 @@ external ffi.Pointer<ffi.Char> hb_blob_get_data(
   ffi.Pointer<ffi.UnsignedInt> length,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Char> Function(
     ffi.Pointer<hb_blob_t>,
@@ -116,12 +127,15 @@ external ffi.Pointer<ffi.Char> hb_blob_get_data_writable(
   ffi.Pointer<ffi.UnsignedInt> length,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_blob_t> Function()>()
 external ffi.Pointer<hb_blob_t> hb_blob_get_empty();
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_blob_t>)>()
 external int hb_blob_get_length(ffi.Pointer<hb_blob_t> blob);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_blob_t>,
@@ -133,15 +147,19 @@ external ffi.Pointer<ffi.Void> hb_blob_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_blob_t>)>()
 external int hb_blob_is_immutable(ffi.Pointer<hb_blob_t> blob);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_blob_t>)>()
 external void hb_blob_make_immutable(ffi.Pointer<hb_blob_t> blob);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_blob_t>)>()
 external ffi.Pointer<hb_blob_t> hb_blob_reference(ffi.Pointer<hb_blob_t> blob);
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_blob_t>,
@@ -160,6 +178,7 @@ external int hb_blob_set_user_data(
 );
 
 /// Filling the buffer in
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_codepoint_t, ffi.UnsignedInt)
 >()
@@ -169,6 +188,7 @@ external void hb_buffer_add(
   int cluster,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_buffer_t>,
@@ -186,6 +206,7 @@ external void hb_buffer_add_codepoints(
   int item_length,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_buffer_t>,
@@ -203,6 +224,7 @@ external void hb_buffer_add_latin1(
   int item_length,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_buffer_t>,
@@ -220,6 +242,7 @@ external void hb_buffer_add_utf16(
   int item_length,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_buffer_t>,
@@ -237,6 +260,7 @@ external void hb_buffer_add_utf32(
   int item_length,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_buffer_t>,
@@ -254,9 +278,11 @@ external void hb_buffer_add_utf8(
   int item_length,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_allocation_successful(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_buffer_t>,
@@ -272,21 +298,26 @@ external void hb_buffer_append(
   int end,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
 external void hb_buffer_changed(ffi.Pointer<hb_buffer_t> buffer);
 
 /// Content API.
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
 external void hb_buffer_clear_contents(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_buffer_t> Function()>()
 external ffi.Pointer<hb_buffer_t> hb_buffer_create();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_buffer_t> Function(ffi.Pointer<hb_buffer_t>)>()
 external ffi.Pointer<hb_buffer_t> hb_buffer_create_similar(
   ffi.Pointer<hb_buffer_t> src,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_buffer_t>,
@@ -324,6 +355,7 @@ Darthb_bool_t hb_buffer_deserialize_glyphs(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_buffer_t>,
@@ -357,10 +389,12 @@ Darthb_bool_t hb_buffer_deserialize_unicode(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
 external void hb_buffer_destroy(ffi.Pointer<hb_buffer_t> buffer);
 
 /// Compare the contents of two buffers, report types of differences.
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_buffer_t>,
@@ -387,6 +421,7 @@ hb_buffer_diff_flags_t hb_buffer_diff(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_buffer_t>)>(
   symbol: 'hb_buffer_get_cluster_level',
 )
@@ -400,6 +435,7 @@ hb_buffer_cluster_level_t hb_buffer_get_cluster_level(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_buffer_t>)>(
   symbol: 'hb_buffer_get_content_type',
 )
@@ -413,6 +449,7 @@ hb_buffer_content_type_t hb_buffer_get_content_type(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_buffer_t>)>(
   symbol: 'hb_buffer_get_direction',
 )
@@ -422,9 +459,11 @@ hb_direction_t hb_buffer_get_direction(ffi.Pointer<hb_buffer_t> buffer) {
   return hb_direction_t.fromValue(_hb_buffer_get_direction(buffer));
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_buffer_t> Function()>()
 external ffi.Pointer<hb_buffer_t> hb_buffer_get_empty();
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_buffer_t>)>(
   symbol: 'hb_buffer_get_flags',
 )
@@ -435,6 +474,7 @@ hb_buffer_flags_t hb_buffer_get_flags(ffi.Pointer<hb_buffer_t> buffer) {
 }
 
 /// Getting glyphs out of the buffer
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_glyph_info_t> Function(
     ffi.Pointer<hb_buffer_t>,
@@ -446,6 +486,7 @@ external ffi.Pointer<hb_glyph_info_t> hb_buffer_get_glyph_infos(
   ffi.Pointer<ffi.UnsignedInt> length,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_glyph_position_t> Function(
     ffi.Pointer<hb_buffer_t>,
@@ -457,31 +498,39 @@ external ffi.Pointer<hb_glyph_position_t> hb_buffer_get_glyph_positions(
   ffi.Pointer<ffi.UnsignedInt> length,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_get_invisible_glyph(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<hb_language_t Function(ffi.Pointer<hb_buffer_t>)>()
 external hb_language_t hb_buffer_get_language(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_get_length(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_get_not_found_glyph(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_get_not_found_variation_selector_glyph(
   ffi.Pointer<hb_buffer_t> buffer,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_get_random_state(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_get_replacement_codepoint(
   ffi.Pointer<hb_buffer_t> buffer,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_buffer_t>)>(
   symbol: 'hb_buffer_get_script',
 )
@@ -491,6 +540,7 @@ hb_script_t hb_buffer_get_script(ffi.Pointer<hb_buffer_t> buffer) {
   return hb_script_t.fromValue(_hb_buffer_get_script(buffer));
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_buffer_t>,
@@ -502,6 +552,7 @@ external void hb_buffer_get_segment_properties(
   ffi.Pointer<hb_segment_properties_t> props,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_unicode_funcs_t> Function(ffi.Pointer<hb_buffer_t>)
 >()
@@ -509,6 +560,7 @@ external ffi.Pointer<hb_unicode_funcs_t> hb_buffer_get_unicode_funcs(
   ffi.Pointer<hb_buffer_t> buffer,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_buffer_t>,
@@ -520,34 +572,43 @@ external ffi.Pointer<ffi.Void> hb_buffer_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
 external void hb_buffer_guess_segment_properties(
   ffi.Pointer<hb_buffer_t> buffer,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_buffer_t>)>()
 external int hb_buffer_has_positions(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
 external void hb_buffer_normalize_glyphs(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>()
 external int hb_buffer_pre_allocate(ffi.Pointer<hb_buffer_t> buffer, int size);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_buffer_t> Function(ffi.Pointer<hb_buffer_t>)>()
 external ffi.Pointer<hb_buffer_t> hb_buffer_reference(
   ffi.Pointer<hb_buffer_t> buffer,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
 external void hb_buffer_reset(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
 external void hb_buffer_reverse(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>)>()
 external void hb_buffer_reverse_clusters(ffi.Pointer<hb_buffer_t> buffer);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt, ffi.UnsignedInt)
 >()
@@ -557,6 +618,7 @@ external void hb_buffer_reverse_range(
   int end,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_buffer_t>,
@@ -606,6 +668,7 @@ int hb_buffer_serialize(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<ffi.Char>, ffi.Int)>(
   symbol: 'hb_buffer_serialize_format_from_string',
 )
@@ -623,6 +686,7 @@ hb_buffer_serialize_format_t hb_buffer_serialize_format_from_string(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.UnsignedInt)>(
   symbol: 'hb_buffer_serialize_format_to_string',
 )
@@ -636,6 +700,7 @@ ffi.Pointer<ffi.Char> hb_buffer_serialize_format_to_string(
   return _hb_buffer_serialize_format_to_string(format.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_buffer_t>,
@@ -685,9 +750,11 @@ int hb_buffer_serialize_glyphs(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Pointer<ffi.Char>> Function()>()
 external ffi.Pointer<ffi.Pointer<ffi.Char>> hb_buffer_serialize_list_formats();
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_buffer_t>,
@@ -733,6 +800,7 @@ int hb_buffer_serialize_unicode(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>(
   symbol: 'hb_buffer_set_cluster_level',
 )
@@ -748,6 +816,7 @@ void hb_buffer_set_cluster_level(
   return _hb_buffer_set_cluster_level(buffer, cluster_level.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>(
   symbol: 'hb_buffer_set_content_type',
 )
@@ -763,6 +832,7 @@ void hb_buffer_set_content_type(
   return _hb_buffer_set_content_type(buffer, content_type.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>(
   symbol: 'hb_buffer_set_direction',
 )
@@ -778,6 +848,7 @@ void hb_buffer_set_direction(
   return _hb_buffer_set_direction(buffer, direction.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>(
   symbol: 'hb_buffer_set_flags',
 )
@@ -790,21 +861,25 @@ void hb_buffer_set_flags(
   return _hb_buffer_set_flags(buffer, flags.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_codepoint_t)>()
 external void hb_buffer_set_invisible_glyph(
   ffi.Pointer<hb_buffer_t> buffer,
   int invisible,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_language_t)>()
 external void hb_buffer_set_language(
   ffi.Pointer<hb_buffer_t> buffer,
   hb_language_t language,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>()
 external int hb_buffer_set_length(ffi.Pointer<hb_buffer_t> buffer, int length);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_buffer_t>,
@@ -820,30 +895,35 @@ external void hb_buffer_set_message_func(
   hb_destroy_func_t destroy,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_codepoint_t)>()
 external void hb_buffer_set_not_found_glyph(
   ffi.Pointer<hb_buffer_t> buffer,
   int not_found,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_codepoint_t)>()
 external void hb_buffer_set_not_found_variation_selector_glyph(
   ffi.Pointer<hb_buffer_t> buffer,
   int not_found_variation_selector,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>()
 external void hb_buffer_set_random_state(
   ffi.Pointer<hb_buffer_t> buffer,
   int state,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, hb_codepoint_t)>()
 external void hb_buffer_set_replacement_codepoint(
   ffi.Pointer<hb_buffer_t> buffer,
   int replacement,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.UnsignedInt)>(
   symbol: 'hb_buffer_set_script',
 )
@@ -856,6 +936,7 @@ void hb_buffer_set_script(ffi.Pointer<hb_buffer_t> buffer, hb_script_t script) {
   return _hb_buffer_set_script(buffer, script.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_buffer_t>,
@@ -867,6 +948,7 @@ external void hb_buffer_set_segment_properties(
   ffi.Pointer<hb_segment_properties_t> props,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_buffer_t>, ffi.Pointer<hb_unicode_funcs_t>)
 >()
@@ -875,6 +957,7 @@ external void hb_buffer_set_unicode_funcs(
   ffi.Pointer<hb_unicode_funcs_t> unicode_funcs,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_buffer_t>,
@@ -892,21 +975,27 @@ external int hb_buffer_set_user_data(
   int replace,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>()
 external ffi.Pointer<ffi.Void> hb_calloc(int nmemb, int size);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Uint8 Function(hb_color_t)>()
 external int hb_color_get_alpha(int color);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Uint8 Function(hb_color_t)>()
 external int hb_color_get_blue(int color);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Uint8 Function(hb_color_t)>()
 external int hb_color_get_green(int color);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Uint8 Function(hb_color_t)>()
 external int hb_color_get_red(int color);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_color_line_t>,
@@ -922,6 +1011,7 @@ external int hb_color_line_get_color_stops(
   ffi.Pointer<hb_color_stop_t> color_stops,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_color_line_t>)>(
   symbol: 'hb_color_line_get_extend',
 )
@@ -934,6 +1024,7 @@ hb_paint_extend_t hb_color_line_get_extend(
 }
 
 /// len=-1 means str is NUL-terminated
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<ffi.Char>, ffi.Int)>(
   symbol: 'hb_direction_from_string',
 )
@@ -943,6 +1034,7 @@ hb_direction_t hb_direction_from_string(ffi.Pointer<ffi.Char> str, int len) {
   return hb_direction_t.fromValue(_hb_direction_from_string(str, len));
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.UnsignedInt)>(
   symbol: 'hb_direction_to_string',
 )
@@ -952,6 +1044,7 @@ ffi.Pointer<ffi.Char> hb_direction_to_string(hb_direction_t direction) {
   return _hb_direction_to_string(direction.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -973,6 +1066,7 @@ external void hb_draw_circle(
   double stroke_width,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -986,6 +1080,7 @@ external void hb_draw_close_path(
   ffi.Pointer<hb_draw_state_t> st,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1011,15 +1106,19 @@ external void hb_draw_cubic_to(
   double to_y,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_draw_funcs_t> Function()>()
 external ffi.Pointer<hb_draw_funcs_t> hb_draw_funcs_create();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_draw_funcs_t>)>()
 external void hb_draw_funcs_destroy(ffi.Pointer<hb_draw_funcs_t> dfuncs);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_draw_funcs_t> Function()>()
 external ffi.Pointer<hb_draw_funcs_t> hb_draw_funcs_get_empty();
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1031,12 +1130,15 @@ external ffi.Pointer<ffi.Void> hb_draw_funcs_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_draw_funcs_t>)>()
 external int hb_draw_funcs_is_immutable(ffi.Pointer<hb_draw_funcs_t> dfuncs);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_draw_funcs_t>)>()
 external void hb_draw_funcs_make_immutable(ffi.Pointer<hb_draw_funcs_t> dfuncs);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_draw_funcs_t> Function(ffi.Pointer<hb_draw_funcs_t>)
 >()
@@ -1053,6 +1155,7 @@ external ffi.Pointer<hb_draw_funcs_t> hb_draw_funcs_reference(
 /// Sets close-path callback to the draw functions object.
 ///
 /// Since: 4.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1077,6 +1180,7 @@ external void hb_draw_funcs_set_close_path_func(
 /// Sets cubic-to callback to the draw functions object.
 ///
 /// Since: 4.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1101,6 +1205,7 @@ external void hb_draw_funcs_set_cubic_to_func(
 /// Sets line-to callback to the draw functions object.
 ///
 /// Since: 4.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1125,6 +1230,7 @@ external void hb_draw_funcs_set_line_to_func(
 /// Sets move-to callback to the draw functions object.
 ///
 /// Since: 4.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1149,6 +1255,7 @@ external void hb_draw_funcs_set_move_to_func(
 /// Sets quadratic-to callback to the draw functions object.
 ///
 /// Since: 4.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1164,6 +1271,7 @@ external void hb_draw_funcs_set_quadratic_to_func(
   hb_destroy_func_t destroy,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1181,6 +1289,7 @@ external int hb_draw_funcs_set_user_data(
   int replace,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1234,6 +1343,7 @@ void hb_draw_line(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1251,6 +1361,7 @@ external void hb_draw_line_to(
   double to_y,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1268,6 +1379,7 @@ external void hb_draw_move_to(
   double to_y,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1289,6 +1401,7 @@ external void hb_draw_quadratic_to(
   double to_y,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_draw_funcs_t>,
@@ -1312,6 +1425,7 @@ external void hb_draw_rectangle(
   double stroke_width,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(ffi.Pointer<hb_face_t>, hb_tag_t, ffi.Pointer<hb_blob_t>)
 >()
@@ -1322,15 +1436,18 @@ external int hb_face_builder_add_table(
 );
 
 /// Builder face.
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_face_t> Function()>()
 external ffi.Pointer<hb_face_t> hb_face_builder_create();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_face_t>, ffi.Pointer<hb_tag_t>)>()
 external void hb_face_builder_sort_tables(
   ffi.Pointer<hb_face_t> face,
   ffi.Pointer<hb_tag_t> tags,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -1345,18 +1462,21 @@ external void hb_face_collect_nominal_glyph_mapping(
 );
 
 /// Character set.
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_face_t>, ffi.Pointer<hb_set_t>)>()
 external void hb_face_collect_unicodes(
   ffi.Pointer<hb_face_t> face,
   ffi.Pointer<hb_set_t> out,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_face_t>, ffi.Pointer<hb_set_t>)>()
 external void hb_face_collect_variation_selectors(
   ffi.Pointer<hb_face_t> face,
   ffi.Pointer<hb_set_t> out,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -1370,9 +1490,11 @@ external void hb_face_collect_variation_unicodes(
   ffi.Pointer<hb_set_t> out,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_blob_t>)>()
 external int hb_face_count(ffi.Pointer<hb_blob_t> blob);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_face_t> Function(ffi.Pointer<hb_blob_t>, ffi.UnsignedInt)
 >()
@@ -1382,6 +1504,7 @@ external ffi.Pointer<hb_face_t> hb_face_create(
 );
 
 /// calls destroy() when not needing user_data anymore
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_face_t> Function(
     hb_reference_table_func_t,
@@ -1395,6 +1518,7 @@ external ffi.Pointer<hb_face_t> hb_face_create_for_tables(
   hb_destroy_func_t destroy,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_face_t> Function(ffi.Pointer<ffi.Char>, ffi.UnsignedInt)
 >()
@@ -1403,6 +1527,7 @@ external ffi.Pointer<hb_face_t> hb_face_create_from_file_or_fail(
   int index,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_face_t> Function(
     ffi.Pointer<ffi.Char>,
@@ -1416,6 +1541,7 @@ external ffi.Pointer<hb_face_t> hb_face_create_from_file_or_fail_using(
   ffi.Pointer<ffi.Char> loader_name,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_face_t> Function(ffi.Pointer<hb_blob_t>, ffi.UnsignedInt)
 >()
@@ -1424,6 +1550,7 @@ external ffi.Pointer<hb_face_t> hb_face_create_or_fail(
   int index,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_face_t> Function(
     ffi.Pointer<hb_blob_t>,
@@ -1437,18 +1564,23 @@ external ffi.Pointer<hb_face_t> hb_face_create_or_fail_using(
   ffi.Pointer<ffi.Char> loader_name,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_face_t>)>()
 external void hb_face_destroy(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_face_t> Function()>()
 external ffi.Pointer<hb_face_t> hb_face_get_empty();
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>)>()
 external int hb_face_get_glyph_count(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>)>()
 external int hb_face_get_index(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -1464,9 +1596,11 @@ external int hb_face_get_table_tags(
   ffi.Pointer<hb_tag_t> table_tags,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>)>()
 external int hb_face_get_upem(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_face_t>,
@@ -1478,29 +1612,36 @@ external ffi.Pointer<ffi.Void> hb_face_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_face_is_immutable(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Pointer<ffi.Char>> Function()>()
 external ffi.Pointer<ffi.Pointer<ffi.Char>> hb_face_list_loaders();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_face_t>)>()
 external void hb_face_make_immutable(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_face_t> Function(ffi.Pointer<hb_face_t>)>()
 external ffi.Pointer<hb_face_t> hb_face_reference(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>)>()
 external ffi.Pointer<hb_blob_t> hb_face_reference_blob(
   ffi.Pointer<hb_face_t> face,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>, hb_tag_t)>()
 external ffi.Pointer<hb_blob_t> hb_face_reference_table(
   ffi.Pointer<hb_face_t> face,
   int tag,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -1516,18 +1657,22 @@ external void hb_face_set_get_table_tags_func(
   hb_destroy_func_t destroy,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
 external void hb_face_set_glyph_count(
   ffi.Pointer<hb_face_t> face,
   int glyph_count,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
 external void hb_face_set_index(ffi.Pointer<hb_face_t> face, int index);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
 external void hb_face_set_upem(ffi.Pointer<hb_face_t> face, int upem);
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -1545,6 +1690,7 @@ external int hb_face_set_user_data(
   int replace,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(ffi.Pointer<ffi.Char>, ffi.Int, ffi.Pointer<hb_feature_t>)
 >()
@@ -1554,6 +1700,7 @@ external int hb_feature_from_string(
   ffi.Pointer<hb_feature_t> feature,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_feature_t>,
@@ -1567,6 +1714,7 @@ external void hb_feature_to_string(
   int size,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -1600,22 +1748,27 @@ void hb_font_add_glyph_origin_for_direction(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>)>()
 external void hb_font_changed(ffi.Pointer<hb_font_t> font);
 
 /// Fonts are very light-weight objects
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_font_t> Function(ffi.Pointer<hb_face_t>)>()
 external ffi.Pointer<hb_font_t> hb_font_create(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_font_t> Function(ffi.Pointer<hb_font_t>)>()
 external ffi.Pointer<hb_font_t> hb_font_create_sub_font(
   ffi.Pointer<hb_font_t> parent,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>)>()
 external void hb_font_destroy(ffi.Pointer<hb_font_t> font);
 
 /// Older alias for hb_font_draw_glyph_or_fail() with no return value.
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -1631,6 +1784,7 @@ external void hb_font_draw_glyph(
   ffi.Pointer<ffi.Void> draw_data,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -1646,15 +1800,19 @@ external int hb_font_draw_glyph_or_fail(
   ffi.Pointer<ffi.Void> draw_data,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_font_funcs_t> Function()>()
 external ffi.Pointer<hb_font_funcs_t> hb_font_funcs_create();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_funcs_t>)>()
 external void hb_font_funcs_destroy(ffi.Pointer<hb_font_funcs_t> ffuncs);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_font_funcs_t> Function()>()
 external ffi.Pointer<hb_font_funcs_t> hb_font_funcs_get_empty();
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1666,12 +1824,15 @@ external ffi.Pointer<ffi.Void> hb_font_funcs_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_font_funcs_t>)>()
 external int hb_font_funcs_is_immutable(ffi.Pointer<hb_font_funcs_t> ffuncs);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_funcs_t>)>()
 external void hb_font_funcs_make_immutable(ffi.Pointer<hb_font_funcs_t> ffuncs);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_font_funcs_t> Function(ffi.Pointer<hb_font_funcs_t>)
 >()
@@ -1690,6 +1851,7 @@ external ffi.Pointer<hb_font_funcs_t> hb_font_funcs_reference(
 /// Since: 7.0.0
 /// Deprecated: 11.2.0: Use hb_font_funcs_set_draw_glyph_or_fail_func instead.
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1714,6 +1876,7 @@ external void hb_font_funcs_set_draw_glyph_func(
 /// Sets the implementation function for #hb_font_draw_glyph_or_fail_func_t.
 ///
 /// Since: 11.2.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1738,6 +1901,7 @@ external void hb_font_funcs_set_draw_glyph_or_fail_func(
 /// Sets the implementation function for #hb_font_get_font_h_extents_func_t.
 ///
 /// Since: 1.1.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1762,6 +1926,7 @@ external void hb_font_funcs_set_font_h_extents_func(
 /// Sets the implementation function for #hb_font_get_font_v_extents_func_t.
 ///
 /// Since: 1.1.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1786,6 +1951,7 @@ external void hb_font_funcs_set_font_v_extents_func(
 /// Sets the implementation function for #hb_font_get_glyph_contour_point_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1810,6 +1976,7 @@ external void hb_font_funcs_set_glyph_contour_point_func(
 /// Sets the implementation function for #hb_font_get_glyph_extents_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1834,6 +2001,7 @@ external void hb_font_funcs_set_glyph_extents_func(
 /// Sets the implementation function for #hb_font_get_glyph_from_name_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1850,6 +2018,7 @@ external void hb_font_funcs_set_glyph_from_name_func(
 );
 
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1874,6 +2043,7 @@ external void hb_font_funcs_set_glyph_func(
 /// Sets the implementation function for #hb_font_get_glyph_h_advance_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1898,6 +2068,7 @@ external void hb_font_funcs_set_glyph_h_advance_func(
 /// Sets the implementation function for #hb_font_get_glyph_h_advances_func_t.
 ///
 /// Since: 1.8.6
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1922,6 +2093,7 @@ external void hb_font_funcs_set_glyph_h_advances_func(
 /// Sets the implementation function for #hb_font_get_glyph_h_kerning_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1946,6 +2118,7 @@ external void hb_font_funcs_set_glyph_h_kerning_func(
 /// Sets the implementation function for #hb_font_get_glyph_h_origin_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1970,6 +2143,7 @@ external void hb_font_funcs_set_glyph_h_origin_func(
 /// Sets the implementation function for #hb_font_get_glyph_h_origins_func_t.
 ///
 /// Since: 11.3.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -1994,6 +2168,7 @@ external void hb_font_funcs_set_glyph_h_origins_func(
 /// Sets the implementation function for #hb_font_get_glyph_name_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2021,6 +2196,7 @@ external void hb_font_funcs_set_glyph_name_func(
 /// Since: 4.0.0
 /// Deprecated: 7.0.0: Use hb_font_funcs_set_draw_glyph_func() instead
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2045,6 +2221,7 @@ external void hb_font_funcs_set_glyph_shape_func(
 /// Sets the implementation function for #hb_font_get_glyph_v_advance_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2069,6 +2246,7 @@ external void hb_font_funcs_set_glyph_v_advance_func(
 /// Sets the implementation function for #hb_font_get_glyph_v_advances_func_t.
 ///
 /// Since: 1.8.6
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2094,6 +2272,7 @@ external void hb_font_funcs_set_glyph_v_advances_func(
 ///
 /// Since: 0.9.2
 /// Deprecated: 2.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2118,6 +2297,7 @@ external void hb_font_funcs_set_glyph_v_kerning_func(
 /// Sets the implementation function for #hb_font_get_glyph_v_origin_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2142,6 +2322,7 @@ external void hb_font_funcs_set_glyph_v_origin_func(
 /// Sets the implementation function for #hb_font_get_glyph_v_origins_func_t.
 ///
 /// Since: 11.3.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2166,6 +2347,7 @@ external void hb_font_funcs_set_glyph_v_origins_func(
 /// Sets the implementation function for #hb_font_get_nominal_glyph_func_t.
 ///
 /// Since: 1.2.3
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2190,6 +2372,7 @@ external void hb_font_funcs_set_nominal_glyph_func(
 /// Sets the implementation function for #hb_font_get_nominal_glyphs_func_t.
 ///
 /// Since: 2.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2216,6 +2399,7 @@ external void hb_font_funcs_set_nominal_glyphs_func(
 /// Since: 7.0.0
 /// Deprecated: 11.2.0: Use hb_font_funcs_set_paint_glyph_or_fail_func() instead.
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2240,6 +2424,7 @@ external void hb_font_funcs_set_paint_glyph_func(
 /// Sets the implementation function for #hb_font_paint_glyph_or_fail_func_t.
 ///
 /// Since: 11.2.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2255,6 +2440,7 @@ external void hb_font_funcs_set_paint_glyph_or_fail_func(
   hb_destroy_func_t destroy,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2281,6 +2467,7 @@ external int hb_font_funcs_set_user_data(
 /// Sets the implementation function for #hb_font_get_variation_glyph_func_t.
 ///
 /// Since: 1.2.3
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_funcs_t>,
@@ -2296,9 +2483,11 @@ external void hb_font_funcs_set_variation_glyph_func(
   hb_destroy_func_t destroy,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_font_t> Function()>()
 external ffi.Pointer<hb_font_t> hb_font_get_empty();
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2320,11 +2509,13 @@ void hb_font_get_extents_for_direction(
   return _hb_font_get_extents_for_direction(font, direction.value, extents);
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_face_t> Function(ffi.Pointer<hb_font_t>)>()
 external ffi.Pointer<hb_face_t> hb_font_get_face(ffi.Pointer<hb_font_t> font);
 
 /// Calls either hb_font_get_nominal_glyph() if variation_selector is 0,
 /// otherwise calls hb_font_get_variation_glyph().
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2340,6 +2531,7 @@ external int hb_font_get_glyph(
   ffi.Pointer<hb_codepoint_t> glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2373,6 +2565,7 @@ void hb_font_get_glyph_advance_for_direction(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2414,6 +2607,7 @@ void hb_font_get_glyph_advances_for_direction(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2431,6 +2625,7 @@ external int hb_font_get_glyph_contour_point(
   ffi.Pointer<hb_position_t> y,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2468,6 +2663,7 @@ Darthb_bool_t hb_font_get_glyph_contour_point_for_origin(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2481,6 +2677,7 @@ external int hb_font_get_glyph_extents(
   ffi.Pointer<hb_glyph_extents_t> extents,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2510,6 +2707,7 @@ Darthb_bool_t hb_font_get_glyph_extents_for_origin(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2525,12 +2723,14 @@ external int hb_font_get_glyph_from_name(
   ffi.Pointer<hb_codepoint_t> glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t)>()
 external int hb_font_get_glyph_h_advance(
   ffi.Pointer<hb_font_t> font,
   int glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2550,6 +2750,7 @@ external void hb_font_get_glyph_h_advances(
   int advance_stride,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t, hb_codepoint_t)
 >()
@@ -2559,6 +2760,7 @@ external int hb_font_get_glyph_h_kerning(
   int right_glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2574,6 +2776,7 @@ external int hb_font_get_glyph_h_origin(
   ffi.Pointer<hb_position_t> y,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2597,6 +2800,7 @@ external int hb_font_get_glyph_h_origins(
   int y_stride,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2634,6 +2838,7 @@ void hb_font_get_glyph_kerning_for_direction(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2649,6 +2854,7 @@ external int hb_font_get_glyph_name(
   int size,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2683,6 +2889,7 @@ void hb_font_get_glyph_origin_for_direction(
 }
 
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2698,12 +2905,14 @@ external void hb_font_get_glyph_shape(
   ffi.Pointer<ffi.Void> draw_data,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t)>()
 external int hb_font_get_glyph_v_advance(
   ffi.Pointer<hb_font_t> font,
   int glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2723,6 +2932,7 @@ external void hb_font_get_glyph_v_advances(
   int advance_stride,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t, hb_codepoint_t)
 >()
@@ -2732,6 +2942,7 @@ external int hb_font_get_glyph_v_kerning(
   int bottom_glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2747,6 +2958,7 @@ external int hb_font_get_glyph_v_origin(
   ffi.Pointer<hb_position_t> y,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2771,6 +2983,7 @@ external int hb_font_get_glyph_v_origins(
 );
 
 /// func dispatch
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(ffi.Pointer<hb_font_t>, ffi.Pointer<hb_font_extents_t>)
 >()
@@ -2779,6 +2992,7 @@ external int hb_font_get_h_extents(
   ffi.Pointer<hb_font_extents_t> extents,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2792,6 +3006,7 @@ external int hb_font_get_nominal_glyph(
   ffi.Pointer<hb_codepoint_t> glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_font_t>,
@@ -2811,9 +3026,11 @@ external int hb_font_get_nominal_glyphs(
   int glyph_stride,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_font_t> Function(ffi.Pointer<hb_font_t>)>()
 external ffi.Pointer<hb_font_t> hb_font_get_parent(ffi.Pointer<hb_font_t> font);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2827,9 +3044,11 @@ external void hb_font_get_ppem(
   ffi.Pointer<ffi.UnsignedInt> y_ppem,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Float Function(ffi.Pointer<hb_font_t>)>()
 external double hb_font_get_ptem(ffi.Pointer<hb_font_t> font);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2843,9 +3062,11 @@ external void hb_font_get_scale(
   ffi.Pointer<ffi.Int> y_scale,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_font_t>)>()
 external int hb_font_get_serial(ffi.Pointer<hb_font_t> font);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2861,9 +3082,11 @@ external void hb_font_get_synthetic_bold(
   ffi.Pointer<hb_bool_t> in_place,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Float Function(ffi.Pointer<hb_font_t>)>()
 external double hb_font_get_synthetic_slant(ffi.Pointer<hb_font_t> font);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_font_t>,
@@ -2875,6 +3098,7 @@ external ffi.Pointer<ffi.Void> hb_font_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(ffi.Pointer<hb_font_t>, ffi.Pointer<hb_font_extents_t>)
 >()
@@ -2883,6 +3107,7 @@ external int hb_font_get_v_extents(
   ffi.Pointer<hb_font_extents_t> extents,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Float> Function(
     ffi.Pointer<hb_font_t>,
@@ -2894,6 +3119,7 @@ external ffi.Pointer<ffi.Float> hb_font_get_var_coords_design(
   ffi.Pointer<ffi.UnsignedInt> length,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Int> Function(
     ffi.Pointer<hb_font_t>,
@@ -2905,9 +3131,11 @@ external ffi.Pointer<ffi.Int> hb_font_get_var_coords_normalized(
   ffi.Pointer<ffi.UnsignedInt> length,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_font_t>)>()
 external int hb_font_get_var_named_instance(ffi.Pointer<hb_font_t> font);
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2924,6 +3152,7 @@ external int hb_font_get_variation_glyph(
 );
 
 /// Parses gidDDD and uniUUUU strings automatically.
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -2940,6 +3169,7 @@ external int hb_font_glyph_from_string(
 );
 
 /// Generates gidDDD if glyph has no name.
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2955,19 +3185,24 @@ external void hb_font_glyph_to_string(
   int size,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_font_t>)>()
 external int hb_font_is_immutable(ffi.Pointer<hb_font_t> font);
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_font_t>)>()
 external int hb_font_is_synthetic(ffi.Pointer<hb_font_t> font);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Pointer<ffi.Char>> Function()>()
 external ffi.Pointer<ffi.Pointer<ffi.Char>> hb_font_list_funcs();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>)>()
 external void hb_font_make_immutable(ffi.Pointer<hb_font_t> font);
 
 /// Paints color glyph; if failed, draws outline glyph.
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -2987,6 +3222,7 @@ external void hb_font_paint_glyph(
   int foreground,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -3006,15 +3242,18 @@ external int hb_font_paint_glyph_or_fail(
   int foreground,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_font_t> Function(ffi.Pointer<hb_font_t>)>()
 external ffi.Pointer<hb_font_t> hb_font_reference(ffi.Pointer<hb_font_t> font);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.Pointer<hb_face_t>)>()
 external void hb_font_set_face(
   ffi.Pointer<hb_font_t> font,
   ffi.Pointer<hb_face_t> face,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -3031,6 +3270,7 @@ external void hb_font_set_funcs(
 );
 
 /// Be *very* careful with this function!
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -3044,12 +3284,14 @@ external void hb_font_set_funcs_data(
   hb_destroy_func_t destroy,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_font_t>, ffi.Pointer<ffi.Char>)>()
 external int hb_font_set_funcs_using(
   ffi.Pointer<hb_font_t> font,
   ffi.Pointer<ffi.Char> name,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.Pointer<hb_font_t>)>()
 external void hb_font_set_parent(
   ffi.Pointer<hb_font_t> font,
@@ -3057,6 +3299,7 @@ external void hb_font_set_parent(
 );
 
 /// A zero value means "no hinting in that direction"
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt, ffi.UnsignedInt)
 >()
@@ -3068,9 +3311,11 @@ external void hb_font_set_ppem(
 
 /// Point size per EM.  Used for optical-sizing in CoreText.
 /// A value of zero means "not set".
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.Float)>()
 external void hb_font_set_ptem(ffi.Pointer<hb_font_t> font, double ptem);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.Int, ffi.Int)>()
 external void hb_font_set_scale(
   ffi.Pointer<hb_font_t> font,
@@ -3078,6 +3323,7 @@ external void hb_font_set_scale(
   int y_scale,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.Float, ffi.Float, hb_bool_t)
 >()
@@ -3088,12 +3334,14 @@ external void hb_font_set_synthetic_bold(
   int in_place,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.Float)>()
 external void hb_font_set_synthetic_slant(
   ffi.Pointer<hb_font_t> font,
   double slant,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -3111,6 +3359,7 @@ external int hb_font_set_user_data(
   int replace,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -3124,6 +3373,7 @@ external void hb_font_set_var_coords_design(
   int coords_length,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -3137,12 +3387,14 @@ external void hb_font_set_var_coords_normalized(
   int coords_length,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>()
 external void hb_font_set_var_named_instance(
   ffi.Pointer<hb_font_t> font,
   int instance_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>, hb_tag_t, ffi.Float)>()
 external void hb_font_set_variation(
   ffi.Pointer<hb_font_t> font,
@@ -3150,6 +3402,7 @@ external void hb_font_set_variation(
   double value,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -3163,6 +3416,7 @@ external void hb_font_set_variations(
   int variations_length,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -3196,9 +3450,11 @@ void hb_font_subtract_glyph_origin_for_direction(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<ffi.Void>)>()
 external void hb_free(ffi.Pointer<ffi.Void> ptr);
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_glyph_info_t>)>(
   symbol: 'hb_glyph_info_get_glyph_flags',
 )
@@ -3210,56 +3466,71 @@ hb_glyph_flags_t hb_glyph_info_get_glyph_flags(
   return hb_glyph_flags_t.fromValue(_hb_glyph_info_get_glyph_flags(info));
 }
 
+@meta.RecordUse()
 @ffi.Native<hb_language_t Function(ffi.Pointer<ffi.Char>, ffi.Int)>()
 external hb_language_t hb_language_from_string(
   ffi.Pointer<ffi.Char> str,
   int len,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_language_t Function()>()
 external hb_language_t hb_language_get_default();
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(hb_language_t, hb_language_t)>()
 external int hb_language_matches(
   hb_language_t language,
   hb_language_t specific,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Char> Function(hb_language_t)>()
 external ffi.Pointer<ffi.Char> hb_language_to_string(hb_language_t language);
 
 /// Not of much use to clients.
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Void> Function(ffi.Size)>()
 external ffi.Pointer<ffi.Void> hb_malloc(int size);
 
 /// Returns false if allocation has failed before
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_map_t>)>()
 external int hb_map_allocation_successful(ffi.Pointer<hb_map_t> map);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>)>()
 external void hb_map_clear(ffi.Pointer<hb_map_t> map);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_map_t> Function(ffi.Pointer<hb_map_t>)>()
 external ffi.Pointer<hb_map_t> hb_map_copy(ffi.Pointer<hb_map_t> map);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_map_t> Function()>()
 external ffi.Pointer<hb_map_t> hb_map_create();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>, hb_codepoint_t)>()
 external void hb_map_del(ffi.Pointer<hb_map_t> map, int key);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>)>()
 external void hb_map_destroy(ffi.Pointer<hb_map_t> map);
 
+@meta.RecordUse()
 @ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_map_t>, hb_codepoint_t)>()
 external int hb_map_get(ffi.Pointer<hb_map_t> map, int key);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_map_t> Function()>()
 external ffi.Pointer<hb_map_t> hb_map_get_empty();
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_map_t>)>()
 external int hb_map_get_population(ffi.Pointer<hb_map_t> map);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_map_t>,
@@ -3271,21 +3542,26 @@ external ffi.Pointer<ffi.Void> hb_map_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_map_t>, hb_codepoint_t)>()
 external int hb_map_has(ffi.Pointer<hb_map_t> map, int key);
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_map_t>)>()
 external int hb_map_hash(ffi.Pointer<hb_map_t> map);
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_map_t>)>()
 external int hb_map_is_empty(ffi.Pointer<hb_map_t> map);
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_map_t>, ffi.Pointer<hb_map_t>)>()
 external int hb_map_is_equal(
   ffi.Pointer<hb_map_t> map,
   ffi.Pointer<hb_map_t> other,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>, ffi.Pointer<hb_set_t>)>()
 external void hb_map_keys(
   ffi.Pointer<hb_map_t> map,
@@ -3293,6 +3569,7 @@ external void hb_map_keys(
 );
 
 /// Pass -1 in for idx to get started.
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_map_t>,
@@ -3308,14 +3585,17 @@ external int hb_map_next(
   ffi.Pointer<hb_codepoint_t> value,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_map_t> Function(ffi.Pointer<hb_map_t>)>()
 external ffi.Pointer<hb_map_t> hb_map_reference(ffi.Pointer<hb_map_t> map);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_map_t>, hb_codepoint_t, hb_codepoint_t)
 >()
 external void hb_map_set(ffi.Pointer<hb_map_t> map, int key, int value);
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_map_t>,
@@ -3333,21 +3613,25 @@ external int hb_map_set_user_data(
   int replace,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>, ffi.Pointer<hb_map_t>)>()
 external void hb_map_update(
   ffi.Pointer<hb_map_t> map,
   ffi.Pointer<hb_map_t> other,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_map_t>, ffi.Pointer<hb_set_t>)>()
 external void hb_map_values(
   ffi.Pointer<hb_map_t> map,
   ffi.Pointer<hb_set_t> values,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_get_svg_document_count(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -3363,6 +3647,7 @@ external int hb_ot_color_get_svg_document_glyph_range(
   ffi.Pointer<hb_codepoint_t> end_glyph_id,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -3380,6 +3665,7 @@ external int hb_ot_color_glyph_get_layers(
   ffi.Pointer<hb_ot_color_layer_t> layers,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -3393,12 +3679,14 @@ external int hb_ot_color_glyph_get_svg_document_index(
   ffi.Pointer<ffi.UnsignedInt> svg_document_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)>()
 external int hb_ot_color_glyph_has_paint(
   ffi.Pointer<hb_face_t> face,
   int glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_font_t>, hb_codepoint_t)
 >()
@@ -3407,6 +3695,7 @@ external ffi.Pointer<hb_blob_t> hb_ot_color_glyph_reference_png(
   int glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)
 >()
@@ -3416,31 +3705,38 @@ external ffi.Pointer<hb_blob_t> hb_ot_color_glyph_reference_svg(
 );
 
 /// Color layers.
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_has_layers(ffi.Pointer<hb_face_t> face);
 
 /// COLRv1
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_has_paint(ffi.Pointer<hb_face_t> face);
 
 /// Color palettes.
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_has_palettes(ffi.Pointer<hb_face_t> face);
 
 /// PNG: CBDT or sbix
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_has_png(ffi.Pointer<hb_face_t> face);
 
 /// SVG
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_has_svg(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<hb_ot_name_id_t Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
 external int hb_ot_color_palette_color_get_name_id(
   ffi.Pointer<hb_face_t> face,
   int color_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -3458,9 +3754,11 @@ external int hb_ot_color_palette_get_colors(
   ffi.Pointer<hb_color_t> colors,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_color_palette_get_count(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_color_palette_get_flags',
 )
@@ -3478,12 +3776,14 @@ hb_ot_color_palette_flags_t hb_ot_color_palette_get_flags(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<hb_ot_name_id_t Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
 external int hb_ot_color_palette_get_name_id(
   ffi.Pointer<hb_face_t> face,
   int palette_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Uint32 Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_fetch_bits',
 )
@@ -3493,6 +3793,7 @@ int hb_ot_fetch_bits(ffi.Pointer<hb_face_t> face, hb_ot_bits_tag_t tag) {
   return _hb_ot_fetch_bits(face, tag.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Int32 Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_fetch_number',
 )
@@ -3502,9 +3803,11 @@ int hb_ot_fetch_number(ffi.Pointer<hb_face_t> face, hb_ot_number_tag_t tag) {
   return _hb_ot_fetch_number(face, tag.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>)>()
 external void hb_ot_font_set_funcs(ffi.Pointer<hb_font_t> font);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -3524,6 +3827,7 @@ external void hb_ot_layout_collect_features(
   ffi.Pointer<hb_set_t> feature_indexes,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -3541,6 +3845,7 @@ external void hb_ot_layout_collect_features_map(
   ffi.Pointer<hb_map_t> feature_map,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -3560,6 +3865,7 @@ external void hb_ot_layout_collect_lookups(
   ffi.Pointer<hb_set_t> lookup_indexes,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -3579,6 +3885,7 @@ external int hb_ot_layout_feature_get_characters(
   ffi.Pointer<hb_codepoint_t> characters,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -3599,6 +3906,7 @@ external int hb_ot_layout_feature_get_lookups(
 );
 
 /// GSUB/GPOS
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -3622,6 +3930,7 @@ external int hb_ot_layout_feature_get_name_ids(
   ffi.Pointer<hb_ot_name_id_t> first_param_id,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -3645,6 +3954,7 @@ external int hb_ot_layout_feature_with_variations_get_lookups(
 
 /// Not that useful.  Provides list of attach points for a glyph that a
 /// client may want to cache
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -3662,6 +3972,7 @@ external int hb_ot_layout_get_attach_points(
   ffi.Pointer<ffi.UnsignedInt> point_array,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -3699,6 +4010,7 @@ Darthb_bool_t hb_ot_layout_get_baseline(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -3736,6 +4048,7 @@ Darthb_bool_t hb_ot_layout_get_baseline2(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -3773,6 +4086,7 @@ void hb_ot_layout_get_baseline_with_fallback(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -3811,6 +4125,7 @@ void hb_ot_layout_get_baseline_with_fallback2(
 }
 
 /// BASE
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -3844,6 +4159,7 @@ Darthb_bool_t hb_ot_layout_get_font_extents(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -3877,6 +4193,7 @@ Darthb_bool_t hb_ot_layout_get_font_extents2(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)>(
   symbol: 'hb_ot_layout_get_glyph_class',
 )
@@ -3894,6 +4211,7 @@ hb_ot_layout_glyph_class_t hb_ot_layout_get_glyph_class(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -3915,6 +4233,7 @@ void hb_ot_layout_get_glyphs_in_class(
   return _hb_ot_layout_get_glyphs_in_class(face, klass.value, glyphs);
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.UnsignedInt)>(
   symbol: 'hb_ot_layout_get_horizontal_baseline_tag_for_script',
 )
@@ -3929,6 +4248,7 @@ hb_ot_layout_baseline_tag_t hb_ot_layout_get_horizontal_baseline_tag_for_script(
 }
 
 /// Ligature caret positions
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_font_t>,
@@ -3968,6 +4288,7 @@ int hb_ot_layout_get_ligature_carets(
 
 /// Optical 'size' feature info.  Returns true if found.
 /// https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#size
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -3988,17 +4309,21 @@ external int hb_ot_layout_get_size_params(
 );
 
 /// GDEF
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_layout_has_glyph_classes(ffi.Pointer<hb_face_t> face);
 
 /// GPOS
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_layout_has_positioning(ffi.Pointer<hb_face_t> face);
 
 /// GSUB
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_layout_has_substitution(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4018,6 +4343,7 @@ external int hb_ot_layout_language_find_feature(
   ffi.Pointer<ffi.UnsignedInt> feature_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4039,6 +4365,7 @@ external int hb_ot_layout_language_get_feature_indexes(
   ffi.Pointer<ffi.UnsignedInt> feature_indexes,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4060,6 +4387,7 @@ external int hb_ot_layout_language_get_feature_tags(
   ffi.Pointer<hb_tag_t> feature_tags,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4079,6 +4407,7 @@ external int hb_ot_layout_language_get_required_feature(
   ffi.Pointer<hb_tag_t> feature_tag,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4096,6 +4425,7 @@ external int hb_ot_layout_language_get_required_feature_index(
   ffi.Pointer<ffi.UnsignedInt> feature_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4111,6 +4441,7 @@ external int hb_ot_layout_lookup_collect_glyph_alternates(
   ffi.Pointer<hb_map_t> alternate_glyphs,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -4132,6 +4463,7 @@ external void hb_ot_layout_lookup_collect_glyphs(
   ffi.Pointer<hb_set_t> glyphs_output,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4151,6 +4483,7 @@ external int hb_ot_layout_lookup_get_glyph_alternates(
   ffi.Pointer<hb_codepoint_t> alternate_glyphs,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_position_t Function(
     ffi.Pointer<hb_font_t>,
@@ -4180,6 +4513,7 @@ Darthb_position_t hb_ot_layout_lookup_get_optical_bound(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -4193,6 +4527,7 @@ external void hb_ot_layout_lookup_substitute_closure(
   ffi.Pointer<hb_set_t> glyphs,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4210,6 +4545,7 @@ external int hb_ot_layout_lookup_would_substitute(
   int zero_context,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -4224,6 +4560,7 @@ external void hb_ot_layout_lookups_substitute_closure(
 );
 
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4241,6 +4578,7 @@ external int hb_ot_layout_script_find_language(
   ffi.Pointer<ffi.UnsignedInt> language_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4260,6 +4598,7 @@ external int hb_ot_layout_script_get_language_tags(
   ffi.Pointer<hb_tag_t> language_tags,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4279,6 +4618,7 @@ external int hb_ot_layout_script_select_language(
   ffi.Pointer<ffi.UnsignedInt> language_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4302,6 +4642,7 @@ external int hb_ot_layout_script_select_language2(
 
 /// Like hb_ot_layout_table_find_script, but takes zero-terminated array of scripts to test
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4320,6 +4661,7 @@ external int hb_ot_layout_table_choose_script(
 );
 
 /// Variations support
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4337,6 +4679,7 @@ external int hb_ot_layout_table_find_feature_variations(
   ffi.Pointer<ffi.UnsignedInt> variations_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4352,6 +4695,7 @@ external int hb_ot_layout_table_find_script(
   ffi.Pointer<ffi.UnsignedInt> script_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4369,12 +4713,14 @@ external int hb_ot_layout_table_get_feature_tags(
   ffi.Pointer<hb_tag_t> feature_tags,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>, hb_tag_t)>()
 external int hb_ot_layout_table_get_lookup_count(
   ffi.Pointer<hb_face_t> face,
   int table_tag,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4392,6 +4738,7 @@ external int hb_ot_layout_table_get_script_tags(
   ffi.Pointer<hb_tag_t> script_tags,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4411,6 +4758,7 @@ external int hb_ot_layout_table_select_script(
   ffi.Pointer<hb_tag_t> chosen_script,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_math_get_constant',
 )
@@ -4426,6 +4774,7 @@ Darthb_position_t hb_ot_math_get_constant(
   return _hb_ot_math_get_constant(font, constant.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_font_t>,
@@ -4467,12 +4816,14 @@ int hb_ot_math_get_glyph_assembly(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t)>()
 external int hb_ot_math_get_glyph_italics_correction(
   ffi.Pointer<hb_font_t> font,
   int glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_position_t Function(
     ffi.Pointer<hb_font_t>,
@@ -4502,6 +4853,7 @@ Darthb_position_t hb_ot_math_get_glyph_kerning(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_font_t>,
@@ -4539,12 +4891,14 @@ int hb_ot_math_get_glyph_kernings(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, hb_codepoint_t)>()
 external int hb_ot_math_get_glyph_top_accent_attachment(
   ffi.Pointer<hb_font_t> font,
   int glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_font_t>,
@@ -4582,6 +4936,7 @@ int hb_ot_math_get_glyph_variants(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_math_get_min_connector_overlap',
 )
@@ -4598,15 +4953,18 @@ Darthb_position_t hb_ot_math_get_min_connector_overlap(
 }
 
 /// Methods
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_math_has_data(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)>()
 external int hb_ot_math_is_glyph_extended_shape(
   ffi.Pointer<hb_face_t> face,
   int glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4622,6 +4980,7 @@ external int hb_ot_meta_get_entry_tags(
   ffi.Pointer<ffi.UnsignedInt> entries,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)
 >(symbol: 'hb_ot_meta_reference_entry')
@@ -4637,6 +4996,7 @@ ffi.Pointer<hb_blob_t> hb_ot_meta_reference_entry(
   return _hb_ot_meta_reference_entry(face, meta_tag.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -4658,6 +5018,7 @@ Darthb_bool_t hb_ot_metrics_get_position(
   return _hb_ot_metrics_get_position(font, metrics_tag.value, position);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -4683,6 +5044,7 @@ void hb_ot_metrics_get_position_with_fallback(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Float Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_metrics_get_variation',
 )
@@ -4698,6 +5060,7 @@ double hb_ot_metrics_get_variation(
   return _hb_ot_metrics_get_variation(font, metrics_tag.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_metrics_get_x_variation',
 )
@@ -4713,6 +5076,7 @@ Darthb_position_t hb_ot_metrics_get_x_variation(
   return _hb_ot_metrics_get_x_variation(font, metrics_tag.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<hb_position_t Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
   symbol: 'hb_ot_metrics_get_y_variation',
 )
@@ -4728,6 +5092,7 @@ Darthb_position_t hb_ot_metrics_get_y_variation(
   return _hb_ot_metrics_get_y_variation(font, metrics_tag.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4745,6 +5110,7 @@ external int hb_ot_name_get_utf16(
   ffi.Pointer<ffi.Uint16> text,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4762,6 +5128,7 @@ external int hb_ot_name_get_utf32(
   ffi.Pointer<ffi.Uint32> text,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4779,6 +5146,7 @@ external int hb_ot_name_get_utf8(
   ffi.Pointer<ffi.Char> text,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_ot_name_entry_t> Function(
     ffi.Pointer<hb_face_t>,
@@ -4790,10 +5158,12 @@ external ffi.Pointer<hb_ot_name_entry_t> hb_ot_name_list_names(
   ffi.Pointer<ffi.UnsignedInt> num_entries,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function()>()
 external int hb_ot_shape_get_buffer_format_serial();
 
 /// TODO port to shape-plan / set.
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -4811,6 +5181,7 @@ external void hb_ot_shape_glyphs_closure(
   ffi.Pointer<hb_set_t> glyphs,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_shape_plan_t>,
@@ -4824,6 +5195,7 @@ external void hb_ot_shape_plan_collect_lookups(
   ffi.Pointer<hb_set_t> lookup_indexes,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_shape_plan_t>,
@@ -4840,12 +5212,15 @@ external int hb_ot_shape_plan_get_feature_tags(
 );
 
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<hb_tag_t Function(hb_language_t)>()
 external int hb_ot_tag_from_language(hb_language_t language);
 
+@meta.RecordUse()
 @ffi.Native<hb_language_t Function(hb_tag_t)>()
 external hb_language_t hb_ot_tag_to_language(int tag);
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(hb_tag_t)>(symbol: 'hb_ot_tag_to_script')
 external int _hb_ot_tag_to_script(int tag);
 
@@ -4854,6 +5229,7 @@ hb_script_t hb_ot_tag_to_script(Darthb_tag_t tag) {
 }
 
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.UnsignedInt,
@@ -4875,6 +5251,7 @@ void hb_ot_tags_from_script(
   return _hb_ot_tags_from_script(script.value, script_tag_1, script_tag_2);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.UnsignedInt,
@@ -4912,6 +5289,7 @@ void hb_ot_tags_from_script_and_language(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     hb_tag_t,
@@ -4928,6 +5306,7 @@ external void hb_ot_tags_to_script_and_language(
 );
 
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4943,6 +5322,7 @@ external int hb_ot_var_find_axis(
   ffi.Pointer<hb_ot_var_axis_t> axis_info,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_face_t>,
@@ -4957,6 +5337,7 @@ external int hb_ot_var_find_axis_info(
 );
 
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4973,9 +5354,11 @@ external int hb_ot_var_get_axes(
 );
 
 /// Variation axes.
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_var_get_axis_count(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -4992,13 +5375,16 @@ external int hb_ot_var_get_axis_infos(
 );
 
 /// Named instances.
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_var_get_named_instance_count(ffi.Pointer<hb_face_t> face);
 
 /// fvar / avar
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_face_t>)>()
 external int hb_ot_var_has_data(ffi.Pointer<hb_face_t> face);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_face_t>,
@@ -5014,18 +5400,21 @@ external int hb_ot_var_named_instance_get_design_coords(
   ffi.Pointer<ffi.Float> coords,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_ot_name_id_t Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
 external int hb_ot_var_named_instance_get_postscript_name_id(
   ffi.Pointer<hb_face_t> face,
   int instance_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_ot_name_id_t Function(ffi.Pointer<hb_face_t>, ffi.UnsignedInt)>()
 external int hb_ot_var_named_instance_get_subfamily_name_id(
   ffi.Pointer<hb_face_t> face,
   int instance_index,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -5042,6 +5431,7 @@ external void hb_ot_var_normalize_coords(
 );
 
 /// Conversions.
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_face_t>,
@@ -5059,6 +5449,7 @@ external void hb_ot_var_normalize_variations(
   int coords_length,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5074,6 +5465,7 @@ external void hb_paint_color(
   int color,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5089,6 +5481,7 @@ external int hb_paint_color_glyph(
   ffi.Pointer<hb_font_t> font,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5104,6 +5497,7 @@ external int hb_paint_custom_palette_color(
   ffi.Pointer<hb_color_t> color,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5123,15 +5517,19 @@ external void hb_paint_fill_glyph(
   int color,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_paint_funcs_t> Function()>()
 external ffi.Pointer<hb_paint_funcs_t> hb_paint_funcs_create();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_paint_funcs_t>)>()
 external void hb_paint_funcs_destroy(ffi.Pointer<hb_paint_funcs_t> funcs);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_paint_funcs_t> Function()>()
 external ffi.Pointer<hb_paint_funcs_t> hb_paint_funcs_get_empty();
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5143,14 +5541,17 @@ external ffi.Pointer<ffi.Void> hb_paint_funcs_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_paint_funcs_t>)>()
 external int hb_paint_funcs_is_immutable(ffi.Pointer<hb_paint_funcs_t> funcs);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_paint_funcs_t>)>()
 external void hb_paint_funcs_make_immutable(
   ffi.Pointer<hb_paint_funcs_t> funcs,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_paint_funcs_t> Function(ffi.Pointer<hb_paint_funcs_t>)
 >()
@@ -5167,6 +5568,7 @@ external ffi.Pointer<hb_paint_funcs_t> hb_paint_funcs_reference(
 /// Sets the paint-color callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5191,6 +5593,7 @@ external void hb_paint_funcs_set_color_func(
 /// Sets the color-glyph callback on the paint functions struct.
 ///
 /// Since: 8.2.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5215,6 +5618,7 @@ external void hb_paint_funcs_set_color_glyph_func(
 /// Sets the custom-palette-color callback on @funcs.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5239,6 +5643,7 @@ external void hb_paint_funcs_set_custom_palette_color_func(
 /// Sets the fill-glyph callback on the paint functions struct.
 ///
 /// Since: 14.3.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5263,6 +5668,7 @@ external void hb_paint_funcs_set_fill_glyph_func(
 /// Sets the paint-image callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5287,6 +5693,7 @@ external void hb_paint_funcs_set_image_func(
 /// Sets the linear-gradient callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5311,6 +5718,7 @@ external void hb_paint_funcs_set_linear_gradient_func(
 /// Sets the pop-clip callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5335,6 +5743,7 @@ external void hb_paint_funcs_set_pop_clip_func(
 /// Sets the pop-group callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5359,6 +5768,7 @@ external void hb_paint_funcs_set_pop_group_func(
 /// Sets the pop-transform callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5383,6 +5793,7 @@ external void hb_paint_funcs_set_pop_transform_func(
 /// Sets the push-clip-glyph callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5407,6 +5818,7 @@ external void hb_paint_funcs_set_push_clip_glyph_func(
 /// Sets the push-clip-path-end callback on the paint functions struct.
 ///
 /// Since: 14.2.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5431,6 +5843,7 @@ external void hb_paint_funcs_set_push_clip_path_end_func(
 /// Sets the push-clip-path-start callback on the paint functions struct.
 ///
 /// Since: 14.2.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5455,6 +5868,7 @@ external void hb_paint_funcs_set_push_clip_path_start_func(
 /// Sets the push-clip-rect callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5479,6 +5893,7 @@ external void hb_paint_funcs_set_push_clip_rectangle_func(
 /// Sets the push-group-for callback on the paint functions struct.
 ///
 /// Since: 14.2.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5503,6 +5918,7 @@ external void hb_paint_funcs_set_push_group_for_func(
 /// Sets the push-group callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5527,6 +5943,7 @@ external void hb_paint_funcs_set_push_group_func(
 /// Sets the push-transform callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5551,6 +5968,7 @@ external void hb_paint_funcs_set_push_transform_func(
 /// Sets the radial-gradient callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5575,6 +5993,7 @@ external void hb_paint_funcs_set_radial_gradient_func(
 /// Sets the sweep-gradient callback on the paint functions struct.
 ///
 /// Since: 7.0.0
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5590,6 +6009,7 @@ external void hb_paint_funcs_set_sweep_gradient_func(
   hb_destroy_func_t destroy,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5607,6 +6027,7 @@ external int hb_paint_funcs_set_user_data(
   int replace,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5630,6 +6051,7 @@ external void hb_paint_image(
   ffi.Pointer<hb_glyph_extents_t> extents,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5655,6 +6077,7 @@ external void hb_paint_linear_gradient(
   double y2,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_color_stop_t>,
@@ -5670,6 +6093,7 @@ external void hb_paint_normalize_color_line(
   ffi.Pointer<ffi.Float> max,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_paint_funcs_t>, ffi.Pointer<ffi.Void>)
 >()
@@ -5678,6 +6102,7 @@ external void hb_paint_pop_clip(
   ffi.Pointer<ffi.Void> paint_data,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5699,6 +6124,7 @@ void hb_paint_pop_group(
   return _hb_paint_pop_group(funcs, paint_data, mode.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_paint_funcs_t>, ffi.Pointer<ffi.Void>)
 >()
@@ -5707,6 +6133,7 @@ external void hb_paint_pop_transform(
   ffi.Pointer<ffi.Void> paint_data,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5722,6 +6149,7 @@ external void hb_paint_push_clip_glyph(
   ffi.Pointer<hb_font_t> font,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_paint_funcs_t>, ffi.Pointer<ffi.Void>)
 >()
@@ -5730,6 +6158,7 @@ external void hb_paint_push_clip_path_end(
   ffi.Pointer<ffi.Void> paint_data,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_draw_funcs_t> Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5743,6 +6172,7 @@ external ffi.Pointer<hb_draw_funcs_t> hb_paint_push_clip_path_start(
   ffi.Pointer<ffi.Pointer<ffi.Void>> draw_data,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5762,6 +6192,7 @@ external void hb_paint_push_clip_rectangle(
   double ymax,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5775,6 +6206,7 @@ external void hb_paint_push_font_transform(
   ffi.Pointer<hb_font_t> font,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_paint_funcs_t>, ffi.Pointer<ffi.Void>)
 >()
@@ -5783,6 +6215,7 @@ external void hb_paint_push_group(
   ffi.Pointer<ffi.Void> paint_data,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5804,6 +6237,7 @@ void hb_paint_push_group_for(
   return _hb_paint_push_group_for(funcs, paint_data, mode.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5818,6 +6252,7 @@ external void hb_paint_push_inverse_font_transform(
 );
 
 /// Manual API
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5841,6 +6276,7 @@ external void hb_paint_push_transform(
   double dy,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5872,6 +6308,7 @@ external void hb_paint_radial_gradient(
 /// renderer ends up reinventing.  Exposed here so third-party
 /// paint backends can consume a single canonical implementation
 /// instead of forking one per project.
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Float,
@@ -5899,6 +6336,7 @@ external void hb_paint_reduce_linear_anchors(
   ffi.Pointer<ffi.Float> yy1,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_paint_funcs_t>,
@@ -5920,6 +6358,7 @@ external void hb_paint_sweep_gradient(
   double end_angle,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_color_stop_t>,
@@ -5961,10 +6400,12 @@ void hb_paint_sweep_gradient_tiles(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Size)>()
 external ffi.Pointer<ffi.Void> hb_realloc(ffi.Pointer<ffi.Void> ptr, int size);
 
 /// Script functions
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(hb_tag_t)>(
   symbol: 'hb_script_from_iso15924_tag',
 )
@@ -5974,6 +6415,7 @@ hb_script_t hb_script_from_iso15924_tag(Darthb_tag_t tag) {
   return hb_script_t.fromValue(_hb_script_from_iso15924_tag(tag));
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<ffi.Char>, ffi.Int)>(
   symbol: 'hb_script_from_string',
 )
@@ -5983,6 +6425,7 @@ hb_script_t hb_script_from_string(ffi.Pointer<ffi.Char> str, int len) {
   return hb_script_t.fromValue(_hb_script_from_string(str, len));
 }
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.UnsignedInt)>(
   symbol: 'hb_script_get_horizontal_direction',
 )
@@ -5994,6 +6437,7 @@ hb_direction_t hb_script_get_horizontal_direction(hb_script_t script) {
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<hb_tag_t Function(ffi.UnsignedInt)>(
   symbol: 'hb_script_to_iso15924_tag',
 )
@@ -6003,6 +6447,7 @@ Darthb_tag_t hb_script_to_iso15924_tag(hb_script_t script) {
   return _hb_script_to_iso15924_tag(script.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_segment_properties_t>,
@@ -6014,9 +6459,11 @@ external int hb_segment_properties_equal(
   ffi.Pointer<hb_segment_properties_t> b,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_segment_properties_t>)>()
 external int hb_segment_properties_hash(ffi.Pointer<hb_segment_properties_t> p);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_segment_properties_t>,
@@ -6028,14 +6475,17 @@ external void hb_segment_properties_overlay(
   ffi.Pointer<hb_segment_properties_t> src,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, hb_codepoint_t)>()
 external void hb_set_add(ffi.Pointer<hb_set_t> set, int codepoint);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_set_t>, hb_codepoint_t, hb_codepoint_t)
 >()
 external void hb_set_add_range(ffi.Pointer<hb_set_t> set, int first, int last);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_set_t>,
@@ -6050,43 +6500,55 @@ external void hb_set_add_sorted_array(
 );
 
 /// Returns false if allocation has failed before
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_allocation_successful(ffi.Pointer<hb_set_t> set);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>)>()
 external void hb_set_clear(ffi.Pointer<hb_set_t> set);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_set_t> Function(ffi.Pointer<hb_set_t>)>()
 external ffi.Pointer<hb_set_t> hb_set_copy(ffi.Pointer<hb_set_t> set);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_set_t> Function()>()
 external ffi.Pointer<hb_set_t> hb_set_create();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, hb_codepoint_t)>()
 external void hb_set_del(ffi.Pointer<hb_set_t> set, int codepoint);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_set_t>, hb_codepoint_t, hb_codepoint_t)
 >()
 external void hb_set_del_range(ffi.Pointer<hb_set_t> set, int first, int last);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>)>()
 external void hb_set_destroy(ffi.Pointer<hb_set_t> set);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_set_t> Function()>()
 external ffi.Pointer<hb_set_t> hb_set_get_empty();
 
 /// Returns HB_SET_VALUE_INVALID if set empty.
+@meta.RecordUse()
 @ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_get_max(ffi.Pointer<hb_set_t> set);
 
 /// Returns HB_SET_VALUE_INVALID if set empty.
+@meta.RecordUse()
 @ffi.Native<hb_codepoint_t Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_get_min(ffi.Pointer<hb_set_t> set);
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_get_population(ffi.Pointer<hb_set_t> set);
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_set_t>,
@@ -6098,39 +6560,48 @@ external ffi.Pointer<ffi.Void> hb_set_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>, hb_codepoint_t)>()
 external int hb_set_has(ffi.Pointer<hb_set_t> set, int codepoint);
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_hash(ffi.Pointer<hb_set_t> set);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
 external void hb_set_intersect(
   ffi.Pointer<hb_set_t> set,
   ffi.Pointer<hb_set_t> other,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
 external int hb_set_intersects(
   ffi.Pointer<hb_set_t> set,
   ffi.Pointer<hb_set_t> other,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>)>()
 external void hb_set_invert(ffi.Pointer<hb_set_t> set);
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_is_empty(ffi.Pointer<hb_set_t> set);
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
 external int hb_set_is_equal(
   ffi.Pointer<hb_set_t> set,
   ffi.Pointer<hb_set_t> other,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>)>()
 external int hb_set_is_inverted(ffi.Pointer<hb_set_t> set);
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
 external int hb_set_is_subset(
   ffi.Pointer<hb_set_t> set,
@@ -6138,6 +6609,7 @@ external int hb_set_is_subset(
 );
 
 /// Pass HB_SET_VALUE_INVALID in to get started.
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_codepoint_t>)
 >()
@@ -6147,6 +6619,7 @@ external int hb_set_next(
 );
 
 /// Pass HB_SET_VALUE_INVALID in to get started.
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_set_t>,
@@ -6163,6 +6636,7 @@ external int hb_set_next_many(
 );
 
 /// Pass HB_SET_VALUE_INVALID for first and last to get started.
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_set_t>,
@@ -6177,6 +6651,7 @@ external int hb_set_next_range(
 );
 
 /// Pass HB_SET_VALUE_INVALID in to get started.
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_codepoint_t>)
 >()
@@ -6186,6 +6661,7 @@ external int hb_set_previous(
 );
 
 /// Pass HB_SET_VALUE_INVALID for first and last to get started.
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_set_t>,
@@ -6199,15 +6675,18 @@ external int hb_set_previous_range(
   ffi.Pointer<hb_codepoint_t> last,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_set_t> Function(ffi.Pointer<hb_set_t>)>()
 external ffi.Pointer<hb_set_t> hb_set_reference(ffi.Pointer<hb_set_t> set);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
 external void hb_set_set(
   ffi.Pointer<hb_set_t> set,
   ffi.Pointer<hb_set_t> other,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_set_t>,
@@ -6225,24 +6704,28 @@ external int hb_set_set_user_data(
   int replace,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
 external void hb_set_subtract(
   ffi.Pointer<hb_set_t> set,
   ffi.Pointer<hb_set_t> other,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
 external void hb_set_symmetric_difference(
   ffi.Pointer<hb_set_t> set,
   ffi.Pointer<hb_set_t> other,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_set_t>, ffi.Pointer<hb_set_t>)>()
 external void hb_set_union(
   ffi.Pointer<hb_set_t> set,
   ffi.Pointer<hb_set_t> other,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_font_t>,
@@ -6258,6 +6741,7 @@ external void hb_shape(
   int num_features,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -6275,6 +6759,7 @@ external int hb_shape_full(
   ffi.Pointer<ffi.Pointer<ffi.Char>> shaper_list,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_font_t>,
@@ -6302,9 +6787,11 @@ external int hb_shape_justify(
   ffi.Pointer<ffi.Float> var_value,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Pointer<ffi.Char>> Function()>()
 external ffi.Pointer<ffi.Pointer<ffi.Char>> hb_shape_list_shapers();
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_shape_plan_t> Function(
     ffi.Pointer<hb_face_t>,
@@ -6322,6 +6809,7 @@ external ffi.Pointer<hb_shape_plan_t> hb_shape_plan_create(
   ffi.Pointer<ffi.Pointer<ffi.Char>> shaper_list,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_shape_plan_t> Function(
     ffi.Pointer<hb_face_t>,
@@ -6343,6 +6831,7 @@ external ffi.Pointer<hb_shape_plan_t> hb_shape_plan_create2(
   ffi.Pointer<ffi.Pointer<ffi.Char>> shaper_list,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_shape_plan_t> Function(
     ffi.Pointer<hb_face_t>,
@@ -6360,6 +6849,7 @@ external ffi.Pointer<hb_shape_plan_t> hb_shape_plan_create_cached(
   ffi.Pointer<ffi.Pointer<ffi.Char>> shaper_list,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_shape_plan_t> Function(
     ffi.Pointer<hb_face_t>,
@@ -6381,9 +6871,11 @@ external ffi.Pointer<hb_shape_plan_t> hb_shape_plan_create_cached2(
   ffi.Pointer<ffi.Pointer<ffi.Char>> shaper_list,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_shape_plan_t>)>()
 external void hb_shape_plan_destroy(ffi.Pointer<hb_shape_plan_t> shape_plan);
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_shape_plan_t>,
@@ -6401,14 +6893,17 @@ external int hb_shape_plan_execute(
   int num_features,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_shape_plan_t> Function()>()
 external ffi.Pointer<hb_shape_plan_t> hb_shape_plan_get_empty();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Pointer<hb_shape_plan_t>)>()
 external ffi.Pointer<ffi.Char> hb_shape_plan_get_shaper(
   ffi.Pointer<hb_shape_plan_t> shape_plan,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_shape_plan_t>,
@@ -6420,6 +6915,7 @@ external ffi.Pointer<ffi.Void> hb_shape_plan_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_shape_plan_t> Function(ffi.Pointer<hb_shape_plan_t>)
 >()
@@ -6427,6 +6923,7 @@ external ffi.Pointer<hb_shape_plan_t> hb_shape_plan_reference(
   ffi.Pointer<hb_shape_plan_t> shape_plan,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_shape_plan_t>,
@@ -6444,6 +6941,7 @@ external int hb_shape_plan_set_user_data(
   int replace,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Float Function(ffi.Pointer<hb_font_t>, ffi.UnsignedInt)>(
   symbol: 'hb_style_get_value',
 )
@@ -6456,6 +6954,7 @@ double hb_style_get_value(
   return _hb_style_get_value(font, style_tag.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<ffi.Char>,
@@ -6473,6 +6972,7 @@ external int hb_subset_axis_range_from_string(
   ffi.Pointer<ffi.Float> axis_def_value,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_subset_input_t>,
@@ -6488,6 +6988,7 @@ external void hb_subset_axis_range_to_string(
   int size,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)
 >()
@@ -6496,12 +6997,14 @@ external ffi.Pointer<hb_blob_t> hb_subset_cff2_get_charstring_data(
   int glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>)>()
 external ffi.Pointer<hb_blob_t> hb_subset_cff2_get_charstrings_index(
   ffi.Pointer<hb_face_t> face,
 );
 
 /// Raw outline data access
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>, hb_codepoint_t)
 >()
@@ -6510,19 +7013,23 @@ external ffi.Pointer<hb_blob_t> hb_subset_cff_get_charstring_data(
   int glyph,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_face_t>)>()
 external ffi.Pointer<hb_blob_t> hb_subset_cff_get_charstrings_index(
   ffi.Pointer<hb_face_t> face,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_subset_depend_t>)>()
 external void hb_subset_depend_destroy(ffi.Pointer<hb_subset_depend_t> depend);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_subset_depend_t> Function(ffi.Pointer<hb_face_t>)>()
 external ffi.Pointer<hb_subset_depend_t> hb_subset_depend_from_face_or_fail(
   ffi.Pointer<hb_face_t> face,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_subset_depend_t>,
@@ -6540,6 +7047,7 @@ external int hb_subset_depend_lookup_glyph(
   ffi.Pointer<hb_subset_depend_entry_t> entries,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_subset_depend_t>,
@@ -6553,12 +7061,15 @@ external int hb_subset_depend_lookup_set(
   ffi.Pointer<hb_set_t> out,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_subset_input_t> Function()>()
 external ffi.Pointer<hb_subset_input_t> hb_subset_input_create_or_fail();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_subset_input_t>)>()
 external void hb_subset_input_destroy(ffi.Pointer<hb_subset_input_t> input);
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_subset_input_t>,
@@ -6576,6 +7087,7 @@ external int hb_subset_input_get_axis_range(
   ffi.Pointer<ffi.Float> axis_def_value,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_subset_input_t>)>(
   symbol: 'hb_subset_input_get_flags',
 )
@@ -6587,6 +7099,7 @@ hb_subset_flags_t hb_subset_input_get_flags(
   return hb_subset_flags_t.fromValue(_hb_subset_input_get_flags(input));
 }
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_subset_input_t>,
@@ -6598,21 +7111,25 @@ external ffi.Pointer<ffi.Void> hb_subset_input_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_set_t> Function(ffi.Pointer<hb_subset_input_t>)>()
 external ffi.Pointer<hb_set_t> hb_subset_input_glyph_set(
   ffi.Pointer<hb_subset_input_t> input,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_subset_input_t>)>()
 external void hb_subset_input_keep_everything(
   ffi.Pointer<hb_subset_input_t> input,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_map_t> Function(ffi.Pointer<hb_subset_input_t>)>()
 external ffi.Pointer<hb_map_t> hb_subset_input_old_to_new_glyph_mapping(
   ffi.Pointer<hb_subset_input_t> input,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_subset_input_t>,
@@ -6634,6 +7151,7 @@ external int hb_subset_input_override_name_table(
   int str_len,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(ffi.Pointer<hb_subset_input_t>, ffi.Pointer<hb_face_t>)
 >()
@@ -6642,6 +7160,7 @@ external int hb_subset_input_pin_all_axes_to_default(
   ffi.Pointer<hb_face_t> face,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_subset_input_t>,
@@ -6657,6 +7176,7 @@ external int hb_subset_input_pin_axis_location(
   double axis_value,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_subset_input_t>,
@@ -6670,6 +7190,7 @@ external int hb_subset_input_pin_axis_to_default(
   int axis_tag,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_subset_input_t> Function(ffi.Pointer<hb_subset_input_t>)
 >()
@@ -6677,6 +7198,7 @@ external ffi.Pointer<hb_subset_input_t> hb_subset_input_reference(
   ffi.Pointer<hb_subset_input_t> input,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_set_t> Function(
     ffi.Pointer<hb_subset_input_t>,
@@ -6695,6 +7217,7 @@ ffi.Pointer<hb_set_t> hb_subset_input_set(
   return _hb_subset_input_set(input, set_type.value);
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_subset_input_t>,
@@ -6714,6 +7237,7 @@ external int hb_subset_input_set_axis_range(
   double axis_def_value,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(ffi.Pointer<hb_subset_input_t>, ffi.UnsignedInt)
 >()
@@ -6722,6 +7246,7 @@ external void hb_subset_input_set_flags(
   int value,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_subset_input_t>,
@@ -6739,16 +7264,19 @@ external int hb_subset_input_set_user_data(
   int replace,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_subset_input_t>)>()
 external ffi.Pointer<hb_blob_t> hb_subset_input_to_string_or_fail(
   ffi.Pointer<hb_subset_input_t> input,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_set_t> Function(ffi.Pointer<hb_subset_input_t>)>()
 external ffi.Pointer<hb_set_t> hb_subset_input_unicode_set(
   ffi.Pointer<hb_subset_input_t> input,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_face_t> Function(
     ffi.Pointer<hb_face_t>,
@@ -6760,6 +7288,7 @@ external ffi.Pointer<hb_face_t> hb_subset_or_fail(
   ffi.Pointer<hb_subset_input_t> input,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_subset_plan_t> Function(
     ffi.Pointer<hb_face_t>,
@@ -6771,14 +7300,17 @@ external ffi.Pointer<hb_subset_plan_t> hb_subset_plan_create_or_fail(
   ffi.Pointer<hb_subset_input_t> input,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_subset_plan_t>)>()
 external void hb_subset_plan_destroy(ffi.Pointer<hb_subset_plan_t> plan);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_face_t> Function(ffi.Pointer<hb_subset_plan_t>)>()
 external ffi.Pointer<hb_face_t> hb_subset_plan_execute_or_fail(
   ffi.Pointer<hb_subset_plan_t> plan,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_subset_plan_t>,
@@ -6790,16 +7322,19 @@ external ffi.Pointer<ffi.Void> hb_subset_plan_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_map_t> Function(ffi.Pointer<hb_subset_plan_t>)>()
 external ffi.Pointer<hb_map_t> hb_subset_plan_new_to_old_glyph_mapping(
   ffi.Pointer<hb_subset_plan_t> plan,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_map_t> Function(ffi.Pointer<hb_subset_plan_t>)>()
 external ffi.Pointer<hb_map_t> hb_subset_plan_old_to_new_glyph_mapping(
   ffi.Pointer<hb_subset_plan_t> plan,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_subset_plan_t> Function(ffi.Pointer<hb_subset_plan_t>)
 >()
@@ -6807,6 +7342,7 @@ external ffi.Pointer<hb_subset_plan_t> hb_subset_plan_reference(
   ffi.Pointer<hb_subset_plan_t> plan,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_subset_plan_t>,
@@ -6824,16 +7360,19 @@ external int hb_subset_plan_set_user_data(
   int replace,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_map_t> Function(ffi.Pointer<hb_subset_plan_t>)>()
 external ffi.Pointer<hb_map_t> hb_subset_plan_unicode_to_old_glyph_mapping(
   ffi.Pointer<hb_subset_plan_t> plan,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_face_t> Function(ffi.Pointer<hb_face_t>)>()
 external ffi.Pointer<hb_face_t> hb_subset_preprocess(
   ffi.Pointer<hb_face_t> source,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_blob_t> Function(
     hb_tag_t,
@@ -6848,10 +7387,12 @@ external ffi.Pointer<hb_blob_t> hb_subset_serialize_or_fail(
 );
 
 /// len=-1 means str is NUL-terminated.
+@meta.RecordUse()
 @ffi.Native<hb_tag_t Function(ffi.Pointer<ffi.Char>, ffi.Int)>()
 external int hb_tag_from_string(ffi.Pointer<ffi.Char> str, int len);
 
 /// buf should have 4 bytes.
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(hb_tag_t, ffi.Pointer<ffi.Char>)>()
 external void hb_tag_to_string(int tag, ffi.Pointer<ffi.Char> buf);
 
@@ -6865,6 +7406,7 @@ external void hb_tag_to_string(int tag, ffi.Pointer<ffi.Char> buf);
 /// Return value: The #hb_unicode_combining_class_t of @unicode
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, hb_codepoint_t)
 >(symbol: 'hb_unicode_combining_class')
@@ -6882,6 +7424,7 @@ hb_unicode_combining_class_t hb_unicode_combining_class(
   );
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -6897,6 +7440,7 @@ external int hb_unicode_compose(
   ffi.Pointer<hb_codepoint_t> ab,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -6913,6 +7457,7 @@ external int hb_unicode_decompose(
 );
 
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -6935,6 +7480,7 @@ external int hb_unicode_decompose_compatibility(
 /// Since: 0.9.2
 /// Deprecated: 2.0.0
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, hb_codepoint_t)
 >()
@@ -6943,6 +7489,7 @@ external int hb_unicode_eastasian_width(
   int unicode,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_unicode_funcs_t> Function(ffi.Pointer<hb_unicode_funcs_t>)
 >()
@@ -6950,16 +7497,20 @@ external ffi.Pointer<hb_unicode_funcs_t> hb_unicode_funcs_create(
   ffi.Pointer<hb_unicode_funcs_t> parent,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_unicode_funcs_t>)>()
 external void hb_unicode_funcs_destroy(ffi.Pointer<hb_unicode_funcs_t> ufuncs);
 
 /// just give me the best implementation you've got there.
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_unicode_funcs_t> Function()>()
 external ffi.Pointer<hb_unicode_funcs_t> hb_unicode_funcs_get_default();
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<hb_unicode_funcs_t> Function()>()
 external ffi.Pointer<hb_unicode_funcs_t> hb_unicode_funcs_get_empty();
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_unicode_funcs_t> Function(ffi.Pointer<hb_unicode_funcs_t>)
 >()
@@ -6967,6 +7518,7 @@ external ffi.Pointer<hb_unicode_funcs_t> hb_unicode_funcs_get_parent(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<ffi.Void> Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -6978,16 +7530,19 @@ external ffi.Pointer<ffi.Void> hb_unicode_funcs_get_user_data(
   ffi.Pointer<hb_user_data_key_t> key,
 );
 
+@meta.RecordUse()
 @ffi.Native<hb_bool_t Function(ffi.Pointer<hb_unicode_funcs_t>)>()
 external int hb_unicode_funcs_is_immutable(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
 );
 
+@meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_unicode_funcs_t>)>()
 external void hb_unicode_funcs_make_immutable(
   ffi.Pointer<hb_unicode_funcs_t> ufuncs,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Pointer<hb_unicode_funcs_t> Function(ffi.Pointer<hb_unicode_funcs_t>)
 >()
@@ -7004,6 +7559,7 @@ external ffi.Pointer<hb_unicode_funcs_t> hb_unicode_funcs_reference(
 /// Sets the implementation function for #hb_unicode_combining_class_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -7028,6 +7584,7 @@ external void hb_unicode_funcs_set_combining_class_func(
 /// Sets the implementation function for #hb_unicode_compose_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -7056,6 +7613,7 @@ external void hb_unicode_funcs_set_compose_func(
 /// Since: 0.9.2
 /// Deprecated: 2.0.0
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -7080,6 +7638,7 @@ external void hb_unicode_funcs_set_decompose_compatibility_func(
 /// Sets the implementation function for #hb_unicode_decompose_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -7106,6 +7665,7 @@ external void hb_unicode_funcs_set_decompose_func(
 /// Since: 0.9.2
 /// Deprecated: 2.0.0
 @Deprecated('Deprecated')
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -7130,6 +7690,7 @@ external void hb_unicode_funcs_set_eastasian_width_func(
 /// Sets the implementation function for #hb_unicode_general_category_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -7154,6 +7715,7 @@ external void hb_unicode_funcs_set_general_category_func(
 /// Sets the implementation function for #hb_unicode_mirroring_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -7178,6 +7740,7 @@ external void hb_unicode_funcs_set_mirroring_func(
 /// Sets the implementation function for #hb_unicode_script_func_t.
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -7193,6 +7756,7 @@ external void hb_unicode_funcs_set_script_func(
   hb_destroy_func_t destroy,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<hb_unicode_funcs_t>,
@@ -7220,6 +7784,7 @@ external int hb_unicode_funcs_set_user_data(
 /// Return value: The #hb_unicode_general_category_t of @unicode
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, hb_codepoint_t)
 >(symbol: 'hb_unicode_general_category')
@@ -7247,6 +7812,7 @@ hb_unicode_general_category_t hb_unicode_general_category(
 /// Return value: The #hb_codepoint_t of the Mirroring Glyph for @unicode
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   hb_codepoint_t Function(ffi.Pointer<hb_unicode_funcs_t>, hb_codepoint_t)
 >()
@@ -7265,6 +7831,7 @@ external int hb_unicode_mirroring(
 /// Return value: The #hb_script_t of @unicode
 ///
 /// Since: 0.9.2
+@meta.RecordUse()
 @ffi.Native<
   ffi.UnsignedInt Function(ffi.Pointer<hb_unicode_funcs_t>, hb_codepoint_t)
 >(symbol: 'hb_unicode_script')
@@ -7280,6 +7847,7 @@ hb_script_t hb_unicode_script(
   return hb_script_t.fromValue(_hb_unicode_script(ufuncs, unicode));
 }
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
     ffi.Pointer<ffi.Char>,
@@ -7293,6 +7861,7 @@ external int hb_variation_from_string(
   ffi.Pointer<hb_variation_t> variation,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<hb_variation_t>,
@@ -7306,6 +7875,7 @@ external void hb_variation_to_string(
   int size,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   ffi.Void Function(
     ffi.Pointer<ffi.UnsignedInt>,
@@ -7319,11 +7889,13 @@ external void hb_version(
   ffi.Pointer<ffi.UnsignedInt> micro,
 );
 
+@meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(ffi.UnsignedInt, ffi.UnsignedInt, ffi.UnsignedInt)
 >()
 external int hb_version_atleast(int major, int minor, int micro);
 
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Char> Function()>()
 external ffi.Pointer<ffi.Char> hb_version_string();
 

@@ -23,12 +23,15 @@ Future<void> main() async {
     ),
     output: .new(
       dart: .new(path: packageRoot.resolve("lib/src/ffi_bindings.g.dart")),
+      recordUseMapping: packageRoot.resolve("lib/src/record_use_mapping.dart"),
       format: true,
       commentType: const .new(.any, .full),
     ),
     visitors: [
       .new(
-        func: (node) => node.isIncluded = include(node),
+        func: (node) => node
+          ..isIncluded = include(node)
+          ..recordUse = true,
         struct: (node) => node.isIncluded = include(node),
         union: (node) => node.isIncluded = include(node),
         enumClass: (node) => node.isIncluded = include(node),
