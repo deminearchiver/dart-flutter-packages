@@ -712,6 +712,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "apps_outage".
   static const IconData apps_outage = IconData(0xe7cc, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "apps_plus".
+  static const IconData apps_plus = IconData(0xffea7, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "apps_policy".
   static const IconData apps_policy = IconData(0xe6e3, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -2353,6 +2356,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "chat_dashed".
   static const IconData chat_dashed = IconData(0xeeed, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "chat_display".
+  static const IconData chat_display = IconData(0xffeac, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "chat_error".
   static const IconData chat_error = IconData(0xf7ac, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -2625,6 +2631,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "closed_caption_disabled".
   static const IconData closed_caption_disabled = IconData(0xf1dc, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "closed_caption_display".
+  static const IconData closed_caption_display = IconData(0xffeab, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "cloud".
   static const IconData cloud = IconData(0xe2bd, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -3556,6 +3565,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "display_external_input".
   static const IconData display_external_input = IconData(0xf7e7, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "display_group".
+  static const IconData display_group = IconData(0xffeaa, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "display_settings".
   static const IconData display_settings = IconData(0xeb97, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -3624,6 +3636,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "document_search".
   static const IconData document_search = IconData(0xf385, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "document_share".
+  static const IconData document_share = IconData(0xffea6, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "dogfood".
   static const IconData dogfood = IconData(0xe6d8, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -4011,6 +4026,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "edit_fix_auto_off".
   static const IconData edit_fix_auto_off = IconData(0xf5c3, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "edit_line".
+  static const IconData edit_line = IconData(0xffea5, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "edit_location".
   static const IconData edit_location = IconData(0xe568, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -4651,6 +4669,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "filter_b_and_w".
   static const IconData filter_b_and_w = IconData(0xe3db, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "filter_cancel".
+  static const IconData filter_cancel = IconData(0xffea4, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "filter_center_focus".
   static const IconData filter_center_focus = IconData(0xe3dc, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -4677,6 +4698,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "filter_none".
   static const IconData filter_none = IconData(0xe3e0, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "filter_plus".
+  static const IconData filter_plus = IconData(0xffea3, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "filter_retrolux".
   static const IconData filter_retrolux = IconData(0xe3e1, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -5677,6 +5701,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "function".
   static const IconData function = IconData(0xf866, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "function_search".
+  static const IconData function_search = IconData(0xffea2, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "function_spark".
   static const IconData function_spark = IconData(0xf26f, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -6153,6 +6180,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "group_auto".
   static const IconData group_auto = IconData(0xf551, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "group_eye".
+  static const IconData group_eye = IconData(0xffea1, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "group_off".
   static const IconData group_off = IconData(0xe747, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -6771,6 +6801,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "import_sheets".
   static const IconData import_sheets = IconData(0xf520, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "import_spark".
+  static const IconData import_spark = IconData(0xffea9, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "important_devices".
   static const IconData important_devices = IconData(0xe912, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -7774,11 +7807,20 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "markdown".
   static const IconData markdown = IconData(0xf552, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "markdown_convert".
+  static const IconData markdown_convert = IconData(0xffea0, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "markdown_copy".
   static const IconData markdown_copy = IconData(0xf553, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "markdown_document".
+  static const IconData markdown_document = IconData(0xffe9f, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "markdown_paste".
   static const IconData markdown_paste = IconData(0xf554, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "markdown_spark".
+  static const IconData markdown_spark = IconData(0xffea8, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "markunread_mailbox".
   static const IconData markunread_mailbox = IconData(0xe89b, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -11250,6 +11292,9 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "sheets_column_spark".
   static const IconData sheets_column_spark = IconData(0xfff9e, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "sheets_column_swap".
+  static const IconData sheets_column_swap = IconData(0xffe9d, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "sheets_rtl".
   static const IconData sheets_rtl = IconData(0xf823, fontFamily: fontFamily, fontPackage: fontPackage);

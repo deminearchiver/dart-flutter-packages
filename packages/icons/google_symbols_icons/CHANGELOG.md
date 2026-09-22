@@ -1,3 +1,8 @@
+## 0.1.9
+
+- Rolled the Google Symbols font from `v461` to `v462`.
+  - This update introduces 15 new icons: `apps_plus`, `chat_display`, `closed_caption_display`, `display_group`, `document_share`, `edit_line`, `filter_cancel`, `filter_plus`, `function_search`, `group_eye`, `import_spark`, `markdown_convert`, `markdown_document`, `markdown_spark`, `sheets_column_swap`.
+
 ## 0.1.8
 
 - Rolled the Google Symbols font from `v459` to `v461`.
