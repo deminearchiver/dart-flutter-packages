@@ -111,15 +111,22 @@ const recordUseMapping = {
   'hb_draw_funcs_reference': 'hb_draw_funcs_reference',
   'hb_draw_funcs_set_close_path_func': 'hb_draw_funcs_set_close_path_func',
   'hb_draw_funcs_set_cubic_to_func': 'hb_draw_funcs_set_cubic_to_func',
+  'hb_draw_funcs_set_get_budget_func': 'hb_draw_funcs_set_get_budget_func',
+  'hb_draw_funcs_set_get_budget_remaining_func':
+      'hb_draw_funcs_set_get_budget_remaining_func',
   'hb_draw_funcs_set_line_to_func': 'hb_draw_funcs_set_line_to_func',
   'hb_draw_funcs_set_move_to_func': 'hb_draw_funcs_set_move_to_func',
   'hb_draw_funcs_set_quadratic_to_func': 'hb_draw_funcs_set_quadratic_to_func',
+  'hb_draw_funcs_set_set_budget_func': 'hb_draw_funcs_set_set_budget_func',
   'hb_draw_funcs_set_user_data': 'hb_draw_funcs_set_user_data',
+  'hb_draw_get_budget': 'hb_draw_get_budget',
+  'hb_draw_get_budget_remaining': 'hb_draw_get_budget_remaining',
   '_hb_draw_line': 'hb_draw_line',
   'hb_draw_line_to': 'hb_draw_line_to',
   'hb_draw_move_to': 'hb_draw_move_to',
   'hb_draw_quadratic_to': 'hb_draw_quadratic_to',
   'hb_draw_rectangle': 'hb_draw_rectangle',
+  'hb_draw_set_budget': 'hb_draw_set_budget',
   'hb_face_builder_add_table': 'hb_face_builder_add_table',
   'hb_face_builder_create': 'hb_face_builder_create',
   'hb_face_builder_sort_tables': 'hb_face_builder_sort_tables',
@@ -471,6 +478,9 @@ const recordUseMapping = {
   'hb_paint_funcs_set_custom_palette_color_func':
       'hb_paint_funcs_set_custom_palette_color_func',
   'hb_paint_funcs_set_fill_glyph_func': 'hb_paint_funcs_set_fill_glyph_func',
+  'hb_paint_funcs_set_get_budget_func': 'hb_paint_funcs_set_get_budget_func',
+  'hb_paint_funcs_set_get_budget_remaining_func':
+      'hb_paint_funcs_set_get_budget_remaining_func',
   'hb_paint_funcs_set_image_func': 'hb_paint_funcs_set_image_func',
   'hb_paint_funcs_set_linear_gradient_func':
       'hb_paint_funcs_set_linear_gradient_func',
@@ -493,9 +503,12 @@ const recordUseMapping = {
       'hb_paint_funcs_set_push_transform_func',
   'hb_paint_funcs_set_radial_gradient_func':
       'hb_paint_funcs_set_radial_gradient_func',
+  'hb_paint_funcs_set_set_budget_func': 'hb_paint_funcs_set_set_budget_func',
   'hb_paint_funcs_set_sweep_gradient_func':
       'hb_paint_funcs_set_sweep_gradient_func',
   'hb_paint_funcs_set_user_data': 'hb_paint_funcs_set_user_data',
+  'hb_paint_get_budget': 'hb_paint_get_budget',
+  'hb_paint_get_budget_remaining': 'hb_paint_get_budget_remaining',
   'hb_paint_image': 'hb_paint_image',
   'hb_paint_linear_gradient': 'hb_paint_linear_gradient',
   'hb_paint_normalize_color_line': 'hb_paint_normalize_color_line',
@@ -514,6 +527,7 @@ const recordUseMapping = {
   'hb_paint_push_transform': 'hb_paint_push_transform',
   'hb_paint_radial_gradient': 'hb_paint_radial_gradient',
   'hb_paint_reduce_linear_anchors': 'hb_paint_reduce_linear_anchors',
+  'hb_paint_set_budget': 'hb_paint_set_budget',
   'hb_paint_sweep_gradient': 'hb_paint_sweep_gradient',
   '_hb_paint_sweep_gradient_tiles': 'hb_paint_sweep_gradient_tiles',
   'hb_realloc': 'hb_realloc',

@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Bumped native HarfBuzz dependency to [`14.5.0`](https://github.com/harfbuzz/harfbuzz/releases/tag/14.5.0).
+
 - Created a [link hook](https://dart.dev/tools/hooks#create-link-hook) to tree-shake native symbols from the compiled HarfBuzz library.
   - HarfBuzz native library will now be linked statically.
 

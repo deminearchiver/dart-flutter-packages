@@ -1196,6 +1196,56 @@ external void hb_draw_funcs_set_cubic_to_func(
   hb_destroy_func_t destroy,
 );
 
+/// hb_draw_funcs_set_get_budget_func:
+/// @dfuncs: draw functions object
+/// @func: (closure user_data) (destroy destroy) (scope notified): budget getter
+/// @user_data: Data to pass to @func
+/// @destroy: (nullable): callback to destroy @user_data
+///
+/// Sets the budget-policy getter callback.
+///
+/// Since: 14.5.0
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_draw_funcs_t>,
+    hb_draw_get_budget_func_t,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+  )
+>()
+external void hb_draw_funcs_set_get_budget_func(
+  ffi.Pointer<hb_draw_funcs_t> dfuncs,
+  hb_draw_get_budget_func_t func,
+  ffi.Pointer<ffi.Void> user_data,
+  hb_destroy_func_t destroy,
+);
+
+/// hb_draw_funcs_set_get_budget_remaining_func:
+/// @dfuncs: draw functions object
+/// @func: (closure user_data) (destroy destroy) (scope notified): live-budget getter
+/// @user_data: Data to pass to @func
+/// @destroy: (nullable): callback to destroy @user_data
+///
+/// Sets the live-budget getter callback.
+///
+/// Since: 14.5.0
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_draw_funcs_t>,
+    hb_draw_get_budget_remaining_func_t,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+  )
+>()
+external void hb_draw_funcs_set_get_budget_remaining_func(
+  ffi.Pointer<hb_draw_funcs_t> dfuncs,
+  hb_draw_get_budget_remaining_func_t func,
+  ffi.Pointer<ffi.Void> user_data,
+  hb_destroy_func_t destroy,
+);
+
 /// hb_draw_funcs_set_line_to_func:
 /// @dfuncs: draw functions object
 /// @func: (closure user_data) (destroy destroy) (scope notified): line-to callback
@@ -1271,6 +1321,31 @@ external void hb_draw_funcs_set_quadratic_to_func(
   hb_destroy_func_t destroy,
 );
 
+/// hb_draw_funcs_set_set_budget_func:
+/// @dfuncs: draw functions object
+/// @func: (closure user_data) (destroy destroy) (scope notified): budget setter
+/// @user_data: Data to pass to @func
+/// @destroy: (nullable): callback to destroy @user_data
+///
+/// Sets the budget setter callback.
+///
+/// Since: 14.5.0
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_draw_funcs_t>,
+    hb_draw_set_budget_func_t,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+  )
+>()
+external void hb_draw_funcs_set_set_budget_func(
+  ffi.Pointer<hb_draw_funcs_t> dfuncs,
+  hb_draw_set_budget_func_t func,
+  ffi.Pointer<ffi.Void> user_data,
+  hb_destroy_func_t destroy,
+);
+
 @meta.RecordUse()
 @ffi.Native<
   hb_bool_t Function(
@@ -1287,6 +1362,24 @@ external int hb_draw_funcs_set_user_data(
   ffi.Pointer<ffi.Void> data,
   hb_destroy_func_t destroy,
   int replace,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Int64 Function(ffi.Pointer<hb_draw_funcs_t>, ffi.Pointer<ffi.Void>)
+>()
+external int hb_draw_get_budget(
+  ffi.Pointer<hb_draw_funcs_t> dfuncs,
+  ffi.Pointer<ffi.Void> draw_data,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Int64 Function(ffi.Pointer<hb_draw_funcs_t>, ffi.Pointer<ffi.Void>)
+>()
+external int hb_draw_get_budget_remaining(
+  ffi.Pointer<hb_draw_funcs_t> dfuncs,
+  ffi.Pointer<ffi.Void> draw_data,
 );
 
 @meta.RecordUse()
@@ -1423,6 +1516,20 @@ external void hb_draw_rectangle(
   double w,
   double h,
   double stroke_width,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_draw_funcs_t>,
+    ffi.Pointer<ffi.Void>,
+    ffi.Int64,
+  )
+>()
+external int hb_draw_set_budget(
+  ffi.Pointer<hb_draw_funcs_t> dfuncs,
+  ffi.Pointer<ffi.Void> draw_data,
+  int budget,
 );
 
 @meta.RecordUse()
@@ -5659,6 +5766,56 @@ external void hb_paint_funcs_set_fill_glyph_func(
   hb_destroy_func_t destroy,
 );
 
+/// hb_paint_funcs_set_get_budget_func:
+/// @funcs: paint functions object
+/// @func: (closure user_data) (destroy destroy) (scope notified): budget getter
+/// @user_data: Data to pass to @func
+/// @destroy: (nullable): callback to destroy @user_data
+///
+/// Sets the budget-policy getter callback.
+///
+/// Since: 14.5.0
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_paint_funcs_t>,
+    hb_paint_get_budget_func_t,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+  )
+>()
+external void hb_paint_funcs_set_get_budget_func(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  hb_paint_get_budget_func_t func,
+  ffi.Pointer<ffi.Void> user_data,
+  hb_destroy_func_t destroy,
+);
+
+/// hb_paint_funcs_set_get_budget_remaining_func:
+/// @funcs: paint functions object
+/// @func: (closure user_data) (destroy destroy) (scope notified): live-budget getter
+/// @user_data: Data to pass to @func
+/// @destroy: (nullable): callback to destroy @user_data
+///
+/// Sets the live-budget getter callback.
+///
+/// Since: 14.5.0
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_paint_funcs_t>,
+    hb_paint_get_budget_remaining_func_t,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+  )
+>()
+external void hb_paint_funcs_set_get_budget_remaining_func(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  hb_paint_get_budget_remaining_func_t func,
+  ffi.Pointer<ffi.Void> user_data,
+  hb_destroy_func_t destroy,
+);
+
 /// hb_paint_funcs_set_image_func:
 /// @funcs: A paint functions struct
 /// @func: (closure user_data) (destroy destroy) (scope notified): The paint-image callback
@@ -5984,6 +6141,31 @@ external void hb_paint_funcs_set_radial_gradient_func(
   hb_destroy_func_t destroy,
 );
 
+/// hb_paint_funcs_set_set_budget_func:
+/// @funcs: paint functions object
+/// @func: (closure user_data) (destroy destroy) (scope notified): budget setter
+/// @user_data: Data to pass to @func
+/// @destroy: (nullable): callback to destroy @user_data
+///
+/// Sets the budget setter callback.
+///
+/// Since: 14.5.0
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_paint_funcs_t>,
+    hb_paint_set_budget_func_t,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+  )
+>()
+external void hb_paint_funcs_set_set_budget_func(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  hb_paint_set_budget_func_t func,
+  ffi.Pointer<ffi.Void> user_data,
+  hb_destroy_func_t destroy,
+);
+
 /// hb_paint_funcs_set_sweep_gradient_func:
 /// @funcs: A paint functions struct
 /// @func: (closure user_data) (destroy destroy) (scope notified): The sweep-gradient callback
@@ -6025,6 +6207,24 @@ external int hb_paint_funcs_set_user_data(
   ffi.Pointer<ffi.Void> data,
   hb_destroy_func_t destroy,
   int replace,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Int64 Function(ffi.Pointer<hb_paint_funcs_t>, ffi.Pointer<ffi.Void>)
+>()
+external int hb_paint_get_budget(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  ffi.Pointer<ffi.Void> paint_data,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Int64 Function(ffi.Pointer<hb_paint_funcs_t>, ffi.Pointer<ffi.Void>)
+>()
+external int hb_paint_get_budget_remaining(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  ffi.Pointer<ffi.Void> paint_data,
 );
 
 @meta.RecordUse()
@@ -6334,6 +6534,20 @@ external void hb_paint_reduce_linear_anchors(
   ffi.Pointer<ffi.Float> yy0,
   ffi.Pointer<ffi.Float> xx1,
   ffi.Pointer<ffi.Float> yy1,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_paint_funcs_t>,
+    ffi.Pointer<ffi.Void>,
+    ffi.Int64,
+  )
+>()
+external int hb_paint_set_budget(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  ffi.Pointer<ffi.Void> paint_data,
+  int budget,
 );
 
 @meta.RecordUse()
@@ -7899,6 +8113,10 @@ external int hb_version_atleast(int major, int minor, int micro);
 @ffi.Native<ffi.Pointer<ffi.Char> Function()>()
 external ffi.Pointer<ffi.Char> hb_version_string();
 
+const int HB_BUDGET_DEFAULT = -9223372036854775808;
+
+const int HB_BUDGET_UNLIMITED = 9223372036854775807;
+
 const int HB_BUFFER_FLAGS_DEFAULT = 0;
 
 const int HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT = 65533;
@@ -7989,9 +8207,9 @@ const int HB_VERSION_MAJOR = 14;
 
 const int HB_VERSION_MICRO = 0;
 
-const int HB_VERSION_MINOR = 4;
+const int HB_VERSION_MINOR = 5;
 
-const String HB_VERSION_STRING = '14.4.0';
+const String HB_VERSION_STRING = '14.5.0';
 
 final class _hb_var_int_t extends ffi.Union {
   @ffi.Uint32()
@@ -8692,6 +8910,54 @@ typedef Darthb_draw_cubic_to_func_tFunction = void Function(
 
 final class hb_draw_funcs_t extends ffi.Opaque {}
 
+/// hb_draw_get_budget_func_t:
+/// @dfuncs: draw functions object
+/// @draw_data: The data accompanying the draw functions
+/// @user_data: User data pointer passed to hb_draw_funcs_set_get_budget_func()
+///
+/// Fetches the configured work-budget policy.
+///
+/// Return value: the configured work-budget policy
+///
+/// Since: 14.5.0
+typedef hb_draw_get_budget_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_draw_get_budget_func_tFunction>>;
+typedef hb_draw_get_budget_func_tFunction = ffi.Int64 Function(
+  ffi.Pointer<hb_draw_funcs_t> dfuncs,
+  ffi.Pointer<ffi.Void> draw_data,
+  ffi.Pointer<ffi.Void> user_data,
+);
+typedef Darthb_draw_get_budget_func_tFunction = int Function(
+  ffi.Pointer<hb_draw_funcs_t> dfuncs,
+  ffi.Pointer<ffi.Void> draw_data,
+  ffi.Pointer<ffi.Void> user_data,
+);
+
+/// hb_draw_get_budget_remaining_func_t:
+/// @dfuncs: draw functions object
+/// @draw_data: The data accompanying the draw functions
+/// @user_data: User data pointer passed to
+/// hb_draw_funcs_set_get_budget_remaining_func()
+///
+/// Fetches the address of the live work budget. The returned address must stay
+/// valid while @draw_data is used with @dfuncs. The live value must be concrete;
+/// it must not contain #HB_BUDGET_DEFAULT.
+///
+/// Return value: (nullable) (transfer none): the live work budget, or `NULL` if
+/// live budget accounting is unsupported
+///
+/// Since: 14.5.0
+typedef hb_draw_get_budget_remaining_func_t =
+    ffi.Pointer<
+      ffi.NativeFunction<hb_draw_get_budget_remaining_func_tFunction>
+    >;
+typedef hb_draw_get_budget_remaining_func_tFunction =
+    ffi.Pointer<ffi.Int64> Function(
+      ffi.Pointer<hb_draw_funcs_t> dfuncs,
+      ffi.Pointer<ffi.Void> draw_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
 /// hb_draw_line_cap_t:
 /// @HB_DRAW_LINE_CAP_BUTT:   No cap; the line ends exactly at
 /// its endpoint.
@@ -8813,6 +9079,33 @@ typedef Darthb_draw_quadratic_to_func_tFunction = void Function(
   double control_y,
   double to_x,
   double to_y,
+  ffi.Pointer<ffi.Void> user_data,
+);
+
+/// hb_draw_set_budget_func_t:
+/// @dfuncs: draw functions object
+/// @draw_data: The data accompanying the draw functions
+/// @budget: the new work-budget policy
+/// @user_data: User data pointer passed to hb_draw_funcs_set_set_budget_func()
+///
+/// Sets the work-budget policy and recharges the live work budget. @budget is
+/// #HB_BUDGET_DEFAULT, #HB_BUDGET_UNLIMITED, or a non-negative concrete value.
+///
+/// Return value: `true` if the budget was set, `false` if unsupported
+///
+/// Since: 14.5.0
+typedef hb_draw_set_budget_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_draw_set_budget_func_tFunction>>;
+typedef hb_draw_set_budget_func_tFunction = hb_bool_t Function(
+  ffi.Pointer<hb_draw_funcs_t> dfuncs,
+  ffi.Pointer<ffi.Void> draw_data,
+  ffi.Int64 budget,
+  ffi.Pointer<ffi.Void> user_data,
+);
+typedef Darthb_draw_set_budget_func_tFunction = Darthb_bool_t Function(
+  ffi.Pointer<hb_draw_funcs_t> dfuncs,
+  ffi.Pointer<ffi.Void> draw_data,
+  int budget,
   ffi.Pointer<ffi.Void> user_data,
 );
 
@@ -11293,6 +11586,54 @@ typedef Darthb_paint_fill_glyph_func_tFunction = void Function(
 
 final class hb_paint_funcs_t extends ffi.Opaque {}
 
+/// hb_paint_get_budget_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions
+/// @user_data: User data pointer passed to hb_paint_funcs_set_get_budget_func()
+///
+/// Fetches the configured work-budget policy.
+///
+/// Return value: the configured work-budget policy
+///
+/// Since: 14.5.0
+typedef hb_paint_get_budget_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_get_budget_func_tFunction>>;
+typedef hb_paint_get_budget_func_tFunction = ffi.Int64 Function(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  ffi.Pointer<ffi.Void> paint_data,
+  ffi.Pointer<ffi.Void> user_data,
+);
+typedef Darthb_paint_get_budget_func_tFunction = int Function(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  ffi.Pointer<ffi.Void> paint_data,
+  ffi.Pointer<ffi.Void> user_data,
+);
+
+/// hb_paint_get_budget_remaining_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions
+/// @user_data: User data pointer passed to
+/// hb_paint_funcs_set_get_budget_remaining_func()
+///
+/// Fetches the address of the live work budget. The returned address must stay
+/// valid while @paint_data is used with @funcs. The live value must be concrete;
+/// it must not contain #HB_BUDGET_DEFAULT.
+///
+/// Return value: (nullable) (transfer none): the live work budget, or `NULL` if
+/// live budget accounting is unsupported
+///
+/// Since: 14.5.0
+typedef hb_paint_get_budget_remaining_func_t =
+    ffi.Pointer<
+      ffi.NativeFunction<hb_paint_get_budget_remaining_func_tFunction>
+    >;
+typedef hb_paint_get_budget_remaining_func_tFunction =
+    ffi.Pointer<ffi.Int64> Function(
+      ffi.Pointer<hb_paint_funcs_t> funcs,
+      ffi.Pointer<ffi.Void> paint_data,
+      ffi.Pointer<ffi.Void> user_data,
+    );
+
 /// hb_paint_image_func_t:
 /// @funcs: paint functions object
 /// @paint_data: The data accompanying the paint functions in hb_font_paint_glyph()
@@ -11761,6 +12102,33 @@ typedef Darthb_paint_radial_gradient_func_tFunction = void Function(
   double x1,
   double y1,
   double r1,
+  ffi.Pointer<ffi.Void> user_data,
+);
+
+/// hb_paint_set_budget_func_t:
+/// @funcs: paint functions object
+/// @paint_data: The data accompanying the paint functions
+/// @budget: the new work-budget policy
+/// @user_data: User data pointer passed to hb_paint_funcs_set_set_budget_func()
+///
+/// Sets the work-budget policy and recharges the live work budget. @budget is
+/// #HB_BUDGET_DEFAULT, #HB_BUDGET_UNLIMITED, or a non-negative concrete value.
+///
+/// Return value: `true` if the budget was set, `false` if unsupported
+///
+/// Since: 14.5.0
+typedef hb_paint_set_budget_func_t =
+    ffi.Pointer<ffi.NativeFunction<hb_paint_set_budget_func_tFunction>>;
+typedef hb_paint_set_budget_func_tFunction = hb_bool_t Function(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  ffi.Pointer<ffi.Void> paint_data,
+  ffi.Int64 budget,
+  ffi.Pointer<ffi.Void> user_data,
+);
+typedef Darthb_paint_set_budget_func_tFunction = Darthb_bool_t Function(
+  ffi.Pointer<hb_paint_funcs_t> funcs,
+  ffi.Pointer<ffi.Void> paint_data,
+  int budget,
   ffi.Pointer<ffi.Void> user_data,
 );
 
@@ -12407,6 +12775,15 @@ enum hb_script_t {
   /// 17.0
   HB_SCRIPT_TOLONG_SIKI(1416588403),
 
+  /// 18.0
+  HB_SCRIPT_JURCHEN(1249210979),
+
+  /// 18.0
+  HB_SCRIPT_PROTO_CUNEIFORM(1348695406),
+
+  /// 18.0
+  HB_SCRIPT_SEAL(1399153004),
+
   /// No script set.
   HB_SCRIPT_INVALID(0),
 
@@ -12596,6 +12973,9 @@ enum hb_script_t {
     1399415924 => HB_SCRIPT_SIDETIC,
     1415674223 => HB_SCRIPT_TAI_YO,
     1416588403 => HB_SCRIPT_TOLONG_SIKI,
+    1249210979 => HB_SCRIPT_JURCHEN,
+    1348695406 => HB_SCRIPT_PROTO_CUNEIFORM,
+    1399153004 => HB_SCRIPT_SEAL,
     0 => HB_SCRIPT_INVALID,
     2147483647 => _HB_SCRIPT_MAX_VALUE,
     _ => throw ArgumentError('Unknown value for hb_script_t: $value'),
