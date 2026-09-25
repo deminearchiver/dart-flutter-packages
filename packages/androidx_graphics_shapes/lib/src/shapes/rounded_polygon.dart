@@ -257,7 +257,7 @@ final class RoundedPolygon(
 
     return .regular(
       numVertices: numVertices,
-      rounding: .from(radius: radius),
+      rounding: .new(radius: radius),
       radius: polygonRadius,
       centerX: centerX,
       centerY: centerY,
@@ -367,7 +367,7 @@ final class RoundedPolygon(
         wHalf + centerX,
         -hHalf + centerY,
       ],
-      rounding: .from(radius: math.min(wHalf, hHalf), smoothing: smoothing),
+      rounding: .new(radius: math.min(wHalf, hHalf), smoothing: smoothing),
       centerX: centerX,
       centerY: centerY,
     );
