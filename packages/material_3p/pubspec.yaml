@@ -19,7 +19,7 @@ dependencies:
     sdk: flutter
 
   # Hosted dependencies
-  androidx_graphics_shapes: ^1.7.0
+  androidx_graphics_shapes: ^2.0.0
   collection: ^1.19.1
   libmonet: 2.0.0-dev.22
   material_symbols_icons: ^4.2960.0

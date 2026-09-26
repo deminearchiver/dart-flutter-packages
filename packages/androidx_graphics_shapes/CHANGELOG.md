@@ -1,6 +1,4 @@
-## Unreleased
-
-The following changes have been scheduled for the 2.0 major release of the package.
+## 2.0.0
 
 - The `CornerRounding.from()` constructor is now unnamed (`CornerRounding()`) and the unnamed constructor with positional parameters is now gone.
   - From now on, all instantiations of this class must use named parameters: `CornerRounding(radius: ..., smoothing: ...)`.
