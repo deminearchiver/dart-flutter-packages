@@ -28,7 +28,9 @@ final _indeterminateIndicatorPolygons = <RoundedPolygon>[
 
 final _determinateIndicatorPolygons = <RoundedPolygon>[
   // Rotate by 36 degrees to align vertices with softBurst.
-  MaterialShapes.circle.transformedWithMatrix2(.rotation(math.pi / 10.0)),
+  MaterialShapes.circle.transformed(
+    Matrix4.rotationZ(math.pi / 10.0).asPointTransformer(),
+  ),
   MaterialShapes.softBurst,
 ];
 
@@ -102,7 +104,7 @@ class DeterminateLoadingIndicator extends StatefulWidget {
       _DeterminateLoadingIndicatorState();
 
   static RoundedPolygon defaultForEachPolygon(RoundedPolygon polygon) =>
-      polygon.normalized();
+      polygon.normalized;
 }
 
 class _DeterminateLoadingIndicatorState
@@ -266,10 +268,7 @@ class _DeterminateLoadingIndicatorPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final path = LoadingIndicatorHelper.transformPath(
       size: size,
-      path: currentMorph.toPath(
-        progress: adjustedProgressValue,
-        startAngle: 0.0,
-      ),
+      path: currentMorph.toPath(adjustedProgressValue, startAngle: 0.0),
       scale: morphScaleFactor,
       rotation: rotation,
       matrix: matrix,
@@ -674,7 +673,7 @@ class _IndeterminateLoadingIndicatorPainter
     final globalRotation = controller.globalRotation * _kFullRotation;
     final path = LoadingIndicatorHelper.transformPath(
       size: size,
-      path: morphSequence[morphIndex].toPath(progress: morphProgress),
+      path: morphSequence[morphIndex].toPath(morphProgress),
       scale: morphScaleFactor,
       rotation:
           morphProgress * _kQuarterRotation +
@@ -706,7 +705,7 @@ class _IndeterminateLoadingIndicatorPainter
 
 abstract final class LoadingIndicatorHelper {
   static RoundedPolygon defaultForEachPolygon(RoundedPolygon polygon) =>
-      polygon.normalized();
+      polygon.normalized;
 
   static Iterable<Morph> generateMorphSequence({
     required List<RoundedPolygon> polygons,
@@ -756,8 +755,8 @@ abstract final class LoadingIndicatorHelper {
     for (var i = 0; i < indicatorPolygons.length; i++) {
       final polygon = indicatorPolygons[i];
 
-      final bounds = polygon.calculateBounds(approximate: approximate);
-      final maxBounds = polygon.calculateMaxBounds();
+      final bounds = approximate ? polygon.approximateBounds : polygon.bounds;
+      final maxBounds = polygon.maxBounds;
 
       final scaleX = bounds.width / maxBounds.width;
       final scaleY = bounds.height / maxBounds.height;

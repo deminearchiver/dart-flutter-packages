@@ -5,10 +5,16 @@ library;
 export 'src/shapes/shapes.dart'
     show
         CornerRounding,
-        Cubic,
-        MutableCubic,
+        CubicBezier,
         Feature,
+        Matrix2PointTransformer,
+        Matrix3PointTransformer,
+        Matrix4PointTransformer,
+        Morph,
+        pathFromCubics,
         PointTransformer,
-        RoundedPolygon,
-        TransformResult,
-        Morph;
+        RoundedPolygon;
+
+export 'src/material_shapes.dart';
+export 'src/material_shape_border.dart';
+export 'src/path_borders.dart';

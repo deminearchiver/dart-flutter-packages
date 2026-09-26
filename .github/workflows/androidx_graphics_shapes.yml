@@ -1,0 +1,30 @@
+name: package:androidx_graphics_shapes
+permissions: read-all
+
+on:
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    working-directory: packages/androidx_graphics_shapes
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        channel: [stable, master]
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          channel: ${{ matrix.channel }}
+          cache: true
+      - id: install
+        run: flutter pub get
+      - run: flutter test
+        if: always() && steps.install.outcome == 'success'

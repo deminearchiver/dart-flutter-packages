@@ -1,96 +1,133 @@
-import 'package:meta/meta.dart';
+// Copyright 2013 The Flutter Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
+import 'package:flutter/foundation.dart';
+
+import 'double_mapping.dart';
 import 'features.dart';
-import 'float_mapping.dart';
 import 'point.dart';
 import 'utils.dart';
 
+/// A [Feature] paired with the [0..1] progress at which it sits along the
+/// outline of its polygon.
 @internal
-typedef MeasuredFeatures = List<ProgressableFeature>;
+class const ProgressableFeature(
+  /// The [0..1] progress at which [feature] sits along the polygon outline.
+  final double progress,
 
-@internal
-extension type const ProgressableFeature._((double progress, Feature feature) _)
-    implements Object {
-  const new(double progress, Feature feature) : _ = (progress, feature);
-
-  double get progress => _.$1;
-  Feature get feature => _.$2;
+  /// The feature at [progress].
+  final Feature feature,
+) {
+  /// Creates a [ProgressableFeature].
+  this;
 }
 
+/// A candidate pairing of two features, along with the distance between them.
+@internal
+class const DistanceVertex(
+  /// The distance between [f1] and [f2].
+  final double distance,
+
+  /// The feature from the first polygon.
+  final ProgressableFeature f1,
+
+  /// The feature from the second polygon.
+  final ProgressableFeature f2,
+) {
+  /// Creates a [DistanceVertex].
+  this;
+}
+
+/// Creates a mapping between the "features" (rounded corners) of two shapes.
 @internal
 DoubleMapper featureMapper(
-  MeasuredFeatures features1,
-  MeasuredFeatures features2,
+  List<ProgressableFeature> features1,
+  List<ProgressableFeature> features2,
 ) {
-  final filteredFeatures1 = <ProgressableFeature>[
-    // Performance: Builds the list by avoiding creating an unnecessary Iterator
-    // to iterate through the features1 List.
-    for (var i = 0; i < features1.length; i++)
-      if (features1[i].feature is Corner) features1[i],
-  ];
-  final filteredFeatures2 = <ProgressableFeature>[
-    // Performance: Builds the list by avoiding creating an unnecessary Iterator
-    // to iterate through the features2 List.
-    for (var i = 0; i < features2.length; i++)
-      if (features2[i].feature is Corner) features2[i],
-  ];
+  // We only use corners for this mapping.
+  final filteredFeatures1 = <ProgressableFeature>[];
+  for (var i = 0; i < features1.length; i++) {
+    if (features1[i].feature.isCorner) {
+      filteredFeatures1.add(features1[i]);
+    }
+  }
+
+  final filteredFeatures2 = <ProgressableFeature>[];
+  for (var i = 0; i < features2.length; i++) {
+    if (features2[i].feature.isCorner) {
+      filteredFeatures2.add(features2[i]);
+    }
+  }
+
   final featureProgressMapping = doMapping(
     filteredFeatures1,
     filteredFeatures2,
   );
-  return DoubleMapper(featureProgressMapping);
+
+  return .new(featureProgressMapping);
 }
 
-@internal
-extension type const DistanceVertex._(
-  (double distance, ProgressableFeature f1, ProgressableFeature f2) _,
-) implements Object {
-  const new(double distance, ProgressableFeature f1, ProgressableFeature f2)
-    : _ = (distance, f1, f2);
-
-  double get distance => _.$1;
-  ProgressableFeature get f1 => _.$2;
-  ProgressableFeature get f2 => _.$3;
-}
-
+/// Returns a mapping of the features between [features1] and [features2].
+///
+/// The return is a list of pairs in which the first element is the progress of
+/// a feature in [features1] and the second element is the progress of the
+/// feature in [features2] that we mapped it to. The list is sorted by the
+/// first element. To do this:
+///
+/// 1) Compute the distance for all pairs of features in
+///    ([features1] x [features2]).
+/// 2) Sort ascending by such distance.
+/// 3) Try to add them, from smallest distance to biggest, ensuring that:
+///    a) The features we are mapping haven't been mapped yet.
+///    b) We are not adding a crossing in the mapping. Since the mapping is
+///       sorted by the first element of each pair, this means that the second
+///       elements of each pair are monotonically increasing, except maybe one
+///       time (counting all pairs of consecutive elements, and the last
+///       element to first element).
 @internal
 List<(double, double)> doMapping(
   List<ProgressableFeature> features1,
   List<ProgressableFeature> features2,
 ) {
-  // TODO: optimize this implementation without using iterators
-  final distanceVertexList =
-      features1
-          .expand(
-            (f1) => features2.map((f2) {
-              final d = featureDistSquared(f1.feature, f2.feature);
-              return d != .maxFinite ? DistanceVertex(d, f1, f2) : null;
-            }),
-          )
-          .nonNulls
-          .toList(growable: false)
-        ..sort((a, b) => a.distance.compareTo(b.distance));
+  final distanceVertexList = <DistanceVertex>[];
 
-  // Special cases.
-  if (distanceVertexList.isEmpty) return List.of(_identityMapping);
-  if (distanceVertexList.length == 1) {
-    final it = distanceVertexList.first;
-    final f1 = it.f1.progress;
-    final f2 = it.f2.progress;
+  for (final f1 in features1) {
+    for (final f2 in features2) {
+      final d = featureDistSquared(f1.feature, f2.feature);
+      if (d != .maxFinite) {
+        distanceVertexList.add(DistanceVertex(d, f1, f2));
+      }
+    }
+  }
+
+  distanceVertexList.sort((a, b) => a.distance.compareTo(b.distance));
+
+  final helper = _MappingHelper();
+
+  for (final d in distanceVertexList) {
+    helper.addMapping(d.f1, d.f2);
+  }
+
+  // The mapping needs at least two pairs to be valid.
+  if (helper.mapping.isEmpty) {
+    // No candidate pair was usable, fall back to the identity mapping.
+    return const [(0.0, 0.0), (0.5, 0.5)];
+  }
+
+  if (helper.mapping.length == 1) {
+    // All but one candidate pair were rejected, synthesize a second pair half
+    // a turn away from the surviving one on both shapes.
+    final (f1, f2) = helper.mapping.first;
     return [(f1, f2), ((f1 + 0.5) % 1, (f2 + 0.5) % 1)];
   }
 
-  final mh = _MappingHelper();
-  for (var i = 0; i < distanceVertexList.length; i++) {
-    mh.addMapping(distanceVertexList[i].f1, distanceVertexList[i].f2);
-  }
-  return mh.mapping;
+  return helper.mapping;
 }
 
-const _identityMapping = <(double, double)>[(0.0, 0.0), (0.5, 0.5)];
-
-final class _MappingHelper() {
-  // List of mappings from progress in the start shape to progress in the end shape.
+class _MappingHelper {
+  // List of mappings from progress in the start shape to progress in the
+  // end shape.
   // We keep this list sorted by the first element.
   final mapping = <(double, double)>[];
 
@@ -100,10 +137,11 @@ final class _MappingHelper() {
 
   void addMapping(ProgressableFeature f1, ProgressableFeature f2) {
     // We don't want to map the same feature twice.
-    if (_usedF1.contains(f1) || _usedF2.contains(f2)) return;
+    if (_usedF1.contains(f1) || _usedF2.contains(f2)) {
+      return;
+    }
 
-    // Ret is sorted, find where we need to insert this new mapping.
-    // final index = mapping.binarySearchBy(f1.progress) { it.first }
+    // List is sorted, find where we need to insert this new mapping.
     final index = binarySearchBy<(double, double), double>(
       mapping,
       (it) => it.$1,
@@ -112,21 +150,20 @@ final class _MappingHelper() {
     );
 
     if (index >= 0) {
-      throw ArgumentError(
-        "There can't be two features with the same progress.",
-      );
+      // TODO: explain why a StateError should not be thrown (Cubic.pointAtX u * u * t / t * u * u ordering).
+      return;
     }
 
     final insertionIndex = -index - 1;
     final n = mapping.length;
 
-    // We can always add the first 1 element
+    // We can always add the first 1 element.
     if (n >= 1) {
       final (before1, before2) = mapping[(insertionIndex + n - 1) % n];
       final (after1, after2) = mapping[insertionIndex % n];
 
-      // We don't want features that are way too close to each other, that will make the
-      // DoubleMapper unstable
+      // We don't want features that are way too close to each other, that will
+      // make the DoubleMapper unstable.
       if (progressDistance(f1.progress, before1) < distanceEpsilon ||
           progressDistance(f1.progress, after1) < distanceEpsilon ||
           progressDistance(f2.progress, before2) < distanceEpsilon ||
@@ -134,7 +171,8 @@ final class _MappingHelper() {
         return;
       }
 
-      // When we have 2 or more elements, we need to ensure we are not adding extra crossings.
+      // When we have 2 or more elements, we need to ensure we are not adding
+      // extra crossings.
       if (n > 1 && !progressInRange(f2.progress, before2, after2)) return;
     }
 
@@ -145,24 +183,29 @@ final class _MappingHelper() {
   }
 }
 
+/// Returns the squared distance between the representative points of two
+/// features on the two different shapes.
+///
+/// This information is used to determine how to map features (and the curves
+/// that make up those features).
 @internal
 double featureDistSquared(Feature f1, Feature f2) {
-  // TODO: We might want to enable concave-convex matching in some situations. If so, the
-  //  approach below will not work
-  if (f1 is Corner && f2 is Corner && f1.convex != f2.convex) {
-    // Simple hack to force all features to map only to features of the same concavity, by
-    // returning an infinitely large distance in that case
+  if (f1 is CornerFeature && f2 is CornerFeature && f1.convex != f2.convex) {
+    // Simple hack to force all features to map only to features of the same
+    // concavity, by returning an infinitely large distance in that case.
     return .maxFinite;
   }
+
   return (featureRepresentativePoint(f1) - featureRepresentativePoint(f2))
       .distanceSquared;
 }
 
-// TODO: b/378441547 - Move to explicit parameter / expose?
+/// Returns the point that best represents [feature] when matching features
+/// between two shapes.
 @internal
 Point featureRepresentativePoint(Feature feature) {
   final cubics = feature.cubics;
   final x = (cubics.first.anchor0X + cubics.last.anchor1X) / 2.0;
   final y = (cubics.first.anchor0Y + cubics.last.anchor1Y) / 2.0;
-  return Point(x, y);
+  return .new(x, y);
 }

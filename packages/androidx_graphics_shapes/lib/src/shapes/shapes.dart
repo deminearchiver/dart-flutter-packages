@@ -1,15 +1,14 @@
+/// A geometry engine for describing rounded polygonal shapes and morphing
+/// between them.
+library;
+
 export 'corner_rounding.dart';
 export 'cubic.dart';
-export 'feature_detector.dart';
+export 'double_mapping.dart';
 export 'feature_mapping.dart';
-export 'feature_serializer.dart';
 export 'features.dart';
-export 'float_mapping.dart';
-export 'format.dart';
 export 'morph.dart';
 export 'point.dart';
 export 'polygon_measure.dart';
-export 'polygon_validation.dart';
 export 'rounded_polygon.dart';
-export 'svg_path_parser.dart';
 export 'utils.dart';

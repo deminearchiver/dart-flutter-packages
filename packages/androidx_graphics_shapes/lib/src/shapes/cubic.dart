@@ -1,112 +1,184 @@
-import 'dart:collection';
+// Copyright 2013 The Flutter Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+/// @docImport 'morph.dart';
+/// @docImport 'rounded_polygon.dart';
+library;
+
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
+import 'package:vector_math/vector_math_64.dart' show Matrix4;
 
-import 'features.dart';
 import 'point.dart';
 import 'utils.dart';
 
-abstract class const Cubic() {
+/// A single cubic Bézier curve.
+///
+/// The curve runs from [anchor0] to [anchor1], and the control points
+/// [control0] and [control1] determine its slope at either end.
+@immutable
+class CubicBezier {
+  /// Creates a cubic Bézier curve running from [anchor0] to [anchor1], with
+  /// [control0] and [control1] determining its slope at either end.
+  new(Offset anchor0, Offset control0, Offset control1, Offset anchor1)
+    : this.raw(
+        anchor0.x,
+        anchor0.y,
+        control0.x,
+        control0.y,
+        control1.x,
+        control1.y,
+        anchor1.x,
+        anchor1.y,
+      );
+
+  /// Creates a [CubicBezier] directly from its eight anchor and control point
+  /// coordinates.
   @internal
-  const factory empty(double x0, double y0) = _Cubic.empty;
-
-  const factory from(
-    double anchor0X,
-    double anchor0Y,
-    double control0X,
-    double control0Y,
-    double control1X,
-    double control1Y,
-    double anchor1X,
-    double anchor1Y,
-  ) = _Cubic;
-
-  @internal
-  const factory fromPoints(
-    Point anchor0,
-    Point control0,
-    Point control1,
-    Point anchor1,
-  ) = _CubicFromPoints;
-
-  factory straightLine(double x0, double y0, double x1, double y1) => .from(
-    x0,
-    y0,
-    interpolateDouble(x0, x1, 1.0 / 3.0),
-    interpolateDouble(y0, y1, 1.0 / 3.0),
-    interpolateDouble(x0, x1, 2.0 / 3.0),
-    interpolateDouble(y0, y1, 2.0 / 3.0),
-    x1,
-    y1,
+  const new raw(
+    this.anchor0X,
+    this.anchor0Y,
+    this.control0X,
+    this.control0Y,
+    this.control1X,
+    this.control1Y,
+    this.anchor1X,
+    this.anchor1Y,
   );
 
-  factory circularArc(
-    double centerX,
-    double centerY,
-    double x0,
-    double y0,
-    double x1,
-    double y1,
-  ) {
-    final p0d = directionVector(x0 - centerX, y0 - centerY);
-    final p1d = directionVector(x1 - centerX, y1 - centerY);
+  /// Generates a bezier curve that is a straight line between the given anchor
+  /// points [p0] and [p1]. The control points lie 1/3 of the distance from
+  /// their respective anchor points.
+  factory straightLine(Offset p0, Offset p1) => .raw(
+    p0.x,
+    p0.y,
+    lerp(p0.x, p1.x, 1.0 / 3.0),
+    lerp(p0.y, p1.y, 1.0 / 3.0),
+    lerp(p0.x, p1.x, 2.0 / 3.0),
+    lerp(p0.y, p1.y, 2.0 / 3.0),
+    p1.x,
+    p1.y,
+  );
+
+  /// Generates a bezier curve that approximates a circular arc around [center],
+  /// with [p0] and [p1] as the starting and ending anchor points. The curve
+  /// generated is the smallest of the two possible arcs around the entire
+  /// 360-degree circle. Arcs of greater than 180 degrees should use more than
+  /// one arc together. Note that [p0] and [p1] should be equidistant from
+  /// [center].
+  factory circularArc(Offset center, Offset p0, Offset p1) {
+    final p0FromCenter = p0 - center;
+    final p1FromCenter = p1 - center;
+    final p0d = p0FromCenter.unitVector;
+    final p1d = p1FromCenter.unitVector;
     final rotatedP0 = p0d.rotate90();
     final rotatedP1 = p1d.rotate90();
-    final clockwise =
-        rotatedP0.dotProductWith(x1 - centerX, y1 - centerY) >= 0.0;
-
+    final clockwise = rotatedP0.dotProduct(p1FromCenter) >= 0.0;
     final cosa = p0d.dotProduct(p1d);
-    if (cosa > 0.999) /* p0 ~= p1 */ return .straightLine(x0, y0, x1, y1);
+
+    // p0 ~= p1
+    if (cosa > 0.999) {
+      return .straightLine(p0, p1);
+    }
 
     final k =
-        distance(x0 - centerX, y0 - centerY) *
+        p0FromCenter.distance *
         4.0 /
         3.0 *
-        (math.sqrt(2.0 * (1.0 - cosa)) - math.sqrt(1 - cosa * cosa)) /
-        (1 - cosa) *
+        (math.sqrt(2.0 * (1.0 - cosa)) - math.sqrt(1.0 - cosa * cosa)) /
+        (1.0 - cosa) *
         (clockwise ? 1.0 : -1.0);
 
-    return .from(
-      x0,
-      y0,
-      x0 + rotatedP0.x * k,
-      y0 + rotatedP0.y * k,
-      x1 - rotatedP1.x * k,
-      y1 - rotatedP1.y * k,
-      x1,
-      y1,
+    return .raw(
+      p0.x,
+      p0.y,
+      p0.x + rotatedP0.x * k,
+      p0.y + rotatedP0.y * k,
+      p1.x - rotatedP1.x * k,
+      p1.y - rotatedP1.y * k,
+      p1.x,
+      p1.y,
     );
   }
 
-  double get anchor0X;
+  /// Generates a zero-length [CubicBezier] at [point].
+  ///
+  /// Both anchor points and both control points coincide, so the curve has
+  /// zero length. See [isZeroLength].
+  new point(Offset point)
+    : this.raw(
+        point.x,
+        point.y,
+        point.x,
+        point.y,
+        point.x,
+        point.y,
+        point.x,
+        point.y,
+      );
 
-  double get anchor0Y;
+  /// The eight coordinates of this curve as a flat, unmodifiable list, ordered
+  /// as anchor0, control0, control1, anchor1.
+  ///
+  /// Equivalent to reading [anchor0X] through [anchor1Y] in order, and more
+  /// convenient when serializing a curve or handing its coordinates to code
+  /// that expects a coordinate buffer.
+  ///
+  /// A new list is created on every access. Prefer the individual coordinate
+  /// fields when reading single values.
+  List<double> get points => .unmodifiableOf([
+    anchor0X,
+    anchor0Y,
+    control0X,
+    control0Y,
+    control1X,
+    control1Y,
+    anchor1X,
+    anchor1Y,
+  ]);
 
-  double get control0X;
+  /// The anchor point at the start of the curve.
+  Offset get anchor0 => .new(anchor0X, anchor0Y);
 
-  double get control0Y;
+  /// The control point closest to [anchor0].
+  Offset get control0 => .new(control0X, control0Y);
 
-  double get control1X;
+  /// The control point closest to [anchor1].
+  Offset get control1 => .new(control1X, control1Y);
 
-  double get control1Y;
+  /// The anchor point at the end of the curve.
+  Offset get anchor1 => .new(anchor1X, anchor1Y);
 
-  double get anchor1X;
+  /// The X coordinate of the anchor point at the start of the curve.
+  final double anchor0X;
 
-  double get anchor1Y;
+  /// The Y coordinate of the anchor point at the start of the curve.
+  final double anchor0Y;
 
-  Point get anchor0 => .new(anchor0X, anchor0Y);
+  /// The X coordinate of the control point closest to [anchor0].
+  final double control0X;
 
-  Point get control0 => .new(control0X, control0Y);
+  /// The Y coordinate of the control point closest to [anchor0].
+  final double control0Y;
 
-  Point get control1 => .new(control1X, control1Y);
+  /// The X coordinate of the control point closest to [anchor1].
+  final double control1X;
 
-  Point get anchor1 => .new(anchor1X, anchor1Y);
+  /// The Y coordinate of the control point closest to [anchor1].
+  final double control1Y;
 
-  @internal
-  Point pointOnCurve(double t) {
-    // Factored out most of variables to minimize the amount of calculations.
+  /// The X coordinate of the anchor point at the end of the curve.
+  final double anchor1X;
+
+  /// The Y coordinate of the anchor point at the end of the curve.
+  final double anchor1Y;
+
+  /// Returns the point on this curve at [t], the proportional distance along
+  /// the curve from [anchor0] at 0 to [anchor1] at 1.
+  Offset pointAt(double t) {
     final u = 1.0 - t;
     final uSq = u * u;
     final tSq = t * t;
@@ -127,31 +199,70 @@ abstract class const Cubic() {
     );
   }
 
-  @internal
-  bool zeroLength() =>
+  /// The X coordinate of the point on this curve at [t]. See [pointAt].
+  double pointAtX(double t) {
+    final u = 1.0 - t;
+    final threeUT = 3.0 * u * t;
+    return anchor0X * (u * u * u) +
+        control0X * (threeUT * u) +
+        control1X * (threeUT * t) +
+        anchor1X * (t * t * t);
+  }
+
+  /// The Y coordinate of the point on this curve at [t]. See [pointAt].
+  double pointAtY(double t) {
+    final u = 1.0 - t;
+    final threeUT = 3.0 * u * t;
+    return anchor0Y * (u * u * u) +
+        control0Y * (threeUT * u) +
+        control1Y * (threeUT * t) +
+        anchor1Y * (t * t * t);
+  }
+
+  /// Whether this curve's two anchor points coincide, and so the curve
+  /// contributes nothing to an outline.
+  ///
+  /// Coincidence is measured with a small tolerance rather than exactly, so a
+  /// curve whose anchors differ only by rounding error still counts as zero
+  /// length. Note that the control points are not considered.
+  bool get isZeroLength =>
       (anchor0X - anchor1X).abs() < distanceEpsilon &&
       (anchor0Y - anchor1Y).abs() < distanceEpsilon;
 
+  /// Whether the corner formed by this curve and [next] turns convexly.
   @internal
-  bool convexTo(Cubic next) => convex(
-    Point(anchor0X, anchor0Y),
-    Point(anchor1X, anchor1Y),
-    Point(next.anchor1X, next.anchor1Y),
-  );
+  bool convexTo(CubicBezier next) => convex(anchor0, anchor1, next.anchor1);
 
-  @internal
-  Rect calculateBounds({bool approximate = false}) {
-    // A curve might be of zero-length, with both anchors co-lated.
+  bool _zeroIsh(double value) => value.abs() < distanceEpsilon;
+
+  /// The axis-aligned bounding box of this curve.
+  ///
+  /// This solves for the curve's actual extrema. See [approximateBounds] for a
+  /// cheaper result that is never smaller than this one.
+  Rect get bounds => _calculateBounds(approximate: false);
+
+  /// A cheaper alternative to [bounds], which bounds the two anchor points and
+  /// the two control points rather than solving for the curve's actual
+  /// extrema.
+  ///
+  /// The result is never smaller than [bounds], but can be larger.
+  Rect get approximateBounds => _calculateBounds(approximate: true);
+
+  Rect _calculateBounds({required bool approximate}) {
+    // A curve might be of zero-length, with both anchors co-located.
     // Just return the point itself.
-    if (zeroLength()) {
+    if (isZeroLength) {
       return .fromLTRB(anchor0X, anchor0Y, anchor0X, anchor0Y);
     }
+
     var minX = math.min(anchor0X, anchor1X);
     var minY = math.min(anchor0Y, anchor1Y);
     var maxX = math.max(anchor0X, anchor1X);
     var maxY = math.max(anchor0Y, anchor1Y);
+
     if (approximate) {
-      // Approximate bounds use the bounding box of all anchors and controls
+      // Approximate bounds use the bounding box of all anchors and
+      // controls.
       return .fromLTRB(
         math.min(minX, math.min(control0X, control1X)),
         math.min(minY, math.min(control0Y, control1Y)),
@@ -159,80 +270,111 @@ abstract class const Cubic() {
         math.max(maxY, math.max(control0Y, control1Y)),
       );
     }
-    // Find the derivative, which is a quadratic Bezier. Then we can solve for t using
-    // the quadratic formula
+
+    // Find the derivative, which is a quadratic Bezier. Then we can solve
+    // for t using the quadratic formula.
     final xa = -anchor0X + 3.0 * control0X - 3.0 * control1X + anchor1X;
     final xb = 2.0 * anchor0X - 4.0 * control0X + 2.0 * control1X;
     final xc = -anchor0X + control0X;
+
     if (_zeroIsh(xa)) {
-      // Try Muller's method instead; it can find a single root when a is 0
+      // Try Muller's method instead; it can find a single root when a is 0.
       if (xb != 0.0) {
         final t = 2.0 * xc / (-2.0 * xb);
         if (t >= 0.0 && t <= 1.0) {
-          final x = pointOnCurve(t).x;
-          if (x < minX) minX = x;
-          if (x > maxX) maxX = x;
+          final x = pointAtX(t);
+          if (x < minX) {
+            minX = x;
+          }
+          if (x > maxX) {
+            maxX = x;
+          }
         }
       }
     } else {
       final xs = xb * xb - 4.0 * xa * xc;
       if (xs >= 0.0) {
-        final t1 = (-xb + math.sqrt(xs)) / (2.0 * xa);
+        final sqrtXs = math.sqrt(xs);
+
+        final t1 = (-xb + sqrtXs) / (2.0 * xa);
         if (t1 >= 0.0 && t1 <= 1.0) {
-          final x = pointOnCurve(t1).x;
-          if (x < minX) minX = x;
-          if (x > maxX) maxX = x;
+          final x = pointAtX(t1);
+          if (x < minX) {
+            minX = x;
+          }
+          if (x > maxX) {
+            maxX = x;
+          }
         }
-        final t2 = (-xb - math.sqrt(xs)) / (2.0 * xa);
+
+        final t2 = (-xb - sqrtXs) / (2.0 * xa);
         if (t2 >= 0.0 && t2 <= 1.0) {
-          final x = pointOnCurve(t2).x;
-          if (x < minX) minX = x;
-          if (x > maxX) maxX = x;
+          final x = pointAtX(t2);
+          if (x < minX) {
+            minX = x;
+          }
+          if (x > maxX) {
+            maxX = x;
+          }
         }
       }
     }
+
     // Repeat the above for y coordinate
     final ya = -anchor0Y + 3.0 * control0Y - 3.0 * control1Y + anchor1Y;
     final yb = 2.0 * anchor0Y - 4.0 * control0Y + 2.0 * control1Y;
     final yc = -anchor0Y + control0Y;
+
     if (_zeroIsh(ya)) {
       if (yb != 0.0) {
         final t = 2.0 * yc / (-2.0 * yb);
         if (t >= 0.0 && t <= 1.0) {
-          final y = pointOnCurve(t).y;
-          if (y < minY) minY = y;
-          if (y > maxY) maxY = y;
+          final y = pointAtY(t);
+          if (y < minY) {
+            minY = y;
+          }
+          if (y > maxY) {
+            maxY = y;
+          }
         }
       }
     } else {
       final ys = yb * yb - 4.0 * ya * yc;
       if (ys >= 0.0) {
-        final t1 = (-yb + math.sqrt(ys)) / (2.0 * ya);
+        final sqrtYs = math.sqrt(ys);
+
+        final t1 = (-yb + sqrtYs) / (2.0 * ya);
         if (t1 >= 0.0 && t1 <= 1.0) {
-          final y = pointOnCurve(t1).y;
-          if (y < minY) minY = y;
-          if (y > maxY) maxY = y;
+          final y = pointAtY(t1);
+          if (y < minY) {
+            minY = y;
+          }
+          if (y > maxY) {
+            maxY = y;
+          }
         }
-        final t2 = (-yb - math.sqrt(ys)) / (2.0 * ya);
+
+        final t2 = (-yb - sqrtYs) / (2.0 * ya);
         if (t2 >= 0.0 && t2 <= 1.0) {
-          final y = pointOnCurve(t2).y;
-          if (y < minY) minY = y;
-          if (y > maxY) maxY = y;
+          final y = pointAtY(t2);
+          if (y < minY) {
+            minY = y;
+          }
+          if (y > maxY) {
+            maxY = y;
+          }
         }
       }
     }
+
     return .fromLTRB(minX, minY, maxX, maxY);
   }
 
-  /// Returns two Cubics, created by splitting this curve at the given distance of [t] between the
-  /// original starting and ending anchor points.
-  (Cubic, Cubic) split(double t) {
-    // Cartesian optimization via the De Casteljau's algorithm.
-
-    // Use barycentric interpolation.
+  /// Returns two [CubicBezier]s, created by splitting this curve at the given
+  /// distance of [t] between the original starting and ending anchor points.
+  (CubicBezier, CubicBezier) split(double t) {
     final u = 1.0 - t;
 
-    // Interpolation 1.
     final p01X = anchor0X * u + control0X * t;
     final p01Y = anchor0Y * u + control0Y * t;
 
@@ -242,24 +384,24 @@ abstract class const Cubic() {
     final p23X = control1X * u + anchor1X * t;
     final p23Y = control1Y * u + anchor1Y * t;
 
-    // Interpolation 2.
     final p012X = p01X * u + p12X * t;
     final p012Y = p01Y * u + p12Y * t;
 
     final p123X = p12X * u + p23X * t;
     final p123Y = p12Y * u + p23Y * t;
 
-    // Interpolation 3.
     final p0123X = p012X * u + p123X * t;
     final p0123Y = p012Y * u + p123Y * t;
 
     return (
-      .from(anchor0X, anchor0Y, p01X, p01Y, p012X, p012Y, p0123X, p0123Y),
-      .from(p0123X, p0123Y, p123X, p123Y, p23X, p23Y, anchor1X, anchor1Y),
+      .raw(anchor0X, anchor0Y, p01X, p01Y, p012X, p012Y, p0123X, p0123Y),
+      .raw(p0123X, p0123Y, p123X, p123Y, p23X, p23Y, anchor1X, anchor1Y),
     );
   }
 
-  Cubic reverse() => .from(
+  /// This curve with its control and anchor points in reverse order, so it
+  /// runs from [anchor1] to [anchor0].
+  CubicBezier get reversed => .raw(
     anchor1X,
     anchor1Y,
     control1X,
@@ -270,69 +412,9 @@ abstract class const Cubic() {
     anchor0Y,
   );
 
-  Cubic transformed(PointTransformer f) => .fromPoints(
-    Point.fromRaw(f(anchor0X, anchor0Y)),
-    Point.fromRaw(f(control0X, control0Y)),
-    Point.fromRaw(f(control1X, control1Y)),
-    Point.fromRaw(f(anchor1X, anchor1Y)),
-  );
-
-  /// Convert to [Edge] if this cubic describes a straight line, otherwise to a
-  /// [Corner]. Corner convexity is determined by [convex].
-  @internal
-  Feature asFeature(Cubic next) {
-    final list = UnmodifiableListView(List.filled(1, this, growable: false));
-    return straightIsh() ? Edge(list) : Corner(list, convexTo(next));
-  }
-
-  /// Determine if the cubic is close to a straight line.
-  /// Empty cubics don't count as straightIsh.
-  @internal
-  bool straightIsh() =>
-      !zeroLength() &&
-      collinearIsh(
-        anchor0X,
-        anchor0Y,
-        anchor1X,
-        anchor1Y,
-        control0X,
-        control0Y,
-        relaxedDistanceEpsilon,
-      ) &&
-      collinearIsh(
-        anchor0X,
-        anchor0Y,
-        anchor1X,
-        anchor1Y,
-        control1X,
-        control1Y,
-        relaxedDistanceEpsilon,
-      );
-
-  /// Determines if next is a smooth continuation of this cubic. Smooth meaning
-  /// that the first control point of next is a reflection of this' second
-  /// control point, similar to the S/s or t/T command in svg paths
-  /// https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#b%C3%A9zier_curves
-  @internal
-  bool smoothesIntoIsh(Cubic next) => collinearIsh(
-    control1X,
-    control1Y,
-    next.control0X,
-    next.control0Y,
-    anchor1X,
-    anchor1Y,
-    relaxedDistanceEpsilon,
-  );
-
-  /// Determines if all of this' points align with next's points. For straight
-  /// lines, this is the same as if next was a continuation of this.
-  @internal
-  bool alignsIshWith(Cubic next) =>
-      straightIsh() && next.straightIsh() && smoothesIntoIsh(next) ||
-      zeroLength() ||
-      next.zeroLength();
-
-  Cubic operator +(Cubic o) => .from(
+  /// Returns a curve whose coordinates are the sums of this curve's and [o]'s
+  /// corresponding coordinates.
+  CubicBezier operator +(CubicBezier o) => .raw(
     anchor0X + o.anchor0X,
     anchor0Y + o.anchor0Y,
     control0X + o.control0X,
@@ -343,7 +425,8 @@ abstract class const Cubic() {
     anchor1Y + o.anchor1Y,
   );
 
-  Cubic operator *(double x) => .from(
+  /// Returns a curve whose coordinates are this curve's multiplied by [x].
+  CubicBezier operator *(double x) => .raw(
     anchor0X * x,
     anchor0Y * x,
     control0X * x,
@@ -354,31 +437,32 @@ abstract class const Cubic() {
     anchor1Y * x,
   );
 
-  Cubic operator /(double x) => .from(
-    anchor0X / x,
-    anchor0Y / x,
-    control0X / x,
-    control0Y / x,
-    control1X / x,
-    control1Y / x,
-    anchor1X / x,
-    anchor1Y / x,
-  );
+  /// Returns a curve whose coordinates are this curve's divided by [x].
+  CubicBezier operator /(double x) => this * (1.0 / x);
+
+  /// Returns a copy of this curve with [transformer] applied to each of its
+  /// anchor and control points.
+  CubicBezier transformed(PointTransformer transformer) {
+    final (a0X, a0Y) = transformer(anchor0X, anchor0Y);
+    final (c0X, c0Y) = transformer(control0X, control0Y);
+    final (c1X, c1Y) = transformer(control1X, control1Y);
+    final (a1X, a1Y) = transformer(anchor1X, anchor1Y);
+    return .raw(a0X, a0Y, c0X, c0Y, c1X, c1Y, a1X, a1Y);
+  }
 
   @override
   String toString() =>
-      "Cubic("
-      "anchor0: ($anchor0X, $anchor0Y), "
-      "control0: ($control0X, $control0Y), "
-      "control1: ($control1X, $control1Y), "
-      "anchor1: ($anchor1X, $anchor1Y)"
-      ")";
+      "${objectRuntimeType(this, "CubicBezier")}"
+      "(anchor0: (${anchor0X.toStringAsFixed(1)}, ${anchor0Y.toStringAsFixed(1)}), "
+      "control0: (${control0X.toStringAsFixed(1)}, ${control0Y.toStringAsFixed(1)}), "
+      "control1: (${control1X.toStringAsFixed(1)}, ${control1Y.toStringAsFixed(1)}), "
+      "anchor1: (${anchor1X.toStringAsFixed(1)}, ${anchor1Y.toStringAsFixed(1)}))";
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
-          other is Cubic &&
+          other is CubicBezier &&
           anchor0X == other.anchor0X &&
           anchor0Y == other.anchor0Y &&
           control0X == other.control0X &&
@@ -390,7 +474,6 @@ abstract class const Cubic() {
 
   @override
   int get hashCode => Object.hash(
-    runtimeType,
     anchor0X,
     anchor0Y,
     control0X,
@@ -400,228 +483,92 @@ abstract class const Cubic() {
     anchor1X,
     anchor1Y,
   );
-
-  static bool _zeroIsh(double value) => value.abs() < distanceEpsilon;
-
-  static Cubic interpolate(Cubic c1, Cubic c2, double progress) => .from(
-    interpolateDouble(c1.anchor0X, c2.anchor0X, progress),
-    interpolateDouble(c1.anchor0Y, c2.anchor0Y, progress),
-    interpolateDouble(c1.control0X, c2.control0X, progress),
-    interpolateDouble(c1.control0Y, c2.control0Y, progress),
-    interpolateDouble(c1.control1X, c2.control1X, progress),
-    interpolateDouble(c1.control1Y, c2.control1Y, progress),
-    interpolateDouble(c1.anchor1X, c2.anchor1X, progress),
-    interpolateDouble(c1.anchor1Y, c2.anchor1Y, progress),
-  );
-
-  /// Create a new cubic by extending A to B's second anchor point.
-  // TODO: make this private to feature_detector.dart
-  @internal
-  static Cubic extend(Cubic a, Cubic b) => a.zeroLength()
-      ? .from(
-          a.anchor0X,
-          a.anchor0Y,
-          b.control0X,
-          b.control0Y,
-          b.control1X,
-          b.control1Y,
-          b.anchor1X,
-          b.anchor1Y,
-        )
-      : .from(
-          a.anchor0X,
-          a.anchor0Y,
-          a.control0X,
-          a.control0Y,
-          a.control1X,
-          a.control1Y,
-          b.anchor1X,
-          b.anchor1Y,
-        );
 }
 
-class const _Cubic(
-  @override final double anchor0X,
-  @override final double anchor0Y,
-  @override final double control0X,
-  @override final double control0Y,
-  @override final double control1X,
-  @override final double control1Y,
-  @override final double anchor1X,
-  @override final double anchor1Y,
-) extends Cubic {
-  const new empty(double x0, double y0) : this(x0, y0, x0, y0, x0, y0, x0, y0);
-}
-
-class const _CubicFromPoints(
-  @override final Point anchor0,
-  @override final Point control0,
-  @override final Point control1,
-  @override final Point anchor1,
-) extends Cubic {
-  // ignore: unused_element
-  const new empty(Point p0) : this(p0, p0, p0, p0);
-
-  @override
-  double get anchor0X => anchor0.x;
-
-  @override
-  double get anchor0Y => anchor0.y;
-
-  @override
-  double get control0X => control0.x;
-
-  @override
-  double get control0Y => control0.y;
-
-  @override
-  double get control1X => control1.x;
-
-  @override
-  double get control1Y => control1.y;
-
-  @override
-  double get anchor1X => anchor1.x;
-
-  @override
-  double get anchor1Y => anchor1.y;
-
-  @override
-  String toString() =>
-      "Cubic.fromPoints("
-      "anchor0: (${anchor0.x}, ${anchor0.y}), "
-      "control0: (${control0.x}, ${control0.y}), "
-      "control1: (${control1.x}, ${control1.y}), "
-      "anchor1: (${anchor1.x}, ${anchor1.y})"
-      ")";
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _CubicFromPoints &&
-          anchor0 == other.anchor0 &&
-          control0 == other.control0 &&
-          control1 == other.control1 &&
-          anchor1 == other.anchor1;
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, anchor0, control0, control1, anchor1);
-}
-
-/// This interface is used refer to Points that can be modified,
-/// as a scope to [PointTransformer].
-abstract interface class MutablePoint {
-  double get x;
-
-  set x(double value);
-
-  double get y;
-
-  set y(double value);
-}
-
-typedef TransformResult = (double x, double y);
-
-typedef PointTransformer = TransformResult Function(double x, double y);
-
-abstract class MutableCubic() extends Cubic {
-  @internal
-  factory empty(double x0, double y0) = _MutableCubic.empty;
-
-  factory from(
-    double anchor0X,
-    double anchor0Y,
-    double control0X,
-    double control0Y,
-    double control1X,
-    double control1Y,
-    double anchor1X,
-    double anchor1Y,
-  ) = _MutableCubic;
-
-  factory fromCubic(Cubic other) => .from(
-    other.anchor0X,
-    other.anchor0Y,
-    other.control0X,
-    other.control0Y,
-    other.control1X,
-    other.control1Y,
-    other.anchor1X,
-    other.anchor1Y,
-  );
-
-  set anchor0X(double value);
-
-  set anchor0Y(double value);
-
-  set control0X(double value);
-
-  set control0Y(double value);
-
-  set control1X(double value);
-
-  set control1Y(double value);
-
-  set anchor1X(double value);
-
-  set anchor1Y(double value);
-
-  void transform(PointTransformer f) {
-    final anchor0 = f(anchor0X, anchor0Y);
-    anchor0X = anchor0.$1;
-    anchor0Y = anchor0.$2;
-
-    final control0 = f(control0X, control0Y);
-    control0X = control0.$1;
-    control0Y = control0.$2;
-
-    final control1 = f(control1X, control1Y);
-    control1X = control1.$1;
-    control1Y = control1.$2;
-
-    final anchor1 = f(anchor1X, anchor1Y);
-    anchor1X = anchor1.$1;
-    anchor1Y = anchor1.$2;
+/// Returns a [Path] built from the given [cubics].
+///
+/// This is the building block behind [RoundedPolygon.toPath] and
+/// [Morph.toPath], and is useful when working with a list of curves obtained
+/// from [Morph.toCubics] directly.
+///
+/// [startAngle] places the start point of the first curve at that angle, in
+/// radians, around [rotationPivot], rotating the whole path to get it there.
+/// Zero is to the right of the pivot and `pi / 2` below it, since y grows
+/// downwards.
+/// The default of zero is special: it skips the rotation entirely and leaves
+/// the curves as given.
+///
+/// If [repeatPath] is true, the curves are added twice before the [Path] is
+/// closed. This is useful when the caller would like to draw parts of the path
+/// while offsetting the start and stop positions, for example when phasing and
+/// rotating a path to simulate motion as a star-shaped circular progress
+/// indicator advances.
+///
+/// If [closePath] is false, the returned [Path] is left open.
+///
+/// [rotationPivot] is the point [startAngle] rotates the path around, and the
+/// point its angle is measured from. It defaults to the origin, which suits
+/// curves laid out around [Offset.zero].
+Path pathFromCubics(
+  List<CubicBezier> cubics, {
+  double startAngle = 0.0,
+  bool repeatPath = false,
+  bool closePath = true,
+  Offset rotationPivot = .zero,
+  Path? path,
+}) {
+  if (path != null) {
+    path.reset();
+  } else {
+    path = Path();
   }
 
-  void interpolate(Cubic c1, Cubic c2, double progress) {
-    anchor0X = interpolateDouble(c1.anchor0X, c2.anchor0X, progress);
-    anchor0Y = interpolateDouble(c1.anchor0Y, c2.anchor0Y, progress);
-    control0X = interpolateDouble(c1.control0X, c2.control0X, progress);
-    control0Y = interpolateDouble(c1.control0Y, c2.control0Y, progress);
-    control1X = interpolateDouble(c1.control1X, c2.control1X, progress);
-    control1Y = interpolateDouble(c1.control1Y, c2.control1Y, progress);
-    anchor1X = interpolateDouble(c1.anchor1X, c2.anchor1X, progress);
-    anchor1Y = interpolateDouble(c1.anchor1Y, c2.anchor1Y, progress);
+  if (cubics.isEmpty) return path;
+
+  final firstCubic = cubics.first;
+  path.moveTo(firstCubic.anchor0X, firstCubic.anchor0Y);
+
+  for (final cubic in cubics) {
+    path.cubicTo(
+      cubic.control0X,
+      cubic.control0Y,
+      cubic.control1X,
+      cubic.control1Y,
+      cubic.anchor1X,
+      cubic.anchor1Y,
+    );
   }
 
-  @override
-  String toString() =>
-      "MutableCubic("
-      "anchor0: ($anchor0X, $anchor0Y), "
-      "control0: ($control0X, $control0Y), "
-      "control1: ($control1X, $control1Y), "
-      "anchor1: ($anchor1X, $anchor1Y)"
-      ")";
+  if (repeatPath) {
+    path.lineTo(firstCubic.anchor0X, firstCubic.anchor0Y);
+    for (final cubic in cubics) {
+      path.cubicTo(
+        cubic.control0X,
+        cubic.control0Y,
+        cubic.control1X,
+        cubic.control1Y,
+        cubic.anchor1X,
+        cubic.anchor1Y,
+      );
+    }
+  }
 
-  @override
-  bool operator ==(Object other) => identical(this, other);
+  if (closePath) path.close();
 
-  @override
-  int get hashCode => identityHashCode(this);
-}
+  if (startAngle != 0.0) {
+    final angleToFirstCubic = math.atan2(
+      firstCubic.anchor0Y - rotationPivot.dy,
+      firstCubic.anchor0X - rotationPivot.dx,
+    );
+    // Rotate the path around the pivot so that it starts from the given angle.
+    path = path.transform(
+      (Matrix4.identity()
+            ..translateByDouble(rotationPivot.dx, rotationPivot.dy, 0.0, 1.0)
+            ..rotateZ(-angleToFirstCubic + startAngle)
+            ..translateByDouble(-rotationPivot.dx, -rotationPivot.dy, 0.0, 1.0))
+          .storage,
+    );
+  }
 
-class _MutableCubic(
-  @override var double anchor0X,
-  @override var double anchor0Y,
-  @override var double control0X,
-  @override var double control0Y,
-  @override var double control1X,
-  @override var double control1Y,
-  @override var double anchor1X,
-  @override var double anchor1Y,
-) extends MutableCubic {
-  new empty(double x0, double y0) : this(x0, y0, x0, y0, x0, y0, x0, y0);
+  return path;
 }
