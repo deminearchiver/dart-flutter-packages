@@ -85,7 +85,7 @@ class DeterminateLoadingIndicator extends StatefulWidget {
       _DeterminateLoadingIndicatorState();
 
   static RoundedPolygon defaultForEachPolygon(RoundedPolygon polygon) =>
-      polygon.normalized;
+      polygon.normalized();
 }
 
 class _DeterminateLoadingIndicatorState
@@ -678,7 +678,7 @@ class _IndeterminateLoadingIndicatorPainter
 
 abstract final class LoadingIndicatorHelper {
   static RoundedPolygon defaultForEachPolygon(RoundedPolygon polygon) =>
-      polygon.normalized;
+      polygon.normalized();
 
   static Iterable<Morph> generateMorphSequence({
     required List<RoundedPolygon> polygons,
@@ -728,8 +728,10 @@ abstract final class LoadingIndicatorHelper {
     for (var i = 0; i < indicatorPolygons.length; i++) {
       final polygon = indicatorPolygons[i];
 
-      final bounds = approximate ? polygon.approximateBounds : polygon.bounds;
-      final maxBounds = polygon.maxBounds;
+      final bounds = approximate
+          ? polygon.calculateApproximateBounds()
+          : polygon.calculateBounds();
+      final maxBounds = polygon.calculateMaxBounds();
 
       final scaleX = bounds.width / maxBounds.width;
       final scaleY = bounds.height / maxBounds.height;
