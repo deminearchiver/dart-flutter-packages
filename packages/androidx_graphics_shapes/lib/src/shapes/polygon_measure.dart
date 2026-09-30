@@ -27,11 +27,11 @@ class MeasuredPolygon._({
         "Outline progress length is expected to be the cubics length + 1",
       ),
       assert(
-        outlineProgress.first == 0.0,
+        outlineProgress.first == 0,
         "First outline progress value is expected to be zero",
       ),
       assert(
-        outlineProgress.last == 1.0,
+        outlineProgress.last == 1,
         "Last outline progress value is expected to be one",
       ) {
     final measuredCubics = <MeasuredCubic>[];
@@ -40,7 +40,7 @@ class MeasuredPolygon._({
       // Filter out "empty" cubics.
       if ((outlineProgress[i + 1] - outlineProgress[i]) > distanceEpsilon) {
         measuredCubics.add(
-          MeasuredCubic(
+          .new(
             measurer: _measurer,
             cubic: cubics[i],
             startOutlineProgress: startOutlineProgress,
@@ -61,7 +61,7 @@ class MeasuredPolygon._({
 
   factory measure(Measurer measurer, RoundedPolygon polygon) {
     final cubics = <CubicBezier>[];
-    final featureToCubic = <(Feature, int)>[];
+    final featureToCubic = <(PolygonFeature, int)>[];
 
     // Get the cubics from the polygon, at the same time, extract the features
     // and keep a reference to the representative cubic we will use.
@@ -145,9 +145,7 @@ class MeasuredPolygon._({
   MeasuredCubic? cubicAtOrNull(int index) {
     final length = _cubics.length;
 
-    if (index < 0 || index >= length) {
-      return null;
-    }
+    if (index < 0 || index >= length) return null;
 
     return _cubics[index];
   }
@@ -176,9 +174,7 @@ class MeasuredPolygon._({
       throw ArgumentError("Cutting point is expected to be between 0 and 1");
     }
 
-    if (cuttingPoint < distanceEpsilon) {
-      return this;
-    }
+    if (cuttingPoint < distanceEpsilon) return this;
 
     // Find the index of cubic we want to cut
     final targetIndex = _cubics.indexWhere(
@@ -278,11 +274,9 @@ class MeasuredCubic({
         _endOutlineProgress >= _startOutlineProgress,
         "endOutlineProgress is expected to be equal or greater than "
         "startOutlineProgress",
-      ) {
-    measuredSize = measurer.measureCubic(cubic);
-  }
+      );
 
-  late final double measuredSize;
+  final measuredSize = measurer.measureCubic(cubic);
 
   double get startOutlineProgress => _startOutlineProgress;
 

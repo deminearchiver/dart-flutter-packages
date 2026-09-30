@@ -111,13 +111,13 @@ void main() {
         Point(664, -680),
         Point(720, -624),
         Point(400, -304),
-      ]).normalized;
+      ]).normalized();
 
       final RoundedPolygon verySunny = RoundedPolygon.star(
         numVerticesPerRadius: 8,
         innerRadius: 0.65,
         rounding: const CornerRounding(radius: 0.15),
-      ).normalized;
+      ).normalized();
 
       verifyMapping(checkmark, verySunny, (distances) {
         // Most vertices on the checkmark map to a feature in the second
@@ -134,10 +134,10 @@ void main() {
       // mapped, the remaining one is rejected for being within distanceEpsilon
       // of the existing mapping, leaving a single pair, which is not enough
       // for a valid mapping on its own.
-      final corner1 = Feature.convexCorner([
+      final corner1 = PolygonFeature.convexCorner([
         CubicBezier.straightLine(Point.zero, const Point(0.1, 0)),
       ]);
-      final corner2 = Feature.convexCorner([
+      final corner2 = PolygonFeature.convexCorner([
         CubicBezier.straightLine(const Point(1, 1), const Point(1.1, 1)),
       ]);
 

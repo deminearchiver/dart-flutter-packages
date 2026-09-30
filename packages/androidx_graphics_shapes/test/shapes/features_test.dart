@@ -9,11 +9,11 @@ import 'package:androidx_graphics_shapes/src/shapes/features.dart';
 import 'test_utils.dart';
 
 void main() {
-  group('$Feature', () {
+  group('$PolygonFeature', () {
     test('Cannot build empty features', () {
-      expect(() => Feature.convexCorner(const []), throwsArgumentError);
-      expect(() => Feature.concaveCorner(const []), throwsArgumentError);
-      expect(() => Feature.ignorable(const []), throwsArgumentError);
+      expect(() => PolygonFeature.convexCorner(const []), throwsArgumentError);
+      expect(() => PolygonFeature.concaveCorner(const []), throwsArgumentError);
+      expect(() => PolygonFeature.ignorable(const []), throwsArgumentError);
     });
 
     test('Cannot build non continuous features', () {
@@ -23,38 +23,44 @@ void main() {
         const Offset(11, 11),
       );
 
-      expect(() => Feature.convexCorner([cubic1, cubic2]), throwsArgumentError);
       expect(
-        () => Feature.concaveCorner([cubic1, cubic2]),
+        () => PolygonFeature.convexCorner([cubic1, cubic2]),
         throwsArgumentError,
       );
-      expect(() => Feature.ignorable([cubic1, cubic2]), throwsArgumentError);
+      expect(
+        () => PolygonFeature.concaveCorner([cubic1, cubic2]),
+        throwsArgumentError,
+      );
+      expect(
+        () => PolygonFeature.ignorable([cubic1, cubic2]),
+        throwsArgumentError,
+      );
     });
 
     test('Builds concave corner', () {
       final cubic = CubicBezier.straightLine(Offset.zero, const Offset(1, 0));
-      final actual = Feature.concaveCorner([cubic]);
+      final actual = PolygonFeature.concaveCorner([cubic]);
       final expected = CornerFeature([cubic], convex: false);
       expectFeaturesEqualish(expected, actual);
     });
 
     test('Builds convex corner', () {
       final cubic = CubicBezier.straightLine(Offset.zero, const Offset(1, 0));
-      final actual = Feature.convexCorner([cubic]);
+      final actual = PolygonFeature.convexCorner([cubic]);
       final expected = CornerFeature([cubic]);
       expectFeaturesEqualish(expected, actual);
     });
 
     test('Builds edge', () {
       final cubic = CubicBezier.straightLine(Offset.zero, const Offset(1, 0));
-      final actual = Feature.edge(cubic);
+      final actual = PolygonFeature.edge(cubic);
       final expected = EdgeFeature([cubic]);
       expectFeaturesEqualish(expected, actual);
     });
 
     test('Builds ignorable as edge', () {
       final cubic = CubicBezier.straightLine(Offset.zero, const Offset(1, 0));
-      final actual = Feature.ignorable([cubic]);
+      final actual = PolygonFeature.ignorable([cubic]);
       final expected = EdgeFeature([cubic]);
       expectFeaturesEqualish(expected, actual);
     });
@@ -157,8 +163,8 @@ void main() {
         const Offset(3, 0),
       );
       const cubicString =
-          'CubicBezier(anchor0: (0.0, 0.0), control0: (1.0, 0.0), '
-          'control1: (2.0, 0.0), anchor1: (3.0, 0.0))';
+          'CubicBezier(anchor0: (0.00, 0.00), control0: (1.00, 0.00), '
+          'control1: (2.00, 0.00), anchor1: (3.00, 0.00))';
 
       expect(
         EdgeFeature([cubic]).toString(),

@@ -135,8 +135,8 @@ void main() {
         );
         expect(
           () => RoundedPolygon.fromFeatures([
-            Feature.edge(cubic1),
-            Feature.edge(cubic2),
+            PolygonFeature.edge(cubic1),
+            PolygonFeature.edge(cubic2),
           ]),
           throwsArgumentError,
         );
@@ -211,7 +211,7 @@ void main() {
     test('normalized handles a degenerate point polygon', () {
       final RoundedPolygon degenerate = RoundedPolygon(4)
           .transformed((x, y) => (0.5, 0.5));
-      final RoundedPolygon normalized = degenerate.normalized;
+      final RoundedPolygon normalized = degenerate.normalized();
 
       for (final CubicBezier cubic in normalized.cubics) {
         for (final double coordinate in cubic.points) {
@@ -221,9 +221,11 @@ void main() {
     });
 
     test('hashCode agrees with ==', () {
-      final List<Feature> features = RoundedPolygon.circle().features;
+      final List<PolygonFeature> features = RoundedPolygon.circle().features;
       final first = RoundedPolygon.fromFeatures(features);
-      final second = RoundedPolygon.fromFeatures(List<Feature>.of(features));
+      final second = RoundedPolygon.fromFeatures(
+        List<PolygonFeature>.of(features),
+      );
 
       expect(first, second);
       expect(first.hashCode, second.hashCode);
@@ -241,7 +243,7 @@ void main() {
     });
 
     test('== distinguishes centers', () {
-      final List<Feature> features = RoundedPolygon.circle().features;
+      final List<PolygonFeature> features = RoundedPolygon.circle().features;
       final base = RoundedPolygon.fromFeatures(features);
       final sameCenter = RoundedPolygon.fromFeatures(
         features,
@@ -295,7 +297,7 @@ void main() {
       // Since there is not enough room in the p0 -> p1 side even for the
       // roundings, we shouldn't take smoothing into account, so the corners
       // should end in the middle point.
-      final Feature lowerEdgeFeature = polygon.features.firstWhere(
+      final PolygonFeature lowerEdgeFeature = polygon.features.firstWhere(
         (f) => f is EdgeFeature,
       );
       expect(1, lowerEdgeFeature.cubics.length);

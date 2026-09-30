@@ -16,7 +16,7 @@ import 'package:vector_math/vector_math_64.dart' show Matrix2, Matrix3, Matrix4;
 
 /// Transforms the point (x, y) and returns the transformed coordinates.
 ///
-/// This is used by [CubicBezier.transformed], [Feature.transformed] and
+/// This is used by [CubicBezier.transformed], [PolygonFeature.transformed] and
 /// [RoundedPolygon.transformed] to apply arbitrary transformations to a shape.
 typedef PointTransformer = (double, double) Function(double x, double y);
 
@@ -84,7 +84,7 @@ extension Matrix2PointTransformer on Matrix2 {
   /// This is the bridge between the transformation types Flutter already uses
   /// and the shape transformation methods, so that a matrix built with the
   /// usual [Matrix2] helpers can be passed straight to
-  /// [RoundedPolygon.transformed], [Morph], [Feature.transformed] or
+  /// [RoundedPolygon.transformed], [Morph], [PolygonFeature.transformed] or
   /// [CubicBezier.transformed]:
   ///
   /// ```dart
@@ -109,7 +109,7 @@ extension Matrix3PointTransformer on Matrix3 {
   /// This is the bridge between the transformation types Flutter already uses
   /// and the shape transformation methods, so that a matrix built with the
   /// usual [Matrix3] helpers can be passed straight to
-  /// [RoundedPolygon.transformed], [Morph], [Feature.transformed] or
+  /// [RoundedPolygon.transformed], [Morph], [PolygonFeature.transformed] or
   /// [CubicBezier.transformed]:
   ///
   /// ```dart
@@ -139,7 +139,7 @@ extension Matrix4PointTransformer on Matrix4 {
   /// This is the bridge between the transformation types Flutter already uses
   /// and the shape transformation methods, so that a matrix built with the
   /// usual [Matrix4] helpers can be passed straight to
-  /// [RoundedPolygon.transformed], [Morph], [Feature.transformed] or
+  /// [RoundedPolygon.transformed], [Morph], [PolygonFeature.transformed] or
   /// [CubicBezier.transformed]:
   ///
   /// ```dart

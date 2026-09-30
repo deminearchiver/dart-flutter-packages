@@ -19,9 +19,9 @@ import 'utils.dart';
 /// A closed polygonal shape, with optional rounding at its vertices.
 ///
 /// A polygon can be built from a number of vertices, from an ordered list of
-/// vertices, or from a list of [Feature]s.
+/// vertices, or from a list of [PolygonFeature]s.
 @immutable
-class RoundedPolygon._raw(List<Feature> features, Point center) {
+class RoundedPolygon._raw(List<PolygonFeature> features, final Point _center) {
   this {
     var prevCubic = cubics.last;
 
@@ -173,7 +173,7 @@ class RoundedPolygon._raw(List<Feature> features, Point center) {
     // Finally, store the calculated cubics. This includes all of the rounded
     // corners from above, along with new cubics representing the edges between
     // those corners.
-    final tempFeatures = <Feature>[];
+    final tempFeatures = <PolygonFeature>[];
     for (var i = 0; i < n; i++) {
       final currVertex = vertices[i];
       final prevVertex = vertices[(i + n - 1) % n];
@@ -209,7 +209,7 @@ class RoundedPolygon._raw(List<Feature> features, Point center) {
   ///
   /// Throws [ArgumentError] if [features] has fewer than 2 elements, or if the
   /// features don't describe a closed shape.
-  factory fromFeatures(List<Feature> features, {Offset? center}) {
+  factory fromFeatures(List<PolygonFeature> features, {Offset? center}) {
     if (features.length < 2) {
       throw ArgumentError("Polygons must have at least 2 features.");
     }
@@ -226,7 +226,7 @@ class RoundedPolygon._raw(List<Feature> features, Point center) {
       }
     }
 
-    return RoundedPolygon._raw(features, calculateCenter(vertices));
+    return ._raw(features, calculateCenter(vertices));
   }
 
   /// Creates a circle of the given [radius] about [center], approximated by
@@ -433,7 +433,7 @@ class RoundedPolygon._raw(List<Feature> features, Point center) {
     CornerRounding? innerRounding,
     List<CornerRounding>? perVertexRounding,
     double vertexSpacing = 0.5,
-    double startLocation = 0,
+    double startLocation = 0.0,
     Offset center = .zero,
   }) {
     if (numVerticesPerRadius < 3) {
@@ -481,22 +481,23 @@ class RoundedPolygon._raw(List<Feature> features, Point center) {
     );
   }
 
-  /// The [Feature]s this polygon is composed of.
+  /// The [PolygonFeature]s this polygon is composed of.
   ///
   /// This list is unmodifiable.
   final features = List.unmodifiableOf(features);
 
-  final _center = center;
-
-  /// A flattened version of the [Feature]s, as a `List<CubicBezier>`.
+  /// A flattened version of the [PolygonFeature]s, as a `List<CubicBezier>`.
   ///
   /// This list is unmodifiable.
-  final cubics = List.unmodifiableOf(_buildCubics(features, center));
+  final cubics = List.unmodifiableOf(_buildCubics(features, _center));
 
   /// The center of this polygon, around which all vertices are placed.
   Offset get center => _center;
 
-  static List<CubicBezier> _buildCubics(List<Feature> features, Point center) {
+  static List<CubicBezier> _buildCubics(
+    List<PolygonFeature> features,
+    Point center,
+  ) {
     final cubics = <CubicBezier>[];
 
     // The first/last mechanism here ensures that the final anchor point in the
@@ -590,13 +591,13 @@ class RoundedPolygon._raw(List<Feature> features, Point center) {
   RoundedPolygon transformed(PointTransformer transformer) => ._raw([
     for (var i = 0; i < features.length; i++)
       features[i].transformed(transformer),
-  ], _center.transformed(transformer));
+  ], center.transformed(transformer));
 
-  /// A new [RoundedPolygon], moving and resizing this one, so it's completely
-  /// inside the (0, 0) -> (1, 1) square, centered if there is extra space in
-  /// one direction.
-  RoundedPolygon get normalized {
-    final bounds = approximateBounds;
+  /// Returns a new [RoundedPolygon], moving and resizing this one, so it's
+  /// completely inside the (0, 0) -> (1, 1) square, centered if there is extra
+  /// space in one direction.
+  RoundedPolygon normalized() {
+    final bounds = calculateApproximateBounds();
     final side = math.max(bounds.width, bounds.height);
 
     if (side < distanceEpsilon) {
@@ -610,20 +611,20 @@ class RoundedPolygon._raw(List<Feature> features, Point center) {
     return transformed((x, y) => ((x + offsetX) / side, (y + offsetY) / side));
   }
 
-  /// Like [bounds], the axis-aligned bounds of this shape, but determining the
-  /// max dimension of the shape (by calculating the distance from its center
-  /// to the start and midpoint of each curve) and returning a square which can
-  /// be used to hold the object in any rotation.
+  /// Like [calculateBounds], calculates the axis-aligned bounds of this shape,
+  /// but determines the max dimension of the shape (by calculating the
+  /// distance from its center to the start and midpoint of each curve) and
+  /// returns a square which can be used to hold the object in any rotation.
   ///
   /// This can be used, for example, to calculate the max size of a UI element
   /// meant to hold this shape in any rotation.
-  Rect get maxBounds {
+  Rect calculateMaxBounds() {
     var maxDistSquared = 0.0;
     for (var i = 0; i < cubics.length; i++) {
       final cubic = cubics[i];
-      final anchorDistance = (cubic.anchor0 - _center).distanceSquared;
+      final anchorDistance = (cubic.anchor0 - center).distanceSquared;
       final middlePoint = cubic.pointAt(0.5);
-      final middleDistance = (middlePoint - _center).distanceSquared;
+      final middleDistance = (middlePoint - center).distanceSquared;
       maxDistSquared = math.max(
         maxDistSquared,
         math.max(anchorDistance, middleDistance),
@@ -633,35 +634,37 @@ class RoundedPolygon._raw(List<Feature> features, Point center) {
     final distance = math.sqrt(maxDistSquared);
 
     return .fromLTRB(
-      _center.x - distance,
-      _center.y - distance,
-      _center.x + distance,
-      _center.y + distance,
+      center.x - distance,
+      center.y - distance,
+      center.x + distance,
+      center.y + distance,
     );
   }
 
-  /// The axis-aligned bounds of this shape.
+  /// Calculates the axis-aligned bounds of this shape.
   ///
   /// This solves for the actual extrema of every curve. See
-  /// [approximateBounds] for a cheaper result that is never smaller than this
-  /// one.
-  Rect get bounds => _calculateBounds(approximate: false);
+  /// [calculateApproximateBounds] for a cheaper result that is never smaller
+  /// than this one.
+  Rect calculateBounds() => _computeBounds(approximate: false);
 
-  /// A cheaper alternative to [bounds], based on the min/max values of all
-  /// anchor and control points that make up this shape.
+  /// A cheaper alternative to [calculateBounds], based on the min/max values of
+  /// all anchor and control points that make up this shape.
   ///
-  /// The result is never smaller than [bounds], but can be larger.
-  Rect get approximateBounds => _calculateBounds(approximate: true);
+  /// The result is never smaller than [calculateBounds], but can be larger.
+  Rect calculateApproximateBounds() => _computeBounds(approximate: true);
 
-  Rect _calculateBounds({required bool approximate}) {
+  Rect _computeBounds({required bool approximate}) {
     var bounds = approximate
-        ? cubics.first.approximateBounds
-        : cubics.first.bounds;
+        ? cubics.first.calculateApproximateBounds()
+        : cubics.first.calculateBounds();
 
     for (var i = 1; i < cubics.length; i++) {
       final cubic = cubics[i];
       bounds = bounds.expandToInclude(
-        approximate ? cubic.approximateBounds : cubic.bounds,
+        approximate
+            ? cubic.calculateApproximateBounds()
+            : cubic.calculateBounds(),
       );
     }
 
@@ -694,7 +697,7 @@ class RoundedPolygon._raw(List<Feature> features, Point center) {
     startAngle: startAngle,
     repeatPath: repeatPath,
     closePath: closePath,
-    rotationPivot: _center,
+    rotationPivot: center,
     path: path,
   );
 
@@ -755,8 +758,13 @@ Point calculateCenter(List<Point> vertices) {
 /// to keep between them: first we determine how much we want to cut to comply
 /// with the parameters, then we are given how much we can actually cut,
 /// because of space restrictions outside this corner.
-class _RoundedCorner {
-  new(this.p0, this.p1, this.p2, this.rounding) {
+class _RoundedCorner(
+  final Point p0,
+  final Point p1,
+  final Point p2,
+  final CornerRounding? rounding,
+) {
+  this {
     final v01 = p0 - p1;
     final v21 = p2 - p1;
     final d01 = v01.distance;
@@ -794,14 +802,6 @@ class _RoundedCorner {
       expectedRoundCut = 0.0;
     }
   }
-
-  final Point p0;
-
-  final Point p1;
-
-  final Point p2;
-
-  final CornerRounding? rounding;
 
   late final Point d1;
 

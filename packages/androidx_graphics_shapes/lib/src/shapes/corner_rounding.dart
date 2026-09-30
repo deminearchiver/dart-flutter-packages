@@ -56,6 +56,7 @@ class const CornerRounding({
   /// Must be in the range 0.0 to 1.0, inclusive.
   final double smoothing = 0.0,
 }) {
+  /// Creates a [CornerRounding].
   this
     : assert(radius >= 0.0, "radius has to be greater than or equal to zero"),
       assert(
@@ -66,8 +67,8 @@ class const CornerRounding({
   @override
   String toString() =>
       "${objectRuntimeType(this, "CornerRounding")}"
-      "(radius: ${radius.toStringAsFixed(1)}, "
-      "smoothing: ${smoothing.toStringAsFixed(1)})";
+      "(radius: ${radius.toStringAsFixed(2)}, "
+      "smoothing: ${smoothing.toStringAsFixed(2)})";
 
   @override
   bool operator ==(Object other) =>

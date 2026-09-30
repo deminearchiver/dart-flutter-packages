@@ -14,17 +14,20 @@ import 'package:vector_math/vector_math_64.dart';
 
 const _epsilon = 1e-4;
 
-bool equalish(double f0, double f1, double epsilon) =>
-    (f0 - f1).abs() < epsilon;
+bool equalish(double f0, double f1, double epsilon) {
+  return (f0 - f1).abs() < epsilon;
+}
 
-bool pointsEqualish(Point p0, Point p1) =>
-    equalish(p0.x, p1.x, _epsilon) && equalish(p0.y, p1.y, _epsilon);
+bool pointsEqualish(Point p0, Point p1) {
+  return equalish(p0.x, p1.x, _epsilon) && equalish(p0.y, p1.y, _epsilon);
+}
 
-bool cubicsEqualish(CubicBezier c0, CubicBezier c1) =>
-    pointsEqualish(c0.anchor0, c1.anchor0) &&
-    pointsEqualish(c0.anchor1, c1.anchor1) &&
-    pointsEqualish(c0.control0, c1.control0) &&
-    pointsEqualish(c0.control1, c1.control1);
+bool cubicsEqualish(CubicBezier c0, CubicBezier c1) {
+  return pointsEqualish(c0.anchor0, c1.anchor0) &&
+      pointsEqualish(c0.anchor1, c1.anchor1) &&
+      pointsEqualish(c0.control0, c1.control0) &&
+      pointsEqualish(c0.control1, c1.control1);
+}
 
 // Test points equality within epsilon.
 void expectPointsEqualish(Point expected, Point actual) {
@@ -58,7 +61,7 @@ void expectCubicListsEqualish(
   }
 }
 
-void expectFeaturesEqualish(Feature expected, Feature actual) {
+void expectFeaturesEqualish(PolygonFeature expected, PolygonFeature actual) {
   expectCubicListsEqualish(expected.cubics, actual.cubics);
   expect(expected.runtimeType, actual.runtimeType);
 

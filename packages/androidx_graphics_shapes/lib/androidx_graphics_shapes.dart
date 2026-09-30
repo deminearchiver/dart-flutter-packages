@@ -6,7 +6,7 @@ export 'src/shapes/shapes.dart'
     show
         CornerRounding,
         CubicBezier,
-        Feature,
+        PolygonFeature,
         Matrix2PointTransformer,
         Matrix3PointTransformer,
         Matrix4PointTransformer,

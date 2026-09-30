@@ -22,18 +22,18 @@ import 'point.dart';
 ///     process.
 ///   - Curve Type Mapping: [Morph] maps similar curve types (convex, concave)
 ///     together. Note that edges or features created with
-///     [Feature.ignorable] are ignored in the default mapping.
+///     [PolygonFeature.ignorable] are ignored in the default mapping.
 ///
 /// By using features, you can manipulate polygon shapes with more context and
 /// control.
 @immutable
 // ignore: prefer_const_constructors_in_immutables
-abstract class Feature._(List<CubicBezier> cubics) {
-  /// Creates a [Feature] spanning the given [cubics].
+abstract class PolygonFeature._(List<CubicBezier> cubics) {
+  /// Creates a [PolygonFeature] spanning the given [cubics].
   ///
   /// The list is defensively copied into an unmodifiable one, so later changes
-  /// to [cubics] do not affect this feature, and [Feature.cubics] can return
-  /// the stored list directly instead of allocating a wrapper per call.
+  /// to [cubics] do not affect this feature, and [PolygonFeature.cubics] can
+  /// return the stored list directly instead of allocating a wrapper per call.
   this;
 
   /// Groups a list of [CubicBezier] objects into a feature that should be
@@ -79,14 +79,14 @@ abstract class Feature._(List<CubicBezier> cubics) {
   factory concaveCorner(List<CubicBezier> cubics) =>
       _validated(CornerFeature(cubics, convex: false));
 
-  static Feature _validated(Feature feature) {
+  static PolygonFeature _validated(PolygonFeature feature) {
     if (feature.cubics.isEmpty) {
       throw ArgumentError("Features need at least one cubic.");
     }
 
     if (!_isContinuous(feature)) {
       throw ArgumentError(
-        "Feature must be continuous, with the anchor points of all cubics "
+        "PolygonFeature must be continuous, with the anchor points of all cubics "
         "matching the anchor points of the preceding and succeeding cubics",
       );
     }
@@ -94,7 +94,7 @@ abstract class Feature._(List<CubicBezier> cubics) {
     return feature;
   }
 
-  static bool _isContinuous(Feature feature) {
+  static bool _isContinuous(PolygonFeature feature) {
     const distanceEpsilon = 1e-5;
     var prevCubic = feature.cubics.first;
     for (var i = 1; i < feature.cubics.length; i++) {
@@ -109,38 +109,38 @@ abstract class Feature._(List<CubicBezier> cubics) {
   }
 
   /// The cubic curves defining this feature, as an unmodifiable list.
-  final cubics = List.unmodifiableOf(cubics);
+  final cubics = List<CubicBezier>.unmodifiableOf(cubics);
 
-  /// Whether this Feature gets ignored in the [Morph] mapping.
+  /// Whether this feature gets ignored in the [Morph] mapping.
   ///
-  /// See [Feature.ignorable] for more details.
+  /// See [PolygonFeature.ignorable] for more details.
   bool get isIgnorable;
 
-  /// Whether this Feature is an Edge with no inward or outward indentation.
+  /// Whether this feature is an Edge with no inward or outward indentation.
   bool get isEdge;
 
-  /// Whether this Feature is a corner.
+  /// Whether this feature is a corner.
   bool get isCorner;
 
-  /// Whether this Feature is a convex corner (outward indentation in a shape).
+  /// Whether this feature is a convex corner (outward indentation in a shape).
   bool get isConvexCorner;
 
-  /// Whether this Feature is a concave corner (inward indentation in a shape).
+  /// Whether this feature is a concave corner (inward indentation in a shape).
   bool get isConcaveCorner;
 
-  /// Transforms the points in this [Feature] with the given [transformer] and
-  /// returns a new [Feature].
-  Feature transformed(PointTransformer transformer);
+  /// Transforms the points in this [PolygonFeature] with the given
+  /// [transformer] and returns a new [PolygonFeature].
+  PolygonFeature transformed(PointTransformer transformer);
 
-  /// A new [Feature] with the points that define the shape of this [Feature]
-  /// in reversed order.
-  Feature get reversed;
+  /// A new [PolygonFeature] with the points that define the shape of this
+  /// [PolygonFeature] in reversed order.
+  PolygonFeature get reversed;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
-          other is Feature &&
+          other is PolygonFeature &&
           listEquals(cubics, other.cubics);
 
   @override
@@ -151,7 +151,7 @@ abstract class Feature._(List<CubicBezier> cubics) {
 /// lie between corners and have no vertex or concavity; the curves are simply
 /// straight lines (represented by [CubicBezier] curves).
 @internal
-class EdgeFeature(super.cubics) extends Feature {
+class EdgeFeature(super.cubics) extends PolygonFeature {
   /// Creates an [EdgeFeature] from the given cubics.
   this : super._();
 
@@ -204,7 +204,7 @@ class CornerFeature(
 
   /// Whether this corner is convex.
   final bool convex = true,
-}) extends Feature {
+}) extends PolygonFeature {
   /// Creates a [CornerFeature] from the given cubics.
   this : super._();
 

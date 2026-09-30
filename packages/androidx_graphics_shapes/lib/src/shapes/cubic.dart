@@ -20,7 +20,36 @@ import 'utils.dart';
 /// The curve runs from [anchor0] to [anchor1], and the control points
 /// [control0] and [control1] determine its slope at either end.
 @immutable
-class CubicBezier {
+class const CubicBezier.raw(
+  /// The X coordinate of the anchor point at the start of the curve.
+  final double anchor0X,
+
+  /// The Y coordinate of the anchor point at the start of the curve.
+  final double anchor0Y,
+
+  /// The X coordinate of the control point closest to [anchor0].
+  final double control0X,
+
+  /// The Y coordinate of the control point closest to [anchor0].
+  final double control0Y,
+
+  /// The X coordinate of the control point closest to [anchor1].
+  final double control1X,
+
+  /// The Y coordinate of the control point closest to [anchor1].
+  final double control1Y,
+
+  /// The X coordinate of the anchor point at the end of the curve.
+  final double anchor1X,
+
+  /// The Y coordinate of the anchor point at the end of the curve.
+  final double anchor1Y,
+) {
+  /// Creates a [CubicBezier] directly from its eight anchor and control point
+  /// coordinates.
+  @internal
+  this;
+
   /// Creates a cubic Bézier curve running from [anchor0] to [anchor1], with
   /// [control0] and [control1] determining its slope at either end.
   new(Offset anchor0, Offset control0, Offset control1, Offset anchor1)
@@ -34,20 +63,6 @@ class CubicBezier {
         anchor1.x,
         anchor1.y,
       );
-
-  /// Creates a [CubicBezier] directly from its eight anchor and control point
-  /// coordinates.
-  @internal
-  const new raw(
-    this.anchor0X,
-    this.anchor0Y,
-    this.control0X,
-    this.control0Y,
-    this.control1X,
-    this.control1Y,
-    this.anchor1X,
-    this.anchor1Y,
-  );
 
   /// Generates a bezier curve that is a straight line between the given anchor
   /// points [p0] and [p1]. The control points lie 1/3 of the distance from
@@ -152,30 +167,6 @@ class CubicBezier {
   /// The anchor point at the end of the curve.
   Offset get anchor1 => .new(anchor1X, anchor1Y);
 
-  /// The X coordinate of the anchor point at the start of the curve.
-  final double anchor0X;
-
-  /// The Y coordinate of the anchor point at the start of the curve.
-  final double anchor0Y;
-
-  /// The X coordinate of the control point closest to [anchor0].
-  final double control0X;
-
-  /// The Y coordinate of the control point closest to [anchor0].
-  final double control0Y;
-
-  /// The X coordinate of the control point closest to [anchor1].
-  final double control1X;
-
-  /// The Y coordinate of the control point closest to [anchor1].
-  final double control1Y;
-
-  /// The X coordinate of the anchor point at the end of the curve.
-  final double anchor1X;
-
-  /// The Y coordinate of the anchor point at the end of the curve.
-  final double anchor1Y;
-
   /// Returns the point on this curve at [t], the proportional distance along
   /// the curve from [anchor0] at 0 to [anchor1] at 1.
   Offset pointAt(double t) {
@@ -235,20 +226,21 @@ class CubicBezier {
 
   bool _zeroIsh(double value) => value.abs() < distanceEpsilon;
 
-  /// The axis-aligned bounding box of this curve.
+  /// Calculates the axis-aligned bounding box of this curve.
   ///
-  /// This solves for the curve's actual extrema. See [approximateBounds] for a
-  /// cheaper result that is never smaller than this one.
-  Rect get bounds => _calculateBounds(approximate: false);
+  /// This solves for the curve's actual extrema. See
+  /// [calculateApproximateBounds] for a cheaper result that is never smaller
+  /// than this one.
+  Rect calculateBounds() => _computeBounds(approximate: false);
 
-  /// A cheaper alternative to [bounds], which bounds the two anchor points and
-  /// the two control points rather than solving for the curve's actual
-  /// extrema.
+  /// A cheaper alternative to [calculateBounds], which bounds the two anchor
+  /// points and the two control points rather than solving for the curve's
+  /// actual extrema.
   ///
-  /// The result is never smaller than [bounds], but can be larger.
-  Rect get approximateBounds => _calculateBounds(approximate: true);
+  /// The result is never smaller than [calculateBounds], but can be larger.
+  Rect calculateApproximateBounds() => _computeBounds(approximate: true);
 
-  Rect _calculateBounds({required bool approximate}) {
+  Rect _computeBounds({required bool approximate}) {
     // A curve might be of zero-length, with both anchors co-located.
     // Just return the point itself.
     if (isZeroLength) {
@@ -453,24 +445,24 @@ class CubicBezier {
   @override
   String toString() =>
       "${objectRuntimeType(this, "CubicBezier")}"
-      "(anchor0: (${anchor0X.toStringAsFixed(1)}, ${anchor0Y.toStringAsFixed(1)}), "
-      "control0: (${control0X.toStringAsFixed(1)}, ${control0Y.toStringAsFixed(1)}), "
-      "control1: (${control1X.toStringAsFixed(1)}, ${control1Y.toStringAsFixed(1)}), "
-      "anchor1: (${anchor1X.toStringAsFixed(1)}, ${anchor1Y.toStringAsFixed(1)}))";
+      "(anchor0: (${anchor0X.toStringAsFixed(2)}, ${anchor0Y.toStringAsFixed(2)}), "
+      "control0: (${control0X.toStringAsFixed(2)}, ${control0Y.toStringAsFixed(2)}), "
+      "control1: (${control1X.toStringAsFixed(2)}, ${control1Y.toStringAsFixed(2)}), "
+      "anchor1: (${anchor1X.toStringAsFixed(2)}, ${anchor1Y.toStringAsFixed(2)}))";
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is CubicBezier &&
-          anchor0X == other.anchor0X &&
-          anchor0Y == other.anchor0Y &&
-          control0X == other.control0X &&
-          control0Y == other.control0Y &&
-          control1X == other.control1X &&
-          control1Y == other.control1Y &&
-          anchor1X == other.anchor1X &&
-          anchor1Y == other.anchor1Y;
+          other.anchor0X == anchor0X &&
+          other.anchor0Y == anchor0Y &&
+          other.control0X == control0X &&
+          other.control0Y == control0Y &&
+          other.control1X == control1X &&
+          other.control1Y == control1Y &&
+          other.anchor1X == anchor1X &&
+          other.anchor1Y == anchor1Y;
 
   @override
   int get hashCode => Object.hash(
@@ -561,13 +553,11 @@ Path pathFromCubics(
       firstCubic.anchor0X - rotationPivot.dx,
     );
     // Rotate the path around the pivot so that it starts from the given angle.
-    path = path.transform(
-      (Matrix4.identity()
-            ..translateByDouble(rotationPivot.dx, rotationPivot.dy, 0.0, 1.0)
-            ..rotateZ(-angleToFirstCubic + startAngle)
-            ..translateByDouble(-rotationPivot.dx, -rotationPivot.dy, 0.0, 1.0))
-          .storage,
-    );
+    final transform = Matrix4.identity()
+      ..translateByDouble(rotationPivot.dx, rotationPivot.dy, 0.0, 1.0)
+      ..rotateZ(-angleToFirstCubic + startAngle)
+      ..translateByDouble(-rotationPivot.dx, -rotationPivot.dy, 0.0, 1.0);
+    path = path.transform(transform.storage);
   }
 
   return path;

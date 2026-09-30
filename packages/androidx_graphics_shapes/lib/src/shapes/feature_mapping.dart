@@ -9,15 +9,15 @@ import 'features.dart';
 import 'point.dart';
 import 'utils.dart';
 
-/// A [Feature] paired with the [0..1] progress at which it sits along the
-/// outline of its polygon.
+/// A [PolygonFeature] paired with the [0..1] progress at which it sits along
+/// the outline of its polygon.
 @internal
 class const ProgressableFeature(
   /// The [0..1] progress at which [feature] sits along the polygon outline.
   final double progress,
 
   /// The feature at [progress].
-  final Feature feature,
+  final PolygonFeature feature,
 ) {
   /// Creates a [ProgressableFeature].
   this;
@@ -119,7 +119,7 @@ List<(double, double)> doMapping(
     // All but one candidate pair were rejected, synthesize a second pair half
     // a turn away from the surviving one on both shapes.
     final (f1, f2) = helper.mapping.first;
-    return [(f1, f2), ((f1 + 0.5) % 1, (f2 + 0.5) % 1)];
+    return [(f1, f2), ((f1 + 0.5) % 1.0, (f2 + 0.5) % 1.0)];
   }
 
   return helper.mapping;
@@ -137,9 +137,7 @@ class _MappingHelper {
 
   void addMapping(ProgressableFeature f1, ProgressableFeature f2) {
     // We don't want to map the same feature twice.
-    if (_usedF1.contains(f1) || _usedF2.contains(f2)) {
-      return;
-    }
+    if (_usedF1.contains(f1) || _usedF2.contains(f2)) return;
 
     // List is sorted, find where we need to insert this new mapping.
     final index = binarySearchBy<(double, double), double>(
@@ -189,7 +187,7 @@ class _MappingHelper {
 /// This information is used to determine how to map features (and the curves
 /// that make up those features).
 @internal
-double featureDistSquared(Feature f1, Feature f2) {
+double featureDistSquared(PolygonFeature f1, PolygonFeature f2) {
   if (f1 is CornerFeature && f2 is CornerFeature && f1.convex != f2.convex) {
     // Simple hack to force all features to map only to features of the same
     // concavity, by returning an infinitely large distance in that case.
@@ -203,7 +201,7 @@ double featureDistSquared(Feature f1, Feature f2) {
 /// Returns the point that best represents [feature] when matching features
 /// between two shapes.
 @internal
-Point featureRepresentativePoint(Feature feature) {
+Point featureRepresentativePoint(PolygonFeature feature) {
   final cubics = feature.cubics;
   final x = (cubics.first.anchor0X + cubics.last.anchor1X) / 2.0;
   final y = (cubics.first.anchor0Y + cubics.last.anchor1Y) / 2.0;

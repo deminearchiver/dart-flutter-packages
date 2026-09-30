@@ -65,13 +65,13 @@ void main() {
     });
 
     test('bounds', () {
-      Rect bounds = square.approximateBounds;
+      Rect bounds = square.calculateApproximateBounds();
       expectEqualish(-1, bounds.left);
       expectEqualish(-1, bounds.top);
       expectEqualish(1, bounds.right);
       expectEqualish(1, bounds.bottom);
 
-      Rect betterBounds = square.bounds;
+      Rect betterBounds = square.calculateBounds();
       expectEqualish(-1, betterBounds.left);
       expectEqualish(-1, betterBounds.top);
       expectEqualish(1, betterBounds.right);
@@ -79,16 +79,16 @@ void main() {
 
       // roundedSquare's approximate bounds will be larger due to control
       // points.
-      bounds = roundedSquare.approximateBounds;
-      betterBounds = roundedSquare.bounds;
+      bounds = roundedSquare.calculateApproximateBounds();
+      betterBounds = roundedSquare.calculateBounds();
       expect(
         betterBounds.width < bounds.width,
         isTrue,
         reason: 'bounds = $bounds, betterBounds = $betterBounds',
       );
 
-      bounds = pentagon.approximateBounds;
-      final Rect maxBounds = pentagon.maxBounds;
+      bounds = pentagon.calculateApproximateBounds();
+      final Rect maxBounds = pentagon.calculateMaxBounds();
       expect(maxBounds.width > bounds.width, isTrue);
     });
 
@@ -144,7 +144,7 @@ void main() {
         return original.where((c) => !c.isZeroLength).toList();
       }
 
-      final List<Feature> squareFeatures = square.features;
+      final List<PolygonFeature> squareFeatures = square.features;
 
       // Verify that cubics of polygon == nonzero cubics of features of that
       // polygon.
@@ -158,7 +158,7 @@ void main() {
 
     test('cubics and features are unmodifiable', () {
       final polygon = RoundedPolygon(4);
-      final edge = Feature.edge(
+      final edge = PolygonFeature.edge(
         CubicBezier.straightLine(Point.zero, const Point(1, 0)),
       );
 
@@ -172,8 +172,8 @@ void main() {
     });
 
     test('fromFeatures does not alias the list it is given', () {
-      final List<Feature> expected = RoundedPolygon(4).features;
-      final features = List<Feature>.of(expected);
+      final List<PolygonFeature> expected = RoundedPolygon(4).features;
+      final features = List<PolygonFeature>.of(expected);
       final polygon = RoundedPolygon.fromFeatures(features);
       final int cubicCount = polygon.cubics.length;
 
