@@ -140,9 +140,8 @@ void main() {
     });
 
     test('features', () {
-      List<CubicBezier> nonZeroCubics(List<CubicBezier> original) {
-        return original.where((c) => !c.isZeroLength).toList();
-      }
+      List<CubicBezier> nonZeroCubics(List<CubicBezier> original) =>
+          original.where((c) => !c.isZeroLength).toList();
 
       final List<PolygonFeature> squareFeatures = square.features;
 
@@ -162,12 +161,12 @@ void main() {
         CubicBezier.straightLine(Point.zero, const Point(1, 0)),
       );
 
-      expect(() => polygon.cubics.clear(), throwsUnsupportedError);
+      expect(polygon.cubics.clear, throwsUnsupportedError);
       expect(
         () => polygon.cubics.add(edge.cubics.first),
         throwsUnsupportedError,
       );
-      expect(() => polygon.features.clear(), throwsUnsupportedError);
+      expect(polygon.features.clear, throwsUnsupportedError);
       expect(() => polygon.features.add(edge), throwsUnsupportedError);
     });
 

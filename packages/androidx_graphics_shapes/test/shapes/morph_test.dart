@@ -63,7 +63,7 @@ void main() {
         );
 
       final ui.Picture picture = recorder.endRecording();
-      return picture.toImage(side.toInt(), side.toInt());
+      return await picture.toImage(side.toInt(), side.toInt());
     }
 
     Future<void> comparePathsVisually(ui.Path a, ui.Path b, double side) async {
@@ -93,8 +93,8 @@ void main() {
       // Shapes are in canonical size of 2x2 around center (.5, .5).
       // Translate and scale to get a larger path.
       final matrix = Matrix4.identity()
-        ..translate(scale / 2, scale / 2)
-        ..scale(scale, scale);
+        ..translateByDouble(scale / 2, scale / 2, 0, 1)
+        ..scaleByDouble(scale, scale, 1, 1);
 
       final ui.Path poly1Path = poly1.toPath().transform(matrix.storage);
       final ui.Path poly2Path = poly2.toPath().transform(matrix.storage);
