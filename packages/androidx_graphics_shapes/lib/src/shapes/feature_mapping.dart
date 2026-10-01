@@ -147,10 +147,10 @@ class _MappingHelper {
       f1.progress,
     );
 
-    if (index >= 0) {
-      // TODO: explain why a StateError should not be thrown (Cubic.pointAtX u * u * t / t * u * u ordering).
-      return;
-    }
+    // Two features at exactly the same progress, e.g. the sharp corners at a
+    // duplicated vertex, can't both be mapped. The first one to get here took
+    // the spot.
+    if (index >= 0) return;
 
     final insertionIndex = -index - 1;
     final n = mapping.length;

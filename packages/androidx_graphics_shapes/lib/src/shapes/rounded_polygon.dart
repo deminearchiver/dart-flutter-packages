@@ -704,7 +704,7 @@ class RoundedPolygon._raw(List<PolygonFeature> features, final Point _center) {
   @override
   String toString() =>
       "${objectRuntimeType(this, "RoundedPolygon")}"
-      "(center: $center, features: $features, cubics: $cubics)";
+      "(center: $center, features: ${features.length}, cubics: ${cubics.length})";
 
   @override
   bool operator ==(Object other) =>

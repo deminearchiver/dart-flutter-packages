@@ -56,14 +56,13 @@ class const MaterialShapeBorder({
         "squash has to be in range [0, 1]",
       );
 
-  // The number 5 was chosen without any real science behind it. It is small
-  // enough that the cached morphs fit comfortably in memory, and large enough
-  // for the few pairs of shapes a screen animates between at once.
-  static const _morphCacheSize = 5;
+  // Large enough for the pairs of shapes a screen animates between at once,
+  // small enough that the cached morphs fit comfortably in memory.
+  static const int _morphCacheSize = 20;
 
   /// Caches the mapping between pairs of shapes to speed up [lerpFrom] and
   /// [lerpTo].
-  static final _morphCache = _FifoCache<_MorphCacheKey, Morph>(_morphCacheSize);
+  static final _morphCache = _LruCache<_MorphCacheKey, Morph>(_morphCacheSize);
 
   /// Returns the [Morph] between [start] and [end], reusing a cached one when
   /// possible.
@@ -77,6 +76,13 @@ class const MaterialShapeBorder({
         _MorphCacheKey(start, end),
         () => Morph(start, end),
       );
+
+  /// Whether the [Morph] from [start] to [end] is currently cached.
+  ///
+  /// Only meant for tests that check the caching of morphs.
+  @visibleForTesting
+  static bool debugIsMorphCached(RoundedPolygon start, RoundedPolygon end) =>
+      _morphCache.containsKey(_MorphCacheKey(start, end));
 
   /// Whether [border] is a [MaterialShapeBorder] or the result of lerping
   /// between two of them.
@@ -104,8 +110,7 @@ class const MaterialShapeBorder({
       }
 
       return _MorphingShapeBorder(
-        start: a.shape,
-        end: b.shape,
+        morph: _morphBetween(a.shape, b.shape),
         progress: t,
         side: side,
         squash: squash,
@@ -128,8 +133,7 @@ class const MaterialShapeBorder({
     }
 
     return _MorphingShapeBorder(
-      start: start,
-      end: end,
+      morph: morphing.morph,
       progress: ui.lerpDouble(from, to, t)!,
       side: side,
       squash: squash,
@@ -183,24 +187,32 @@ class const MaterialShapeBorder({
 
   @override
   ShapeBorder? lerpFrom(ShapeBorder? a, double t) {
-    if (t == 0) return a;
-
-    if (t == 1.0) return this;
-
-    if (a is OutlinedBorder && _canLerpWith(a)) return _lerp(a, this, t);
+    if (a is OutlinedBorder && _canLerpWith(a)) {
+      return _lerpOrSnap(a, this, t);
+    }
 
     return super.lerpFrom(a, t);
   }
 
   @override
   ShapeBorder? lerpTo(ShapeBorder? b, double t) {
-    if (t == 0.0) return this;
-
-    if (t == 1.0) return b;
-
-    if (b is OutlinedBorder && _canLerpWith(b)) return _lerp(this, b, t);
+    if (b is OutlinedBorder && _canLerpWith(b)) {
+      return _lerpOrSnap(this, b, t);
+    }
 
     return super.lerpTo(b, t);
+  }
+
+  /// Like [_lerp], but returns [a] or [b] themselves at the ends of the
+  /// interpolation instead of an equivalent morphing border.
+  static OutlinedBorder? _lerpOrSnap(
+    OutlinedBorder a,
+    OutlinedBorder b,
+    double t,
+  ) {
+    if (t == 0.0) return a;
+    if (t == 1.0) return b;
+    return _lerp(a, b, t);
   }
 
   @override
@@ -252,11 +264,12 @@ class const MaterialShapeBorder({
 /// transition resume along the same morph instead of snapping.
 // ignore: prefer_const_constructors_in_immutables
 class _MorphingShapeBorder({
-  /// The shape the morph starts at, where [progress] is zero.
-  required final RoundedPolygon start,
-
-  /// The shape the morph ends at, where [progress] is one.
-  required final RoundedPolygon end,
+  /// The morph this border sits on.
+  ///
+  /// Carrying it along saves every border produced while resuming an
+  /// interrupted transition from looking the morph up again, and keeps the
+  /// morph from being built during painting.
+  required final Morph morph,
 
   /// How far along the morph from [start] to [end] this border sits.
   required final double progress,
@@ -265,15 +278,17 @@ class _MorphingShapeBorder({
   required final double squash,
   super.side,
 }) extends OutlinedBorder {
-  final _cubics = MaterialShapeBorder._morphBetween(
-    start,
-    end,
-  ).toCubics(progress);
+  final _cubics = morph.toCubics(progress);
+
+  /// The shape the morph starts at, where [progress] is zero.
+  RoundedPolygon get start => morph.start;
+
+  /// The shape the morph ends at, where [progress] is one.
+  RoundedPolygon get end => morph.end;
 
   @override
   _MorphingShapeBorder copyWith({BorderSide? side, double? squash}) => .new(
-    start: start,
-    end: end,
+    morph: morph,
     progress: progress,
     side: side ?? this.side,
     squash: squash ?? this.squash,
@@ -297,12 +312,8 @@ class _MorphingShapeBorder({
 
   @override
   ShapeBorder? lerpFrom(ShapeBorder? a, double t) {
-    if (t == 0.0) return a;
-
-    if (t == 1.0) return this;
-
     if (a is OutlinedBorder && MaterialShapeBorder._canLerpWith(a)) {
-      return MaterialShapeBorder._lerp(a, this, t);
+      return MaterialShapeBorder._lerpOrSnap(a, this, t);
     }
 
     return super.lerpFrom(a, t);
@@ -310,12 +321,8 @@ class _MorphingShapeBorder({
 
   @override
   ShapeBorder? lerpTo(ShapeBorder? b, double t) {
-    if (t == 0) return this;
-
-    if (t == 1.0) return b;
-
     if (b is OutlinedBorder && MaterialShapeBorder._canLerpWith(b)) {
-      return MaterialShapeBorder._lerp(this, b, t);
+      return MaterialShapeBorder._lerpOrSnap(this, b, t);
     }
 
     return super.lerpTo(b, t);
@@ -410,15 +417,14 @@ final class const _MorphCacheKey(
   int get hashCode => Object.hash(start, end);
 }
 
-/// Cache of objects of limited size that uses the first in first out eviction
-/// strategy (a.k.a least recently inserted).
+/// Cache of objects of limited size that evicts the least recently used entry.
 ///
-/// The key that was inserted before all other keys is evicted first, i.e. the
-/// one inserted least recently.
-final class _FifoCache<K extends Object?, V extends Object>(
+/// Reading an entry counts as using it, so entries that are asked for on
+/// every frame stay cached while ones that are no longer needed drift out.
+final class _LruCache<K extends Object?, V extends Object>(
   /// Maximum number of entries to store in the cache.
   ///
-  /// Once this many entries have been cached, the entry inserted least recently
+  /// Once this many entries have been cached, the entry used least recently
   /// is evicted when adding a new entry.
   final int _maximumSize,
 ) {
@@ -426,15 +432,19 @@ final class _FifoCache<K extends Object?, V extends Object>(
 
   /// In Dart the map literal uses a linked hash-map implementation, whose keys
   /// are stored such that [Map.keys] returns them in the order they were
-  /// inserted.
+  /// inserted. Re-inserting an entry on every use keeps that order the order
+  /// of last use, with the least recently used entry first.
   final _cache = <K, V>{};
+
+  /// Whether there is a cached value for the given key.
+  bool containsKey(K key) => _cache.containsKey(key);
 
   /// Returns the previously cached value for the given key, if available;
   /// if not, calls the given callback to obtain it first.
   V putIfAbsent(K key, V Function() loader) {
-    final result = _cache[key];
+    final result = _cache.remove(key);
 
-    if (result != null) return result;
+    if (result != null) return _cache[key] = result;
 
     if (_cache.length == _maximumSize) _cache.remove(_cache.keys.first);
 
