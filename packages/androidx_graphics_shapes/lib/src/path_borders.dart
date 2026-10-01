@@ -308,6 +308,13 @@ class RoundedPolygonBorder({
   super.strokeJoin,
   super.strokeMiterLimit,
   super.squash,
+
+  /// The shape this border represents.
+  ///
+  /// The polygon is assumed to fit inside the (0, 0) -> (1, 1) unit square,
+  /// as the border scales it to the bounding rectangle of the widget it is
+  /// applied to. Shapes from [MaterialShapes] already satisfy this. For an
+  /// arbitrary polygon, use [RoundedPolygon.normalized].
   required final RoundedPolygon polygon,
   final double startAngle = 0.0,
 }) extends StaticPathBorder {
@@ -323,7 +330,7 @@ class RoundedPolygonBorder({
     double? squash,
     RoundedPolygon? polygon,
     double? startAngle,
-  }) => RoundedPolygonBorder(
+  }) => .new(
     side: side ?? this.side,
     strokeCap: strokeCap ?? this.strokeCap,
     strokeJoin: strokeJoin ?? this.strokeJoin,
@@ -334,7 +341,7 @@ class RoundedPolygonBorder({
   );
 
   @override
-  RoundedPolygonBorder scale(double t) => RoundedPolygonBorder(
+  RoundedPolygonBorder scale(double t) => .new(
     side: side.scale(t),
     strokeCap: strokeCap,
     strokeJoin: strokeJoin,
@@ -427,14 +434,13 @@ class RoundedPolygonBorder({
     startAngle,
   );
 
-  // The number 5 was chosen without any real science behind it. It is small
-  // enough that the cached morphs fit comfortably in memory, and large enough
-  // for the few pairs of shapes a screen animates between at once.
-  static const int _morphCacheSize = 5;
+  // Large enough for the pairs of shapes a screen animates between at once,
+  // small enough that the cached morphs fit comfortably in memory.
+  static const int _morphCacheSize = 20;
 
   /// Caches the mapping between pairs of shapes to speed up [lerpFrom] and
   /// [lerpTo].
-  static final _morphCache = _FifoCache<_MorphCacheKey, Morph>(_morphCacheSize);
+  static final _morphCache = _LruCache<_MorphCacheKey, Morph>(_morphCacheSize);
 
   /// Returns the [Morph] between [start] and [end], reusing a cached one when
   /// possible.
@@ -590,7 +596,7 @@ class MorphBorder({
 /// Keys compare by value. This is cheap because [RoundedPolygon.hashCode] is
 /// computed once and cached, and its `==` short-circuits on identical instances.
 @immutable
-class const _MorphCacheKey(
+final class const _MorphCacheKey(
   final RoundedPolygon start,
   final RoundedPolygon end,
 ) {
@@ -603,15 +609,14 @@ class const _MorphCacheKey(
   int get hashCode => Object.hash(start, end);
 }
 
-/// Cache of objects of limited size that uses the first in first out eviction
-/// strategy (a.k.a least recently inserted).
+/// Cache of objects of limited size that evicts the least recently used entry.
 ///
-/// The key that was inserted before all other keys is evicted first, i.e. the
-/// one inserted least recently.
-class _FifoCache<K extends Object, V extends Object?>(
+/// Reading an entry counts as using it, so entries that are asked for on
+/// every frame stay cached while ones that are no longer needed drift out.
+final class _LruCache<K extends Object?, V extends Object>(
   /// Maximum number of entries to store in the cache.
   ///
-  /// Once this many entries have been cached, the entry inserted least recently
+  /// Once this many entries have been cached, the entry used least recently
   /// is evicted when adding a new entry.
   final int _maximumSize,
 ) {
@@ -619,18 +624,22 @@ class _FifoCache<K extends Object, V extends Object?>(
 
   /// In Dart the map literal uses a linked hash-map implementation, whose keys
   /// are stored such that [Map.keys] returns them in the order they were
-  /// inserted.
+  /// inserted. Re-inserting an entry on every use keeps that order the order
+  /// of last use, with the least recently used entry first.
   final _cache = <K, V>{};
+
+  /// Whether there is a cached value for the given key.
+  bool containsKey(K key) => _cache.containsKey(key);
 
   /// Returns the previously cached value for the given key, if available;
   /// if not, calls the given callback to obtain it first.
   V putIfAbsent(K key, V Function() loader) {
-    final result = _cache[key];
-    if (result != null) return result;
+    final result = _cache.remove(key);
 
-    if (_cache.length == _maximumSize) {
-      _cache.remove(_cache.keys.first);
-    }
+    if (result != null) return _cache[key] = result;
+
+    if (_cache.length == _maximumSize) _cache.remove(_cache.keys.first);
+
     return _cache[key] = loader();
   }
 }
