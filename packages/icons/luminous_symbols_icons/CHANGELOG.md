@@ -1,3 +1,8 @@
+## 0.1.8
+
+- Rolled the Luminous Symbols font from `v57` to `v61`.
+  - This update introduces 22 new icons: `all_inclusive`, `delivery_truck_bolt`, `delivery_truck_speed`, `diversity_4`, `family_restroom`, `format_quote`, `groups`, `health_cross`, `laundry`, `local_shipping`, `payments`, `quick_reference_all`, `restaurant`, `sauna`, `smoking_rooms`, `spa`, `sports_soccer`, `sync_alt`, `universal_currency`, `verified`, `view_carousel`, `wifi`.
+
 ## 0.1.7
 
 - Rolled the Luminous Symbols font from `v56` to `v57`.
