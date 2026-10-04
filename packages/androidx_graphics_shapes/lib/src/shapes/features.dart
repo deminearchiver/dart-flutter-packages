@@ -130,7 +130,7 @@ abstract class PolygonFeature._(List<CubicBezier> cubics) {
 
   /// Transforms the points in this [PolygonFeature] with the given
   /// [transformer] and returns a new [PolygonFeature].
-  PolygonFeature transformed(PointTransformer transformer);
+  PolygonFeature transformed(ShapePointTransformer transformer);
 
   /// A new [PolygonFeature] with the points that define the shape of this
   /// [PolygonFeature] in reversed order.
@@ -156,7 +156,7 @@ class EdgeFeature(super.cubics) extends PolygonFeature {
   this : super._();
 
   @override
-  EdgeFeature transformed(PointTransformer transformer) =>
+  EdgeFeature transformed(ShapePointTransformer transformer) =>
       .new(.generate(cubics.length, (i) => cubics[i].transformed(transformer)));
 
   @override
@@ -209,7 +209,7 @@ class CornerFeature(
   this : super._();
 
   @override
-  CornerFeature transformed(PointTransformer transformer) => .new(
+  CornerFeature transformed(ShapePointTransformer transformer) => .new(
     .generate(cubics.length, (i) => cubics[i].transformed(transformer)),
     convex: convex,
   );

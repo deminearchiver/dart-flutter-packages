@@ -111,7 +111,7 @@ void main() {
       // the shape is translated similarly by it.
       const offset = Point(1, 2);
       final List<CubicBezier> squareCubics = square.cubics;
-      final PointTransformer translator = translateTransform(
+      final ShapePointTransformer translator = translateTransform(
         offset.x,
         offset.y,
       );

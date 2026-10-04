@@ -6,14 +6,14 @@ export 'src/shapes/shapes.dart'
     show
         CornerRounding,
         CubicBezier,
-        PolygonFeature,
-        Matrix2PointTransformer,
-        Matrix3PointTransformer,
-        Matrix4PointTransformer,
+        Matrix2ShapePointTransformer,
+        Matrix3ShapePointTransformer,
+        Matrix4ShapePointTransformer,
         Morph,
         pathFromCubics,
-        PointTransformer,
-        RoundedPolygon;
+        PolygonFeature,
+        RoundedPolygon,
+        ShapePointTransformer;
 
 export 'src/material_shapes.dart';
 export 'src/material_shape_border.dart';

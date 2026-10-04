@@ -135,26 +135,6 @@ class const CubicBezier.raw(
         point.y,
       );
 
-  /// The eight coordinates of this curve as a flat, unmodifiable list, ordered
-  /// as anchor0, control0, control1, anchor1.
-  ///
-  /// Equivalent to reading [anchor0X] through [anchor1Y] in order, and more
-  /// convenient when serializing a curve or handing its coordinates to code
-  /// that expects a coordinate buffer.
-  ///
-  /// A new list is created on every access. Prefer the individual coordinate
-  /// fields when reading single values.
-  List<double> get points => .unmodifiableOf([
-    anchor0X,
-    anchor0Y,
-    control0X,
-    control0Y,
-    control1X,
-    control1Y,
-    anchor1X,
-    anchor1Y,
-  ]);
-
   /// The anchor point at the start of the curve.
   Offset get anchor0 => .new(anchor0X, anchor0Y);
 
@@ -404,37 +384,9 @@ class const CubicBezier.raw(
     anchor0Y,
   );
 
-  /// Returns a curve whose coordinates are the sums of this curve's and [o]'s
-  /// corresponding coordinates.
-  CubicBezier operator +(CubicBezier o) => .raw(
-    anchor0X + o.anchor0X,
-    anchor0Y + o.anchor0Y,
-    control0X + o.control0X,
-    control0Y + o.control0Y,
-    control1X + o.control1X,
-    control1Y + o.control1Y,
-    anchor1X + o.anchor1X,
-    anchor1Y + o.anchor1Y,
-  );
-
-  /// Returns a curve whose coordinates are this curve's multiplied by [x].
-  CubicBezier operator *(double x) => .raw(
-    anchor0X * x,
-    anchor0Y * x,
-    control0X * x,
-    control0Y * x,
-    control1X * x,
-    control1Y * x,
-    anchor1X * x,
-    anchor1Y * x,
-  );
-
-  /// Returns a curve whose coordinates are this curve's divided by [x].
-  CubicBezier operator /(double x) => this * (1.0 / x);
-
   /// Returns a copy of this curve with [transformer] applied to each of its
   /// anchor and control points.
-  CubicBezier transformed(PointTransformer transformer) {
+  CubicBezier transformed(ShapePointTransformer transformer) {
     final (a0X, a0Y) = transformer(anchor0X, anchor0Y);
     final (c0X, c0Y) = transformer(control0X, control0Y);
     final (c1X, c1Y) = transformer(control1X, control1Y);

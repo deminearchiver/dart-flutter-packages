@@ -18,7 +18,7 @@ import 'package:vector_math/vector_math_64.dart' show Matrix2, Matrix3, Matrix4;
 ///
 /// This is used by [CubicBezier.transformed], [PolygonFeature.transformed] and
 /// [RoundedPolygon.transformed] to apply arbitrary transformations to a shape.
-typedef PointTransformer = (double, double) Function(double x, double y);
+typedef ShapePointTransformer = (double, double) Function(double x, double y);
 
 /// A two dimensional coordinate pair used by the shape algorithms.
 @internal
@@ -71,15 +71,15 @@ extension PointGeometry on Offset {
   }
 
   /// Returns a copy of this point with [f] applied to it.
-  Point transformed(PointTransformer f) {
+  Point transformed(ShapePointTransformer f) {
     final result = f(x, y);
     return Point(result.$1, result.$2);
   }
 }
 
-/// Adapts a [Matrix2] into a [PointTransformer].
-extension Matrix2PointTransformer on Matrix2 {
-  /// Returns a [PointTransformer] that applies this matrix.
+/// Adapts a [Matrix2] into a [ShapePointTransformer].
+extension Matrix2ShapePointTransformer on Matrix2 {
+  /// Returns a [ShapePointTransformer] that applies this matrix.
   ///
   /// This is the bridge between the transformation types Flutter already uses
   /// and the shape transformation methods, so that a matrix built with the
@@ -92,7 +92,7 @@ extension Matrix2PointTransformer on Matrix2 {
   ///   Matrix2.rotation(math.pi / 4).asPointTransformer(),
   /// );
   /// ```
-  PointTransformer asPointTransformer() {
+  ShapePointTransformer asPointTransformer() {
     final m = storage;
     final m00 = m[0];
     final m10 = m[1];
@@ -102,9 +102,9 @@ extension Matrix2PointTransformer on Matrix2 {
   }
 }
 
-/// Adapts a [Matrix3] into a [PointTransformer].
-extension Matrix3PointTransformer on Matrix3 {
-  /// Returns a [PointTransformer] that applies this matrix.
+/// Adapts a [Matrix3] into a [ShapePointTransformer].
+extension Matrix3ShapePointTransformer on Matrix3 {
+  /// Returns a [ShapePointTransformer] that applies this matrix.
   ///
   /// This is the bridge between the transformation types Flutter already uses
   /// and the shape transformation methods, so that a matrix built with the
@@ -120,7 +120,7 @@ extension Matrix3PointTransformer on Matrix3 {
   ///
   /// Only the X and Y components of the result are used, so the Z translation
   /// of the matrix has no effect.
-  PointTransformer asPointTransformer() {
+  ShapePointTransformer asPointTransformer() {
     final m = storage;
     final m00 = m[0];
     final m10 = m[1];
@@ -132,9 +132,9 @@ extension Matrix3PointTransformer on Matrix3 {
   }
 }
 
-/// Adapts a [Matrix4] into a [PointTransformer].
-extension Matrix4PointTransformer on Matrix4 {
-  /// Returns a [PointTransformer] that applies this matrix.
+/// Adapts a [Matrix4] into a [ShapePointTransformer].
+extension Matrix4ShapePointTransformer on Matrix4 {
+  /// Returns a [ShapePointTransformer] that applies this matrix.
   ///
   /// This is the bridge between the transformation types Flutter already uses
   /// and the shape transformation methods, so that a matrix built with the
@@ -150,7 +150,7 @@ extension Matrix4PointTransformer on Matrix4 {
   ///
   /// Only the X and Y components of the result are used, so the Z translation
   /// and perspective rows of the matrix have no effect.
-  PointTransformer asPointTransformer() {
+  ShapePointTransformer asPointTransformer() {
     final m = storage;
     final m00 = m[0];
     final m10 = m[4];
