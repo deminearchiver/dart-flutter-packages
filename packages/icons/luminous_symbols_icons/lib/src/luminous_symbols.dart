@@ -739,6 +739,9 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "front_hand".
   static const IconData front_hand = IconData(0xe769, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "front_hand_2".
+  static const IconData front_hand_2 = IconData(0xffe9b, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "fullscreen".
   static const IconData fullscreen = IconData(0xe5d0, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -1395,6 +1398,9 @@ abstract final class LuminousSymbols {
 
   /// Luminous Symbols icon named "search_ext".
   static const IconData search_ext = IconData(0xffeba, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "search_live".
+  static const IconData search_live = IconData(0xffe9c, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "search_off".
   static const IconData search_off = IconData(0xea76, fontFamily: fontFamily, fontPackage: fontPackage);

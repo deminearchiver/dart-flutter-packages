@@ -1,3 +1,8 @@
+## 0.1.9
+
+- Rolled the Luminous Symbols font from `v61` to `v62`.
+  - This update introduces 2 new icons: `front_hand_2`, `search_live`.
+
 ## 0.1.8
 
 - Rolled the Luminous Symbols font from `v57` to `v61`.
