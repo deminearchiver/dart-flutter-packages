@@ -8207,9 +8207,9 @@ const int HB_VERSION_MAJOR = 14;
 
 const int HB_VERSION_MICRO = 0;
 
-const int HB_VERSION_MINOR = 5;
+const int HB_VERSION_MINOR = 6;
 
-const String HB_VERSION_STRING = '14.5.0';
+const String HB_VERSION_STRING = '14.6.0';
 
 final class _hb_var_int_t extends ffi.Union {
   @ffi.Uint32()
