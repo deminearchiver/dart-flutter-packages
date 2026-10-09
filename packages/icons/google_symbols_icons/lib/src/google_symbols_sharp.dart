@@ -7615,6 +7615,9 @@ abstract final class GoogleSymbolsSharp {
   /// Google Symbols Sharp icon named "looks".
   static const IconData looks = IconData(0xe3fc, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Sharp icon named "looks_0".
+  static const IconData looks_0 = IconData(0xffe97, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Sharp icon named "looks_3".
   static const IconData looks_3 = IconData(0xe3fb, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -7626,6 +7629,15 @@ abstract final class GoogleSymbolsSharp {
 
   /// Google Symbols Sharp icon named "looks_6".
   static const IconData looks_6 = IconData(0xe3ff, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "looks_7".
+  static const IconData looks_7 = IconData(0xffe9a, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "looks_8".
+  static const IconData looks_8 = IconData(0xffe99, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Sharp icon named "looks_9".
+  static const IconData looks_9 = IconData(0xffe98, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Sharp icon named "looks_one".
   static const IconData looks_one = IconData(0xe400, fontFamily: fontFamily, fontPackage: fontPackage);

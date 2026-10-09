@@ -1,3 +1,8 @@
+## 0.1.10
+
+- Rolled the Google Symbols font from `v462` to `v464`.
+  - This update introduces 4 new icons: `looks_0`, `looks_7`, `looks_8`, `looks_9`.
+
 ## 0.1.9
 
 - Rolled the Google Symbols font from `v461` to `v462`.
