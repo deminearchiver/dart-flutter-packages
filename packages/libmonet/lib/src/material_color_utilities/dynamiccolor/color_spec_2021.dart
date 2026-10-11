@@ -1,787 +1,2295 @@
-// ignore_for_file: recursive_getters
+part of 'color_spec.dart';
 
-import 'dart:math' as math;
+double _findDesiredChromaByTone(
+  double hue,
+  double chroma,
+  double tone,
+  bool byDecreasingTone,
+) {
+  var answer = tone;
+  var closestToChroma = Hct.from(hue, chroma, tone);
+  if (closestToChroma.chroma < chroma) {
+    var chromaPeak = closestToChroma.chroma;
+    while (closestToChroma.chroma < chroma) {
+      answer += byDecreasingTone ? -1.0 : 1.0;
+      final potentialSolution = Hct.from(hue, chroma, answer);
+      if (chromaPeak > potentialSolution.chroma) {
+        break;
+      }
+      if ((potentialSolution.chroma - chroma).abs() < 0.4) {
+        break;
+      }
 
-import '../contrast/contrast.dart';
-import '../dislike/dislike_analyzer.dart';
-import '../hct/hct.dart';
-import '../palettes/tonal_palette.dart';
-import '../temperature/temperature_cache.dart';
-import '../utils/math_utils.dart';
-import 'color_spec.dart';
-import 'contrast_curve.dart';
-import 'dynamic_color.dart';
-import 'dynamic_scheme.dart';
-import 'tone_delta_pair.dart';
-import 'variant.dart';
+      final potentialDelta = (potentialSolution.chroma - chroma).abs();
+      final currentDelta = (closestToChroma.chroma - chroma).abs();
+      if (potentialDelta < currentDelta) {
+        closestToChroma = potentialSolution;
+      }
+      chromaPeak = math.max(chromaPeak, potentialSolution.chroma);
+    }
+  }
+  return answer;
+}
+
+final class const _PrimaryPaletteKeyColor2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "primary_palette_key_color";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.primaryPalette.keyColor.tone;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _PrimaryPaletteKeyColor2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SecondaryPaletteKeyColor2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "secondary_palette_key_color";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.secondaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.secondaryPalette.keyColor.tone;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _SecondaryPaletteKeyColor2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TertiaryPaletteKeyColor2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "tertiary_palette_key_color";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.tertiaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.tertiaryPalette.keyColor.tone;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _TertiaryPaletteKeyColor2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _NeutralPaletteKeyColor2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "neutral_palette_key_color";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.neutralPalette.keyColor.tone;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _NeutralPaletteKeyColor2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _NeutralVariantPaletteKeyColor2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "neutral_variant_palette_key_color";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralVariantPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.neutralVariantPalette.keyColor.tone;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _NeutralVariantPaletteKeyColor2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _ErrorPaletteKeyColor2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "error_palette_key_color";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.errorPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.errorPalette.keyColor.tone;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _ErrorPaletteKeyColor2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _Background2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "background";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 6.0 : 98.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _Background2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnBackground2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_background";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 90.0 : 10.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _background;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 3.0, 4.5, 7.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnBackground2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _Surface2021() extends DynamicColor with _DynamicColors2021 {
+  @override
+  String get name => "surface";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 6.0 : 98.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _Surface2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SurfaceDim2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "surface_dim";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark
+      ? 6.0
+      : const ContrastCurve(87.0, 87.0, 80.0, 75.0).get(scheme.contrastLevel);
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SurfaceDim2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SurfaceBright2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "surface_bright";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark
+      ? const ContrastCurve(24.0, 24.0, 29.0, 34.0).get(scheme.contrastLevel)
+      : 98.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SurfaceBright2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SurfaceContainerLowest2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "surface_container_lowest";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark
+      ? const ContrastCurve(4.0, 4.0, 2.0, 0.0).get(scheme.contrastLevel)
+      : 100.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SurfaceContainerLowest2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SurfaceContainerLow2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "surface_container_low";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark
+      ? const ContrastCurve(10.0, 10.0, 11.0, 12.0).get(scheme.contrastLevel)
+      : const ContrastCurve(96.0, 96.0, 96.0, 95.0).get(scheme.contrastLevel);
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SurfaceContainerLow2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SurfaceContainer2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "surface_container";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark
+      ? const ContrastCurve(12.0, 12.0, 16.0, 20.0).get(scheme.contrastLevel)
+      : const ContrastCurve(94.0, 94.0, 92.0, 90.0).get(scheme.contrastLevel);
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SurfaceContainer2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SurfaceContainerHigh2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "surface_container_high";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark
+      ? const ContrastCurve(17.0, 17.0, 21.0, 25.0).get(scheme.contrastLevel)
+      : const ContrastCurve(92.0, 92.0, 88.0, 85.0).get(scheme.contrastLevel);
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SurfaceContainerHigh2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SurfaceContainerHighest2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "surface_container_highest";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark
+      ? const ContrastCurve(22.0, 22.0, 26.0, 30.0).get(scheme.contrastLevel)
+      : const ContrastCurve(90.0, 90.0, 84.0, 80.0).get(scheme.contrastLevel);
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SurfaceContainerHighest2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnSurface2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_surface";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 90.0 : 10.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(4.5, 7.0, 11.0, 21.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnSurface2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SurfaceVariant2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "surface_variant";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralVariantPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 30.0 : 90.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SurfaceVariant2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnSurfaceVariant2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_surface_variant";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralVariantPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 80.0 : 30.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 11.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnSurfaceVariant2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _InverseSurface2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "inverse_surface";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 90.0 : 20.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _InverseSurface2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _InverseOnSurface2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "inverse_on_surface";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 20.0 : 95.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _inverseSurface;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(4.5, 7.0, 11.0, 21.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _InverseOnSurface2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _Outline2021() extends DynamicColor with _DynamicColors2021 {
+  @override
+  String get name => "outline";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralVariantPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 60.0 : 50.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.5, 3.0, 4.5, 7.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _Outline2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OutlineVariant2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "outline_variant";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralVariantPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 30.0 : 80.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.0, 1.0, 3.0, 4.5);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OutlineVariant2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _Shadow2021() extends DynamicColor with _DynamicColors2021 {
+  @override
+  String get name => "shadow";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => 0.0;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _Shadow2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _Scrim2021() extends DynamicColor with _DynamicColors2021 {
+  @override
+  String get name => "scrim";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => 0.0;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _Scrim2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SurfaceTint2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "surface_tint";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 80.0 : 40.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SurfaceTint2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _Primary2021() extends DynamicColor with _DynamicColors2021 {
+  @override
+  String get name => "primary";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 100.0 : 0.0;
+    }
+    return scheme.isDark ? 80.0 : 40.0;
+  }
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 7.0);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _primaryContainer,
+    roleB: _primary,
+    delta: 10.0,
+    polarity: .relativeLighter,
+    stayTogether: false,
+    constraint: .nearer,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _Primary2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnPrimary2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_primary";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 10.0 : 90.0;
+    }
+    return scheme.isDark ? 20.0 : 100.0;
+  }
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _primary;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(4.5, 7.0, 11.0, 21.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnPrimary2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _PrimaryContainer2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "primary_container";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .fidelity || scheme.variant == .content) {
+      return scheme.sourceColorHct.tone;
+    }
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 85.0 : 25.0;
+    }
+    return scheme.isDark ? 30.0 : 90.0;
+  }
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.0, 1.0, 3.0, 4.5);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _primaryContainer,
+    roleB: _primary,
+    delta: 10.0,
+    polarity: .relativeLighter,
+    stayTogether: false,
+    constraint: .nearer,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _PrimaryContainer2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnPrimaryContainer2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_primary_container";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .fidelity || scheme.variant == .content) {
+      return DynamicColor.foregroundTone(_primaryContainer.tone(scheme), 4.5);
+    }
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 0.0 : 100.0;
+    }
+    return scheme.isDark ? 90.0 : 30.0;
+  }
+
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _primaryContainer;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 11.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnPrimaryContainer2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _InversePrimary2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "inverse_primary";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 40.0 : 80.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _inverseSurface;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 7.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _InversePrimary2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _Secondary2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "secondary";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.secondaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 80.0 : 40.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 7.0);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _secondaryContainer,
+    roleB: _secondary,
+    delta: 10.0,
+    polarity: .relativeLighter,
+    stayTogether: false,
+    constraint: .nearer,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _Secondary2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnSecondary2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_secondary";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.secondaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 10.0 : 100.0;
+    }
+    return scheme.isDark ? 20.0 : 100.0;
+  }
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _secondary;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(4.5, 7.0, 11.0, 21.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnSecondary2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SecondaryContainer2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "secondary_container";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.secondaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 30.0 : 85.0;
+    }
+    final initialTone = scheme.isDark ? 30.0 : 90.0;
+    if (!(scheme.variant == .fidelity || scheme.variant == .content)) {
+      return initialTone;
+    }
+    return _findDesiredChromaByTone(
+      scheme.secondaryPalette.hue,
+      scheme.secondaryPalette.chroma,
+      initialTone,
+      !scheme.isDark,
+    );
+  }
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.0, 1.0, 3.0, 4.5);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _secondaryContainer,
+    roleB: _secondary,
+    delta: 10.0,
+    polarity: .relativeLighter,
+    stayTogether: false,
+    constraint: .nearer,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SecondaryContainer2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnSecondaryContainer2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_secondary_container";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.secondaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 90.0 : 10.0;
+    }
+    if (!(scheme.variant == .fidelity || scheme.variant == .content)) {
+      return scheme.isDark ? 90.0 : 30.0;
+    }
+    return DynamicColor.foregroundTone(_secondaryContainer.tone(scheme), 4.5);
+  }
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _secondaryContainer;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 11.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnSecondaryContainer2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _Tertiary2021() extends DynamicColor with _DynamicColors2021 {
+  @override
+  String get name => "tertiary";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.tertiaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 90.0 : 25.0;
+    }
+    return scheme.isDark ? 80.0 : 40.0;
+  }
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 7.0);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _tertiaryContainer,
+    roleB: _tertiary,
+    delta: 10.0,
+    polarity: .relativeLighter,
+    stayTogether: false,
+    constraint: .nearer,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _Tertiary2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnTertiary2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_tertiary";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.tertiaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 10.0 : 90.0;
+    }
+    return scheme.isDark ? 20.0 : 100.0;
+  }
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _tertiary;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(4.5, 7.0, 11.0, 21.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnTertiary2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TertiaryContainer2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "tertiary_container";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.tertiaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 60.0 : 49.0;
+    }
+    if (!(scheme.variant == .fidelity || scheme.variant == .content)) {
+      return scheme.isDark ? 30.0 : 90.0;
+    }
+    final proposedHct = scheme.tertiaryPalette.getHct(
+      scheme.sourceColorHct.tone,
+    );
+    return DislikeAnalyzer.fixIfDisliked(proposedHct).tone;
+  }
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.0, 1.0, 3.0, 4.5);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _tertiaryContainer,
+    roleB: _tertiary,
+    delta: 10.0,
+    polarity: .relativeLighter,
+    stayTogether: false,
+    constraint: .nearer,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _TertiaryContainer2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnTertiaryContainer2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_tertiary_container";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.tertiaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 0.0 : 100.0;
+    }
+    if (!(scheme.variant == .fidelity || scheme.variant == .content)) {
+      return scheme.isDark ? 90.0 : 30.0;
+    }
+    return DynamicColor.foregroundTone(_tertiaryContainer.tone(scheme), 4.5);
+  }
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _tertiaryContainer;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 11.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnTertiaryContainer2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _Error2021() extends DynamicColor with _DynamicColors2021 {
+  @override
+  String get name => "error";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.errorPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 80.0 : 40.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 7.0);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _errorContainer,
+    roleB: _error,
+    delta: 10.0,
+    polarity: .relativeLighter,
+    stayTogether: false,
+    constraint: .nearer,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _Error2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnError2021() extends DynamicColor with _DynamicColors2021 {
+  @override
+  String get name => "on_error";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.errorPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 20.0 : 100.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _error;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(4.5, 7.0, 11.0, 21.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnError2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _ErrorContainer2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "error_container";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.errorPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 30.0 : 90.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.0, 1.0, 3.0, 4.5);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _errorContainer,
+    roleB: _error,
+    delta: 10.0,
+    polarity: .relativeLighter,
+    stayTogether: false,
+    constraint: .nearer,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _ErrorContainer2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnErrorContainer2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_error_container";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.errorPalette;
+
+  @override
+  double tone(DynamicScheme scheme) {
+    if (scheme.variant == .monochrome) {
+      return scheme.isDark ? 90.0 : 10.0;
+    }
+    return scheme.isDark ? 90.0 : 30.0;
+  }
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _errorContainer;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 11.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnErrorContainer2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _PrimaryFixed2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "primary_fixed";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.variant == .monochrome ? 40.0 : 90.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.0, 1.0, 3.0, 4.5);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _primaryFixed,
+    roleB: _primaryFixedDim,
+    delta: 10.0,
+    polarity: .lighter,
+    stayTogether: true,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _PrimaryFixed2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _PrimaryFixedDim2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "primary_fixed_dim";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.variant == .monochrome ? 30.0 : 80.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.0, 1.0, 3.0, 4.5);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _primaryFixed,
+    roleB: _primaryFixedDim,
+    delta: 10.0,
+    polarity: .lighter,
+    stayTogether: true,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _PrimaryFixedDim2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnPrimaryFixed2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_primary_fixed";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.variant == .monochrome ? 100.0 : 10.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _primaryFixedDim;
+
+  @override
+  DynamicColor? secondBackground(DynamicScheme scheme) => _primaryFixed;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(4.5, 7.0, 11.0, 21.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnPrimaryFixed2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnPrimaryFixedVariant2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_primary_fixed_variant";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.variant == .monochrome ? 90.0 : 30.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _primaryFixedDim;
+
+  @override
+  DynamicColor? secondBackground(DynamicScheme scheme) => _primaryFixed;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 11.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnPrimaryFixedVariant2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SecondaryFixed2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "secondary_fixed";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.secondaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.variant == .monochrome ? 80.0 : 90.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.0, 1.0, 3.0, 4.5);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _secondaryFixed,
+    roleB: _secondaryFixedDim,
+    delta: 10.0,
+    polarity: .lighter,
+    stayTogether: true,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SecondaryFixed2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SecondaryFixedDim2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "secondary_fixed_dim";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.secondaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.variant == .monochrome ? 70.0 : 80.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.0, 1.0, 3.0, 4.5);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _secondaryFixed,
+    roleB: _secondaryFixedDim,
+    delta: 10.0,
+    polarity: .lighter,
+    stayTogether: true,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _SecondaryFixedDim2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnSecondaryFixed2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_secondary_fixed";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.secondaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => 10.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _secondaryFixedDim;
+
+  @override
+  DynamicColor? secondBackground(DynamicScheme scheme) => _secondaryFixed;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(4.5, 7.0, 11.0, 21.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnSecondaryFixed2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnSecondaryFixedVariant2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_secondary_fixed_variant";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.secondaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.variant == .monochrome ? 25.0 : 30.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _secondaryFixedDim;
+
+  @override
+  DynamicColor? secondBackground(DynamicScheme scheme) => _secondaryFixed;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 11.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnSecondaryFixedVariant2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TertiaryFixed2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "tertiary_fixed";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.tertiaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.variant == .monochrome ? 40.0 : 90.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.0, 1.0, 3.0, 4.5);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _tertiaryFixed,
+    roleB: _tertiaryFixedDim,
+    delta: 10.0,
+    polarity: .lighter,
+    stayTogether: true,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _TertiaryFixed2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TertiaryFixedDim2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "tertiary_fixed_dim";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.tertiaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.variant == .monochrome ? 30.0 : 80.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _highestSurface(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(1.0, 1.0, 3.0, 4.5);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => .new(
+    roleA: _tertiaryFixed,
+    roleB: _tertiaryFixedDim,
+    delta: 10.0,
+    polarity: .lighter,
+    stayTogether: true,
+  );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _TertiaryFixedDim2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnTertiaryFixed2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_tertiary_fixed";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.tertiaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.variant == .monochrome ? 100.0 : 10.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _tertiaryFixedDim;
+
+  @override
+  DynamicColor? secondBackground(DynamicScheme scheme) => _tertiaryFixed;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(4.5, 7.0, 11.0, 21.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnTertiaryFixed2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _OnTertiaryFixedVariant2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "on_tertiary_fixed_variant";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.tertiaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      scheme.variant == .monochrome ? 90.0 : 30.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _tertiaryFixedDim;
+
+  @override
+  DynamicColor? secondBackground(DynamicScheme scheme) => _tertiaryFixed;
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      const .new(3.0, 4.5, 7.0, 11.0);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _OnTertiaryFixedVariant2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _ControlActivated2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "control_activated";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.primaryPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 30.0 : 90.0;
+
+  @override
+  bool get isBackground => true;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _ControlActivated2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _ControlNormal2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "control_normal";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralVariantPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 80.0 : 30.0;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _ControlNormal2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _ControlHighlight2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "control_highlight";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 100.0 : 0.0;
+
+  @override
+  double? opacity(DynamicScheme scheme) => scheme.isDark ? 0.20 : 0.12;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _ControlHighlight2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TextPrimaryInverse2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "text_primary_inverse";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 10.0 : 90.0;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _TextPrimaryInverse2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TextSecondaryAndTertiaryInverse2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "text_secondary_and_tertiary_inverse";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralVariantPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 30.0 : 80.0;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _TextSecondaryAndTertiaryInverse2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TextPrimaryInverseDisableOnly2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "text_primary_inverse_disable_only";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 10.0 : 90.0;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _TextPrimaryInverseDisableOnly2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TextSecondaryAndTertiaryInverseDisabled2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "text_secondary_and_tertiary_inverse_disabled";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 10.0 : 90.0;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _TextSecondaryAndTertiaryInverseDisabled2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TextHintInverse2021()
+    extends DynamicColor
+    with _DynamicColors2021 {
+  @override
+  String get name => "text_hint_inverse";
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => scheme.neutralPalette;
+
+  @override
+  double tone(DynamicScheme scheme) => scheme.isDark ? 10.0 : 90.0;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _TextHintInverse2021;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+abstract mixin class _DynamicColors2021 {
+  DynamicColor get _primaryPaletteKeyColor =>
+      const _PrimaryPaletteKeyColor2021();
+
+  DynamicColor get _secondaryPaletteKeyColor =>
+      const _SecondaryPaletteKeyColor2021();
+
+  DynamicColor get _tertiaryPaletteKeyColor =>
+      const _TertiaryPaletteKeyColor2021();
+
+  DynamicColor get _neutralPaletteKeyColor =>
+      const _NeutralPaletteKeyColor2021();
+
+  DynamicColor get _neutralVariantPaletteKeyColor =>
+      const _NeutralVariantPaletteKeyColor2021();
+
+  DynamicColor get _errorPaletteKeyColor => const _ErrorPaletteKeyColor2021();
+
+  DynamicColor get _background => const _Background2021();
+
+  DynamicColor get _onBackground => const _OnBackground2021();
+
+  DynamicColor get _surface => const _Surface2021();
+
+  DynamicColor get _surfaceDim => const _SurfaceDim2021();
+
+  DynamicColor get _surfaceBright => const _SurfaceBright2021();
+
+  DynamicColor get _surfaceContainerLowest =>
+      const _SurfaceContainerLowest2021();
+
+  DynamicColor get _surfaceContainerLow => const _SurfaceContainerLow2021();
+
+  DynamicColor get _surfaceContainer => const _SurfaceContainer2021();
+
+  DynamicColor get _surfaceContainerHigh => const _SurfaceContainerHigh2021();
+
+  DynamicColor get _surfaceContainerHighest =>
+      const _SurfaceContainerHighest2021();
+
+  DynamicColor get _onSurface => const _OnSurface2021();
+
+  DynamicColor get _surfaceVariant => const _SurfaceVariant2021();
+
+  DynamicColor get _onSurfaceVariant => const _OnSurfaceVariant2021();
+
+  DynamicColor get _inverseSurface => const _InverseSurface2021();
+
+  DynamicColor get _inverseOnSurface => const _InverseOnSurface2021();
+
+  DynamicColor get _outline => const _Outline2021();
+
+  DynamicColor get _outlineVariant => const _OutlineVariant2021();
+
+  DynamicColor get _shadow => const _Shadow2021();
+
+  DynamicColor get _scrim => const _Scrim2021();
+
+  DynamicColor get _surfaceTint => const _SurfaceTint2021();
+
+  DynamicColor get _primary => const _Primary2021();
+
+  DynamicColor get _onPrimary => const _OnPrimary2021();
+
+  DynamicColor get _primaryContainer => const _PrimaryContainer2021();
+
+  DynamicColor get _onPrimaryContainer => const _OnPrimaryContainer2021();
+
+  DynamicColor get _inversePrimary => const _InversePrimary2021();
+
+  DynamicColor get _secondary => const _Secondary2021();
+
+  DynamicColor get _onSecondary => const _OnSecondary2021();
+
+  DynamicColor get _secondaryContainer => const _SecondaryContainer2021();
+
+  DynamicColor get _onSecondaryContainer => const _OnSecondaryContainer2021();
+
+  DynamicColor get _tertiary => const _Tertiary2021();
+
+  DynamicColor get _onTertiary => const _OnTertiary2021();
+
+  DynamicColor get _tertiaryContainer => const _TertiaryContainer2021();
+
+  DynamicColor get _onTertiaryContainer => const _OnTertiaryContainer2021();
+
+  DynamicColor get _error => const _Error2021();
+
+  DynamicColor get _onError => const _OnError2021();
+
+  DynamicColor get _errorContainer => const _ErrorContainer2021();
+
+  DynamicColor get _onErrorContainer => const _OnErrorContainer2021();
+
+  DynamicColor get _primaryFixed => const _PrimaryFixed2021();
+
+  DynamicColor get _primaryFixedDim => const _PrimaryFixedDim2021();
+
+  DynamicColor get _onPrimaryFixed => const _OnPrimaryFixed2021();
+
+  DynamicColor get _onPrimaryFixedVariant => const _OnPrimaryFixedVariant2021();
+
+  DynamicColor get _secondaryFixed => const _SecondaryFixed2021();
+
+  DynamicColor get _secondaryFixedDim => const _SecondaryFixedDim2021();
+
+  DynamicColor get _onSecondaryFixed => const _OnSecondaryFixed2021();
+
+  DynamicColor get _onSecondaryFixedVariant =>
+      const _OnSecondaryFixedVariant2021();
+
+  DynamicColor get _tertiaryFixed => const _TertiaryFixed2021();
+
+  DynamicColor get _tertiaryFixedDim => const _TertiaryFixedDim2021();
+
+  DynamicColor get _onTertiaryFixed => const _OnTertiaryFixed2021();
+
+  DynamicColor get _onTertiaryFixedVariant =>
+      const _OnTertiaryFixedVariant2021();
+
+  DynamicColor get _controlActivated => const _ControlActivated2021();
+
+  DynamicColor get _controlNormal => const _ControlNormal2021();
+
+  DynamicColor get _controlHighlight => const _ControlHighlight2021();
+
+  DynamicColor get _textPrimaryInverse => const _TextPrimaryInverse2021();
+
+  DynamicColor get _textSecondaryAndTertiaryInverse =>
+      const _TextSecondaryAndTertiaryInverse2021();
+
+  DynamicColor get _textPrimaryInverseDisableOnly =>
+      const _TextPrimaryInverseDisableOnly2021();
+
+  DynamicColor get _textSecondaryAndTertiaryInverseDisabled =>
+      const _TextSecondaryAndTertiaryInverseDisabled2021();
+
+  DynamicColor get _textHintInverse => const _TextHintInverse2021();
+
+  DynamicColor _highestSurface(DynamicScheme scheme) =>
+      scheme.isDark ? _surfaceBright : _surfaceDim;
+}
 
 /// [ColorSpec] implementation for the 2021 spec.
-class const ColorSpec2021() implements ColorSpec {
+class const ColorSpec2021() with _DynamicColors2021 implements ColorSpec {
   @override
-  DynamicColor get primaryPaletteKeyColor => .new(
-    name: "primary_palette_key_color",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) => scheme.primaryPalette.keyColor.tone,
-  );
+  DynamicColor get primaryPaletteKeyColor => _primaryPaletteKeyColor;
 
   @override
-  DynamicColor get secondaryPaletteKeyColor => .new(
-    name: "secondary_palette_key_color",
-    palette: (scheme) => scheme.secondaryPalette,
-    tone: (scheme) => scheme.secondaryPalette.keyColor.tone,
-  );
+  DynamicColor get secondaryPaletteKeyColor => _secondaryPaletteKeyColor;
 
   @override
-  DynamicColor get tertiaryPaletteKeyColor => .new(
-    name: "tertiary_palette_key_color",
-    palette: (scheme) => scheme.tertiaryPalette,
-    tone: (scheme) => scheme.tertiaryPalette.keyColor.tone,
-  );
+  DynamicColor get tertiaryPaletteKeyColor => _tertiaryPaletteKeyColor;
 
   @override
-  DynamicColor get neutralPaletteKeyColor => .new(
-    name: "neutral_palette_key_color",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.neutralPalette.keyColor.tone,
-  );
+  DynamicColor get neutralPaletteKeyColor => _neutralPaletteKeyColor;
 
   @override
-  DynamicColor get neutralVariantPaletteKeyColor => .new(
-    name: "neutral_variant_palette_key_color",
-    palette: (scheme) => scheme.neutralVariantPalette,
-    tone: (scheme) => scheme.neutralVariantPalette.keyColor.tone,
-  );
+  DynamicColor get neutralVariantPaletteKeyColor =>
+      _neutralVariantPaletteKeyColor;
 
   @override
-  DynamicColor get errorPaletteKeyColor => .new(
-    name: "error_palette_key_color",
-    palette: (scheme) => scheme.errorPalette,
-    tone: (scheme) => scheme.errorPalette.keyColor.tone,
-  );
+  DynamicColor get errorPaletteKeyColor => _errorPaletteKeyColor;
 
   @override
-  DynamicColor get background => .new(
-    name: "background",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark ? 6.0 : 98.0,
-    isBackground: true,
-  );
+  DynamicColor get background => _background;
 
   @override
-  DynamicColor get onBackground => .new(
-    name: "on_background",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark ? 90.0 : 10.0,
-    background: (_) => background,
-    contrastCurve: (_) => const ContrastCurve(3.0, 3.0, 4.5, 7.0),
-  );
+  DynamicColor get onBackground => _onBackground;
 
   @override
-  DynamicColor get surface => .new(
-    name: "surface",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark ? 6.0 : 98.0,
-    isBackground: true,
-  );
+  DynamicColor get surface => _surface;
 
   @override
-  DynamicColor get surfaceDim => .new(
-    name: "surface_dim",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark
-        ? 6.0
-        : const ContrastCurve(87.0, 87.0, 80.0, 75.0).get(scheme.contrastLevel),
-    isBackground: true,
-  );
+  DynamicColor get surfaceDim => _surfaceDim;
 
   @override
-  DynamicColor get surfaceBright => .new(
-    name: "surface_bright",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark
-        ? const ContrastCurve(24.0, 24.0, 29.0, 34.0).get(scheme.contrastLevel)
-        : 98.0,
-    isBackground: true,
-  );
+  DynamicColor get surfaceBright => _surfaceBright;
 
   @override
-  DynamicColor get surfaceContainerLowest => .new(
-    name: "surface_container_lowest",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark
-        ? const ContrastCurve(4.0, 4.0, 2.0, 0.0).get(scheme.contrastLevel)
-        : 100.0,
-    isBackground: true,
-  );
+  DynamicColor get surfaceContainerLowest => _surfaceContainerLowest;
 
   @override
-  DynamicColor get surfaceContainerLow => .new(
-    name: "surface_container_low",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark
-        ? const ContrastCurve(10.0, 10.0, 11.0, 12.0).get(scheme.contrastLevel)
-        : const ContrastCurve(96.0, 96.0, 96.0, 95.0).get(scheme.contrastLevel),
-    isBackground: true,
-  );
+  DynamicColor get surfaceContainerLow => _surfaceContainerLow;
 
   @override
-  DynamicColor get surfaceContainer => .new(
-    name: "surface_container",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark
-        ? const ContrastCurve(12.0, 12.0, 16.0, 20.0).get(scheme.contrastLevel)
-        : const ContrastCurve(94.0, 94.0, 92.0, 90.0).get(scheme.contrastLevel),
-    isBackground: true,
-  );
+  DynamicColor get surfaceContainer => _surfaceContainer;
 
   @override
-  DynamicColor get surfaceContainerHigh => .new(
-    name: "surface_container_high",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark
-        ? const ContrastCurve(17.0, 17.0, 21.0, 25.0).get(scheme.contrastLevel)
-        : const ContrastCurve(92.0, 92.0, 88.0, 85.0).get(scheme.contrastLevel),
-    isBackground: true,
-  );
+  DynamicColor get surfaceContainerHigh => _surfaceContainerHigh;
 
   @override
-  DynamicColor get surfaceContainerHighest => .new(
-    name: "surface_container_highest",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark
-        ? const ContrastCurve(22.0, 22.0, 26.0, 30.0).get(scheme.contrastLevel)
-        : const ContrastCurve(90.0, 90.0, 84.0, 80.0).get(scheme.contrastLevel),
-    isBackground: true,
-  );
+  DynamicColor get surfaceContainerHighest => _surfaceContainerHighest;
 
   @override
-  DynamicColor get onSurface => .new(
-    name: "on_surface",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark ? 90.0 : 10.0,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(4.5, 7.0, 11.0, 21.0),
-  );
+  DynamicColor get onSurface => _onSurface;
 
   @override
-  DynamicColor get surfaceVariant => .new(
-    name: "surface_variant",
-    palette: (scheme) => scheme.neutralVariantPalette,
-    tone: (scheme) => scheme.isDark ? 30.0 : 90.0,
-    isBackground: true,
-  );
+  DynamicColor get surfaceVariant => _surfaceVariant;
 
   @override
-  DynamicColor get onSurfaceVariant => .new(
-    name: "on_surface_variant",
-    palette: (scheme) => scheme.neutralVariantPalette,
-    tone: (scheme) => scheme.isDark ? 80.0 : 30.0,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 11.0),
-  );
+  DynamicColor get onSurfaceVariant => _onSurfaceVariant;
 
   @override
-  DynamicColor get inverseSurface => .new(
-    name: "inverse_surface",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark ? 90.0 : 20.0,
-    isBackground: true,
-  );
+  DynamicColor get inverseSurface => _inverseSurface;
 
   @override
-  DynamicColor get inverseOnSurface => .new(
-    name: "inverse_on_surface",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark ? 20.0 : 95.0,
-    background: (_) => inverseSurface,
-    contrastCurve: (_) => const ContrastCurve(4.5, 7.0, 11.0, 21.0),
-  );
+  DynamicColor get inverseOnSurface => _inverseOnSurface;
 
   @override
-  DynamicColor get outline => .new(
-    name: "outline",
-    palette: (scheme) => scheme.neutralVariantPalette,
-    tone: (scheme) => scheme.isDark ? 60.0 : 50.0,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.5, 3.0, 4.5, 7.0),
-  );
+  DynamicColor get outline => _outline;
 
   @override
-  DynamicColor get outlineVariant => .new(
-    name: "outline_variant",
-    palette: (scheme) => scheme.neutralVariantPalette,
-    tone: (scheme) => scheme.isDark ? 30.0 : 80.0,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 3.0, 4.5),
-  );
+  DynamicColor get outlineVariant => _outlineVariant;
 
   @override
-  DynamicColor get shadow => .new(
-    name: "shadow",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (_) => 0.0,
-  );
+  DynamicColor get shadow => _shadow;
 
   @override
-  DynamicColor get scrim => .new(
-    name: "scrim",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (_) => 0.0,
-  );
+  DynamicColor get scrim => _scrim;
 
   @override
-  DynamicColor get surfaceTint => .new(
-    name: "surface_tint",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
-    isBackground: true,
-  );
+  DynamicColor get surfaceTint => _surfaceTint;
 
   @override
-  DynamicColor get primary => .new(
-    name: "primary",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) {
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 100.0 : 0.0;
-      }
-      return scheme.isDark ? 80.0 : 40.0;
-    },
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 7.0),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: primaryContainer,
-      roleB: primary,
-      delta: 10.0,
-      polarity: .relativeLighter,
-      stayTogether: false,
-      constraint: .nearer,
-    ),
-  );
+  DynamicColor get primary => _primary;
 
   @override
   DynamicColor? get primaryDim => null;
 
   @override
-  DynamicColor get onPrimary => .new(
-    name: "on_primary",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) {
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 10.0 : 90.0;
-      }
-      return scheme.isDark ? 20.0 : 100.0;
-    },
-    background: (_) => primary,
-    contrastCurve: (_) => const ContrastCurve(4.5, 7.0, 11.0, 21.0),
-  );
+  DynamicColor get onPrimary => _onPrimary;
 
   @override
-  DynamicColor get primaryContainer => .new(
-    name: "primary_container",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) {
-      if (_isFidelity(scheme)) {
-        return scheme.sourceColorHct.tone;
-      }
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 85.0 : 25.0;
-      }
-      return scheme.isDark ? 30.0 : 90.0;
-    },
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 3.0, 4.5),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: primaryContainer,
-      roleB: primary,
-      delta: 10.0,
-      polarity: .relativeLighter,
-      stayTogether: false,
-      constraint: .nearer,
-    ),
-  );
+  DynamicColor get primaryContainer => _primaryContainer;
 
   @override
-  DynamicColor get onPrimaryContainer => .new(
-    name: "on_primary_container",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) {
-      if (_isFidelity(scheme)) {
-        return DynamicColor.foregroundTone(primaryContainer.tone(scheme), 4.5);
-      }
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 0.0 : 100.0;
-      }
-      return scheme.isDark ? 90.0 : 30.0;
-    },
-    background: (_) => primaryContainer,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 11.0),
-  );
+  DynamicColor get onPrimaryContainer => _onPrimaryContainer;
 
   @override
-  DynamicColor get inversePrimary => .new(
-    name: "inverse_primary",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) => scheme.isDark ? 40.0 : 80.0,
-    background: (_) => inverseSurface,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 7.0),
-  );
+  DynamicColor get inversePrimary => _inversePrimary;
 
   @override
-  DynamicColor get secondary => .new(
-    name: "secondary",
-    palette: (scheme) => scheme.secondaryPalette,
-    tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 7.0),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: secondaryContainer,
-      roleB: secondary,
-      delta: 10.0,
-      polarity: .relativeLighter,
-      stayTogether: false,
-      constraint: .nearer,
-    ),
-  );
+  DynamicColor get secondary => _secondary;
 
   @override
   DynamicColor? get secondaryDim => null;
 
   @override
-  DynamicColor get onSecondary => .new(
-    name: "on_secondary",
-    palette: (scheme) => scheme.secondaryPalette,
-    tone: (scheme) {
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 10.0 : 100.0;
-      }
-      return scheme.isDark ? 20.0 : 100.0;
-    },
-    background: (_) => secondary,
-    contrastCurve: (_) => const ContrastCurve(4.5, 7.0, 11.0, 21.0),
-  );
+  DynamicColor get onSecondary => _onSecondary;
 
   @override
-  DynamicColor get secondaryContainer => .new(
-    name: "secondary_container",
-    palette: (scheme) => scheme.secondaryPalette,
-    tone: (scheme) {
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 30.0 : 85.0;
-      }
-      final initialTone = scheme.isDark ? 30.0 : 90.0;
-      if (!_isFidelity(scheme)) return initialTone;
-      return _findDesiredChromaByTone(
-        scheme.secondaryPalette.hue,
-        scheme.secondaryPalette.chroma,
-        initialTone,
-        !scheme.isDark,
-      );
-    },
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 3.0, 4.5),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: secondaryContainer,
-      roleB: secondary,
-      delta: 10.0,
-      polarity: .relativeLighter,
-      stayTogether: false,
-      constraint: .nearer,
-    ),
-  );
+  DynamicColor get secondaryContainer => _secondaryContainer;
 
   @override
-  DynamicColor get onSecondaryContainer => .new(
-    name: "on_secondary_container",
-    palette: (scheme) => scheme.secondaryPalette,
-    tone: (scheme) {
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 90.0 : 10.0;
-      }
-      if (!_isFidelity(scheme)) {
-        return scheme.isDark ? 90.0 : 30.0;
-      }
-      return DynamicColor.foregroundTone(secondaryContainer.tone(scheme), 4.5);
-    },
-    background: (_) => secondaryContainer,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 11.0),
-  );
+  DynamicColor get onSecondaryContainer => _onSecondaryContainer;
 
   @override
-  DynamicColor get tertiary => .new(
-    name: "tertiary",
-    palette: (scheme) => scheme.tertiaryPalette,
-    tone: (scheme) {
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 90.0 : 25.0;
-      }
-      return scheme.isDark ? 80.0 : 40.0;
-    },
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 7.0),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: tertiaryContainer,
-      roleB: tertiary,
-      delta: 10.0,
-      polarity: .relativeLighter,
-      stayTogether: false,
-      constraint: .nearer,
-    ),
-  );
+  DynamicColor get tertiary => _tertiary;
 
   @override
   DynamicColor? get tertiaryDim => null;
 
   @override
-  DynamicColor get onTertiary => .new(
-    name: "on_tertiary",
-    palette: (scheme) => scheme.tertiaryPalette,
-    tone: (scheme) {
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 10.0 : 90.0;
-      }
-      return scheme.isDark ? 20.0 : 100.0;
-    },
-    background: (_) => tertiary,
-    contrastCurve: (_) => const ContrastCurve(4.5, 7.0, 11.0, 21.0),
-  );
+  DynamicColor get onTertiary => _onTertiary;
 
   @override
-  DynamicColor get tertiaryContainer => .new(
-    name: "tertiary_container",
-    palette: (scheme) => scheme.tertiaryPalette,
-    tone: (scheme) {
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 60.0 : 49.0;
-      }
-      if (!_isFidelity(scheme)) {
-        return scheme.isDark ? 30.0 : 90.0;
-      }
-      final proposedHct = scheme.tertiaryPalette.getHct(
-        scheme.sourceColorHct.tone,
-      );
-      return DislikeAnalyzer.fixIfDisliked(proposedHct).tone;
-    },
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 3.0, 4.5),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: tertiaryContainer,
-      roleB: tertiary,
-      delta: 10.0,
-      polarity: .relativeLighter,
-      stayTogether: false,
-      constraint: .nearer,
-    ),
-  );
+  DynamicColor get tertiaryContainer => _tertiaryContainer;
 
   @override
-  DynamicColor get onTertiaryContainer => .new(
-    name: "on_tertiary_container",
-    palette: (scheme) => scheme.tertiaryPalette,
-    tone: (scheme) {
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 0.0 : 100.0;
-      }
-      if (!_isFidelity(scheme)) {
-        return scheme.isDark ? 90.0 : 30.0;
-      }
-      return DynamicColor.foregroundTone(tertiaryContainer.tone(scheme), 4.5);
-    },
-    background: (_) => tertiaryContainer,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 11.0),
-  );
+  DynamicColor get onTertiaryContainer => _onTertiaryContainer;
 
   @override
-  DynamicColor get error => .new(
-    name: "error",
-    palette: (scheme) => scheme.errorPalette,
-    tone: (scheme) => scheme.isDark ? 80.0 : 40.0,
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 7.0),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: errorContainer,
-      roleB: error,
-      delta: 10.0,
-      polarity: .relativeLighter,
-      stayTogether: false,
-      constraint: .nearer,
-    ),
-  );
+  DynamicColor get error => _error;
 
   @override
   DynamicColor? get errorDim => null;
 
   @override
-  DynamicColor get onError => .new(
-    name: "on_error",
-    palette: (scheme) => scheme.errorPalette,
-    tone: (scheme) => scheme.isDark ? 20.0 : 100.0,
-    background: (_) => error,
-    contrastCurve: (_) => const ContrastCurve(4.5, 7.0, 11.0, 21.0),
-  );
+  DynamicColor get onError => _onError;
 
   @override
-  DynamicColor get errorContainer => .new(
-    name: "error_container",
-    palette: (scheme) => scheme.errorPalette,
-    tone: (scheme) => scheme.isDark ? 30.0 : 90.0,
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 3.0, 4.5),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: errorContainer,
-      roleB: error,
-      delta: 10.0,
-      polarity: .relativeLighter,
-      stayTogether: false,
-      constraint: .nearer,
-    ),
-  );
+  DynamicColor get errorContainer => _errorContainer;
 
   @override
-  DynamicColor get onErrorContainer => .new(
-    name: "on_error_container",
-    palette: (scheme) => scheme.errorPalette,
-    tone: (scheme) {
-      if (_isMonochrome(scheme)) {
-        return scheme.isDark ? 90.0 : 10.0;
-      }
-      return scheme.isDark ? 90.0 : 30.0;
-    },
-    background: (_) => errorContainer,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 11.0),
-  );
+  DynamicColor get onErrorContainer => _onErrorContainer;
 
   @override
-  DynamicColor get primaryFixed => .new(
-    name: "primary_fixed",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) => _isMonochrome(scheme) ? 40.0 : 90.0,
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 3.0, 4.5),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: primaryFixed,
-      roleB: primaryFixedDim,
-      delta: 10.0,
-      polarity: .lighter,
-      stayTogether: true,
-    ),
-  );
+  DynamicColor get primaryFixed => _primaryFixed;
 
   @override
-  DynamicColor get primaryFixedDim => .new(
-    name: "primary_fixed_dim",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) => _isMonochrome(scheme) ? 30.0 : 80.0,
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 3.0, 4.5),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: primaryFixed,
-      roleB: primaryFixedDim,
-      delta: 10.0,
-      polarity: .lighter,
-      stayTogether: true,
-    ),
-  );
+  DynamicColor get primaryFixedDim => _primaryFixedDim;
 
   @override
-  DynamicColor get onPrimaryFixed => .new(
-    name: "on_primary_fixed",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) => _isMonochrome(scheme) ? 100.0 : 10.0,
-    background: (_) => primaryFixedDim,
-    secondBackground: (_) => primaryFixed,
-    contrastCurve: (_) => const ContrastCurve(4.5, 7.0, 11.0, 21.0),
-  );
+  DynamicColor get onPrimaryFixed => _onPrimaryFixed;
 
   @override
-  DynamicColor get onPrimaryFixedVariant => .new(
-    name: "on_primary_fixed_variant",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) => _isMonochrome(scheme) ? 90.0 : 30.0,
-    background: (_) => primaryFixedDim,
-    secondBackground: (_) => primaryFixed,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 11.0),
-  );
+  DynamicColor get onPrimaryFixedVariant => _onPrimaryFixedVariant;
 
   @override
-  DynamicColor get secondaryFixed => .new(
-    name: "secondary_fixed",
-    palette: (scheme) => scheme.secondaryPalette,
-    tone: (scheme) => _isMonochrome(scheme) ? 80.0 : 90.0,
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 3.0, 4.5),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: secondaryFixed,
-      roleB: secondaryFixedDim,
-      delta: 10.0,
-      polarity: .lighter,
-      stayTogether: true,
-    ),
-  );
+  DynamicColor get secondaryFixed => _secondaryFixed;
 
   @override
-  DynamicColor get secondaryFixedDim => .new(
-    name: "secondary_fixed_dim",
-    palette: (scheme) => scheme.secondaryPalette,
-    tone: (scheme) => _isMonochrome(scheme) ? 70.0 : 80.0,
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 3.0, 4.5),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: secondaryFixed,
-      roleB: secondaryFixedDim,
-      delta: 10.0,
-      polarity: .lighter,
-      stayTogether: true,
-    ),
-  );
+  DynamicColor get secondaryFixedDim => _secondaryFixedDim;
 
   @override
-  DynamicColor get onSecondaryFixed => .new(
-    name: "on_secondary_fixed",
-    palette: (scheme) => scheme.secondaryPalette,
-    tone: (_) => 10.0,
-    background: (_) => secondaryFixedDim,
-    secondBackground: (_) => secondaryFixed,
-    contrastCurve: (_) => const ContrastCurve(4.5, 7.0, 11.0, 21.0),
-  );
+  DynamicColor get onSecondaryFixed => _onSecondaryFixed;
 
   @override
-  DynamicColor get onSecondaryFixedVariant => .new(
-    name: "on_secondary_fixed_variant",
-    palette: (scheme) => scheme.secondaryPalette,
-    tone: (scheme) => _isMonochrome(scheme) ? 25.0 : 30.0,
-    background: (_) => secondaryFixedDim,
-    secondBackground: (_) => secondaryFixed,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 11.0),
-  );
+  DynamicColor get onSecondaryFixedVariant => _onSecondaryFixedVariant;
 
   @override
-  DynamicColor get tertiaryFixed => .new(
-    name: "tertiary_fixed",
-    palette: (scheme) => scheme.tertiaryPalette,
-    tone: (scheme) => _isMonochrome(scheme) ? 40.0 : 90.0,
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 3.0, 4.5),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: tertiaryFixed,
-      roleB: tertiaryFixedDim,
-      delta: 10.0,
-      polarity: .lighter,
-      stayTogether: true,
-    ),
-  );
+  DynamicColor get tertiaryFixed => _tertiaryFixed;
 
   @override
-  DynamicColor get tertiaryFixedDim => .new(
-    name: "tertiary_fixed_dim",
-    palette: (scheme) => scheme.tertiaryPalette,
-    tone: (scheme) => _isMonochrome(scheme) ? 30.0 : 80.0,
-    isBackground: true,
-    background: highestSurface,
-    contrastCurve: (_) => const ContrastCurve(1.0, 1.0, 3.0, 4.5),
-    toneDeltaPair: (_) => ToneDeltaPair(
-      roleA: tertiaryFixed,
-      roleB: tertiaryFixedDim,
-      delta: 10.0,
-      polarity: .lighter,
-      stayTogether: true,
-    ),
-  );
+  DynamicColor get tertiaryFixedDim => _tertiaryFixedDim;
 
   @override
-  DynamicColor get onTertiaryFixed => .new(
-    name: "on_tertiary_fixed",
-    palette: (scheme) => scheme.tertiaryPalette,
-    tone: (scheme) => _isMonochrome(scheme) ? 100.0 : 10.0,
-    background: (_) => tertiaryFixedDim,
-    secondBackground: (_) => tertiaryFixed,
-    contrastCurve: (_) => const ContrastCurve(4.5, 7.0, 11.0, 21.0),
-  );
+  DynamicColor get onTertiaryFixed => _onTertiaryFixed;
 
   @override
-  DynamicColor get onTertiaryFixedVariant => .new(
-    name: "on_tertiary_fixed_variant",
-    palette: (scheme) => scheme.tertiaryPalette,
-    tone: (scheme) => _isMonochrome(scheme) ? 90.0 : 30.0,
-    background: (_) => tertiaryFixedDim,
-    secondBackground: (_) => tertiaryFixed,
-    contrastCurve: (_) => const ContrastCurve(3.0, 4.5, 7.0, 11.0),
-  );
+  DynamicColor get onTertiaryFixedVariant => _onTertiaryFixedVariant;
 
   @override
-  DynamicColor get controlActivated => .new(
-    name: "control_activated",
-    palette: (scheme) => scheme.primaryPalette,
-    tone: (scheme) => scheme.isDark ? 30.0 : 90.0,
-    isBackground: true,
-  );
+  DynamicColor get controlActivated => _controlActivated;
 
   @override
-  DynamicColor get controlNormal => .new(
-    name: "control_normal",
-    palette: (scheme) => scheme.neutralVariantPalette,
-    tone: (scheme) => scheme.isDark ? 80.0 : 30.0,
-  );
+  DynamicColor get controlNormal => _controlNormal;
 
   @override
-  DynamicColor get controlHighlight => .new(
-    name: "control_highlight",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark ? 100.0 : 0.0,
-    opacity: (scheme) => scheme.isDark ? 0.20 : 0.12,
-  );
+  DynamicColor get controlHighlight => _controlHighlight;
 
   @override
-  DynamicColor get textPrimaryInverse => .new(
-    name: "text_primary_inverse",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark ? 10.0 : 90.0,
-  );
+  DynamicColor get textPrimaryInverse => _textPrimaryInverse;
 
   @override
-  DynamicColor get textSecondaryAndTertiaryInverse => .new(
-    name: "text_secondary_and_tertiary_inverse",
-    palette: (scheme) => scheme.neutralVariantPalette,
-    tone: (scheme) => scheme.isDark ? 30.0 : 80.0,
-  );
+  DynamicColor get textSecondaryAndTertiaryInverse =>
+      _textSecondaryAndTertiaryInverse;
 
   @override
-  DynamicColor get textPrimaryInverseDisableOnly => .new(
-    name: "text_primary_inverse_disable_only",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark ? 10.0 : 90.0,
-  );
+  DynamicColor get textPrimaryInverseDisableOnly =>
+      _textPrimaryInverseDisableOnly;
 
   @override
-  DynamicColor get textSecondaryAndTertiaryInverseDisabled => .new(
-    name: "text_secondary_and_tertiary_inverse_disabled",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark ? 10.0 : 90.0,
-  );
+  DynamicColor get textSecondaryAndTertiaryInverseDisabled =>
+      _textSecondaryAndTertiaryInverseDisabled;
 
   @override
-  DynamicColor get textHintInverse => .new(
-    name: "text_hint_inverse",
-    palette: (scheme) => scheme.neutralPalette,
-    tone: (scheme) => scheme.isDark ? 10.0 : 90.0,
-  );
+  DynamicColor get textHintInverse => _textHintInverse;
 
   @override
-  DynamicColor highestSurface(DynamicScheme scheme) =>
-      scheme.isDark ? surfaceBright : surfaceDim;
+  DynamicColor highestSurface(DynamicScheme scheme) => _highestSurface(scheme);
 
   @override
   Hct getHct(DynamicScheme scheme, DynamicColor color) {
@@ -792,7 +2300,9 @@ class const ColorSpec2021() implements ColorSpec {
   @override
   double getTone(DynamicScheme scheme, DynamicColor color) {
     final decreasingContrast = scheme.contrastLevel < 0;
-    final toneDeltaPair = color.toneDeltaPair?.call(scheme);
+    final toneDeltaPair = color.toneDeltaPair(scheme);
+
+    final bg = color.background(scheme);
 
     // Case 1: dual foreground, pair of colors with delta constraint.
     if (toneDeltaPair != null) {
@@ -814,12 +2324,9 @@ class const ColorSpec2021() implements ColorSpec {
       var fTone = farther.tone(scheme);
 
       // 1st round: solve to min, each
-      if (color.background != null &&
-          nearer.contrastCurve != null &&
-          farther.contrastCurve != null) {
-        final bg = color.background?.call(scheme);
-        final nContrastCurve = nearer.contrastCurve?.call(scheme);
-        final fContrastCurve = farther.contrastCurve?.call(scheme);
+      {
+        final nContrastCurve = nearer.contrastCurve(scheme);
+        final fContrastCurve = farther.contrastCurve(scheme);
         if (bg != null && nContrastCurve != null && fContrastCurve != null) {
           final nContrast = nContrastCurve.get(scheme.contrastLevel);
           final fContrast = fContrastCurve.get(scheme.contrastLevel);
@@ -893,15 +2400,14 @@ class const ColorSpec2021() implements ColorSpec {
       // Case 2: No contrast pair; just solve for itself.
       var answer = color.tone(scheme);
 
-      if (color.background?.call(scheme) == null ||
-          color.contrastCurve?.call(scheme) == null) {
+      final contrastCurve = color.contrastCurve(scheme);
+
+      if (bg == null || contrastCurve == null) {
         return answer; // No adjustment for colors with no background.
       }
 
-      final bgTone = color.background!(scheme)!.getTone(scheme);
-      final desiredRatio = color.contrastCurve!(scheme)!.get(
-        scheme.contrastLevel,
-      );
+      final bgTone = bg.getTone(scheme);
+      final desiredRatio = contrastCurve.get(scheme.contrastLevel);
 
       if (Contrast.ratioOfTones(bgTone, answer) >= desiredRatio) {
         // Don't "improve" what's good enough.
@@ -923,13 +2429,12 @@ class const ColorSpec2021() implements ColorSpec {
         }
       }
 
-      if (color.secondBackground?.call(scheme) == null) {
-        return answer;
-      }
+      final secondBackground = color.secondBackground(scheme);
+      if (secondBackground == null) return answer;
 
       // Case 3: Adjust for dual backgrounds.
-      final bgTone1 = color.background!(scheme)!.getTone(scheme);
-      final bgTone2 = color.secondBackground!(scheme)!.getTone(scheme);
+      final bgTone1 = bg.getTone(scheme);
+      final bgTone2 = secondBackground.getTone(scheme);
 
       final upper = math.max(bgTone1, bgTone2);
       final lower = math.min(bgTone1, bgTone2);
@@ -1154,47 +2659,4 @@ class const ColorSpec2021() implements ColorSpec {
     Platform platform,
     SpecVersion specVersion,
   ) => .fromHueAndChroma(25.0, 84.0);
-
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
-  static bool _isMonochrome(DynamicScheme scheme) =>
-      scheme.variant == .monochrome;
-
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
-  static bool _isFidelity(DynamicScheme scheme) =>
-      scheme.variant == .fidelity || scheme.variant == .content;
-
-  static double _findDesiredChromaByTone(
-    double hue,
-    double chroma,
-    double tone,
-    bool byDecreasingTone,
-  ) {
-    var answer = tone;
-    var closestToChroma = Hct.from(hue, chroma, tone);
-    if (closestToChroma.chroma < chroma) {
-      var chromaPeak = closestToChroma.chroma;
-      while (closestToChroma.chroma < chroma) {
-        answer += byDecreasingTone ? -1.0 : 1.0;
-        final potentialSolution = Hct.from(hue, chroma, answer);
-        if (chromaPeak > potentialSolution.chroma) {
-          break;
-        }
-        if ((potentialSolution.chroma - chroma).abs() < 0.4) {
-          break;
-        }
-
-        final potentialDelta = (potentialSolution.chroma - chroma).abs();
-        final currentDelta = (closestToChroma.chroma - chroma).abs();
-        if (potentialDelta < currentDelta) {
-          closestToChroma = potentialSolution;
-        }
-        chromaPeak = math.max(chromaPeak, potentialSolution.chroma);
-      }
-    }
-    return answer;
-  }
 }

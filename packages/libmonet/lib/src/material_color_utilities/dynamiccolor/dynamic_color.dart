@@ -1,8 +1,11 @@
+import 'package:meta/meta.dart';
+
 import '../contrast/contrast.dart';
 import '../hct/hct.dart';
 import '../palettes/tonal_palette.dart';
 import '../utils/math_utils.dart';
 
+import '../utils/string_utils.dart';
 import 'color_spec.dart';
 import 'tone_delta_pair.dart';
 import 'contrast_curve.dart';
@@ -10,263 +13,91 @@ import 'dynamic_scheme.dart';
 
 typedef DynamicSchemeCallback<T> = T Function(DynamicScheme scheme);
 
-/// A color that adjusts itself based on UI state, represented by DynamicScheme.
-///
-/// This color automatically adjusts to accommodate a desired contrast level, or other adjustments
-/// such as differing in light mode versus dark mode, or what the theme is, or what the color that
-/// produced the theme is, etc.
-///
-/// Colors without backgrounds do not change tone when contrast changes. Colors with backgrounds
-/// become closer to their background as contrast lowers, and further when contrast increases.
-///
-/// For example, the default behavior of adjust tone at max contrast to be at a 7.0 ratio with its
-/// background is principled and matches accessibility guidance. That does not mean it's the desired
-/// approach for _every_ design system, and every color pairing, always, in every case.
-///
-/// Ultimately, each component necessary for calculating a color, adjusting it for a desired contrast
-/// level, and ensuring it has a certain lightness/tone difference from another color, is provided by
-/// a function that takes a DynamicScheme and returns a value. This ensures ultimate flexibility, any
-/// desired behavior of a color for any design system, but is usually unnecessary.
-///
-/// @param name The name of the dynamic color.
-/// @param palette Function that provides a TonalPalette given DynamicScheme. A TonalPalette is
-///   defined by a hue and chroma, so this replaces the need to specify hue/chroma. By providing a
-///   tonal palette, when contrast adjustments are made, intended chroma can be preserved.
-/// @param isBackground Whether this dynamic color is a background, with some other color as the
-///   foreground.
-/// @param chromaMultiplier Function that provides a chroma multiplier, given a DynamicScheme.
-/// @param background Function that provides a background color, given a DynamicScheme.
-/// @param tone Function that provides a tone, given a DynamicScheme.
-/// @param secondBackground Function that provides a second background color, given a DynamicScheme.
-/// @param contrastCurve Function that provides a contrast curve, given a DynamicScheme.
-/// @param toneDeltaPair Function that provides a tone delta pair, given a DynamicScheme.
-/// @param opacity Function that provides an opacity percentage, given a DynamicScheme.
-final class DynamicColor({
-  /// The name of the dynamic color.
-  required final String name,
+@immutable
+abstract class const DynamicColor() {
+  factory fromHct(String name, Hct hct) = _DynamicColor.fromHct;
 
-  /// Function that provides a [TonalPalette] given [DynamicScheme].
-  /// A [TonalPalette] is defined by a hue and chroma, so this replaces
-  /// the need to specify hue/chroma. By providing a tonal palette,
-  /// when contrast adjustments are made, intended chroma can be preserved.
-  required final DynamicSchemeCallback<TonalPalette> palette,
+  factory fromArgb(String name, int argb) = _DynamicColor.fromArgb;
 
-  /// Whether this dynamic color is a background,
-  /// with some other color as the foreground.
-  final bool isBackground = false,
+  const factory extended(
+    DynamicColor baseColor,
+    SpecVersion specVersion,
+    DynamicColor extendedColor,
+  ) = _ExtendedDynamicColor;
 
-  /// Function that provides a chroma multiplier, given a [DynamicScheme].
-  final DynamicSchemeCallback<double>? chromaMultiplier,
-
-  /// Function that provides a background color, given a [DynamicScheme].
-  final DynamicSchemeCallback<DynamicColor?>? background,
-
-  /// Function that provides a tone, given a [DynamicScheme].
-  DynamicSchemeCallback<double>? tone,
-
-  /// Function that provides a second background color, given a [DynamicScheme].
-  final DynamicSchemeCallback<DynamicColor?>? secondBackground,
-
-  /// Function that provides a contrast curve, given a [DynamicScheme].
-  final DynamicSchemeCallback<ContrastCurve?>? contrastCurve,
-
-  /// Function that provides a tone delta pair, given a [DynamicScheme].
-  final DynamicSchemeCallback<ToneDeltaPair?>? toneDeltaPair,
-
-  /// Function that provides an opacity percentage, given a [DynamicScheme].
-  final DynamicSchemeCallback<double?>? opacity,
-}) {
-  this {
-    if (background == null && secondBackground != null) {
-      throw ArgumentError(
-        "Color $name has secondBackground defined, "
-        "but background is not defined.",
-      );
-    }
-    if (background == null && contrastCurve != null) {
-      throw ArgumentError(
-        "Color $name has contrastCurve defined, "
-        "but background is not defined.",
-      );
-    }
-    if (background != null && contrastCurve == null) {
-      throw ArgumentError(
-        "Color $name has background defined, "
-        "but contrastCurve is not defined.",
-      );
-    }
-  }
-
-  /// Create a DynamicColor from a hex code.
-  ///
-  /// Result has no background; thus no support for increasing/decreasing
-  /// contrast for a11y.
-  ///
-  /// - [name] - The name of the dynamic color.
-  /// - [argb] - The source color from which to extract the hue and chroma.
-  factory fromArgb(String name, int argb) {
-    final hct = Hct.fromInt(argb);
-    final palette = TonalPalette.fromInt(argb);
-    return .new(name: name, palette: (_) => palette, tone: (_) => hct.tone);
-  }
-
-  /// Function that provides a tone, given a [DynamicScheme].
-  final DynamicSchemeCallback<double> tone =
-      tone ?? getInitialToneFromBackground(background);
-
-  final Map<DynamicScheme, Hct> _hctCache = <DynamicScheme, Hct>{};
-
-  DynamicColor copyWith({
-    String? name,
-    DynamicSchemeCallback<TonalPalette>? palette,
+  const factory custom({
+    required String name,
+    required DynamicSchemeCallback<TonalPalette> palette,
+    bool isBackground,
+    DynamicSchemeCallback<double>? chromaMultiplier,
+    DynamicSchemeCallback<DynamicColor?>? background,
     DynamicSchemeCallback<double>? tone,
-    bool? isBackground,
-  }) => name != null || palette != null || tone != null || isBackground != null
-      ? .new(
-          name: name ?? this.name,
-          palette: palette ?? this.palette,
-          tone: tone ?? this.tone,
-          isBackground: isBackground ?? this.isBackground,
-          chromaMultiplier: chromaMultiplier,
-          background: background,
-          secondBackground: secondBackground,
-          contrastCurve: contrastCurve,
-          toneDeltaPair: toneDeltaPair,
-          opacity: opacity,
-        )
-      : this;
+    DynamicSchemeCallback<DynamicColor?>? secondBackground,
+    DynamicSchemeCallback<ContrastCurve?>? contrastCurve,
+    DynamicSchemeCallback<ToneDeltaPair?>? toneDeltaPair,
+    DynamicSchemeCallback<double?>? opacity,
+  }) = _CustomDynamicColor;
+
+  // this {
+  //   if (background == null && secondBackground != null) {
+  //     throw ArgumentError(
+  //       "Color $name has secondBackground defined, "
+  //       "but background is not defined.",
+  //     );
+  //   }
+  //   if (background == null && contrastCurve != null) {
+  //     throw ArgumentError(
+  //       "Color $name has contrastCurve defined, "
+  //       "but background is not defined.",
+  //     );
+  //   }
+  //   if (background != null && contrastCurve == null) {
+  //     throw ArgumentError(
+  //       "Color $name has background defined, "
+  //       "but contrastCurve is not defined.",
+  //     );
+  //   }
+  // }
+
+  String get name;
+
+  TonalPalette palette(DynamicScheme scheme);
+
+  bool get isBackground => false;
+
+  double chromaMultiplier(DynamicScheme scheme) => 1.0;
+
+  DynamicColor? background(DynamicScheme scheme) => null;
+
+  double tone(DynamicScheme scheme) =>
+      background(scheme)?.getTone(scheme) ?? 50.0;
+
+  DynamicColor? secondBackground(DynamicScheme scheme) => null;
+
+  ContrastCurve? contrastCurve(DynamicScheme scheme) => null;
+
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) => null;
+
+  double? opacity(DynamicScheme scheme) => null;
 
   int getArgb(DynamicScheme scheme) {
     final argb = getHct(scheme).toInt();
-    final opacityPercentage = opacity?.call(scheme);
+
+    final opacityPercentage = opacity(scheme);
     if (opacityPercentage == null) return argb;
+
     final alpha = MathUtils.clamp((opacityPercentage * 255.0).round(), 0, 255);
     return (argb & 0x00ffffff) | (alpha << 24);
   }
 
-  Hct getHct(DynamicScheme scheme) {
-    final cachedAnswer = _hctCache[scheme];
-    if (cachedAnswer != null) return cachedAnswer;
-    final answer = ColorSpec.fromSpecVersion(scheme.specVersion)
-        .getHct(scheme, this);
-    if (_hctCache.length > 4) _hctCache.clear();
-    _hctCache[scheme] = answer;
-    return answer;
-  }
+  Hct getHct(DynamicScheme scheme) =>
+      ColorSpec.fromSpecVersion(scheme.specVersion).getHct(scheme, this);
 
   double getTone(DynamicScheme scheme) =>
       ColorSpec.fromSpecVersion(scheme.specVersion).getTone(scheme, this);
 
-  DynamicColor extendSpecVersion(
-    SpecVersion specVersion,
-    DynamicColor extendedColor,
-  ) {
-    _validateExtendedColor(specVersion, extendedColor);
-    return DynamicColor(
-      name: name,
-      isBackground: isBackground,
-      palette: (scheme) => scheme.specVersion >= specVersion
-          ? extendedColor.palette(scheme)
-          : palette(scheme),
-      tone: (scheme) => scheme.specVersion >= specVersion
-          ? extendedColor.tone(scheme)
-          : tone(scheme),
-      chromaMultiplier: (scheme) =>
-          (scheme.specVersion >= specVersion
-                  ? extendedColor.chromaMultiplier
-                  : chromaMultiplier)
-              ?.call(scheme) ??
-          1.0,
-      background: (scheme) =>
-          (scheme.specVersion >= specVersion
-                  ? extendedColor.background
-                  : background)
-              ?.call(scheme),
-      secondBackground: (scheme) =>
-          (scheme.specVersion >= specVersion
-                  ? extendedColor.secondBackground
-                  : secondBackground)
-              ?.call(scheme),
-      contrastCurve: (scheme) =>
-          (scheme.specVersion >= specVersion
-                  ? extendedColor.contrastCurve
-                  : contrastCurve)
-              ?.call(scheme),
-      toneDeltaPair: (scheme) =>
-          (scheme.specVersion >= specVersion
-                  ? extendedColor.toneDeltaPair
-                  : toneDeltaPair)
-              ?.call(scheme),
-      opacity: (scheme) =>
-          (scheme.specVersion >= specVersion ? extendedColor.opacity : opacity)
-              ?.call(scheme),
-    );
-  }
-
-  void _validateExtendedColor(
-    SpecVersion specVersion,
-    DynamicColor extendedColor,
-  ) {
-    if (name != extendedColor.name) {
-      throw ArgumentError(
-        "Attempting to extend color $name with color ${extendedColor.name} "
-        "of different name for spec version $specVersion.",
-      );
-    }
-    if (isBackground != extendedColor.isBackground) {
-      throw ArgumentError(
-        "Attempting to extend color $name as a "
-        "${isBackground ? "background" : "foreground"} with color "
-        "${extendedColor.name} as a "
-        "${extendedColor.isBackground ? "background" : "foreground"} "
-        "for spec version $specVersion.",
-      );
-    }
-  }
-
   @override
-  String toString() =>
-      "DynamicColor("
-      "name: $name, "
-      "palette: $palette, "
-      "tone: $tone, "
-      "isBackground: $isBackground, "
-      "chromaMultiplier: $chromaMultiplier, "
-      "background: $background, "
-      "secondBackground: $secondBackground, "
-      "contrastCurve: $contrastCurve, "
-      "toneDeltaPair: $toneDeltaPair, "
-      "opacity: $opacity"
-      ")";
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DynamicColor &&
-          name == other.name &&
-          palette == other.palette &&
-          tone == other.tone &&
-          isBackground == other.isBackground &&
-          chromaMultiplier == other.chromaMultiplier &&
-          background == other.background &&
-          secondBackground == other.secondBackground &&
-          contrastCurve == other.contrastCurve &&
-          toneDeltaPair == other.toneDeltaPair &&
-          opacity == other.opacity;
-
-  @override
-  int get hashCode => Object.hash(
-    name,
-    palette,
-    tone,
-    isBackground,
-    chromaMultiplier,
-    background,
-    secondBackground,
-    contrastCurve,
-    toneDeltaPair,
-    opacity,
-  );
+  String toString() => "DynamicColor($name)";
 
   static double foregroundTone(double bgTone, double ratio) {
     final lighterTone = Contrast.lighterUnsafe(bgTone, ratio);
@@ -313,9 +144,177 @@ final class DynamicColor({
 
   static bool toneAllowsLightForeground(double tone) => tone.round() <= 49.0;
 
-  static DynamicSchemeCallback<double> getInitialToneFromBackground(
-    DynamicSchemeCallback<DynamicColor?>? background,
-  ) => background != null
-      ? (scheme) => background(scheme)?.getTone(scheme) ?? 50.0
-      : (_) => 50.0;
+  // TODO: REMOVE AFTER MIGRATING
+  // static DynamicSchemeCallback<double> getInitialToneFromBackground(
+  //   DynamicSchemeCallback<DynamicColor?>? background,
+  // ) => background != null
+  //     ? (scheme) => background(scheme)?.getTone(scheme) ?? 50.0
+  //     : (_) => 50.0;
+}
+
+// ignore: prefer_const_constructors_in_immutables
+final class _DynamicColor.fromHct(@override final String name, final Hct _hct)
+    extends DynamicColor {
+  new fromArgb(String name, int argb) : this.fromHct(name, .fromInt(argb));
+
+  final _palette = TonalPalette.fromHct(_hct);
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => _palette;
+
+  @override
+  double tone(DynamicScheme scheme) => _hct.tone;
+
+  @override
+  String toString() =>
+      "DynamicColor($name, ${StringUtils.hexFromArgb(_hct.toInt())})";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _DynamicColor && name == other.name && _hct == other._hct;
+
+  @override
+  int get hashCode => Object.hash(name, _hct);
+}
+
+final class const _ExtendedDynamicColor(
+  final DynamicColor _baseColor,
+  final SpecVersion _specVersion,
+  final DynamicColor _extendedColor,
+) extends DynamicColor {
+  @override
+  String get name => _baseColor.name;
+
+  @override
+  bool get isBackground => _baseColor.isBackground;
+
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  DynamicColor _dynamicColor(DynamicScheme scheme) =>
+      scheme.specVersion >= _specVersion ? _extendedColor : _baseColor;
+
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  @override
+  TonalPalette palette(DynamicScheme scheme) =>
+      _dynamicColor(scheme).palette(scheme);
+
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  @override
+  double tone(DynamicScheme scheme) => _dynamicColor(scheme).tone(scheme);
+
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  @override
+  double chromaMultiplier(DynamicScheme scheme) =>
+      _dynamicColor(scheme).chromaMultiplier(scheme);
+
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  @override
+  DynamicColor? background(DynamicScheme scheme) =>
+      _dynamicColor(scheme).background(scheme);
+
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  @override
+  DynamicColor? secondBackground(DynamicScheme scheme) =>
+      _dynamicColor(scheme).secondBackground(scheme);
+
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      _dynamicColor(scheme).contrastCurve(scheme);
+
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) =>
+      _dynamicColor(scheme).toneDeltaPair(scheme);
+
+  @pragma("wasm:prefer-inline")
+  @pragma("vm:prefer-inline")
+  @pragma("dart2js:prefer-inline")
+  @override
+  double? opacity(DynamicScheme scheme) =>
+      _dynamicColor(scheme).opacity(scheme);
+
+  @override
+  String toString() =>
+      "$_baseColor.extendSpecVersion($_specVersion, $_extendedColor)";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _ExtendedDynamicColor &&
+          _baseColor == other._baseColor &&
+          _specVersion == other._specVersion &&
+          _extendedColor == other._extendedColor;
+
+  @override
+  int get hashCode => Object.hash(_baseColor, _specVersion, _extendedColor);
+}
+
+// TODO: IMPLEMENT EQUALITY
+
+final class const _CustomDynamicColor({
+  @override required final String name,
+
+  required final DynamicSchemeCallback<TonalPalette> _palette,
+
+  @override final bool isBackground = false,
+
+  final DynamicSchemeCallback<double>? _chromaMultiplier,
+
+  final DynamicSchemeCallback<DynamicColor?>? _background,
+
+  final DynamicSchemeCallback<double>? _tone,
+
+  final DynamicSchemeCallback<DynamicColor?>? _secondBackground,
+
+  final DynamicSchemeCallback<ContrastCurve?>? _contrastCurve,
+
+  final DynamicSchemeCallback<ToneDeltaPair?>? _toneDeltaPair,
+
+  final DynamicSchemeCallback<double?>? _opacity,
+}) extends DynamicColor {
+  @override
+  TonalPalette palette(DynamicScheme scheme) => _palette(scheme);
+
+  @override
+  double tone(DynamicScheme scheme) =>
+      _tone?.call(scheme) ?? background(scheme)?.getTone(scheme) ?? 50.0;
+
+  @override
+  double chromaMultiplier(DynamicScheme scheme) =>
+      _chromaMultiplier?.call(scheme) ?? 1.0;
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) => _background?.call(scheme);
+
+  @override
+  DynamicColor? secondBackground(DynamicScheme scheme) =>
+      _secondBackground?.call(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      _contrastCurve?.call(scheme);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) =>
+      _toneDeltaPair?.call(scheme);
+
+  @override
+  double? opacity(DynamicScheme scheme) => _opacity?.call(scheme);
 }

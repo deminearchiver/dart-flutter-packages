@@ -541,7 +541,7 @@ void _expectMatchesSnapshot(String snapshotFilePath) {
   // JSON parsing
   final snapshots = _tryParseSnapshots(validJson);
 
-  var rawSnapshotCount = 0;
+  final rawSnapshots = <SnapshotScheme>{};
 
   for (final snapshot in snapshots) {
     var scheme = snapshot.properties.toDynamicScheme();
@@ -554,7 +554,7 @@ void _expectMatchesSnapshot(String snapshotFilePath) {
       //   "snapshot: ${snapshot.properties}\n"
       //   "scheme: $scheme\n",
       // );
-      rawSnapshotCount += 1;
+      rawSnapshots.add(snapshot);
       scheme = snapshot.properties.toDynamicSchemeRaw();
     }
 
@@ -569,6 +569,9 @@ void _expectMatchesSnapshot(String snapshotFilePath) {
       expect(dynamicColor, isNotNull);
       if (dynamicColor != null) {
         final generatedColor = Color.argb(scheme.getArgb(dynamicColor));
+        // if (generatedColor.argb != snapshotColor.argb) {
+        //   rawSnapshots.add(snapshot);
+        // }
         expect(
           generatedColor.argb,
           snapshotColor.argb,
@@ -583,9 +586,15 @@ void _expectMatchesSnapshot(String snapshotFilePath) {
     }
     expect(dynamicColorsMapCopy, isEmpty);
   }
-  if (rawSnapshotCount > 0) {
+  if (rawSnapshots.isNotEmpty) {
     // print(
-    //   "marked $rawSnapshotCount snapshots out of ${snapshots.length} as raw",
+    //   "marked ${rawSnapshots.length} snapshots out of ${snapshots.length} as raw",
+    // );
+    // print(
+    //   rawSnapshots
+    //       .where((snapshot) => snapshot.properties.specVersion == .spec2021)
+    //       // .map((snapshot) => snapshot.properties.contrastLevel)
+    //       .toSet(),
     // );
   }
 }

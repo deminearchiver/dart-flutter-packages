@@ -1,23 +1,58 @@
-// ignore_for_file: recursive_getters
+part of 'color_spec.dart';
 
-import 'dart:math' as math;
+// TODO: REMOVE AFTER MIGRATING
+extension on DynamicColor {
+  DynamicColor copyWith({String? name}) =>
+      _DynamicColorCopyWith(this, name: name);
+}
 
-import '../hct.dart';
-import '../palettes/tonal_palette.dart';
-import '../utils/math_utils.dart';
-import 'color_spec.dart';
-import 'color_spec_2025.dart';
-import 'contrast_curve.dart';
-import 'dynamic_color.dart';
-import 'dynamic_scheme.dart';
-import 'tone_delta_pair.dart';
-import 'variant.dart';
+final class const _DynamicColorCopyWith(
+  final DynamicColor _baseColor, {
+  final String? _name,
+}) extends DynamicColor {
+  @override
+  String get name => _name ?? _baseColor.name;
+
+  @override
+  bool get isBackground => _baseColor.isBackground;
+
+  @override
+  TonalPalette palette(DynamicScheme scheme) => _baseColor.palette(scheme);
+
+  @override
+  double tone(DynamicScheme scheme) => _baseColor.tone(scheme);
+
+  @override
+  double chromaMultiplier(DynamicScheme scheme) =>
+      _baseColor.chromaMultiplier(scheme);
+
+  @override
+  DynamicColor? background(DynamicScheme scheme) =>
+      _baseColor.background(scheme);
+
+  @override
+  DynamicColor? secondBackground(DynamicScheme scheme) =>
+      _baseColor.secondBackground(scheme);
+
+  @override
+  ContrastCurve? contrastCurve(DynamicScheme scheme) =>
+      _baseColor.contrastCurve(scheme);
+
+  @override
+  ToneDeltaPair? toneDeltaPair(DynamicScheme scheme) =>
+      _baseColor.toneDeltaPair(scheme);
+
+  @override
+  double? opacity(DynamicScheme scheme) => _baseColor.opacity(scheme);
+}
+
+// TODO: MIGRATE
 
 /// [ColorSpec] implementation for the 2026 spec.
 class const ColorSpec2026() extends ColorSpec2025 {
   @override
   DynamicColor get surface {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "surface",
       palette: (scheme) => scheme.neutralPalette,
       tone: (scheme) => scheme.variant == .cmf
@@ -27,12 +62,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
           : 0.0,
       isBackground: true,
     );
-    return super.surface.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.surface, .spec2026, color2026);
   }
 
   @override
   DynamicColor get surfaceDim {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "surface_dim",
       palette: (scheme) => scheme.neutralPalette,
       tone: (scheme) => scheme.variant == .cmf
@@ -47,12 +82,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
                 : 1.7
           : 0.0,
     );
-    return super.surfaceDim.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.surfaceDim, .spec2026, color2026);
   }
 
   @override
   DynamicColor get surfaceBright {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "surface_bright",
       palette: (scheme) => scheme.neutralPalette,
       tone: (scheme) => scheme.variant == .cmf
@@ -67,12 +102,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
                 : 1.0
           : 0.0,
     );
-    return super.surfaceBright.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.surfaceBright, .spec2026, color2026);
   }
 
   @override
   DynamicColor get surfaceContainerLowest {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "surface_container_lowest",
       palette: (scheme) => scheme.neutralPalette,
       tone: (scheme) => scheme.variant == .cmf
@@ -82,12 +117,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
           : 0.0,
       isBackground: true,
     );
-    return super.surfaceContainerLowest.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.surfaceContainerLowest, .spec2026, color2026);
   }
 
   @override
   DynamicColor get surfaceContainerLow {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "surface_container_low",
       palette: (scheme) => scheme.neutralPalette,
       tone: (scheme) => scheme.variant == .cmf
@@ -98,12 +133,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
       isBackground: true,
       chromaMultiplier: (scheme) => scheme.variant == .cmf ? 1.25 : 0.0,
     );
-    return super.surfaceContainerLow.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.surfaceContainerLow, .spec2026, color2026);
   }
 
   @override
   DynamicColor get surfaceContainer {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "surface_container",
       palette: (scheme) => scheme.neutralPalette,
       tone: (scheme) => scheme.variant == .cmf
@@ -114,12 +149,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
       isBackground: true,
       chromaMultiplier: (scheme) => scheme.variant == .cmf ? 1.4 : 0.0,
     );
-    return super.surfaceContainer.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.surfaceContainer, .spec2026, color2026);
   }
 
   @override
   DynamicColor get surfaceContainerHigh {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "surface_container_high",
       palette: (scheme) => scheme.neutralPalette,
       tone: (scheme) => scheme.variant == .cmf
@@ -130,12 +165,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
       isBackground: true,
       chromaMultiplier: (scheme) => scheme.variant == .cmf ? 1.5 : 0.0,
     );
-    return super.surfaceContainerHigh.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.surfaceContainerHigh, .spec2026, color2026);
   }
 
   @override
   DynamicColor get surfaceContainerHighest {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "surface_container_highest",
       palette: (scheme) => scheme.neutralPalette,
       tone: (scheme) => scheme.variant == .cmf
@@ -146,86 +181,83 @@ class const ColorSpec2026() extends ColorSpec2025 {
       isBackground: true,
       chromaMultiplier: (scheme) => scheme.variant == .cmf ? 1.7 : 0.0,
     );
-    return super.surfaceContainerHighest.extendSpecVersion(
-      .spec2026,
-      color2026,
-    );
+    return .extended(super.surfaceContainerHighest, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onSurface {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_surface",
       palette: (scheme) => scheme.neutralPalette,
       chromaMultiplier: (scheme) => scheme.variant == .cmf ? 1.7 : 0.0,
       background: highestSurface,
       contrastCurve: (scheme) => _getContrastCurve(scheme.isDark ? 11.0 : 9.0),
     );
-    return super.onSurface.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onSurface, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onSurfaceVariant {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_surface_variant",
       palette: (scheme) => scheme.neutralPalette,
       chromaMultiplier: (scheme) => scheme.variant == .cmf ? 1.7 : 0.0,
       background: highestSurface,
       contrastCurve: (scheme) => _getContrastCurve(scheme.isDark ? 6.0 : 4.5),
     );
-    return super.onSurfaceVariant.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onSurfaceVariant, .spec2026, color2026);
   }
 
   @override
   DynamicColor get outline {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "outline",
       palette: (scheme) => scheme.neutralPalette,
       chromaMultiplier: (scheme) => scheme.variant == .cmf ? 1.7 : 0.0,
       background: highestSurface,
       contrastCurve: (scheme) => _getContrastCurve(3.0),
     );
-    return super.outline.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.outline, .spec2026, color2026);
   }
 
   @override
   DynamicColor get outlineVariant {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "outline_variant",
       palette: (scheme) => scheme.neutralPalette,
       chromaMultiplier: (scheme) => scheme.variant == .cmf ? 1.7 : 0.0,
       background: highestSurface,
       contrastCurve: (scheme) => _getContrastCurve(1.5),
     );
-    return super.outlineVariant.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.outlineVariant, .spec2026, color2026);
   }
 
   @override
   DynamicColor get inverseSurface {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "inverse_surface",
       palette: (scheme) => scheme.neutralPalette,
       tone: (scheme) => scheme.isDark ? 98.0 : 4.0,
       isBackground: true,
       chromaMultiplier: (scheme) => scheme.variant == .cmf ? 1.7 : 0.0,
     );
-    return super.inverseSurface.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.inverseSurface, .spec2026, color2026);
   }
 
   @override
   DynamicColor get inverseOnSurface {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "inverse_on_surface",
       palette: (scheme) => scheme.neutralPalette,
       background: (scheme) => inverseSurface,
       contrastCurve: (scheme) => _getContrastCurve(7.0),
     );
-    return super.inverseOnSurface.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.inverseOnSurface, .spec2026, color2026);
   }
 
   @override
   DynamicColor get primary {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "primary",
       palette: (scheme) => scheme.primaryPalette,
       tone: (scheme) => scheme.sourceColorHct.chroma <= 12
@@ -246,30 +278,30 @@ class const ColorSpec2026() extends ColorSpec2025 {
             )
           : null,
     );
-    return super.primary.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.primary, .spec2026, color2026);
   }
 
   @override
   DynamicColor get primaryDim {
     // Remapped to primary in 2026 spec.
     final color2026 = primary.copyWith(name: "primary_dim");
-    return super.primaryDim.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.primaryDim, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onPrimary {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_primary",
       palette: (scheme) => scheme.primaryPalette,
       background: (scheme) => primary,
       contrastCurve: (scheme) => _getContrastCurve(6.0),
     );
-    return super.onPrimary.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onPrimary, .spec2026, color2026);
   }
 
   @override
   DynamicColor get primaryContainer {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "primary_container",
       palette: (scheme) => scheme.primaryPalette,
       tone: (scheme) => !scheme.isDark && scheme.sourceColorHct.chroma <= 12
@@ -282,23 +314,23 @@ class const ColorSpec2026() extends ColorSpec2025 {
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
-    return super.primaryContainer.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.primaryContainer, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onPrimaryContainer {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_primary_container",
       palette: (scheme) => scheme.primaryPalette,
       background: (scheme) => primaryContainer,
       contrastCurve: (scheme) => _getContrastCurve(6.0),
     );
-    return super.onPrimaryContainer.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onPrimaryContainer, .spec2026, color2026);
   }
 
   @override
   DynamicColor get primaryFixed {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "primary_fixed",
       palette: (scheme) => scheme.primaryPalette,
       tone: (scheme) => primaryContainer.getTone(
@@ -309,12 +341,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
-    return super.primaryFixed.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.primaryFixed, .spec2026, color2026);
   }
 
   @override
   DynamicColor get primaryFixedDim {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "primary_fixed_dim",
       palette: (scheme) => scheme.primaryPalette,
       tone: (scheme) => primaryFixed.getTone(scheme),
@@ -330,36 +362,36 @@ class const ColorSpec2026() extends ColorSpec2025 {
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
-    return super.primaryFixedDim.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.primaryFixedDim, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onPrimaryFixed {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_primary_fixed",
       palette: (scheme) => scheme.primaryPalette,
       background: (scheme) =>
           primaryFixed.getTone(scheme) > 57.0 ? primaryFixedDim : primaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(7.0),
     );
-    return super.onPrimaryFixed.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onPrimaryFixed, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onPrimaryFixedVariant {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_primary_fixed_variant",
       palette: (scheme) => scheme.primaryPalette,
       background: (scheme) =>
           primaryFixed.getTone(scheme) > 57.0 ? primaryFixedDim : primaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(4.5),
     );
-    return super.onPrimaryFixedVariant.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onPrimaryFixedVariant, .spec2026, color2026);
   }
 
   @override
   DynamicColor get secondary {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "secondary",
       palette: (scheme) => scheme.secondaryPalette,
       tone: (scheme) => scheme.isDark
@@ -378,30 +410,30 @@ class const ColorSpec2026() extends ColorSpec2025 {
             )
           : null,
     );
-    return super.secondary.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.secondary, .spec2026, color2026);
   }
 
   @override
   DynamicColor get secondaryDim {
     // Remapped to secondary in 2026 spec.
     final color2026 = secondary.copyWith(name: "secondary_dim");
-    return super.secondaryDim.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.secondaryDim, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onSecondary {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_secondary",
       palette: (scheme) => scheme.secondaryPalette,
       background: (scheme) => secondary,
       contrastCurve: (scheme) => _getContrastCurve(6.0),
     );
-    return super.onSecondary.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onSecondary, .spec2026, color2026);
   }
 
   @override
   DynamicColor get secondaryContainer {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "secondary_container",
       palette: (scheme) => scheme.secondaryPalette,
       tone: (scheme) => scheme.isDark
@@ -412,23 +444,23 @@ class const ColorSpec2026() extends ColorSpec2025 {
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
-    return super.secondaryContainer.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.secondaryContainer, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onSecondaryContainer {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_secondary_container",
       palette: (scheme) => scheme.secondaryPalette,
       background: (scheme) => secondaryContainer,
       contrastCurve: (scheme) => _getContrastCurve(6.0),
     );
-    return super.onSecondaryContainer.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onSecondaryContainer, .spec2026, color2026);
   }
 
   @override
   DynamicColor get secondaryFixed {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "secondary_fixed",
       palette: (scheme) => scheme.secondaryPalette,
       tone: (scheme) => secondaryContainer.getTone(
@@ -439,12 +471,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
-    return super.secondaryFixed.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.secondaryFixed, .spec2026, color2026);
   }
 
   @override
   DynamicColor get secondaryFixedDim {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "secondary_fixed_dim",
       palette: (scheme) => scheme.secondaryPalette,
       tone: (scheme) => secondaryFixed.getTone(scheme),
@@ -460,12 +492,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
-    return super.secondaryFixedDim.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.secondaryFixedDim, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onSecondaryFixed {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_secondary_fixed",
       palette: (scheme) => scheme.secondaryPalette,
       background: (scheme) => secondaryFixed.getTone(scheme) > 57.0
@@ -473,12 +505,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
           : secondaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(7.0),
     );
-    return super.onSecondaryFixed.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onSecondaryFixed, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onSecondaryFixedVariant {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_secondary_fixed_variant",
       palette: (scheme) => scheme.secondaryPalette,
       background: (scheme) => secondaryFixed.getTone(scheme) > 57.0
@@ -486,15 +518,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
           : secondaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(4.5),
     );
-    return super.onSecondaryFixedVariant.extendSpecVersion(
-      .spec2026,
-      color2026,
-    );
+    return .extended(super.onSecondaryFixedVariant, .spec2026, color2026);
   }
 
   @override
   DynamicColor get tertiary {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "tertiary",
       palette: (scheme) => scheme.tertiaryPalette,
       tone: (scheme) =>
@@ -513,30 +542,30 @@ class const ColorSpec2026() extends ColorSpec2025 {
             )
           : null,
     );
-    return super.tertiary.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.tertiary, .spec2026, color2026);
   }
 
   @override
   DynamicColor get tertiaryDim {
     // Remapped to tertiary in 2026 spec.
     final color2026 = tertiary.copyWith(name: "tertiary_dim");
-    return super.tertiaryDim.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.tertiaryDim, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onTertiary {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_tertiary",
       palette: (scheme) => scheme.tertiaryPalette,
       background: (scheme) => tertiary,
       contrastCurve: (scheme) => _getContrastCurve(6.0),
     );
-    return super.onTertiary.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onTertiary, .spec2026, color2026);
   }
 
   @override
   DynamicColor get tertiaryContainer {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "tertiary_container",
       palette: (scheme) => scheme.tertiaryPalette,
       tone: (scheme) {
@@ -552,23 +581,23 @@ class const ColorSpec2026() extends ColorSpec2025 {
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
-    return super.tertiaryContainer.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.tertiaryContainer, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onTertiaryContainer {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_tertiary_container",
       palette: (scheme) => scheme.tertiaryPalette,
       background: (scheme) => tertiaryContainer,
       contrastCurve: (scheme) => _getContrastCurve(6.0),
     );
-    return super.onTertiaryContainer.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onTertiaryContainer, .spec2026, color2026);
   }
 
   @override
   DynamicColor get tertiaryFixed {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "tertiary_fixed",
       palette: (scheme) => scheme.tertiaryPalette,
       tone: (scheme) {
@@ -580,12 +609,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
-    return super.tertiaryFixed.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.tertiaryFixed, .spec2026, color2026);
   }
 
   @override
   DynamicColor get tertiaryFixedDim {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "tertiary_fixed_dim",
       palette: (scheme) => scheme.tertiaryPalette,
       tone: (scheme) => tertiaryFixed.getTone(scheme),
@@ -601,12 +630,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
-    return super.tertiaryFixedDim.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.tertiaryFixedDim, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onTertiaryFixed {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_tertiary_fixed",
       palette: (scheme) => scheme.tertiaryPalette,
       background: (scheme) => tertiaryFixed.getTone(scheme) > 57.0
@@ -614,12 +643,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
           : tertiaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(7.0),
     );
-    return super.onTertiaryFixed.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onTertiaryFixed, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onTertiaryFixedVariant {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_tertiary_fixed_variant",
       palette: (scheme) => scheme.tertiaryPalette,
       background: (scheme) => tertiaryFixed.getTone(scheme) > 57.0
@@ -627,12 +656,12 @@ class const ColorSpec2026() extends ColorSpec2025 {
           : tertiaryFixed,
       contrastCurve: (scheme) => _getContrastCurve(4.5),
     );
-    return super.onTertiaryFixedVariant.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onTertiaryFixedVariant, .spec2026, color2026);
   }
 
   @override
   DynamicColor get error {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "error",
       palette: (scheme) => scheme.errorPalette,
       tone: (scheme) => _tMaxC(scheme.errorPalette),
@@ -649,30 +678,30 @@ class const ColorSpec2026() extends ColorSpec2025 {
             )
           : null,
     );
-    return super.error.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.error, .spec2026, color2026);
   }
 
   @override
   DynamicColor get errorDim {
     // Remapped to error in 2026 spec.
     final color2026 = error.copyWith(name: "error_dim");
-    return super.errorDim.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.errorDim, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onError {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_error",
       palette: (scheme) => scheme.errorPalette,
       background: (scheme) => error,
       contrastCurve: (scheme) => _getContrastCurve(6.0),
     );
-    return super.onError.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onError, .spec2026, color2026);
   }
 
   @override
   DynamicColor get errorContainer {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "error_container",
       palette: (scheme) => scheme.errorPalette,
       tone: (scheme) => scheme.isDark
@@ -683,18 +712,18 @@ class const ColorSpec2026() extends ColorSpec2025 {
       contrastCurve: (scheme) =>
           scheme.contrastLevel > 0.0 ? _getContrastCurve(1.5) : null,
     );
-    return super.errorContainer.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.errorContainer, .spec2026, color2026);
   }
 
   @override
   DynamicColor get onErrorContainer {
-    final color2026 = DynamicColor(
+    final color2026 = DynamicColor.custom(
       name: "on_error_container",
       palette: (scheme) => scheme.errorPalette,
       background: (scheme) => errorContainer,
       contrastCurve: (scheme) => _getContrastCurve(6.0),
     );
-    return super.onErrorContainer.extendSpecVersion(.spec2026, color2026);
+    return .extended(super.onErrorContainer, .spec2026, color2026);
   }
 
   @override
@@ -828,68 +857,6 @@ class const ColorSpec2026() extends ColorSpec2025 {
       specVersion,
     ),
   };
-
-  static double _findBestToneForChroma(
-    double hue,
-    double chroma,
-    double tone,
-    bool byDecreasingTone,
-  ) {
-    var answer = tone;
-    var bestCandidate = Hct.from(hue, chroma, answer);
-    while (bestCandidate.chroma < chroma) {
-      if (tone < 0 || tone > 100) break;
-      tone += byDecreasingTone ? -1.0 : 1.0;
-      final newCandidate = Hct.from(hue, chroma, tone);
-      if (bestCandidate.chroma < newCandidate.chroma) {
-        bestCandidate = newCandidate;
-        answer = tone;
-      }
-    }
-    return answer;
-  }
-
-  static double _tMaxC(
-    TonalPalette palette, [
-    double lowerBound = 0.0,
-    double upperBound = 100.0,
-    double chromaMultiplier = 1.0,
-  ]) => MathUtils.clamp(
-    _findBestToneForChroma(
-      palette.hue,
-      palette.chroma * chromaMultiplier,
-      100.0,
-      true,
-    ),
-    lowerBound,
-    upperBound,
-  );
-
-  static double _tMinC(
-    TonalPalette palette, [
-    double lowerBound = 0.0,
-    double upperBound = 100.0,
-  ]) => MathUtils.clamp(
-    _findBestToneForChroma(palette.hue, palette.chroma, 0.0, false),
-    lowerBound,
-    upperBound,
-  );
-
-  @pragma("wasm:prefer-inline")
-  @pragma("vm:prefer-inline")
-  @pragma("dart2js:prefer-inline")
-  static ContrastCurve _getContrastCurve(double defaultContrast) =>
-      switch (defaultContrast) {
-        1.5 => const ContrastCurve(1.5, 1.5, 3.0, 5.5),
-        3.0 => const ContrastCurve(3.0, 3.0, 4.5, 7.0),
-        4.5 => const ContrastCurve(4.5, 4.5, 7.0, 11.0),
-        6.0 => const ContrastCurve(6.0, 6.0, 7.0, 11.0),
-        7.0 => const ContrastCurve(7.0, 7.0, 11.0, 21.0),
-        9.0 => const ContrastCurve(9.0, 9.0, 11.0, 21.0),
-        11.0 => const ContrastCurve(11.0, 11.0, 21.0, 21.0),
-        21.0 => const ContrastCurve(21.0, 21.0, 21.0, 21.0),
-        _ => ContrastCurve(defaultContrast, defaultContrast, 7.0, 21.0),
-      };
 
   static double _getErrorHue(double primaryHue, double tertiaryHue) {
     if (primaryHue <= 8.0) {

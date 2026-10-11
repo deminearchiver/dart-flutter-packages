@@ -41,4 +41,6 @@ final class const ContrastCurve(
 
   @override
   int get hashCode => Object.hash(low, normal, medium, high);
+
+  static const identity = ContrastCurve(-1.0, 0.0, 0.5, 1.0);
 }
