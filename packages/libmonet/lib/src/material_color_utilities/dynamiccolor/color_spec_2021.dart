@@ -810,7 +810,6 @@ final class const _OnPrimaryContainer2021()
     return scheme.isDark ? 90.0 : 30.0;
   }
 
-
   @override
   DynamicColor? background(DynamicScheme scheme) => _primaryContainer;
 
@@ -1938,7 +1937,7 @@ final class const _TextHintInverse2021()
   int get hashCode => runtimeType.hashCode;
 }
 
-abstract mixin class _DynamicColors2021 {
+mixin _DynamicColors2021 {
   DynamicColor get _primaryPaletteKeyColor =>
       const _PrimaryPaletteKeyColor2021();
 
