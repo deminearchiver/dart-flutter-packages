@@ -1,3 +1,8 @@
+## 0.1.10
+
+- Rolled the Luminous Symbols font from `v62` to `v63`.
+  - This update introduces 27 new icons: `airline_seat_flat`, `airline_seat_flat_angled`, `airline_seat_individual_suite`, `airline_seat_legroom_extra`, `airline_seat_legroom_normal`, `airline_seat_legroom_reduced`, `airline_seat_recline_extra`, `child_friendly`, `date_range`, `doorbell_2`, `event_seat`, `fitness_center`, `flightsmode`, `golf_course`, `grass`, `hotel`, `local_activity`, `local_cafe`, `nature`, `notifications_off`, `park`, `photo_spark`, `power`, `room_service`, `stars`, `usb`, `youtube_tv`.
+
 ## 0.1.9
 
 - Rolled the Luminous Symbols font from `v61` to `v62`.
