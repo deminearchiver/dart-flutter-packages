@@ -1,3 +1,8 @@
+## 0.1.11
+
+- Rolled the Luminous Symbols font from `v63` to `v65`.
+  - This update introduces 23 new icons: `attractions`, `carry_on_bag`, `checked_bag`, `chrome_product`, `collapse_all`, `doorbell`, `download_done`, `festival`, `health_and_beauty`, `kid_star`, `matter`, `no_photography`, `notebook_open`, `offline_pin`, `passkey`, `person_check`, `plane_contrails`, `select_all`, `sim_card_download`, `stadium`, `theater_comedy`, `universal_currency_alt`, `volunteer_activism`.
+
 ## 0.1.10
 
 - Rolled the Luminous Symbols font from `v62` to `v63`.
