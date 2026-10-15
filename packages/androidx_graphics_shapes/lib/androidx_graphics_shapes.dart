@@ -15,6 +15,6 @@ export 'src/shapes/shapes.dart'
         RoundedPolygon,
         ShapePointTransformer;
 
-export 'src/material_shapes.dart';
 export 'src/material_shape_border.dart' show MaterialShapeBorder;
+export 'src/material_shapes.dart';
 export 'src/path_borders.dart';
