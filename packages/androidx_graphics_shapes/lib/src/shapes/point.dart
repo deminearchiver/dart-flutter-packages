@@ -35,7 +35,7 @@ extension PointGeometry on Offset {
 
   /// Returns this point rotated a quarter turn around (0, 0), taking (x, y)
   /// to (-y, x).
-  Point rotate90() => Point(-y, x);
+  Point rotate90() => .new(-y, x);
 
   /// Returns this point rotated by [degrees] around [center].
   Point rotate(double degrees, {Point center = .zero}) {
@@ -73,7 +73,7 @@ extension PointGeometry on Offset {
   /// Returns a copy of this point with [f] applied to it.
   Point transformed(ShapePointTransformer f) {
     final result = f(x, y);
-    return Point(result.$1, result.$2);
+    return .new(result.$1, result.$2);
   }
 }
 

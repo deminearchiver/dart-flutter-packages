@@ -161,12 +161,12 @@ void main() {
         CubicBezier.straightLine(Point.zero, const Point(1, 0)),
       );
 
-      expect(polygon.cubics.clear, throwsUnsupportedError);
+      expect(() => polygon.cubics.clear(), throwsUnsupportedError);
       expect(
         () => polygon.cubics.add(edge.cubics.first),
         throwsUnsupportedError,
       );
-      expect(polygon.features.clear, throwsUnsupportedError);
+      expect(() => polygon.features.clear(), throwsUnsupportedError);
       expect(() => polygon.features.add(edge), throwsUnsupportedError);
     });
 

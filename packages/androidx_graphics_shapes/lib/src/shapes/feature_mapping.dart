@@ -125,7 +125,7 @@ List<(double, double)> doMapping(
   return helper.mapping;
 }
 
-class _MappingHelper {
+final class _MappingHelper {
   // List of mappings from progress in the start shape to progress in the
   // end shape.
   // We keep this list sorted by the first element.
@@ -161,11 +161,11 @@ class _MappingHelper {
       final (after1, after2) = mapping[insertionIndex % n];
 
       // We don't want features that are way too close to each other, that will
-      // make the DoubleMapper unstable.
-      if (progressDistance(f1.progress, before1) < distanceEpsilon ||
-          progressDistance(f1.progress, after1) < distanceEpsilon ||
-          progressDistance(f2.progress, before2) < distanceEpsilon ||
-          progressDistance(f2.progress, after2) < distanceEpsilon) {
+      // make the DoubleMapper unstable, and validateProgress rejects them.
+      if (progressDistance(f1.progress, before1) <= distanceEpsilon ||
+          progressDistance(f1.progress, after1) <= distanceEpsilon ||
+          progressDistance(f2.progress, before2) <= distanceEpsilon ||
+          progressDistance(f2.progress, after2) <= distanceEpsilon) {
         return;
       }
 

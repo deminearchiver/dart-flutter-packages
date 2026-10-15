@@ -223,9 +223,7 @@ class const CubicBezier.raw(
   Rect _computeBounds({required bool approximate}) {
     // A curve might be of zero-length, with both anchors co-located.
     // Just return the point itself.
-    if (isZeroLength) {
-      return .fromLTRB(anchor0X, anchor0Y, anchor0X, anchor0Y);
-    }
+    if (isZeroLength) return .fromLTRB(anchor0X, anchor0Y, anchor0X, anchor0Y);
 
     var minX = math.min(anchor0X, anchor1X);
     var minY = math.min(anchor0Y, anchor1Y);
@@ -255,12 +253,8 @@ class const CubicBezier.raw(
         final t = 2.0 * xc / (-2.0 * xb);
         if (t >= 0.0 && t <= 1.0) {
           final x = pointAtX(t);
-          if (x < minX) {
-            minX = x;
-          }
-          if (x > maxX) {
-            maxX = x;
-          }
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
         }
       }
     } else {
@@ -271,23 +265,15 @@ class const CubicBezier.raw(
         final t1 = (-xb + sqrtXs) / (2.0 * xa);
         if (t1 >= 0.0 && t1 <= 1.0) {
           final x = pointAtX(t1);
-          if (x < minX) {
-            minX = x;
-          }
-          if (x > maxX) {
-            maxX = x;
-          }
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
         }
 
         final t2 = (-xb - sqrtXs) / (2.0 * xa);
         if (t2 >= 0.0 && t2 <= 1.0) {
           final x = pointAtX(t2);
-          if (x < minX) {
-            minX = x;
-          }
-          if (x > maxX) {
-            maxX = x;
-          }
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
         }
       }
     }
@@ -302,12 +288,8 @@ class const CubicBezier.raw(
         final t = 2.0 * yc / (-2.0 * yb);
         if (t >= 0.0 && t <= 1.0) {
           final y = pointAtY(t);
-          if (y < minY) {
-            minY = y;
-          }
-          if (y > maxY) {
-            maxY = y;
-          }
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
         }
       }
     } else {
@@ -318,23 +300,15 @@ class const CubicBezier.raw(
         final t1 = (-yb + sqrtYs) / (2.0 * ya);
         if (t1 >= 0.0 && t1 <= 1.0) {
           final y = pointAtY(t1);
-          if (y < minY) {
-            minY = y;
-          }
-          if (y > maxY) {
-            maxY = y;
-          }
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
         }
 
         final t2 = (-yb - sqrtYs) / (2.0 * ya);
         if (t2 >= 0.0 && t2 <= 1.0) {
           final y = pointAtY(t2);
-          if (y < minY) {
-            minY = y;
-          }
-          if (y > maxY) {
-            maxY = y;
-          }
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
         }
       }
     }

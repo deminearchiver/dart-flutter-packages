@@ -16,5 +16,5 @@ export 'src/shapes/shapes.dart'
         ShapePointTransformer;
 
 export 'src/material_shapes.dart';
-export 'src/material_shape_border.dart';
+export 'src/material_shape_border.dart' show MaterialShapeBorder;
 export 'src/path_borders.dart';

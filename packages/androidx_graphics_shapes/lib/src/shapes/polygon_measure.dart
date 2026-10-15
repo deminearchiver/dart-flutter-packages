@@ -391,10 +391,6 @@ class const LengthMeasurer() implements Measurer {
   /// Creates a [LengthMeasurer].
   this;
 
-  // The minimum number needed to achieve up to 98.5% accuracy from the true
-  // arc length.
-  static const _segments = 3;
-
   @override
   double measureCubic(CubicBezier cubic) =>
       _closestProgressTo(cubic, .infinity).$2;
@@ -404,9 +400,7 @@ class const LengthMeasurer() implements Measurer {
       _closestProgressTo(cubic, measure).$1;
 
   (double, double) _closestProgressTo(CubicBezier cubic, double threshold) {
-    if (threshold <= 0.0) {
-      return (0.0, 0.0);
-    }
+    if (threshold <= 0.0) return (0.0, 0.0);
 
     var total = 0.0;
     var remainder = threshold;
@@ -433,4 +427,8 @@ class const LengthMeasurer() implements Measurer {
 
     return (1.0, total);
   }
+
+  // The minimum number needed to achieve up to 98.5% accuracy from the true
+  // arc length.
+  static const _segments = 3;
 }

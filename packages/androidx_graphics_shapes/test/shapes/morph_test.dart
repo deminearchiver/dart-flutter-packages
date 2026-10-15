@@ -94,7 +94,7 @@ void main() {
       // Translate and scale to get a larger path.
       final matrix = Matrix4.identity()
         ..translateByDouble(scale / 2, scale / 2, 0, 1)
-        ..scaleByDouble(scale, scale, 1, 1);
+        ..scaleByDouble(scale, scale, scale, 1);
 
       final ui.Path poly1Path = poly1.toPath().transform(matrix.storage);
       final ui.Path poly2Path = poly2.toPath().transform(matrix.storage);

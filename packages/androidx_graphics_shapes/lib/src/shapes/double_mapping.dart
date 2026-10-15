@@ -93,11 +93,6 @@ class DoubleMapper(List<(double, double)> mappings) {
     validateProgress(_targetValues);
   }
 
-  // Any 2 points in the (x, x) diagonal, with x in the [0, 1) range, define
-  // the identity mapping. They are spread out as much as possible to minimize
-  // floating point errors.
-  static final identity = DoubleMapper([(0.0, 0.0), (0.5, 0.5)]);
-
   final _sourceValues = List<double>.filled(mappings.length, 0.0);
 
   final _targetValues = List<double>.filled(mappings.length, 0.0);
@@ -107,6 +102,11 @@ class DoubleMapper(List<(double, double)> mappings) {
 
   /// Maps a value from the target back to the source space.
   double mapBack(double x) => linearMap(_targetValues, _sourceValues, x);
+
+  // Any 2 points in the (x, x) diagonal, with x in the [0, 1) range, define
+  // the identity mapping. They are spread out as much as possible to minimize
+  // floating point errors.
+  static final identity = DoubleMapper([(0.0, 0.0), (0.5, 0.5)]);
 }
 
 /// Verifies that a list of progress values are all in the range [0.0, 1.0)

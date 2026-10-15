@@ -20,6 +20,11 @@ import 'shapes/rounded_polygon.dart';
 /// widget it is applied to.
 ///
 /// Typically used with a [ShapeDecoration] to draw a material-shaped border.
+///
+/// Lerping between two [MaterialShapeBorder]s morphs one shape into the
+/// other. Lerping to or from another kind of [ShapeBorder], such as a
+/// [RoundedRectangleBorder], doesn't morph: the border switches from one to
+/// the other halfway through.
 class const MaterialShapeBorder({
   /// The shape this border represents.
   ///
@@ -49,7 +54,6 @@ class const MaterialShapeBorder({
   final double squash = 0.0,
 }) extends OutlinedBorder {
   /// Creates a [MaterialShapeBorder].
-
   this
     : assert(
         squash >= 0.0 && squash <= 1.0,
@@ -72,17 +76,7 @@ class const MaterialShapeBorder({
   /// for the same pair of shapes on every frame, so the result is worth
   /// keeping.
   static Morph _morphBetween(RoundedPolygon start, RoundedPolygon end) =>
-      _morphCache.putIfAbsent(
-        _MorphCacheKey(start, end),
-        () => Morph(start, end),
-      );
-
-  /// Whether the [Morph] from [start] to [end] is currently cached.
-  ///
-  /// Only meant for tests that check the caching of morphs.
-  @visibleForTesting
-  static bool debugIsMorphCached(RoundedPolygon start, RoundedPolygon end) =>
-      _morphCache.containsKey(_MorphCacheKey(start, end));
+      _morphCache.putIfAbsent(.new(start, end), () => .new(start, end));
 
   /// Whether [border] is a [MaterialShapeBorder] or the result of lerping
   /// between two of them.
@@ -128,9 +122,7 @@ class const MaterialShapeBorder({
     final from = _progressAlong(a, start, end);
     final to = _progressAlong(b, start, end);
 
-    if (from == null || to == null) {
-      return null;
-    }
+    if (from == null || to == null) return null;
 
     return _MorphingShapeBorder(
       morph: morphing.morph,
@@ -174,9 +166,9 @@ class const MaterialShapeBorder({
 
     final shape = (border as MaterialShapeBorder).shape;
 
-    if (shape == start) return 0.0;
+    if (shape == start) return 0;
 
-    if (shape == end) return 1.0;
+    if (shape == end) return 1;
 
     return null;
   }
@@ -211,7 +203,9 @@ class const MaterialShapeBorder({
     double t,
   ) {
     if (t == 0.0) return a;
+
     if (t == 1.0) return b;
+
     return _lerp(a, b, t);
   }
 
@@ -249,9 +243,9 @@ class const MaterialShapeBorder({
       identical(this, other) ||
       runtimeType == other.runtimeType &&
           other is MaterialShapeBorder &&
-          other.shape == shape &&
-          other.side == side &&
-          other.squash == squash;
+          shape == other.shape &&
+          side == other.side &&
+          squash == other.squash;
 
   @override
   int get hashCode => Object.hash(shape, side, squash);
@@ -263,7 +257,7 @@ class const MaterialShapeBorder({
 /// returns. It keeps the morph it sits on, which is what lets an interrupted
 /// transition resume along the same morph instead of snapping.
 // ignore: prefer_const_constructors_in_immutables
-class _MorphingShapeBorder({
+final class _MorphingShapeBorder({
   /// The morph this border sits on.
   ///
   /// Carrying it along saves every border produced while resuming an
@@ -278,37 +272,16 @@ class _MorphingShapeBorder({
   required final double squash,
   super.side,
 }) extends OutlinedBorder {
-  final _cubics = morph.toCubics(progress);
-
   /// The shape the morph starts at, where [progress] is zero.
   RoundedPolygon get start => morph.start;
 
   /// The shape the morph ends at, where [progress] is one.
   RoundedPolygon get end => morph.end;
 
-  @override
-  _MorphingShapeBorder copyWith({BorderSide? side, double? squash}) => .new(
-    morph: morph,
-    progress: progress,
-    side: side ?? this.side,
-    squash: squash ?? this.squash,
-  );
+  final _cubics = morph.toCubics(progress);
 
   @override
   ShapeBorder scale(double t) => copyWith(side: side.scale(t));
-
-  @override
-  Path getInnerPath(Rect rect, {TextDirection? textDirection}) =>
-      _pathFromRect(_cubics, squash, rect.deflate(side.strokeInset));
-
-  @override
-  Path getOuterPath(Rect rect, {TextDirection? textDirection}) =>
-      _pathFromRect(_cubics, squash, rect.inflate(side.strokeOutset));
-
-  @override
-  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
-    _paintSide(canvas, rect, side, _cubics, squash);
-  }
 
   @override
   ShapeBorder? lerpFrom(ShapeBorder? a, double t) {
@@ -329,6 +302,27 @@ class _MorphingShapeBorder({
   }
 
   @override
+  _MorphingShapeBorder copyWith({BorderSide? side, double? squash}) => .new(
+    morph: morph,
+    progress: progress,
+    side: side ?? this.side,
+    squash: squash ?? this.squash,
+  );
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) =>
+      _pathFromRect(_cubics, squash, rect.deflate(side.strokeInset));
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) =>
+      _pathFromRect(_cubics, squash, rect.inflate(side.strokeOutset));
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
+    _paintSide(canvas, rect, side, _cubics, squash);
+  }
+
+  @override
   String toString() =>
       "MaterialShapeBorder(side: $side, squash: $squash, "
       "${(progress * 100.0).toStringAsFixed(1)}% of the way from $start to $end)";
@@ -336,13 +330,12 @@ class _MorphingShapeBorder({
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is _MorphingShapeBorder &&
-          other.start == start &&
-          other.end == end &&
-          other.progress == progress &&
-          other.side == side &&
-          other.squash == squash;
+      other is _MorphingShapeBorder &&
+          start == other.start &&
+          end == other.end &&
+          progress == other.progress &&
+          side == other.side &&
+          squash == other.squash;
 
   @override
   int get hashCode => Object.hash(start, end, progress, side, squash);
@@ -399,6 +392,16 @@ void _paintSide(
   }
 }
 
+/// Whether the [Morph] from [start] to [end] is currently cached by
+/// [MaterialShapeBorder].
+///
+/// Only meant for tests that check the caching of morphs.
+@visibleForTesting
+bool debugIsMaterialShapeMorphCached(
+  RoundedPolygon start,
+  RoundedPolygon end,
+) => MaterialShapeBorder._morphCache.containsKey(.new(start, end));
+
 /// The pair of shapes a cached [Morph] was built from.
 ///
 /// Keys compare by value. This is cheap because [RoundedPolygon.hashCode] is
@@ -410,8 +413,7 @@ final class const _MorphCacheKey(
 ) {
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _MorphCacheKey && other.start == start && other.end == end;
+      other is _MorphCacheKey && start == other.start && end == other.end;
 
   @override
   int get hashCode => Object.hash(start, end);

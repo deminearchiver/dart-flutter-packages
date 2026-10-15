@@ -1,10 +1,14 @@
+/// @docImport 'material_shapes.dart';
+library;
+
 import 'dart:math' as math;
 import 'dart:ui' show lerpDouble;
 
-import 'package:androidx_graphics_shapes/androidx_graphics_shapes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:vector_math/vector_math_64.dart';
+
+import 'shapes/shapes.dart';
 
 abstract class const DynamicPathBorder({
   super.side,
@@ -450,10 +454,7 @@ class RoundedPolygonBorder({
   /// for the same pair of shapes on every frame, so the result is worth
   /// keeping.
   static Morph _morphBetween(RoundedPolygon start, RoundedPolygon end) =>
-      _morphCache.putIfAbsent(
-        _MorphCacheKey(start, end),
-        () => Morph(start, end),
-      );
+      _morphCache.putIfAbsent(.new(start, end), () => .new(start, end));
 }
 
 // ignore: prefer_const_constructors_in_immutables
@@ -602,8 +603,7 @@ final class const _MorphCacheKey(
 ) {
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _MorphCacheKey && other.start == start && other.end == end;
+      other is _MorphCacheKey && start == other.start && end == other.end;
 
   @override
   int get hashCode => Object.hash(start, end);

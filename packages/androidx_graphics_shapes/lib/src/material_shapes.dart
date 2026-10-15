@@ -5,7 +5,11 @@
 // This code is a Dart port of the Compose Material 3 shape catalog:
 // https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/MaterialShapes.kt
 
-import 'dart:collection';
+// ignore_for_file: unintended_html_in_doc_comment
+
+/// @docImport 'material_shape_border.dart';
+library;
+
 import 'dart:math' as math;
 
 import 'package:vector_math/vector_math_64.dart';
@@ -13,7 +17,8 @@ import 'package:vector_math/vector_math_64.dart';
 import 'shapes/shapes.dart';
 
 /// Holds predefined Material Design shapes as [RoundedPolygon]s that can be
-/// used at various components as they are, or as part of a [Morph].
+/// used at various components as they are, or with a [MaterialShapeBorder] to
+/// animate between them.
 ///
 /// Note that each [RoundedPolygon] in this class is normalized.
 ///
@@ -21,7 +26,8 @@ import 'shapes/shapes.dart';
 ///
 /// <callout-box>
 ///
-/// This example shows how to animate a [Morph] through every shape in [all].
+/// This example shows how to morph through every shape in [all] by animating
+/// a [MaterialShapeBorder].
 ///
 // TODO(framework): Replace the following block with a @dartpad directive
 // when it's supported. https://github.com/dart-lang/dartdoc/issues/4123
@@ -312,7 +318,8 @@ abstract final class MaterialShapes {
             mirroring: true,
           )
           .transformed(
-            (Matrix4.identity()..scale(1.0, 0.742)).asPointTransformer(),
+            (Matrix4.identity()..scaleByDouble(1.0, 0.742, 1.0, 1.0))
+                .asPointTransformer(),
           )
           .normalized();
 
@@ -401,7 +408,9 @@ abstract final class MaterialShapes {
   ).normalized();
 
   /// A list of all available shapes.
-  static final all = UnmodifiableListView<RoundedPolygon>([
+  ///
+  /// The list is unmodifiable.
+  static final all = List<RoundedPolygon>.unmodifiableOf(<RoundedPolygon>[
     MaterialShapes.circle,
     MaterialShapes.square,
     MaterialShapes.slanted,
@@ -471,18 +480,20 @@ abstract final class MaterialShapes {
           return (angle: off.direction, distance: off.distance);
         },
       );
-      final actualReps = reps * 2.0;
+      final actualReps = reps * 2;
       final sectionAngle = math.pi * 2.0 / actualReps;
 
       for (var r = 0; r < actualReps; r++) {
         for (var index = 0; index < points.length; index++) {
-          final i = (r.isEven) ? index : points.length - 1 - index;
+          final i = r.isEven ? index : points.length - 1 - index;
           if (i > 0 || r.isEven) {
             final a =
                 sectionAngle * r +
                 (r.isEven
                     ? measures[i].angle
-                    : sectionAngle - measures[i].angle + 2 * measures[0].angle);
+                    : sectionAngle -
+                          measures[i].angle +
+                          2.0 * measures[0].angle);
 
             final finalPoint =
                 Point(math.cos(a), math.sin(a)) * measures[i].distance + center;
@@ -498,7 +509,7 @@ abstract final class MaterialShapes {
           (i ~/ np) * 360.0 / reps,
           center: center,
         );
-        result.add(_PointNRound(point, points[i % np].r));
+        result.add(.new(point, points[i % np].r));
       }
     }
 
@@ -506,4 +517,7 @@ abstract final class MaterialShapes {
   }
 }
 
-class const _PointNRound(final Point p, [final CornerRounding r = .unrounded]);
+final class const _PointNRound(
+  final Point p, [
+  final CornerRounding r = .unrounded,
+]);

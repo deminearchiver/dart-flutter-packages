@@ -18,10 +18,13 @@ import 'utils.dart';
 
 /// A closed polygonal shape, with optional rounding at its vertices.
 ///
-/// A polygon can be built from a number of vertices, from an ordered list of
-/// vertices, or from a list of [PolygonFeature]s.
+/// A polygon can be built from a number of vertices, or from an ordered list of
+/// vertices.
 @immutable
-class RoundedPolygon._raw(List<PolygonFeature> features, final Point _center) {
+final class RoundedPolygon._raw(
+  List<PolygonFeature> features,
+  final Point _center,
+) {
   this {
     var prevCubic = cubics.last;
 
@@ -42,8 +45,8 @@ class RoundedPolygon._raw(List<PolygonFeature> features, final Point _center) {
   /// around a circle of the given [radius] about [center].
   ///
   /// The default radius of 1 puts the vertices on the unit circle, giving a
-  /// shape 2 wide and 2 high, which will usually need rescaling with
-  /// [transformed] to suit the UI it is drawn in.
+  /// shape 2 wide and 2 high, which will usually need [normalized] to fit the
+  /// unit square a shape border expects.
   ///
   /// [rounding] rounds every vertex the same way. [perVertexRounding]
   /// overrides it, and must have [numVertices] elements when it is not null.
@@ -214,9 +217,7 @@ class RoundedPolygon._raw(List<PolygonFeature> features, final Point _center) {
       throw ArgumentError("Polygons must have at least 2 features.");
     }
 
-    if (center != null) {
-      return ._raw(features, center);
-    }
+    if (center != null) return ._raw(features, center);
 
     final vertices = <Point>[];
 
@@ -259,8 +260,8 @@ class RoundedPolygon._raw(List<PolygonFeature> features, final Point _center) {
   /// optional rounding at its four corners.
   ///
   /// The default dimensions and center fit the shape into the 2x2 box around
-  /// the origin, which will usually need rescaling with [transformed] to suit
-  /// the UI it is drawn in.
+  /// the origin, which will usually need [normalized] to fit the unit square a
+  /// shape border expects.
   ///
   /// [rounding] rounds all four corners the same way. [perVertexRounding]
   /// overrides it, and must have 4 elements when it is not null. The default
@@ -481,15 +482,21 @@ class RoundedPolygon._raw(List<PolygonFeature> features, final Point _center) {
     );
   }
 
+  final _features = List<PolygonFeature>.unmodifiableOf(features);
+
   /// The [PolygonFeature]s this polygon is composed of.
   ///
   /// This list is unmodifiable.
-  final features = List.unmodifiableOf(features);
+  List<PolygonFeature> get features => _features;
+
+  final _cubics = List<CubicBezier>.unmodifiableOf(
+    _buildCubics(features, _center),
+  );
 
   /// A flattened version of the [PolygonFeature]s, as a `List<CubicBezier>`.
   ///
   /// This list is unmodifiable.
-  final cubics = List.unmodifiableOf(_buildCubics(features, _center));
+  List<CubicBezier> get cubics => _cubics;
 
   /// The center of this polygon, around which all vertices are placed.
   Offset get center => _center;
@@ -600,9 +607,7 @@ class RoundedPolygon._raw(List<PolygonFeature> features, final Point _center) {
     final bounds = calculateApproximateBounds();
     final side = math.max(bounds.width, bounds.height);
 
-    if (side < distanceEpsilon) {
-      return this;
-    }
+    if (side < distanceEpsilon) return this;
 
     // Center the shape if bounds are not a square.
     final offsetX = (side - bounds.width) / 2.0 - bounds.left;
@@ -709,8 +714,7 @@ class RoundedPolygon._raw(List<PolygonFeature> features, final Point _center) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      runtimeType == other.runtimeType &&
-          other is RoundedPolygon &&
+      other is RoundedPolygon &&
           center == other.center &&
           listEquals(features, other.features);
 
@@ -758,7 +762,7 @@ Point calculateCenter(List<Point> vertices) {
 /// to keep between them: first we determine how much we want to cut to comply
 /// with the parameters, then we are given how much we can actually cut,
 /// because of space restrictions outside this corner.
-class _RoundedCorner(
+final class _RoundedCorner(
   final Point p0,
   final Point p1,
   final Point p2,
@@ -962,17 +966,13 @@ class _RoundedCorner(
     final rotatedD1 = d1.rotate90();
     final den = d0.dotProduct(rotatedD1);
 
-    if (den.abs() < distanceEpsilon) {
-      return null;
-    }
+    if (den.abs() < distanceEpsilon) return null;
 
     final num = (p1 - p0).dotProduct(rotatedD1);
 
     // Also check the relative value. This is equivalent to
     // (den/num).abs() < distanceEpsilon, but avoid doing a division
-    if (den.abs() < distanceEpsilon * num.abs()) {
-      return null;
-    }
+    if (den.abs() < distanceEpsilon * num.abs()) return null;
 
     final k = num / den;
     return p0 + d0 * k;
