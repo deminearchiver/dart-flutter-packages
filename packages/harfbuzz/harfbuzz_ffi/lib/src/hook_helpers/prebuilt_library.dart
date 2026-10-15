@@ -27,47 +27,47 @@ import 'symbols_resolver.dart';
 /// - `hook/build.dart` via [build]
 /// - `hook/link.dart` via [link]
 /// - `tool/precompile_binaries.dart` via [buildStandalone]
-class PrebuiltLibrary {
+class const PrebuiltLibrary({
   /// The library stem name passed to `OS.dylibFileName` and `CLinker.library`
   /// (e.g. `'my_lib'` for `libmy_lib.so`).
-  final String name;
+  required final String name,
 
   /// Optional package name override. Defaults to `input.packageName`.
-  final String? packageName;
+  final String? packageName,
 
   /// The `@Native` asset ID suffix (e.g. `'my_package.dart'` or
   /// `'src/bindings/lib.g.dart'`).
-  final String assetName;
+  required final String assetName,
 
   /// Configuration for fetching and verifying prebuilt release binaries.
-  final PrebuiltReleaseConfig? releaseConfig;
+  final PrebuiltReleaseConfig? releaseConfig,
 
   /// Optional directory relative to `input.packageRoot` containing pub-bundled
   /// prebuilt binaries (e.g. `'prebuilt'`, following `prebuilt_assets_example`
   /// in `package:hooks`).
-  final String? prebuiltDirectory;
+  final String? prebuiltDirectory,
 
   /// Callback to compile the native library from source when `buildMode` is
   /// `build` or when `fetch` falls back to building from source.
-  final SourceBuildCallback? buildFromSource;
+  final SourceBuildCallback? buildFromSource,
 
   /// Whether `fetch` mode should fall back to [buildFromSource] if no prebuilt
   /// binary is available for the target.
-  final bool fallbackToBuildOnFetchFailure;
+  final bool fallbackToBuildOnFetchFailure = true,
 
   /// Whether unrecognized `buildMode`/`treeshake` values in
   /// `hooks.user_defines` throw a [BuildError] (the default) instead of
   /// silently using the defaults.
-  final bool strictBuildOptions;
+  final bool strictBuildOptions = true,
 
   /// Extracts the native symbols used by the application from
   /// `LinkInput.recordedUses`.
-  final SymbolsResolver? usedSymbols;
+  final SymbolsResolver? usedSymbols,
 
   /// Optional set of all bound symbol names (used on Windows when
   /// `LinkInput.recordedUses` is `null` or when filtering COFF archive
   /// symbols).
-  final Iterable<String>? allKnownSymbols;
+  final Iterable<String>? allKnownSymbols,
 
   /// Optional callback returning the system libraries to link against in
   /// [link] for the target [CodeConfig] (passed as `-l<name>`, or `<name>.lib`
@@ -76,34 +76,18 @@ class PrebuiltLibrary {
   /// Static libraries don't record their dependencies, so this has to list
   /// every library that the static library needs and that the linker doesn't
   /// link by default (such as `ws2_32` on Windows or `m` on Android).
-  final List<String> Function(CodeConfig code)? libraries;
+  final List<String> Function(CodeConfig code)? libraries,
 
   /// Optional callback returning the frameworks to link against in [link] for
   /// the target [CodeConfig] (passed as `-framework <name>`).
   ///
   /// Only used when targeting macOS or iOS. If `null`, uses the default of
   /// `CLinker` in `package:native_toolchain_c` (`Foundation`).
-  final List<String> Function(CodeConfig code)? frameworks;
+  final List<String> Function(CodeConfig code)? frameworks,
 
   /// Optimization level passed to `CLinker.library` in [link].
-  final OptimizationLevel optimizationLevel;
-
-  const PrebuiltLibrary({
-    required this.name,
-    this.packageName,
-    required this.assetName,
-    this.releaseConfig,
-    this.prebuiltDirectory,
-    this.buildFromSource,
-    this.fallbackToBuildOnFetchFailure = true,
-    this.strictBuildOptions = true,
-    this.usedSymbols,
-    this.allKnownSymbols,
-    this.libraries,
-    this.frameworks,
-    this.optimizationLevel = OptimizationLevel.o3,
-  });
-
+  final OptimizationLevel optimizationLevel = OptimizationLevel.o3,
+}) {
   /// Runs the build hook (`hook/build.dart`) for this library.
   ///
   /// When linking is enabled (`input.config.linkingEnabled`), `buildMode` is
@@ -266,7 +250,12 @@ class PrebuiltLibrary {
             'this package does not support building from source.',
       );
     }
-    return callback(input, output, static: static, checkoutPath: checkoutPath);
+    return await callback(
+      input,
+      output,
+      static: static,
+      checkoutPath: checkoutPath,
+    );
   }
 
   Future<void> _useLocalBinary(
@@ -608,7 +597,7 @@ class PrebuiltLibrary {
         ),
       );
 
-    return callback(
+    return await callback(
       inputBuilder.build(),
       BuildOutputBuilder(),
       static: static,

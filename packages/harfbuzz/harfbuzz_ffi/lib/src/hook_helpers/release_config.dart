@@ -28,32 +28,24 @@ typedef DownloadUriResolver = Uri Function(
 );
 
 /// Configuration for fetching and verifying prebuilt release binaries.
-class PrebuiltReleaseConfig {
+class const PrebuiltReleaseConfig({
   /// The release version string (e.g. `'0.4.1'` or `'2.0.0-beta2'`).
-  final String version;
+  required final String version,
 
   /// Map from remote asset filename (as returned by [resolveAssetName]) to its
   /// lower-case hexadecimal SHA-256 digest.
-  final Map<String, String> fileHashes;
+  required final Map<String, String> fileHashes,
 
   /// Returns the remote download [Uri] for [version] and an asset name.
-  final DownloadUriResolver resolveDownloadUri;
+  required final DownloadUriResolver resolveDownloadUri,
 
   /// Returns the remote asset filename for a given target and `static` mode.
-  final AssetNameResolver resolveAssetName;
+  required final AssetNameResolver resolveAssetName,
 
   /// Returns the canonical OS library filename (e.g. `libfoo.dylib`,
   /// `libfoo.a`, `foo.dll`) for a given [OS] and `static` mode.
-  final LibraryFileNameResolver resolveLibraryFileName;
-
-  const PrebuiltReleaseConfig({
-    required this.version,
-    required this.fileHashes,
-    required this.resolveDownloadUri,
-    required this.resolveAssetName,
-    required this.resolveLibraryFileName,
-  });
-
+  required final LibraryFileNameResolver resolveLibraryFileName,
+}) {
   /// Creates a [PrebuiltReleaseConfig] backed by GitHub Releases at
   /// `https://github.com/<owner>/<repo>/releases/download/<tagPrefix><version>/<assetName>`.
   ///
@@ -65,7 +57,7 @@ class PrebuiltReleaseConfig {
   ///   `<assetPrefix ?? repo>-<targetTriple>-<libraryFileName>` (see
   ///   [targetTripleFor]). Pass a custom [resolveAssetName] for other release
   ///   naming schemes (for example, Rust target triples).
-  factory PrebuiltReleaseConfig.github({
+  factory github({
     required String owner,
     required String repo,
     required String version,

@@ -14,8 +14,8 @@ import 'package:logging/logging.dart';
 final Logger defaultLogger = Logger.detached('prebuilt_code_assets')
   ..level = Level.ALL
   ..onRecord.listen((record) {
-    final sink = record.level >= Level.WARNING ? stderr : stdout;
-    sink.writeln(record.message);
+    final sink = record.level >= Level.WARNING ? stderr : stdout
+      ..writeln(record.message);
     if (record.error != null) sink.writeln(record.error);
     if (record.stackTrace != null) sink.writeln(record.stackTrace);
   });

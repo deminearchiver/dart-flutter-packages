@@ -42,29 +42,22 @@ enum TreeshakeMode {
 
 /// Parsed `hooks.user_defines.<package_name>` configuration for native asset
 /// hooks.
-class BuildOptions {
+class const BuildOptions({
   /// How the build hook obtains the native library.
-  final NativeBuildMode buildMode;
+  required final NativeBuildMode buildMode,
 
   /// Whether and how `hook/link.dart` tree-shakes the native library.
-  final TreeshakeMode treeshake;
+  final TreeshakeMode treeshake = TreeshakeMode.auto,
 
   /// Path to a prebuilt dynamic library, used when [buildMode] is
   /// [NativeBuildMode.local].
-  final Uri? localPath;
+  final Uri? localPath,
 
   /// Path to a source checkout, used when [buildMode] is
   /// [NativeBuildMode.build] (and when `fetch` falls back to building from
   /// source).
-  final Uri? checkoutPath;
-
-  const BuildOptions({
-    required this.buildMode,
-    this.treeshake = TreeshakeMode.auto,
-    this.localPath,
-    this.checkoutPath,
-  });
-
+  final Uri? checkoutPath,
+}) {
   /// Parses [BuildOptions] from `input.userDefines`.
   ///
   /// Recognized keys:
@@ -79,7 +72,7 @@ class BuildOptions {
   /// `true` (the default), unrecognized `buildMode`/`treeshake` values also
   /// throw; when `false`, they fall back to [defaultMode] /
   /// [defaultTreeshake].
-  factory BuildOptions.fromDefines(
+  factory fromDefines(
     HookInputUserDefines defines, {
     String? packageName,
     NativeBuildMode defaultMode = NativeBuildMode.fetch,

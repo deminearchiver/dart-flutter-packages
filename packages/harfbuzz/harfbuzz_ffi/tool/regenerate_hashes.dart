@@ -71,7 +71,7 @@ Future<void> runRegenerateHashesCli(
         );
         if (localDir != null) {
           final file = File.fromUri(localDir.uri.resolve(assetName));
-          if (!await file.exists()) {
+          if (!file.existsSync()) {
             stdout.writeln('  Skipping missing local file: ${file.path}');
             continue;
           }
@@ -154,8 +154,9 @@ Future<void> runRegenerateHashesCli(
     ..writeln('/// Mapping from release asset name to SHA-256 hash.')
     ..writeln('const fileHashes = <String, String>{');
   for (final entry in fileHashes.entries) {
-    buffer.writeln('  ${_dartString(entry.key)}:');
-    buffer.writeln('      ${_dartString(entry.value)},');
+    buffer
+      ..writeln('  ${_dartString(entry.key)}:')
+      ..writeln('      ${_dartString(entry.value)},');
   }
   buffer.writeln('};');
 

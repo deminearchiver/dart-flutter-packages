@@ -93,7 +93,7 @@ Future<Uri?> fetchPrebuiltLibrary(
       ),
     ];
     for (final bundledFile in candidates) {
-      if (!await bundledFile.exists()) continue;
+      if (!bundledFile.existsSync()) continue;
       if (hasHash) {
         final actual = await _hashFile(bundledFile);
         if (actual != expectedHash) mismatch(actual, bundledFile.path);
@@ -111,8 +111,7 @@ Future<Uri?> fetchPrebuiltLibrary(
   }
 
   // 3. The shared cache.
-  if (await cachedFile.exists() &&
-      await _hashFile(cachedFile) == expectedHash) {
+  if (cachedFile.existsSync() && await _hashFile(cachedFile) == expectedHash) {
     log.info('$pkg: using cached prebuilt binary ($assetRemoteName).');
     return cachedFile.uri;
   }
@@ -171,7 +170,7 @@ Future<Uri?> fetchPrebuiltLibrary(
         return cachedFile.uri;
       } on Exception catch (e) {
         // IOException (network), TimeoutException, HttpException, ...
-        if (await tempFile.exists()) await tempFile.delete();
+        if (tempFile.existsSync()) await tempFile.delete();
         log.info('$pkg: error downloading prebuilt binary ($e).');
         if (attempt < maxAttempts) await _backoff(attempt);
       }
