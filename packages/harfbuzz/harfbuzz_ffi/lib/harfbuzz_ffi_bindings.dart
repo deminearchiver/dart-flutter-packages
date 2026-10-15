@@ -1,3 +1,3 @@
 library;
 
-export 'src/ffi_bindings.g.dart';
+export 'src/bindings/bindings.g.dart';

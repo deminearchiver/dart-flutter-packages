@@ -1,20 +1,9 @@
-import 'package:code_assets/code_assets.dart';
-import 'package:harfbuzz_ffi/src/c_library.dart';
+import 'package:harfbuzz_ffi/src/hook_helpers/library.dart';
 import 'package:hooks/hooks.dart';
 
 Future<void> main(List<String> arguments) async {
-  await build(arguments, (input, output) async {
-    if (!input.config.buildCodeAssets) return;
-    await createCLibrary(
-      packageName: input.packageName,
-      targetOS: input.config.code.targetOS,
-    ).build(
-      input: input,
-      output: output,
-      logger: .new("")
-        ..level = .WARNING
-        // ignore: avoid_print
-        ..onRecord.listen((record) => print(record.message)),
-    );
-  });
+  await build(
+    arguments,
+    (input, output) => harfbuzzLibrary.build(input: input, output: output),
+  );
 }

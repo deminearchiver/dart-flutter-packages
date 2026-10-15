@@ -8,6 +8,7 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart' show UsageException;
 import 'package:code_assets/code_assets.dart';
 
+import 'package:harfbuzz_ffi/src/hook_helpers/library.dart';
 import 'package:harfbuzz_ffi/src/hook_helpers/prebuilt_library.dart';
 import 'package:harfbuzz_ffi/src/hook_helpers/targets.dart';
 
@@ -156,3 +157,6 @@ Future<void> runPrecompileBinariesCli(
     stdout.writeln('==> Created release binary: ${releaseAsset.path}');
   }
 }
+
+Future<void> main(List<String> arguments) =>
+    runPrecompileBinariesCli(arguments, library: harfbuzzLibrary);

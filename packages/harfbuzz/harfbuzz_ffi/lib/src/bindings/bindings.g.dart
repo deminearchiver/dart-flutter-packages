@@ -3574,6 +3574,335 @@ hb_glyph_flags_t hb_glyph_info_get_glyph_flags(
 }
 
 @meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_gpu_draw_t>)>()
+external void hb_gpu_draw_clear(ffi.Pointer<hb_gpu_draw_t> draw);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_gpu_draw_t> Function()>()
+external ffi.Pointer<hb_gpu_draw_t> hb_gpu_draw_create_or_fail();
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_gpu_draw_t>)>()
+external void hb_gpu_draw_destroy(ffi.Pointer<hb_gpu_draw_t> draw);
+
+/// Encode
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_blob_t> Function(
+    ffi.Pointer<hb_gpu_draw_t>,
+    ffi.Pointer<hb_glyph_extents_t>,
+  )
+>()
+external ffi.Pointer<hb_blob_t> hb_gpu_draw_encode(
+  ffi.Pointer<hb_gpu_draw_t> draw,
+  ffi.Pointer<hb_glyph_extents_t> extents,
+);
+
+/// Draw
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_draw_funcs_t> Function(ffi.Pointer<hb_gpu_draw_t>)>()
+external ffi.Pointer<hb_draw_funcs_t> hb_gpu_draw_get_funcs(
+  ffi.Pointer<hb_gpu_draw_t> draw,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_gpu_draw_t>,
+    ffi.Pointer<ffi.Int>,
+    ffi.Pointer<ffi.Int>,
+  )
+>()
+external void hb_gpu_draw_get_scale(
+  ffi.Pointer<hb_gpu_draw_t> draw,
+  ffi.Pointer<ffi.Int> x_scale,
+  ffi.Pointer<ffi.Int> y_scale,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<ffi.Void> Function(
+    ffi.Pointer<hb_gpu_draw_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+  )
+>()
+external ffi.Pointer<ffi.Void> hb_gpu_draw_get_user_data(
+  ffi.Pointer<hb_gpu_draw_t> draw,
+  ffi.Pointer<hb_user_data_key_t> key,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_gpu_draw_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+  )
+>()
+external void hb_gpu_draw_glyph(
+  ffi.Pointer<hb_gpu_draw_t> draw,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_gpu_draw_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+  )
+>()
+external int hb_gpu_draw_glyph_or_fail(
+  ffi.Pointer<hb_gpu_draw_t> draw,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_gpu_draw_t>, ffi.Pointer<hb_blob_t>)
+>()
+external void hb_gpu_draw_recycle_blob(
+  ffi.Pointer<hb_gpu_draw_t> draw,
+  ffi.Pointer<hb_blob_t> blob,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_gpu_draw_t> Function(ffi.Pointer<hb_gpu_draw_t>)>()
+external ffi.Pointer<hb_gpu_draw_t> hb_gpu_draw_reference(
+  ffi.Pointer<hb_gpu_draw_t> draw,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_gpu_draw_t>)>()
+external void hb_gpu_draw_reset(ffi.Pointer<hb_gpu_draw_t> draw);
+
+/// Scale
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_gpu_draw_t>, ffi.Int, ffi.Int)>()
+external void hb_gpu_draw_set_scale(
+  ffi.Pointer<hb_gpu_draw_t> draw,
+  int x_scale,
+  int y_scale,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_gpu_draw_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+    hb_bool_t,
+  )
+>()
+external int hb_gpu_draw_set_user_data(
+  ffi.Pointer<hb_gpu_draw_t> draw,
+  ffi.Pointer<hb_user_data_key_t> key,
+  ffi.Pointer<ffi.Void> data,
+  hb_destroy_func_t destroy,
+  int replace,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.UnsignedInt, ffi.UnsignedInt)>(
+  symbol: 'hb_gpu_draw_shader_source',
+)
+external ffi.Pointer<ffi.Char> _hb_gpu_draw_shader_source(int stage, int lang);
+
+ffi.Pointer<ffi.Char> hb_gpu_draw_shader_source(
+  hb_gpu_shader_stage_t stage,
+  hb_gpu_shader_lang_t lang,
+) {
+  return _hb_gpu_draw_shader_source(stage.value, lang.value);
+}
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_gpu_paint_t>)>()
+external void hb_gpu_paint_clear(ffi.Pointer<hb_gpu_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_gpu_paint_t>)>()
+external void hb_gpu_paint_clear_custom_palette_colors(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_gpu_paint_t> Function()>()
+external ffi.Pointer<hb_gpu_paint_t> hb_gpu_paint_create_or_fail();
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_gpu_paint_t>)>()
+external void hb_gpu_paint_destroy(ffi.Pointer<hb_gpu_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_blob_t> Function(
+    ffi.Pointer<hb_gpu_paint_t>,
+    ffi.Pointer<hb_glyph_extents_t>,
+  )
+>()
+external ffi.Pointer<hb_blob_t> hb_gpu_paint_encode(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+  ffi.Pointer<hb_glyph_extents_t> extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_paint_funcs_t> Function(ffi.Pointer<hb_gpu_paint_t>)
+>()
+external ffi.Pointer<hb_paint_funcs_t> hb_gpu_paint_get_funcs(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_gpu_paint_t>)>()
+external int hb_gpu_paint_get_palette(ffi.Pointer<hb_gpu_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_gpu_paint_t>,
+    ffi.Pointer<ffi.Int>,
+    ffi.Pointer<ffi.Int>,
+  )
+>()
+external void hb_gpu_paint_get_scale(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+  ffi.Pointer<ffi.Int> x_scale,
+  ffi.Pointer<ffi.Int> y_scale,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<ffi.Void> Function(
+    ffi.Pointer<hb_gpu_paint_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+  )
+>()
+external ffi.Pointer<ffi.Void> hb_gpu_paint_get_user_data(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+  ffi.Pointer<hb_user_data_key_t> key,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_gpu_paint_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+  )
+>()
+external void hb_gpu_paint_glyph(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_gpu_paint_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+  )
+>()
+external int hb_gpu_paint_glyph_or_fail(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_gpu_paint_t>, ffi.Pointer<hb_blob_t>)
+>()
+external void hb_gpu_paint_recycle_blob(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+  ffi.Pointer<hb_blob_t> blob,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_gpu_paint_t> Function(ffi.Pointer<hb_gpu_paint_t>)>()
+external ffi.Pointer<hb_gpu_paint_t> hb_gpu_paint_reference(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_gpu_paint_t>)>()
+external void hb_gpu_paint_reset(ffi.Pointer<hb_gpu_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(ffi.Pointer<hb_gpu_paint_t>, ffi.UnsignedInt, hb_color_t)
+>()
+external int hb_gpu_paint_set_custom_palette_color(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+  int color_index,
+  int color,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_gpu_paint_t>, ffi.UnsignedInt)>()
+external void hb_gpu_paint_set_palette(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+  int palette,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_gpu_paint_t>, ffi.Int, ffi.Int)>()
+external void hb_gpu_paint_set_scale(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+  int x_scale,
+  int y_scale,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_gpu_paint_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+    hb_bool_t,
+  )
+>()
+external int hb_gpu_paint_set_user_data(
+  ffi.Pointer<hb_gpu_paint_t> paint,
+  ffi.Pointer<hb_user_data_key_t> key,
+  ffi.Pointer<ffi.Void> data,
+  hb_destroy_func_t destroy,
+  int replace,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.UnsignedInt, ffi.UnsignedInt)>(
+  symbol: 'hb_gpu_paint_shader_source',
+)
+external ffi.Pointer<ffi.Char> _hb_gpu_paint_shader_source(int stage, int lang);
+
+ffi.Pointer<ffi.Char> hb_gpu_paint_shader_source(
+  hb_gpu_shader_stage_t stage,
+  hb_gpu_shader_lang_t lang,
+) {
+  return _hb_gpu_paint_shader_source(stage.value, lang.value);
+}
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.UnsignedInt, ffi.UnsignedInt)>(
+  symbol: 'hb_gpu_shader_source',
+)
+external ffi.Pointer<ffi.Char> _hb_gpu_shader_source(int stage, int lang);
+
+ffi.Pointer<ffi.Char> hb_gpu_shader_source(
+  hb_gpu_shader_stage_t stage,
+  hb_gpu_shader_lang_t lang,
+) {
+  return _hb_gpu_shader_source(stage.value, lang.value);
+}
+
+@meta.RecordUse()
 @ffi.Native<hb_language_t Function(ffi.Pointer<ffi.Char>, ffi.Int)>()
 external hb_language_t hb_language_from_string(
   ffi.Pointer<ffi.Char> str,
@@ -6615,6 +6944,610 @@ void hb_paint_sweep_gradient_tiles(
 }
 
 @meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_raster_draw_t>)>()
+external void hb_raster_draw_clear(ffi.Pointer<hb_raster_draw_t> draw);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_raster_draw_t> Function()>()
+external ffi.Pointer<hb_raster_draw_t> hb_raster_draw_create_or_fail();
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_raster_draw_t>)>()
+external void hb_raster_draw_destroy(ffi.Pointer<hb_raster_draw_t> draw);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_raster_draw_t>,
+    ffi.Pointer<hb_raster_extents_t>,
+  )
+>()
+external int hb_raster_draw_get_extents(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  ffi.Pointer<hb_raster_extents_t> extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_draw_funcs_t> Function(ffi.Pointer<hb_raster_draw_t>)
+>()
+external ffi.Pointer<hb_draw_funcs_t> hb_raster_draw_get_funcs(
+  ffi.Pointer<hb_raster_draw_t> draw,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_draw_t>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+  )
+>()
+external void hb_raster_draw_get_scale_factor(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  ffi.Pointer<ffi.Float> x_scale_factor,
+  ffi.Pointer<ffi.Float> y_scale_factor,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_draw_t>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+  )
+>()
+external void hb_raster_draw_get_transform(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  ffi.Pointer<ffi.Float> xx,
+  ffi.Pointer<ffi.Float> yx,
+  ffi.Pointer<ffi.Float> xy,
+  ffi.Pointer<ffi.Float> yy,
+  ffi.Pointer<ffi.Float> dx,
+  ffi.Pointer<ffi.Float> dy,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<ffi.Void> Function(
+    ffi.Pointer<hb_raster_draw_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+  )
+>()
+external ffi.Pointer<ffi.Void> hb_raster_draw_get_user_data(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  ffi.Pointer<hb_user_data_key_t> key,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_draw_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+  )
+>()
+external void hb_raster_draw_glyph(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_raster_draw_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+  )
+>()
+external int hb_raster_draw_glyph_or_fail(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_draw_t>,
+    ffi.Pointer<hb_raster_image_t>,
+  )
+>()
+external void hb_raster_draw_recycle_image(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  ffi.Pointer<hb_raster_image_t> image,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_raster_draw_t> Function(ffi.Pointer<hb_raster_draw_t>)
+>()
+external ffi.Pointer<hb_raster_draw_t> hb_raster_draw_reference(
+  ffi.Pointer<hb_raster_draw_t> draw,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_raster_image_t> Function(ffi.Pointer<hb_raster_draw_t>)
+>()
+external ffi.Pointer<hb_raster_image_t> hb_raster_draw_render(
+  ffi.Pointer<hb_raster_draw_t> draw,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_raster_draw_t>)>()
+external void hb_raster_draw_reset(ffi.Pointer<hb_raster_draw_t> draw);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_draw_t>,
+    ffi.Pointer<hb_raster_extents_t>,
+  )
+>()
+external void hb_raster_draw_set_extents(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  ffi.Pointer<hb_raster_extents_t> extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_raster_draw_t>,
+    ffi.Pointer<hb_glyph_extents_t>,
+  )
+>()
+external int hb_raster_draw_set_glyph_extents(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  ffi.Pointer<hb_glyph_extents_t> glyph_extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_raster_draw_t>, ffi.Float, ffi.Float)
+>()
+external void hb_raster_draw_set_scale_factor(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  double x_scale_factor,
+  double y_scale_factor,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_draw_t>,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+  )
+>()
+external void hb_raster_draw_set_transform(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  double xx,
+  double yx,
+  double xy,
+  double yy,
+  double dx,
+  double dy,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_raster_draw_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+    hb_bool_t,
+  )
+>()
+external int hb_raster_draw_set_user_data(
+  ffi.Pointer<hb_raster_draw_t> draw,
+  ffi.Pointer<hb_user_data_key_t> key,
+  ffi.Pointer<ffi.Void> data,
+  hb_destroy_func_t destroy,
+  int replace,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_raster_image_t>)>()
+external void hb_raster_image_clear(ffi.Pointer<hb_raster_image_t> image);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_raster_image_t>,
+    ffi.UnsignedInt,
+    ffi.Pointer<hb_raster_extents_t>,
+  )
+>(symbol: 'hb_raster_image_configure')
+external int _hb_raster_image_configure(
+  ffi.Pointer<hb_raster_image_t> image,
+  int format,
+  ffi.Pointer<hb_raster_extents_t> extents,
+);
+
+Darthb_bool_t hb_raster_image_configure(
+  ffi.Pointer<hb_raster_image_t> image,
+  hb_raster_format_t format,
+  ffi.Pointer<hb_raster_extents_t> extents,
+) {
+  return _hb_raster_image_configure(image, format.value, extents);
+}
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_raster_image_t> Function()>()
+external ffi.Pointer<hb_raster_image_t> hb_raster_image_create_or_fail();
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(ffi.Pointer<hb_raster_image_t>, ffi.Pointer<hb_blob_t>)
+>()
+external int hb_raster_image_deserialize_from_png_or_fail(
+  ffi.Pointer<hb_raster_image_t> image,
+  ffi.Pointer<hb_blob_t> png,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_raster_image_t>)>()
+external void hb_raster_image_destroy(ffi.Pointer<hb_raster_image_t> image);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<hb_raster_image_t>)>()
+external ffi.Pointer<ffi.Uint8> hb_raster_image_get_buffer(
+  ffi.Pointer<hb_raster_image_t> image,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_image_t>,
+    ffi.Pointer<hb_raster_extents_t>,
+  )
+>()
+external void hb_raster_image_get_extents(
+  ffi.Pointer<hb_raster_image_t> image,
+  ffi.Pointer<hb_raster_extents_t> extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_raster_image_t>)>(
+  symbol: 'hb_raster_image_get_format',
+)
+external int _hb_raster_image_get_format(ffi.Pointer<hb_raster_image_t> image);
+
+hb_raster_format_t hb_raster_image_get_format(
+  ffi.Pointer<hb_raster_image_t> image,
+) {
+  return hb_raster_format_t.fromValue(_hb_raster_image_get_format(image));
+}
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<ffi.Void> Function(
+    ffi.Pointer<hb_raster_image_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+  )
+>()
+external ffi.Pointer<ffi.Void> hb_raster_image_get_user_data(
+  ffi.Pointer<hb_raster_image_t> image,
+  ffi.Pointer<hb_user_data_key_t> key,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_raster_image_t> Function(ffi.Pointer<hb_raster_image_t>)
+>()
+external ffi.Pointer<hb_raster_image_t> hb_raster_image_reference(
+  ffi.Pointer<hb_raster_image_t> image,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_raster_image_t>)>()
+external ffi.Pointer<hb_blob_t> hb_raster_image_serialize_to_png_or_fail(
+  ffi.Pointer<hb_raster_image_t> image,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_raster_image_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+    hb_bool_t,
+  )
+>()
+external int hb_raster_image_set_user_data(
+  ffi.Pointer<hb_raster_image_t> image,
+  ffi.Pointer<hb_user_data_key_t> key,
+  ffi.Pointer<ffi.Void> data,
+  hb_destroy_func_t destroy,
+  int replace,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_raster_paint_t>)>()
+external void hb_raster_paint_clear(ffi.Pointer<hb_raster_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_raster_paint_t>)>()
+external void hb_raster_paint_clear_custom_palette_colors(
+  ffi.Pointer<hb_raster_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_raster_paint_t> Function()>()
+external ffi.Pointer<hb_raster_paint_t> hb_raster_paint_create_or_fail();
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_raster_paint_t>)>()
+external void hb_raster_paint_destroy(ffi.Pointer<hb_raster_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<hb_color_t Function(ffi.Pointer<hb_raster_paint_t>)>()
+external int hb_raster_paint_get_background(
+  ffi.Pointer<hb_raster_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.Pointer<hb_raster_extents_t>,
+  )
+>()
+external int hb_raster_paint_get_extents(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  ffi.Pointer<hb_raster_extents_t> extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<hb_color_t Function(ffi.Pointer<hb_raster_paint_t>)>()
+external int hb_raster_paint_get_foreground(
+  ffi.Pointer<hb_raster_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_paint_funcs_t> Function(ffi.Pointer<hb_raster_paint_t>)
+>()
+external ffi.Pointer<hb_paint_funcs_t> hb_raster_paint_get_funcs(
+  ffi.Pointer<hb_raster_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_raster_paint_t>)>()
+external int hb_raster_paint_get_palette(ffi.Pointer<hb_raster_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+  )
+>()
+external void hb_raster_paint_get_scale_factor(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  ffi.Pointer<ffi.Float> x_scale_factor,
+  ffi.Pointer<ffi.Float> y_scale_factor,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+  )
+>()
+external void hb_raster_paint_get_transform(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  ffi.Pointer<ffi.Float> xx,
+  ffi.Pointer<ffi.Float> yx,
+  ffi.Pointer<ffi.Float> xy,
+  ffi.Pointer<ffi.Float> yy,
+  ffi.Pointer<ffi.Float> dx,
+  ffi.Pointer<ffi.Float> dy,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<ffi.Void> Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+  )
+>()
+external ffi.Pointer<ffi.Void> hb_raster_paint_get_user_data(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  ffi.Pointer<hb_user_data_key_t> key,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+  )
+>()
+external void hb_raster_paint_glyph(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+  )
+>()
+external int hb_raster_paint_glyph_or_fail(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.Pointer<hb_raster_image_t>,
+  )
+>()
+external void hb_raster_paint_recycle_image(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  ffi.Pointer<hb_raster_image_t> image,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_raster_paint_t> Function(ffi.Pointer<hb_raster_paint_t>)
+>()
+external ffi.Pointer<hb_raster_paint_t> hb_raster_paint_reference(
+  ffi.Pointer<hb_raster_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_raster_image_t> Function(ffi.Pointer<hb_raster_paint_t>)
+>()
+external ffi.Pointer<hb_raster_image_t> hb_raster_paint_render(
+  ffi.Pointer<hb_raster_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_raster_paint_t>)>()
+external void hb_raster_paint_reset(ffi.Pointer<hb_raster_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_raster_paint_t>, hb_color_t)>()
+external void hb_raster_paint_set_background(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  int background,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.UnsignedInt,
+    hb_color_t,
+  )
+>()
+external int hb_raster_paint_set_custom_palette_color(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  int color_index,
+  int color,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.Pointer<hb_raster_extents_t>,
+  )
+>()
+external void hb_raster_paint_set_extents(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  ffi.Pointer<hb_raster_extents_t> extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_raster_paint_t>, hb_color_t)>()
+external void hb_raster_paint_set_foreground(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  int foreground,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.Pointer<hb_glyph_extents_t>,
+  )
+>()
+external int hb_raster_paint_set_glyph_extents(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  ffi.Pointer<hb_glyph_extents_t> glyph_extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_raster_paint_t>, ffi.UnsignedInt)
+>()
+external void hb_raster_paint_set_palette(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  int palette,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_raster_paint_t>, ffi.Float, ffi.Float)
+>()
+external void hb_raster_paint_set_scale_factor(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  double x_scale_factor,
+  double y_scale_factor,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+  )
+>()
+external void hb_raster_paint_set_transform(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  double xx,
+  double yx,
+  double xy,
+  double yy,
+  double dx,
+  double dy,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_raster_paint_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+    hb_bool_t,
+  )
+>()
+external int hb_raster_paint_set_user_data(
+  ffi.Pointer<hb_raster_paint_t> paint,
+  ffi.Pointer<hb_user_data_key_t> key,
+  ffi.Pointer<ffi.Void> data,
+  hb_destroy_func_t destroy,
+  int replace,
+);
+
+@meta.RecordUse()
 @ffi.Native<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Size)>()
 external ffi.Pointer<ffi.Void> hb_realloc(ffi.Pointer<ffi.Void> ptr, int size);
 
@@ -8087,6 +9020,632 @@ external void hb_variation_to_string(
   ffi.Pointer<hb_variation_t> variation,
   ffi.Pointer<ffi.Char> buf,
   int size,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_draw_t>)>()
+external void hb_vector_draw_clear(ffi.Pointer<hb_vector_draw_t> draw);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_vector_draw_t> Function(ffi.UnsignedInt)>(
+  symbol: 'hb_vector_draw_create_or_fail',
+)
+external ffi.Pointer<hb_vector_draw_t> _hb_vector_draw_create_or_fail(
+  int format,
+);
+
+ffi.Pointer<hb_vector_draw_t> hb_vector_draw_create_or_fail(
+  hb_vector_format_t format,
+) {
+  return _hb_vector_draw_create_or_fail(format.value);
+}
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_draw_t>)>()
+external void hb_vector_draw_destroy(ffi.Pointer<hb_vector_draw_t> draw);
+
+@meta.RecordUse()
+@ffi.Native<hb_color_t Function(ffi.Pointer<hb_vector_draw_t>)>()
+external int hb_vector_draw_get_background(ffi.Pointer<hb_vector_draw_t> draw);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_vector_draw_t>,
+    ffi.Pointer<hb_vector_extents_t>,
+  )
+>()
+external int hb_vector_draw_get_extents(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<hb_vector_extents_t> extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<hb_color_t Function(ffi.Pointer<hb_vector_draw_t>)>()
+external int hb_vector_draw_get_foreground(ffi.Pointer<hb_vector_draw_t> draw);
+
+@meta.RecordUse()
+@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_vector_draw_t>)>(
+  symbol: 'hb_vector_draw_get_format',
+)
+external int _hb_vector_draw_get_format(ffi.Pointer<hb_vector_draw_t> draw);
+
+hb_vector_format_t hb_vector_draw_get_format(
+  ffi.Pointer<hb_vector_draw_t> draw,
+) {
+  return hb_vector_format_t.fromValue(_hb_vector_draw_get_format(draw));
+}
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_draw_funcs_t> Function(ffi.Pointer<hb_vector_draw_t>)
+>()
+external ffi.Pointer<hb_draw_funcs_t> hb_vector_draw_get_funcs(
+  ffi.Pointer<hb_vector_draw_t> draw,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_vector_draw_t>)>()
+external int hb_vector_draw_get_precision(ffi.Pointer<hb_vector_draw_t> draw);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_vector_draw_t>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+  )
+>()
+external void hb_vector_draw_get_scale_factor(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<ffi.Float> x_scale_factor,
+  ffi.Pointer<ffi.Float> y_scale_factor,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_vector_draw_t>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+  )
+>()
+external void hb_vector_draw_get_transform(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<ffi.Float> xx,
+  ffi.Pointer<ffi.Float> yx,
+  ffi.Pointer<ffi.Float> xy,
+  ffi.Pointer<ffi.Float> yy,
+  ffi.Pointer<ffi.Float> dx,
+  ffi.Pointer<ffi.Float> dy,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<ffi.Void> Function(
+    ffi.Pointer<hb_vector_draw_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+  )
+>()
+external ffi.Pointer<ffi.Void> hb_vector_draw_get_user_data(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<hb_user_data_key_t> key,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_vector_draw_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+    ffi.UnsignedInt,
+  )
+>(symbol: 'hb_vector_draw_glyph')
+external void _hb_vector_draw_glyph(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+  int extents_mode,
+);
+
+void hb_vector_draw_glyph(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<hb_font_t> font,
+  Darthb_codepoint_t glyph,
+  hb_vector_extents_mode_t extents_mode,
+) {
+  return _hb_vector_draw_glyph(draw, font, glyph, extents_mode.value);
+}
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_vector_draw_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+    ffi.UnsignedInt,
+  )
+>(symbol: 'hb_vector_draw_glyph_or_fail')
+external int _hb_vector_draw_glyph_or_fail(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+  int extents_mode,
+);
+
+Darthb_bool_t hb_vector_draw_glyph_or_fail(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<hb_font_t> font,
+  Darthb_codepoint_t glyph,
+  hb_vector_extents_mode_t extents_mode,
+) {
+  return _hb_vector_draw_glyph_or_fail(draw, font, glyph, extents_mode.value);
+}
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_draw_t>)>()
+external void hb_vector_draw_new_path(ffi.Pointer<hb_vector_draw_t> draw);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_vector_draw_t>, ffi.Pointer<hb_blob_t>)
+>()
+external void hb_vector_draw_recycle_blob(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<hb_blob_t> blob,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_vector_draw_t> Function(ffi.Pointer<hb_vector_draw_t>)
+>()
+external ffi.Pointer<hb_vector_draw_t> hb_vector_draw_reference(
+  ffi.Pointer<hb_vector_draw_t> draw,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_vector_draw_t>)>()
+external ffi.Pointer<hb_blob_t> hb_vector_draw_render(
+  ffi.Pointer<hb_vector_draw_t> draw,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_draw_t>)>()
+external void hb_vector_draw_reset(ffi.Pointer<hb_vector_draw_t> draw);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_draw_t>, hb_color_t)>()
+external void hb_vector_draw_set_background(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  int background,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_vector_draw_t>,
+    ffi.Pointer<hb_vector_extents_t>,
+  )
+>()
+external void hb_vector_draw_set_extents(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<hb_vector_extents_t> extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_draw_t>, hb_color_t)>()
+external void hb_vector_draw_set_foreground(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  int foreground,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_vector_draw_t>,
+    ffi.Pointer<hb_glyph_extents_t>,
+  )
+>()
+external int hb_vector_draw_set_glyph_extents(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<hb_glyph_extents_t> glyph_extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_draw_t>, ffi.UnsignedInt)>()
+external void hb_vector_draw_set_precision(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  int precision,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_vector_draw_t>, ffi.Float, ffi.Float)
+>()
+external void hb_vector_draw_set_scale_factor(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  double x_scale_factor,
+  double y_scale_factor,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_vector_draw_t>,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+  )
+>()
+external void hb_vector_draw_set_transform(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  double xx,
+  double yx,
+  double xy,
+  double yy,
+  double dx,
+  double dy,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_vector_draw_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+    hb_bool_t,
+  )
+>()
+external int hb_vector_draw_set_user_data(
+  ffi.Pointer<hb_vector_draw_t> draw,
+  ffi.Pointer<hb_user_data_key_t> key,
+  ffi.Pointer<ffi.Void> data,
+  hb_destroy_func_t destroy,
+  int replace,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_paint_t>)>()
+external void hb_vector_paint_clear(ffi.Pointer<hb_vector_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_paint_t>)>()
+external void hb_vector_paint_clear_custom_palette_colors(
+  ffi.Pointer<hb_vector_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_vector_paint_t> Function(ffi.UnsignedInt)>(
+  symbol: 'hb_vector_paint_create_or_fail',
+)
+external ffi.Pointer<hb_vector_paint_t> _hb_vector_paint_create_or_fail(
+  int format,
+);
+
+ffi.Pointer<hb_vector_paint_t> hb_vector_paint_create_or_fail(
+  hb_vector_format_t format,
+) {
+  return _hb_vector_paint_create_or_fail(format.value);
+}
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_paint_t>)>()
+external void hb_vector_paint_destroy(ffi.Pointer<hb_vector_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<hb_color_t Function(ffi.Pointer<hb_vector_paint_t>)>()
+external int hb_vector_paint_get_background(
+  ffi.Pointer<hb_vector_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_vector_paint_t>,
+    ffi.Pointer<hb_vector_extents_t>,
+  )
+>()
+external int hb_vector_paint_get_extents(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<hb_vector_extents_t> extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<hb_color_t Function(ffi.Pointer<hb_vector_paint_t>)>()
+external int hb_vector_paint_get_foreground(
+  ffi.Pointer<hb_vector_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_vector_paint_t>)>(
+  symbol: 'hb_vector_paint_get_format',
+)
+external int _hb_vector_paint_get_format(ffi.Pointer<hb_vector_paint_t> paint);
+
+hb_vector_format_t hb_vector_paint_get_format(
+  ffi.Pointer<hb_vector_paint_t> paint,
+) {
+  return hb_vector_format_t.fromValue(_hb_vector_paint_get_format(paint));
+}
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_paint_funcs_t> Function(ffi.Pointer<hb_vector_paint_t>)
+>()
+external ffi.Pointer<hb_paint_funcs_t> hb_vector_paint_get_funcs(
+  ffi.Pointer<hb_vector_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Int Function(ffi.Pointer<hb_vector_paint_t>)>()
+external int hb_vector_paint_get_palette(ffi.Pointer<hb_vector_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<ffi.UnsignedInt Function(ffi.Pointer<hb_vector_paint_t>)>()
+external int hb_vector_paint_get_precision(
+  ffi.Pointer<hb_vector_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_vector_paint_t>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+  )
+>()
+external void hb_vector_paint_get_scale_factor(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<ffi.Float> x_scale_factor,
+  ffi.Pointer<ffi.Float> y_scale_factor,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Pointer<hb_vector_paint_t>)>()
+external ffi.Pointer<ffi.Char> hb_vector_paint_get_svg_prefix(
+  ffi.Pointer<hb_vector_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_vector_paint_t>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+    ffi.Pointer<ffi.Float>,
+  )
+>()
+external void hb_vector_paint_get_transform(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<ffi.Float> xx,
+  ffi.Pointer<ffi.Float> yx,
+  ffi.Pointer<ffi.Float> xy,
+  ffi.Pointer<ffi.Float> yy,
+  ffi.Pointer<ffi.Float> dx,
+  ffi.Pointer<ffi.Float> dy,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<ffi.Void> Function(
+    ffi.Pointer<hb_vector_paint_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+  )
+>()
+external ffi.Pointer<ffi.Void> hb_vector_paint_get_user_data(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<hb_user_data_key_t> key,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_vector_paint_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+    ffi.UnsignedInt,
+  )
+>(symbol: 'hb_vector_paint_glyph')
+external void _hb_vector_paint_glyph(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+  int extents_mode,
+);
+
+void hb_vector_paint_glyph(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<hb_font_t> font,
+  Darthb_codepoint_t glyph,
+  hb_vector_extents_mode_t extents_mode,
+) {
+  return _hb_vector_paint_glyph(paint, font, glyph, extents_mode.value);
+}
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_vector_paint_t>,
+    ffi.Pointer<hb_font_t>,
+    hb_codepoint_t,
+    ffi.UnsignedInt,
+  )
+>(symbol: 'hb_vector_paint_glyph_or_fail')
+external int _hb_vector_paint_glyph_or_fail(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<hb_font_t> font,
+  int glyph,
+  int extents_mode,
+);
+
+Darthb_bool_t hb_vector_paint_glyph_or_fail(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<hb_font_t> font,
+  Darthb_codepoint_t glyph,
+  hb_vector_extents_mode_t extents_mode,
+) {
+  return _hb_vector_paint_glyph_or_fail(paint, font, glyph, extents_mode.value);
+}
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_vector_paint_t>, ffi.Pointer<hb_blob_t>)
+>()
+external void hb_vector_paint_recycle_blob(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<hb_blob_t> blob,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Pointer<hb_vector_paint_t> Function(ffi.Pointer<hb_vector_paint_t>)
+>()
+external ffi.Pointer<hb_vector_paint_t> hb_vector_paint_reference(
+  ffi.Pointer<hb_vector_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_blob_t> Function(ffi.Pointer<hb_vector_paint_t>)>()
+external ffi.Pointer<hb_blob_t> hb_vector_paint_render(
+  ffi.Pointer<hb_vector_paint_t> paint,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_paint_t>)>()
+external void hb_vector_paint_reset(ffi.Pointer<hb_vector_paint_t> paint);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_paint_t>, hb_color_t)>()
+external void hb_vector_paint_set_background(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  int background,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_vector_paint_t>, ffi.UnsignedInt, hb_color_t)
+>()
+external void hb_vector_paint_set_custom_palette_color(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  int color_index,
+  int color,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_vector_paint_t>,
+    ffi.Pointer<hb_vector_extents_t>,
+  )
+>()
+external void hb_vector_paint_set_extents(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<hb_vector_extents_t> extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_paint_t>, hb_color_t)>()
+external void hb_vector_paint_set_foreground(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  int foreground,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_vector_paint_t>,
+    ffi.Pointer<hb_glyph_extents_t>,
+  )
+>()
+external int hb_vector_paint_set_glyph_extents(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<hb_glyph_extents_t> glyph_extents,
+);
+
+@meta.RecordUse()
+@ffi.Native<ffi.Void Function(ffi.Pointer<hb_vector_paint_t>, ffi.Int)>()
+external void hb_vector_paint_set_palette(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  int palette,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_vector_paint_t>, ffi.UnsignedInt)
+>()
+external void hb_vector_paint_set_precision(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  int precision,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_vector_paint_t>, ffi.Float, ffi.Float)
+>()
+external void hb_vector_paint_set_scale_factor(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  double x_scale_factor,
+  double y_scale_factor,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(ffi.Pointer<hb_vector_paint_t>, ffi.Pointer<ffi.Char>)
+>()
+external void hb_vector_paint_set_svg_prefix(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<ffi.Char> prefix,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  ffi.Void Function(
+    ffi.Pointer<hb_vector_paint_t>,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+    ffi.Float,
+  )
+>()
+external void hb_vector_paint_set_transform(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  double xx,
+  double yx,
+  double xy,
+  double yy,
+  double dx,
+  double dy,
+);
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_vector_paint_t>,
+    ffi.Pointer<hb_user_data_key_t>,
+    ffi.Pointer<ffi.Void>,
+    hb_destroy_func_t,
+    hb_bool_t,
+  )
+>()
+external int hb_vector_paint_set_user_data(
+  ffi.Pointer<hb_vector_paint_t> paint,
+  ffi.Pointer<hb_user_data_key_t> key,
+  ffi.Pointer<ffi.Void> data,
+  hb_destroy_func_t destroy,
+  int replace,
 );
 
 @meta.RecordUse()
@@ -10252,6 +11811,61 @@ final class hb_glyph_position_t extends ffi.Struct {
   external hb_var_int_t var$;
 }
 
+final class hb_gpu_draw_t extends ffi.Opaque {}
+
+final class hb_gpu_paint_t extends ffi.Opaque {}
+
+/// hb_gpu_shader_lang_t:
+/// @HB_GPU_SHADER_LANG_INVALID: Sentinel for an invalid or unspecified language.
+/// @HB_GPU_SHADER_LANG_GLSL: GLSL (OpenGL 3.3 / OpenGL ES 3.0 / WebGL 2.0)
+/// @HB_GPU_SHADER_LANG_WGSL: WGSL (WebGPU)
+/// @HB_GPU_SHADER_LANG_MSL: MSL (Metal)
+/// @HB_GPU_SHADER_LANG_HLSL: HLSL (Direct3D)
+///
+/// Shader language variant.
+///
+/// Since: 14.0.0
+enum hb_gpu_shader_lang_t {
+  HB_GPU_SHADER_LANG_INVALID(0),
+  HB_GPU_SHADER_LANG_GLSL(1),
+  HB_GPU_SHADER_LANG_WGSL(2),
+  HB_GPU_SHADER_LANG_MSL(3),
+  HB_GPU_SHADER_LANG_HLSL(4);
+
+  final int value;
+  const hb_gpu_shader_lang_t(this.value);
+
+  static hb_gpu_shader_lang_t fromValue(int value) => switch (value) {
+    0 => HB_GPU_SHADER_LANG_INVALID,
+    1 => HB_GPU_SHADER_LANG_GLSL,
+    2 => HB_GPU_SHADER_LANG_WGSL,
+    3 => HB_GPU_SHADER_LANG_MSL,
+    4 => HB_GPU_SHADER_LANG_HLSL,
+    _ => throw ArgumentError('Unknown value for hb_gpu_shader_lang_t: $value'),
+  };
+}
+
+/// hb_gpu_shader_stage_t:
+/// @HB_GPU_SHADER_STAGE_VERTEX: Vertex shader stage.
+/// @HB_GPU_SHADER_STAGE_FRAGMENT: Fragment shader stage.
+///
+/// Shader pipeline stage.
+///
+/// Since: 14.2.0
+enum hb_gpu_shader_stage_t {
+  HB_GPU_SHADER_STAGE_VERTEX(0),
+  HB_GPU_SHADER_STAGE_FRAGMENT(1);
+
+  final int value;
+  const hb_gpu_shader_stage_t(this.value);
+
+  static hb_gpu_shader_stage_t fromValue(int value) => switch (value) {
+    0 => HB_GPU_SHADER_STAGE_VERTEX,
+    1 => HB_GPU_SHADER_STAGE_FRAGMENT,
+    _ => throw ArgumentError('Unknown value for hb_gpu_shader_stage_t: $value'),
+  };
+}
+
 final class hb_language_impl_t extends ffi.Opaque {}
 
 /// hb_language_t:
@@ -12217,6 +13831,74 @@ typedef Darthb_paint_sweep_gradient_tile_func_tFunction = void Function(
 typedef hb_position_t = ffi.Int32;
 typedef Darthb_position_t = int;
 
+final class hb_raster_draw_t extends ffi.Opaque {}
+
+/// hb_raster_extents_t:
+/// @x_origin: X coordinate of the left edge of the image in glyph space
+/// @y_origin: Y coordinate of the bottom edge of the image in glyph space
+/// @width: Width in pixels
+/// @height: Height in pixels
+/// @stride: Bytes per row; 0 means auto-calculate on input, filled on output
+///
+/// Pixel-buffer extents for raster operations.
+///
+/// Since: 13.0.0
+final class hb_raster_extents_t extends ffi.Struct {
+  @ffi.Int()
+  external int x_origin;
+
+  @ffi.Int()
+  external int y_origin;
+
+  @ffi.UnsignedInt()
+  external int width;
+
+  @ffi.UnsignedInt()
+  external int height;
+
+  @ffi.UnsignedInt()
+  external int stride;
+
+  static ffi.Pointer<hb_raster_extents_t> $allocate(
+    ffi.Allocator $allocator, {
+    required int x_origin,
+    required int y_origin,
+    required int width,
+    required int height,
+    required int stride,
+  }) => $allocator<hb_raster_extents_t>()
+    ..ref.x_origin = x_origin
+    ..ref.y_origin = y_origin
+    ..ref.width = width
+    ..ref.height = height
+    ..ref.stride = stride;
+}
+
+/// hb_raster_format_t:
+/// @HB_RASTER_FORMAT_A8: 8-bit alpha-only coverage
+/// @HB_RASTER_FORMAT_BGRA32: 32-bit BGRA color
+///
+/// Pixel format for raster images.
+///
+/// Since: 13.0.0
+enum hb_raster_format_t {
+  HB_RASTER_FORMAT_A8(0),
+  HB_RASTER_FORMAT_BGRA32(1);
+
+  final int value;
+  const hb_raster_format_t(this.value);
+
+  static hb_raster_format_t fromValue(int value) => switch (value) {
+    0 => HB_RASTER_FORMAT_A8,
+    1 => HB_RASTER_FORMAT_BGRA32,
+    _ => throw ArgumentError('Unknown value for hb_raster_format_t: $value'),
+  };
+}
+
+final class hb_raster_image_t extends ffi.Opaque {}
+
+final class hb_raster_paint_t extends ffi.Opaque {}
+
 /// hb_reference_table_func_t:
 /// @face: an #hb_face_t to reference table for
 /// @tag: the tag of the table to reference
@@ -14011,3 +15693,89 @@ final class hb_variation_t extends ffi.Struct {
     ..ref.tag = tag
     ..ref.value = value;
 }
+
+final class hb_vector_draw_t extends ffi.Opaque {}
+
+/// hb_vector_extents_mode_t:
+/// @HB_VECTOR_EXTENTS_MODE_NONE: Do not update extents.
+/// @HB_VECTOR_EXTENTS_MODE_EXPAND: Union glyph ink extents into current extents.
+///
+/// Controls whether convenience glyph APIs update context extents.
+///
+/// Since: 13.0.0
+enum hb_vector_extents_mode_t {
+  HB_VECTOR_EXTENTS_MODE_NONE(0),
+  HB_VECTOR_EXTENTS_MODE_EXPAND(1);
+
+  final int value;
+  const hb_vector_extents_mode_t(this.value);
+
+  static hb_vector_extents_mode_t fromValue(int value) => switch (value) {
+    0 => HB_VECTOR_EXTENTS_MODE_NONE,
+    1 => HB_VECTOR_EXTENTS_MODE_EXPAND,
+    _ => throw ArgumentError(
+      'Unknown value for hb_vector_extents_mode_t: $value',
+    ),
+  };
+}
+
+/// hb_vector_extents_t:
+/// @x: Left edge of the output coordinate system.
+/// @y: Top edge of the output coordinate system.
+/// @width: Width of the output coordinate system.
+/// @height: Height of the output coordinate system.
+///
+/// Vector output extents, mapped to SVG viewBox.
+///
+/// Since: 13.0.0
+final class hb_vector_extents_t extends ffi.Struct {
+  @ffi.Float()
+  external double x;
+
+  @ffi.Float()
+  external double y;
+
+  @ffi.Float()
+  external double width;
+
+  @ffi.Float()
+  external double height;
+
+  static ffi.Pointer<hb_vector_extents_t> $allocate(
+    ffi.Allocator $allocator, {
+    required double x,
+    required double y,
+    required double width,
+    required double height,
+  }) => $allocator<hb_vector_extents_t>()
+    ..ref.x = x
+    ..ref.y = y
+    ..ref.width = width
+    ..ref.height = height;
+}
+
+/// hb_vector_format_t:
+/// @HB_VECTOR_FORMAT_INVALID: Invalid format.
+/// @HB_VECTOR_FORMAT_SVG: SVG output.
+/// @HB_VECTOR_FORMAT_PDF: PDF output.
+///
+/// Output format for vector conversion.
+///
+/// Since: 13.0.0
+enum hb_vector_format_t {
+  HB_VECTOR_FORMAT_INVALID(0),
+  HB_VECTOR_FORMAT_SVG(1937139488),
+  HB_VECTOR_FORMAT_PDF(1885627936);
+
+  final int value;
+  const hb_vector_format_t(this.value);
+
+  static hb_vector_format_t fromValue(int value) => switch (value) {
+    0 => HB_VECTOR_FORMAT_INVALID,
+    1937139488 => HB_VECTOR_FORMAT_SVG,
+    1885627936 => HB_VECTOR_FORMAT_PDF,
+    _ => throw ArgumentError('Unknown value for hb_vector_format_t: $value'),
+  };
+}
+
+final class hb_vector_paint_t extends ffi.Opaque {}

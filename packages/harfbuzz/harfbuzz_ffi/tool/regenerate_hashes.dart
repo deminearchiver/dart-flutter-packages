@@ -183,3 +183,17 @@ String _dartString(String value) {
       .replaceAll('\n', r'\n');
   return "'$escaped'";
 }
+
+Future<void> main(List<String> arguments) => runRegenerateHashesCli(
+  arguments,
+  defaultVersion: "0.6.0",
+  releaseConfigForVersion: (version) => .github(
+    owner: "deminearchiver",
+    repo: "dart-flutter-packages",
+    tagPrefix: "harfbuzz_ffi-v",
+    version: version,
+    fileHashes: const {},
+    libraryName: "harfbuzz",
+    assetPrefix: "harfbuzz_ffi",
+  ),
+);
