@@ -1,3 +1,8 @@
+## 0.1.12
+
+- Rolled the Luminous Symbols font from `v65` to `v66`.
+  - This update introduces 5 new icons: `account_circle_spark`, `google_one`, `loyalty_programs_spark`, `messages`, `screenshot_region`.
+
 ## 0.1.11
 
 - Rolled the Luminous Symbols font from `v63` to `v65`.

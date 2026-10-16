@@ -76,6 +76,9 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "account_circle".
   static const IconData account_circle = IconData(0xe853, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "account_circle_spark".
+  static const IconData account_circle_spark = IconData(0xffebc, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "acute".
   static const IconData acute = IconData(0xe4cb, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -880,6 +883,9 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "google_messages".
   static const IconData google_messages = IconData(0xf3a3, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "google_one".
+  static const IconData google_one = IconData(0xffe91, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "graph_5".
   static const IconData graph_5 = IconData(0xf39c, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -1090,6 +1096,9 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "loyalty_programs".
   static const IconData loyalty_programs = IconData(0xf839, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "loyalty_programs_spark".
+  static const IconData loyalty_programs_spark = IconData(0xffe92, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "m".
   static const IconData m = IconData(0x4d, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -1110,6 +1119,9 @@ abstract final class LuminousSymbols {
 
   /// Luminous Symbols icon named "menu_book".
   static const IconData menu_book = IconData(0xea19, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "messages".
+  static const IconData messages = IconData(0xefa8, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "mic".
   static const IconData mic = IconData(0xe029, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -1512,6 +1524,9 @@ abstract final class LuminousSymbols {
 
   /// Luminous Symbols icon named "screensaver_auto".
   static const IconData screensaver_auto = IconData(0xf5b2, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "screenshot_region".
+  static const IconData screenshot_region = IconData(0xf7d2, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "search".
   static const IconData search = IconData(0xe8b6, fontFamily: fontFamily, fontPackage: fontPackage);
