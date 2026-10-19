@@ -1937,144 +1937,216 @@ final class const _TextHintInverse2021()
   int get hashCode => runtimeType.hashCode;
 }
 
+const DynamicColor _primaryPaletteKeyColor2021 = _PrimaryPaletteKeyColor2021();
+const DynamicColor _secondaryPaletteKeyColor2021 =
+    _SecondaryPaletteKeyColor2021();
+const DynamicColor _tertiaryPaletteKeyColor2021 =
+    _TertiaryPaletteKeyColor2021();
+const DynamicColor _neutralPaletteKeyColor2021 = _NeutralPaletteKeyColor2021();
+const DynamicColor _neutralVariantPaletteKeyColor2021 =
+    _NeutralVariantPaletteKeyColor2021();
+const DynamicColor _errorPaletteKeyColor2021 = _ErrorPaletteKeyColor2021();
+const DynamicColor _background2021 = _Background2021();
+const DynamicColor _onBackground2021 = _OnBackground2021();
+const DynamicColor _surface2021 = _Surface2021();
+const DynamicColor _surfaceDim2021 = _SurfaceDim2021();
+const DynamicColor _surfaceBright2021 = _SurfaceBright2021();
+const DynamicColor _surfaceContainerLowest2021 = _SurfaceContainerLowest2021();
+const DynamicColor _surfaceContainerLow2021 = _SurfaceContainerLow2021();
+const DynamicColor _surfaceContainer2021 = _SurfaceContainer2021();
+const DynamicColor _surfaceContainerHigh2021 = _SurfaceContainerHigh2021();
+const DynamicColor _surfaceContainerHighest2021 =
+    _SurfaceContainerHighest2021();
+const DynamicColor _onSurface2021 = _OnSurface2021();
+const DynamicColor _surfaceVariant2021 = _SurfaceVariant2021();
+const DynamicColor _onSurfaceVariant2021 = _OnSurfaceVariant2021();
+const DynamicColor _outline2021 = _Outline2021();
+const DynamicColor _outlineVariant2021 = _OutlineVariant2021();
+const DynamicColor _inverseSurface2021 = _InverseSurface2021();
+const DynamicColor _inverseOnSurface2021 = _InverseOnSurface2021();
+const DynamicColor _shadow2021 = _Shadow2021();
+const DynamicColor _scrim2021 = _Scrim2021();
+const DynamicColor _surfaceTint2021 = _SurfaceTint2021();
+const DynamicColor _primary2021 = _Primary2021();
+const DynamicColor _onPrimary2021 = _OnPrimary2021();
+const DynamicColor _primaryContainer2021 = _PrimaryContainer2021();
+const DynamicColor _onPrimaryContainer2021 = _OnPrimaryContainer2021();
+const DynamicColor _primaryFixed2021 = _PrimaryFixed2021();
+const DynamicColor _primaryFixedDim2021 = _PrimaryFixedDim2021();
+const DynamicColor _onPrimaryFixed2021 = _OnPrimaryFixed2021();
+const DynamicColor _onPrimaryFixedVariant2021 = _OnPrimaryFixedVariant2021();
+const DynamicColor _inversePrimary2021 = _InversePrimary2021();
+const DynamicColor _secondary2021 = _Secondary2021();
+const DynamicColor _onSecondary2021 = _OnSecondary2021();
+const DynamicColor _secondaryContainer2021 = _SecondaryContainer2021();
+const DynamicColor _onSecondaryContainer2021 = _OnSecondaryContainer2021();
+const DynamicColor _secondaryFixed2021 = _SecondaryFixed2021();
+const DynamicColor _secondaryFixedDim2021 = _SecondaryFixedDim2021();
+const DynamicColor _onSecondaryFixed2021 = _OnSecondaryFixed2021();
+const DynamicColor _onSecondaryFixedVariant2021 =
+    _OnSecondaryFixedVariant2021();
+const DynamicColor _tertiary2021 = _Tertiary2021();
+const DynamicColor _onTertiary2021 = _OnTertiary2021();
+const DynamicColor _tertiaryContainer2021 = _TertiaryContainer2021();
+const DynamicColor _onTertiaryContainer2021 = _OnTertiaryContainer2021();
+const DynamicColor _tertiaryFixed2021 = _TertiaryFixed2021();
+const DynamicColor _tertiaryFixedDim2021 = _TertiaryFixedDim2021();
+const DynamicColor _onTertiaryFixed2021 = _OnTertiaryFixed2021();
+const DynamicColor _onTertiaryFixedVariant2021 = _OnTertiaryFixedVariant2021();
+const DynamicColor _error2021 = _Error2021();
+const DynamicColor _onError2021 = _OnError2021();
+const DynamicColor _errorContainer2021 = _ErrorContainer2021();
+const DynamicColor _onErrorContainer2021 = _OnErrorContainer2021();
+const DynamicColor _controlActivated2021 = _ControlActivated2021();
+const DynamicColor _controlNormal2021 = _ControlNormal2021();
+const DynamicColor _controlHighlight2021 = _ControlHighlight2021();
+const DynamicColor _textPrimaryInverse2021 = _TextPrimaryInverse2021();
+const DynamicColor _textSecondaryAndTertiaryInverse2021 =
+    _TextSecondaryAndTertiaryInverse2021();
+const DynamicColor _textPrimaryInverseDisableOnly2021 =
+    _TextPrimaryInverseDisableOnly2021();
+const DynamicColor _textSecondaryAndTertiaryInverseDisabled2021 =
+    _TextSecondaryAndTertiaryInverseDisabled2021();
+const DynamicColor _textHintInverse2021 = _TextHintInverse2021();
+
 mixin _DynamicColors2021 {
-  DynamicColor get _primaryPaletteKeyColor =>
-      const _PrimaryPaletteKeyColor2021();
+  DynamicColor get _primaryPaletteKeyColor => _primaryPaletteKeyColor2021;
 
-  DynamicColor get _secondaryPaletteKeyColor =>
-      const _SecondaryPaletteKeyColor2021();
+  DynamicColor get _secondaryPaletteKeyColor => _secondaryPaletteKeyColor2021;
 
-  DynamicColor get _tertiaryPaletteKeyColor =>
-      const _TertiaryPaletteKeyColor2021();
+  DynamicColor get _tertiaryPaletteKeyColor => _tertiaryPaletteKeyColor2021;
 
-  DynamicColor get _neutralPaletteKeyColor =>
-      const _NeutralPaletteKeyColor2021();
+  DynamicColor get _neutralPaletteKeyColor => _neutralPaletteKeyColor2021;
 
   DynamicColor get _neutralVariantPaletteKeyColor =>
-      const _NeutralVariantPaletteKeyColor2021();
+      _neutralVariantPaletteKeyColor2021;
 
-  DynamicColor get _errorPaletteKeyColor => const _ErrorPaletteKeyColor2021();
+  DynamicColor get _errorPaletteKeyColor => _errorPaletteKeyColor2021;
 
-  DynamicColor get _background => const _Background2021();
+  DynamicColor get _background => _background2021;
 
-  DynamicColor get _onBackground => const _OnBackground2021();
+  DynamicColor get _onBackground => _onBackground2021;
 
-  DynamicColor get _surface => const _Surface2021();
+  DynamicColor get _surface => _surface2021;
 
-  DynamicColor get _surfaceDim => const _SurfaceDim2021();
+  DynamicColor get _surfaceDim => _surfaceDim2021;
 
-  DynamicColor get _surfaceBright => const _SurfaceBright2021();
+  DynamicColor get _surfaceBright => _surfaceBright2021;
 
-  DynamicColor get _surfaceContainerLowest =>
-      const _SurfaceContainerLowest2021();
+  DynamicColor get _surfaceContainerLowest => _surfaceContainerLowest2021;
 
-  DynamicColor get _surfaceContainerLow => const _SurfaceContainerLow2021();
+  DynamicColor get _surfaceContainerLow => _surfaceContainerLow2021;
 
-  DynamicColor get _surfaceContainer => const _SurfaceContainer2021();
+  DynamicColor get _surfaceContainer => _surfaceContainer2021;
 
-  DynamicColor get _surfaceContainerHigh => const _SurfaceContainerHigh2021();
+  DynamicColor get _surfaceContainerHigh => _surfaceContainerHigh2021;
 
-  DynamicColor get _surfaceContainerHighest =>
-      const _SurfaceContainerHighest2021();
+  DynamicColor get _surfaceContainerHighest => _surfaceContainerHighest2021;
 
-  DynamicColor get _onSurface => const _OnSurface2021();
+  DynamicColor get _onSurface => _onSurface2021;
 
-  DynamicColor get _surfaceVariant => const _SurfaceVariant2021();
+  DynamicColor get _surfaceVariant => _surfaceVariant2021;
 
-  DynamicColor get _onSurfaceVariant => const _OnSurfaceVariant2021();
+  DynamicColor get _onSurfaceVariant => _onSurfaceVariant2021;
 
-  DynamicColor get _inverseSurface => const _InverseSurface2021();
+  DynamicColor get _outline => _outline2021;
 
-  DynamicColor get _inverseOnSurface => const _InverseOnSurface2021();
+  DynamicColor get _outlineVariant => _outlineVariant2021;
 
-  DynamicColor get _outline => const _Outline2021();
+  DynamicColor get _inverseSurface => _inverseSurface2021;
 
-  DynamicColor get _outlineVariant => const _OutlineVariant2021();
+  DynamicColor get _inverseOnSurface => _inverseOnSurface2021;
 
-  DynamicColor get _shadow => const _Shadow2021();
+  DynamicColor get _shadow => _shadow2021;
 
-  DynamicColor get _scrim => const _Scrim2021();
+  DynamicColor get _scrim => _scrim2021;
 
-  DynamicColor get _surfaceTint => const _SurfaceTint2021();
+  DynamicColor get _surfaceTint => _surfaceTint2021;
 
-  DynamicColor get _primary => const _Primary2021();
+  DynamicColor get _primary => _primary2021;
 
-  DynamicColor get _onPrimary => const _OnPrimary2021();
+  DynamicColor? get _primaryDim => null;
 
-  DynamicColor get _primaryContainer => const _PrimaryContainer2021();
+  DynamicColor get _onPrimary => _onPrimary2021;
 
-  DynamicColor get _onPrimaryContainer => const _OnPrimaryContainer2021();
+  DynamicColor get _primaryContainer => _primaryContainer2021;
 
-  DynamicColor get _inversePrimary => const _InversePrimary2021();
+  DynamicColor get _onPrimaryContainer => _onPrimaryContainer2021;
 
-  DynamicColor get _secondary => const _Secondary2021();
+  DynamicColor get _primaryFixed => _primaryFixed2021;
 
-  DynamicColor get _onSecondary => const _OnSecondary2021();
+  DynamicColor get _primaryFixedDim => _primaryFixedDim2021;
 
-  DynamicColor get _secondaryContainer => const _SecondaryContainer2021();
+  DynamicColor get _onPrimaryFixed => _onPrimaryFixed2021;
 
-  DynamicColor get _onSecondaryContainer => const _OnSecondaryContainer2021();
+  DynamicColor get _onPrimaryFixedVariant => _onPrimaryFixedVariant2021;
 
-  DynamicColor get _tertiary => const _Tertiary2021();
+  DynamicColor get _inversePrimary => _inversePrimary2021;
 
-  DynamicColor get _onTertiary => const _OnTertiary2021();
+  DynamicColor get _secondary => _secondary2021;
 
-  DynamicColor get _tertiaryContainer => const _TertiaryContainer2021();
+  DynamicColor? get _secondaryDim => null;
 
-  DynamicColor get _onTertiaryContainer => const _OnTertiaryContainer2021();
+  DynamicColor get _onSecondary => _onSecondary2021;
 
-  DynamicColor get _error => const _Error2021();
+  DynamicColor get _secondaryContainer => _secondaryContainer2021;
 
-  DynamicColor get _onError => const _OnError2021();
+  DynamicColor get _onSecondaryContainer => _onSecondaryContainer2021;
 
-  DynamicColor get _errorContainer => const _ErrorContainer2021();
+  DynamicColor get _secondaryFixed => _secondaryFixed2021;
 
-  DynamicColor get _onErrorContainer => const _OnErrorContainer2021();
+  DynamicColor get _secondaryFixedDim => _secondaryFixedDim2021;
 
-  DynamicColor get _primaryFixed => const _PrimaryFixed2021();
+  DynamicColor get _onSecondaryFixed => _onSecondaryFixed2021;
 
-  DynamicColor get _primaryFixedDim => const _PrimaryFixedDim2021();
+  DynamicColor get _onSecondaryFixedVariant => _onSecondaryFixedVariant2021;
 
-  DynamicColor get _onPrimaryFixed => const _OnPrimaryFixed2021();
+  DynamicColor get _tertiary => _tertiary2021;
 
-  DynamicColor get _onPrimaryFixedVariant => const _OnPrimaryFixedVariant2021();
+  DynamicColor? get _tertiaryDim => null;
 
-  DynamicColor get _secondaryFixed => const _SecondaryFixed2021();
+  DynamicColor get _onTertiary => _onTertiary2021;
 
-  DynamicColor get _secondaryFixedDim => const _SecondaryFixedDim2021();
+  DynamicColor get _tertiaryContainer => _tertiaryContainer2021;
 
-  DynamicColor get _onSecondaryFixed => const _OnSecondaryFixed2021();
+  DynamicColor get _onTertiaryContainer => _onTertiaryContainer2021;
 
-  DynamicColor get _onSecondaryFixedVariant =>
-      const _OnSecondaryFixedVariant2021();
+  DynamicColor get _tertiaryFixed => _tertiaryFixed2021;
 
-  DynamicColor get _tertiaryFixed => const _TertiaryFixed2021();
+  DynamicColor get _tertiaryFixedDim => _tertiaryFixedDim2021;
 
-  DynamicColor get _tertiaryFixedDim => const _TertiaryFixedDim2021();
+  DynamicColor get _onTertiaryFixed => _onTertiaryFixed2021;
 
-  DynamicColor get _onTertiaryFixed => const _OnTertiaryFixed2021();
+  DynamicColor get _onTertiaryFixedVariant => _onTertiaryFixedVariant2021;
 
-  DynamicColor get _onTertiaryFixedVariant =>
-      const _OnTertiaryFixedVariant2021();
+  DynamicColor get _error => _error2021;
 
-  DynamicColor get _controlActivated => const _ControlActivated2021();
+  DynamicColor? get _errorDim => null;
 
-  DynamicColor get _controlNormal => const _ControlNormal2021();
+  DynamicColor get _onError => _onError2021;
 
-  DynamicColor get _controlHighlight => const _ControlHighlight2021();
+  DynamicColor get _errorContainer => _errorContainer2021;
 
-  DynamicColor get _textPrimaryInverse => const _TextPrimaryInverse2021();
+  DynamicColor get _onErrorContainer => _onErrorContainer2021;
+
+  DynamicColor get _controlActivated => _controlActivated2021;
+
+  DynamicColor get _controlNormal => _controlNormal2021;
+
+  DynamicColor get _controlHighlight => _controlHighlight2021;
+
+  DynamicColor get _textPrimaryInverse => _textPrimaryInverse2021;
 
   DynamicColor get _textSecondaryAndTertiaryInverse =>
-      const _TextSecondaryAndTertiaryInverse2021();
+      _textSecondaryAndTertiaryInverse2021;
 
   DynamicColor get _textPrimaryInverseDisableOnly =>
-      const _TextPrimaryInverseDisableOnly2021();
+      _textPrimaryInverseDisableOnly2021;
 
   DynamicColor get _textSecondaryAndTertiaryInverseDisabled =>
-      const _TextSecondaryAndTertiaryInverseDisabled2021();
+      _textSecondaryAndTertiaryInverseDisabled2021;
 
-  DynamicColor get _textHintInverse => const _TextHintInverse2021();
+  DynamicColor get _textHintInverse => _textHintInverse2021;
 
   DynamicColor _highestSurface(DynamicScheme scheme) =>
       scheme.isDark ? _surfaceBright : _surfaceDim;
@@ -2165,7 +2237,7 @@ class const ColorSpec2021() with _DynamicColors2021 implements ColorSpec {
   DynamicColor get primary => _primary;
 
   @override
-  DynamicColor? get primaryDim => null;
+  DynamicColor? get primaryDim => _primaryDim;
 
   @override
   DynamicColor get onPrimary => _onPrimary;
@@ -2183,7 +2255,7 @@ class const ColorSpec2021() with _DynamicColors2021 implements ColorSpec {
   DynamicColor get secondary => _secondary;
 
   @override
-  DynamicColor? get secondaryDim => null;
+  DynamicColor? get secondaryDim => _secondaryDim;
 
   @override
   DynamicColor get onSecondary => _onSecondary;
@@ -2198,7 +2270,7 @@ class const ColorSpec2021() with _DynamicColors2021 implements ColorSpec {
   DynamicColor get tertiary => _tertiary;
 
   @override
-  DynamicColor? get tertiaryDim => null;
+  DynamicColor? get tertiaryDim => _tertiaryDim;
 
   @override
   DynamicColor get onTertiary => _onTertiary;
@@ -2213,7 +2285,7 @@ class const ColorSpec2021() with _DynamicColors2021 implements ColorSpec {
   DynamicColor get error => _error;
 
   @override
-  DynamicColor? get errorDim => null;
+  DynamicColor? get errorDim => _errorDim;
 
   @override
   DynamicColor get onError => _onError;

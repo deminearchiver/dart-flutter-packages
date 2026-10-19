@@ -62,6 +62,80 @@ ContrastCurve _getContrastCurve(double defaultContrast) =>
       final value => ContrastCurve(value, value, 7.0, 21.0),
     };
 
+final class const _PrimaryPaletteKeyColor2025()
+    extends _PrimaryPaletteKeyColor2021
+    with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _PrimaryPaletteKeyColor2025;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _SecondaryPaletteKeyColor2025()
+    extends _SecondaryPaletteKeyColor2021
+    with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _SecondaryPaletteKeyColor2025;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TertiaryPaletteKeyColor2025()
+    extends _TertiaryPaletteKeyColor2021
+    with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _TertiaryPaletteKeyColor2025;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _NeutralPaletteKeyColor2025()
+    extends _NeutralPaletteKeyColor2021
+    with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _NeutralPaletteKeyColor2025;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _NeutralVariantPaletteKeyColor2025()
+    extends _NeutralVariantPaletteKeyColor2021
+    with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _NeutralVariantPaletteKeyColor2025;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _ErrorPaletteKeyColor2025()
+    extends _ErrorPaletteKeyColor2021
+    with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _ErrorPaletteKeyColor2025;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
 final class const _Background2025() extends _Surface2025 {
   @override
   String get name => "background";
@@ -92,9 +166,7 @@ final class const _OnBackground2025() extends _OnSurface2025 {
   int get hashCode => runtimeType.hashCode;
 }
 
-final class const _Surface2025()
-    extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+final class const _Surface2025() extends DynamicColor with _DynamicColors2025 {
   @override
   String get name => "surface";
 
@@ -134,7 +206,7 @@ final class const _Surface2025()
 
 final class const _SurfaceDim2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "surface_dim";
 
@@ -186,7 +258,7 @@ final class const _SurfaceDim2025()
 
 final class const _SurfaceBright2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "surface_bright";
 
@@ -238,7 +310,7 @@ final class const _SurfaceBright2025()
 
 final class const _SurfaceContainerLowest2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "surface_container_lowest";
 
@@ -262,7 +334,7 @@ final class const _SurfaceContainerLowest2025()
 
 final class const _SurfaceContainerLow2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "surface_container_low";
 
@@ -318,7 +390,7 @@ final class const _SurfaceContainerLow2025()
 
 final class const _SurfaceContainer2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "surface_container";
 
@@ -374,7 +446,7 @@ final class const _SurfaceContainer2025()
 
 final class const _SurfaceContainerHigh2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "surface_container_high";
 
@@ -430,7 +502,7 @@ final class const _SurfaceContainerHigh2025()
 
 final class const _SurfaceContainerHighest2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "surface_container_highest";
 
@@ -480,7 +552,7 @@ final class const _SurfaceContainerHighest2025()
 
 final class const _OnSurface2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_surface";
 
@@ -551,7 +623,7 @@ final class const _SurfaceVariant2025() extends _SurfaceContainerHighest2025 {
 
 final class const _OnSurfaceVariant2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_surface_variant";
 
@@ -602,7 +674,7 @@ final class const _OnSurfaceVariant2025()
 
 final class const _InverseSurface2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "inverse_surface";
 
@@ -626,7 +698,7 @@ final class const _InverseSurface2025()
 
 final class const _InverseOnSurface2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "inverse_on_surface";
 
@@ -648,9 +720,27 @@ final class const _InverseOnSurface2025()
   int get hashCode => runtimeType.hashCode;
 }
 
-final class const _Outline2025()
-    extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+final class const _Shadow2025() extends _Shadow2021 with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _Shadow2025;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _Scrim2025() extends _Scrim2021 with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _Scrim2025;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _Outline2025() extends DynamicColor with _DynamicColors2025 {
   @override
   String get name => "outline";
 
@@ -699,7 +789,7 @@ final class const _Outline2025()
 
 final class const _OutlineVariant2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "outline_variant";
 
@@ -759,9 +849,7 @@ final class const _SurfaceTint2025() extends _Primary2025 {
   int get hashCode => runtimeType.hashCode;
 }
 
-final class const _Primary2025()
-    extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+final class const _Primary2025() extends DynamicColor with _DynamicColors2025 {
   @override
   String get name => "primary";
 
@@ -855,7 +943,7 @@ final class const _Primary2025()
 
 final class const _PrimaryDim2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "primary_dim";
 
@@ -902,7 +990,7 @@ final class const _PrimaryDim2025()
 
 final class const _OnPrimary2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_primary";
 
@@ -930,7 +1018,7 @@ final class const _OnPrimary2025()
 
 final class const _PrimaryContainer2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "primary_container";
 
@@ -1008,7 +1096,7 @@ final class const _PrimaryContainer2025()
 
 final class const _OnPrimaryContainer2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_primary_container";
 
@@ -1038,7 +1126,7 @@ final class const _OnPrimaryContainer2025()
 
 final class const _InversePrimary2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "inverse_primary";
 
@@ -1068,7 +1156,7 @@ final class const _InversePrimary2025()
 
 final class const _Secondary2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "secondary";
 
@@ -1134,7 +1222,7 @@ final class const _Secondary2025()
 
 final class const _SecondaryDim2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "secondary_dim";
 
@@ -1179,7 +1267,7 @@ final class const _SecondaryDim2025()
 
 final class const _OnSecondary2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_secondary";
 
@@ -1207,7 +1295,7 @@ final class const _OnSecondary2025()
 
 final class const _SecondaryContainer2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "secondary_container";
 
@@ -1270,7 +1358,7 @@ final class const _SecondaryContainer2025()
 
 final class const _OnSecondaryContainer2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_secondary_container";
 
@@ -1295,9 +1383,7 @@ final class const _OnSecondaryContainer2025()
   int get hashCode => runtimeType.hashCode;
 }
 
-final class const _Tertiary2025()
-    extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+final class const _Tertiary2025() extends DynamicColor with _DynamicColors2025 {
   @override
   String get name => "tertiary";
 
@@ -1367,7 +1453,7 @@ final class const _Tertiary2025()
 
 final class const _TertiaryDim2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "tertiary_dim";
 
@@ -1412,7 +1498,7 @@ final class const _TertiaryDim2025()
 
 final class const _OnTertiary2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_tertiary";
 
@@ -1440,7 +1526,7 @@ final class const _OnTertiary2025()
 
 final class const _TertiaryContainer2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "tertiary_container";
 
@@ -1518,7 +1604,7 @@ final class const _TertiaryContainer2025()
 
 final class const _OnTertiaryContainer2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_tertiary_container";
 
@@ -1543,9 +1629,7 @@ final class const _OnTertiaryContainer2025()
   int get hashCode => runtimeType.hashCode;
 }
 
-final class const _Error2025()
-    extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+final class const _Error2025() extends DynamicColor with _DynamicColors2025 {
   @override
   String get name => "error";
 
@@ -1602,9 +1686,7 @@ final class const _Error2025()
   int get hashCode => runtimeType.hashCode;
 }
 
-final class const _ErrorDim2025()
-    extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+final class const _ErrorDim2025() extends DynamicColor with _DynamicColors2025 {
   @override
   String get name => "error_dim";
 
@@ -1641,9 +1723,7 @@ final class const _ErrorDim2025()
   int get hashCode => runtimeType.hashCode;
 }
 
-final class const _OnError2025()
-    extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+final class const _OnError2025() extends DynamicColor with _DynamicColors2025 {
   @override
   String get name => "on_error";
 
@@ -1671,7 +1751,7 @@ final class const _OnError2025()
 
 final class const _ErrorContainer2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "error_container";
 
@@ -1730,7 +1810,7 @@ final class const _ErrorContainer2025()
 
 final class const _OnErrorContainer2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_error_container";
 
@@ -1757,7 +1837,7 @@ final class const _OnErrorContainer2025()
 
 final class const _PrimaryFixed2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "primary_fixed";
 
@@ -1798,7 +1878,7 @@ final class const _PrimaryFixed2025()
 
 final class const _PrimaryFixedDim2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "primary_fixed_dim";
 
@@ -1831,7 +1911,7 @@ final class const _PrimaryFixedDim2025()
 
 final class const _OnPrimaryFixed2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_primary_fixed";
 
@@ -1855,7 +1935,7 @@ final class const _OnPrimaryFixed2025()
 
 final class const _OnPrimaryFixedVariant2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_primary_fixed_variant";
 
@@ -1879,7 +1959,7 @@ final class const _OnPrimaryFixedVariant2025()
 
 final class const _SecondaryFixed2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "secondary_fixed";
 
@@ -1920,7 +2000,7 @@ final class const _SecondaryFixed2025()
 
 final class const _SecondaryFixedDim2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "secondary_fixed_dim";
 
@@ -1953,7 +2033,7 @@ final class const _SecondaryFixedDim2025()
 
 final class const _OnSecondaryFixed2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_secondary_fixed";
 
@@ -1977,7 +2057,7 @@ final class const _OnSecondaryFixed2025()
 
 final class const _OnSecondaryFixedVariant2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_secondary_fixed_variant";
 
@@ -2001,7 +2081,7 @@ final class const _OnSecondaryFixedVariant2025()
 
 final class const _TertiaryFixed2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "tertiary_fixed";
 
@@ -2042,7 +2122,7 @@ final class const _TertiaryFixed2025()
 
 final class const _TertiaryFixedDim2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "tertiary_fixed_dim";
 
@@ -2075,7 +2155,7 @@ final class const _TertiaryFixedDim2025()
 
 final class const _OnTertiaryFixed2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_tertiary_fixed";
 
@@ -2099,7 +2179,7 @@ final class const _OnTertiaryFixed2025()
 
 final class const _OnTertiaryFixedVariant2025()
     extends DynamicColor
-    with _DynamicColors2021, _DynamicColors2025 {
+    with _DynamicColors2025 {
   @override
   String get name => "on_tertiary_fixed_variant";
 
@@ -2147,6 +2227,18 @@ final class const _ControlNormal2025() extends _OnSurfaceVariant2025 {
   int get hashCode => runtimeType.hashCode;
 }
 
+final class const _ControlHighlight2025()
+    extends _ControlHighlight2021
+    with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _ControlHighlight2025;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
 final class const _TextPrimaryInverse2025() extends _InverseOnSurface2025 {
   @override
   String get name => "text_primary_inverse";
@@ -2160,450 +2252,659 @@ final class const _TextPrimaryInverse2025() extends _InverseOnSurface2025 {
   int get hashCode => runtimeType.hashCode;
 }
 
-mixin _DynamicColors2025 on _DynamicColors2021 {
+final class const _TextSecondaryAndTertiaryInverse2025()
+    extends _TextSecondaryAndTertiaryInverse2021
+    with _DynamicColors2025 {
   @override
-  DynamicColor get _background =>
-      const .extended(_Background2021(), .spec2025, _Background2025());
-
-  @override
-  DynamicColor get _onBackground =>
-      const .extended(_OnBackground2021(), .spec2025, _OnBackground2025());
-
-  @override
-  DynamicColor get _surface =>
-      const .extended(_Surface2021(), .spec2025, _Surface2025());
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _TextSecondaryAndTertiaryInverse2025;
 
   @override
-  DynamicColor get _surfaceDim =>
-      const .extended(_SurfaceDim2021(), .spec2025, _SurfaceDim2025());
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TextPrimaryInverseDisableOnly2025()
+    extends _TextPrimaryInverseDisableOnly2021
+    with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _TextPrimaryInverseDisableOnly2025;
 
   @override
-  DynamicColor get _surfaceBright =>
-      const .extended(_SurfaceBright2021(), .spec2025, _SurfaceBright2025());
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TextSecondaryAndTertiaryInverseDisabled2025()
+    extends _TextSecondaryAndTertiaryInverseDisabled2021
+    with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is _TextSecondaryAndTertiaryInverseDisabled2025;
 
   @override
-  DynamicColor get _surfaceContainerLowest => const .extended(
-    _SurfaceContainerLowest2021(),
-    .spec2025,
-    _SurfaceContainerLowest2025(),
-  );
+  int get hashCode => runtimeType.hashCode;
+}
+
+final class const _TextHintInverse2025()
+    extends _TextHintInverse2021
+    with _DynamicColors2025 {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType && other is _TextHintInverse2025;
 
   @override
-  DynamicColor get _surfaceContainerLow => const .extended(
-    _SurfaceContainerLow2021(),
-    .spec2025,
-    _SurfaceContainerLow2025(),
-  );
+  int get hashCode => runtimeType.hashCode;
+}
+
+const DynamicColor _primaryPaletteKeyColor2025 = .extended(
+  _primaryPaletteKeyColor2021,
+  .spec2025,
+  _PrimaryPaletteKeyColor2025(),
+);
+
+const DynamicColor _secondaryPaletteKeyColor2025 = .extended(
+  _secondaryPaletteKeyColor2021,
+  .spec2025,
+  _SecondaryPaletteKeyColor2025(),
+);
+
+const DynamicColor _tertiaryPaletteKeyColor2025 = .extended(
+  _tertiaryPaletteKeyColor2021,
+  .spec2025,
+  _TertiaryPaletteKeyColor2025(),
+);
+
+const DynamicColor _neutralPaletteKeyColor2025 = .extended(
+  _neutralPaletteKeyColor2021,
+  .spec2025,
+  _NeutralPaletteKeyColor2025(),
+);
+
+const DynamicColor _neutralVariantPaletteKeyColor2025 = .extended(
+  _neutralVariantPaletteKeyColor2021,
+  .spec2025,
+  _NeutralVariantPaletteKeyColor2025(),
+);
+
+const DynamicColor _errorPaletteKeyColor2025 = .extended(
+  _errorPaletteKeyColor2021,
+  .spec2025,
+  _ErrorPaletteKeyColor2025(),
+);
+
+const DynamicColor _background2025 = .extended(
+  _background2021,
+  .spec2025,
+  _Background2025(),
+);
+
+const DynamicColor _onBackground2025 = .extended(
+  _onBackground2021,
+  .spec2025,
+  _OnBackground2025(),
+);
+
+const DynamicColor _surface2025 = .extended(
+  _surface2021,
+  .spec2025,
+  _Surface2025(),
+);
+
+const DynamicColor _surfaceDim2025 = .extended(
+  _surfaceDim2021,
+  .spec2025,
+  _SurfaceDim2025(),
+);
+
+const DynamicColor _surfaceBright2025 = .extended(
+  _surfaceBright2021,
+  .spec2025,
+  _SurfaceBright2025(),
+);
+
+const DynamicColor _surfaceContainerLowest2025 = .extended(
+  _surfaceContainerLowest2021,
+  .spec2025,
+  _SurfaceContainerLowest2025(),
+);
+
+const DynamicColor _surfaceContainerLow2025 = .extended(
+  _surfaceContainerLow2021,
+  .spec2025,
+  _SurfaceContainerLow2025(),
+);
+
+const DynamicColor _surfaceContainer2025 = .extended(
+  _surfaceContainer2021,
+  .spec2025,
+  _SurfaceContainer2025(),
+);
+
+const DynamicColor _surfaceContainerHigh2025 = .extended(
+  _surfaceContainerHigh2021,
+  .spec2025,
+  _SurfaceContainerHigh2025(),
+);
+
+const DynamicColor _surfaceContainerHighest2025 = .extended(
+  _surfaceContainerHighest2021,
+  .spec2025,
+  _SurfaceContainerHighest2025(),
+);
+
+const DynamicColor _onSurface2025 = .extended(
+  _onSurface2021,
+  .spec2025,
+  _OnSurface2025(),
+);
+
+const DynamicColor _surfaceVariant2025 = .extended(
+  _surfaceVariant2021,
+  .spec2025,
+  _SurfaceVariant2025(),
+);
+
+const DynamicColor _onSurfaceVariant2025 = .extended(
+  _onSurfaceVariant2021,
+  .spec2025,
+  _OnSurfaceVariant2025(),
+);
+
+const DynamicColor _outline2025 = .extended(
+  _outline2021,
+  .spec2025,
+  _Outline2025(),
+);
+
+const DynamicColor _outlineVariant2025 = .extended(
+  _outlineVariant2021,
+  .spec2025,
+  _OutlineVariant2025(),
+);
+
+const DynamicColor _inverseSurface2025 = .extended(
+  _inverseSurface2021,
+  .spec2025,
+  _InverseSurface2025(),
+);
+
+const DynamicColor _inverseOnSurface2025 = .extended(
+  _inverseOnSurface2021,
+  .spec2025,
+  _InverseOnSurface2025(),
+);
+
+const DynamicColor _shadow2025 = .extended(
+  _shadow2021,
+  .spec2025,
+  _Shadow2025(),
+);
+
+const DynamicColor _scrim2025 = .extended(_scrim2021, .spec2025, _Scrim2025());
+
+const DynamicColor _surfaceTint2025 = .extended(
+  _surfaceTint2021,
+  .spec2025,
+  _SurfaceTint2025(),
+);
+
+const DynamicColor _primary2025 = .extended(
+  _primary2021,
+  .spec2025,
+  _Primary2025(),
+);
+
+const DynamicColor _primaryDim2025 = _PrimaryDim2025();
+
+const DynamicColor _onPrimary2025 = .extended(
+  _onPrimary2021,
+  .spec2025,
+  _OnPrimary2025(),
+);
+
+const DynamicColor _primaryContainer2025 = .extended(
+  _primaryContainer2021,
+  .spec2025,
+  _PrimaryContainer2025(),
+);
+
+const DynamicColor _onPrimaryContainer2025 = .extended(
+  _onPrimaryContainer2021,
+  .spec2025,
+  _OnPrimaryContainer2025(),
+);
+
+const DynamicColor _primaryFixed2025 = .extended(
+  _primaryFixed2021,
+  .spec2025,
+  _PrimaryFixed2025(),
+);
+
+const DynamicColor _primaryFixedDim2025 = .extended(
+  _primaryFixedDim2021,
+  .spec2025,
+  _PrimaryFixedDim2025(),
+);
+
+const DynamicColor _onPrimaryFixed2025 = .extended(
+  _onPrimaryFixed2021,
+  .spec2025,
+  _OnPrimaryFixed2025(),
+);
+
+const DynamicColor _onPrimaryFixedVariant2025 = .extended(
+  _onPrimaryFixedVariant2021,
+  .spec2025,
+  _OnPrimaryFixedVariant2025(),
+);
+
+const DynamicColor _inversePrimary2025 = .extended(
+  _inversePrimary2021,
+  .spec2025,
+  _InversePrimary2025(),
+);
+
+const DynamicColor _secondary2025 = .extended(
+  _secondary2021,
+  .spec2025,
+  _Secondary2025(),
+);
+
+const DynamicColor _secondaryDim2025 = _SecondaryDim2025();
+
+const DynamicColor _onSecondary2025 = .extended(
+  _onSecondary2021,
+  .spec2025,
+  _OnSecondary2025(),
+);
+
+const DynamicColor _secondaryContainer2025 = .extended(
+  _secondaryContainer2021,
+  .spec2025,
+  _SecondaryContainer2025(),
+);
+
+const DynamicColor _onSecondaryContainer2025 = .extended(
+  _onSecondaryContainer2021,
+  .spec2025,
+  _OnSecondaryContainer2025(),
+);
+
+const DynamicColor _secondaryFixed2025 = .extended(
+  _secondaryFixed2021,
+  .spec2025,
+  _SecondaryFixed2025(),
+);
+
+const DynamicColor _secondaryFixedDim2025 = .extended(
+  _secondaryFixedDim2021,
+  .spec2025,
+  _SecondaryFixedDim2025(),
+);
+
+const DynamicColor _onSecondaryFixed2025 = .extended(
+  _onSecondaryFixed2021,
+  .spec2025,
+  _OnSecondaryFixed2025(),
+);
+
+const DynamicColor _onSecondaryFixedVariant2025 = .extended(
+  _onSecondaryFixedVariant2021,
+  .spec2025,
+  _OnSecondaryFixedVariant2025(),
+);
+
+const DynamicColor _tertiary2025 = .extended(
+  _tertiary2021,
+  .spec2025,
+  _Tertiary2025(),
+);
+
+const DynamicColor _tertiaryDim2025 = _TertiaryDim2025();
+
+const DynamicColor _onTertiary2025 = .extended(
+  _onTertiary2021,
+  .spec2025,
+  _OnTertiary2025(),
+);
+
+const DynamicColor _tertiaryContainer2025 = .extended(
+  _tertiaryContainer2021,
+  .spec2025,
+  _TertiaryContainer2025(),
+);
+
+const DynamicColor _onTertiaryContainer2025 = .extended(
+  _onTertiaryContainer2021,
+  .spec2025,
+  _OnTertiaryContainer2025(),
+);
+
+const DynamicColor _tertiaryFixed2025 = .extended(
+  _tertiaryFixed2021,
+  .spec2025,
+  _TertiaryFixed2025(),
+);
+
+const DynamicColor _tertiaryFixedDim2025 = .extended(
+  _tertiaryFixedDim2021,
+  .spec2025,
+  _TertiaryFixedDim2025(),
+);
+
+const DynamicColor _onTertiaryFixed2025 = .extended(
+  _onTertiaryFixed2021,
+  .spec2025,
+  _OnTertiaryFixed2025(),
+);
+
+const DynamicColor _onTertiaryFixedVariant2025 = .extended(
+  _onTertiaryFixedVariant2021,
+  .spec2025,
+  _OnTertiaryFixedVariant2025(),
+);
+
+const DynamicColor _error2025 = .extended(_error2021, .spec2025, _Error2025());
+
+const DynamicColor _errorDim2025 = _ErrorDim2025();
+
+const DynamicColor _onError2025 = .extended(
+  _onError2021,
+  .spec2025,
+  _OnError2025(),
+);
+
+const DynamicColor _errorContainer2025 = .extended(
+  _errorContainer2021,
+  .spec2025,
+  _ErrorContainer2025(),
+);
+
+const DynamicColor _onErrorContainer2025 = .extended(
+  _onErrorContainer2021,
+  .spec2025,
+  _OnErrorContainer2025(),
+);
+
+const DynamicColor _controlActivated2025 = .extended(
+  _controlActivated2021,
+  .spec2025,
+  _ControlActivated2025(),
+);
+
+const DynamicColor _controlNormal2025 = .extended(
+  _controlNormal2021,
+  .spec2025,
+  _ControlNormal2025(),
+);
+
+const DynamicColor _controlHighlight2025 = .extended(
+  _controlHighlight2021,
+  .spec2025,
+  _ControlHighlight2025(),
+);
+
+const DynamicColor _textPrimaryInverse2025 = .extended(
+  _textPrimaryInverse2021,
+  .spec2025,
+  _TextPrimaryInverse2025(),
+);
+
+const DynamicColor _textSecondaryAndTertiaryInverse2025 = .extended(
+  _textSecondaryAndTertiaryInverse2021,
+  .spec2025,
+  _TextSecondaryAndTertiaryInverse2025(),
+);
+
+const DynamicColor _textPrimaryInverseDisableOnly2025 = .extended(
+  _textPrimaryInverseDisableOnly2021,
+  .spec2025,
+  _TextPrimaryInverseDisableOnly2025(),
+);
+
+const DynamicColor _textSecondaryAndTertiaryInverseDisabled2025 = .extended(
+  _textSecondaryAndTertiaryInverseDisabled2021,
+  .spec2025,
+  _TextSecondaryAndTertiaryInverseDisabled2025(),
+);
+
+const DynamicColor _textHintInverse2025 = .extended(
+  _textHintInverse2021,
+  .spec2025,
+  _TextHintInverse2025(),
+);
+
+mixin _DynamicColors2025 implements _DynamicColors2021 {
+  @override
+  DynamicColor get _primaryPaletteKeyColor => _primaryPaletteKeyColor2025;
 
   @override
-  DynamicColor get _surfaceContainer => const .extended(
-    _SurfaceContainer2021(),
-    .spec2025,
-    _SurfaceContainer2025(),
-  );
+  DynamicColor get _secondaryPaletteKeyColor => _secondaryPaletteKeyColor2025;
 
   @override
-  DynamicColor get _surfaceContainerHigh => const .extended(
-    _SurfaceContainerHigh2021(),
-    .spec2025,
-    _SurfaceContainerHigh2025(),
-  );
+  DynamicColor get _tertiaryPaletteKeyColor => _tertiaryPaletteKeyColor2025;
 
   @override
-  DynamicColor get _surfaceContainerHighest => const .extended(
-    _SurfaceContainerHighest2021(),
-    .spec2025,
-    _SurfaceContainerHighest2025(),
-  );
+  DynamicColor get _neutralPaletteKeyColor => _neutralPaletteKeyColor2025;
 
   @override
-  DynamicColor get _onSurface =>
-      const .extended(_OnSurface2021(), .spec2025, _OnSurface2025());
+  DynamicColor get _neutralVariantPaletteKeyColor =>
+      _neutralVariantPaletteKeyColor2025;
 
   @override
-  DynamicColor get _surfaceVariant =>
-      const .extended(_SurfaceVariant2021(), .spec2025, _SurfaceVariant2025());
+  DynamicColor get _errorPaletteKeyColor => _errorPaletteKeyColor2025;
 
   @override
-  DynamicColor get _onSurfaceVariant => const .extended(
-    _OnSurfaceVariant2021(),
-    .spec2025,
-    _OnSurfaceVariant2025(),
-  );
+  DynamicColor get _background => _background2025;
 
   @override
-  DynamicColor get _inverseSurface =>
-      const .extended(_InverseSurface2021(), .spec2025, _InverseSurface2025());
+  DynamicColor get _onBackground => _onBackground2025;
 
   @override
-  DynamicColor get _inverseOnSurface => const .extended(
-    _InverseOnSurface2021(),
-    .spec2025,
-    _InverseOnSurface2025(),
-  );
+  DynamicColor get _surface => _surface2025;
 
   @override
-  DynamicColor get _outline =>
-      const .extended(_Outline2021(), .spec2025, _Outline2025());
+  DynamicColor get _surfaceDim => _surfaceDim2025;
 
   @override
-  DynamicColor get _outlineVariant =>
-      const .extended(_OutlineVariant2021(), .spec2025, _OutlineVariant2025());
+  DynamicColor get _surfaceBright => _surfaceBright2025;
 
   @override
-  DynamicColor get _surfaceTint =>
-      const .extended(_SurfaceTint2021(), .spec2025, _SurfaceTint2025());
+  DynamicColor get _surfaceContainerLowest => _surfaceContainerLowest2025;
 
   @override
-  DynamicColor get _primary =>
-      const .extended(_Primary2021(), .spec2025, _Primary2025());
-
-  DynamicColor get _primaryDim => const _PrimaryDim2025();
+  DynamicColor get _surfaceContainerLow => _surfaceContainerLow2025;
 
   @override
-  DynamicColor get _onPrimary =>
-      const .extended(_OnPrimary2021(), .spec2025, _OnPrimary2025());
+  DynamicColor get _surfaceContainer => _surfaceContainer2025;
 
   @override
-  DynamicColor get _primaryContainer => const .extended(
-    _PrimaryContainer2021(),
-    .spec2025,
-    _PrimaryContainer2025(),
-  );
+  DynamicColor get _surfaceContainerHigh => _surfaceContainerHigh2025;
 
   @override
-  DynamicColor get _onPrimaryContainer => const .extended(
-    _OnPrimaryContainer2021(),
-    .spec2025,
-    _OnPrimaryContainer2025(),
-  );
+  DynamicColor get _surfaceContainerHighest => _surfaceContainerHighest2025;
 
   @override
-  DynamicColor get _inversePrimary =>
-      const .extended(_InversePrimary2021(), .spec2025, _InversePrimary2025());
+  DynamicColor get _onSurface => _onSurface2025;
 
   @override
-  DynamicColor get _secondary =>
-      const .extended(_Secondary2021(), .spec2025, _Secondary2025());
-
-  DynamicColor get _secondaryDim => const _SecondaryDim2025();
+  DynamicColor get _surfaceVariant => _surfaceVariant2025;
 
   @override
-  DynamicColor get _onSecondary =>
-      const .extended(_OnSecondary2021(), .spec2025, _OnSecondary2025());
+  DynamicColor get _onSurfaceVariant => _onSurfaceVariant2025;
 
   @override
-  DynamicColor get _secondaryContainer => const .extended(
-    _SecondaryContainer2021(),
-    .spec2025,
-    _SecondaryContainer2025(),
-  );
+  DynamicColor get _outline => _outline2025;
 
   @override
-  DynamicColor get _onSecondaryContainer => const .extended(
-    _OnSecondaryContainer2021(),
-    .spec2025,
-    _OnSecondaryContainer2025(),
-  );
+  DynamicColor get _outlineVariant => _outlineVariant2025;
 
   @override
-  DynamicColor get _tertiary =>
-      const .extended(_Tertiary2021(), .spec2025, _Tertiary2025());
-
-  DynamicColor get _tertiaryDim => const _TertiaryDim2025();
+  DynamicColor get _inverseSurface => _inverseSurface2025;
 
   @override
-  DynamicColor get _onTertiary =>
-      const .extended(_OnTertiary2021(), .spec2025, _OnTertiary2025());
+  DynamicColor get _inverseOnSurface => _inverseOnSurface2025;
 
   @override
-  DynamicColor get _tertiaryContainer => const .extended(
-    _TertiaryContainer2021(),
-    .spec2025,
-    _TertiaryContainer2025(),
-  );
+  DynamicColor get _shadow => _shadow2025;
 
   @override
-  DynamicColor get _onTertiaryContainer => const .extended(
-    _OnTertiaryContainer2021(),
-    .spec2025,
-    _OnTertiaryContainer2025(),
-  );
+  DynamicColor get _scrim => _scrim2025;
 
   @override
-  DynamicColor get _error =>
-      const .extended(_Error2021(), .spec2025, _Error2025());
-
-  DynamicColor get _errorDim => const _ErrorDim2025();
+  DynamicColor get _surfaceTint => _surfaceTint2025;
 
   @override
-  DynamicColor get _onError =>
-      const .extended(_OnError2021(), .spec2025, _OnError2025());
+  DynamicColor get _primary => _primary2025;
 
   @override
-  DynamicColor get _errorContainer =>
-      const .extended(_ErrorContainer2021(), .spec2025, _ErrorContainer2025());
+  DynamicColor get _primaryDim => _primaryDim2025;
 
   @override
-  DynamicColor get _onErrorContainer => const .extended(
-    _OnErrorContainer2021(),
-    .spec2025,
-    _OnErrorContainer2025(),
-  );
+  DynamicColor get _onPrimary => _onPrimary2025;
 
   @override
-  DynamicColor get _primaryFixed =>
-      const .extended(_PrimaryFixed2021(), .spec2025, _PrimaryFixed2025());
+  DynamicColor get _primaryContainer => _primaryContainer2025;
 
   @override
-  DynamicColor get _primaryFixedDim => const .extended(
-    _PrimaryFixedDim2021(),
-    .spec2025,
-    _PrimaryFixedDim2025(),
-  );
+  DynamicColor get _onPrimaryContainer => _onPrimaryContainer2025;
 
   @override
-  DynamicColor get _onPrimaryFixed =>
-      const .extended(_OnPrimaryFixed2021(), .spec2025, _OnPrimaryFixed2025());
+  DynamicColor get _primaryFixed => _primaryFixed2025;
 
   @override
-  DynamicColor get _onPrimaryFixedVariant => const .extended(
-    _OnPrimaryFixedVariant2021(),
-    .spec2025,
-    _OnPrimaryFixedVariant2025(),
-  );
+  DynamicColor get _primaryFixedDim => _primaryFixedDim2025;
 
   @override
-  DynamicColor get _secondaryFixed =>
-      const .extended(_SecondaryFixed2021(), .spec2025, _SecondaryFixed2025());
+  DynamicColor get _onPrimaryFixed => _onPrimaryFixed2025;
 
   @override
-  DynamicColor get _secondaryFixedDim => const .extended(
-    _SecondaryFixedDim2021(),
-    .spec2025,
-    _SecondaryFixedDim2025(),
-  );
+  DynamicColor get _onPrimaryFixedVariant => _onPrimaryFixedVariant2025;
 
   @override
-  DynamicColor get _onSecondaryFixed => const .extended(
-    _OnSecondaryFixed2021(),
-    .spec2025,
-    _OnSecondaryFixed2025(),
-  );
+  DynamicColor get _inversePrimary => _inversePrimary2025;
 
   @override
-  DynamicColor get _onSecondaryFixedVariant => const .extended(
-    _OnSecondaryFixedVariant2021(),
-    .spec2025,
-    _OnSecondaryFixedVariant2025(),
-  );
+  DynamicColor get _secondary => _secondary2025;
 
   @override
-  DynamicColor get _tertiaryFixed =>
-      const .extended(_TertiaryFixed2021(), .spec2025, _TertiaryFixed2025());
+  DynamicColor get _secondaryDim => _secondaryDim2025;
 
   @override
-  DynamicColor get _tertiaryFixedDim => const .extended(
-    _TertiaryFixedDim2021(),
-    .spec2025,
-    _TertiaryFixedDim2025(),
-  );
+  DynamicColor get _onSecondary => _onSecondary2025;
 
   @override
-  DynamicColor get _onTertiaryFixed => const .extended(
-    _OnTertiaryFixed2021(),
-    .spec2025,
-    _OnTertiaryFixed2025(),
-  );
+  DynamicColor get _secondaryContainer => _secondaryContainer2025;
 
   @override
-  DynamicColor get _onTertiaryFixedVariant => const .extended(
-    _OnTertiaryFixedVariant2021(),
-    .spec2025,
-    _OnTertiaryFixedVariant2025(),
-  );
+  DynamicColor get _onSecondaryContainer => _onSecondaryContainer2025;
 
   @override
-  DynamicColor get _controlActivated => const .extended(
-    _ControlActivated2021(),
-    .spec2025,
-    _ControlActivated2025(),
-  );
+  DynamicColor get _secondaryFixed => _secondaryFixed2025;
 
   @override
-  DynamicColor get _controlNormal =>
-      const .extended(_ControlNormal2021(), .spec2025, _ControlNormal2025());
+  DynamicColor get _secondaryFixedDim => _secondaryFixedDim2025;
 
   @override
-  DynamicColor get _textPrimaryInverse => const .extended(
-    _TextPrimaryInverse2021(),
-    .spec2025,
-    _TextPrimaryInverse2025(),
-  );
+  DynamicColor get _onSecondaryFixed => _onSecondaryFixed2025;
+
+  @override
+  DynamicColor get _onSecondaryFixedVariant => _onSecondaryFixedVariant2025;
+
+  @override
+  DynamicColor get _tertiary => _tertiary2025;
+
+  @override
+  DynamicColor get _tertiaryDim => _tertiaryDim2025;
+
+  @override
+  DynamicColor get _onTertiary => _onTertiary2025;
+
+  @override
+  DynamicColor get _tertiaryContainer => _tertiaryContainer2025;
+
+  @override
+  DynamicColor get _onTertiaryContainer => _onTertiaryContainer2025;
+
+  @override
+  DynamicColor get _tertiaryFixed => _tertiaryFixed2025;
+
+  @override
+  DynamicColor get _tertiaryFixedDim => _tertiaryFixedDim2025;
+
+  @override
+  DynamicColor get _onTertiaryFixed => _onTertiaryFixed2025;
+
+  @override
+  DynamicColor get _onTertiaryFixedVariant => _onTertiaryFixedVariant2025;
+
+  @override
+  DynamicColor get _error => _error2025;
+
+  @override
+  DynamicColor get _errorDim => _errorDim2025;
+
+  @override
+  DynamicColor get _onError => _onError2025;
+
+  @override
+  DynamicColor get _errorContainer => _errorContainer2025;
+
+  @override
+  DynamicColor get _onErrorContainer => _onErrorContainer2025;
+
+  @override
+  DynamicColor get _controlActivated => _controlActivated2025;
+
+  @override
+  DynamicColor get _controlNormal => _controlNormal2025;
+
+  @override
+  DynamicColor get _controlHighlight => _controlHighlight2025;
+
+  @override
+  DynamicColor get _textPrimaryInverse => _textPrimaryInverse2025;
+
+  @override
+  DynamicColor get _textSecondaryAndTertiaryInverse =>
+      _textSecondaryAndTertiaryInverse2025;
+
+  @override
+  DynamicColor get _textPrimaryInverseDisableOnly =>
+      _textPrimaryInverseDisableOnly2025;
+
+  @override
+  DynamicColor get _textSecondaryAndTertiaryInverseDisabled =>
+      _textSecondaryAndTertiaryInverseDisabled2025;
+
+  @override
+  DynamicColor get _textHintInverse => _textHintInverse2025;
+
+  @override
+  DynamicColor _highestSurface(DynamicScheme scheme) =>
+      scheme.isDark ? _surfaceBright : _surfaceDim;
 }
 
 /// [ColorSpec] implementation for the 2025 spec.
 class const ColorSpec2025() extends ColorSpec2021 with _DynamicColors2025 {
   @override
-  DynamicColor get background => _background;
-
-  @override
-  DynamicColor get onBackground => _onBackground;
-
-  @override
-  DynamicColor get surface => _surface;
-
-  @override
-  DynamicColor get surfaceDim => _surfaceDim;
-
-  @override
-  DynamicColor get surfaceBright => _surfaceBright;
-
-  @override
-  DynamicColor get surfaceContainerLowest => _surfaceContainerLowest;
-
-  @override
-  DynamicColor get surfaceContainerLow => _surfaceContainerLow;
-
-  @override
-  DynamicColor get surfaceContainer => _surfaceContainer;
-
-  @override
-  DynamicColor get surfaceContainerHigh => _surfaceContainerHigh;
-
-  @override
-  DynamicColor get surfaceContainerHighest => _surfaceContainerHighest;
-
-  @override
-  DynamicColor get onSurface => _onSurface;
-
-  @override
-  DynamicColor get surfaceVariant => _surfaceVariant;
-
-  @override
-  DynamicColor get onSurfaceVariant => _onSurfaceVariant;
-
-  @override
-  DynamicColor get inverseSurface => _inverseSurface;
-
-  @override
-  DynamicColor get inverseOnSurface => _inverseOnSurface;
-
-  @override
-  DynamicColor get outline => _outline;
-
-  @override
-  DynamicColor get outlineVariant => _outlineVariant;
-
-  @override
-  DynamicColor get surfaceTint => _surfaceTint;
-
-  @override
-  DynamicColor get primary => _primary;
-
-  @override
   DynamicColor get primaryDim => _primaryDim;
-
-  @override
-  DynamicColor get onPrimary => _onPrimary;
-
-  @override
-  DynamicColor get primaryContainer => _primaryContainer;
-
-  @override
-  DynamicColor get onPrimaryContainer => _onPrimaryContainer;
-
-  @override
-  DynamicColor get inversePrimary => _inversePrimary;
-
-  @override
-  DynamicColor get secondary => _secondary;
 
   @override
   DynamicColor get secondaryDim => _secondaryDim;
 
   @override
-  DynamicColor get onSecondary => _onSecondary;
-
-  @override
-  DynamicColor get secondaryContainer => _secondaryContainer;
-
-  @override
-  DynamicColor get onSecondaryContainer => _onSecondaryContainer;
-
-  @override
-  DynamicColor get tertiary => _tertiary;
-
-  @override
   DynamicColor get tertiaryDim => _tertiaryDim;
 
   @override
-  DynamicColor get onTertiary => _onTertiary;
-
-  @override
-  DynamicColor get tertiaryContainer => _tertiaryContainer;
-
-  @override
-  DynamicColor get onTertiaryContainer => _onTertiaryContainer;
-  @override
-  DynamicColor get error => _error;
-
-  @override
   DynamicColor get errorDim => _errorDim;
-
-  @override
-  DynamicColor get onError => _onError;
-
-  @override
-  DynamicColor get errorContainer => _errorContainer;
-
-  @override
-  DynamicColor get onErrorContainer => _onErrorContainer;
-
-  @override
-  DynamicColor get primaryFixed => _primaryFixed;
-
-  @override
-  DynamicColor get primaryFixedDim => _primaryFixedDim;
-
-  @override
-  DynamicColor get onPrimaryFixed => _onPrimaryFixed;
-
-  @override
-  DynamicColor get onPrimaryFixedVariant => _onPrimaryFixedVariant;
-
-  @override
-  DynamicColor get secondaryFixed => _secondaryFixed;
-
-  @override
-  DynamicColor get secondaryFixedDim => _secondaryFixedDim;
-
-  @override
-  DynamicColor get onSecondaryFixed => _onSecondaryFixed;
-
-  @override
-  DynamicColor get onSecondaryFixedVariant => _onSecondaryFixedVariant;
-
-  @override
-  DynamicColor get tertiaryFixed => _tertiaryFixed;
-
-  @override
-  DynamicColor get tertiaryFixedDim => _tertiaryFixedDim;
-
-  @override
-  DynamicColor get onTertiaryFixed => _onTertiaryFixed;
-
-  @override
-  DynamicColor get onTertiaryFixedVariant => _onTertiaryFixedVariant;
-
-  @override
-  DynamicColor get controlActivated => _controlActivated;
-
-  @override
-  DynamicColor get controlNormal => _controlNormal;
-
-  @override
-  DynamicColor get textPrimaryInverse => _textPrimaryInverse;
 
   @override
   Hct getHct(DynamicScheme scheme, DynamicColor color) {
