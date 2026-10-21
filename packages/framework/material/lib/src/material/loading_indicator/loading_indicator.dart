@@ -35,14 +35,9 @@ final _determinateIndicatorPolygons = <RoundedPolygon>[
   MaterialShapes.softBurst,
 ];
 
-final class _LoadingIndicatorStates
-    with Diagnosticable
-    implements LoadingIndicatorStates {
-  const _LoadingIndicatorStates({required this.isContained});
-
-  @override
-  final bool isContained;
-
+final class const _LoadingIndicatorStates({
+  @override required final bool isContained,
+}) with Diagnosticable implements LoadingIndicatorStates {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -58,37 +53,22 @@ final class _LoadingIndicatorStates
   int get hashCode => isContained.hashCode;
 }
 
-class DeterminateLoadingIndicator extends StatefulWidget {
-  const DeterminateLoadingIndicator({
-    super.key,
-    this.contained = false,
-    required this.progress,
-    this.indicatorPolygons,
-    this.containerShape,
-    this.containerColor,
-    this.containerOutline,
-    this.activeIndicatorColor,
-    this.activeIndicatorOutline,
-  }) : assert(
-         indicatorPolygons == null || indicatorPolygons.length >= 2,
-         "indicatorPolygons should have, at least, two RoundedPolygons",
-       );
-
-  final bool contained;
-
-  final double progress;
-
-  final List<RoundedPolygon>? indicatorPolygons;
-
-  final LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape;
-
-  final LoadingIndicatorStateProperty<Color?>? containerColor;
-
-  final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline;
-
-  final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor;
-
-  final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline;
+class const DeterminateLoadingIndicator({
+  super.key,
+  final bool contained = false,
+  required final double progress,
+  final List<RoundedPolygon>? indicatorPolygons,
+  final LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+  final LoadingIndicatorStateProperty<Color?>? containerColor,
+  final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+  final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+  final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
+}) extends StatefulWidget {
+  this
+    : assert(
+        indicatorPolygons == null || indicatorPolygons.length >= 2,
+        "indicatorPolygons should have, at least, two RoundedPolygons",
+      );
 
   List<RoundedPolygon> get _indicatorPolygons =>
       indicatorPolygons ?? _determinateIndicatorPolygons;
@@ -226,31 +206,15 @@ class _DeterminateLoadingIndicatorState
   }
 }
 
-class _DeterminateLoadingIndicatorPainter extends CustomPainter {
-  _DeterminateLoadingIndicatorPainter({
-    required this.color,
-    required this.outline,
-    required this.currentMorph,
-    required this.morphScaleFactor,
-    required this.adjustedProgressValue,
-    required this.rotation,
-    this.matrix,
-  });
-
-  final Color color;
-
-  final Outline outline;
-
-  final Morph currentMorph;
-
-  final double morphScaleFactor;
-
-  final double adjustedProgressValue;
-
-  final double rotation;
-
-  final Matrix4? matrix;
-
+class _DeterminateLoadingIndicatorPainter({
+  required final Color color,
+  required final Outline outline,
+  required final Morph currentMorph,
+  required final double morphScaleFactor,
+  required final double adjustedProgressValue,
+  required final double rotation,
+  final Matrix4? matrix,
+}) extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final path = LoadingIndicatorHelper.transformPath(
@@ -292,37 +256,22 @@ class _DeterminateLoadingIndicatorPainter extends CustomPainter {
       matrix != oldDelegate.matrix;
 }
 
-class IndeterminateLoadingIndicator extends StatefulWidget {
-  const IndeterminateLoadingIndicator({
-    super.key,
-    this.contained = false,
-    this.indicatorPolygons,
-    this.containerShape,
-    this.containerColor,
-    this.containerOutline,
-    this.activeIndicatorColor,
-    this.activeIndicatorOutline,
-    this.semanticsLabel,
-  }) : assert(
-         indicatorPolygons == null || indicatorPolygons.length >= 2,
-         "indicatorPolygons should have, at least, two RoundedPolygons",
-       );
-
-  final bool contained;
-
-  final List<RoundedPolygon>? indicatorPolygons;
-
-  final LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape;
-
-  final LoadingIndicatorStateProperty<Color?>? containerColor;
-
-  final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline;
-
-  final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor;
-
-  final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline;
-
-  final String? semanticsLabel;
+class const IndeterminateLoadingIndicator({
+  super.key,
+  final bool contained = false,
+  final List<RoundedPolygon>? indicatorPolygons,
+  final LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+  final LoadingIndicatorStateProperty<Color?>? containerColor,
+  final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+  final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+  final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
+  final String? semanticsLabel,
+}) extends StatefulWidget {
+  this
+    : assert(
+        indicatorPolygons == null || indicatorPolygons.length >= 2,
+        "indicatorPolygons should have, at least, two RoundedPolygons",
+      );
 
   List<RoundedPolygon> get _indicatorPolygons =>
       indicatorPolygons ?? _indeterminateIndicatorPolygons;
@@ -453,12 +402,12 @@ class _IndeterminateLoadingIndicatorState
   }
 }
 
-class _IndeterminateLoadingIndicatorAnimationController extends ChangeNotifier {
-  _IndeterminateLoadingIndicatorAnimationController({
-    required TickerProvider vsync,
-    required this._morphSequenceLength,
-    this.debugLabel,
-  }) {
+class _IndeterminateLoadingIndicatorAnimationController({
+  required TickerProvider vsync,
+  required var int _morphSequenceLength,
+  final String? debugLabel,
+}) extends ChangeNotifier {
+  this {
     _ticker = vsync.createTicker(_tick);
   }
 
@@ -467,8 +416,6 @@ class _IndeterminateLoadingIndicatorAnimationController extends ChangeNotifier {
   void resync(TickerProvider vsync) {
     _ticker = vsync.createTicker(_tick)..absorbTicker(_ticker!);
   }
-
-  int _morphSequenceLength;
 
   int get morphSequenceLength => _morphSequenceLength;
 
@@ -495,8 +442,6 @@ class _IndeterminateLoadingIndicatorAnimationController extends ChangeNotifier {
   double _globalRotation = 0.0;
 
   double get globalRotation => _globalRotation;
-
-  final String? debugLabel;
 
   Duration _currentSpringStart = .zero;
 
@@ -578,63 +523,47 @@ class _IndeterminateLoadingIndicatorAnimationController extends ChangeNotifier {
   }
 }
 
-class _IndeterminateLoadingIndicatorPainter
-    extends StatefulCustomPainter<_IndeterminateLoadingIndicatorPainter> {
-  _IndeterminateLoadingIndicatorPainter({
-    required this._color,
-    required this._outline,
-    required this._morphSequence,
-    required this._morphScaleFactor,
-    required this._controller,
-  }) {
+class _IndeterminateLoadingIndicatorPainter({
+  required var Color _color,
+  required var Outline _outline,
+  required var List<Morph> _morphSequence,
+  required var double _morphScaleFactor,
+  required var _IndeterminateLoadingIndicatorAnimationController _controller,
+}) extends StatefulCustomPainter<_IndeterminateLoadingIndicatorPainter> {
+  this {
     _controller.addListener(notifyListeners);
   }
 
-  Color _color;
-
   Color get color => _color;
-
   set color(Color value) {
     if (_color == value) return;
     _color = value;
     notifyListeners();
   }
 
-  Outline _outline;
-
   Outline get outline => _outline;
-
   set outline(Outline value) {
     if (_outline == value) return;
     _outline = value;
     notifyListeners();
   }
 
-  List<Morph> _morphSequence;
-
   List<Morph> get morphSequence => _morphSequence;
-
   set morphSequence(List<Morph> value) {
     if (_morphSequence == value) return;
     _morphSequence = value;
     notifyListeners();
   }
 
-  double _morphScaleFactor;
-
   double get morphScaleFactor => _morphScaleFactor;
-
   set morphScaleFactor(double value) {
     if (_morphScaleFactor == value) return;
     _morphScaleFactor = value;
     notifyListeners();
   }
 
-  _IndeterminateLoadingIndicatorAnimationController _controller;
-
   _IndeterminateLoadingIndicatorAnimationController get controller =>
       _controller;
-
   set controller(_IndeterminateLoadingIndicatorAnimationController value) {
     if (_controller == value) return;
     _controller.removeListener(notifyListeners);
@@ -783,31 +712,5 @@ abstract final class LoadingIndicatorHelper {
       matrix: matrix,
     );
     canvas.drawPath(processedPath, paint);
-  }
-}
-
-// TODO: implement controlled loading indicators
-
-class LoadingIndicatorController {
-  // TODO: this class manages LoadingIndicator animations
-  //  and allows syncing multiple loading indicators together
-
-  // TODO: add vsync here
-}
-
-class LoadingIndicatorPaint extends StatefulWidget {
-  const LoadingIndicatorPaint({super.key, required this.controller});
-
-  final LoadingIndicatorController controller;
-
-  @override
-  State<LoadingIndicatorPaint> createState() => _LoadingIndicatorPaintState();
-}
-
-// The widget is theoretically stateless but we still need a state (probably).
-class _LoadingIndicatorPaintState extends State<LoadingIndicatorPaint> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
