@@ -16,25 +16,6 @@ const _kMorphIntervalMs = 650;
 const _kFullRotation = 2.0 * math.pi;
 const _kQuarterRotation = _kFullRotation / 4.0;
 
-final _indeterminateIndicatorPolygons = <RoundedPolygon>[
-  MaterialShapes.softBurst,
-  MaterialShapes.cookie9Sided,
-  MaterialShapes.pentagon,
-  MaterialShapes.pill,
-  MaterialShapes.sunny,
-  MaterialShapes.cookie4Sided,
-  MaterialShapes.oval,
-];
-
-final _determinateIndicatorPolygons = <RoundedPolygon>[
-  MaterialShapes.circle
-      // Rotate by 36 degrees to align vertices with softBurst.
-      .transformed(Matrix4.rotationZ(math.pi / 10.0).asPointTransformer())
-      // Normalizing is required to avoid weird feature mapping for morph.
-      .normalized(),
-  MaterialShapes.softBurst,
-];
-
 final class const _LoadingIndicatorStates({
   @override required final bool isContained,
 }) with Diagnosticable implements LoadingIndicatorStates {
@@ -70,9 +51,6 @@ class const DeterminateLoadingIndicator({
         "indicatorPolygons should have, at least, two RoundedPolygons",
       );
 
-  List<RoundedPolygon> get _indicatorPolygons =>
-      indicatorPolygons ?? _determinateIndicatorPolygons;
-
   @override
   State<DeterminateLoadingIndicator> createState() =>
       _DeterminateLoadingIndicatorState();
@@ -80,47 +58,57 @@ class const DeterminateLoadingIndicator({
 
 class _DeterminateLoadingIndicatorState
     extends State<DeterminateLoadingIndicator> {
+  List<RoundedPolygon> get _indicatorPolygons =>
+      widget.indicatorPolygons ??
+      LoadingIndicatorDefaults.determinateIndicatorPolygons;
+
   final _matrix = Matrix4.zero();
 
   late List<Morph> _morphSequence;
   late double _morphScaleFactor;
 
-  double _calculateMorphScaleFactor(List<RoundedPolygon> indicatorPolygons) =>
-      LoadingIndicatorDefaults.calculateScaleFactor(widget._indicatorPolygons) *
-      _kActiveIndicatorScale;
-
   @override
   void initState() {
     super.initState();
-    _morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
-      polygons: widget._indicatorPolygons,
+    final (
+      :morphSequence,
+      :morphScaleFactor,
+    ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+      polygons: _indicatorPolygons,
       circularSequence: false,
     );
-    _morphScaleFactor = _calculateMorphScaleFactor(widget._indicatorPolygons);
+    _morphSequence = morphSequence;
+    _morphScaleFactor = morphScaleFactor;
   }
 
   @override
   void didUpdateWidget(covariant DeterminateLoadingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (!listEquals(widget._indicatorPolygons, oldWidget._indicatorPolygons)) {
-      _morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
-        morphSequence: _morphSequence,
-        polygons: widget._indicatorPolygons,
+    if (!listEquals(widget.indicatorPolygons, oldWidget.indicatorPolygons)) {
+      final (
+        :morphSequence,
+        :morphScaleFactor,
+      ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+        polygons: _indicatorPolygons,
         circularSequence: false,
       );
-      _morphScaleFactor = _calculateMorphScaleFactor(widget._indicatorPolygons);
+      _morphSequence = morphSequence;
+      _morphScaleFactor = morphScaleFactor;
     }
   }
 
   @override
   void reassemble() {
     super.reassemble();
-    _morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
-      morphSequence: _morphSequence,
-      polygons: widget._indicatorPolygons,
+    final (
+      :morphSequence,
+      :morphScaleFactor,
+    ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+      polygons: _indicatorPolygons,
       circularSequence: false,
     );
-    _morphScaleFactor = _calculateMorphScaleFactor(widget._indicatorPolygons);
+    _morphSequence = morphSequence;
+    _morphScaleFactor = morphScaleFactor;
   }
 
   @override
@@ -273,9 +261,6 @@ class const IndeterminateLoadingIndicator({
         "indicatorPolygons should have, at least, two RoundedPolygons",
       );
 
-  List<RoundedPolygon> get _indicatorPolygons =>
-      indicatorPolygons ?? _indeterminateIndicatorPolygons;
-
   @override
   State<IndeterminateLoadingIndicator> createState() =>
       _IndeterminateLoadingIndicatorState();
@@ -284,22 +269,22 @@ class const IndeterminateLoadingIndicator({
 class _IndeterminateLoadingIndicatorState
     extends State<IndeterminateLoadingIndicator>
     with TickerProviderStateMixin {
+  List<RoundedPolygon> get _indicatorPolygons =>
+      widget.indicatorPolygons ??
+      LoadingIndicatorDefaults.indeterminateIndicatorPolygons;
+
   late _IndeterminateLoadingIndicatorAnimationController _controller;
   late _IndeterminateLoadingIndicatorPainter _painter;
-
-  double _calculateMorphScaleFactor(List<RoundedPolygon> indicatorPolygons) =>
-      LoadingIndicatorDefaults.calculateScaleFactor(widget._indicatorPolygons) *
-      _kActiveIndicatorScale;
 
   @override
   void initState() {
     super.initState();
-    final morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
-      polygons: widget._indicatorPolygons,
+    final (
+      :morphSequence,
+      :morphScaleFactor,
+    ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+      polygons: _indicatorPolygons,
       circularSequence: true,
-    );
-    final morphScaleFactor = _calculateMorphScaleFactor(
-      widget._indicatorPolygons,
     );
     _controller = .new(vsync: this, morphSequenceLength: morphSequence.length);
     _painter = .new(
@@ -316,16 +301,17 @@ class _IndeterminateLoadingIndicatorState
   void didUpdateWidget(IndeterminateLoadingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget.indicatorPolygons, oldWidget.indicatorPolygons)) {
+      final (
+        :morphSequence,
+        :morphScaleFactor,
+      ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+        polygons: _indicatorPolygons,
+        circularSequence: true,
+      );
       _painter
-        ..morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
-          morphSequence: _painter.morphSequence,
-          polygons: widget._indicatorPolygons,
-          circularSequence: true,
-        )
-        ..morphScaleFactor = _calculateMorphScaleFactor(
-          widget._indicatorPolygons,
-        );
-      _controller.morphSequenceLength = _painter.morphSequence.length;
+        ..morphSequence = morphSequence
+        ..morphScaleFactor = morphScaleFactor;
+      _controller.morphSequenceLength = morphSequence.length;
     }
   }
 
@@ -339,16 +325,17 @@ class _IndeterminateLoadingIndicatorState
   @override
   void reassemble() {
     super.reassemble();
+    final (
+      :morphSequence,
+      :morphScaleFactor,
+    ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+      polygons: _indicatorPolygons,
+      circularSequence: true,
+    );
     _painter
-      ..morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
-        morphSequence: _painter.morphSequence,
-        polygons: widget._indicatorPolygons,
-        circularSequence: true,
-      )
-      ..morphScaleFactor = _calculateMorphScaleFactor(
-        widget._indicatorPolygons,
-      );
-    _controller.morphSequenceLength = _painter.morphSequence.length;
+      ..morphSequence = morphSequence
+      ..morphScaleFactor = morphScaleFactor;
+    _controller.morphSequenceLength = morphSequence.length;
   }
 
   @override
@@ -613,51 +600,112 @@ class _IndeterminateLoadingIndicatorPainter({
 }
 
 abstract final class LoadingIndicatorDefaults {
-  static Iterable<Morph> generateMorphSequence({
+  static final indeterminateIndicatorPolygons =
+      List<RoundedPolygon>.unmodifiableOf([
+        MaterialShapes.softBurst,
+        MaterialShapes.cookie9Sided,
+        MaterialShapes.pentagon,
+        MaterialShapes.pill,
+        MaterialShapes.sunny,
+        MaterialShapes.cookie4Sided,
+        MaterialShapes.oval,
+      ]);
+
+  static final determinateIndicatorPolygons =
+      List<RoundedPolygon>.unmodifiableOf([
+        MaterialShapes.circle
+            // Rotate by 36 degrees to align vertices with softBurst.
+            .transformed(Matrix4.rotationZ(math.pi / 10.0).asPointTransformer())
+            // Normalizing is required to avoid weird feature mapping for morph.
+            .normalized(),
+        MaterialShapes.softBurst,
+      ]);
+
+  static const _morphSequenceCacheSize = 8;
+
+  static final _morphSequenceCache =
+      _LruCache<_MorphSequenceCacheKey, _MorphSequenceCacheValue>(
+        _morphSequenceCacheSize,
+      );
+
+  static List<Morph> _createMorphSequence({
+    required List<RoundedPolygon> polygons,
+    required int polygonsLength,
+    required bool circularSequence,
+    required int morphSequenceLength,
+  }) => .unmodifiableOf(
+    // Using fully qualified call avoids Iterable.generate dot shorthand.
+    List<Morph>.generate(
+      morphSequenceLength,
+      (index) => Morph(polygons[index], polygons[(index + 1) % polygonsLength]),
+      growable: false,
+    ),
+  );
+
+  static _MorphSequenceCacheValue _buildMorphSequenceAndScaleFactor({
     required List<RoundedPolygon> polygons,
     required bool circularSequence,
-  }) sync* {
-    if (polygons.isEmpty) return;
-    final first = polygons[0];
-    var current = first;
-    for (var i = 1; i < polygons.length; i++) {
-      final next = polygons[i];
-      yield Morph(current, next);
-      current = next;
+    bool approximate = true,
+  }) {
+    final polygonsLength = polygons.length;
+    final morphSequenceLength = circularSequence
+        ? polygonsLength
+        : polygonsLength - 1;
+    if (morphSequenceLength <= 0) {
+      return (morphSequence: const [], morphScaleFactor: 1.0);
     }
-    if (circularSequence) {
-      // Create a morph from the last shape to the first shape.
-      yield Morph(current, first);
-    }
+
+    polygons = .unmodifiableOf(polygons);
+    return _morphSequenceCache.putIfAbsent(
+      .new(
+        polygons: polygons,
+        circularSequence: circularSequence,
+        approximate: approximate,
+      ),
+      () => (
+        morphSequence: _createMorphSequence(
+          polygons: polygons,
+          polygonsLength: polygonsLength,
+          circularSequence: circularSequence,
+          morphSequenceLength: morphSequenceLength,
+        ),
+        morphScaleFactor: calculateMorphScaleFactor(
+          polygons,
+          approximate: approximate,
+        ),
+      ),
+    );
   }
 
-  static List<Morph> updateMorphSequence({
-    List<Morph>? morphSequence,
-    required List<RoundedPolygon> polygons,
+  static List<Morph> buildMorphSequence(
+    List<RoundedPolygon> polygons, {
     required bool circularSequence,
   }) {
-    if (polygons.isEmpty) {
-      morphSequence?.clear();
-      return morphSequence ?? [];
-    }
-    final iterable = generateMorphSequence(
-      polygons: polygons,
-      circularSequence: circularSequence,
-    );
-    morphSequence
-      ?..clear()
-      ..addAll(iterable);
-    return morphSequence ?? [...iterable];
+    final polygonsLength = polygons.length;
+    final morphSequenceLength = circularSequence
+        ? polygonsLength
+        : polygonsLength - 1;
+    return morphSequenceLength > 0
+        ? _createMorphSequence(
+            polygons: polygons,
+            polygonsLength: polygonsLength,
+            circularSequence: circularSequence,
+            morphSequenceLength: morphSequenceLength,
+          )
+        : const [];
   }
 
-  static double calculateScaleFactor(
-    List<RoundedPolygon> indicatorPolygons, {
+  static double calculateMorphScaleFactor(
+    List<RoundedPolygon> polygons, {
+    bool approximate = true,
+  }) => calculateMorphScaleFactorRaw(polygons) * _kActiveIndicatorScale;
+
+  static double calculateMorphScaleFactorRaw(
+    List<RoundedPolygon> polygons, {
     bool approximate = true,
   }) {
     var scaleFactor = 1.0;
-    for (var i = 0; i < indicatorPolygons.length; i++) {
-      final polygon = indicatorPolygons[i];
-
+    for (final polygon in polygons) {
       final bounds = approximate
           ? polygon.calculateApproximateBounds()
           : polygon.calculateBounds();
@@ -712,5 +760,68 @@ abstract final class LoadingIndicatorDefaults {
       matrix: matrix,
     );
     canvas.drawPath(processedPath, paint);
+  }
+}
+
+@immutable
+// ignore: prefer_const_constructors_in_immutables
+final class _MorphSequenceCacheKey({
+  required final List<RoundedPolygon> polygons,
+  required final bool circularSequence,
+  required final bool approximate,
+}) {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _MorphSequenceCacheKey &&
+          listEquals(polygons, other.polygons) &&
+          circularSequence == other.circularSequence &&
+          approximate == other.approximate;
+
+  @override
+  late final int hashCode = Object.hash(
+    Object.hashAll(polygons),
+    circularSequence,
+    approximate,
+  );
+}
+
+typedef _MorphSequenceCacheValue = ({
+  List<Morph> morphSequence,
+  double morphScaleFactor,
+});
+
+/// Cache of objects of limited size that evicts the least recently used entry.
+///
+/// Reading an entry counts as using it, so entries that are asked for on
+/// every frame stay cached while ones that are no longer needed drift out.
+final class _LruCache<K extends Object?, V extends Object>(
+  /// Maximum number of entries to store in the cache.
+  ///
+  /// Once this many entries have been cached, the entry used least recently
+  /// is evicted when adding a new entry.
+  final int _maximumSize,
+) {
+  this : assert(_maximumSize > 0);
+
+  /// In Dart the map literal uses a linked hash-map implementation, whose keys
+  /// are stored such that [Map.keys] returns them in the order they were
+  /// inserted. Re-inserting an entry on every use keeps that order the order
+  /// of last use, with the least recently used entry first.
+  final _cache = <K, V>{};
+
+  /// Whether there is a cached value for the given key.
+  bool containsKey(K key) => _cache.containsKey(key);
+
+  /// Returns the previously cached value for the given key, if available;
+  /// if not, calls the given callback to obtain it first.
+  V putIfAbsent(K key, V Function() loader) {
+    final result = _cache.remove(key);
+
+    if (result != null) return _cache[key] = result;
+
+    if (_cache.length == _maximumSize) _cache.remove(_cache.keys.first);
+
+    return _cache[key] = loader();
   }
 }
