@@ -27,16 +27,13 @@ final _indeterminateIndicatorPolygons = <RoundedPolygon>[
 ];
 
 final _determinateIndicatorPolygons = <RoundedPolygon>[
-  // Rotate by 36 degrees to align vertices with softBurst.
-  MaterialShapes.circle.transformed(
-    Matrix4.rotationZ(math.pi / 10.0).asPointTransformer(),
-  ),
+  MaterialShapes.circle
+      // Rotate by 36 degrees to align vertices with softBurst.
+      .transformed(Matrix4.rotationZ(math.pi / 10.0).asPointTransformer())
+      // Normalizing is required to avoid weird feature mapping for morph.
+      .normalized(),
   MaterialShapes.softBurst,
 ];
-
-typedef LoadingIndicatorForEachPolygon = RoundedPolygon Function(
-  RoundedPolygon polygon,
-);
 
 final class _LoadingIndicatorStates
     with Diagnosticable
@@ -72,7 +69,6 @@ class DeterminateLoadingIndicator extends StatefulWidget {
     this.containerOutline,
     this.activeIndicatorColor,
     this.activeIndicatorOutline,
-    this.forEachPolygon = defaultForEachPolygon,
   }) : assert(
          indicatorPolygons == null || indicatorPolygons.length >= 2,
          "indicatorPolygons should have, at least, two RoundedPolygons",
@@ -94,17 +90,12 @@ class DeterminateLoadingIndicator extends StatefulWidget {
 
   final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline;
 
-  final LoadingIndicatorForEachPolygon forEachPolygon;
-
   List<RoundedPolygon> get _indicatorPolygons =>
       indicatorPolygons ?? _determinateIndicatorPolygons;
 
   @override
   State<DeterminateLoadingIndicator> createState() =>
       _DeterminateLoadingIndicatorState();
-
-  static RoundedPolygon defaultForEachPolygon(RoundedPolygon polygon) =>
-      polygon.normalized();
 }
 
 class _DeterminateLoadingIndicatorState
@@ -124,7 +115,6 @@ class _DeterminateLoadingIndicatorState
     _morphSequence = LoadingIndicatorHelper.updateMorphSequence(
       polygons: widget._indicatorPolygons,
       circularSequence: false,
-      forEachPolygon: widget.forEachPolygon,
     );
     _morphScaleFactor = _calculateMorphScaleFactor(widget._indicatorPolygons);
   }
@@ -132,13 +122,11 @@ class _DeterminateLoadingIndicatorState
   @override
   void didUpdateWidget(covariant DeterminateLoadingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (!listEquals(widget._indicatorPolygons, oldWidget._indicatorPolygons) ||
-        widget.forEachPolygon != oldWidget.forEachPolygon) {
+    if (!listEquals(widget._indicatorPolygons, oldWidget._indicatorPolygons)) {
       _morphSequence = LoadingIndicatorHelper.updateMorphSequence(
         morphSequence: _morphSequence,
         polygons: widget._indicatorPolygons,
         circularSequence: false,
-        forEachPolygon: widget.forEachPolygon,
       );
       _morphScaleFactor = _calculateMorphScaleFactor(widget._indicatorPolygons);
     }
@@ -151,7 +139,6 @@ class _DeterminateLoadingIndicatorState
       morphSequence: _morphSequence,
       polygons: widget._indicatorPolygons,
       circularSequence: false,
-      forEachPolygon: widget.forEachPolygon,
     );
     _morphScaleFactor = _calculateMorphScaleFactor(widget._indicatorPolygons);
   }
@@ -316,7 +303,6 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
     this.activeIndicatorColor,
     this.activeIndicatorOutline,
     this.semanticsLabel,
-    this.forEachPolygon = LoadingIndicatorHelper.defaultForEachPolygon,
   }) : assert(
          indicatorPolygons == null || indicatorPolygons.length >= 2,
          "indicatorPolygons should have, at least, two RoundedPolygons",
@@ -337,8 +323,6 @@ class IndeterminateLoadingIndicator extends StatefulWidget {
   final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline;
 
   final String? semanticsLabel;
-
-  final LoadingIndicatorForEachPolygon forEachPolygon;
 
   List<RoundedPolygon> get _indicatorPolygons =>
       indicatorPolygons ?? _indeterminateIndicatorPolygons;
@@ -364,7 +348,6 @@ class _IndeterminateLoadingIndicatorState
     final morphSequence = LoadingIndicatorHelper.updateMorphSequence(
       polygons: widget._indicatorPolygons,
       circularSequence: true,
-      forEachPolygon: widget.forEachPolygon,
     );
     final morphScaleFactor = _calculateMorphScaleFactor(
       widget._indicatorPolygons,
@@ -383,14 +366,12 @@ class _IndeterminateLoadingIndicatorState
   @override
   void didUpdateWidget(IndeterminateLoadingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (!listEquals(widget.indicatorPolygons, oldWidget.indicatorPolygons) ||
-        widget.forEachPolygon != oldWidget.forEachPolygon) {
+    if (!listEquals(widget.indicatorPolygons, oldWidget.indicatorPolygons)) {
       _painter
         ..morphSequence = LoadingIndicatorHelper.updateMorphSequence(
           morphSequence: _painter.morphSequence,
           polygons: widget._indicatorPolygons,
           circularSequence: true,
-          forEachPolygon: widget.forEachPolygon,
         )
         ..morphScaleFactor = _calculateMorphScaleFactor(
           widget._indicatorPolygons,
@@ -414,7 +395,6 @@ class _IndeterminateLoadingIndicatorState
         morphSequence: _painter.morphSequence,
         polygons: widget._indicatorPolygons,
         circularSequence: true,
-        forEachPolygon: widget.forEachPolygon,
       )
       ..morphScaleFactor = _calculateMorphScaleFactor(
         widget._indicatorPolygons,
@@ -704,19 +684,15 @@ class _IndeterminateLoadingIndicatorPainter
 }
 
 abstract final class LoadingIndicatorHelper {
-  static RoundedPolygon defaultForEachPolygon(RoundedPolygon polygon) =>
-      polygon.normalized();
-
   static Iterable<Morph> generateMorphSequence({
     required List<RoundedPolygon> polygons,
     required bool circularSequence,
-    LoadingIndicatorForEachPolygon forEachPolygon = defaultForEachPolygon,
   }) sync* {
     if (polygons.isEmpty) return;
-    final first = forEachPolygon(polygons[0]);
+    final first = polygons[0];
     var current = first;
     for (var i = 1; i < polygons.length; i++) {
-      final next = forEachPolygon(polygons[i]);
+      final next = polygons[i];
       yield Morph(current, next);
       current = next;
     }
@@ -730,7 +706,6 @@ abstract final class LoadingIndicatorHelper {
     List<Morph>? morphSequence,
     required List<RoundedPolygon> polygons,
     required bool circularSequence,
-    LoadingIndicatorForEachPolygon forEachPolygon = defaultForEachPolygon,
   }) {
     if (polygons.isEmpty) {
       morphSequence?.clear();
@@ -739,7 +714,6 @@ abstract final class LoadingIndicatorHelper {
     final iterable = generateMorphSequence(
       polygons: polygons,
       circularSequence: circularSequence,
-      forEachPolygon: forEachPolygon,
     );
     morphSequence
       ?..clear()

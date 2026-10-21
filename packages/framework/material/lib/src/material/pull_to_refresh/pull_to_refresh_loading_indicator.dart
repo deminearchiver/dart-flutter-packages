@@ -56,9 +56,6 @@ class const PullToRefreshLoadingIndicator({
 
   final PullToRefreshLoadingIndicatorStateProperty<OutlinePartial?>?
   activeIndicatorOutline,
-
-  final LoadingIndicatorForEachPolygon forEachPolygon =
-      LoadingIndicatorHelper.defaultForEachPolygon,
 }) extends StatefulWidget {
   @override
   State<PullToRefreshLoadingIndicator> createState() =>
