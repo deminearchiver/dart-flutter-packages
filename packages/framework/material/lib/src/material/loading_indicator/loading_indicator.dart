@@ -86,13 +86,13 @@ class _DeterminateLoadingIndicatorState
   late double _morphScaleFactor;
 
   double _calculateMorphScaleFactor(List<RoundedPolygon> indicatorPolygons) =>
-      LoadingIndicatorHelper.calculateScaleFactor(widget._indicatorPolygons) *
+      LoadingIndicatorDefaults.calculateScaleFactor(widget._indicatorPolygons) *
       _kActiveIndicatorScale;
 
   @override
   void initState() {
     super.initState();
-    _morphSequence = LoadingIndicatorHelper.updateMorphSequence(
+    _morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
       polygons: widget._indicatorPolygons,
       circularSequence: false,
     );
@@ -103,7 +103,7 @@ class _DeterminateLoadingIndicatorState
   void didUpdateWidget(covariant DeterminateLoadingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget._indicatorPolygons, oldWidget._indicatorPolygons)) {
-      _morphSequence = LoadingIndicatorHelper.updateMorphSequence(
+      _morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
         morphSequence: _morphSequence,
         polygons: widget._indicatorPolygons,
         circularSequence: false,
@@ -115,7 +115,7 @@ class _DeterminateLoadingIndicatorState
   @override
   void reassemble() {
     super.reassemble();
-    _morphSequence = LoadingIndicatorHelper.updateMorphSequence(
+    _morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
       morphSequence: _morphSequence,
       polygons: widget._indicatorPolygons,
       circularSequence: false,
@@ -217,7 +217,7 @@ class _DeterminateLoadingIndicatorPainter({
 }) extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final path = LoadingIndicatorHelper.transformPath(
+    final path = LoadingIndicatorDefaults.transformPath(
       size: size,
       path: currentMorph.toPath(adjustedProgressValue, startAngle: 0.0),
       scale: morphScaleFactor,
@@ -288,13 +288,13 @@ class _IndeterminateLoadingIndicatorState
   late _IndeterminateLoadingIndicatorPainter _painter;
 
   double _calculateMorphScaleFactor(List<RoundedPolygon> indicatorPolygons) =>
-      LoadingIndicatorHelper.calculateScaleFactor(widget._indicatorPolygons) *
+      LoadingIndicatorDefaults.calculateScaleFactor(widget._indicatorPolygons) *
       _kActiveIndicatorScale;
 
   @override
   void initState() {
     super.initState();
-    final morphSequence = LoadingIndicatorHelper.updateMorphSequence(
+    final morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
       polygons: widget._indicatorPolygons,
       circularSequence: true,
     );
@@ -317,7 +317,7 @@ class _IndeterminateLoadingIndicatorState
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget.indicatorPolygons, oldWidget.indicatorPolygons)) {
       _painter
-        ..morphSequence = LoadingIndicatorHelper.updateMorphSequence(
+        ..morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
           morphSequence: _painter.morphSequence,
           polygons: widget._indicatorPolygons,
           circularSequence: true,
@@ -340,7 +340,7 @@ class _IndeterminateLoadingIndicatorState
   void reassemble() {
     super.reassemble();
     _painter
-      ..morphSequence = LoadingIndicatorHelper.updateMorphSequence(
+      ..morphSequence = LoadingIndicatorDefaults.updateMorphSequence(
         morphSequence: _painter.morphSequence,
         polygons: widget._indicatorPolygons,
         circularSequence: true,
@@ -580,7 +580,7 @@ class _IndeterminateLoadingIndicatorPainter({
     final morphRotationTargetAngle = controller.morphRotationTargetAngle;
     final morphProgress = controller.morphProgress;
     final globalRotation = controller.globalRotation * _kFullRotation;
-    final path = LoadingIndicatorHelper.transformPath(
+    final path = LoadingIndicatorDefaults.transformPath(
       size: size,
       path: morphSequence[morphIndex].toPath(morphProgress),
       scale: morphScaleFactor,
@@ -612,7 +612,7 @@ class _IndeterminateLoadingIndicatorPainter({
   }
 }
 
-abstract final class LoadingIndicatorHelper {
+abstract final class LoadingIndicatorDefaults {
   static Iterable<Morph> generateMorphSequence({
     required List<RoundedPolygon> polygons,
     required bool circularSequence,
