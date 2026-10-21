@@ -3283,6 +3283,9 @@ abstract final class GoogleSymbols {
   /// Google Symbols icon named "deployed_code_spark".
   static const IconData deployed_code_spark = IconData(0xf2b8, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols icon named "deployed_code_spark_off".
+  static const IconData deployed_code_spark_off = IconData(0xffe90, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols icon named "deployed_code_update".
   static const IconData deployed_code_update = IconData(0xf5f4, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -3639,6 +3642,9 @@ abstract final class GoogleSymbols {
 
   /// Google Symbols icon named "document_share".
   static const IconData document_share = IconData(0xffea6, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols icon named "document_share_stack".
+  static const IconData document_share_stack = IconData(0xffe93, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols icon named "dogfood".
   static const IconData dogfood = IconData(0xe6d8, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -6049,6 +6055,9 @@ abstract final class GoogleSymbols {
   /// Google Symbols icon named "google_news".
   static const IconData google_news = IconData(0xe9ae, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols icon named "google_one".
+  static const IconData google_one = IconData(0xffe91, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols icon named "google_pin".
   static const IconData google_pin = IconData(0xeef9, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -7662,6 +7671,9 @@ abstract final class GoogleSymbols {
 
   /// Google Symbols icon named "loyalty_programs".
   static const IconData loyalty_programs = IconData(0xf839, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols icon named "loyalty_programs_spark".
+  static const IconData loyalty_programs_spark = IconData(0xffe92, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols icon named "lte_mobiledata".
   static const IconData lte_mobiledata = IconData(0xf02c, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -9490,6 +9502,9 @@ abstract final class GoogleSymbols {
   /// Google Symbols icon named "person_edit".
   static const IconData person_edit = IconData(0xf4fa, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols icon named "person_eye".
+  static const IconData person_eye = IconData(0xffe9e, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols icon named "person_heart".
   static const IconData person_heart = IconData(0xf290, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -10951,6 +10966,9 @@ abstract final class GoogleSymbols {
   /// Google Symbols icon named "search_insights".
   static const IconData search_insights = IconData(0xf4bc, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols icon named "search_live".
+  static const IconData search_live = IconData(0xffe9c, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols icon named "search_logo".
   static const IconData search_logo = IconData(0xeb20, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -11946,6 +11964,9 @@ abstract final class GoogleSymbols {
 
   /// Google Symbols icon named "speed_4".
   static const IconData speed_4 = IconData(0xfff36, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols icon named "speed_4_progress".
+  static const IconData speed_4_progress = IconData(0xffe94, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols icon named "speed_camera".
   static const IconData speed_camera = IconData(0xf470, fontFamily: fontFamily, fontPackage: fontPackage);

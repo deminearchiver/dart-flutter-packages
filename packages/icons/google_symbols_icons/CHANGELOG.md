@@ -1,3 +1,8 @@
+## 0.1.11
+
+- Rolled the Google Symbols font from `v464` to `v467`.
+  - This update introduces 7 new icons: `deployed_code_spark_off`, `document_share_stack`, `google_one`, `loyalty_programs_spark`, `person_eye`, `search_live`, `speed_4_progress`.
+
 ## 0.1.10
 
 - Rolled the Google Symbols font from `v462` to `v464`.
