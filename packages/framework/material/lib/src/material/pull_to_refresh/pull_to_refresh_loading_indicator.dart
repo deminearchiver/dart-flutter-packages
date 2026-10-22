@@ -167,7 +167,7 @@ class _PullToRefreshLoadingIndicatorState
           clipBehavior: .antiAlias,
           shape: _resolvedContainerOutline.apply(_resolvedContainerShape),
           color: _resolvedContainerColor,
-          child: _PullToRefreshLoadingIndicatorCrossFade(
+          child: PullToRefreshIndicatorCrossFade(
             isRefreshing: states.isRefreshing,
             determinateChild: determinateActiveIndicator,
             indeterminateChild: indeterminateActiveIndicator,
@@ -176,108 +176,4 @@ class _PullToRefreshLoadingIndicatorState
       ),
     );
   }
-}
-
-class const _PullToRefreshLoadingIndicatorCrossFade({
-  super.key,
-  required final bool isRefreshing,
-  required final Widget determinateChild,
-  required final Widget indeterminateChild,
-}) extends StatefulWidget {
-  @override
-  State<_PullToRefreshLoadingIndicatorCrossFade> createState() =>
-      _PullToRefreshLoadingIndicatorCrossFadeState();
-}
-
-class _PullToRefreshLoadingIndicatorCrossFadeState
-    extends State<_PullToRefreshLoadingIndicatorCrossFade>
-    with SingleTickerProviderStateMixin {
-  double get _crossFadeFractionTargetValue => widget.isRefreshing ? 1.0 : 0.0;
-
-  late AnimationController _crossFadeController;
-
-  late SpringThemeData _springTheme;
-
-  void _startImplicitAnimation() {
-    final oldValue = _crossFadeController.value;
-    final newValue = _crossFadeFractionTargetValue;
-    if (newValue == oldValue) return;
-
-    final simulation = SpringSimulation(
-      _springTheme.defaultEffects.toSpringDescription(),
-      oldValue,
-      newValue,
-      _crossFadeController.velocity,
-      snapToEnd: true,
-    );
-
-    if (newValue >= oldValue) {
-      _crossFadeController.animateWith(simulation);
-    } else {
-      _crossFadeController.animateBackWith(simulation);
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _crossFadeController = .unbounded(
-      vsync: this,
-      value: _crossFadeFractionTargetValue,
-    );
-  }
-
-  @override
-  void didUpdateWidget(
-    covariant _PullToRefreshLoadingIndicatorCrossFade oldWidget,
-  ) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.isRefreshing != oldWidget.isRefreshing) {
-      _startImplicitAnimation();
-    }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _springTheme = SpringTheme.of(context);
-  }
-
-  @override
-  void dispose() {
-    _crossFadeController.dispose();
-    super.dispose();
-  }
-
-  Widget _buildTransition(BuildContext context, Widget? _) {
-    final crossFadeFraction = clampDouble(_crossFadeController.value, 0.0, 1.0);
-    final determinateOpacity = 1.0 - crossFadeFraction;
-    final indeterminateOpacity = crossFadeFraction;
-    return Stack(
-      fit: .expand,
-      alignment: .center,
-      children: [
-        Visibility(
-          visible: determinateOpacity > 0.0,
-          child: Opacity(
-            opacity: determinateOpacity,
-            child: widget.determinateChild,
-          ),
-        ),
-        Visibility(
-          visible: indeterminateOpacity > 0.0,
-          child: Opacity(
-            opacity: indeterminateOpacity,
-            child: widget.indeterminateChild,
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-    animation: _crossFadeController,
-    builder: _buildTransition,
-  );
 }
