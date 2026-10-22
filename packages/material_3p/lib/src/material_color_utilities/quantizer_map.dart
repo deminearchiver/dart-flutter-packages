@@ -1,9 +1,7 @@
 import 'package:material_3p/material_color_utilities.dart';
 
 /// Creates a dictionary with keys of colors, and values of count of the color.
-final class QuantizerMap implements Quantizer {
-  const QuantizerMap();
-
+final class const QuantizerMap() implements Quantizer {
   @override
   QuantizerResult quantize(List<int> pixels, int maxColors) {
     final pixelByCount = <int, int>{};

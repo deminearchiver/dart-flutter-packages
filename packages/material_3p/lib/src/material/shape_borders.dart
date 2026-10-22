@@ -2,11 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 
 @immutable
-abstract class ProxyShapeBorder extends ShapeBorder {
-  const ProxyShapeBorder(this.shape);
-
-  final ShapeBorder shape;
-
+abstract class const ProxyShapeBorder(final ShapeBorder shape)
+    extends ShapeBorder {
   @override
   EdgeInsetsGeometry get dimensions => shape.dimensions;
 
@@ -68,10 +65,9 @@ abstract class ProxyShapeBorder extends ShapeBorder {
 }
 
 @immutable
-abstract class ProxyOutlinedBorder extends ProxyShapeBorder
+abstract class const ProxyOutlinedBorder(super.shape)
+    extends ProxyShapeBorder
     implements OutlinedBorder {
-  const ProxyOutlinedBorder(super.shape);
-
   @override
   BorderSide get side => switch (shape) {
     OutlinedBorder(:final side) => side,

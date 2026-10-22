@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 
-abstract class StatefulCustomPainter<T extends StatefulCustomPainter<T>>
+abstract class StatefulCustomPainter<T extends StatefulCustomPainter<T>>()
     with ChangeNotifier
     implements CustomPainter {
-  StatefulCustomPainter() {
+  this {
     if (kFlutterMemoryAllocationsEnabled) {
       ChangeNotifier.maybeDispatchObjectCreation(this);
     }
