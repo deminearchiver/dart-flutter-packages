@@ -1,3 +1,13 @@
+## 0.6.2
+
+- Introduced exprimental `ProxyShapeBorder` and `ProxyOutlinedBorder` abstract classes.
+  - They can be used to easily implement custom proxies over arbitrary consumer-supplied `ShapeBorder`s or `OutlinedBorder`s.
+
+- Introduced `StatefulCustomPainter` class, which allows to create a mutable, persistent, optimized `CustomPainter` implementation.
+  - Based on `ChangeNotifier`: implementers must call `notifyListeners()` to mark as needing paint.
+
+- Slightly tweaked `pubspec.yaml` topics.
+
 ## 0.6.1
 
 - Introduced `PullToRefreshProgressIndicator` - the classic, arrow-based indicator for Pull-to-Refresh.
@@ -36,9 +46,6 @@
   - Merged `PullToRefreshDelegate` with `PullToRefreshController`.
   - Made `PullToRefreshController` truly abstract, creating a default implementation hierarchy: `PullToRefreshTickerController` and `PullToRefreshSpringController`.
   - Improved custom `ScrollPhysics` to handle more edge cases.
-
-- Introduced exprimental `ProxyShapeBorder` and `ProxyOutlinedBorder` abstract classes.
-  - They can be used to easily implement custom proxies over arbitrary consumer-supplied `ShapeBorder`s or `OutlinedBorder`s.
 
 - Upgraded hosted dependencies.
   - `androidx_graphics_shapes` to `^2.0.0`.

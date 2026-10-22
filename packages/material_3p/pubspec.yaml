@@ -1,10 +1,10 @@
 name: material_3p
 description: 3P (third-party) version of the Material 3 Expressive package.
-version: 0.6.1
+version: 0.6.2
 homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/material_3p
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
-topics: [ui, widgets, material]
+topics: [ui, widget, material]
 resolution: workspace
 
 environment:

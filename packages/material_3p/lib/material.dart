@@ -8,3 +8,5 @@ export 'src/material/pull_to_refresh_indicator_cross_fade.dart';
 export 'src/material/pull_to_refresh_loading_indicator.dart';
 export 'src/material/pull_to_refresh_progress_indicator.dart';
 export 'src/material/pull_to_refresh_ticker_controller.dart';
+export 'src/material/shape_borders.dart';
+export 'src/material/stateful_custom_painter.dart';
