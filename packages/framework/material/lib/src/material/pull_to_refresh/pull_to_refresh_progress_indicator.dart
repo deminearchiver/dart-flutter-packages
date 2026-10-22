@@ -29,7 +29,7 @@ class _PullToRefreshProgressIndicatorState
         dimension: _kSpinnerSize,
         child: ValueListenableBuilder(
           valueListenable: widget.states,
-          builder: (context, states, child) => _CircularArrowProgressIndicator(
+          builder: (context, states, _) => _CircularArrowProgressIndicator(
             progress: states.distanceFraction,
             color: activeIndicatorColor,
           ),

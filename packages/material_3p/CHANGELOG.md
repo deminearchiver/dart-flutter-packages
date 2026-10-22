@@ -1,3 +1,15 @@
+## Unreleased
+
+- Introduced `PullToRefreshProgressIndicator` - the classic, arrow-based indicator for Pull-to-Refresh.
+  - Closely follows Compose Material 3 specs, bringing some visual improvements.
+  - Determinate active indicator is represented by a circular arrow progress indicator.
+  - Indeterminate active indicator is represented by a `CircularProgressIndicator`.
+  - More customization will be added in a later update.
+
+- Added `PullToRefreshIndicatorCrossFade` to simplify building custom Pull-to-Refresh indicators.
+  - This widget can be used to switch between an indeterminate and a determinate active indicator.
+  - It's used internally in `PullToRefreshLoadingIndicator` and `PullToRefreshProgressIndicator`.
+
 ## 0.6.0
 
 - Migrated to the official [`material_ui`](https://pub.dev/packages/material_ui) package.
