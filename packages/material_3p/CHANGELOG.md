@@ -1,12 +1,44 @@
-## Unreleased
+## 0.6.0
 
 - Migrated to the official [`material_ui`](https://pub.dev/packages/material_ui) package.
   - Make sure to import `package:material_ui/material_ui.dart` instead of `package:flutter/material.dart` in your code.
+  - This package will only support one minor version of the `material_ui` package, because of deep integration with it.
 
-- Removed `PointerProvider` parameter from quantizers.
+- Moved `MaterialShapes`, `DynamicPathBorder`, `StaticPathBorder`, `RoundedPolygonBorder`, and `MorphBorder` back into `androidx_graphics_shapes`.
+  - The `androidx_graphics_shapes` package is now a mirror of the `material_ui` API with minor changes and performance improvements.
+  - The `material_shapes` library now exports members from `androidx_graphics_shapes` that are currently unavailable in `material_ui` as of `1.8.0`, such as `CubicBezier`, `PolygonFeature`, `Morph`, etc.
+
+- Renamed `LoadingIndicatorHelper` to `LoadingIndicatorDefaults`.
+
+- Exposed previously private `indeterminateIndicatorPolygons` and `determinateIndicatorPolygons` on `LoadingIndicatorDefaults`.
+
+- Replaced in-place list mutation with LRU caching of morph sequence and morph scale factor in `IndeterminateLoadingIndicator` and `DeterminateLoadingIndicator`.
+  - Removed `generateMorphSequence` and `updateMorphSequence` in favor of `buildMorphSequence` in `LoadingIndicatorDefaults`.
+  - Renamed `calculateScaleFactor` to `calculateMorphScaleFactorRaw` in `LoadingIndicatorDefaults`.
+  - Introduced `LoadingIndicatorDefaults.calculateMorphScaleFactor` to calculate the scale factor of the active indicator, following the specific design spec.
+  - Caching is private use only: `LoadingIndicatorDefaults.buildMorphSequence` and `LoadingIndicatorDefaults.calculateMorphScaleFactor` will not utilize caching.
+
+- Major update to the Pull-to-Refresh API surface.
+  - Merged `PullToRefreshDelegate` with `PullToRefreshController`.
+  - Made `PullToRefreshController` truly abstract, creating a default implementation hierarchy: `PullToRefreshTickerController` and `PullToRefreshSpringController`.
+  - Improved custom `ScrollPhysics` to handle more edge cases.
+
+- Introduced exprimental `ProxyShapeBorder` and `ProxyOutlinedBorder` abstract classes.
+  - They can be used to easily implement custom proxies over arbitrary consumer-supplied `ShapeBorder`s or `OutlinedBorder`s.
 
 - Upgraded hosted dependencies.
-  - `libmonet` to `2.0.0-dev.22`.
+  - `androidx_graphics_shapes` to `^2.0.0`.
+  - `libmonet` to `2.0.0-dev.23`.
+  - `material_ui` to `>=1.8.0 <1.9.0`.
+
+- Removed `PointerProvider` parameter from quantizers in the `material_color_utilities` library.
+
+- Changed the `material_symbols` library to use `show` instead of `hide` when re-exporting from the `material_symbols_icons` package.
+
+- Refactored internal file structure.
+
+- Minor code quality changes.
+  - Refactored classes and extension types to use Dart 3.13 [primary constructors](https://dart.dev/language/primary-constructors) and [concise constructor syntax](https://dart.dev/language/constructors#concise-constructor-syntax).
 
 ## 0.5.0
 
