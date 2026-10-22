@@ -1,4 +1,4 @@
-## Unreleased
+## 0.6.1
 
 - Introduced `PullToRefreshProgressIndicator` - the classic, arrow-based indicator for Pull-to-Refresh.
   - Closely follows Compose Material 3 specs, bringing some visual improvements.
@@ -9,6 +9,8 @@
 - Added `PullToRefreshIndicatorCrossFade` to simplify building custom Pull-to-Refresh indicators.
   - This widget can be used to switch between an indeterminate and a determinate active indicator.
   - It's used internally in `PullToRefreshLoadingIndicator` and `PullToRefreshProgressIndicator`.
+
+- Minor internal changes.
 
 ## 0.6.0
 
