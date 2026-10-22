@@ -382,7 +382,7 @@ extension type const _MaximizeResult._(({int cutLocation, double maximum}) _) {
 }
 
 extension type const _CreateBoxesResult._(
-  ({int requestedCount, int resultCount}) _
+  ({int requestedCount, int resultCount}) _,
 ) {
   const _CreateBoxesResult({
     required int requestedCount,

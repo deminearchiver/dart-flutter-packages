@@ -87,9 +87,8 @@ void main(List<String> arguments) {
   final lengthPtr = calloc<UnsignedInt>();
   final resultData = hb_blob_get_data(resultBlob, lengthPtr);
 
-  File(
-    outputPath,
-  ).writeAsBytesSync(resultData.cast<Uint8>().asTypedList(lengthPtr.value));
+  File(outputPath)
+      .writeAsBytesSync(resultData.cast<Uint8>().asTypedList(lengthPtr.value));
   print("Saved to $outputPath");
 
   calloc.free(lengthPtr);

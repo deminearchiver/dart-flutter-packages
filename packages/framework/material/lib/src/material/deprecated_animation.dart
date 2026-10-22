@@ -400,8 +400,10 @@ class SpringImplicitAnimation<T extends Object?> extends ImplicitAnimation<T> {
 //   }
 // }
 
-typedef WeightsFunction<T extends Object?> =
-    T Function(List<T> values, List<double> weights);
+typedef WeightsFunction<T extends Object?> = T Function(
+  List<T> values,
+  List<double> weights,
+);
 
 abstract class WeightAnimation<T extends Object?> extends Animation<T>
     with
@@ -651,14 +653,15 @@ class _WeightAnimationFromTween<T extends Object?> extends WeightAnimation<T> {
   T get value => _builder(_begin.value, _end.value).evaluate(_weight);
 }
 
-typedef _Listener<T extends Object?> =
-    void Function(_AnimationWeight item, Animation<T> animation);
-typedef _StatusListener<T extends Object?> =
-    void Function(
-      _AnimationWeight item,
-      Animation<T> animation,
-      AnimationStatus status,
-    );
+typedef _Listener<T extends Object?> = void Function(
+  _AnimationWeight item,
+  Animation<T> animation,
+);
+typedef _StatusListener<T extends Object?> = void Function(
+  _AnimationWeight item,
+  Animation<T> animation,
+  AnimationStatus status,
+);
 
 class _AnimationWeight<T extends Object?> {
   _AnimationWeight(this._value, this._weight);

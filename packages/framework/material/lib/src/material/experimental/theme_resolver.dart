@@ -1,7 +1,8 @@
 import 'package:material/src/material/flutter.dart';
 
-typedef ThemeResolverCallback<T extends Object?> =
-    T Function(BuildContext context);
+typedef ThemeResolverCallback<T extends Object?> = T Function(
+  BuildContext context,
+);
 
 typedef ThemeResolverCombineCallback<T extends Object?> = T Function(T a, T b);
 

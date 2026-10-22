@@ -707,8 +707,10 @@ mixin GeometryInflateDefaultsMixin<T extends Object> on GeometryDeflateMixin<T>
   T inflate(T value, double delta) => deflate(value, -delta);
 }
 
-typedef GeometryOffsetCallback<T extends Object> =
-    T Function(T value, double delta);
+typedef GeometryOffsetCallback<T extends Object> = T Function(
+  T value,
+  double delta,
+);
 
 abstract class GeometryOffsetDelegate<T extends Object>
     implements GeometryOffsetMixin<T> {

@@ -5,7 +5,7 @@ import 'package:collection/collection.dart';
 import 'src/hash_code.dart';
 
 extension type const _Token._(
-  ({String identifier, String value, String path}) _
+  ({String identifier, String value, String path}) _,
 ) implements Object {
   const _Token({
     required String identifier,
@@ -290,7 +290,7 @@ extension type const _DataObjectIdentifiers._(
     String concreteImplementation,
     String concreteDefaultsImplementation,
   })
-  _
+  _,
 ) implements Object {
   const _DataObjectIdentifiers({
     required String partialInterface,

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:math' as math;
 import 'dart:typed_data';
+
 import 'package:ffi/ffi.dart';
 
 import 'package:lz4_ffi/src/ffi_bindings.dart' as fb;

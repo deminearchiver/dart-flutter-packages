@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 extension type const ObjectHashExpressionBuilder._(
-  ({List<String> expressions}) _
+  ({List<String> expressions}) _,
 ) implements Object {
   const ObjectHashExpressionBuilder(List<String> expressions)
     : assert(expressions.length > 1, "Must have at least two expressions."),

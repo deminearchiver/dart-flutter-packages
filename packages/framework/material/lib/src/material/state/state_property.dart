@@ -177,8 +177,9 @@ enum WidgetStatesConstraint implements StatesConstraint<WidgetStates> {
   }
 }
 
-typedef PropertyResolver<T extends Object?, S extends Object?> =
-    T Function(S states);
+typedef PropertyResolver<T extends Object?, S extends Object?> = T Function(
+  S states,
+);
 
 typedef PropertyFactory<T extends Object?> = T Function();
 

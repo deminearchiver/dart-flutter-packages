@@ -15,7 +15,7 @@ extension type const _TypescaleToken._(
     double fill,
     double hexp,
   })
-  _
+  _,
 ) {
   const _TypescaleToken({
     required _TypefaceFontToken font,

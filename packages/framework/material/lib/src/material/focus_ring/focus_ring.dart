@@ -55,12 +55,11 @@ class _FocusRingStates implements FocusRingStates {
   int get hashCode => Object.hash(runtimeType, placement, isVisible, isActive);
 }
 
-typedef FocusRingLayoutBuilder =
-    Widget Function(
-      BuildContext context,
-      OverlayChildLayoutInfo info,
-      Widget child,
-    );
+typedef FocusRingLayoutBuilder = Widget Function(
+  BuildContext context,
+  OverlayChildLayoutInfo info,
+  Widget child,
+);
 
 class FocusRing extends StatefulWidget {
   const FocusRing({

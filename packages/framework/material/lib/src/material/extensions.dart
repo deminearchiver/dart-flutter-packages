@@ -139,8 +139,9 @@ class _AnimationMapValue<T, U> extends Animation<U>
   U get value => _callback(_parent.value);
 }
 
-typedef AnimationMapStatusCallback =
-    AnimationStatus Function(AnimationStatus status);
+typedef AnimationMapStatusCallback = AnimationStatus Function(
+  AnimationStatus status,
+);
 
 class _AnimationMapStatus<T> extends Animation<T>
     with

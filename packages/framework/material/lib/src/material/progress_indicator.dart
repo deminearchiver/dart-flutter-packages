@@ -1168,8 +1168,7 @@ class _CircularProgressIndicatorState extends State<CircularProgressIndicator>
             defaultColor: defaults.color,
           ),
           value: widget.value, // may be null
-          headValue:
-              headValue, // remaining arguments are ignored if widget.value is not null
+          headValue: headValue, // remaining arguments are ignored if widget.value is not null
           tailValue: tailValue,
           offsetValue: offsetValue,
           rotationValue: rotationValue,
