@@ -43,7 +43,7 @@ class _PullToRefreshIndicatorCrossFadeState
   @override
   void initState() {
     super.initState();
-    _crossFadeController = .unbounded(
+    _crossFadeController = .new(
       vsync: this,
       value: _crossFadeFractionTargetValue,
     );
@@ -70,7 +70,7 @@ class _PullToRefreshIndicatorCrossFadeState
   }
 
   Widget _buildTransition(BuildContext context, Widget? _) {
-    final crossFadeFraction = clampDouble(_crossFadeController.value, 0.0, 1.0);
+    final crossFadeFraction = _crossFadeController.value;
     final determinateOpacity = 1.0 - crossFadeFraction;
     final indeterminateOpacity = crossFadeFraction;
     return Stack(
