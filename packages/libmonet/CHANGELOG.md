@@ -25,7 +25,17 @@
   - Added `DynamicScheme.raw()` constructor for creating potentially logically impossible scheme configurations.
   - Removed ARGB dynamic color value getters from the class and replaced with extension methods instead: `MaterialDynamicSchemeColorsExtension` and `AndroidDynamicSchemeColorsExtension` (on `DynamicScheme`).
 
+- Refactored `DynamicColor` and made `const` optimizations to the dynamic color system.
+  - Converted `DynamicColor` into an `@immutable` `abstract class` with a `const` default generative constructor, replacing closure-based fields (`palette`, `tone`, `chromaMultiplier`, `background`, `secondBackground`, `contrastCurve`, `toneDeltaPair`, and `opacity`) with overridable methods.
+  - Replaced the closure-based `DynamicColor()` constructor with the `const DynamicColor.custom()` factory constructor.
+  - Replaced `DynamicColor.extendSpecVersion()` with the `const DynamicColor.extended()` factory constructor.
+  - Added `DynamicColor.fromHct()` factory constructor.
+  - Removed `DynamicColor.copyWith()`, `DynamicColor.getInitialToneFromBackground()`, and the internal per-instance HCT cache in `DynamicColor.getHct()`.
+  - Migrated all dynamic color definitions in `ColorSpec2021`, `ColorSpec2025`, and `ColorSpec2026` to `const` `DynamicColor` subclasses and top-level `const` instances.
+
 - Removed `ColorSpecs` in favor of `ColorSpec.fromSpecVersion()` factory constructor.
+
+- Added `ContrastCurve.identity` constant (`ContrastCurve(-1.0, 0.0, 0.5, 1.0)`).
 
 - Changed returns types of functions that work with color spaces from `List<double>` to use [Dart records](https://dart.dev/language/records).
   - This affects some helpers from `ColorUtils` and other classes.
@@ -62,6 +72,7 @@
 - Added generated example schemes in CSS and Figma formats.
 
 - Refactored internal file structure (breaks source code imports).
+  - Converted `color_spec_2021.dart`, `color_spec_2025.dart`, and `color_spec_2026.dart` into `part` files of `color_spec.dart`.
 
 - Other minor changes.
 
