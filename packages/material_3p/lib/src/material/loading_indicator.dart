@@ -4,7 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/physics.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:material_3p/material_shapes.dart';
+import 'package:material_3p/material_shapes.dart' as material_shapes;
 import 'package:material_ui/material_ui.dart';
 
 import 'stateful_custom_painter.dart';
@@ -24,7 +24,7 @@ class const DeterminateLoadingIndicator({
   super.key,
   final bool contained = false,
   required final double progress,
-  final List<RoundedPolygon>? indicatorPolygons,
+  final List<material_shapes.RoundedPolygon>? indicatorPolygons,
   final OutlinedBorder? containerShape,
   final Color? containerColor,
   final BorderSide? containerOutline,
@@ -44,13 +44,13 @@ class const DeterminateLoadingIndicator({
 
 class _DeterminateLoadingIndicatorState
     extends State<DeterminateLoadingIndicator> {
-  List<RoundedPolygon> get _indicatorPolygons =>
+  List<material_shapes.RoundedPolygon> get _indicatorPolygons =>
       widget.indicatorPolygons ??
       LoadingIndicatorDefaults.determinateIndicatorPolygons;
 
   final _matrix = Matrix4.zero();
 
-  late List<Morph> _morphSequence;
+  late List<material_shapes.Morph> _morphSequence;
   late double _morphScaleFactor;
 
   @override
@@ -181,7 +181,7 @@ class _DeterminateLoadingIndicatorState
 class _DeterminateLoadingIndicatorPainter({
   required final Color color,
   required final BorderSide outline,
-  required final Morph currentMorph,
+  required final material_shapes.Morph currentMorph,
   required final double morphScaleFactor,
   required final double adjustedProgressValue,
   required final double rotation,
@@ -205,7 +205,7 @@ class _DeterminateLoadingIndicatorPainter({
     }
 
     if (outline.width > 0.0 && outline.color.a > 0.0) {
-      DynamicPathBorder.paintPathStroke(
+      material_shapes.DynamicPathBorder.paintPathStroke(
         canvas,
         path,
         outline.color,
@@ -231,7 +231,7 @@ class _DeterminateLoadingIndicatorPainter({
 class const IndeterminateLoadingIndicator({
   super.key,
   final bool contained = false,
-  final List<RoundedPolygon>? indicatorPolygons,
+  final List<material_shapes.RoundedPolygon>? indicatorPolygons,
   final OutlinedBorder? containerShape,
   final Color? containerColor,
   final BorderSide? containerOutline,
@@ -253,7 +253,7 @@ class const IndeterminateLoadingIndicator({
 class _IndeterminateLoadingIndicatorState
     extends State<IndeterminateLoadingIndicator>
     with TickerProviderStateMixin {
-  List<RoundedPolygon> get _indicatorPolygons =>
+  List<material_shapes.RoundedPolygon> get _indicatorPolygons =>
       widget.indicatorPolygons ??
       LoadingIndicatorDefaults.indeterminateIndicatorPolygons;
 
@@ -494,7 +494,7 @@ class _IndeterminateLoadingIndicatorAnimationController({
 class _IndeterminateLoadingIndicatorPainter({
   required var Color _color,
   required var BorderSide _outline,
-  required var List<Morph> _morphSequence,
+  required var List<material_shapes.Morph> _morphSequence,
   required var double _morphScaleFactor,
   required var _IndeterminateLoadingIndicatorAnimationController _controller,
 }) extends StatefulCustomPainter<_IndeterminateLoadingIndicatorPainter> {
@@ -516,8 +516,8 @@ class _IndeterminateLoadingIndicatorPainter({
     notifyListeners();
   }
 
-  List<Morph> get morphSequence => _morphSequence;
-  set morphSequence(List<Morph> value) {
+  List<material_shapes.Morph> get morphSequence => _morphSequence;
+  set morphSequence(List<material_shapes.Morph> value) {
     if (_morphSequence == value) return;
     _morphSequence = value;
     notifyListeners();
@@ -567,7 +567,7 @@ class _IndeterminateLoadingIndicatorPainter({
     }
 
     if (outline.width > 0.0 && outline.color.a > 0.0) {
-      DynamicPathBorder.paintPathStroke(
+      material_shapes.DynamicPathBorder.paintPathStroke(
         canvas,
         path,
         outline.color,
@@ -582,24 +582,24 @@ class _IndeterminateLoadingIndicatorPainter({
 
 abstract final class LoadingIndicatorDefaults {
   static final indeterminateIndicatorPolygons =
-      List<RoundedPolygon>.unmodifiableOf([
-        MaterialShapes.softBurst,
-        MaterialShapes.cookie9Sided,
-        MaterialShapes.pentagon,
-        MaterialShapes.pill,
-        MaterialShapes.sunny,
-        MaterialShapes.cookie4Sided,
-        MaterialShapes.oval,
+      List<material_shapes.RoundedPolygon>.unmodifiableOf([
+        material_shapes.MaterialShapes.softBurst,
+        material_shapes.MaterialShapes.cookie9Sided,
+        material_shapes.MaterialShapes.pentagon,
+        material_shapes.MaterialShapes.pill,
+        material_shapes.MaterialShapes.sunny,
+        material_shapes.MaterialShapes.cookie4Sided,
+        material_shapes.MaterialShapes.oval,
       ]);
 
   static final determinateIndicatorPolygons =
-      List<RoundedPolygon>.unmodifiableOf([
-        MaterialShapes.circle
+      List<material_shapes.RoundedPolygon>.unmodifiableOf([
+        material_shapes.MaterialShapes.circle
             // Rotate by 36 degrees to align vertices with softBurst.
             .transformed(Matrix4.rotationZ(math.pi / 10.0).asPointTransformer())
             // Normalizing is required to avoid weird feature mapping for morph.
             .normalized(),
-        MaterialShapes.softBurst,
+        material_shapes.MaterialShapes.softBurst,
       ]);
 
   static const _morphSequenceCacheSize = 8;
@@ -609,22 +609,25 @@ abstract final class LoadingIndicatorDefaults {
         _morphSequenceCacheSize,
       );
 
-  static List<Morph> _createMorphSequence({
-    required List<RoundedPolygon> polygons,
+  static List<material_shapes.Morph> _createMorphSequence({
+    required List<material_shapes.RoundedPolygon> polygons,
     required int polygonsLength,
     required bool circularSequence,
     required int morphSequenceLength,
   }) => .unmodifiableOf(
     // Using fully qualified call avoids Iterable.generate dot shorthand.
-    List<Morph>.generate(
+    List<material_shapes.Morph>.generate(
       morphSequenceLength,
-      (index) => Morph(polygons[index], polygons[(index + 1) % polygonsLength]),
+      (index) => material_shapes.Morph(
+        polygons[index],
+        polygons[(index + 1) % polygonsLength],
+      ),
       growable: false,
     ),
   );
 
   static _MorphSequenceCacheValue _buildMorphSequenceAndScaleFactor({
-    required List<RoundedPolygon> polygons,
+    required List<material_shapes.RoundedPolygon> polygons,
     required bool circularSequence,
     bool approximate = true,
   }) {
@@ -658,8 +661,8 @@ abstract final class LoadingIndicatorDefaults {
     );
   }
 
-  static List<Morph> buildMorphSequence(
-    List<RoundedPolygon> polygons, {
+  static List<material_shapes.Morph> buildMorphSequence(
+    List<material_shapes.RoundedPolygon> polygons, {
     required bool circularSequence,
   }) {
     final polygonsLength = polygons.length;
@@ -677,12 +680,12 @@ abstract final class LoadingIndicatorDefaults {
   }
 
   static double calculateMorphScaleFactor(
-    List<RoundedPolygon> polygons, {
+    List<material_shapes.RoundedPolygon> polygons, {
     bool approximate = true,
   }) => calculateMorphScaleFactorRaw(polygons) * _kActiveIndicatorScale;
 
   static double calculateMorphScaleFactorRaw(
-    List<RoundedPolygon> polygons, {
+    List<material_shapes.RoundedPolygon> polygons, {
     bool approximate = true,
   }) {
     var scaleFactor = 1.0;
@@ -747,7 +750,7 @@ abstract final class LoadingIndicatorDefaults {
 @immutable
 // ignore: prefer_const_constructors_in_immutables
 final class _MorphSequenceCacheKey({
-  required final List<RoundedPolygon> polygons,
+  required final List<material_shapes.RoundedPolygon> polygons,
   required final bool circularSequence,
   required final bool approximate,
 }) {
@@ -768,7 +771,7 @@ final class _MorphSequenceCacheKey({
 }
 
 typedef _MorphSequenceCacheValue = ({
-  List<Morph> morphSequence,
+  List<material_shapes.Morph> morphSequence,
   double morphScaleFactor,
 });
 

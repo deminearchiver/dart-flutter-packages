@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/physics.dart';
 import 'package:material_3p/material.dart';
-import 'package:material_3p/material_shapes.dart';
+import 'package:material_3p/material_shapes.dart' as material_shapes;
 import 'package:material_ui/material_ui.dart';
 
 class const PullToRefreshLoadingIndicator({
@@ -9,9 +9,9 @@ class const PullToRefreshLoadingIndicator({
 
   required final PullToRefreshController controller,
 
-  final List<RoundedPolygon>? determinateIndicatorPolygons,
+  final List<material_shapes.RoundedPolygon>? determinateIndicatorPolygons,
 
-  final List<RoundedPolygon>? indeterminateIndicatorPolygons,
+  final List<material_shapes.RoundedPolygon>? indeterminateIndicatorPolygons,
 
   final OutlinedBorder? containerShape,
 

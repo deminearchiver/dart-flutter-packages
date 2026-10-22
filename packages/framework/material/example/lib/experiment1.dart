@@ -1,14 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:material/material_color_utilities.dart' show EnergyColors;
-import 'package:material/material_shapes.dart'
-    show
-        MaterialShapes,
-        Morph,
-        MorphBorder,
-        RoundedPolygon,
-        RoundedPolygonBorder,
-        RoundedPolygonExtension;
 import 'package:material_example/flutter.dart';
 
 class Experiment1View extends StatefulWidget {

@@ -1,4 +1,3 @@
-import 'package:material/material_shapes.dart';
 import 'package:material/src/material/flutter.dart';
 
 mixin PullToRefreshLoadingIndicatorStates

@@ -1,5 +1,7 @@
 library;
 
+export 'package:androidx_graphics_shapes/androidx_graphics_shapes.dart';
+
 export 'src/material/extensions.dart';
 export 'src/material/window_size_class.dart';
 export 'src/material/shape/outline.dart';

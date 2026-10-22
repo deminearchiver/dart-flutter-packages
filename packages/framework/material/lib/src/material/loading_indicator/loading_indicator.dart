@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/scheduler.dart';
-import 'package:material/material_shapes.dart';
 import 'package:material/src/material/flutter.dart';
 
 const _kContainerWidth = 48.0;

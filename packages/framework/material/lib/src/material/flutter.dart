@@ -64,7 +64,12 @@ export 'package:material_ui/material_ui.dart'
         // ---
         Switch,
         SwitchTheme,
-        SwitchThemeData;
+        SwitchThemeData,
+        // ---
+        CornerRounding,
+        RoundedPolygon,
+        MaterialShapes,
+        MaterialShapeBorder;
 
 // Synchronized packages
 export 'package:animation/animation.dart';
