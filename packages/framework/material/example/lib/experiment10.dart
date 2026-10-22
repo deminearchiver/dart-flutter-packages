@@ -25,7 +25,7 @@ class _Experiment10ViewState extends State<Experiment10View>
     final typescaleTheme = TypescaleTheme.of(context);
     return Scaffold(
       body: CustomPullToRefresh(
-        onRefresh: () => Future.delayed(const .new(seconds: 3)),
+        onRefresh: () => Future.delayed(const .new(seconds: 5)),
         builder: (context, controller) => CustomScrollView(
           physics: AlwaysScrollableScrollPhysics(
             parent: controller.createScrollPhysics(),
@@ -46,13 +46,24 @@ class _Experiment10ViewState extends State<Experiment10View>
                   child: child!,
                 ),
               ),
-              child: Align.center(
-                child: PullToRefreshFadeTransition(
-                  states: controller,
-                  endFraction: 0.4,
-                  dismissedScale: 0.4,
-                  child: PullToRefreshLoadingIndicator(states: controller),
-                ),
+              child: Flex.horizontal(
+                mainAxisAlignment: .center,
+                crossAxisAlignment: .center,
+                spacing: 12.0,
+                children: [
+                  PullToRefreshFadeTransition(
+                    states: controller,
+                    endFraction: 0.4,
+                    dismissedScale: 0.4,
+                    child: PullToRefreshProgressIndicator(states: controller),
+                  ),
+                  PullToRefreshFadeTransition(
+                    states: controller,
+                    endFraction: 0.4,
+                    dismissedScale: 0.4,
+                    child: PullToRefreshLoadingIndicator(states: controller),
+                  ),
+                ],
               ),
             ),
             SliverPadding(
