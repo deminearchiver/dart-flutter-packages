@@ -20,21 +20,21 @@ jobs:
           - os: ubuntu-22.04
             target-os: linux
             target-arch: x64
-          - os: ubuntu-22.04-arm
-            target-os: linux
-            target-arch: arm64
+          # - os: ubuntu-22.04-arm
+          #   target-os: linux
+          #   target-arch: arm64
           - os: macos-14
             target-os: macos
             target-arch: arm64
           - os: macos-14
             target-os: macos
             target-arch: x64
-          - os: windows-latest
-            target-os: windows
-            target-arch: x64
-          - os: windows-latest
-            target-os: windows
-            target-arch: arm64
+          # - os: windows-latest
+          #   target-os: windows
+          #   target-arch: x64
+          # - os: windows-latest
+          #   target-os: windows
+          #   target-arch: arm64
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
