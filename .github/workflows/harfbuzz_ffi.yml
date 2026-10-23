@@ -63,7 +63,7 @@ jobs:
   publish-release:
     name: Attach Binaries to GitHub Release
     needs: precompile
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/harfbuzz_ffi-v')
     runs-on: ubuntu-latest
     steps:
       - name: Download All Artifacts
