@@ -41,16 +41,13 @@ jobs:
             target-arch: arm64
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@v1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
-          sdk: stable
-
+          channel: stable
+          cache: true
       - name: Install Dependencies
-        run: dart pub get
+        run: flutter pub get
 
       - name: Precompile font-subset Binary
         run: dart run tool/precompile_binaries.dart --target-os=${{ matrix.target-os }} --target-arch=${{ matrix.target-arch }}
