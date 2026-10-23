@@ -3353,6 +3353,7 @@ external int hb_font_paint_glyph_or_fail(
 @ffi.Native<ffi.Pointer<hb_font_t> Function(ffi.Pointer<hb_font_t>)>()
 external ffi.Pointer<hb_font_t> hb_font_reference(ffi.Pointer<hb_font_t> font);
 
+@Deprecated('Deprecated')
 @meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>, ffi.Pointer<hb_face_t>)>()
 external void hb_font_set_face(
@@ -9762,13 +9763,13 @@ const int HB_UNICODE_MAX = 1114111;
 
 const int HB_UNICODE_MAX_DECOMPOSITION_LEN = 19;
 
-const int HB_VERSION_MAJOR = 14;
+const int HB_VERSION_MAJOR = 15;
 
 const int HB_VERSION_MICRO = 0;
 
-const int HB_VERSION_MINOR = 6;
+const int HB_VERSION_MINOR = 0;
 
-const String HB_VERSION_STRING = '14.6.0';
+const String HB_VERSION_STRING = '15.0.0';
 
 final class _hb_var_int_t extends ffi.Union {
   @ffi.Uint32()
