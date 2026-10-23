@@ -3,7 +3,7 @@ name: package:harfbuzz_ffi
 on:
   push:
     tags:
-      - 'v*'
+      - 'harfbuzz_ffi-v*'
   workflow_dispatch:
 
 permissions:
