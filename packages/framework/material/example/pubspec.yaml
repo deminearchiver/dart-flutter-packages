@@ -82,7 +82,7 @@ flutter:
           style: italic
     - family: Google Sans Flex
       fonts:
-        - asset: assets/fonts/googlesansflex/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf
+        - asset: assets/fonts/googlesansflex/GoogleSansFlex[ROND,opsz,slnt,wdth,wght].ttf
     - family: Monaspace Argon
       fonts:
         - asset: assets/fonts/monaspace/MonaspaceArgon-VariableFont_slnt,wdth,wght.ttf
