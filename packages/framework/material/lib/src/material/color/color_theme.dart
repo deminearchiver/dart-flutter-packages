@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui' as ui show Image, PictureRecorder;
 
 import 'package:collection/collection.dart';
-import 'package:material_ui/material_ui.dart' as flutter;
 import 'package:material/quantize.dart';
 import 'package:material/material_color_utilities.dart'
     show
@@ -27,35 +26,6 @@ typedef DynamicSchemeVariant = Variant;
 typedef DynamicSchemePlatform = Platform;
 typedef DynamicSchemeSpecVersion = SpecVersion;
 typedef ColorSchemeLegacy = ColorScheme;
-
-extension DynamicSchemeVariantExtension on DynamicSchemeVariant {
-  flutter.DynamicSchemeVariant? get asLegacy => switch (this) {
-    .monochrome => .monochrome,
-    .neutral => .neutral,
-    .tonalSpot => .tonalSpot,
-    .vibrant => .vibrant,
-    .expressive => .expressive,
-    .fidelity => .fidelity,
-    .content => .content,
-    .rainbow => .rainbow,
-    .fruitSalad => .fruitSalad,
-    _ => null,
-  };
-}
-
-extension DynamicSchemeVariantLegacyExtension on flutter.DynamicSchemeVariant {
-  DynamicSchemeVariant get asModern => switch (this) {
-    .monochrome => .monochrome,
-    .neutral => .neutral,
-    .tonalSpot => .tonalSpot,
-    .vibrant => .vibrant,
-    .expressive => .expressive,
-    .fidelity => .fidelity,
-    .content => .content,
-    .rainbow => .rainbow,
-    .fruitSalad => .fruitSalad,
-  };
-}
 
 abstract class const ColorTheme._({super.key, super.child})
     extends SingleChildStatelessWidget {
