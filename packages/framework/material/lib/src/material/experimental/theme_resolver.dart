@@ -6,22 +6,18 @@ typedef ThemeResolverCallback<T extends Object?> = T Function(
 
 typedef ThemeResolverCombineCallback<T extends Object?> = T Function(T a, T b);
 
-abstract class ThemeResolver<T extends Object?> {
-  const ThemeResolver();
-
-  const factory ThemeResolver.callback(ThemeResolverCallback<T> callback) =
+abstract class const ThemeResolver<T extends Object?>() {
+  const factory callback(ThemeResolverCallback<T> callback) =
       _CallbackThemeResolver;
 
-  const factory ThemeResolver.value(T value) = _ValueThemeResolver;
+  const factory value(T value) = _ValueThemeResolver;
 
   T resolve(BuildContext context);
 }
 
-final class _CallbackThemeResolver<T extends Object?> extends ThemeResolver<T> {
-  const _CallbackThemeResolver(this._callback);
-
-  final ThemeResolverCallback<T> _callback;
-
+final class const _CallbackThemeResolver<T extends Object?>(
+  final ThemeResolverCallback<T> _callback,
+) extends ThemeResolver<T> {
   @override
   T resolve(BuildContext context) => _callback(context);
 
@@ -37,11 +33,8 @@ final class _CallbackThemeResolver<T extends Object?> extends ThemeResolver<T> {
   int get hashCode => _callback.hashCode;
 }
 
-final class _ValueThemeResolver<T extends Object?> extends ThemeResolver<T> {
-  const _ValueThemeResolver(this._value);
-
-  final T _value;
-
+final class const _ValueThemeResolver<T extends Object?>(final T _value)
+    extends ThemeResolver<T> {
   @override
   T resolve(BuildContext context) => _value;
 
@@ -57,13 +50,10 @@ final class _ValueThemeResolver<T extends Object?> extends ThemeResolver<T> {
   int get hashCode => _value.hashCode;
 }
 
-abstract class CombiningThemeResolver<T extends Object?>
-    extends ThemeResolver<T> {
-  const CombiningThemeResolver(this.a, this.b);
-
-  final ThemeResolver<T> a;
-  final ThemeResolver<T> b;
-
+abstract class const CombiningThemeResolver<T extends Object?>(
+  final ThemeResolver<T> a,
+  final ThemeResolver<T> b,
+) extends ThemeResolver<T> {
   @protected
   T combine(T a, T b);
 
@@ -171,19 +161,16 @@ typedef _VerifyCallback = bool Function(BuildContext context);
 /// was registered. It includes the element itself, its [InheritedWidget], and
 /// the aspect, if any, which was supplied when registering the dependency.
 final class _InheritedSnapshot {
-  _InheritedSnapshot.fromElementAndWidget({
+  new fromElementAndWidget({
     required this.element,
     required this.widget,
     this.aspect,
     required this._verify,
   });
 
-  _InheritedSnapshot.fromElement(
-    this.element, {
-    this.aspect,
-    required this._verify,
-  }) : assert(element.widget is InheritedWidget),
-       widget = element.widget as InheritedWidget;
+  new fromElement(this.element, {this.aspect, required this._verify})
+    : assert(element.widget is InheritedWidget),
+      widget = element.widget as InheritedWidget;
 
   final InheritedElement element;
   final InheritedWidget widget;
@@ -215,13 +202,11 @@ final class _InheritedSnapshot {
 
 /// Stores the fully resolved, merged theme data and the complete tree of
 /// dependencies required to validate it.
-final class _DependencyTree {
-  _DependencyTree(this.local, {this.ancestorSnapshot, this.ancestorTree});
-
-  final List<_InheritedSnapshot> local;
-  final _InheritedSnapshot? ancestorSnapshot;
-  final _DependencyTree? ancestorTree;
-
+final class _DependencyTree(
+  final List<_InheritedSnapshot> local, {
+  final _InheritedSnapshot? ancestorSnapshot,
+  final _DependencyTree? ancestorTree,
+}) {
   bool verifyAll(BuildContext context) {
     for (final snapshot in local) {
       if (!snapshot.verify(context)) return false;
@@ -242,19 +227,15 @@ final class _DependencyTree {
   }
 }
 
-final class _DependencyCacheEntry<PartialType extends Object?> {
-  _DependencyCacheEntry(this.data, {required this.dependencies});
+final class _DependencyCacheEntry<PartialType extends Object?>(
+  final PartialType data, {
+  required final _DependencyTree dependencies,
+});
 
-  final PartialType data;
-  final _DependencyTree dependencies;
-}
-
-final class _ResolutionCache<PartialType extends Object?> {
-  _ResolutionCache({required this.data, required this.dependencies});
-
-  final PartialType data;
-  final List<_InheritedSnapshot> dependencies;
-
+final class _ResolutionCache<PartialType extends Object?>({
+  required final PartialType data,
+  required final List<_InheritedSnapshot> dependencies,
+}) {
   bool verifyAll(BuildContext context) {
     for (final snapshot in dependencies) {
       if (!snapshot.verify(context)) return false;
@@ -271,26 +252,17 @@ final class _ResolutionCache<PartialType extends Object?> {
 
 /// Data structure for fine-grained cache control. Stores three partial objects:
 /// base [fallback], applied [overrides], and the [merged] result.
-final class _MergeCache<PartialType extends Object?> {
-  _MergeCache({
-    required this.fallback,
-    required this.overrides,
-    required this.merged,
-  });
-
-  final PartialType fallback;
-  final PartialType overrides;
-  final PartialType merged;
-}
+final class _MergeCache<PartialType extends Object?>({
+  required final PartialType fallback,
+  required final PartialType overrides,
+  required final PartialType merged,
+});
 
 /// A proxy [BuildContext] that intercepts dependency registrations during
 /// [ThemeResolver.resolve] invocations to build the dependency graph.
-final class _ResolutionContext implements BuildContext {
-  _ResolutionContext(this._context) : _element = _asElement(_context);
-
-  final BuildContext _context;
-
-  final Element? _element;
+final class _ResolutionContext(final BuildContext _context)
+    implements BuildContext {
+  final _element = _asElement(_context);
 
   final _dependencies = <_InheritedSnapshot>[];
 
@@ -441,14 +413,12 @@ final class _ResolutionContext implements BuildContext {
   }
 }
 
-final class _ResolveResult<PartialType extends Object?> {
-  _ResolveResult(this.data, {required this.dependencies});
+final class _ResolveResult<PartialType extends Object?>(
+  final PartialType data, {
+  required final _DependencyTree dependencies,
+});
 
-  final PartialType data;
-  final _DependencyTree dependencies;
-}
-
-final class _Scope<
+final class const _Scope<
   PartialType extends Object?,
   WidgetType extends InheritedThemeResolverWidget<
     PartialType,
@@ -460,12 +430,8 @@ final class _Scope<
     WidgetType,
     ElementType
   >
->
+>({super.key, required final ElementType element, required super.child})
     extends InheritedWidget {
-  const _Scope({super.key, required this.element, required super.child});
-
-  final ElementType element;
-
   @override
   bool updateShouldNotify(
     _Scope<PartialType, WidgetType, ElementType> oldWidget,
@@ -478,7 +444,7 @@ final class _Scope<
   }
 }
 
-abstract class InheritedThemeResolverWidget<
+abstract class const InheritedThemeResolverWidget<
   PartialType extends Object?,
   WidgetType extends InheritedThemeResolverWidget<
     PartialType,
@@ -490,16 +456,11 @@ abstract class InheritedThemeResolverWidget<
     WidgetType,
     ElementType
   >
->
-    extends InheritedWidget {
-  const InheritedThemeResolverWidget({
-    super.key,
-    required this.resolver,
-    required super.child,
-  });
-
-  final ThemeResolver<PartialType> resolver;
-
+>({
+  super.key,
+  required final ThemeResolver<PartialType> resolver,
+  required super.child,
+}) extends InheritedWidget {
   PartialType merge(PartialType fallback, PartialType? overrides);
 
   bool isConcrete(PartialType data) => false;
@@ -571,9 +532,8 @@ base class InheritedThemeResolverElement<
     WidgetType,
     ElementType
   >
->
-    extends InheritedElement {
-  InheritedThemeResolverElement(WidgetType super.widget)
+>(WidgetType super.widget) extends InheritedElement {
+  this
     : assert(
         widget.runtimeType == WidgetType,
         "${widget.runtimeType} must be exactly $WidgetType.",
