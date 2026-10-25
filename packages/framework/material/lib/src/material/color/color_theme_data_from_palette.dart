@@ -5,7 +5,6 @@ mixin _ColorThemeDataDefaultsMixin<T extends _ColorThemeDataDefaultsMixin<T>>
   PaletteThemeData get _palette;
   ColorThemeDataPartial get _overrides;
 
-  Brightness get _brightness;
   Color get _primaryPaletteKeyColor => primary;
   Color get _secondaryPaletteKeyColor => secondary;
   Color get _tertiaryPaletteKeyColor => tertiary;
@@ -70,9 +69,6 @@ mixin _ColorThemeDataDefaultsMixin<T extends _ColorThemeDataDefaultsMixin<T>>
     required PaletteThemeData palette,
     ColorThemeDataPartial? overrides,
   });
-
-  @override
-  Brightness get brightness => _overrides.brightness ?? _brightness;
 
   @override
   Color get primaryPaletteKeyColor =>
@@ -280,7 +276,6 @@ mixin _ColorThemeDataDefaultsMixin<T extends _ColorThemeDataDefaultsMixin<T>>
 
   @override
   ColorThemeData copyWith({
-    Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
     Color? tertiaryPaletteKeyColor,
@@ -343,7 +338,6 @@ mixin _ColorThemeDataDefaultsMixin<T extends _ColorThemeDataDefaultsMixin<T>>
   }) => _create(
     palette: _palette,
     overrides: _overrides.copyWith(
-      brightness: brightness,
       primaryPaletteKeyColor: primaryPaletteKeyColor,
       secondaryPaletteKeyColor: secondaryPaletteKeyColor,
       tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
@@ -408,7 +402,6 @@ mixin _ColorThemeDataDefaultsMixin<T extends _ColorThemeDataDefaultsMixin<T>>
 
   @override
   ColorThemeData maybeCopyWith({
-    Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
     Color? tertiaryPaletteKeyColor,
@@ -469,8 +462,7 @@ mixin _ColorThemeDataDefaultsMixin<T extends _ColorThemeDataDefaultsMixin<T>>
     Color? errorContainer,
     Color? onErrorContainer,
   }) =>
-      brightness != null &&
-          primaryPaletteKeyColor != null &&
+      primaryPaletteKeyColor != null &&
           secondaryPaletteKeyColor != null &&
           tertiaryPaletteKeyColor != null &&
           neutralPaletteKeyColor != null &&
@@ -530,7 +522,6 @@ mixin _ColorThemeDataDefaultsMixin<T extends _ColorThemeDataDefaultsMixin<T>>
           errorContainer != null &&
           onErrorContainer != null
       ? .from(
-          brightness: brightness,
           primaryPaletteKeyColor: primaryPaletteKeyColor,
           secondaryPaletteKeyColor: secondaryPaletteKeyColor,
           tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
@@ -591,8 +582,7 @@ mixin _ColorThemeDataDefaultsMixin<T extends _ColorThemeDataDefaultsMixin<T>>
           errorContainer: errorContainer,
           onErrorContainer: onErrorContainer,
         )
-      : brightness != null ||
-            primaryPaletteKeyColor != null ||
+      : primaryPaletteKeyColor != null ||
             secondaryPaletteKeyColor != null ||
             tertiaryPaletteKeyColor != null ||
             neutralPaletteKeyColor != null ||
@@ -652,7 +642,6 @@ mixin _ColorThemeDataDefaultsMixin<T extends _ColorThemeDataDefaultsMixin<T>>
             errorContainer != null ||
             onErrorContainer != null
       ? copyWith(
-          brightness: brightness,
           primaryPaletteKeyColor: primaryPaletteKeyColor,
           secondaryPaletteKeyColor: secondaryPaletteKeyColor,
           tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
@@ -736,9 +725,6 @@ final class const _ColorThemeDataDefaultsLightNormalContrast({
         > {
   @override
   final ColorThemeDataPartial _overrides = overrides ?? const .from();
-
-  @override
-  Brightness get _brightness => .light;
 
   @override
   Color get _primary => _palette.primary40;
@@ -891,9 +877,6 @@ final class const _ColorThemeDataDefaultsLightMediumContrast({
   final ColorThemeDataPartial _overrides = overrides ?? const .from();
 
   @override
-  Brightness get _brightness => .light;
-
-  @override
   Color get _primary => _palette.primary30;
 
   @override
@@ -1040,9 +1023,6 @@ final class const _ColorThemeDataDefaultsLightHighContrast({
         _ColorThemeDataDefaultsMixin<_ColorThemeDataDefaultsLightHighContrast> {
   @override
   final ColorThemeDataPartial _overrides = overrides ?? const .from();
-
-  @override
-  Brightness get _brightness => .light;
 
   @override
   Color get _primary => _palette.primary20;
@@ -1195,9 +1175,6 @@ final class const _ColorThemeDataDefaultsDarkNormalContrast({
   final ColorThemeDataPartial _overrides = overrides ?? const .from();
 
   @override
-  Brightness get _brightness => .dark;
-
-  @override
   Color get _primary => _palette.primary80;
 
   @override
@@ -1348,9 +1325,6 @@ final class const _ColorThemeDataDefaultsDarkMediumContrast({
   final ColorThemeDataPartial _overrides = overrides ?? const .from();
 
   @override
-  Brightness get _brightness => .dark;
-
-  @override
   Color get _primary => _palette.primary90;
 
   @override
@@ -1496,9 +1470,6 @@ final class const _ColorThemeDataDefaultsDarkHighContrast({
     with _ColorThemeDataDefaultsMixin<_ColorThemeDataDefaultsDarkHighContrast> {
   @override
   final ColorThemeDataPartial _overrides = overrides ?? const .from();
-
-  @override
-  Brightness get _brightness => .dark;
 
   @override
   Color get _primary => _palette.primary95;

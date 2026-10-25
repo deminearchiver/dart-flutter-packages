@@ -244,7 +244,7 @@ class StaticColors extends InheritedTheme {
     final colorTheme = ColorTheme.of(context);
     final highContrast = MediaQuery.highContrastOf(context);
     return .fallback(
-      brightness: colorTheme.brightness,
+      brightness: ThemeData.estimateBrightnessForColor(colorTheme.surface),
       contrastLevel: highContrast ? 1.0 : 0.0,
       platform: .phone,
       variant: .tonalSpot,

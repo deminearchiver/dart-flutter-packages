@@ -4,7 +4,6 @@ part of 'color_theme.dart';
 
 abstract class const ColorThemeData() extends ColorThemeDataPartial {
   const factory from({
-    required Brightness brightness,
     required Color primaryPaletteKeyColor,
     required Color secondaryPaletteKeyColor,
     required Color tertiaryPaletteKeyColor,
@@ -153,9 +152,6 @@ abstract class const ColorThemeData() extends ColorThemeDataPartial {
         contrastLevel ?? (MediaQuery.highContrastOf(context) ? 1.0 : 0.0),
     overrides: overrides,
   );
-
-  @override
-  Brightness get brightness;
 
   @override
   Color get primaryPaletteKeyColor;
@@ -339,7 +335,6 @@ abstract class const ColorThemeData() extends ColorThemeDataPartial {
 
   @override
   ColorThemeData copyWith({
-    Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
     Color? tertiaryPaletteKeyColor,
@@ -400,7 +395,6 @@ abstract class const ColorThemeData() extends ColorThemeDataPartial {
     Color? errorContainer,
     Color? onErrorContainer,
   }) => .from(
-    brightness: brightness ?? this.brightness,
     primaryPaletteKeyColor:
         primaryPaletteKeyColor ?? this.primaryPaletteKeyColor,
     secondaryPaletteKeyColor:
@@ -473,7 +467,6 @@ abstract class const ColorThemeData() extends ColorThemeDataPartial {
 
   @override
   ColorThemeData maybeCopyWith({
-    Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
     Color? tertiaryPaletteKeyColor,
@@ -534,8 +527,7 @@ abstract class const ColorThemeData() extends ColorThemeDataPartial {
     Color? errorContainer,
     Color? onErrorContainer,
   }) =>
-      brightness != null ||
-          primaryPaletteKeyColor != null ||
+      primaryPaletteKeyColor != null ||
           secondaryPaletteKeyColor != null ||
           tertiaryPaletteKeyColor != null ||
           neutralPaletteKeyColor != null ||
@@ -595,7 +587,6 @@ abstract class const ColorThemeData() extends ColorThemeDataPartial {
           errorContainer != null ||
           onErrorContainer != null
       ? copyWith(
-          brightness: brightness,
           primaryPaletteKeyColor: primaryPaletteKeyColor,
           secondaryPaletteKeyColor: secondaryPaletteKeyColor,
           tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
@@ -661,7 +652,6 @@ abstract class const ColorThemeData() extends ColorThemeDataPartial {
   @override
   ColorThemeData merge(ColorThemeDataPartial? other) => other != null
       ? copyWith(
-          brightness: other.brightness,
           primaryPaletteKeyColor: other.primaryPaletteKeyColor,
           secondaryPaletteKeyColor: other.secondaryPaletteKeyColor,
           tertiaryPaletteKeyColor: other.tertiaryPaletteKeyColor,
@@ -727,7 +717,6 @@ abstract class const ColorThemeData() extends ColorThemeDataPartial {
   @override
   ColorThemeData maybeMerge(ColorThemeDataPartial? other) => other != null
       ? maybeCopyWith(
-          brightness: other.brightness,
           primaryPaletteKeyColor: other.primaryPaletteKeyColor,
           secondaryPaletteKeyColor: other.secondaryPaletteKeyColor,
           tertiaryPaletteKeyColor: other.tertiaryPaletteKeyColor,
@@ -802,13 +791,13 @@ abstract class const ColorThemeData() extends ColorThemeDataPartial {
   @override
   ColorThemeData get asConcrete => this;
 
-  ColorSchemeLegacy get asLegacy => _ColorThemeDataAsLegacy(this);
+  ColorSchemeLegacy toLegacy({required Brightness brightness}) =>
+      _ColorThemeDataAsLegacy(this, brightness: brightness);
 
   @override
   // ignore: must_call_super
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties
-      ..add(EnumProperty<Brightness>("brightness", brightness))
       ..add(ColorProperty("primaryPaletteKeyColor", primaryPaletteKeyColor))
       ..add(ColorProperty("secondaryPaletteKeyColor", secondaryPaletteKeyColor))
       ..add(ColorProperty("tertiaryPaletteKeyColor", tertiaryPaletteKeyColor))
@@ -1006,7 +995,6 @@ abstract class const ColorThemeData() extends ColorThemeDataPartial {
     if (t == 1.0) return b;
     if (a == b) return a;
     return .from(
-      brightness: t < 0.5 ? a.brightness : b.brightness,
       primaryPaletteKeyColor: Color.lerp(
         a.primaryPaletteKeyColor,
         b.primaryPaletteKeyColor,
@@ -1147,7 +1135,6 @@ abstract class const ColorThemeData() extends ColorThemeDataPartial {
 }
 
 final class const _ColorThemeData({
-  @override required final Brightness brightness,
   @override required final Color primaryPaletteKeyColor,
   @override required final Color secondaryPaletteKeyColor,
   @override required final Color tertiaryPaletteKeyColor,
@@ -1212,7 +1199,6 @@ final class const _ColorThemeData({
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _ColorThemeData &&
-          brightness == other.brightness &&
           primaryPaletteKeyColor == other.primaryPaletteKeyColor &&
           secondaryPaletteKeyColor == other.secondaryPaletteKeyColor &&
           tertiaryPaletteKeyColor == other.tertiaryPaletteKeyColor &&
@@ -1276,74 +1262,76 @@ final class const _ColorThemeData({
 
   @override
   int get hashCode => Object.hash(
-    brightness,
-    primaryPaletteKeyColor,
-    secondaryPaletteKeyColor,
-    tertiaryPaletteKeyColor,
-    neutralPaletteKeyColor,
-    neutralVariantPaletteKeyColor,
-    errorPaletteKeyColor,
-    background,
-    onBackground,
-    surface,
-    surfaceDim,
-    surfaceBright,
-    surfaceContainerLowest,
-    surfaceContainerLow,
-    surfaceContainer,
-    surfaceContainerHigh,
-    surfaceContainerHighest,
-    onSurface,
-    surfaceVariant,
     Object.hash(
-      onSurfaceVariant,
-      outline,
-      outlineVariant,
-      inverseSurface,
-      inverseOnSurface,
-      shadow,
-      scrim,
-      surfaceTint,
-      primary,
-      primaryDim,
-      onPrimary,
-      primaryContainer,
-      onPrimaryContainer,
-      primaryFixed,
-      primaryFixedDim,
-      onPrimaryFixed,
-      onPrimaryFixedVariant,
-      inversePrimary,
-      secondary,
       Object.hash(
+        Object.hash(
+          primaryPaletteKeyColor,
+          secondaryPaletteKeyColor,
+          tertiaryPaletteKeyColor,
+          neutralPaletteKeyColor,
+          neutralVariantPaletteKeyColor,
+          errorPaletteKeyColor,
+          background,
+          onBackground,
+          surface,
+          surfaceDim,
+          surfaceBright,
+          surfaceContainerLowest,
+          surfaceContainerLow,
+          surfaceContainer,
+          surfaceContainerHigh,
+          surfaceContainerHighest,
+          onSurface,
+          surfaceVariant,
+          onSurfaceVariant,
+          outline,
+        ),
+        outlineVariant,
+        inverseSurface,
+        inverseOnSurface,
+        shadow,
+        scrim,
+        surfaceTint,
+        primary,
+        primaryDim,
+        onPrimary,
+        primaryContainer,
+        onPrimaryContainer,
+        primaryFixed,
+        primaryFixedDim,
+        onPrimaryFixed,
+        onPrimaryFixedVariant,
+        inversePrimary,
+        secondary,
         secondaryDim,
         onSecondary,
-        secondaryContainer,
-        onSecondaryContainer,
-        secondaryFixed,
-        secondaryFixedDim,
-        onSecondaryFixed,
-        onSecondaryFixedVariant,
-        tertiary,
-        tertiaryDim,
-        onTertiary,
-        tertiaryContainer,
-        onTertiaryContainer,
-        tertiaryFixed,
-        tertiaryFixedDim,
-        onTertiaryFixed,
-        onTertiaryFixedVariant,
-        error,
-        errorDim,
-        Object.hash(onError, errorContainer, onErrorContainer),
       ),
+      secondaryContainer,
+      onSecondaryContainer,
+      secondaryFixed,
+      secondaryFixedDim,
+      onSecondaryFixed,
+      onSecondaryFixedVariant,
+      tertiary,
+      tertiaryDim,
+      onTertiary,
+      tertiaryContainer,
+      onTertiaryContainer,
+      tertiaryFixed,
+      tertiaryFixedDim,
+      onTertiaryFixed,
+      onTertiaryFixedVariant,
+      error,
+      errorDim,
+      onError,
+      errorContainer,
     ),
+    onErrorContainer,
   );
 }
 
 final class _ColorThemeDataFromDynamicSchemeCache(
   final DynamicScheme _scheme, {
-  var Brightness? _brightness,
   var Color? _primaryPaletteKeyColor,
   var Color? _secondaryPaletteKeyColor,
   var Color? _tertiaryPaletteKeyColor,
@@ -1404,9 +1392,6 @@ final class _ColorThemeDataFromDynamicSchemeCache(
   var Color? _errorContainer,
   var Color? _onErrorContainer,
 }) {
-  Brightness get brightness =>
-      _brightness ??= (_scheme.isDark ? .dark : .light);
-
   Color get primaryPaletteKeyColor =>
       _primaryPaletteKeyColor ??= Color(_scheme.primaryPaletteKeyColor);
 
@@ -1572,9 +1557,6 @@ final class const _ColorThemeDataFromDynamicScheme._({
         cache: _ColorThemeDataFromDynamicSchemeCache(scheme),
         overrides: const .from(),
       );
-
-  @override
-  Brightness get brightness => _overrides.brightness ?? _cache.brightness;
 
   @override
   Color get primaryPaletteKeyColor =>
@@ -1791,7 +1773,6 @@ final class const _ColorThemeDataFromDynamicScheme._({
 
   @override
   ColorThemeData copyWith({
-    Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
     Color? tertiaryPaletteKeyColor,
@@ -1854,7 +1835,6 @@ final class const _ColorThemeDataFromDynamicScheme._({
   }) => _ColorThemeDataFromDynamicScheme._(
     cache: _cache,
     overrides: _overrides.copyWith(
-      brightness: brightness,
       primaryPaletteKeyColor: primaryPaletteKeyColor,
       secondaryPaletteKeyColor: secondaryPaletteKeyColor,
       tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
@@ -1919,7 +1899,6 @@ final class const _ColorThemeDataFromDynamicScheme._({
 
   @override
   ColorThemeData maybeCopyWith({
-    Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
     Color? tertiaryPaletteKeyColor,
@@ -1980,8 +1959,7 @@ final class const _ColorThemeDataFromDynamicScheme._({
     Color? errorContainer,
     Color? onErrorContainer,
   }) =>
-      brightness != null &&
-          primaryPaletteKeyColor != null &&
+      primaryPaletteKeyColor != null &&
           secondaryPaletteKeyColor != null &&
           tertiaryPaletteKeyColor != null &&
           neutralPaletteKeyColor != null &&
@@ -2041,7 +2019,6 @@ final class const _ColorThemeDataFromDynamicScheme._({
           errorContainer != null &&
           onErrorContainer != null
       ? .from(
-          brightness: brightness,
           primaryPaletteKeyColor: primaryPaletteKeyColor,
           secondaryPaletteKeyColor: secondaryPaletteKeyColor,
           tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
@@ -2102,8 +2079,7 @@ final class const _ColorThemeDataFromDynamicScheme._({
           errorContainer: errorContainer,
           onErrorContainer: onErrorContainer,
         )
-      : brightness != null ||
-            primaryPaletteKeyColor != null ||
+      : primaryPaletteKeyColor != null ||
             secondaryPaletteKeyColor != null ||
             tertiaryPaletteKeyColor != null ||
             neutralPaletteKeyColor != null ||
@@ -2163,7 +2139,6 @@ final class const _ColorThemeDataFromDynamicScheme._({
             errorContainer != null ||
             onErrorContainer != null
       ? copyWith(
-          brightness: brightness,
           primaryPaletteKeyColor: primaryPaletteKeyColor,
           secondaryPaletteKeyColor: secondaryPaletteKeyColor,
           tertiaryPaletteKeyColor: tertiaryPaletteKeyColor,
@@ -2239,7 +2214,7 @@ final class const _ColorThemeDataFromDynamicScheme._({
 
 final class const _ColorThemeDataAsLegacy(
   final ColorThemeData _value, {
-  final Brightness? _brightness,
+  required final Brightness _brightness,
   final Color? _primary,
   final Color? _onPrimary,
   final Color? _primaryContainer,
@@ -2291,7 +2266,7 @@ final class const _ColorThemeDataAsLegacy(
   final Color? _surfaceVariant,
 }) with Diagnosticable implements ColorSchemeLegacy {
   @override
-  Brightness get brightness => _brightness ?? _value.brightness;
+  Brightness get brightness => _brightness;
 
   @override
   Color get primary => _primary ?? _value.primary;
@@ -2971,27 +2946,29 @@ final class const _ColorThemeDataAsLegacy(
 
   @override
   int get hashCode => Object.hash(
-    _value,
-    _brightness,
-    _primary,
-    _onPrimary,
-    _primaryContainer,
-    _onPrimaryContainer,
-    _primaryFixed,
-    _primaryFixedDim,
-    _onPrimaryFixed,
-    _onPrimaryFixedVariant,
-    _secondary,
-    _onSecondary,
-    _secondaryContainer,
-    _onSecondaryContainer,
-    _secondaryFixed,
-    _secondaryFixedDim,
-    _onSecondaryFixed,
-    _onSecondaryFixedVariant,
     Object.hash(
-      _tertiary,
-      _onTertiary,
+      Object.hash(
+        _value,
+        _brightness,
+        _primary,
+        _onPrimary,
+        _primaryContainer,
+        _onPrimaryContainer,
+        _primaryFixed,
+        _primaryFixedDim,
+        _onPrimaryFixed,
+        _onPrimaryFixedVariant,
+        _secondary,
+        _onSecondary,
+        _secondaryContainer,
+        _onSecondaryContainer,
+        _secondaryFixed,
+        _secondaryFixedDim,
+        _onSecondaryFixed,
+        _onSecondaryFixedVariant,
+        _tertiary,
+        _onTertiary,
+      ),
       _tertiaryContainer,
       _onTertiaryContainer,
       _tertiaryFixed,
@@ -3009,22 +2986,20 @@ final class const _ColorThemeDataAsLegacy(
       _surfaceContainerLowest,
       _surfaceContainerLow,
       _surfaceContainer,
-      Object.hash(
-        _surfaceContainerHigh,
-        _surfaceContainerHighest,
-        _onSurfaceVariant,
-        _outline,
-        _outlineVariant,
-        _shadow,
-        _scrim,
-        _inverseSurface,
-        _onInverseSurface,
-        _inversePrimary,
-        _surfaceTint,
-        _background,
-        _onBackground,
-        _surfaceVariant,
-      ),
+      _surfaceContainerHigh,
+      _surfaceContainerHighest,
     ),
+    _onSurfaceVariant,
+    _outline,
+    _outlineVariant,
+    _shadow,
+    _scrim,
+    _inverseSurface,
+    _onInverseSurface,
+    _inversePrimary,
+    _surfaceTint,
+    _background,
+    _onBackground,
+    _surfaceVariant,
   );
 }

@@ -67,7 +67,9 @@ abstract final class LegacyThemeFactory {
     final modalBarrierColor = colorTheme.scrim.withValues(alpha: 0.32);
     return ThemeData(
       platform: kDebugMode ? TargetPlatform.android : null,
-      colorScheme: colorTheme.asLegacy,
+      colorScheme: colorTheme.toLegacy(
+        brightness: ThemeData.estimateBrightnessForColor(colorTheme.surface),
+      ),
       visualDensity: .standard,
       splashFactory: InkSparkle.splashFactory,
       textTheme: typescaleTheme.toBaselineTextTheme(),
