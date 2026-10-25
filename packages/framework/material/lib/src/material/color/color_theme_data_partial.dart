@@ -2123,10 +2123,9 @@ final class const _ColorThemeDataPartialFromLegacy(
   );
 }
 
-final class _ColorThemeDataPartialAsConcrete(final ColorThemeDataPartial _value)
-    extends ColorThemeData {
-  this : assert(_value.isConcrete);
-
+final class const _ColorThemeDataPartialAsConcrete(
+  final ColorThemeDataPartial _value,
+) extends ColorThemeData {
   @override
   Brightness get brightness => _value.brightness!;
 
