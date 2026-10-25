@@ -57,40 +57,39 @@ extension DynamicSchemeVariantLegacyExtension on flutter.DynamicSchemeVariant {
   };
 }
 
-abstract class ColorTheme extends SingleChildStatelessWidget {
-  const ColorTheme._({super.key, super.child});
-
-  const factory ColorTheme.mergeWithResolver({
+abstract class const ColorTheme._({super.key, super.child})
+    extends SingleChildStatelessWidget {
+  const factory mergeWithResolver({
     Key? key,
     required ThemeResolver<ColorThemeDataPartial> resolver,
     Widget? child,
   }) = _ColorThemeWithResolver<ColorThemeDataPartial>;
 
-  const factory ColorTheme.mergeWithCallback({
+  const factory mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<ColorThemeDataPartial> callback,
     Widget? child,
   }) = _ColorThemeWithCallback<ColorThemeDataPartial>;
 
-  const factory ColorTheme.mergeWithData({
+  const factory mergeWithData({
     Key? key,
     required ColorThemeDataPartial data,
     Widget? child,
   }) = _ColorThemeWithData<ColorThemeDataPartial>;
 
-  const factory ColorTheme.replaceWithResolver({
+  const factory replaceWithResolver({
     Key? key,
     required ThemeResolver<ColorThemeData> resolver,
     Widget? child,
   }) = _ColorThemeWithResolver<ColorThemeData>;
 
-  const factory ColorTheme.replaceWithCallback({
+  const factory replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<ColorThemeData> callback,
     Widget? child,
   }) = _ColorThemeWithCallback<ColorThemeData>;
 
-  const factory ColorTheme.replaceWithData({
+  const factory replaceWithData({
     Key? key,
     required ColorThemeData data,
     Widget? child,
@@ -113,16 +112,12 @@ abstract class ColorTheme extends SingleChildStatelessWidget {
       .defaultsOf(context, overrides: _ColorTheme.maybeOverridesOf(context));
 }
 
-class _ColorThemeWithResolver<T extends ColorThemeDataPartial>
-    extends ColorTheme {
-  const _ColorThemeWithResolver({
-    super.key,
-    required this.resolver,
-    super.child,
-  }) : super._();
-
-  @override
-  final ThemeResolver<T> resolver;
+class const _ColorThemeWithResolver<T extends ColorThemeDataPartial>({
+  super.key,
+  @override required final ThemeResolver<T> resolver,
+  super.child,
+}) extends ColorTheme {
+  this : super._();
 
   @override
   SingleChildWidget wrap(BuildContext context, Widget? child) =>
@@ -135,15 +130,12 @@ class _ColorThemeWithResolver<T extends ColorThemeDataPartial>
   }
 }
 
-class _ColorThemeWithCallback<T extends ColorThemeDataPartial>
-    extends ColorTheme {
-  const _ColorThemeWithCallback({
-    super.key,
-    required this.callback,
-    super.child,
-  }) : super._();
-
-  final ThemeResolverCallback<T> callback;
+class const _ColorThemeWithCallback<T extends ColorThemeDataPartial>({
+  super.key,
+  required final ThemeResolverCallback<T> callback,
+  super.child,
+}) extends ColorTheme {
+  this : super._();
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
@@ -161,11 +153,12 @@ class _ColorThemeWithCallback<T extends ColorThemeDataPartial>
   }
 }
 
-class _ColorThemeWithData<T extends ColorThemeDataPartial> extends ColorTheme {
-  const _ColorThemeWithData({super.key, required this.data, super.child})
-    : super._();
-
-  final T data;
+class const _ColorThemeWithData<T extends ColorThemeDataPartial>({
+  super.key,
+  required final T data,
+  super.child,
+}) extends ColorTheme {
+  this : super._();
 
   @override
   ThemeResolver<T> get resolver => .value(data);
@@ -181,16 +174,17 @@ class _ColorThemeWithData<T extends ColorThemeDataPartial> extends ColorTheme {
   }
 }
 
-final class _ColorTheme
-    extends
+final class const _ColorTheme({
+  super.key,
+  required super.resolver,
+  required super.child,
+}) extends
         InheritedThemeResolverWidget<
           ColorThemeDataPartial,
           _ColorTheme,
           _ColorThemeElement
         >
     implements InheritedTheme {
-  const _ColorTheme({super.key, required super.resolver, required super.child});
-
   @override
   ColorThemeDataPartial merge(
     ColorThemeDataPartial fallback,
@@ -224,12 +218,10 @@ final class _ColorTheme
       >(context);
 }
 
-final class _ColorThemeElement
+final class _ColorThemeElement(super.widget)
     extends
         InheritedThemeResolverElement<
           ColorThemeDataPartial,
           _ColorTheme,
           _ColorThemeElement
-        > {
-  _ColorThemeElement(super.widget);
-}
+        >;

@@ -726,22 +726,16 @@ mixin _ColorThemeDataDefaultsMixin<T extends _ColorThemeDataDefaultsMixin<T>>
   int get hashCode => Object.hash(_palette, _overrides);
 }
 
-final class _ColorThemeDataDefaultsLightNormalContrast extends ColorThemeData
+final class const _ColorThemeDataDefaultsLightNormalContrast({
+  @override required final PaletteThemeData _palette,
+  ColorThemeDataPartial? overrides,
+}) extends ColorThemeData
     with
         _ColorThemeDataDefaultsMixin<
           _ColorThemeDataDefaultsLightNormalContrast
         > {
-  const _ColorThemeDataDefaultsLightNormalContrast({
-    required PaletteThemeData palette,
-    ColorThemeDataPartial? overrides,
-  }) : _palette = palette,
-       _overrides = overrides ?? const .from();
-
   @override
-  final PaletteThemeData _palette;
-
-  @override
-  final ColorThemeDataPartial _overrides;
+  final ColorThemeDataPartial _overrides = overrides ?? const .from();
 
   @override
   Brightness get _brightness => .light;
@@ -885,22 +879,16 @@ final class _ColorThemeDataDefaultsLightNormalContrast extends ColorThemeData
   }) => .new(palette: palette, overrides: overrides);
 }
 
-final class _ColorThemeDataDefaultsLightMediumContrast extends ColorThemeData
+final class const _ColorThemeDataDefaultsLightMediumContrast({
+  @override required final PaletteThemeData _palette,
+  ColorThemeDataPartial? overrides,
+}) extends ColorThemeData
     with
         _ColorThemeDataDefaultsMixin<
           _ColorThemeDataDefaultsLightMediumContrast
         > {
-  const _ColorThemeDataDefaultsLightMediumContrast({
-    required PaletteThemeData palette,
-    ColorThemeDataPartial? overrides,
-  }) : _palette = palette,
-       _overrides = overrides ?? const .from();
-
   @override
-  final PaletteThemeData _palette;
-
-  @override
-  final ColorThemeDataPartial _overrides;
+  final ColorThemeDataPartial _overrides = overrides ?? const .from();
 
   @override
   Brightness get _brightness => .light;
@@ -1044,20 +1032,14 @@ final class _ColorThemeDataDefaultsLightMediumContrast extends ColorThemeData
   }) => .new(palette: palette, overrides: overrides);
 }
 
-final class _ColorThemeDataDefaultsLightHighContrast extends ColorThemeData
+final class const _ColorThemeDataDefaultsLightHighContrast({
+  @override required final PaletteThemeData _palette,
+  ColorThemeDataPartial? overrides,
+}) extends ColorThemeData
     with
         _ColorThemeDataDefaultsMixin<_ColorThemeDataDefaultsLightHighContrast> {
-  const _ColorThemeDataDefaultsLightHighContrast({
-    required PaletteThemeData palette,
-    ColorThemeDataPartial? overrides,
-  }) : _palette = palette,
-       _overrides = overrides ?? const .from();
-
   @override
-  final PaletteThemeData _palette;
-
-  @override
-  final ColorThemeDataPartial _overrides;
+  final ColorThemeDataPartial _overrides = overrides ?? const .from();
 
   @override
   Brightness get _brightness => .light;
@@ -1201,22 +1183,16 @@ final class _ColorThemeDataDefaultsLightHighContrast extends ColorThemeData
   }) => .new(palette: palette, overrides: overrides);
 }
 
-final class _ColorThemeDataDefaultsDarkNormalContrast extends ColorThemeData
+final class const _ColorThemeDataDefaultsDarkNormalContrast({
+  @override required final PaletteThemeData _palette,
+  ColorThemeDataPartial? overrides,
+}) extends ColorThemeData
     with
         _ColorThemeDataDefaultsMixin<
           _ColorThemeDataDefaultsDarkNormalContrast
         > {
-  const _ColorThemeDataDefaultsDarkNormalContrast({
-    required PaletteThemeData palette,
-    ColorThemeDataPartial? overrides,
-  }) : _palette = palette,
-       _overrides = overrides ?? const .from();
-
   @override
-  final PaletteThemeData _palette;
-
-  @override
-  final ColorThemeDataPartial _overrides;
+  final ColorThemeDataPartial _overrides = overrides ?? const .from();
 
   @override
   Brightness get _brightness => .dark;
@@ -1360,22 +1336,16 @@ final class _ColorThemeDataDefaultsDarkNormalContrast extends ColorThemeData
   }) => .new(palette: palette, overrides: overrides);
 }
 
-final class _ColorThemeDataDefaultsDarkMediumContrast extends ColorThemeData
+final class const _ColorThemeDataDefaultsDarkMediumContrast({
+  @override required final PaletteThemeData _palette,
+  ColorThemeDataPartial? overrides,
+}) extends ColorThemeData
     with
         _ColorThemeDataDefaultsMixin<
           _ColorThemeDataDefaultsDarkMediumContrast
         > {
-  const _ColorThemeDataDefaultsDarkMediumContrast({
-    required PaletteThemeData palette,
-    ColorThemeDataPartial? overrides,
-  }) : _palette = palette,
-       _overrides = overrides ?? const .from();
-
   @override
-  final PaletteThemeData _palette;
-
-  @override
-  final ColorThemeDataPartial _overrides;
+  final ColorThemeDataPartial _overrides = overrides ?? const .from();
 
   @override
   Brightness get _brightness => .dark;
@@ -1519,19 +1489,13 @@ final class _ColorThemeDataDefaultsDarkMediumContrast extends ColorThemeData
   }) => .new(palette: palette, overrides: overrides);
 }
 
-final class _ColorThemeDataDefaultsDarkHighContrast extends ColorThemeData
+final class const _ColorThemeDataDefaultsDarkHighContrast({
+  @override required final PaletteThemeData _palette,
+  ColorThemeDataPartial? overrides,
+}) extends ColorThemeData
     with _ColorThemeDataDefaultsMixin<_ColorThemeDataDefaultsDarkHighContrast> {
-  const _ColorThemeDataDefaultsDarkHighContrast({
-    required PaletteThemeData palette,
-    ColorThemeDataPartial? overrides,
-  }) : _palette = palette,
-       _overrides = overrides ?? const .from();
-
   @override
-  final PaletteThemeData _palette;
-
-  @override
-  final ColorThemeDataPartial _overrides;
+  final ColorThemeDataPartial _overrides = overrides ?? const .from();
 
   @override
   Brightness get _brightness => .dark;

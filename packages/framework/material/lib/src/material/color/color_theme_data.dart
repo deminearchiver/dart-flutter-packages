@@ -2,10 +2,8 @@
 
 part of 'color_theme.dart';
 
-abstract class ColorThemeData extends ColorThemeDataPartial {
-  const ColorThemeData();
-
-  const factory ColorThemeData.from({
+abstract class const ColorThemeData() extends ColorThemeDataPartial {
+  const factory from({
     required Brightness brightness,
     required Color primaryPaletteKeyColor,
     required Color secondaryPaletteKeyColor,
@@ -68,10 +66,10 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     required Color onErrorContainer,
   }) = _ColorThemeData;
 
-  factory ColorThemeData.fromDynamicScheme(DynamicScheme scheme) =>
+  factory fromDynamicScheme(DynamicScheme scheme) =>
       _ColorThemeDataFromDynamicScheme(scheme);
 
-  factory ColorThemeData.fromSeed({
+  factory fromSeed({
     DynamicSchemeSourceColor? sourceColor,
     DynamicSchemeVariant variant = .tonalSpot,
     required Brightness brightness,
@@ -91,7 +89,7 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     return .fromDynamicScheme(scheme);
   }
 
-  factory ColorThemeData.defaults({
+  factory defaults({
     required PaletteThemeData paletteTheme,
     required Brightness brightness,
     double contrastLevel = 0.0,
@@ -140,7 +138,7 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
     // };
   }
 
-  factory ColorThemeData.defaultsOf(
+  factory defaultsOf(
     BuildContext context, {
     Brightness? brightness,
     double? contrastLevel,
@@ -1148,250 +1146,68 @@ abstract class ColorThemeData extends ColorThemeDataPartial {
   }
 }
 
-final class _ColorThemeData extends ColorThemeData {
-  const _ColorThemeData({
-    required this.brightness,
-    required this.primaryPaletteKeyColor,
-    required this.secondaryPaletteKeyColor,
-    required this.tertiaryPaletteKeyColor,
-    required this.neutralPaletteKeyColor,
-    required this.neutralVariantPaletteKeyColor,
-    required this.errorPaletteKeyColor,
-    required this.background,
-    required this.onBackground,
-    required this.surface,
-    required this.surfaceDim,
-    required this.surfaceBright,
-    required this.surfaceContainerLowest,
-    required this.surfaceContainerLow,
-    required this.surfaceContainer,
-    required this.surfaceContainerHigh,
-    required this.surfaceContainerHighest,
-    required this.onSurface,
-    required this.surfaceVariant,
-    required this.onSurfaceVariant,
-    required this.outline,
-    required this.outlineVariant,
-    required this.inverseSurface,
-    required this.inverseOnSurface,
-    required this.shadow,
-    required this.scrim,
-    required this.surfaceTint,
-    required this.primary,
-    required this.primaryDim,
-    required this.onPrimary,
-    required this.primaryContainer,
-    required this.onPrimaryContainer,
-    required this.primaryFixed,
-    required this.primaryFixedDim,
-    required this.onPrimaryFixed,
-    required this.onPrimaryFixedVariant,
-    required this.inversePrimary,
-    required this.secondary,
-    required this.secondaryDim,
-    required this.onSecondary,
-    required this.secondaryContainer,
-    required this.onSecondaryContainer,
-    required this.secondaryFixed,
-    required this.secondaryFixedDim,
-    required this.onSecondaryFixed,
-    required this.onSecondaryFixedVariant,
-    required this.tertiary,
-    required this.tertiaryDim,
-    required this.onTertiary,
-    required this.tertiaryContainer,
-    required this.onTertiaryContainer,
-    required this.tertiaryFixed,
-    required this.tertiaryFixedDim,
-    required this.onTertiaryFixed,
-    required this.onTertiaryFixedVariant,
-    required this.error,
-    required this.errorDim,
-    required this.onError,
-    required this.errorContainer,
-    required this.onErrorContainer,
-  });
-
-  @override
-  final Brightness brightness;
-
-  @override
-  final Color primaryPaletteKeyColor;
-
-  @override
-  final Color secondaryPaletteKeyColor;
-
-  @override
-  final Color tertiaryPaletteKeyColor;
-
-  @override
-  final Color neutralPaletteKeyColor;
-
-  @override
-  final Color neutralVariantPaletteKeyColor;
-
-  @override
-  final Color errorPaletteKeyColor;
-
-  @override
-  final Color background;
-
-  @override
-  final Color onBackground;
-
-  @override
-  final Color surface;
-
-  @override
-  final Color surfaceDim;
-
-  @override
-  final Color surfaceBright;
-
-  @override
-  final Color surfaceContainerLowest;
-
-  @override
-  final Color surfaceContainerLow;
-
-  @override
-  final Color surfaceContainer;
-
-  @override
-  final Color surfaceContainerHigh;
-
-  @override
-  final Color surfaceContainerHighest;
-
-  @override
-  final Color onSurface;
-
-  @override
-  final Color surfaceVariant;
-
-  @override
-  final Color onSurfaceVariant;
-
-  @override
-  final Color outline;
-
-  @override
-  final Color outlineVariant;
-
-  @override
-  final Color inverseSurface;
-
-  @override
-  final Color inverseOnSurface;
-
-  @override
-  final Color shadow;
-
-  @override
-  final Color scrim;
-
-  @override
-  final Color surfaceTint;
-
-  @override
-  final Color primary;
-
-  @override
-  final Color primaryDim;
-
-  @override
-  final Color onPrimary;
-
-  @override
-  final Color primaryContainer;
-
-  @override
-  final Color onPrimaryContainer;
-
-  @override
-  final Color primaryFixed;
-
-  @override
-  final Color primaryFixedDim;
-
-  @override
-  final Color onPrimaryFixed;
-
-  @override
-  final Color onPrimaryFixedVariant;
-
-  @override
-  final Color inversePrimary;
-
-  @override
-  final Color secondary;
-
-  @override
-  final Color secondaryDim;
-
-  @override
-  final Color onSecondary;
-
-  @override
-  final Color secondaryContainer;
-
-  @override
-  final Color onSecondaryContainer;
-
-  @override
-  final Color secondaryFixed;
-
-  @override
-  final Color secondaryFixedDim;
-
-  @override
-  final Color onSecondaryFixed;
-
-  @override
-  final Color onSecondaryFixedVariant;
-
-  @override
-  final Color tertiary;
-
-  @override
-  final Color tertiaryDim;
-
-  @override
-  final Color onTertiary;
-
-  @override
-  final Color tertiaryContainer;
-
-  @override
-  final Color onTertiaryContainer;
-
-  @override
-  final Color tertiaryFixed;
-
-  @override
-  final Color tertiaryFixedDim;
-
-  @override
-  final Color onTertiaryFixed;
-
-  @override
-  final Color onTertiaryFixedVariant;
-
-  @override
-  final Color error;
-
-  @override
-  final Color errorDim;
-
-  @override
-  final Color onError;
-
-  @override
-  final Color errorContainer;
-
-  @override
-  final Color onErrorContainer;
-
+final class const _ColorThemeData({
+  @override required final Brightness brightness,
+  @override required final Color primaryPaletteKeyColor,
+  @override required final Color secondaryPaletteKeyColor,
+  @override required final Color tertiaryPaletteKeyColor,
+  @override required final Color neutralPaletteKeyColor,
+  @override required final Color neutralVariantPaletteKeyColor,
+  @override required final Color errorPaletteKeyColor,
+  @override required final Color background,
+  @override required final Color onBackground,
+  @override required final Color surface,
+  @override required final Color surfaceDim,
+  @override required final Color surfaceBright,
+  @override required final Color surfaceContainerLowest,
+  @override required final Color surfaceContainerLow,
+  @override required final Color surfaceContainer,
+  @override required final Color surfaceContainerHigh,
+  @override required final Color surfaceContainerHighest,
+  @override required final Color onSurface,
+  @override required final Color surfaceVariant,
+  @override required final Color onSurfaceVariant,
+  @override required final Color outline,
+  @override required final Color outlineVariant,
+  @override required final Color inverseSurface,
+  @override required final Color inverseOnSurface,
+  @override required final Color shadow,
+  @override required final Color scrim,
+  @override required final Color surfaceTint,
+  @override required final Color primary,
+  @override required final Color primaryDim,
+  @override required final Color onPrimary,
+  @override required final Color primaryContainer,
+  @override required final Color onPrimaryContainer,
+  @override required final Color primaryFixed,
+  @override required final Color primaryFixedDim,
+  @override required final Color onPrimaryFixed,
+  @override required final Color onPrimaryFixedVariant,
+  @override required final Color inversePrimary,
+  @override required final Color secondary,
+  @override required final Color secondaryDim,
+  @override required final Color onSecondary,
+  @override required final Color secondaryContainer,
+  @override required final Color onSecondaryContainer,
+  @override required final Color secondaryFixed,
+  @override required final Color secondaryFixedDim,
+  @override required final Color onSecondaryFixed,
+  @override required final Color onSecondaryFixedVariant,
+  @override required final Color tertiary,
+  @override required final Color tertiaryDim,
+  @override required final Color onTertiary,
+  @override required final Color tertiaryContainer,
+  @override required final Color onTertiaryContainer,
+  @override required final Color tertiaryFixed,
+  @override required final Color tertiaryFixedDim,
+  @override required final Color onTertiaryFixed,
+  @override required final Color onTertiaryFixedVariant,
+  @override required final Color error,
+  @override required final Color errorDim,
+  @override required final Color onError,
+  @override required final Color errorContainer,
+  @override required final Color onErrorContainer,
+}) extends ColorThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1525,194 +1341,69 @@ final class _ColorThemeData extends ColorThemeData {
   );
 }
 
-final class _ColorThemeDataFromDynamicSchemeCache {
-  _ColorThemeDataFromDynamicSchemeCache(
-    DynamicScheme scheme, {
-    Brightness? brightness,
-    Color? primaryPaletteKeyColor,
-    Color? secondaryPaletteKeyColor,
-    Color? tertiaryPaletteKeyColor,
-    Color? neutralPaletteKeyColor,
-    Color? neutralVariantPaletteKeyColor,
-    Color? errorPaletteKeyColor,
-    Color? background,
-    Color? onBackground,
-    Color? surface,
-    Color? surfaceDim,
-    Color? surfaceBright,
-    Color? surfaceContainerLowest,
-    Color? surfaceContainerLow,
-    Color? surfaceContainer,
-    Color? surfaceContainerHigh,
-    Color? surfaceContainerHighest,
-    Color? onSurface,
-    Color? surfaceVariant,
-    Color? onSurfaceVariant,
-    Color? outline,
-    Color? outlineVariant,
-    Color? inverseSurface,
-    Color? inverseOnSurface,
-    Color? shadow,
-    Color? scrim,
-    Color? surfaceTint,
-    Color? primary,
-    Color? primaryDim,
-    Color? onPrimary,
-    Color? primaryContainer,
-    Color? onPrimaryContainer,
-    Color? primaryFixed,
-    Color? primaryFixedDim,
-    Color? onPrimaryFixed,
-    Color? onPrimaryFixedVariant,
-    Color? inversePrimary,
-    Color? secondary,
-    Color? secondaryDim,
-    Color? onSecondary,
-    Color? secondaryContainer,
-    Color? onSecondaryContainer,
-    Color? secondaryFixed,
-    Color? secondaryFixedDim,
-    Color? onSecondaryFixed,
-    Color? onSecondaryFixedVariant,
-    Color? tertiary,
-    Color? tertiaryDim,
-    Color? onTertiary,
-    Color? tertiaryContainer,
-    Color? onTertiaryContainer,
-    Color? tertiaryFixed,
-    Color? tertiaryFixedDim,
-    Color? onTertiaryFixed,
-    Color? onTertiaryFixedVariant,
-    Color? error,
-    Color? errorDim,
-    Color? onError,
-    Color? errorContainer,
-    Color? onErrorContainer,
-  }) : _scheme = scheme,
-       _brightness = brightness,
-       _primaryPaletteKeyColor = primaryPaletteKeyColor,
-       _secondaryPaletteKeyColor = secondaryPaletteKeyColor,
-       _tertiaryPaletteKeyColor = tertiaryPaletteKeyColor,
-       _neutralPaletteKeyColor = neutralPaletteKeyColor,
-       _neutralVariantPaletteKeyColor = neutralVariantPaletteKeyColor,
-       _errorPaletteKeyColor = errorPaletteKeyColor,
-       _background = background,
-       _onBackground = onBackground,
-       _surface = surface,
-       _surfaceDim = surfaceDim,
-       _surfaceBright = surfaceBright,
-       _surfaceContainerLowest = surfaceContainerLowest,
-       _surfaceContainerLow = surfaceContainerLow,
-       _surfaceContainer = surfaceContainer,
-       _surfaceContainerHigh = surfaceContainerHigh,
-       _surfaceContainerHighest = surfaceContainerHighest,
-       _onSurface = onSurface,
-       _surfaceVariant = surfaceVariant,
-       _onSurfaceVariant = onSurfaceVariant,
-       _outline = outline,
-       _outlineVariant = outlineVariant,
-       _inverseSurface = inverseSurface,
-       _inverseOnSurface = inverseOnSurface,
-       _shadow = shadow,
-       _scrim = scrim,
-       _surfaceTint = surfaceTint,
-       _primary = primary,
-       _primaryDim = primaryDim,
-       _onPrimary = onPrimary,
-       _primaryContainer = primaryContainer,
-       _onPrimaryContainer = onPrimaryContainer,
-       _primaryFixed = primaryFixed,
-       _primaryFixedDim = primaryFixedDim,
-       _onPrimaryFixed = onPrimaryFixed,
-       _onPrimaryFixedVariant = onPrimaryFixedVariant,
-       _inversePrimary = inversePrimary,
-       _secondary = secondary,
-       _secondaryDim = secondaryDim,
-       _onSecondary = onSecondary,
-       _secondaryContainer = secondaryContainer,
-       _onSecondaryContainer = onSecondaryContainer,
-       _secondaryFixed = secondaryFixed,
-       _secondaryFixedDim = secondaryFixedDim,
-       _onSecondaryFixed = onSecondaryFixed,
-       _onSecondaryFixedVariant = onSecondaryFixedVariant,
-       _tertiary = tertiary,
-       _tertiaryDim = tertiaryDim,
-       _onTertiary = onTertiary,
-       _tertiaryContainer = tertiaryContainer,
-       _onTertiaryContainer = onTertiaryContainer,
-       _tertiaryFixed = tertiaryFixed,
-       _tertiaryFixedDim = tertiaryFixedDim,
-       _onTertiaryFixed = onTertiaryFixed,
-       _onTertiaryFixedVariant = onTertiaryFixedVariant,
-       _error = error,
-       _errorDim = errorDim,
-       _onError = onError,
-       _errorContainer = errorContainer,
-       _onErrorContainer = onErrorContainer;
-
-  final DynamicScheme _scheme;
-
-  Brightness? _brightness;
-  Color? _primaryPaletteKeyColor;
-  Color? _secondaryPaletteKeyColor;
-  Color? _tertiaryPaletteKeyColor;
-  Color? _neutralPaletteKeyColor;
-  Color? _neutralVariantPaletteKeyColor;
-  Color? _errorPaletteKeyColor;
-  Color? _background;
-  Color? _onBackground;
-  Color? _surface;
-  Color? _surfaceDim;
-  Color? _surfaceBright;
-  Color? _surfaceContainerLowest;
-  Color? _surfaceContainerLow;
-  Color? _surfaceContainer;
-  Color? _surfaceContainerHigh;
-  Color? _surfaceContainerHighest;
-  Color? _onSurface;
-  Color? _surfaceVariant;
-  Color? _onSurfaceVariant;
-  Color? _outline;
-  Color? _outlineVariant;
-  Color? _inverseSurface;
-  Color? _inverseOnSurface;
-  Color? _shadow;
-  Color? _scrim;
-  Color? _surfaceTint;
-  Color? _primary;
-  Color? _primaryDim;
-  Color? _onPrimary;
-  Color? _primaryContainer;
-  Color? _onPrimaryContainer;
-  Color? _primaryFixed;
-  Color? _primaryFixedDim;
-  Color? _onPrimaryFixed;
-  Color? _onPrimaryFixedVariant;
-  Color? _inversePrimary;
-  Color? _secondary;
-  Color? _secondaryDim;
-  Color? _onSecondary;
-  Color? _secondaryContainer;
-  Color? _onSecondaryContainer;
-  Color? _secondaryFixed;
-  Color? _secondaryFixedDim;
-  Color? _onSecondaryFixed;
-  Color? _onSecondaryFixedVariant;
-  Color? _tertiary;
-  Color? _tertiaryDim;
-  Color? _onTertiary;
-  Color? _tertiaryContainer;
-  Color? _onTertiaryContainer;
-  Color? _tertiaryFixed;
-  Color? _tertiaryFixedDim;
-  Color? _onTertiaryFixed;
-  Color? _onTertiaryFixedVariant;
-  Color? _error;
-  Color? _errorDim;
-  Color? _onError;
-  Color? _errorContainer;
-  Color? _onErrorContainer;
-
+final class _ColorThemeDataFromDynamicSchemeCache(
+  final DynamicScheme _scheme, {
+  var Brightness? _brightness,
+  var Color? _primaryPaletteKeyColor,
+  var Color? _secondaryPaletteKeyColor,
+  var Color? _tertiaryPaletteKeyColor,
+  var Color? _neutralPaletteKeyColor,
+  var Color? _neutralVariantPaletteKeyColor,
+  var Color? _errorPaletteKeyColor,
+  var Color? _background,
+  var Color? _onBackground,
+  var Color? _surface,
+  var Color? _surfaceDim,
+  var Color? _surfaceBright,
+  var Color? _surfaceContainerLowest,
+  var Color? _surfaceContainerLow,
+  var Color? _surfaceContainer,
+  var Color? _surfaceContainerHigh,
+  var Color? _surfaceContainerHighest,
+  var Color? _onSurface,
+  var Color? _surfaceVariant,
+  var Color? _onSurfaceVariant,
+  var Color? _outline,
+  var Color? _outlineVariant,
+  var Color? _inverseSurface,
+  var Color? _inverseOnSurface,
+  var Color? _shadow,
+  var Color? _scrim,
+  var Color? _surfaceTint,
+  var Color? _primary,
+  var Color? _primaryDim,
+  var Color? _onPrimary,
+  var Color? _primaryContainer,
+  var Color? _onPrimaryContainer,
+  var Color? _primaryFixed,
+  var Color? _primaryFixedDim,
+  var Color? _onPrimaryFixed,
+  var Color? _onPrimaryFixedVariant,
+  var Color? _inversePrimary,
+  var Color? _secondary,
+  var Color? _secondaryDim,
+  var Color? _onSecondary,
+  var Color? _secondaryContainer,
+  var Color? _onSecondaryContainer,
+  var Color? _secondaryFixed,
+  var Color? _secondaryFixedDim,
+  var Color? _onSecondaryFixed,
+  var Color? _onSecondaryFixedVariant,
+  var Color? _tertiary,
+  var Color? _tertiaryDim,
+  var Color? _onTertiary,
+  var Color? _tertiaryContainer,
+  var Color? _onTertiaryContainer,
+  var Color? _tertiaryFixed,
+  var Color? _tertiaryFixedDim,
+  var Color? _onTertiaryFixed,
+  var Color? _onTertiaryFixedVariant,
+  var Color? _error,
+  var Color? _errorDim,
+  var Color? _onError,
+  var Color? _errorContainer,
+  var Color? _onErrorContainer,
+}) {
   Brightness get brightness =>
       _brightness ??= (_scheme.isDark ? .dark : .light);
 
@@ -1872,22 +1563,15 @@ final class _ColorThemeDataFromDynamicSchemeCache {
   int get hashCode => _scheme.hashCode;
 }
 
-final class _ColorThemeDataFromDynamicScheme extends ColorThemeData {
-  const _ColorThemeDataFromDynamicScheme._({
-    required _ColorThemeDataFromDynamicSchemeCache cache,
-    required ColorThemeDataPartial overrides,
-  }) : _cache = cache,
-       _overrides = overrides;
-
-  _ColorThemeDataFromDynamicScheme(DynamicScheme scheme)
+final class const _ColorThemeDataFromDynamicScheme._({
+  required final _ColorThemeDataFromDynamicSchemeCache _cache,
+  required final ColorThemeDataPartial _overrides,
+}) extends ColorThemeData {
+  new(DynamicScheme scheme)
     : this._(
         cache: _ColorThemeDataFromDynamicSchemeCache(scheme),
         overrides: const .from(),
       );
-
-  final _ColorThemeDataFromDynamicSchemeCache _cache;
-
-  final ColorThemeDataPartial _overrides;
 
   @override
   Brightness get brightness => _overrides.brightness ?? _cache.brightness;
@@ -2553,166 +2237,59 @@ final class _ColorThemeDataFromDynamicScheme extends ColorThemeData {
   int get hashCode => Object.hash(_cache, _overrides);
 }
 
-final class _ColorThemeDataAsLegacy
-    with Diagnosticable
-    implements ColorSchemeLegacy {
-  const _ColorThemeDataAsLegacy(
-    ColorThemeData value, {
-    Brightness? brightness,
-    Color? primary,
-    Color? onPrimary,
-    Color? primaryContainer,
-    Color? onPrimaryContainer,
-    Color? primaryFixed,
-    Color? primaryFixedDim,
-    Color? onPrimaryFixed,
-    Color? onPrimaryFixedVariant,
-    Color? secondary,
-    Color? onSecondary,
-    Color? secondaryContainer,
-    Color? onSecondaryContainer,
-    Color? secondaryFixed,
-    Color? secondaryFixedDim,
-    Color? onSecondaryFixed,
-    Color? onSecondaryFixedVariant,
-    Color? tertiary,
-    Color? onTertiary,
-    Color? tertiaryContainer,
-    Color? onTertiaryContainer,
-    Color? tertiaryFixed,
-    Color? tertiaryFixedDim,
-    Color? onTertiaryFixed,
-    Color? onTertiaryFixedVariant,
-    Color? error,
-    Color? onError,
-    Color? errorContainer,
-    Color? onErrorContainer,
-    Color? surface,
-    Color? onSurface,
-    Color? surfaceDim,
-    Color? surfaceBright,
-    Color? surfaceContainerLowest,
-    Color? surfaceContainerLow,
-    Color? surfaceContainer,
-    Color? surfaceContainerHigh,
-    Color? surfaceContainerHighest,
-    Color? onSurfaceVariant,
-    Color? outline,
-    Color? outlineVariant,
-    Color? shadow,
-    Color? scrim,
-    Color? inverseSurface,
-    Color? onInverseSurface,
-    Color? inversePrimary,
-    Color? surfaceTint,
-    Color? background,
-    Color? onBackground,
-    Color? surfaceVariant,
-  }) : _value = value,
-       _brightness = brightness,
-       _primary = primary,
-       _onPrimary = onPrimary,
-       _primaryContainer = primaryContainer,
-       _onPrimaryContainer = onPrimaryContainer,
-       _primaryFixed = primaryFixed,
-       _primaryFixedDim = primaryFixedDim,
-       _onPrimaryFixed = onPrimaryFixed,
-       _onPrimaryFixedVariant = onPrimaryFixedVariant,
-       _secondary = secondary,
-       _onSecondary = onSecondary,
-       _secondaryContainer = secondaryContainer,
-       _onSecondaryContainer = onSecondaryContainer,
-       _secondaryFixed = secondaryFixed,
-       _secondaryFixedDim = secondaryFixedDim,
-       _onSecondaryFixed = onSecondaryFixed,
-       _onSecondaryFixedVariant = onSecondaryFixedVariant,
-       _tertiary = tertiary,
-       _onTertiary = onTertiary,
-       _tertiaryContainer = tertiaryContainer,
-       _onTertiaryContainer = onTertiaryContainer,
-       _tertiaryFixed = tertiaryFixed,
-       _tertiaryFixedDim = tertiaryFixedDim,
-       _onTertiaryFixed = onTertiaryFixed,
-       _onTertiaryFixedVariant = onTertiaryFixedVariant,
-       _error = error,
-       _onError = onError,
-       _errorContainer = errorContainer,
-       _onErrorContainer = onErrorContainer,
-       _surface = surface,
-       _onSurface = onSurface,
-       _surfaceDim = surfaceDim,
-       _surfaceBright = surfaceBright,
-       _surfaceContainerLowest = surfaceContainerLowest,
-       _surfaceContainerLow = surfaceContainerLow,
-       _surfaceContainer = surfaceContainer,
-       _surfaceContainerHigh = surfaceContainerHigh,
-       _surfaceContainerHighest = surfaceContainerHighest,
-       _onSurfaceVariant = onSurfaceVariant,
-       _outline = outline,
-       _outlineVariant = outlineVariant,
-       _shadow = shadow,
-       _scrim = scrim,
-       _inverseSurface = inverseSurface,
-       _onInverseSurface = onInverseSurface,
-       _inversePrimary = inversePrimary,
-       _surfaceTint = surfaceTint,
-       _background = background,
-       _onBackground = onBackground,
-       _surfaceVariant = surfaceVariant;
-
-  final ColorThemeData _value;
-
-  final Brightness? _brightness;
-  final Color? _primary;
-  final Color? _onPrimary;
-  final Color? _primaryContainer;
-  final Color? _onPrimaryContainer;
-  final Color? _primaryFixed;
-  final Color? _primaryFixedDim;
-  final Color? _onPrimaryFixed;
-  final Color? _onPrimaryFixedVariant;
-  final Color? _secondary;
-  final Color? _onSecondary;
-  final Color? _secondaryContainer;
-  final Color? _onSecondaryContainer;
-  final Color? _secondaryFixed;
-  final Color? _secondaryFixedDim;
-  final Color? _onSecondaryFixed;
-  final Color? _onSecondaryFixedVariant;
-  final Color? _tertiary;
-  final Color? _onTertiary;
-  final Color? _tertiaryContainer;
-  final Color? _onTertiaryContainer;
-  final Color? _tertiaryFixed;
-  final Color? _tertiaryFixedDim;
-  final Color? _onTertiaryFixed;
-  final Color? _onTertiaryFixedVariant;
-  final Color? _error;
-  final Color? _onError;
-  final Color? _errorContainer;
-  final Color? _onErrorContainer;
-  final Color? _surface;
-  final Color? _onSurface;
-  final Color? _surfaceDim;
-  final Color? _surfaceBright;
-  final Color? _surfaceContainerLowest;
-  final Color? _surfaceContainerLow;
-  final Color? _surfaceContainer;
-  final Color? _surfaceContainerHigh;
-  final Color? _surfaceContainerHighest;
-  final Color? _onSurfaceVariant;
-  final Color? _outline;
-  final Color? _outlineVariant;
-  final Color? _shadow;
-  final Color? _scrim;
-  final Color? _inverseSurface;
-  final Color? _onInverseSurface;
-  final Color? _inversePrimary;
-  final Color? _surfaceTint;
-  final Color? _background;
-  final Color? _onBackground;
-  final Color? _surfaceVariant;
-
+final class const _ColorThemeDataAsLegacy(
+  final ColorThemeData _value, {
+  final Brightness? _brightness,
+  final Color? _primary,
+  final Color? _onPrimary,
+  final Color? _primaryContainer,
+  final Color? _onPrimaryContainer,
+  final Color? _primaryFixed,
+  final Color? _primaryFixedDim,
+  final Color? _onPrimaryFixed,
+  final Color? _onPrimaryFixedVariant,
+  final Color? _secondary,
+  final Color? _onSecondary,
+  final Color? _secondaryContainer,
+  final Color? _onSecondaryContainer,
+  final Color? _secondaryFixed,
+  final Color? _secondaryFixedDim,
+  final Color? _onSecondaryFixed,
+  final Color? _onSecondaryFixedVariant,
+  final Color? _tertiary,
+  final Color? _onTertiary,
+  final Color? _tertiaryContainer,
+  final Color? _onTertiaryContainer,
+  final Color? _tertiaryFixed,
+  final Color? _tertiaryFixedDim,
+  final Color? _onTertiaryFixed,
+  final Color? _onTertiaryFixedVariant,
+  final Color? _error,
+  final Color? _onError,
+  final Color? _errorContainer,
+  final Color? _onErrorContainer,
+  final Color? _surface,
+  final Color? _onSurface,
+  final Color? _surfaceDim,
+  final Color? _surfaceBright,
+  final Color? _surfaceContainerLowest,
+  final Color? _surfaceContainerLow,
+  final Color? _surfaceContainer,
+  final Color? _surfaceContainerHigh,
+  final Color? _surfaceContainerHighest,
+  final Color? _onSurfaceVariant,
+  final Color? _outline,
+  final Color? _outlineVariant,
+  final Color? _shadow,
+  final Color? _scrim,
+  final Color? _inverseSurface,
+  final Color? _onInverseSurface,
+  final Color? _inversePrimary,
+  final Color? _surfaceTint,
+  final Color? _background,
+  final Color? _onBackground,
+  final Color? _surfaceVariant,
+}) with Diagnosticable implements ColorSchemeLegacy {
   @override
   Brightness get brightness => _brightness ?? _value.brightness;
 

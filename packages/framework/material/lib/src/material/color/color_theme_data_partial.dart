@@ -2,10 +2,8 @@
 
 part of 'color_theme.dart';
 
-abstract class ColorThemeDataPartial with Diagnosticable {
-  const ColorThemeDataPartial();
-
-  const factory ColorThemeDataPartial.from({
+abstract class const ColorThemeDataPartial() with Diagnosticable {
+  const factory from({
     Brightness? brightness,
     Color? primaryPaletteKeyColor,
     Color? secondaryPaletteKeyColor,
@@ -68,9 +66,8 @@ abstract class ColorThemeDataPartial with Diagnosticable {
     Color? onErrorContainer,
   }) = _ColorThemeDataPartial;
 
-  const factory ColorThemeDataPartial.fromLegacy(
-    ColorSchemeLegacy colorScheme,
-  ) = _ColorThemeDataPartialFromLegacy;
+  const factory fromLegacy(ColorSchemeLegacy colorScheme) =
+      _ColorThemeDataPartialFromLegacy;
 
   Brightness? get brightness;
 
@@ -974,250 +971,68 @@ abstract class ColorThemeDataPartial with Diagnosticable {
   }
 }
 
-final class _ColorThemeDataPartial extends ColorThemeDataPartial {
-  const _ColorThemeDataPartial({
-    this.brightness,
-    this.primaryPaletteKeyColor,
-    this.secondaryPaletteKeyColor,
-    this.tertiaryPaletteKeyColor,
-    this.neutralPaletteKeyColor,
-    this.neutralVariantPaletteKeyColor,
-    this.errorPaletteKeyColor,
-    this.background,
-    this.onBackground,
-    this.surface,
-    this.surfaceDim,
-    this.surfaceBright,
-    this.surfaceContainerLowest,
-    this.surfaceContainerLow,
-    this.surfaceContainer,
-    this.surfaceContainerHigh,
-    this.surfaceContainerHighest,
-    this.onSurface,
-    this.surfaceVariant,
-    this.onSurfaceVariant,
-    this.outline,
-    this.outlineVariant,
-    this.inverseSurface,
-    this.inverseOnSurface,
-    this.shadow,
-    this.scrim,
-    this.surfaceTint,
-    this.primary,
-    this.primaryDim,
-    this.onPrimary,
-    this.primaryContainer,
-    this.onPrimaryContainer,
-    this.primaryFixed,
-    this.primaryFixedDim,
-    this.onPrimaryFixed,
-    this.onPrimaryFixedVariant,
-    this.inversePrimary,
-    this.secondary,
-    this.secondaryDim,
-    this.onSecondary,
-    this.secondaryContainer,
-    this.onSecondaryContainer,
-    this.secondaryFixed,
-    this.secondaryFixedDim,
-    this.onSecondaryFixed,
-    this.onSecondaryFixedVariant,
-    this.tertiary,
-    this.tertiaryDim,
-    this.onTertiary,
-    this.tertiaryContainer,
-    this.onTertiaryContainer,
-    this.tertiaryFixed,
-    this.tertiaryFixedDim,
-    this.onTertiaryFixed,
-    this.onTertiaryFixedVariant,
-    this.error,
-    this.errorDim,
-    this.onError,
-    this.errorContainer,
-    this.onErrorContainer,
-  });
-
-  @override
-  final Brightness? brightness;
-
-  @override
-  final Color? primaryPaletteKeyColor;
-
-  @override
-  final Color? secondaryPaletteKeyColor;
-
-  @override
-  final Color? tertiaryPaletteKeyColor;
-
-  @override
-  final Color? neutralPaletteKeyColor;
-
-  @override
-  final Color? neutralVariantPaletteKeyColor;
-
-  @override
-  final Color? errorPaletteKeyColor;
-
-  @override
-  final Color? background;
-
-  @override
-  final Color? onBackground;
-
-  @override
-  final Color? surface;
-
-  @override
-  final Color? surfaceDim;
-
-  @override
-  final Color? surfaceBright;
-
-  @override
-  final Color? surfaceContainerLowest;
-
-  @override
-  final Color? surfaceContainerLow;
-
-  @override
-  final Color? surfaceContainer;
-
-  @override
-  final Color? surfaceContainerHigh;
-
-  @override
-  final Color? surfaceContainerHighest;
-
-  @override
-  final Color? onSurface;
-
-  @override
-  final Color? surfaceVariant;
-
-  @override
-  final Color? onSurfaceVariant;
-
-  @override
-  final Color? outline;
-
-  @override
-  final Color? outlineVariant;
-
-  @override
-  final Color? inverseSurface;
-
-  @override
-  final Color? inverseOnSurface;
-
-  @override
-  final Color? shadow;
-
-  @override
-  final Color? scrim;
-
-  @override
-  final Color? surfaceTint;
-
-  @override
-  final Color? primary;
-
-  @override
-  final Color? primaryDim;
-
-  @override
-  final Color? onPrimary;
-
-  @override
-  final Color? primaryContainer;
-
-  @override
-  final Color? onPrimaryContainer;
-
-  @override
-  final Color? primaryFixed;
-
-  @override
-  final Color? primaryFixedDim;
-
-  @override
-  final Color? onPrimaryFixed;
-
-  @override
-  final Color? onPrimaryFixedVariant;
-
-  @override
-  final Color? inversePrimary;
-
-  @override
-  final Color? secondary;
-
-  @override
-  final Color? secondaryDim;
-
-  @override
-  final Color? onSecondary;
-
-  @override
-  final Color? secondaryContainer;
-
-  @override
-  final Color? onSecondaryContainer;
-
-  @override
-  final Color? secondaryFixed;
-
-  @override
-  final Color? secondaryFixedDim;
-
-  @override
-  final Color? onSecondaryFixed;
-
-  @override
-  final Color? onSecondaryFixedVariant;
-
-  @override
-  final Color? tertiary;
-
-  @override
-  final Color? tertiaryDim;
-
-  @override
-  final Color? onTertiary;
-
-  @override
-  final Color? tertiaryContainer;
-
-  @override
-  final Color? onTertiaryContainer;
-
-  @override
-  final Color? tertiaryFixed;
-
-  @override
-  final Color? tertiaryFixedDim;
-
-  @override
-  final Color? onTertiaryFixed;
-
-  @override
-  final Color? onTertiaryFixedVariant;
-
-  @override
-  final Color? error;
-
-  @override
-  final Color? errorDim;
-
-  @override
-  final Color? onError;
-
-  @override
-  final Color? errorContainer;
-
-  @override
-  final Color? onErrorContainer;
-
+final class const _ColorThemeDataPartial({
+  @override final Brightness? brightness,
+  @override final Color? primaryPaletteKeyColor,
+  @override final Color? secondaryPaletteKeyColor,
+  @override final Color? tertiaryPaletteKeyColor,
+  @override final Color? neutralPaletteKeyColor,
+  @override final Color? neutralVariantPaletteKeyColor,
+  @override final Color? errorPaletteKeyColor,
+  @override final Color? background,
+  @override final Color? onBackground,
+  @override final Color? surface,
+  @override final Color? surfaceDim,
+  @override final Color? surfaceBright,
+  @override final Color? surfaceContainerLowest,
+  @override final Color? surfaceContainerLow,
+  @override final Color? surfaceContainer,
+  @override final Color? surfaceContainerHigh,
+  @override final Color? surfaceContainerHighest,
+  @override final Color? onSurface,
+  @override final Color? surfaceVariant,
+  @override final Color? onSurfaceVariant,
+  @override final Color? outline,
+  @override final Color? outlineVariant,
+  @override final Color? inverseSurface,
+  @override final Color? inverseOnSurface,
+  @override final Color? shadow,
+  @override final Color? scrim,
+  @override final Color? surfaceTint,
+  @override final Color? primary,
+  @override final Color? primaryDim,
+  @override final Color? onPrimary,
+  @override final Color? primaryContainer,
+  @override final Color? onPrimaryContainer,
+  @override final Color? primaryFixed,
+  @override final Color? primaryFixedDim,
+  @override final Color? onPrimaryFixed,
+  @override final Color? onPrimaryFixedVariant,
+  @override final Color? inversePrimary,
+  @override final Color? secondary,
+  @override final Color? secondaryDim,
+  @override final Color? onSecondary,
+  @override final Color? secondaryContainer,
+  @override final Color? onSecondaryContainer,
+  @override final Color? secondaryFixed,
+  @override final Color? secondaryFixedDim,
+  @override final Color? onSecondaryFixed,
+  @override final Color? onSecondaryFixedVariant,
+  @override final Color? tertiary,
+  @override final Color? tertiaryDim,
+  @override final Color? onTertiary,
+  @override final Color? tertiaryContainer,
+  @override final Color? onTertiaryContainer,
+  @override final Color? tertiaryFixed,
+  @override final Color? tertiaryFixedDim,
+  @override final Color? onTertiaryFixed,
+  @override final Color? onTertiaryFixedVariant,
+  @override final Color? error,
+  @override final Color? errorDim,
+  @override final Color? onError,
+  @override final Color? errorContainer,
+  @override final Color? onErrorContainer,
+}) extends ColorThemeDataPartial {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1351,194 +1166,69 @@ final class _ColorThemeDataPartial extends ColorThemeDataPartial {
   );
 }
 
-final class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
-  const _ColorThemeDataPartialFromLegacy(
-    ColorSchemeLegacy colorScheme, {
-    Brightness? brightness,
-    Color? primaryPaletteKeyColor,
-    Color? secondaryPaletteKeyColor,
-    Color? tertiaryPaletteKeyColor,
-    Color? neutralPaletteKeyColor,
-    Color? neutralVariantPaletteKeyColor,
-    Color? errorPaletteKeyColor,
-    Color? background,
-    Color? onBackground,
-    Color? surface,
-    Color? surfaceDim,
-    Color? surfaceBright,
-    Color? surfaceContainerLowest,
-    Color? surfaceContainerLow,
-    Color? surfaceContainer,
-    Color? surfaceContainerHigh,
-    Color? surfaceContainerHighest,
-    Color? onSurface,
-    Color? surfaceVariant,
-    Color? onSurfaceVariant,
-    Color? outline,
-    Color? outlineVariant,
-    Color? inverseSurface,
-    Color? inverseOnSurface,
-    Color? shadow,
-    Color? scrim,
-    Color? surfaceTint,
-    Color? primary,
-    Color? primaryDim,
-    Color? onPrimary,
-    Color? primaryContainer,
-    Color? onPrimaryContainer,
-    Color? primaryFixed,
-    Color? primaryFixedDim,
-    Color? onPrimaryFixed,
-    Color? onPrimaryFixedVariant,
-    Color? inversePrimary,
-    Color? secondary,
-    Color? secondaryDim,
-    Color? onSecondary,
-    Color? secondaryContainer,
-    Color? onSecondaryContainer,
-    Color? secondaryFixed,
-    Color? secondaryFixedDim,
-    Color? onSecondaryFixed,
-    Color? onSecondaryFixedVariant,
-    Color? tertiary,
-    Color? tertiaryDim,
-    Color? onTertiary,
-    Color? tertiaryContainer,
-    Color? onTertiaryContainer,
-    Color? tertiaryFixed,
-    Color? tertiaryFixedDim,
-    Color? onTertiaryFixed,
-    Color? onTertiaryFixedVariant,
-    Color? error,
-    Color? errorDim,
-    Color? onError,
-    Color? errorContainer,
-    Color? onErrorContainer,
-  }) : _colorScheme = colorScheme,
-       _brightness = brightness,
-       _primaryPaletteKeyColor = primaryPaletteKeyColor,
-       _secondaryPaletteKeyColor = secondaryPaletteKeyColor,
-       _tertiaryPaletteKeyColor = tertiaryPaletteKeyColor,
-       _neutralPaletteKeyColor = neutralPaletteKeyColor,
-       _neutralVariantPaletteKeyColor = neutralVariantPaletteKeyColor,
-       _errorPaletteKeyColor = errorPaletteKeyColor,
-       _background = background,
-       _onBackground = onBackground,
-       _surface = surface,
-       _surfaceDim = surfaceDim,
-       _surfaceBright = surfaceBright,
-       _surfaceContainerLowest = surfaceContainerLowest,
-       _surfaceContainerLow = surfaceContainerLow,
-       _surfaceContainer = surfaceContainer,
-       _surfaceContainerHigh = surfaceContainerHigh,
-       _surfaceContainerHighest = surfaceContainerHighest,
-       _onSurface = onSurface,
-       _surfaceVariant = surfaceVariant,
-       _onSurfaceVariant = onSurfaceVariant,
-       _outline = outline,
-       _outlineVariant = outlineVariant,
-       _inverseSurface = inverseSurface,
-       _inverseOnSurface = inverseOnSurface,
-       _shadow = shadow,
-       _scrim = scrim,
-       _surfaceTint = surfaceTint,
-       _primary = primary,
-       _primaryDim = primaryDim,
-       _onPrimary = onPrimary,
-       _primaryContainer = primaryContainer,
-       _onPrimaryContainer = onPrimaryContainer,
-       _primaryFixed = primaryFixed,
-       _primaryFixedDim = primaryFixedDim,
-       _onPrimaryFixed = onPrimaryFixed,
-       _onPrimaryFixedVariant = onPrimaryFixedVariant,
-       _inversePrimary = inversePrimary,
-       _secondary = secondary,
-       _secondaryDim = secondaryDim,
-       _onSecondary = onSecondary,
-       _secondaryContainer = secondaryContainer,
-       _onSecondaryContainer = onSecondaryContainer,
-       _secondaryFixed = secondaryFixed,
-       _secondaryFixedDim = secondaryFixedDim,
-       _onSecondaryFixed = onSecondaryFixed,
-       _onSecondaryFixedVariant = onSecondaryFixedVariant,
-       _tertiary = tertiary,
-       _tertiaryDim = tertiaryDim,
-       _onTertiary = onTertiary,
-       _tertiaryContainer = tertiaryContainer,
-       _onTertiaryContainer = onTertiaryContainer,
-       _tertiaryFixed = tertiaryFixed,
-       _tertiaryFixedDim = tertiaryFixedDim,
-       _onTertiaryFixed = onTertiaryFixed,
-       _onTertiaryFixedVariant = onTertiaryFixedVariant,
-       _error = error,
-       _errorDim = errorDim,
-       _onError = onError,
-       _errorContainer = errorContainer,
-       _onErrorContainer = onErrorContainer;
-
-  final ColorSchemeLegacy _colorScheme;
-
-  final Brightness? _brightness;
-  final Color? _primaryPaletteKeyColor;
-  final Color? _secondaryPaletteKeyColor;
-  final Color? _tertiaryPaletteKeyColor;
-  final Color? _neutralPaletteKeyColor;
-  final Color? _neutralVariantPaletteKeyColor;
-  final Color? _errorPaletteKeyColor;
-  final Color? _background;
-  final Color? _onBackground;
-  final Color? _surface;
-  final Color? _surfaceDim;
-  final Color? _surfaceBright;
-  final Color? _surfaceContainerLowest;
-  final Color? _surfaceContainerLow;
-  final Color? _surfaceContainer;
-  final Color? _surfaceContainerHigh;
-  final Color? _surfaceContainerHighest;
-  final Color? _onSurface;
-  final Color? _surfaceVariant;
-  final Color? _onSurfaceVariant;
-  final Color? _outline;
-  final Color? _outlineVariant;
-  final Color? _inverseSurface;
-  final Color? _inverseOnSurface;
-  final Color? _shadow;
-  final Color? _scrim;
-  final Color? _surfaceTint;
-  final Color? _primary;
-  final Color? _primaryDim;
-  final Color? _onPrimary;
-  final Color? _primaryContainer;
-  final Color? _onPrimaryContainer;
-  final Color? _primaryFixed;
-  final Color? _primaryFixedDim;
-  final Color? _onPrimaryFixed;
-  final Color? _onPrimaryFixedVariant;
-  final Color? _inversePrimary;
-  final Color? _secondary;
-  final Color? _secondaryDim;
-  final Color? _onSecondary;
-  final Color? _secondaryContainer;
-  final Color? _onSecondaryContainer;
-  final Color? _secondaryFixed;
-  final Color? _secondaryFixedDim;
-  final Color? _onSecondaryFixed;
-  final Color? _onSecondaryFixedVariant;
-  final Color? _tertiary;
-  final Color? _tertiaryDim;
-  final Color? _onTertiary;
-  final Color? _tertiaryContainer;
-  final Color? _onTertiaryContainer;
-  final Color? _tertiaryFixed;
-  final Color? _tertiaryFixedDim;
-  final Color? _onTertiaryFixed;
-  final Color? _onTertiaryFixedVariant;
-  final Color? _error;
-  final Color? _errorDim;
-  final Color? _onError;
-  final Color? _errorContainer;
-  final Color? _onErrorContainer;
-
+final class const _ColorThemeDataPartialFromLegacy(
+  final ColorSchemeLegacy _colorScheme, {
+  final Brightness? _brightness,
+  final Color? _primaryPaletteKeyColor,
+  final Color? _secondaryPaletteKeyColor,
+  final Color? _tertiaryPaletteKeyColor,
+  final Color? _neutralPaletteKeyColor,
+  final Color? _neutralVariantPaletteKeyColor,
+  final Color? _errorPaletteKeyColor,
+  final Color? _background,
+  final Color? _onBackground,
+  final Color? _surface,
+  final Color? _surfaceDim,
+  final Color? _surfaceBright,
+  final Color? _surfaceContainerLowest,
+  final Color? _surfaceContainerLow,
+  final Color? _surfaceContainer,
+  final Color? _surfaceContainerHigh,
+  final Color? _surfaceContainerHighest,
+  final Color? _onSurface,
+  final Color? _surfaceVariant,
+  final Color? _onSurfaceVariant,
+  final Color? _outline,
+  final Color? _outlineVariant,
+  final Color? _inverseSurface,
+  final Color? _inverseOnSurface,
+  final Color? _shadow,
+  final Color? _scrim,
+  final Color? _surfaceTint,
+  final Color? _primary,
+  final Color? _primaryDim,
+  final Color? _onPrimary,
+  final Color? _primaryContainer,
+  final Color? _onPrimaryContainer,
+  final Color? _primaryFixed,
+  final Color? _primaryFixedDim,
+  final Color? _onPrimaryFixed,
+  final Color? _onPrimaryFixedVariant,
+  final Color? _inversePrimary,
+  final Color? _secondary,
+  final Color? _secondaryDim,
+  final Color? _onSecondary,
+  final Color? _secondaryContainer,
+  final Color? _onSecondaryContainer,
+  final Color? _secondaryFixed,
+  final Color? _secondaryFixedDim,
+  final Color? _onSecondaryFixed,
+  final Color? _onSecondaryFixedVariant,
+  final Color? _tertiary,
+  final Color? _tertiaryDim,
+  final Color? _onTertiary,
+  final Color? _tertiaryContainer,
+  final Color? _onTertiaryContainer,
+  final Color? _tertiaryFixed,
+  final Color? _tertiaryFixedDim,
+  final Color? _onTertiaryFixed,
+  final Color? _onTertiaryFixedVariant,
+  final Color? _error,
+  final Color? _errorDim,
+  final Color? _onError,
+  final Color? _errorContainer,
+  final Color? _onErrorContainer,
+}) extends ColorThemeDataPartial {
   @override
   Brightness? get brightness => _brightness ?? _colorScheme.brightness;
 
@@ -2433,10 +2123,9 @@ final class _ColorThemeDataPartialFromLegacy extends ColorThemeDataPartial {
   );
 }
 
-final class _ColorThemeDataPartialAsConcrete extends ColorThemeData {
-  _ColorThemeDataPartialAsConcrete(this._value) : assert(_value.isConcrete);
-
-  final ColorThemeDataPartial _value;
+final class _ColorThemeDataPartialAsConcrete(final ColorThemeDataPartial _value)
+    extends ColorThemeData {
+  this : assert(_value.isConcrete);
 
   @override
   Brightness get brightness => _value.brightness!;
