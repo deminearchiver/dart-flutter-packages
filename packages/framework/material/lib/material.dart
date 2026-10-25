@@ -56,6 +56,7 @@ export 'src/material/switch/switch.dart';
 export 'src/material/switch/switch_theme.dart';
 
 export 'src/material/lists/list_item_theme.dart';
+export 'src/material/lists/list_item.dart';
 
 export 'src/material/loading_indicator/loading_indicator.dart';
 export 'src/material/loading_indicator/loading_indicator_theme.dart';

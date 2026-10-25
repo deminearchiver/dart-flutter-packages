@@ -1,4 +1,4 @@
-import 'package:material_example/flutter.dart';
+import 'package:material/src/material/flutter.dart';
 
 class const _ListItemStates({
   @override required final bool isFirst,

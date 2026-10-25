@@ -2,21 +2,14 @@ import 'package:material/src/material/flutter.dart';
 
 const double _kCenterOpticallyCoefficient = 0.11;
 
-class CenterOptically extends SingleChildRenderObjectWidget {
-  const CenterOptically({
-    super.key,
-    this.enabled = true,
-    this.corners = .zero,
-    this.maxOffsets = .zero,
-    this.textDirection,
-    super.child,
-  });
-
-  final bool enabled;
-  final CornersGeometry corners;
-  final EdgeInsetsGeometry maxOffsets;
-  final TextDirection? textDirection;
-
+class const CenterOptically({
+  super.key,
+  final bool enabled = true,
+  final CornersGeometry corners = .zero,
+  final EdgeInsetsGeometry maxOffsets = .zero,
+  final TextDirection? textDirection,
+  super.child,
+}) extends SingleChildRenderObjectWidget {
   @override
   RenderCenterOptically createRenderObject(BuildContext context) =>
       RenderCenterOptically(
@@ -61,14 +54,14 @@ class CenterOptically extends SingleChildRenderObjectWidget {
   }
 }
 
-class RenderCenterOptically extends RenderShiftedBox {
-  RenderCenterOptically({
-    this._enabled = true,
-    this._corners = .zero,
-    this._maxOffsets = .zero,
-    this._textDirection,
-    RenderBox? child,
-  }) : super(child);
+class RenderCenterOptically({
+  var bool _enabled = true,
+  var CornersGeometry _corners = .zero,
+  var EdgeInsetsGeometry _maxOffsets = .zero,
+  var TextDirection? _textDirection,
+  RenderBox? child,
+}) extends RenderShiftedBox {
+  this : super(child);
 
   Corners? _resolvedCornersCache;
   Corners get _resolvedCorners =>
@@ -84,7 +77,6 @@ class RenderCenterOptically extends RenderShiftedBox {
     markNeedsLayout();
   }
 
-  bool _enabled;
   bool get enabled => _enabled;
   set enabled(bool value) {
     if (_enabled == value) return;
@@ -92,7 +84,6 @@ class RenderCenterOptically extends RenderShiftedBox {
     markNeedsLayout();
   }
 
-  CornersGeometry _corners;
   CornersGeometry get corners => _corners;
   set corners(CornersGeometry value) {
     if (_corners == value) return;
@@ -100,7 +91,6 @@ class RenderCenterOptically extends RenderShiftedBox {
     _markNeedResolution();
   }
 
-  EdgeInsetsGeometry _maxOffsets;
   EdgeInsetsGeometry get maxOffsets => _maxOffsets;
   set maxOffsets(EdgeInsetsGeometry value) {
     if (_maxOffsets == value) return;
@@ -108,7 +98,6 @@ class RenderCenterOptically extends RenderShiftedBox {
     _markNeedResolution();
   }
 
-  TextDirection? _textDirection;
   TextDirection? get textDirection => _textDirection;
   set textDirection(TextDirection? value) {
     if (_textDirection == value) return;
@@ -241,4 +230,50 @@ class RenderCenterOptically extends RenderShiftedBox {
     -maxStartOffset,
     maxEndOffset,
   );
+}
+
+class const InverseCenterOptically({
+  super.key,
+  super.enabled,
+  super.corners,
+  super.maxOffsets,
+  super.textDirection,
+  super.child,
+}) extends CenterOptically {
+  @override
+  RenderInverseCenterOptically createRenderObject(BuildContext context) =>
+      RenderInverseCenterOptically(
+        enabled: enabled,
+        corners: corners,
+        maxOffsets: maxOffsets,
+        textDirection: textDirection ?? Directionality.maybeOf(context),
+      );
+
+  @override
+  void updateRenderObject(
+    BuildContext context,
+    RenderInverseCenterOptically renderObject,
+  ) {
+    renderObject
+      ..enabled = enabled
+      ..corners = corners
+      ..maxOffsets = maxOffsets
+      ..textDirection = textDirection ?? Directionality.maybeOf(context);
+  }
+}
+
+class RenderInverseCenterOptically({
+  super.enabled,
+  super.corners,
+  super.maxOffsets,
+  super.textDirection,
+  super.child,
+}) extends RenderCenterOptically {
+  @override
+  double getHorizontalPaddingCorrection(BorderRadius borderRadius) =>
+      -super.getHorizontalPaddingCorrection(borderRadius);
+
+  @override
+  double getVerticalPaddingCorrection(BorderRadius borderRadius) =>
+      -super.getVerticalPaddingCorrection(borderRadius);
 }
