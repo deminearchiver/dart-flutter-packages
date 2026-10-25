@@ -70,9 +70,9 @@ flutter:
   fonts:
     - family: Google Sans
       fonts:
-        - asset: assets/fonts/googlesans/GoogleSans-VariableFont_GRAD,opsz,wght.ttf
+        - asset: assets/fonts/googlesans/GoogleSans[GRAD,opsz,wght].ttf
           style: normal
-        - asset: assets/fonts/googlesans/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf
+        - asset: assets/fonts/googlesans/GoogleSans-Italic[GRAD,opsz,wght].ttf
           style: italic
     - family: Google Sans Code
       fonts:
