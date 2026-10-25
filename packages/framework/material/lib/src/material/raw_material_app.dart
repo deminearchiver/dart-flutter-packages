@@ -30,7 +30,7 @@ class RawMaterialApp extends StatefulWidget {
   /// unsupported route.
   ///
   /// This class creates an instance of [WidgetsApp].
-  const RawMaterialApp({
+  const new({
     super.key,
     this.navigatorKey,
     this.scaffoldMessengerKey,
@@ -70,7 +70,7 @@ class RawMaterialApp extends StatefulWidget {
   /// Creates a [RawMaterialApp] that uses the [Router] instead of a [Navigator].
   ///
   /// {@macro flutter.widgets.WidgetsApp.router}
-  const RawMaterialApp.router({
+  const new router({
     super.key,
     this.scaffoldMessengerKey,
     this.routeInformationProvider,
@@ -459,7 +459,8 @@ class _RawMaterialAppState extends State<RawMaterialApp> {
     DefaultCupertinoLocalizations.delegate,
   ];
 
-  bool get _isDarkTheme => _colorTheme.brightness == .dark;
+  bool get _isDarkTheme =>
+      ThemeData.estimateBrightnessForColor(_colorTheme.surface) == .dark;
 
   /// The color property is pulled from the current theme. This color is only
   /// used on old Android OSes to color the app bar in Android's switcher UI.
@@ -662,7 +663,7 @@ class _RawMaterialAppState extends State<RawMaterialApp> {
 }
 
 class _MaterialInspectorButton extends InspectorButton {
-  const _MaterialInspectorButton.filled({
+  const new filled({
     super.buttonKey,
     required super.onPressed,
     required super.icon,
@@ -670,7 +671,7 @@ class _MaterialInspectorButton extends InspectorButton {
     required this.isDarkTheme,
   }) : super.filled();
 
-  const _MaterialInspectorButton.toggle({
+  const new toggle({
     required super.toggledOn,
     required super.onPressed,
     required super.icon,
@@ -678,7 +679,7 @@ class _MaterialInspectorButton extends InspectorButton {
     required this.isDarkTheme,
   }) : super.toggle();
 
-  const _MaterialInspectorButton.iconOnly({
+  const new iconOnly({
     required super.onPressed,
     required super.icon,
     required super.semanticsLabel,
