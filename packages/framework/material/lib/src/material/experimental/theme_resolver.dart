@@ -296,24 +296,20 @@ final class _ResolutionContext(final BuildContext _context)
         element: ancestor,
         widget: widget,
         aspect: aspect,
-        verify: (context) {
-          if (!ancestor.mounted) return false;
-          if (context is InheritedThemeResolverElement) {
-            if (context._inheritedElements[widget.runtimeType]
-                case final cachedAncestor?) {
-              return cachedAncestor == ancestor;
-            }
-          }
-          InheritedElement? element;
-          context.visitAncestorElements((other) {
-            if (other == ancestor) {
-              element = other as InheritedElement;
-              return false;
-            }
-            return true;
-          });
-          return element == ancestor;
-        },
+        verify: ancestor is InheritedThemeResolverElement
+            ? ancestor._verifyIsNearestAncestorOf
+            : (context) {
+                if (!ancestor.mounted) return false;
+                InheritedElement? element;
+                context.visitAncestorElements((other) {
+                  if (widget.runtimeType == other.widget.runtimeType) {
+                    element = other as InheritedElement;
+                    return false;
+                  }
+                  return true;
+                });
+                return element == ancestor;
+              },
       ),
     );
     return widget;
@@ -417,32 +413,6 @@ final class _ResolveResult<PartialType extends Object?>(
   final PartialType data, {
   required final _DependencyTree dependencies,
 });
-
-final class const _Scope<
-  PartialType extends Object?,
-  WidgetType extends InheritedThemeResolverWidget<
-    PartialType,
-    WidgetType,
-    ElementType
-  >,
-  ElementType extends InheritedThemeResolverElement<
-    PartialType,
-    WidgetType,
-    ElementType
-  >
->({super.key, required final ElementType element, required super.child})
-    extends InheritedWidget {
-  @override
-  bool updateShouldNotify(
-    _Scope<PartialType, WidgetType, ElementType> oldWidget,
-  ) => element != oldWidget.element;
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ElementType>("element", element));
-  }
-}
 
 abstract class const InheritedThemeResolverWidget<
   PartialType extends Object?,
@@ -556,38 +526,9 @@ base class InheritedThemeResolverElement<
     return widget as WidgetType;
   }
 
-  PersistentHashMap<Type, InheritedElement> _inheritedElements = const .empty();
-
-  void _updateInheritanceMap() {
-    InheritedThemeResolverElement? parent;
-    visitAncestorElements((ancestor) {
-      if (ancestor is InheritedThemeResolverElement) {
-        parent = ancestor;
-        return false;
-      }
-
-      final scopeElement = ancestor
-          .getElementForInheritedWidgetOfExactType<
-            _Scope<PartialType, WidgetType, ElementType>
-          >();
-      final scopeWidget = scopeElement?.widget;
-      assert(
-        scopeWidget == null ||
-            scopeWidget.runtimeType ==
-                _Scope<PartialType, WidgetType, ElementType>,
-      );
-      if (scopeWidget != null) {
-        scopeWidget as _Scope<PartialType, WidgetType, ElementType>;
-        parent = scopeWidget.element;
-        return false;
-      }
-
-      return true;
-    });
-
-    final inheritedElements = parent?._inheritedElements ?? const .empty();
-    _inheritedElements = inheritedElements.put(WidgetType, this);
-  }
+  bool _verifyIsNearestAncestorOf(BuildContext context) =>
+      mounted &&
+      context.getElementForInheritedWidgetOfExactType<WidgetType>() == this;
 
   var _dependencyCache = Expando<_DependencyCacheEntry<PartialType>>();
 
@@ -720,15 +661,6 @@ base class InheritedThemeResolverElement<
   void removeDependent(Element dependent) {
     _dependencyCache[dependent] = null;
     super.removeDependent(dependent);
-  }
-
-  @override
-  Widget build() {
-    _updateInheritanceMap();
-    return _Scope<PartialType, WidgetType, ElementType>(
-      element: this as ElementType,
-      child: super.build(),
-    );
   }
 
   @override
