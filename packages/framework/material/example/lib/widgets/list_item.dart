@@ -1,14 +1,9 @@
 import 'package:material_example/flutter.dart';
 
-class _ListItemStates implements SegmentedListItemStates {
-  const _ListItemStates({required this.isFirst, required this.isLast});
-
-  @override
-  final bool isFirst;
-
-  @override
-  final bool isLast;
-
+class const _ListItemStates({
+  @override required final bool isFirst,
+  @override required final bool isLast,
+}) implements SegmentedListItemStates {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -21,14 +16,11 @@ class _ListItemStates implements SegmentedListItemStates {
   int get hashCode => Object.hash(runtimeType, isFirst, isLast);
 }
 
-sealed class _InteractiveListItemStates extends _ListItemStates
-    implements InteractiveListItemStates {
-  const _InteractiveListItemStates({
-    required super.isFirst,
-    required super.isLast,
-  });
-
-  const factory _InteractiveListItemStates.enabled({
+sealed class const _InteractiveListItemStates({
+  required super.isFirst,
+  required super.isLast,
+}) extends _ListItemStates implements InteractiveListItemStates {
+  const factory enabled({
     required bool isFirst,
     required bool isLast,
     bool isHovered,
@@ -36,12 +28,10 @@ sealed class _InteractiveListItemStates extends _ListItemStates
     bool isPressed,
   }) = _InteractiveListItemEnabledStates;
 
-  const factory _InteractiveListItemStates.disabled({
-    required bool isFirst,
-    required bool isLast,
-  }) = _InteractiveListItemDisabledStates;
+  const factory disabled({required bool isFirst, required bool isLast}) =
+      _InteractiveListItemDisabledStates;
 
-  factory _InteractiveListItemStates.fromWidgetStates(
+  factory fromWidgetStates(
     WidgetStates states, {
     required bool isFirst,
     required bool isLast,
@@ -90,13 +80,11 @@ sealed class _InteractiveListItemStates extends _ListItemStates
   );
 }
 
-class _InteractiveListItemDisabledStates extends _InteractiveListItemStates
+class const _InteractiveListItemDisabledStates({
+  required super.isFirst,
+  required super.isLast,
+}) extends _InteractiveListItemStates
     implements InteractiveListItemDisabledStates {
-  const _InteractiveListItemDisabledStates({
-    required super.isFirst,
-    required super.isLast,
-  });
-
   @override
   bool get isDisabled => true;
 
@@ -110,51 +98,30 @@ class _InteractiveListItemDisabledStates extends _InteractiveListItemStates
   bool get isPressed => false;
 }
 
-class _InteractiveListItemEnabledStates extends _InteractiveListItemStates
+class const _InteractiveListItemEnabledStates({
+  required super.isFirst,
+  required super.isLast,
+  @override final bool isHovered = false,
+  @override final bool isFocused = false,
+  @override final bool isPressed = false,
+}) extends _InteractiveListItemStates
     implements InteractiveListItemEnabledStates {
-  const _InteractiveListItemEnabledStates({
-    required super.isFirst,
-    required super.isLast,
-    this.isHovered = false,
-    this.isFocused = false,
-    this.isPressed = false,
-  });
-
   @override
   bool get isDisabled => false;
-
-  @override
-  final bool isHovered;
-
-  @override
-  final bool isFocused;
-
-  @override
-  final bool isPressed;
 }
 
 enum ListItemControlAffinity { leading, trailing }
 
-class ListItemContainer extends StatelessWidget {
-  const ListItemContainer({
-    super.key,
-    this.isFirst = false,
-    this.isLast = false,
-    this.opticalCenterEnabled = false,
-    this.opticalCenterMaxOffsets = const .all(.infinity),
-    this.containerShape,
-    this.containerColor,
-    required this.child,
-  });
-
-  final bool isFirst;
-  final bool isLast;
-  final bool opticalCenterEnabled;
-  final EdgeInsetsGeometry opticalCenterMaxOffsets;
-  final ListItemStateProperty<OutlinedBorder?>? containerShape;
-  final ListItemStateProperty<Color?>? containerColor;
-  final Widget child;
-
+class const ListItemContainer({
+  super.key,
+  final bool isFirst = false,
+  final bool isLast = false,
+  final bool opticalCenterEnabled = false,
+  final EdgeInsetsGeometry opticalCenterMaxOffsets = const .all(.infinity),
+  final ListItemStateProperty<OutlinedBorder?>? containerShape,
+  final ListItemStateProperty<Color?>? containerColor,
+  required final Widget child,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final listItemTheme = ListItemTheme.of(context);
@@ -244,19 +211,12 @@ class ListItemContainer extends StatelessWidget {
       };
 }
 
-class _ListItemContainerScope extends InheritedWidget {
-  const _ListItemContainerScope({
-    super.key,
-    this.opticalCenterEnabled = false,
-    this.opticalCenterCorners = .zero,
-    this.opticalCenterMaxOffsets = .zero,
-    required super.child,
-  });
-
-  final bool opticalCenterEnabled;
-  final CornersGeometry opticalCenterCorners;
-  final EdgeInsetsGeometry opticalCenterMaxOffsets;
-
+class const _ListItemContainerScope({
+  final bool opticalCenterEnabled = false,
+  final CornersGeometry opticalCenterCorners = .zero,
+  final EdgeInsetsGeometry opticalCenterMaxOffsets = .zero,
+  required super.child,
+}) extends InheritedWidget {
   @override
   bool updateShouldNotify(_ListItemContainerScope oldWidget) =>
       opticalCenterEnabled != oldWidget.opticalCenterEnabled ||
@@ -267,15 +227,14 @@ class _ListItemContainerScope extends InheritedWidget {
       context.dependOnInheritedWidgetOfExactType<_ListItemContainerScope>();
 }
 
-typedef _CenterOpticallyConstructor =
-    CenterOptically Function({
-      Key? key,
-      bool enabled,
-      CornersGeometry corners,
-      EdgeInsetsGeometry maxOffsets,
-      TextDirection? textDirection,
-      Widget? child,
-    });
+typedef _CenterOpticallyConstructor = CenterOptically Function({
+  Key? key,
+  bool enabled,
+  CornersGeometry corners,
+  EdgeInsetsGeometry maxOffsets,
+  TextDirection? textDirection,
+  Widget? child,
+});
 
 extension on _ListItemContainerScope? {
   Widget buildCenterOptically({
@@ -298,41 +257,24 @@ extension on _ListItemContainerScope? {
   }
 }
 
-class ListItemInteraction extends StatefulWidget {
-  const ListItemInteraction({
-    super.key,
-    // State
-    this.statesController,
-    this.stateLayerShape,
-    this.stateLayerColor,
-    this.stateLayerOpacity,
-    // Focus
-    this.focusNode,
-    this.canRequestFocus = true,
-    this.onFocusChange,
-    this.autofocus = false,
-    // Gesture handlers
-    this.onTap,
-    this.onLongPress,
-    // Child
-    required this.child,
-  });
-
-  final WidgetStatesController? statesController;
-  final ListItemStateProperty<ShapeBorder?>? stateLayerShape;
-  final ListItemStateProperty<Color?>? stateLayerColor;
-  final ListItemStateProperty<double?>? stateLayerOpacity;
-
-  final FocusNode? focusNode;
-  final bool canRequestFocus;
-  final ValueChanged<bool>? onFocusChange;
-  final bool autofocus;
-
-  final VoidCallback? onTap;
-  final VoidCallback? onLongPress;
-
-  final Widget child;
-
+class const ListItemInteraction({
+  super.key,
+  // State
+  final WidgetStatesController? statesController,
+  final ListItemStateProperty<ShapeBorder?>? stateLayerShape,
+  final ListItemStateProperty<Color?>? stateLayerColor,
+  final ListItemStateProperty<double?>? stateLayerOpacity,
+  // Focus
+  final FocusNode? focusNode,
+  final bool canRequestFocus = true,
+  final ValueChanged<bool>? onFocusChange,
+  final bool autofocus = false,
+  // Gesture handlers
+  final VoidCallback? onTap,
+  final VoidCallback? onLongPress,
+  // Child
+  required final Widget child,
+}) extends StatefulWidget {
   @override
   State<ListItemInteraction> createState() => _ListItemInteractionState();
 }
@@ -583,49 +525,28 @@ class _ListItemInteractionState extends State<ListItemInteraction> {
   }
 }
 
-enum ListItemAlignment {
+enum ListItemAlignment(final CrossAxisAlignment crossAxisAlignment) {
   top(.start),
-  middle(.center);
-
-  const ListItemAlignment(this.crossAxisAlignment);
-
-  final CrossAxisAlignment crossAxisAlignment;
+  middle(.center),
 }
 
-class ListItemLayout extends StatelessWidget {
-  const ListItemLayout({
-    super.key,
-    this.minHeight,
-    this.maxHeight,
-    this.padding,
-    this.leadingPadding,
-    this.contentPadding,
-    this.trailingPadding,
-    this.leadingSpace,
-    this.trailingSpace,
-    this.alignment = .middle,
-    this.leading,
-    this.overline,
-    this.headline,
-    this.supportingText,
-    this.trailing,
-  });
-
-  final double? minHeight;
-  final double? maxHeight;
-  final EdgeInsetsGeometry? padding;
-  final EdgeInsetsGeometry? leadingPadding;
-  final EdgeInsetsGeometry? contentPadding;
-  final EdgeInsetsGeometry? trailingPadding;
-  final double? leadingSpace;
-  final double? trailingSpace;
-  final ListItemAlignment alignment;
-  final Widget? leading;
-  final Widget? overline;
-  final Widget? headline;
-  final Widget? supportingText;
-  final Widget? trailing;
-
+class const ListItemLayout({
+  super.key,
+  final double? minHeight,
+  final double? maxHeight,
+  final EdgeInsetsGeometry? padding,
+  final EdgeInsetsGeometry? leadingPadding,
+  final EdgeInsetsGeometry? contentPadding,
+  final EdgeInsetsGeometry? trailingPadding,
+  final double? leadingSpace,
+  final double? trailingSpace,
+  final ListItemAlignment alignment = .middle,
+  final Widget? leading,
+  final Widget? overline,
+  final Widget? headline,
+  final Widget? supportingText,
+  final Widget? trailing,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final measurementTheme = MeasurementTheme.of(context);
