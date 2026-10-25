@@ -1,15 +1,13 @@
 import 'package:material_example/flutter.dart';
 
-class InverseCenterOptically extends CenterOptically {
-  const InverseCenterOptically({
-    super.key,
-    super.enabled,
-    super.corners,
-    super.maxOffsets,
-    super.textDirection,
-    super.child,
-  });
-
+class const InverseCenterOptically({
+  super.key,
+  super.enabled,
+  super.corners,
+  super.maxOffsets,
+  super.textDirection,
+  super.child,
+}) extends CenterOptically {
   @override
   RenderInverseCenterOptically createRenderObject(BuildContext context) =>
       RenderInverseCenterOptically(
@@ -32,15 +30,13 @@ class InverseCenterOptically extends CenterOptically {
   }
 }
 
-class RenderInverseCenterOptically extends RenderCenterOptically {
-  RenderInverseCenterOptically({
-    super.enabled,
-    super.corners,
-    super.maxOffsets,
-    super.textDirection,
-    super.child,
-  });
-
+class RenderInverseCenterOptically({
+  super.enabled,
+  super.corners,
+  super.maxOffsets,
+  super.textDirection,
+  super.child,
+}) extends RenderCenterOptically {
   @override
   double getHorizontalPaddingCorrection(BorderRadius borderRadius) =>
       -super.getHorizontalPaddingCorrection(borderRadius);
