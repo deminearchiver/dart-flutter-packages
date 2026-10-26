@@ -272,7 +272,7 @@ class _IndeterminateLoadingIndicatorState
       widget.indicatorPolygons ??
       LoadingIndicatorDefaults.indeterminateIndicatorPolygons;
 
-  late _IndeterminateLoadingIndicatorAnimationController _controller;
+  late _IndeterminateLoadingIndicatorController _controller;
   late _IndeterminateLoadingIndicatorPainter _painter;
 
   @override
@@ -388,7 +388,7 @@ class _IndeterminateLoadingIndicatorState
   }
 }
 
-class _IndeterminateLoadingIndicatorAnimationController({
+class _IndeterminateLoadingIndicatorController({
   required TickerProvider vsync,
   required var int _morphSequenceLength,
   final String? debugLabel,
@@ -514,7 +514,7 @@ class _IndeterminateLoadingIndicatorPainter({
   required var Outline _outline,
   required var List<Morph> _morphSequence,
   required var double _morphScaleFactor,
-  required var _IndeterminateLoadingIndicatorAnimationController _controller,
+  required var _IndeterminateLoadingIndicatorController _controller,
 }) extends StatefulCustomPainter<_IndeterminateLoadingIndicatorPainter> {
   this {
     _controller.addListener(notifyListeners);
@@ -548,9 +548,8 @@ class _IndeterminateLoadingIndicatorPainter({
     notifyListeners();
   }
 
-  _IndeterminateLoadingIndicatorAnimationController get controller =>
-      _controller;
-  set controller(_IndeterminateLoadingIndicatorAnimationController value) {
+  _IndeterminateLoadingIndicatorController get controller => _controller;
+  set controller(_IndeterminateLoadingIndicatorController value) {
     if (_controller == value) return;
     _controller.removeListener(notifyListeners);
     _controller = value;
