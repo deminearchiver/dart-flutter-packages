@@ -1,3 +1,8 @@
+## 0.1.12
+
+- Rolled the Google Symbols font from `v467` to `v469`.
+  - This update introduces 5 new icons: `contrast_auto`, `contrast_inverse`, `contrast_inverse_auto`, `input_search`, `mail_person`.
+
 ## 0.1.11
 
 - Rolled the Google Symbols font from `v464` to `v467`.

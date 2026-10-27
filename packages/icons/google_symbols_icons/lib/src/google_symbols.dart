@@ -2884,8 +2884,17 @@ abstract final class GoogleSymbols {
   /// Google Symbols icon named "contrast".
   static const IconData contrast = IconData(0xeb37, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols icon named "contrast_auto".
+  static const IconData contrast_auto = IconData(0xffe8e, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols icon named "contrast_circle".
   static const IconData contrast_circle = IconData(0xe6a2, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols icon named "contrast_inverse".
+  static const IconData contrast_inverse = IconData(0xffe8d, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols icon named "contrast_inverse_auto".
+  static const IconData contrast_inverse_auto = IconData(0xffe8c, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols icon named "contrast_rtl_off".
   static const IconData contrast_rtl_off = IconData(0xec72, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -6907,6 +6916,9 @@ abstract final class GoogleSymbols {
   /// Google Symbols icon named "input_circle".
   static const IconData input_circle = IconData(0xf71a, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols icon named "input_search".
+  static const IconData input_search = IconData(0xffe8a, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols icon named "insert_chart".
   static const IconData insert_chart = IconData(0xe24b, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -7740,6 +7752,9 @@ abstract final class GoogleSymbols {
 
   /// Google Symbols icon named "mail_off".
   static const IconData mail_off = IconData(0xf48b, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols icon named "mail_person".
+  static const IconData mail_person = IconData(0xffe8f, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols icon named "mail_shield".
   static const IconData mail_shield = IconData(0xf249, fontFamily: fontFamily, fontPackage: fontPackage);
