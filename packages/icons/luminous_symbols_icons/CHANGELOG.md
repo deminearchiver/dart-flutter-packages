@@ -1,3 +1,8 @@
+## 0.1.13
+
+- Rolled the Luminous Symbols font from `v66` to `v67`.
+  - This update introduces 4 new icons: `apps_9_grid`, `input_search`, `mail_person`, `youtube_video`.
+
 ## 0.1.12
 
 - Rolled the Luminous Symbols font from `v65` to `v66`.

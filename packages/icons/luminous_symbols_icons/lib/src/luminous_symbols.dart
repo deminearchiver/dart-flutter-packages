@@ -145,6 +145,9 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "apps".
   static const IconData apps = IconData(0xe5c3, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "apps_9_grid".
+  static const IconData apps_9_grid = IconData(0xffe8b, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "arrow_back".
   static const IconData arrow_back = IconData(0xe5c4, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -976,6 +979,9 @@ abstract final class LuminousSymbols {
   /// Luminous Symbols icon named "ink_pen".
   static const IconData ink_pen = IconData(0xe6d3, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Luminous Symbols icon named "input_search".
+  static const IconData input_search = IconData(0xffe8a, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Luminous Symbols icon named "insert_text".
   static const IconData insert_text = IconData(0xf827, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -1104,6 +1110,9 @@ abstract final class LuminousSymbols {
 
   /// Luminous Symbols icon named "mail".
   static const IconData mail = IconData(0xe158, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "mail_person".
+  static const IconData mail_person = IconData(0xffe8f, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "map".
   static const IconData map = IconData(0xe55b, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -2019,6 +2028,9 @@ abstract final class LuminousSymbols {
 
   /// Luminous Symbols icon named "youtube_tv".
   static const IconData youtube_tv = IconData(0xe377, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Luminous Symbols icon named "youtube_video".
+  static const IconData youtube_video = IconData(0xfff83, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Luminous Symbols icon named "z".
   static const IconData z = IconData(0x5a, fontFamily: fontFamily, fontPackage: fontPackage);
