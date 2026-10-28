@@ -66,6 +66,92 @@ final class const _LoadingIndicatorStates({
   int get hashCode => Object.hash(behavior, containment);
 }
 
+// TODO: finish and implement the new loading indicator API
+
+class LoadingIndicatorController;
+
+class const LoadingIndicator({
+  super.key,
+
+  required final double? progress,
+
+  required final LoadingIndicatorContainment containment,
+
+  /// {@macro material_ui.progress_indicator.ProgressIndicator.semanticsLabel}
+  final String? semanticsLabel,
+
+  /// {@macro material_ui.progress_indicator.ProgressIndicator.semanticsValue}
+  final String? semanticsValue,
+}) extends StatefulWidget {
+  const new uncontained({
+    Key? key,
+    required double? progress,
+    String? semanticsLabel,
+    String? semanticsValue,
+  }) : this(
+         key: key,
+         progress: progress,
+         containment: .uncontained,
+         semanticsLabel: semanticsLabel,
+         semanticsValue: semanticsValue,
+       );
+
+  const new contained({
+    Key? key,
+    required double? progress,
+    String? semanticsLabel,
+    String? semanticsValue,
+  }) : this(
+         key: key,
+         progress: progress,
+         containment: .contained,
+         semanticsLabel: semanticsLabel,
+         semanticsValue: semanticsValue,
+       );
+
+  LoadingIndicatorBehavior get _behavior =>
+      progress != null ? .determinate : .indeterminate;
+
+  @override
+  State<LoadingIndicator> createState() => _LoadingIndicatorState();
+}
+
+class _LoadingIndicatorState extends State<LoadingIndicator> {
+  @override
+  Widget build(BuildContext context) {
+    final progress = widget.progress;
+    final contained = switch (widget.containment) {
+      .uncontained => false,
+      .contained => true,
+    };
+    return progress != null
+        ? DeterminateLoadingIndicator(
+            progress: progress,
+            contained: contained,
+            semanticsLabel: widget.semanticsLabel,
+            semanticsValue: widget.semanticsValue,
+          )
+        : IndeterminateLoadingIndicator(
+            contained: contained,
+            semanticsLabel: widget.semanticsLabel,
+            semanticsValue: widget.semanticsValue,
+          );
+  }
+}
+
+class const LoadingIndicatorPaint({
+  super.key,
+  required final LoadingIndicatorController controller,
+}) extends StatefulWidget {
+  @override
+  State<LoadingIndicatorPaint> createState() => _LoadingIndicatorPaintState();
+}
+
+class _LoadingIndicatorPaintState extends State<LoadingIndicatorPaint> {
+  @override
+  Widget build(BuildContext context) => throw UnimplementedError();
+}
+
 class const DeterminateLoadingIndicator({
   super.key,
 
