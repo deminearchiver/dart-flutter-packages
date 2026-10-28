@@ -38,21 +38,28 @@ final _kMorphSpring = SpringSimulation(
 );
 
 final class const _LoadingIndicatorStates({
-  @override required final bool isContained,
+  @override required final LoadingIndicatorBehavior behavior,
+  @override required final LoadingIndicatorContainment containment,
 }) with Diagnosticable implements LoadingIndicatorStates {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>("isContained", isContained));
+    properties
+      ..add(EnumProperty<LoadingIndicatorBehavior>("behavior", behavior))
+      ..add(
+        EnumProperty<LoadingIndicatorContainment>("containment", containment),
+      );
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _LoadingIndicatorStates && isContained == other.isContained;
+      other is _LoadingIndicatorStates &&
+          behavior == other.behavior &&
+          containment == other.containment;
 
   @override
-  int get hashCode => isContained.hashCode;
+  int get hashCode => Object.hash(behavior, containment);
 }
 
 class const DeterminateLoadingIndicator({
@@ -142,7 +149,10 @@ class _DeterminateLoadingIndicatorState
   Widget build(BuildContext context) {
     final loadingIndicatorTheme = LoadingIndicatorTheme.of(context);
 
-    final states = _LoadingIndicatorStates(isContained: widget.contained);
+    final states = _LoadingIndicatorStates(
+      behavior: .determinate,
+      containment: widget.contained ? .contained : .uncontained,
+    );
 
     final resolvedContainerShape =
         widget.containerShape?.resolve(states) ??
@@ -375,7 +385,10 @@ class _IndeterminateLoadingIndicatorState
   Widget build(BuildContext context) {
     final loadingIndicatorTheme = LoadingIndicatorTheme.of(context);
 
-    final states = _LoadingIndicatorStates(isContained: widget.contained);
+    final states = _LoadingIndicatorStates(
+      behavior: .indeterminate,
+      containment: widget.contained ? .contained : .uncontained,
+    );
 
     final resolvedContainerShape =
         widget.containerShape?.resolve(states) ??

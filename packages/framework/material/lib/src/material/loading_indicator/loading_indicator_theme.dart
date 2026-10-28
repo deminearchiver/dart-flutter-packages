@@ -1,7 +1,13 @@
 import 'package:material/src/material/flutter.dart';
 
+enum LoadingIndicatorBehavior { determinate, indeterminate }
+
+enum LoadingIndicatorContainment { uncontained, contained }
+
 mixin LoadingIndicatorStates {
-  bool get isContained;
+  LoadingIndicatorBehavior get behavior;
+
+  LoadingIndicatorContainment get containment;
 }
 
 typedef LoadingIndicatorStateProperty<T extends Object?> =
@@ -534,9 +540,10 @@ final class _LoadingIndicatorThemeDataDefaults
     _LoadingIndicatorThemeDataDefaults defaults,
   ) =>
       defaults._overrides.containerColor?.resolve(states) ??
-      (states.isContained
-          ? defaults._colorTheme.primaryContainer
-          : Colors.transparent);
+      switch (states.containment) {
+        .uncontained => Colors.transparent,
+        .contained => defaults._colorTheme.primaryContainer,
+      };
 
   @override
   LoadingIndicatorStateProperty<Outline> get containerOutline =>
@@ -558,9 +565,10 @@ final class _LoadingIndicatorThemeDataDefaults
     _LoadingIndicatorThemeDataDefaults defaults,
   ) =>
       defaults._overrides.activeIndicatorColor?.resolve(states) ??
-      (states.isContained
-          ? defaults._colorTheme.onPrimaryContainer
-          : defaults._colorTheme.primary);
+      switch (states.containment) {
+        .uncontained => defaults._colorTheme.primary,
+        .contained => defaults._colorTheme.onPrimaryContainer,
+      };
 
   @override
   LoadingIndicatorStateProperty<Outline> get activeIndicatorOutline =>

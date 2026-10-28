@@ -7,6 +7,7 @@ typedef PullToRefreshLoadingIndicatorStateProperty<T extends Object?> =
     StateProperty<T, PullToRefreshLoadingIndicatorStates>;
 
 final class const _PullToRefreshLoadingIndicatorStates({
+  @override required final LoadingIndicatorBehavior behavior,
   @override required final bool enabled,
   @override required final double threshold,
   @override required final bool isRefreshing,
@@ -17,7 +18,11 @@ final class const _PullToRefreshLoadingIndicatorStates({
   @override required final double adjustedDistancePulled,
   @override required final double progress,
 }) implements PullToRefreshLoadingIndicatorStates {
-  factory fromPullToRefreshStates(PullToRefreshStates states) => .new(
+  factory fromPullToRefreshStates(
+    PullToRefreshStates states, {
+    required LoadingIndicatorBehavior behavior,
+  }) => .new(
+    behavior: behavior,
     enabled: states.enabled,
     threshold: states.threshold,
     isRefreshing: states.isRefreshing,
@@ -30,7 +35,7 @@ final class const _PullToRefreshLoadingIndicatorStates({
   );
 
   @override
-  bool get isContained => true;
+  LoadingIndicatorContainment get containment => .contained;
 }
 
 class const PullToRefreshLoadingIndicator({
@@ -75,6 +80,8 @@ class _PullToRefreshLoadingIndicatorState
   void _didChangeStates() {
     final states = _PullToRefreshLoadingIndicatorStates.fromPullToRefreshStates(
       widget.states.value,
+      // TODO: fix this properly
+      behavior: .indeterminate,
     );
 
     _resolvedContainerShape =
