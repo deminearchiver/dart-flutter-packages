@@ -65,6 +65,12 @@ class const DeterminateLoadingIndicator({
   final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
   final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
   final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
+
+  /// {@macro material_ui.progress_indicator.ProgressIndicator.semanticsLabel}
+  final String? semanticsLabel,
+
+  /// {@macro material_ui.progress_indicator.ProgressIndicator.semanticsValue}
+  final String? semanticsValue,
 }) extends StatefulWidget {
   this
     : assert(
@@ -184,8 +190,11 @@ class _DeterminateLoadingIndicatorState
 
     return RepaintBoundary(
       child: Semantics(
-        label: "$progressFraction",
-        value: "$progressFraction",
+        label: widget.semanticsLabel,
+        role: .progressBar,
+        minValue: "0",
+        maxValue: "100",
+        value: "${(clampedProgressFraction * 100).round()}",
         child: ConstrainedBox(
           constraints: const BoxConstraints(
             minWidth: _kContainerWidth,
@@ -274,7 +283,12 @@ class const IndeterminateLoadingIndicator({
   final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
   final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
   final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
+
+  /// {@macro material_ui.progress_indicator.ProgressIndicator.semanticsLabel}
   final String? semanticsLabel,
+
+  /// {@macro material_ui.progress_indicator.ProgressIndicator.semanticsValue}
+  final String? semanticsValue,
 }) extends StatefulWidget {
   this
     : assert(
@@ -393,6 +407,8 @@ class _IndeterminateLoadingIndicatorState
     return RepaintBoundary(
       child: Semantics(
         label: widget.semanticsLabel,
+        role: .loadingSpinner,
+        value: widget.semanticsValue,
         child: ConstrainedBox(
           constraints: const BoxConstraints(
             minWidth: _kContainerWidth,
