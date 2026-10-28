@@ -5,12 +5,16 @@ import 'package:flutter/scheduler.dart';
 import 'package:material/src/material/flutter.dart';
 
 const _kContainerWidth = 48.0;
+
 const _kContainerHeight = 48.0;
+
 const _kIndicatorSize = 38.0;
+
 final _kActiveIndicatorScale =
     _kIndicatorSize / math.min(_kContainerWidth, _kContainerHeight);
 
 const _kFullRotation = 2.0 * math.pi;
+
 const _kQuarterRotation = _kFullRotation / 4.0;
 
 /// How long the indeterminate indicator takes to morph from one shape to the
@@ -64,13 +68,21 @@ final class const _LoadingIndicatorStates({
 
 class const DeterminateLoadingIndicator({
   super.key,
+
   final bool contained = false,
+
   required final double progress,
+
   final List<RoundedPolygon>? indicatorPolygons,
+
   final LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+
   final LoadingIndicatorStateProperty<Color?>? containerColor,
+
   final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+
   final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+
   final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
 
   /// {@macro material_ui.progress_indicator.ProgressIndicator.semanticsLabel}
@@ -82,7 +94,8 @@ class const DeterminateLoadingIndicator({
   this
     : assert(
         indicatorPolygons == null || indicatorPolygons.length >= 2,
-        "indicatorPolygons should have, at least, two RoundedPolygons",
+        "A DeterminateLoadingIndicator needs at least two polygons "
+        "to morph between, but ${indicatorPolygons.length} were provided.",
       );
 
   @override
@@ -284,12 +297,19 @@ class _DeterminateLoadingIndicatorPainter({
 
 class const IndeterminateLoadingIndicator({
   super.key,
+
   final bool contained = false,
+
   final List<RoundedPolygon>? indicatorPolygons,
+
   final LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+
   final LoadingIndicatorStateProperty<Color?>? containerColor,
+
   final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+
   final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
+
   final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
 
   /// {@macro material_ui.progress_indicator.ProgressIndicator.semanticsLabel}
@@ -301,7 +321,8 @@ class const IndeterminateLoadingIndicator({
   this
     : assert(
         indicatorPolygons == null || indicatorPolygons.length >= 2,
-        "indicatorPolygons should have, at least, two RoundedPolygons",
+        "An IndeterminateLoadingIndicator needs at least two polygons "
+        "to morph between, but ${indicatorPolygons.length} were provided.",
       );
 
   @override
