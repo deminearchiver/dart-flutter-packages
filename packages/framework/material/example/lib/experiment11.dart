@@ -125,6 +125,7 @@ class _Experiment11ViewState extends State<Experiment11View> {
             child: NotificationListener<ScrollNotification>(
               onNotification: _handleScrollNotification,
               child: ListView.builder(
+                key: GlobalObjectKey(this),
                 physics: const _PullToRefreshScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
                 ),
