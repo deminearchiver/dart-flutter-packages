@@ -13,10 +13,8 @@ mixin LoadingIndicatorStates {
 typedef LoadingIndicatorStateProperty<T extends Object?> =
     StateProperty<T, LoadingIndicatorStates>;
 
-abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
-  const LoadingIndicatorThemeDataPartial();
-
-  const factory LoadingIndicatorThemeDataPartial.from({
+abstract class const LoadingIndicatorThemeDataPartial() with Diagnosticable {
+  const factory from({
     LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
     LoadingIndicatorStateProperty<Color?>? containerColor,
     LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
@@ -209,31 +207,16 @@ abstract class LoadingIndicatorThemeDataPartial with Diagnosticable {
   }
 }
 
-final class _LoadingIndicatorThemeDataPartial
-    extends LoadingIndicatorThemeDataPartial {
-  const _LoadingIndicatorThemeDataPartial({
-    this.containerShape,
-    this.containerColor,
-    this.containerOutline,
-    this.activeIndicatorColor,
-    this.activeIndicatorOutline,
-  });
-
+final class const _LoadingIndicatorThemeDataPartial({
   @override
-  final LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape;
-
+  final LoadingIndicatorStateProperty<OutlinedBorder?>? containerShape,
+  @override final LoadingIndicatorStateProperty<Color?>? containerColor,
   @override
-  final LoadingIndicatorStateProperty<Color?>? containerColor;
-
+  final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline,
+  @override final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor,
   @override
-  final LoadingIndicatorStateProperty<OutlinePartial?>? containerOutline;
-
-  @override
-  final LoadingIndicatorStateProperty<Color?>? activeIndicatorColor;
-
-  @override
-  final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline;
-
+  final LoadingIndicatorStateProperty<OutlinePartial?>? activeIndicatorOutline,
+}) extends LoadingIndicatorThemeDataPartial {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -254,11 +237,9 @@ final class _LoadingIndicatorThemeDataPartial
   );
 }
 
-abstract class LoadingIndicatorThemeData
+abstract class const LoadingIndicatorThemeData()
     extends LoadingIndicatorThemeDataPartial {
-  const LoadingIndicatorThemeData();
-
-  const factory LoadingIndicatorThemeData.from({
+  const factory from({
     required LoadingIndicatorStateProperty<OutlinedBorder> containerShape,
     required LoadingIndicatorStateProperty<Color> containerColor,
     required LoadingIndicatorStateProperty<Outline> containerOutline,
@@ -266,13 +247,13 @@ abstract class LoadingIndicatorThemeData
     required LoadingIndicatorStateProperty<Outline> activeIndicatorOutline,
   }) = _LoadingIndicatorThemeData;
 
-  const factory LoadingIndicatorThemeData.defaults({
+  const factory defaults({
     required ColorThemeData colorTheme,
     required ShapeThemeData shapeTheme,
     LoadingIndicatorThemeDataPartial? overrides,
   }) = _LoadingIndicatorThemeDataDefaults;
 
-  factory LoadingIndicatorThemeData.defaultsOf(
+  factory defaultsOf(
     BuildContext context, {
     LoadingIndicatorThemeDataPartial? overrides,
   }) => .defaults(
@@ -464,30 +445,17 @@ abstract class LoadingIndicatorThemeData
   }
 }
 
-final class _LoadingIndicatorThemeData extends LoadingIndicatorThemeData {
-  const _LoadingIndicatorThemeData({
-    required this.containerShape,
-    required this.containerColor,
-    required this.containerOutline,
-    required this.activeIndicatorColor,
-    required this.activeIndicatorOutline,
-  });
-
+final class const _LoadingIndicatorThemeData({
   @override
-  final LoadingIndicatorStateProperty<OutlinedBorder> containerShape;
-
+  required final LoadingIndicatorStateProperty<OutlinedBorder> containerShape,
+  @override required final LoadingIndicatorStateProperty<Color> containerColor,
   @override
-  final LoadingIndicatorStateProperty<Color> containerColor;
-
+  required final LoadingIndicatorStateProperty<Outline> containerOutline,
   @override
-  final LoadingIndicatorStateProperty<Outline> containerOutline;
-
+  required final LoadingIndicatorStateProperty<Color> activeIndicatorColor,
   @override
-  final LoadingIndicatorStateProperty<Color> activeIndicatorColor;
-
-  @override
-  final LoadingIndicatorStateProperty<Outline> activeIndicatorOutline;
-
+  required final LoadingIndicatorStateProperty<Outline> activeIndicatorOutline,
+}) extends LoadingIndicatorThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -508,17 +476,13 @@ final class _LoadingIndicatorThemeData extends LoadingIndicatorThemeData {
   );
 }
 
-final class _LoadingIndicatorThemeDataDefaults
-    extends LoadingIndicatorThemeData {
-  const _LoadingIndicatorThemeDataDefaults({
-    required this._colorTheme,
-    required this._shapeTheme,
-    LoadingIndicatorThemeDataPartial? overrides,
-  }) : _overrides = overrides ?? const .from();
-
-  final ColorThemeData _colorTheme;
-  final ShapeThemeData _shapeTheme;
-  final LoadingIndicatorThemeDataPartial _overrides;
+final class const _LoadingIndicatorThemeDataDefaults({
+  required final ColorThemeData _colorTheme,
+  required final ShapeThemeData _shapeTheme,
+  LoadingIndicatorThemeDataPartial? overrides,
+}) extends LoadingIndicatorThemeData {
+  final LoadingIndicatorThemeDataPartial _overrides =
+      overrides ?? const .from();
 
   @override
   LoadingIndicatorStateProperty<OutlinedBorder> get containerShape =>
@@ -689,17 +653,14 @@ final class _LoadingIndicatorThemeDataDefaults
   int get hashCode => Object.hash(_colorTheme, _shapeTheme, _overrides);
 }
 
-final class _LoadingIndicatorStateProperty<T extends Object?>
-    implements LoadingIndicatorStateProperty<T> {
-  const _LoadingIndicatorStateProperty(this._defaults, this._resolve);
-
-  final _LoadingIndicatorThemeDataDefaults _defaults;
+final class const _LoadingIndicatorStateProperty<T extends Object?>(
+  final _LoadingIndicatorThemeDataDefaults _defaults,
   final T Function(
     LoadingIndicatorStates states,
     _LoadingIndicatorThemeDataDefaults defaults,
   )
-  _resolve;
-
+  _resolve,
+) implements LoadingIndicatorStateProperty<T> {
   @override
   T resolve(LoadingIndicatorStates states) => _resolve(states, _defaults);
 
@@ -714,40 +675,39 @@ final class _LoadingIndicatorStateProperty<T extends Object?>
   int get hashCode => Object.hash(_defaults, _resolve);
 }
 
-abstract class LoadingIndicatorTheme extends SingleChildStatelessWidget {
-  const LoadingIndicatorTheme._({super.key, super.child});
-
-  const factory LoadingIndicatorTheme.mergeWithResolver({
+abstract class const LoadingIndicatorTheme._({super.key, super.child})
+    extends SingleChildStatelessWidget {
+  const factory mergeWithResolver({
     Key? key,
     required ThemeResolver<LoadingIndicatorThemeDataPartial> resolver,
     Widget? child,
   }) = _LoadingIndicatorThemeWithResolver<LoadingIndicatorThemeDataPartial>;
 
-  const factory LoadingIndicatorTheme.mergeWithCallback({
+  const factory mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<LoadingIndicatorThemeDataPartial> callback,
     Widget? child,
   }) = _LoadingIndicatorThemeWithCallback<LoadingIndicatorThemeDataPartial>;
 
-  const factory LoadingIndicatorTheme.mergeWithData({
+  const factory mergeWithData({
     Key? key,
     required LoadingIndicatorThemeDataPartial data,
     Widget? child,
   }) = _LoadingIndicatorThemeWithData<LoadingIndicatorThemeDataPartial>;
 
-  const factory LoadingIndicatorTheme.replaceWithResolver({
+  const factory replaceWithResolver({
     Key? key,
     required ThemeResolver<LoadingIndicatorThemeData> resolver,
     Widget? child,
   }) = _LoadingIndicatorThemeWithResolver<LoadingIndicatorThemeData>;
 
-  const factory LoadingIndicatorTheme.replaceWithCallback({
+  const factory replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<LoadingIndicatorThemeData> callback,
     Widget? child,
   }) = _LoadingIndicatorThemeWithCallback<LoadingIndicatorThemeData>;
 
-  const factory LoadingIndicatorTheme.replaceWithData({
+  const factory replaceWithData({
     Key? key,
     required LoadingIndicatorThemeData data,
     Widget? child,
@@ -772,18 +732,11 @@ abstract class LoadingIndicatorTheme extends SingleChildStatelessWidget {
   );
 }
 
-class _LoadingIndicatorThemeWithResolver<
+class const _LoadingIndicatorThemeWithResolver<
   T extends LoadingIndicatorThemeDataPartial
->
+>({super.key, @override required final ThemeResolver<T> resolver, super.child})
     extends LoadingIndicatorTheme {
-  const _LoadingIndicatorThemeWithResolver({
-    super.key,
-    required this.resolver,
-    super.child,
-  }) : super._();
-
-  @override
-  final ThemeResolver<T> resolver;
+  this : super._();
 
   @override
   SingleChildWidget wrap(BuildContext context, Widget? child) =>
@@ -800,17 +753,11 @@ class _LoadingIndicatorThemeWithResolver<
   }
 }
 
-class _LoadingIndicatorThemeWithCallback<
+class const _LoadingIndicatorThemeWithCallback<
   T extends LoadingIndicatorThemeDataPartial
->
+>({super.key, required final ThemeResolverCallback<T> callback, super.child})
     extends LoadingIndicatorTheme {
-  const _LoadingIndicatorThemeWithCallback({
-    super.key,
-    required this.callback,
-    super.child,
-  }) : super._();
-
-  final ThemeResolverCallback<T> callback;
+  this : super._();
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
@@ -832,15 +779,11 @@ class _LoadingIndicatorThemeWithCallback<
   }
 }
 
-class _LoadingIndicatorThemeWithData<T extends LoadingIndicatorThemeDataPartial>
+class const _LoadingIndicatorThemeWithData<
+  T extends LoadingIndicatorThemeDataPartial
+>({super.key, required final T data, super.child})
     extends LoadingIndicatorTheme {
-  const _LoadingIndicatorThemeWithData({
-    super.key,
-    required this.data,
-    super.child,
-  }) : super._();
-
-  final T data;
+  this : super._();
 
   @override
   ThemeResolver<T> get resolver => .value(data);
@@ -856,20 +799,17 @@ class _LoadingIndicatorThemeWithData<T extends LoadingIndicatorThemeDataPartial>
   }
 }
 
-final class _LoadingIndicatorTheme
-    extends
+final class const _LoadingIndicatorTheme({
+  super.key,
+  required super.resolver,
+  required super.child,
+}) extends
         InheritedThemeResolverWidget<
           LoadingIndicatorThemeDataPartial,
           _LoadingIndicatorTheme,
           _LoadingIndicatorThemeElement
         >
     implements InheritedTheme {
-  const _LoadingIndicatorTheme({
-    super.key,
-    required super.resolver,
-    required super.child,
-  });
-
   @override
   LoadingIndicatorThemeDataPartial merge(
     LoadingIndicatorThemeDataPartial fallback,
@@ -906,12 +846,10 @@ final class _LoadingIndicatorTheme
       >(context);
 }
 
-final class _LoadingIndicatorThemeElement
+final class _LoadingIndicatorThemeElement(super.widget)
     extends
         InheritedThemeResolverElement<
           LoadingIndicatorThemeDataPartial,
           _LoadingIndicatorTheme,
           _LoadingIndicatorThemeElement
-        > {
-  _LoadingIndicatorThemeElement(super.widget);
-}
+        >;
