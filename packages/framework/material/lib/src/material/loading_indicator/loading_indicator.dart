@@ -460,7 +460,7 @@ class _IndeterminateLoadingIndicatorController({
   required TickerProvider vsync,
   required var int _morphSequenceLength,
   final String? debugLabel,
-}) extends ChangeNotifier {
+}) with AnimationEagerListenerMixin, AnimationLocalListenersMixin {
   this {
     _ticker = vsync.createTicker(_tick);
   }
