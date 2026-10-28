@@ -10,10 +10,32 @@ const _kIndicatorSize = 38.0;
 final _kActiveIndicatorScale =
     _kIndicatorSize / math.min(_kContainerWidth, _kContainerHeight);
 
-const _kGlobalRotationDurationMs = 4666;
-const _kMorphIntervalMs = 650;
 const _kFullRotation = 2.0 * math.pi;
 const _kQuarterRotation = _kFullRotation / 4.0;
+
+/// How long the indeterminate indicator takes to morph from one shape to the
+/// next.
+const _kMorphInterval = Duration(milliseconds: 650);
+
+/// How long the indeterminate indicator takes to complete one full turn of
+/// its constant rotation, on top of the rotation that comes with each morph.
+const _kGlobalRotationDuration = Duration(milliseconds: 4666);
+
+/// The spring that drives each indeterminate morph.
+///
+/// Its overshoot carries the morph slightly past its end shape, which gives
+/// the indicator its bounce.
+///
+/// Unlike Compose, which stops the spring early and snaps it back to the end
+/// shape, the spring runs for the whole [_kMorphInterval], so that the
+/// overshoot settles smoothly.
+final _kMorphSpring = SpringSimulation(
+  .withDampingRatio(mass: 1.0, stiffness: 200.0, ratio: 0.6),
+  0.0,
+  1.0,
+  0.0,
+  snapToEnd: true,
+);
 
 final class const _LoadingIndicatorStates({
   @override required final bool isContained,
@@ -433,22 +455,12 @@ class _IndeterminateLoadingIndicatorController({
 
   Duration _nextSpringStart = .zero;
 
+  // TODO: refactor the simulation to either allow customizing it, or remove the field entirely
+
   SpringSimulation? _simulation;
 
-  SpringSimulation _createSimulation() {
-    final spring = SpringDescription.withDampingRatio(
-      mass: 1.0,
-      stiffness: 200.0,
-      ratio: 0.6,
-    );
-    // Ignoring tolerance from Compose fixes the snapping issue.
-    // const tolerance = Tolerance(distance: 0.1, velocity: .infinity);
-    return .new(spring, 0.0, 1.0, 0.0, snapToEnd: true);
-  }
-
   void _tick(Duration elapsed) {
-    const kGlobalRotationDurationUs =
-        _kGlobalRotationDurationMs * Duration.microsecondsPerMillisecond;
+    final kGlobalRotationDurationUs = _kGlobalRotationDuration.inMicroseconds;
     _globalRotation =
         (elapsed.inMicroseconds % kGlobalRotationDurationUs) /
         kGlobalRotationDurationUs;
@@ -456,8 +468,8 @@ class _IndeterminateLoadingIndicatorController({
     while (elapsed >= _nextSpringStart) {
       if (_simulation != null) _snap();
       _currentSpringStart = _nextSpringStart;
-      _nextSpringStart += const .new(milliseconds: _kMorphIntervalMs);
-      _simulation = _createSimulation();
+      _nextSpringStart += _kMorphInterval;
+      _simulation = _kMorphSpring;
     }
 
     if (_simulation case final simulation?) {
