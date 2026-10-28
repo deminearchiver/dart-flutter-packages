@@ -122,7 +122,7 @@ class _DeterminateLoadingIndicatorState
       :morphScaleFactor,
     ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
       polygons: _indicatorPolygons,
-      circularSequence: false,
+      loops: false,
     );
     _morphSequence = morphSequence;
     _morphScaleFactor = morphScaleFactor;
@@ -137,7 +137,7 @@ class _DeterminateLoadingIndicatorState
         :morphScaleFactor,
       ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
         polygons: _indicatorPolygons,
-        circularSequence: false,
+        loops: false,
       );
       _morphSequence = morphSequence;
       _morphScaleFactor = morphScaleFactor;
@@ -152,7 +152,7 @@ class _DeterminateLoadingIndicatorState
       :morphScaleFactor,
     ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
       polygons: _indicatorPolygons,
-      circularSequence: false,
+      loops: false,
     );
     _morphSequence = morphSequence;
     _morphScaleFactor = morphScaleFactor;
@@ -348,7 +348,7 @@ class _IndeterminateLoadingIndicatorState
       :morphScaleFactor,
     ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
       polygons: _indicatorPolygons,
-      circularSequence: true,
+      loops: true,
     );
     _controller = .new(vsync: this, morphSequenceLength: morphSequence.length);
     _painter = .new(
@@ -370,7 +370,7 @@ class _IndeterminateLoadingIndicatorState
         :morphScaleFactor,
       ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
         polygons: _indicatorPolygons,
-        circularSequence: true,
+        loops: true,
       );
       _painter
         ..morphSequence = morphSequence
@@ -394,7 +394,7 @@ class _IndeterminateLoadingIndicatorState
       :morphScaleFactor,
     ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
       polygons: _indicatorPolygons,
-      circularSequence: true,
+      loops: true,
     );
     _painter
       ..morphSequence = morphSequence
@@ -684,45 +684,47 @@ abstract final class LoadingIndicatorDefaults {
         _morphSequenceCacheSize,
       );
 
-  static List<Morph> _createMorphSequence({
+  static List<Morph> _generateMorphSequence({
     required List<RoundedPolygon> polygons,
     required int polygonsLength,
-    required bool circularSequence,
+    required bool loops,
     required int morphSequenceLength,
-  }) => .unmodifiableOf(
-    // Using fully qualified call avoids Iterable.generate dot shorthand.
-    List<Morph>.generate(
-      morphSequenceLength,
-      (index) => Morph(polygons[index], polygons[(index + 1) % polygonsLength]),
-      growable: false,
-    ),
-  );
+  }) {
+    // Sanity checks.
+    assert(polygonsLength == polygons.length);
+    assert(
+      morphSequenceLength == (loops ? polygonsLength : polygonsLength - 1),
+    );
+    return .unmodifiableOf(
+      // Using fully qualified call avoids Iterable.generate dot shorthand.
+      List<Morph>.generate(
+        morphSequenceLength,
+        (index) =>
+            Morph(polygons[index], polygons[(index + 1) % polygonsLength]),
+        growable: false,
+      ),
+    );
+  }
 
   static _MorphSequenceCacheValue _buildMorphSequenceAndScaleFactor({
     required List<RoundedPolygon> polygons,
-    required bool circularSequence,
+    required bool loops,
     bool approximate = true,
   }) {
     final polygonsLength = polygons.length;
-    final morphSequenceLength = circularSequence
-        ? polygonsLength
-        : polygonsLength - 1;
+    final morphSequenceLength = loops ? polygonsLength : polygonsLength - 1;
     if (morphSequenceLength <= 0) {
       return (morphSequence: const [], morphScaleFactor: 1.0);
     }
 
     polygons = .unmodifiableOf(polygons);
     return _morphSequenceCache.putIfAbsent(
-      .new(
-        polygons: polygons,
-        circularSequence: circularSequence,
-        approximate: approximate,
-      ),
+      .new(polygons: polygons, loops: loops, approximate: approximate),
       () => (
-        morphSequence: _createMorphSequence(
+        morphSequence: _generateMorphSequence(
           polygons: polygons,
           polygonsLength: polygonsLength,
-          circularSequence: circularSequence,
+          loops: loops,
           morphSequenceLength: morphSequenceLength,
         ),
         morphScaleFactor: calculateMorphScaleFactor(
@@ -735,17 +737,15 @@ abstract final class LoadingIndicatorDefaults {
 
   static List<Morph> buildMorphSequence(
     List<RoundedPolygon> polygons, {
-    required bool circularSequence,
+    required bool loops,
   }) {
     final polygonsLength = polygons.length;
-    final morphSequenceLength = circularSequence
-        ? polygonsLength
-        : polygonsLength - 1;
+    final morphSequenceLength = loops ? polygonsLength : polygonsLength - 1;
     return morphSequenceLength > 0
-        ? _createMorphSequence(
+        ? _generateMorphSequence(
             polygons: polygons,
             polygonsLength: polygonsLength,
-            circularSequence: circularSequence,
+            loops: loops,
             morphSequenceLength: morphSequenceLength,
           )
         : const [];
@@ -823,7 +823,7 @@ abstract final class LoadingIndicatorDefaults {
 // ignore: prefer_const_constructors_in_immutables
 final class _MorphSequenceCacheKey({
   required final List<RoundedPolygon> polygons,
-  required final bool circularSequence,
+  required final bool loops,
   required final bool approximate,
 }) {
   @override
@@ -831,13 +831,13 @@ final class _MorphSequenceCacheKey({
       identical(this, other) ||
       other is _MorphSequenceCacheKey &&
           listEquals(polygons, other.polygons) &&
-          circularSequence == other.circularSequence &&
+          loops == other.loops &&
           approximate == other.approximate;
 
   @override
   late final int hashCode = Object.hash(
     Object.hashAll(polygons),
-    circularSequence,
+    loops,
     approximate,
   );
 }
