@@ -770,28 +770,6 @@ abstract final class LoadingIndicatorDefaults {
         _morphSequenceCacheSize,
       );
 
-  static List<Morph> _generateMorphSequence({
-    required List<RoundedPolygon> polygons,
-    required int polygonsLength,
-    required bool loops,
-    required int morphSequenceLength,
-  }) {
-    // Sanity checks.
-    assert(polygonsLength == polygons.length);
-    assert(
-      morphSequenceLength == (loops ? polygonsLength : polygonsLength - 1),
-    );
-    return .unmodifiableOf(
-      // Using fully qualified call avoids Iterable.generate dot shorthand.
-      List<Morph>.generate(
-        morphSequenceLength,
-        (index) =>
-            Morph(polygons[index], polygons[(index + 1) % polygonsLength]),
-        growable: false,
-      ),
-    );
-  }
-
   static _MorphSequenceCacheValue _buildMorphSequenceAndScaleFactor({
     required List<RoundedPolygon> polygons,
     required bool loops,
@@ -807,11 +785,13 @@ abstract final class LoadingIndicatorDefaults {
     return _morphSequenceCache.putIfAbsent(
       .new(polygons: polygons, loops: loops, approximate: approximate),
       () => (
-        morphSequence: _generateMorphSequence(
-          polygons: polygons,
-          polygonsLength: polygonsLength,
-          loops: loops,
-          morphSequenceLength: morphSequenceLength,
+        morphSequence: .unmodifiableOf(
+          List<Morph>.generate(
+            morphSequenceLength,
+            (index) =>
+                Morph(polygons[index], polygons[(index + 1) % polygonsLength]),
+            growable: false,
+          ),
         ),
         morphScaleFactor: calculateMorphScaleFactor(
           polygons,
@@ -828,11 +808,15 @@ abstract final class LoadingIndicatorDefaults {
     final polygonsLength = polygons.length;
     final morphSequenceLength = loops ? polygonsLength : polygonsLength - 1;
     return morphSequenceLength > 0
-        ? _generateMorphSequence(
-            polygons: polygons,
-            polygonsLength: polygonsLength,
-            loops: loops,
-            morphSequenceLength: morphSequenceLength,
+        ? .unmodifiableOf(
+            List<Morph>.generate(
+              morphSequenceLength,
+              (index) => Morph(
+                polygons[index],
+                polygons[(index + 1) % polygonsLength],
+              ),
+              growable: false,
+            ),
           )
         : const [];
   }
