@@ -203,10 +203,7 @@ class _DeterminateLoadingIndicatorState
   @override
   void initState() {
     super.initState();
-    final (
-      :morphSequence,
-      :morphScaleFactor,
-    ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+    final _LoadingIndicatorData(:morphSequence, :morphScaleFactor) = .new(
       polygons: _indicatorPolygons,
       loops: false,
     );
@@ -218,10 +215,7 @@ class _DeterminateLoadingIndicatorState
   void didUpdateWidget(covariant DeterminateLoadingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget.indicatorPolygons, oldWidget.indicatorPolygons)) {
-      final (
-        :morphSequence,
-        :morphScaleFactor,
-      ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+      final _LoadingIndicatorData(:morphSequence, :morphScaleFactor) = .new(
         polygons: _indicatorPolygons,
         loops: false,
       );
@@ -233,10 +227,7 @@ class _DeterminateLoadingIndicatorState
   @override
   void reassemble() {
     super.reassemble();
-    final (
-      :morphSequence,
-      :morphScaleFactor,
-    ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+    final _LoadingIndicatorData(:morphSequence, :morphScaleFactor) = .new(
       polygons: _indicatorPolygons,
       loops: false,
     );
@@ -429,10 +420,7 @@ class _IndeterminateLoadingIndicatorState
   @override
   void initState() {
     super.initState();
-    final (
-      :morphSequence,
-      :morphScaleFactor,
-    ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+    final _LoadingIndicatorData(:morphSequence, :morphScaleFactor) = .new(
       polygons: _indicatorPolygons,
       loops: true,
     );
@@ -451,10 +439,7 @@ class _IndeterminateLoadingIndicatorState
   void didUpdateWidget(IndeterminateLoadingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget.indicatorPolygons, oldWidget.indicatorPolygons)) {
-      final (
-        :morphSequence,
-        :morphScaleFactor,
-      ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+      final _LoadingIndicatorData(:morphSequence, :morphScaleFactor) = .new(
         polygons: _indicatorPolygons,
         loops: true,
       );
@@ -475,10 +460,7 @@ class _IndeterminateLoadingIndicatorState
   @override
   void reassemble() {
     super.reassemble();
-    final (
-      :morphSequence,
-      :morphScaleFactor,
-    ) = LoadingIndicatorDefaults._buildMorphSequenceAndScaleFactor(
+    final _LoadingIndicatorData(:morphSequence, :morphScaleFactor) = .new(
       polygons: _indicatorPolygons,
       loops: true,
     );
@@ -763,44 +745,6 @@ abstract final class LoadingIndicatorDefaults {
         MaterialShapes.softBurst,
       ]);
 
-  static const _morphSequenceCacheSize = 8;
-
-  static final _morphSequenceCache =
-      _LruCache<_MorphSequenceCacheKey, _MorphSequenceCacheValue>(
-        _morphSequenceCacheSize,
-      );
-
-  static _MorphSequenceCacheValue _buildMorphSequenceAndScaleFactor({
-    required List<RoundedPolygon> polygons,
-    required bool loops,
-    bool approximate = true,
-  }) {
-    final polygonsLength = polygons.length;
-    final morphSequenceLength = loops ? polygonsLength : polygonsLength - 1;
-    if (morphSequenceLength <= 0) {
-      return (morphSequence: const [], morphScaleFactor: 1.0);
-    }
-
-    polygons = .unmodifiableOf(polygons);
-    return _morphSequenceCache.putIfAbsent(
-      .new(polygons: polygons, loops: loops, approximate: approximate),
-      () => (
-        morphSequence: .unmodifiableOf(
-          List<Morph>.generate(
-            morphSequenceLength,
-            (index) =>
-                Morph(polygons[index], polygons[(index + 1) % polygonsLength]),
-            growable: false,
-          ),
-        ),
-        morphScaleFactor: calculateMorphScaleFactor(
-          polygons,
-          approximate: approximate,
-        ),
-      ),
-    );
-  }
-
   static List<Morph> buildMorphSequence(
     List<RoundedPolygon> polygons, {
     required bool loops,
@@ -890,32 +834,71 @@ abstract final class LoadingIndicatorDefaults {
 }
 
 @immutable
+class const _LoadingIndicatorData._({
+  required final List<Morph> morphSequence,
+  required final double morphScaleFactor,
+}) {
+  factory({required List<RoundedPolygon> polygons, required bool loops}) {
+    final polygonsLength = polygons.length;
+    final morphSequenceLength = loops ? polygonsLength : polygonsLength - 1;
+    if (morphSequenceLength <= 0) {
+      return const ._(morphSequence: [], morphScaleFactor: 1.0);
+    }
+
+    polygons = .unmodifiableOf(polygons);
+    return _cache.putIfAbsent(
+      .new(polygons: polygons, loops: loops),
+      () => ._(
+        morphSequence: .unmodifiableOf(
+          List<Morph>.generate(
+            morphSequenceLength,
+            (index) =>
+                Morph(polygons[index], polygons[(index + 1) % polygonsLength]),
+            growable: false,
+          ),
+        ),
+        morphScaleFactor: LoadingIndicatorDefaults.calculateMorphScaleFactor(
+          polygons,
+        ),
+      ),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _LoadingIndicatorData &&
+          listEquals(morphSequence, other.morphSequence) &&
+          morphScaleFactor == other.morphScaleFactor;
+
+  @override
+  int get hashCode =>
+      Object.hash(Object.hashAll(morphSequence), morphScaleFactor);
+
+  static const _cacheSize = 8;
+
+  static final _cache =
+      _LruCache<_LoadingIndicatorDataCacheKey, _LoadingIndicatorData>(
+        _cacheSize,
+      );
+}
+
+@immutable
 // ignore: prefer_const_constructors_in_immutables
-final class _MorphSequenceCacheKey({
+final class _LoadingIndicatorDataCacheKey({
   required final List<RoundedPolygon> polygons,
   required final bool loops,
-  required final bool approximate,
 }) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _MorphSequenceCacheKey &&
+      other is _LoadingIndicatorDataCacheKey &&
           listEquals(polygons, other.polygons) &&
-          loops == other.loops &&
-          approximate == other.approximate;
+          loops == other.loops;
 
   @override
-  late final int hashCode = Object.hash(
-    Object.hashAll(polygons),
-    loops,
-    approximate,
-  );
+  late final int hashCode = Object.hash(Object.hashAll(polygons), loops);
 }
-
-typedef _MorphSequenceCacheValue = ({
-  List<Morph> morphSequence,
-  double morphScaleFactor,
-});
 
 /// Cache of objects of limited size that evicts the least recently used entry.
 ///
