@@ -11,6 +11,7 @@ import 'package:material_example/experiment7.dart' show Experiment7View;
 import 'package:material_example/experiment8.dart' show Experiment8View;
 import 'package:material_example/experiment9.dart' show Experiment9View;
 import 'package:material_example/experiment10.dart' show Experiment10View;
+import 'package:material_example/experiment11.dart' show Experiment11View;
 
 final _themeModeNotifier = ValueNotifier(ThemeMode.system);
 
@@ -222,6 +223,7 @@ class _NavigationViewState extends State<NavigationView> {
             8 => const Experiment8View(),
             9 => const Experiment9View(),
             10 => const Experiment10View(),
+            11 => const Experiment11View(),
             _ => Scaffold(
               backgroundColor: colorTheme.surfaceContainer,
               body: const Placeholder(),
@@ -238,7 +240,7 @@ class _NavigationViewState extends State<NavigationView> {
   }
 
   static const _firstIndex = 1;
-  static const _lastIndex = 10;
+  static const _lastIndex = 11;
 }
 
 class DeveloperToolbar extends StatefulWidget {
