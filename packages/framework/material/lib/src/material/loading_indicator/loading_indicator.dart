@@ -188,35 +188,33 @@ class _DeterminateLoadingIndicatorState
     // Rotate counterclockwise.
     final rotation = -progressFraction * math.pi;
 
-    return RepaintBoundary(
-      child: Semantics(
-        label: widget.semanticsLabel,
-        role: .progressBar,
-        minValue: "0",
-        maxValue: "100",
-        value: "${(clampedProgressFraction * 100).round()}",
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            minWidth: _kContainerWidth,
-            minHeight: _kContainerHeight,
-          ),
-          child: Surface(
-            clipBehavior: .antiAlias,
-            shape: resolvedContainerOutline.apply(resolvedContainerShape),
-            color: resolvedContainerColor,
-            child: CustomPaint(
-              painter: _DeterminateLoadingIndicatorPainter(
-                color: resolvedActiveIndicatorColor,
-                outline: resolvedActiveIndicatorOutline,
-                currentMorph: currentMorph,
-                morphScaleFactor: _morphScaleFactor,
-                adjustedProgressValue: adjustedProgressValue,
-                rotation: rotation,
-                matrix: _matrix,
-              ),
-              isComplex: true,
-              willChange: false,
+    return Semantics(
+      label: widget.semanticsLabel,
+      role: .progressBar,
+      minValue: "0",
+      maxValue: "100",
+      value: "${(clampedProgressFraction * 100).round()}",
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: _kContainerWidth,
+          minHeight: _kContainerHeight,
+        ),
+        child: Surface(
+          clipBehavior: .antiAlias,
+          shape: resolvedContainerOutline.apply(resolvedContainerShape),
+          color: resolvedContainerColor,
+          child: CustomPaint(
+            painter: _DeterminateLoadingIndicatorPainter(
+              color: resolvedActiveIndicatorColor,
+              outline: resolvedActiveIndicatorOutline,
+              currentMorph: currentMorph,
+              morphScaleFactor: _morphScaleFactor,
+              adjustedProgressValue: adjustedProgressValue,
+              rotation: rotation,
+              matrix: _matrix,
             ),
+            isComplex: true,
+            willChange: false,
           ),
         ),
       ),
@@ -404,22 +402,20 @@ class _IndeterminateLoadingIndicatorState
       ..color = resolvedActiveIndicatorColor
       ..outline = resolvedActiveIndicatorOutline;
 
-    return RepaintBoundary(
-      child: Semantics(
-        label: widget.semanticsLabel,
-        role: .loadingSpinner,
-        value: widget.semanticsValue,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            minWidth: _kContainerWidth,
-            minHeight: _kContainerHeight,
-          ),
-          child: Surface(
-            clipBehavior: .antiAlias,
-            shape: resolvedContainerOutline.apply(resolvedContainerShape),
-            color: resolvedContainerColor,
-            child: CustomPaint(painter: _painter, willChange: true),
-          ),
+    return Semantics(
+      label: widget.semanticsLabel,
+      role: .loadingSpinner,
+      value: widget.semanticsValue,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: _kContainerWidth,
+          minHeight: _kContainerHeight,
+        ),
+        child: Surface(
+          clipBehavior: .antiAlias,
+          shape: resolvedContainerOutline.apply(resolvedContainerShape),
+          color: resolvedContainerColor,
+          child: CustomPaint(painter: _painter, willChange: true),
         ),
       ),
     );
