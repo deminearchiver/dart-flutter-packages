@@ -1,3 +1,7 @@
+## Unreleased
+
+- Upgraded `material_ui` dependency constraint to support `material_ui:1.9.x`.
+
 ## 0.6.2
 
 - Introduced exprimental `ProxyShapeBorder` and `ProxyOutlinedBorder` abstract classes.

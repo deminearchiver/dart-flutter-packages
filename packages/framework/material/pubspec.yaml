@@ -33,7 +33,7 @@ dependencies:
   luminous_symbols_icons: ^0.1.0
   material_3p: ^0.6.0
   material_symbols_icons: ^4.2960.0
-  material_ui: ">=1.8.0 <1.9.0"
+  material_ui: ">=1.9.0 <1.10.0"
   meta: ^1.18.0
   motor: ^1.1.0
   nested: ^1.0.0
