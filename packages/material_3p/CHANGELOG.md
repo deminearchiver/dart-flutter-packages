@@ -1,4 +1,4 @@
-## Unreleased
+## 0.6.3
 
 - Upgraded `material_ui` dependency constraint to support `material_ui:1.9.x`.
 
