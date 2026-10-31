@@ -8,7 +8,7 @@ enum AnimationDirection {
   /// The animation is running backwards, from end to beginning.
   reverse;
 
-  AnimationDirection get inverted => switch (this) {
+  AnimationDirection get flipped => switch (this) {
     .forward => .reverse,
     .reverse => .forward,
   };
