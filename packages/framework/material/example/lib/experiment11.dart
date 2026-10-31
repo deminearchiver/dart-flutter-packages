@@ -189,16 +189,10 @@ class const _PullToRefreshIndicator({
         onEnd: onFadedOut,
         child: Transform.scale(
           scale: scale,
-          child: isPulling
-              ? DeterminateLoadingIndicator(
-                  progress: pullProgress,
-                  contained: true,
-                  semanticsLabel: "Pull to refresh",
-                )
-              : const IndeterminateLoadingIndicator(
-                  contained: true,
-                  semanticsLabel: 'Refreshing',
-                ),
+          child: LoadingIndicator.contained(
+            progress: isPulling ? pullProgress : null,
+            semanticsLabel: isPulling ? "Pull to refresh" : "Refreshing",
+          ),
         ),
       ),
     );
