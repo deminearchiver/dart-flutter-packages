@@ -25,6 +25,52 @@ class _AppBarWithSearchState extends State<AppBarWithSearch> {
       state: this,
       leading: widget.leading,
       trailing: widget.trailing,
+      builder: (context) {
+        final padding = MediaQuery.paddingOf(context);
+        final colorTheme = ColorTheme.of(context);
+        final shapeTheme = ShapeTheme.of(context);
+        return Padding(
+          padding: .fromLTRB(padding.left, 0.0, padding.right, 0.0),
+          child: CustomScrollView(
+            slivers: [
+              SliverPadding(
+                padding: const .symmetric(horizontal: 8.0),
+                sliver: SliverList.separated(
+                  itemCount: 25,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 2.0),
+                  itemBuilder: (context, index) => ListItemContainer(
+                    isFirst: index == 0,
+                    isLast: index == 25 - 1,
+                    containerColor: const .all(Colors.transparent),
+                    child: ListItemInteraction(
+                      onTap: () => Navigator.pop(context),
+                      child: ListItemLayout(
+                        leading: SizedBox.square(
+                          dimension: 32.0,
+                          child: Surface(
+                            shape: shapeTheme.applyCorner(
+                              corner: shapeTheme.cornerFull,
+                            ),
+                            color: colorTheme.surfaceContainerHigh,
+                            child: const Icon(
+                              MaterialSymbols.search_rounded,
+                              opticalSize: 20.0,
+                              size: 20.0,
+                            ),
+                          ),
+                        ),
+                        headline: Text("Result ${index + 1}"),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 8.0 + padding.bottom)),
+            ],
+          ),
+        );
+      },
     );
     setState(() => _route = route);
     await Navigator.of(context).push(route);
@@ -138,6 +184,7 @@ class _AppBarSearchViewRoute<T extends Object?>({
   required final _AppBarWithSearchState state,
   final Widget? leading,
   final Widget? trailing,
+  required final WidgetBuilder builder,
 }) extends PopupRoute<T> {
   @override
   Color? get barrierColor => null;
@@ -288,7 +335,11 @@ class _AppBarSearchViewRoute<T extends Object?>({
     );
   }
 
-  Widget _buildTransitions(BuildContext context, Animation<double> animation) {
+  Widget _buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Widget child,
+  ) {
     final padding = MediaQuery.paddingOf(context);
     final colorTheme = ColorTheme.of(context);
     final elevationTheme = ElevationTheme.of(context);
@@ -445,49 +496,7 @@ class _AppBarSearchViewRoute<T extends Object?>({
               body: Opacity(
                 opacity: clampDouble(animation.value, 0.0, 1.0),
                 // opacity: 1.0,
-                child: Padding(
-                  padding: .fromLTRB(padding.left, 0.0, padding.right, 0.0),
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverPadding(
-                        padding: const .symmetric(horizontal: 8.0),
-                        sliver: SliverList.separated(
-                          itemCount: 25,
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 2.0),
-                          itemBuilder: (context, index) => ListItemContainer(
-                            isFirst: index == 0,
-                            isLast: index == 25 - 1,
-                            containerColor: const .all(Colors.transparent),
-                            child: ListItemInteraction(
-                              onTap: () => navigator?.pop(),
-                              child: ListItemLayout(
-                                leading: SizedBox.square(
-                                  dimension: 32.0,
-                                  child: Surface(
-                                    shape: shapeTheme.applyCorner(
-                                      corner: shapeTheme.cornerFull,
-                                    ),
-                                    color: colorTheme.surfaceContainerHigh,
-                                    child: const Icon(
-                                      MaterialSymbols.search_rounded,
-                                      opticalSize: 20.0,
-                                      size: 20.0,
-                                    ),
-                                  ),
-                                ),
-                                headline: Text("Result ${index + 1}"),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: SizedBox(height: 8.0 + padding.bottom),
-                      ),
-                    ],
-                  ),
-                ),
+                child: child,
               ),
             ),
           ),
@@ -505,7 +514,7 @@ class _AppBarSearchViewRoute<T extends Object?>({
   ) => PredictiveBackGestureDetector(
     route: this,
     builder: (context, phase, startBackEvent, currentBackEvent) =>
-        _buildTransitions(context, animation),
+        _buildTransitions(context, animation, child),
   );
 
   @override
@@ -513,7 +522,7 @@ class _AppBarSearchViewRoute<T extends Object?>({
     BuildContext context,
     Animation<double> animation,
     Animation<double> secondaryAnimation,
-  ) => const SizedBox.shrink();
+  ) => builder(context);
 }
 
 enum _SearchViewLeaderSlot { appBar, appBarLeading, appBarTrailing, searchBar }
