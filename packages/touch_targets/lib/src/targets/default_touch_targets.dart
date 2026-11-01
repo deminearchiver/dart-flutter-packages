@@ -201,15 +201,16 @@ class const _DefaultTouchTargetClient(
   }
 
   @override
-  bool hasOwn(RenderObject renderObject) => renderObject == _renderObject;
+  bool hasOwn(RenderObject renderObject) =>
+      identical(renderObject, _renderObject);
 
   @override
   bool hasDescendant(RenderObject renderObject) {
-    if (renderObject == _renderObject) return false;
+    if (identical(renderObject, _renderObject)) return false;
     if (renderObject.depth <= _renderObject.depth) return false;
     var current = renderObject.parent;
     while (current != null) {
-      if (current == _renderObject) return true;
+      if (identical(current, _renderObject)) return true;
       if (current.depth < _renderObject.depth) break;
       current = current.parent;
     }
@@ -218,11 +219,11 @@ class const _DefaultTouchTargetClient(
 
   @override
   bool hasAncestor(RenderObject renderObject) {
-    if (renderObject == _renderObject) return false;
+    if (identical(renderObject, _renderObject)) return false;
     if (renderObject.depth >= _renderObject.depth) return false;
     var current = _renderObject.parent;
     while (current != null) {
-      if (current == renderObject) return true;
+      if (identical(current, renderObject)) return true;
       if (current.depth < renderObject.depth) break;
       current = current.parent;
     }
@@ -233,7 +234,7 @@ class const _DefaultTouchTargetClient(
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _DefaultTouchTargetClient &&
-          _renderObject == other._renderObject;
+          identical(_renderObject, other._renderObject);
 
   @override
   int get hashCode => _renderObject.hashCode;
