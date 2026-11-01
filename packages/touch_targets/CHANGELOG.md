@@ -4,6 +4,9 @@
   - Refactored classes and extension types to use Dart 3.13 [primary constructors](https://dart.dev/language/primary-constructors) and [concise constructor syntax](https://dart.dev/language/constructors#concise-constructor-syntax).
   - Reformatted the library with [Dart 3.13 formatter changes](https://dart.dev/blog/announcing-dart-3-13#dart-formatter).
 
+- `TouchGroup` no longer implements the `ProxyWidget` interface.
+  - This must not affect most use cases.
+
 ## 0.5.0
 
 - Removed `TouchTargetFit` from default touch targets.

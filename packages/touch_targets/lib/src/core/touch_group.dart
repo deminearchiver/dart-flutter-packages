@@ -41,11 +41,11 @@ bool debugCheckHasTouchGroup(BuildContext context) {
 class const TouchGroup({
   super.key,
 
-  /// The widget below this widget in the tree.
+  /// The child widget of this [TouchGroup].
   ///
   /// {@macro flutter.widgets.ProxyWidget.child}
-  @override required final Widget child,
-}) extends StatefulWidget implements ProxyWidget {
+  required final Widget child,
+}) extends StatefulWidget {
   @override
   State<TouchGroup> createState() => _TouchGroupState();
 
