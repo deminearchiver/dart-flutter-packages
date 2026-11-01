@@ -26,6 +26,3 @@ dev_dependencies:
 
   # Hosted dependencies
   deminearchiver_lints: ^3.1.0
-
-# TODO: should this be removed?
-flutter:

@@ -7,6 +7,8 @@
 - `TouchGroup` no longer implements the `ProxyWidget` interface.
   - This must not affect most use cases.
 
+- Removed empty `flutter:` section from `pubspec.yaml`.
+
 ## 0.5.0
 
 - Removed `TouchTargetFit` from default touch targets.
