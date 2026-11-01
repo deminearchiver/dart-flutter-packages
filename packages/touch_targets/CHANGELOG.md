@@ -1,3 +1,9 @@
+## Unreleased
+
+- Bumped minimum SDK versions to Dart 3.13 and Flutter 3.47.
+  - Refactored classes and extension types to use Dart 3.13 [primary constructors](https://dart.dev/language/primary-constructors) and [concise constructor syntax](https://dart.dev/language/constructors#concise-constructor-syntax).
+  - Reformatted the library with [Dart 3.13 formatter changes](https://dart.dev/blog/announcing-dart-3-13#dart-formatter).
+
 ## 0.5.0
 
 - Removed `TouchTargetFit` from default touch targets.

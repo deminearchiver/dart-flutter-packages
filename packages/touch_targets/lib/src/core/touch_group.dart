@@ -38,15 +38,14 @@ bool debugCheckHasTouchGroup(BuildContext context) {
   return true;
 }
 
-class TouchGroup extends StatefulWidget implements ProxyWidget {
-  const TouchGroup({super.key, required this.child});
+class const TouchGroup({
+  super.key,
 
   /// The widget below this widget in the tree.
   ///
   /// {@macro flutter.widgets.ProxyWidget.child}
-  @override
-  final Widget child;
-
+  @override required final Widget child,
+}) extends StatefulWidget implements ProxyWidget {
   @override
   State<TouchGroup> createState() => _TouchGroupState();
 
@@ -99,13 +98,11 @@ class _TouchGroupState extends State<TouchGroup> implements TouchGroupRegistry {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return _TouchTheatre(
-      registry: this,
-      clients: _clients,
-      child: _TouchGroupStateScope(state: this, child: widget.child),
-    );
-  }
+  Widget build(BuildContext context) => _TouchTheatre(
+    registry: this,
+    clients: _clients,
+    child: _TouchGroupStateScope(state: this, child: widget.child),
+  );
 }
 
 class _TouchGroupStateScope extends InheritedWidget {
@@ -126,17 +123,11 @@ class _TouchGroupStateScope extends InheritedWidget {
       ?.state;
 }
 
-class _TouchTheatre extends SingleChildRenderObjectWidget {
-  const _TouchTheatre({
-    // super.key,
-    required this.registry,
-    required this.clients,
-    super.child,
-  });
-
-  final TouchGroupRegistry registry;
-  final Iterable<TouchClient> clients;
-
+class const _TouchTheatre({
+  required final TouchGroupRegistry registry,
+  required final Iterable<TouchClient> clients,
+  super.child,
+}) extends SingleChildRenderObjectWidget {
   @override
   _RenderTouchTheatre createRenderObject(BuildContext context) =>
       _RenderTouchTheatre(registry: registry, clients: clients);
@@ -152,25 +143,21 @@ class _TouchTheatre extends SingleChildRenderObjectWidget {
   }
 }
 
-class _RenderTouchTheatre extends RenderProxyBox {
-  _RenderTouchTheatre({
-    required this._registry,
-    required this._clients,
-    RenderBox? child,
-  }) : super(child);
+class _RenderTouchTheatre({
+  required var TouchGroupRegistry _registry,
+  required var Iterable<TouchClient> _clients,
+  RenderBox? child,
+}) extends RenderProxyBox {
+  this : super(child);
 
   // TODO: implement debug paint (don't forget to add markNeedsPaint EVERYWHERE)
 
-  TouchGroupRegistry _registry;
-
   TouchGroupRegistry get registry => _registry;
-
   set registry(TouchGroupRegistry value) {
     if (_registry == value) return;
     _registry = value;
   }
 
-  Iterable<TouchClient> _clients;
   Iterable<TouchClient> get clients => _clients;
   set clients(Iterable<TouchClient> value) {
     if (_clients == value) return;
@@ -268,9 +255,9 @@ class _RenderTouchTheatre extends RenderProxyBox {
 }
 
 extension type const _WeightedTouchClient._(
-  ({TouchClient client, double weight}) _
+  ({TouchClient client, double weight}) _,
 ) implements Object {
-  const _WeightedTouchClient(TouchClient client, double weight)
+  const new(TouchClient client, double weight)
     : _ = (client: client, weight: weight);
 
   TouchClient get client => _.client;

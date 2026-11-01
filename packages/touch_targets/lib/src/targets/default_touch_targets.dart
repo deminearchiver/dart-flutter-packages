@@ -8,7 +8,7 @@ mixin TouchTargetDefaultsRenderObjectMixin
     on
         RenderBox,
         RenderObjectWithChildMixin<RenderBox>,
-        TouchClientRenderObjectRequiredMixin {}
+        TouchClientRenderObjectRequiredMixin;
 
 // mixin TouchTargetRenderObjectWidgetMixin on RenderObjectWidget {
 //   @override
@@ -109,11 +109,9 @@ mixin _RenderDefaultTouchTargetMixin
   // }
 }
 
-class _DefaultTouchTargetClient implements TouchClient {
-  const _DefaultTouchTargetClient(this._renderObject);
-
-  final _RenderDefaultTouchTargetMixin _renderObject;
-
+class const _DefaultTouchTargetClient(
+  final _RenderDefaultTouchTargetMixin _renderObject,
+) implements TouchClient {
   @override
   bool get isActive => _renderObject.attached && _renderObject.enabled;
 
@@ -241,32 +239,23 @@ class _DefaultTouchTargetClient implements TouchClient {
   int get hashCode => _renderObject.hashCode;
 }
 
-class SizedTouchTarget extends SingleChildRenderObjectWidget {
-  const SizedTouchTarget({
-    super.key,
-    this.registry,
-    this.enabled = true,
-    required this.minimumSize,
-    this.alignment = .center,
-    this.textDirection,
-    required Widget super.child,
-  });
-
-  final TouchGroupRegistry? registry;
-  final bool enabled;
-  final Size minimumSize;
-  final AlignmentGeometry alignment;
-  final TextDirection? textDirection;
-
+class const SizedTouchTarget({
+  super.key,
+  final TouchGroupRegistry? registry,
+  final bool enabled = true,
+  required final Size minimumSize,
+  final AlignmentGeometry alignment = .center,
+  final TextDirection? textDirection,
+  required Widget super.child,
+}) extends SingleChildRenderObjectWidget {
   @override
-  RenderSizedTouchTarget createRenderObject(BuildContext context) =>
-      RenderSizedTouchTarget(
-        registry: registry ?? TouchGroup.of(context),
-        enabled: enabled,
-        minimumSize: minimumSize,
-        alignment: alignment,
-        textDirection: textDirection ?? Directionality.maybeOf(context),
-      );
+  RenderSizedTouchTarget createRenderObject(BuildContext context) => .new(
+    registry: registry ?? TouchGroup.of(context),
+    enabled: enabled,
+    minimumSize: minimumSize,
+    alignment: alignment,
+    textDirection: textDirection ?? Directionality.maybeOf(context),
+  );
 
   @override
   void updateRenderObject(
@@ -305,33 +294,25 @@ class SizedTouchTarget extends SingleChildRenderObjectWidget {
   }
 }
 
-class RenderSizedTouchTarget extends RenderShiftedBox
+class RenderSizedTouchTarget({
+  required TouchGroupRegistry registry,
+  @override required var bool _enabled,
+  required var Size _minimumSize,
+  var AlignmentGeometry _alignment = .center,
+  var TextDirection? _textDirection,
+  RenderBox? child,
+}) extends RenderShiftedBox
     with TouchClientRenderObjectRequiredMixin, _RenderDefaultTouchTargetMixin {
-  RenderSizedTouchTarget({
-    required TouchGroupRegistry registry,
-    required this._enabled,
-    required this._minimumSize,
-    this._alignment = .center,
-    this._textDirection,
-    RenderBox? child,
-  }) : super(child) {
+  this : super(child) {
     this.registry = registry;
   }
 
-  @override
-  bool _enabled;
-
-  Size _minimumSize;
-
   Size get minimumSize => _minimumSize;
-
   set minimumSize(Size value) {
     if (_minimumSize == value) return;
     _minimumSize = value;
     markNeedsLayout();
   }
-
-  AlignmentGeometry _alignment;
 
   /// How to align the child.
   ///
@@ -354,14 +335,11 @@ class RenderSizedTouchTarget extends RenderShiftedBox
     _markNeedsResolution();
   }
 
-  TextDirection? _textDirection;
-
   /// The text direction with which to resolve [alignment].
   ///
   /// This may be changed to null, but only after [alignment] has been changed
   /// to a value that does not depend on the direction.
   TextDirection? get textDirection => _textDirection;
-
   set textDirection(TextDirection? value) {
     if (_textDirection == value) return;
     _textDirection = value;
@@ -369,7 +347,6 @@ class RenderSizedTouchTarget extends RenderShiftedBox
   }
 
   Alignment? _resolvedAlignmentCache;
-
   Alignment get _resolvedAlignment =>
       _resolvedAlignmentCache ??= alignment.resolve(textDirection);
 
@@ -478,24 +455,14 @@ class RenderSizedTouchTarget extends RenderShiftedBox
   }
 }
 
-class PaddedTouchTarget extends SingleChildRenderObjectWidget {
-  const PaddedTouchTarget({
-    super.key,
-    this.registry,
-    this.enabled = true,
-    this.padding = .zero,
-    this.textDirection,
-    required Widget super.child,
-  });
-
-  final TouchGroupRegistry? registry;
-
-  final bool enabled;
-
-  final EdgeInsetsGeometry padding;
-
-  final TextDirection? textDirection;
-
+class const PaddedTouchTarget({
+  super.key,
+  final TouchGroupRegistry? registry,
+  final bool enabled = true,
+  final EdgeInsetsGeometry padding = .zero,
+  final TextDirection? textDirection,
+  required Widget super.child,
+}) extends SingleChildRenderObjectWidget {
   @override
   RenderPaddedTouchTarget createRenderObject(BuildContext context) =>
       RenderPaddedTouchTarget(
@@ -540,23 +507,18 @@ class PaddedTouchTarget extends SingleChildRenderObjectWidget {
   }
 }
 
-class RenderPaddedTouchTarget extends RenderShiftedBox
+class RenderPaddedTouchTarget({
+  required TouchGroupRegistry registry,
+  @override required var bool _enabled,
+  required var EdgeInsetsGeometry _padding,
+  var TextDirection? _textDirection,
+  RenderBox? child,
+}) extends RenderShiftedBox
     with TouchClientRenderObjectRequiredMixin, _RenderDefaultTouchTargetMixin
     implements RenderPadding {
-  RenderPaddedTouchTarget({
-    required TouchGroupRegistry registry,
-    required this._enabled,
-    required this._padding,
-    this._textDirection,
-    RenderBox? child,
-  }) : super(child) {
+  this : super(child) {
     this.registry = registry;
   }
-
-  @override
-  bool _enabled;
-
-  EdgeInsetsGeometry _padding;
 
   /// The amount to pad the child in each dimension.
   ///
@@ -573,8 +535,6 @@ class RenderPaddedTouchTarget extends RenderShiftedBox
     _markNeedsResolution();
   }
 
-  TextDirection? _textDirection;
-
   /// The text direction with which to resolve [padding].
   ///
   /// This may be changed to null, but only after the [padding] has been changed
@@ -590,7 +550,6 @@ class RenderPaddedTouchTarget extends RenderShiftedBox
   }
 
   EdgeInsets? _resolvedPaddingCache;
-
   EdgeInsets get _resolvedPadding {
     final result = _resolvedPaddingCache ??= padding.resolve(textDirection);
     assert(result.isNonNegative);
