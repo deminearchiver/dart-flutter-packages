@@ -11,6 +11,8 @@
 
 - Removed empty `flutter:` section from `pubspec.yaml`.
 
+- Minor changes.
+
 ## 0.5.0
 
 - Removed `TouchTargetFit` from default touch targets.

@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart';
@@ -61,7 +60,7 @@ class const TouchGroup({
 class _TouchGroupState extends State<TouchGroup> implements TouchGroupRegistry {
   // TODO: improve state management here
 
-  final Set<TouchClient> _clients = HashSet<TouchClient>();
+  final _clients = <TouchClient>{};
 
   @override
   void registerClient(TouchClient client) {
@@ -99,21 +98,15 @@ class _TouchGroupState extends State<TouchGroup> implements TouchGroupRegistry {
 
   @override
   Widget build(BuildContext context) => _TouchTheatre(
-    registry: this,
     clients: _clients,
     child: _TouchGroupStateScope(state: this, child: widget.child),
   );
 }
 
-class _TouchGroupStateScope extends InheritedWidget {
-  const _TouchGroupStateScope({
-    // super.key,
-    required this.state,
-    required super.child,
-  });
-
-  final _TouchGroupState state;
-
+class const _TouchGroupStateScope({
+  required final _TouchGroupState state,
+  required super.child,
+}) extends InheritedWidget {
   @override
   bool updateShouldNotify(_TouchGroupStateScope oldWidget) =>
       state != oldWidget.state;
@@ -124,39 +117,29 @@ class _TouchGroupStateScope extends InheritedWidget {
 }
 
 class const _TouchTheatre({
-  required final TouchGroupRegistry registry,
   required final Iterable<TouchClient> clients,
   super.child,
 }) extends SingleChildRenderObjectWidget {
   @override
   _RenderTouchTheatre createRenderObject(BuildContext context) =>
-      _RenderTouchTheatre(registry: registry, clients: clients);
+      _RenderTouchTheatre(clients: clients);
 
   @override
   void updateRenderObject(
     BuildContext context,
     _RenderTouchTheatre renderObject,
   ) {
-    renderObject
-      ..registry = registry
-      ..clients = clients;
+    renderObject.clients = clients;
   }
 }
 
+typedef _WeightedTouchClient = ({TouchClient client, double weight});
+
 class _RenderTouchTheatre({
-  required var TouchGroupRegistry _registry,
   required var Iterable<TouchClient> _clients,
   RenderBox? child,
 }) extends RenderProxyBox {
   this : super(child);
-
-  // TODO: implement debug paint (don't forget to add markNeedsPaint EVERYWHERE)
-
-  TouchGroupRegistry get registry => _registry;
-  set registry(TouchGroupRegistry value) {
-    if (_registry == value) return;
-    _registry = value;
-  }
 
   Iterable<TouchClient> get clients => _clients;
   set clients(Iterable<TouchClient> value) {
@@ -183,7 +166,7 @@ class _RenderTouchTheatre({
         final weight = distanceToEdge * (childDiagonal + 1.0);
 
         // Add weighted client for scoring.
-        weightedClients.add(.new(client, weight));
+        weightedClients.add((client: client, weight: weight));
       }
     }
 
@@ -252,17 +235,6 @@ class _RenderTouchTheatre({
     }
     return super.hitTest(result, position: position);
   }
-}
-
-extension type const _WeightedTouchClient._(
-  ({TouchClient client, double weight}) _,
-) implements Object {
-  const new(TouchClient client, double weight)
-    : _ = (client: client, weight: weight);
-
-  TouchClient get client => _.client;
-
-  double get weight => _.weight;
 }
 
 // To quickly check if the hit test result has a correct path during debugging,
