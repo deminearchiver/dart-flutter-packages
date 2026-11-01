@@ -22,7 +22,7 @@ mixin TouchTargetDefaultsRenderObjectMixin
 // }
 
 mixin _RenderDefaultTouchTargetMixin
-    on RenderShiftedBox, TouchClientRenderObjectRequiredMixin {
+    on RenderProxyBox, TouchClientRenderObjectRequiredMixin {
   bool get _enabled;
   set _enabled(bool value);
 
@@ -302,7 +302,7 @@ class RenderSizedTouchTarget({
   var AlignmentGeometry _alignment = .center,
   var TextDirection? _textDirection,
   RenderBox? child,
-}) extends RenderShiftedBox
+}) extends RenderProxyBox
     with TouchClientRenderObjectRequiredMixin, _RenderDefaultTouchTargetMixin {
   this : super(child) {
     this.registry = registry;
@@ -514,9 +514,8 @@ class RenderPaddedTouchTarget({
   required var EdgeInsetsGeometry _padding,
   var TextDirection? _textDirection,
   RenderBox? child,
-}) extends RenderShiftedBox
-    with TouchClientRenderObjectRequiredMixin, _RenderDefaultTouchTargetMixin
-    implements RenderPadding {
+}) extends RenderProxyBox
+    with TouchClientRenderObjectRequiredMixin, _RenderDefaultTouchTargetMixin {
   this : super(child) {
     this.registry = registry;
   }
@@ -525,10 +524,7 @@ class RenderPaddedTouchTarget({
   ///
   /// If this is set to an [EdgeInsetsDirectional] object, then [textDirection]
   /// must not be null.
-  @override
   EdgeInsetsGeometry get padding => _padding;
-
-  @override
   set padding(EdgeInsetsGeometry value) {
     assert(value.isNonNegative);
     if (_padding == value) return;
@@ -540,10 +536,7 @@ class RenderPaddedTouchTarget({
   ///
   /// This may be changed to null, but only after the [padding] has been changed
   /// to a value that does not depend on the direction.
-  @override
   TextDirection? get textDirection => _textDirection;
-
-  @override
   set textDirection(TextDirection? value) {
     if (_textDirection == value) return;
     _textDirection = value;
@@ -561,8 +554,6 @@ class RenderPaddedTouchTarget({
     _resolvedPaddingCache = null;
     markNeedsLayout();
   }
-
-  // TODO: investigate if layout logic should match RenderPadding
 
   @override
   Rect _getLocalRect() {

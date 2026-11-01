@@ -6,8 +6,10 @@
   - Refactored classes and extension types to use Dart 3.13 [primary constructors](https://dart.dev/language/primary-constructors) and [concise constructor syntax](https://dart.dev/language/constructors#concise-constructor-syntax).
   - Reformatted the library with [Dart 3.13 formatter changes](https://dart.dev/blog/announcing-dart-3-13#dart-formatter).
 
-- `TouchGroup` no longer implements the `ProxyWidget` interface.
-  - This must not affect most use cases.
+- Fixed certain superinterfaces being used incorrectly in several classes.
+  - `TouchGroup` no longer implements the `ProxyWidget` interface.
+  - `RenderSizedTouchTarget` and `RenderPaddedTouchTarget` now extend `RenderProxyBox` instead of `RenderShiftedBox` because they no longer affect layout.
+  - `RenderPaddedTouchTarget` no longer implements `RenderPadding` because it doesn't affect layout anymore.
 
 - Removed empty `flutter:` section from `pubspec.yaml`.
 
