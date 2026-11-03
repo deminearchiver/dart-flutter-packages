@@ -92,7 +92,7 @@ abstract base class LayoutLink<
     _redepthFollowers();
     _onLeaderCountChanged();
 
-    return LeaderLayoutLinkHandle._(link: this, leader: leader);
+    return ._(link: this, leader: leader);
   }
 
   void _unregisterLeader(LeaderClientType leader) {
@@ -131,6 +131,9 @@ abstract base class LayoutLink<
     final wasEmpty = _followers.isEmpty;
     _followers.add(follower);
     if (wasEmpty) _frameCallbackScheduler.schedule();
+    if (follower.attached && _leaders.isNotEmpty) {
+      follower.tryRedepthWith(_leaders);
+    }
     return ._(link: this, follower: follower);
   }
 

@@ -1,3 +1,11 @@
+## Unreleased
+
+- In `LayoutLink.registerFollower()`, redepth leaders right after registering a new follower.
+
+- Minor code style changes.
+
+- Fixed typos in the `0.7.0` changelog.
+
 ## 0.7.0
 
 This update contains a major update to the internal implementation, as well as minor, but breaking, public API surface changes.
@@ -8,7 +16,7 @@ This update contains a major update to the internal implementation, as well as m
 
 - Support the general `RenderObject` type in `DefaultLayoutLeaderClient` (`LayoutLeaderClient.new()`) and `DefaultSlottedLayoutLeaderClient` (`SlottedLayoutLeaderClient.new()`).
   - `LayoutLeaderClient` now accepts a `GeometryType extends Object` type argument, which specifies the given `RenderObject`'s default geometry type.
-  - `LayoutLeaderClient.tryGetSize()` was replaced by `LayoutLeaderClient.tryGetGeometry()`, which returns `GeometryType?` instead of `Size?`, allowing for arbitrary geometries, such as slivers or custom layout protocols; other respective members such as `DefaulLayoutLeaderClient.onTryGetSize` and `LayoutLeaderClientSizeGetter` were also renamed to "geometry" instead of "size".
+  - `LayoutLeaderClient.tryGetSize()` was replaced by `LayoutLeaderClient.tryGetGeometry()`, which returns `GeometryType?` instead of `Size?`, allowing for arbitrary geometries, such as slivers or custom layout protocols; other respective members such as `DefaultLayoutLeaderClient.onTryGetSize` and `LayoutLeaderClientSizeGetter` were also renamed to "geometry" instead of "size".
   - Factored `tryGetPositionIn()` and `tryGetRectIn()` from `LayoutLeaderClient` into extension methods respectively: `tryGetRectIn()` is only available on `LayoutLeaderClient<Size>` as a utility shorthand method.
   - Added `ancestorTransformCache` optional named parameter to `tryGetTransformFrom`.
 
@@ -16,12 +24,12 @@ This update contains a major update to the internal implementation, as well as m
   - The class now requires a `SlotType`, a `LeaderClientType` and a `FollowerClientType`.
 
 - Redepth followers when a leader performs a redepth.
-  - Added `LeaderLayoutLinkHandle.onClientRedepth`, which must be called when a `LeaderLayoutClient`'s implemnetation performs a redepth of its children.
+  - Added `LeaderLayoutLinkHandle.onClientRedepth`, which must be called when a `LeaderLayoutClient`'s implementation performs a redepth of its children.
 
 - Added ancestors transform caching via `ancestorTransformCache` parameter, used internally across the library.
 
 - Heavily improved the `RenderObjectTransformHelper` internal utility class.
-  - Added `getConstraintsOfType()` which returns the layout constraints of a `RenderObject`, it it has any, or `null`, properly handling `StateError`s.
+  - Added `getConstraintsOfType()` which returns the layout constraints of a `RenderObject`, if it has any, or `null`, properly handling `StateError`s.
   - Added `hasConstraints()` which allows checking whether a given `RenderObject` has layout constraints applied to it.
   - Added `withDebugLayoutMutationsAllowed()`, the entry point for geometry access from arbitrary render objects in debug builds.
   - Removed helpers associated with resolving fallback transform: `tryApplyFallbackTransform()` and its private companions.
