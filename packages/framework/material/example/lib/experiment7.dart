@@ -30,7 +30,7 @@ class _Experiment7ViewState extends State<Experiment7View> {
           ),
           SliverList.builder(
             itemBuilder: (context, index) => ListItemLayout(
-              headline: Text(
+              label: Text(
                 "Lorem ipsum dolor sit amet",
                 textAlign: .center,
                 softWrap: false,

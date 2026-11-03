@@ -130,9 +130,8 @@ class _Experiment11ViewState extends State<Experiment11View> {
                   parent: AlwaysScrollableScrollPhysics(),
                 ),
                 itemCount: _itemCount,
-                itemBuilder: (context, index) => ListItemLayout(
-                  headline: Text('Item ${_itemCount - index}'),
-                ),
+                itemBuilder: (context, index) =>
+                    ListItemLayout(label: Text('Item ${_itemCount - index}')),
               ),
             ),
           ),

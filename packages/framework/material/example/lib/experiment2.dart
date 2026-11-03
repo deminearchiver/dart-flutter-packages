@@ -438,7 +438,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                     leading: const Icon(
                                       MaterialSymbols.width_rounded,
                                     ),
-                                    headline: Text("Width"),
+                                    label: Text("Width"),
                                     trailing: Text(
                                       "${_formatValue(width, true, "dp")} ",
                                     ),
@@ -477,7 +477,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                                     leading: const Icon(
                                       MaterialSymbols.height_rounded,
                                     ),
-                                    headline: Text("Height"),
+                                    label: Text("Height"),
                                     trailing: Text(
                                       "${_formatValue(height, true, "dp")} ",
                                     ),
@@ -511,7 +511,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                             leading: const Icon(
                               MaterialSymbols.rounded_corner_rounded,
                             ),
-                            headline: Text("Fixed"),
+                            label: Text("Fixed"),
                             trailing: Text(
                               "${_formatValue(shapeTheme.cornerValueExtraExtraLarge * _fixedTopLeft, true, "dp")} "
                               "${_formatValue(shapeTheme.cornerValueExtraExtraLarge * _fixedTopRight, true, "dp")}\n"
@@ -596,7 +596,7 @@ class _Experiment2ViewState extends State<Experiment2View> {
                             leading: const Icon(
                               MaterialSymbols.percent_rounded,
                             ),
-                            headline: Text("Fractional"),
+                            label: Text("Fractional"),
                             trailing: Text(
                               "${_formatPercentage(_fractionalTopLeft, true)} "
                               "${_formatPercentage(_fractionalTopRight, true)}\n"

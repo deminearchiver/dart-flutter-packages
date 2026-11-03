@@ -207,12 +207,12 @@ class _PlayerBottomSheetState extends State<PlayerBottomSheet>
                       leading: const Icon(
                         MaterialSymbols.frame_exclamation_rounded,
                       ),
-                      headline: Text(
+                      label: Text(
                         "Swipe me!",
                         maxLines: 1,
                         overflow: .ellipsis,
                       ),
-                      supportingText: Text(
+                      supporting: Text(
                         "Let's see what you're capable of!",
                         maxLines: 1,
                         overflow: .ellipsis,

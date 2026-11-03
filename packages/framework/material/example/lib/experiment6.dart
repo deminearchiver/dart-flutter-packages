@@ -185,7 +185,7 @@ class _Experiment6ViewState extends State<Experiment6View> {
                                               checked: isSelected,
                                             ),
                                           ),
-                                          headline: Text("Item ${index + 1}"),
+                                          label: Text("Item ${index + 1}"),
                                         ),
                                       ),
                                     );

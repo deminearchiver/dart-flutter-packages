@@ -118,7 +118,7 @@ class const ListItemContainer({
   final bool isLast = false,
   final bool opticalCenterEnabled = false,
   final EdgeInsetsGeometry opticalCenterMaxOffsets = const .all(.infinity),
-  final ListItemStateProperty<OutlinedBorder?>? containerShape,
+  final ListItemStateProperty<ShapeBorder?>? containerShape,
   final ListItemStateProperty<Color?>? containerColor,
   required final Widget child,
 }) extends StatelessWidget {
@@ -543,8 +543,8 @@ class const ListItemLayout({
   final ListItemAlignment alignment = .middle,
   final Widget? leading,
   final Widget? overline,
-  final Widget? headline,
-  final Widget? supportingText,
+  final Widget? label,
+  final Widget? supporting,
   final Widget? trailing,
 }) extends StatelessWidget {
   @override
@@ -626,19 +626,19 @@ class const ListItemLayout({
                         style: listItemTheme.overlineTextStyle.resolve(states),
                         child: overline,
                       ),
-                    if (headline case final headline?)
+                    if (label case final label?)
                       DefaultTextStyle.merge(
                         textAlign: .start,
                         style: listItemTheme.headlineTextStyle.resolve(states),
-                        child: headline,
+                        child: label,
                       ),
-                    if (supportingText case final supportingText?)
+                    if (supporting case final supporting?)
                       DefaultTextStyle.merge(
                         textAlign: .start,
                         style: listItemTheme.supportingTextStyle.resolve(
                           states,
                         ),
-                        child: supportingText,
+                        child: supporting,
                       ),
                   ],
                 ),

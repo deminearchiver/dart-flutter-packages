@@ -65,7 +65,7 @@ class _AppBarWithSearchState extends State<AppBarWithSearch> {
                             ),
                           ),
                         ),
-                        headline: Text("Result ${index + 1}"),
+                        label: Text("Result ${index + 1}"),
                       ),
                     ),
                   ),

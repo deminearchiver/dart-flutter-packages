@@ -185,7 +185,7 @@ class _DockedSearchViewExampleState extends State<DockedSearchViewExample> {
                 onTap: () {},
                 child: ListItemLayout(
                   leading: Icon(icon),
-                  headline: Text("Item ${index + 1} in $title"),
+                  label: Text("Item ${index + 1} in $title"),
                 ),
               ),
               childCount: itemCount,
@@ -329,8 +329,10 @@ class _SearchBarDelegate extends SliverPersistentHeaderDelegate {
       padding != oldDelegate.padding;
 }
 
-typedef NestedSliverWrapperBuilder =
-    Widget Function(BuildContext context, Widget child);
+typedef NestedSliverWrapperBuilder = Widget Function(
+  BuildContext context,
+  Widget child,
+);
 
 class NestedSliverBuilder extends StatefulWidget {
   const NestedSliverBuilder({

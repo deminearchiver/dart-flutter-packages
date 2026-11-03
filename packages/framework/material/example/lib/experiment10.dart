@@ -77,7 +77,7 @@ class _Experiment10ViewState extends State<Experiment10View>
                       children: [
                         ListItemLayout(
                           leading: const Icon(MaterialSymbols.list_rounded),
-                          headline: Text("Item count"),
+                          label: Text("Item count"),
                           trailing: Text("$_itemCount"),
                         ),
                         Slider(
@@ -113,9 +113,7 @@ class _Experiment10ViewState extends State<Experiment10View>
                     isLast: isLast,
                     child: ListItemInteraction(
                       onTap: () {},
-                      child: ListItemLayout(
-                        headline: Text("Item ${index + 1}"),
-                      ),
+                      child: ListItemLayout(label: Text("Item ${index + 1}")),
                     ),
                   ),
                 );
@@ -248,11 +246,10 @@ class CustomPullToRefreshController extends PullToRefreshSpringController
   }
 }
 
-typedef CustomPullToRefreshBuilder =
-    Widget Function(
-      BuildContext context,
-      CustomPullToRefreshController controller,
-    );
+typedef CustomPullToRefreshBuilder = Widget Function(
+  BuildContext context,
+  CustomPullToRefreshController controller,
+);
 
 class CustomPullToRefresh extends StatefulWidget {
   const CustomPullToRefresh({

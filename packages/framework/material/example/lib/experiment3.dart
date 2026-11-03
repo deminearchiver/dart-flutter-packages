@@ -133,8 +133,8 @@ class _Experiment3ViewState extends State<Experiment3View>
                       children: [
                         ListItemLayout(
                           leading: const Icon(MaterialSymbols.height_rounded),
-                          headline: const Text("App bar height"),
-                          supportingText: const Text(
+                          label: const Text("App bar height"),
+                          supporting: const Text(
                             "Height will change after dragging is stopped.",
                           ),
                           trailing: Text(
@@ -173,7 +173,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                           vertical: 10.0 - (48.0 - 40.0) / 2.0,
                         ),
                         leading: const Icon(MaterialSymbols.menu_rounded),
-                        headline: const Text("Show navigation icon"),
+                        label: const Text("Show navigation icon"),
                         trailing: ExcludeFocus(
                           child: Switch(
                             checked: _showNavigationIcon,
@@ -195,7 +195,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                           vertical: 10.0 - (48.0 - 40.0) / 2.0,
                         ),
                         leading: const Icon(MaterialSymbols.star_rounded),
-                        headline: const Text("Show action icon 1"),
+                        label: const Text("Show action icon 1"),
                         trailing: ExcludeFocus(
                           child: Switch(
                             checked: _showActionIcon1,
@@ -217,7 +217,7 @@ class _Experiment3ViewState extends State<Experiment3View>
                           vertical: 10.0 - (48.0 - 40.0) / 2.0,
                         ),
                         leading: const Icon(MaterialSymbols.more_horiz_rounded),
-                        headline: const Text("Show action icon 2"),
+                        label: const Text("Show action icon 2"),
                         trailing: ExcludeFocus(
                           child: Switch(
                             checked: _showActionIcon2,
@@ -236,8 +236,8 @@ class _Experiment3ViewState extends State<Experiment3View>
                         vertical: 10.0 - (48.0 - 40.0) / 2.0,
                       ),
                       leading: const Icon(MaterialSymbols.restart_alt_rounded),
-                      headline: const Text("Reset all properties"),
-                      supportingText: const Text(
+                      label: const Text("Reset all properties"),
+                      supporting: const Text(
                         "Set all values to their respective defaults.",
                       ),
                       trailing: FilledButton(
