@@ -1,4 +1,4 @@
-## Unreleased
+## 0.7.1
 
 - In `LayoutLink.registerFollower()`, redepth leaders right after registering a new follower.
 
