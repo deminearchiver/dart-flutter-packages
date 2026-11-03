@@ -137,10 +137,8 @@ class const _DefaultTouchTargetClient(
     final child = _renderObject.child;
     if (child == null) return false;
 
-    final childParentData = child.parentData as BoxParentData?;
-    final childOffset = childParentData?.offset ?? .zero;
     final childCenter = child.size.center(Offset.zero);
-    final centerInLocal = childOffset + childCenter;
+    final centerInLocal = childCenter;
 
     final transform = _renderObject.getTransformTo(ancestor);
     final centerInAncestor = MatrixUtils.transformPoint(
@@ -422,17 +420,6 @@ class RenderSizedTouchTarget({
       _computeLayout(constraints, ChildLayoutHelper.dryLayoutChild);
 
   @override
-  void performLayout() {
-    if (child case final child?) {
-      child.layout(constraints, parentUsesSize: true);
-      size = child.size;
-      (child.parentData! as BoxParentData).offset = .zero;
-    } else {
-      size = constraints.constrain(.zero);
-    }
-  }
-
-  @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
@@ -611,17 +598,6 @@ class RenderPaddedTouchTarget({
   @override
   Size computeDryLayout(BoxConstraints constraints) =>
       _computeLayout(constraints, ChildLayoutHelper.dryLayoutChild);
-
-  @override
-  void performLayout() {
-    if (child case final child?) {
-      child.layout(constraints, parentUsesSize: true);
-      size = child.size;
-      (child.parentData! as BoxParentData).offset = .zero;
-    } else {
-      size = constraints.constrain(.zero);
-    }
-  }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
