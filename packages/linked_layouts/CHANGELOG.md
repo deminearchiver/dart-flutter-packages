@@ -1,4 +1,4 @@
-## Unreleased
+## 0.7.0
 
 This update contains a major update to the internal implementation, as well as minor, but breaking, public API surface changes.
 
