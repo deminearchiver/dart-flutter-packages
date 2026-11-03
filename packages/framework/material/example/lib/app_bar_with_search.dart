@@ -16,7 +16,12 @@ class const AppBarWithSearch({
 }
 
 class _AppBarWithSearchState extends State<AppBarWithSearch> {
-  final _layoutLink = SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>();
+  final _layoutLink =
+      SlottedMultiLeaderLayoutLink<
+        _SearchViewLeaderSlot,
+        SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
+        LayoutFollowerClient
+      >();
   _AppBarSearchViewRoute? _route;
 
   Future<void> _openView() async {
@@ -530,7 +535,12 @@ enum _SearchViewLeaderSlot { appBar, appBarLeading, appBarTrailing, searchBar }
 enum _SearchViewLayoutSlot { appBarLeading, searchBar, appBarTrailing, body }
 
 class const _SearchViewLayout({
-  required final SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot> layoutLink,
+  required final SlottedMultiLeaderLayoutLink<
+    _SearchViewLeaderSlot,
+    SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
+    LayoutFollowerClient
+  >
+  layoutLink,
   final ValueListenable<double> animation = kAlwaysCompleteAnimation,
   final EdgeInsets padding = .zero,
   final Widget? appBarLeading,
@@ -567,15 +577,31 @@ class const _SearchViewLayout({
 }
 
 class _RenderSearchViewLayout({
-  var SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? _layoutLink,
+  var SlottedMultiLeaderLayoutLink<
+    _SearchViewLeaderSlot,
+    SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
+    LayoutFollowerClient
+  >?
+  _layoutLink,
   required var ValueListenable<double> _animation,
   required var EdgeInsets _padding,
 }) extends RenderBox
     with SlottedContainerRenderObjectMixin<_SearchViewLayoutSlot, RenderBox> {
-  SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? get layoutLink =>
-      _layoutLink;
+  SlottedMultiLeaderLayoutLink<
+    _SearchViewLeaderSlot,
+    SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
+    LayoutFollowerClient
+  >?
+  get layoutLink => _layoutLink;
 
-  set layoutLink(SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? value) {
+  set layoutLink(
+    SlottedMultiLeaderLayoutLink<
+      _SearchViewLeaderSlot,
+      SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
+      LayoutFollowerClient
+    >?
+    value,
+  ) {
     if (_layoutLink == value) return;
     _layoutLinkHandle?.dispose();
     _layoutLinkHandle = null;
@@ -613,7 +639,7 @@ class _RenderSearchViewLayout({
   RenderBox? get _list => childForSlot(.body);
 
   FollowerLayoutLinkHandle<
-    SlottedLayoutLeaderClient<_SearchViewLeaderSlot>,
+    SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
     LayoutFollowerClient
   >?
   _layoutLinkHandle;

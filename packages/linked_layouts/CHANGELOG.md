@@ -1,3 +1,40 @@
+## Unreleased
+
+This update contains a major update to the internal implementation, as well as minor, but breaking, public API surface changes.
+
+- Bumped minimum SDK versions to Dart 3.13 and Flutter 3.47.
+  - Refactored classes and extension types to use Dart 3.13 [primary constructors](https://dart.dev/language/primary-constructors) and [concise constructor syntax](https://dart.dev/language/constructors#concise-constructor-syntax).
+  - Reformatted the library with [Dart 3.13 formatter changes](https://dart.dev/blog/announcing-dart-3-13#dart-formatter).
+
+- Support the general `RenderObject` type in `DefaultLayoutLeaderClient` (`LayoutLeaderClient.new()`) and `DefaultSlottedLayoutLeaderClient` (`SlottedLayoutLeaderClient.new()`).
+  - `LayoutLeaderClient` now accepts a `GeometryType extends Object` type argument, which specifies the given `RenderObject`'s default geometry type.
+  - `LayoutLeaderClient.tryGetSize()` was replaced by `LayoutLeaderClient.tryGetGeometry()`, which returns `GeometryType?` instead of `Size?`, allowing for arbitrary geometries, such as slivers or custom layout protocols; other respective members such as `DefaulLayoutLeaderClient.onTryGetSize` and `LayoutLeaderClientSizeGetter` were also renamed to "geometry" instead of "size".
+  - Factored `tryGetPositionIn()` and `tryGetRectIn()` from `LayoutLeaderClient` into extension methods respectively: `tryGetRectIn()` is only available on `LayoutLeaderClient<Size>` as a utility shorthand method.
+  - Added `ancestorTransformCache` optional named parameter to `tryGetTransformFrom`.
+
+- Normalized `SlottedMultiLeaderLayoutLink` type arguments to match `SingleLeaderLayoutLink`.
+  - The class now requires a `SlotType`, a `LeaderClientType` and a `FollowerClientType`.
+
+- Redepth followers when a leader performs a redepth.
+  - Added `LeaderLayoutLinkHandle.onClientRedepth`, which must be called when a `LeaderLayoutClient`'s implemnetation performs a redepth of its children.
+
+- Added ancestors transform caching via `ancestorTransformCache` parameter, used internally across the library.
+
+- Heavily improved the `RenderObjectTransformHelper` internal utility class.
+  - Added `getConstraintsOfType()` which returns the layout constraints of a `RenderObject`, it it has any, or `null`, properly handling `StateError`s.
+  - Added `hasConstraints()` which allows checking whether a given `RenderObject` has layout constraints applied to it.
+  - Added `withDebugLayoutMutationsAllowed()`, the entry point for geometry access from arbitrary render objects in debug builds.
+  - Removed helpers associated with resolving fallback transform: `tryApplyFallbackTransform()` and its private companions.
+  - Removed the `tryGetPositionIn()` helper for not being needed anymore.
+  - Removed `@internal` annotations from all static methods, because the class itself is already marked as internal.
+
+- Other minor changes.
+  - Removed `runtimeType` from all `hashCode` implementations.
+  - Changed ordering of some `hashCode` implementations.
+  - Removed useless explaining comments from `LayoutLink`'s basic methods.
+  - Removed minor snippets from `LayoutLinkHandle`'s documentation comments.
+  - Code style updates.
+
 ## 0.6.1
 
 - Replaced the classic LCA in transform helpers with a `RenderObject.depth`-based implementation.

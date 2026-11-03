@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:linked_layouts/src/linked_layouts.dart';
 
 mixin LayoutLeaderRenderObjectMixin<
-  LeaderClientType extends LayoutLeaderClient,
+  LeaderClientType extends LayoutLeaderClient<Size>,
   FollowerClientType extends LayoutFollowerClient,
   LayoutLinkType extends LayoutLink<LeaderClientType, FollowerClientType>
 >
@@ -15,7 +15,7 @@ mixin LayoutLeaderRenderObjectMixin<
 
   @visibleForOverriding
   LeaderClientType createLayoutClient({
-    required LayoutLeaderClientSizeGetter onTryGetSize,
+    required LayoutLeaderClientGeometryGetter<Size> onTryGetGeometry,
   });
 
   @protected
@@ -28,7 +28,7 @@ mixin LayoutLeaderRenderObjectMixin<
     _layoutLink = layoutLink;
 
     if (layoutLink != null && attached) {
-      final client = createLayoutClient(onTryGetSize: _onTryGetSize);
+      final client = createLayoutClient(onTryGetGeometry: _onTryGetSize);
       return _layoutLinkHandle = layoutLink.registerLeader(client);
     }
     return null;
@@ -39,7 +39,7 @@ mixin LayoutLeaderRenderObjectMixin<
     super.attach(owner);
     assert(_layoutLinkHandle == null);
     if (_layoutLink case final layoutLink?) {
-      final client = createLayoutClient(onTryGetSize: _onTryGetSize);
+      final client = createLayoutClient(onTryGetGeometry: _onTryGetSize);
       _layoutLinkHandle = layoutLink.registerLeader(client);
     }
   }
@@ -49,6 +49,13 @@ mixin LayoutLeaderRenderObjectMixin<
     super.detach();
     _layoutLinkHandle?.dispose();
     _layoutLinkHandle = null;
+    _lastSize = null;
+  }
+
+  @override
+  void redepthChildren() {
+    super.redepthChildren();
+    _layoutLinkHandle?.onClientRedepth();
   }
 
   @override

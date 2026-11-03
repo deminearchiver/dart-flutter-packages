@@ -2,11 +2,15 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:linked_layouts/src/linked_layouts.dart';
 
-class SingleLayoutLeader extends SingleChildRenderObjectWidget {
-  const SingleLayoutLeader({super.key, required this.layoutLink, super.child});
-
-  final SingleLeaderLayoutLink? layoutLink;
-
+class const SingleLayoutLeader({
+  super.key,
+  required final SingleLeaderLayoutLink<
+    LayoutLeaderClient<Size>,
+    LayoutFollowerClient
+  >?
+  layoutLink,
+  super.child,
+}) extends SingleChildRenderObjectWidget {
   @override
   RenderSingleLayoutLeader createRenderObject(BuildContext context) =>
       .new(layoutLink: layoutLink);
@@ -23,59 +27,70 @@ class SingleLayoutLeader extends SingleChildRenderObjectWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      DiagnosticsProperty<SingleLeaderLayoutLink>("layoutLink", layoutLink),
+      DiagnosticsProperty<
+        SingleLeaderLayoutLink<LayoutLeaderClient<Size>, LayoutFollowerClient>
+      >("layoutLink", layoutLink),
     );
   }
 }
 
-class RenderSingleLayoutLeader extends RenderProxyBox
+class RenderSingleLayoutLeader({
+  required var SingleLeaderLayoutLink<
+    LayoutLeaderClient<Size>,
+    LayoutFollowerClient
+  >?
+  _layoutLink,
+  RenderBox? child,
+}) extends RenderProxyBox
     with
         LayoutLeaderRenderObjectMixin<
-          LayoutLeaderClient,
+          LayoutLeaderClient<Size>,
           LayoutFollowerClient,
-          SingleLeaderLayoutLink
+          SingleLeaderLayoutLink<LayoutLeaderClient<Size>, LayoutFollowerClient>
         > {
-  RenderSingleLayoutLeader({required this._layoutLink, RenderBox? child})
-    : super(child) {
+  this : super(child) {
     updateLayoutLink(layoutLink);
   }
 
-  SingleLeaderLayoutLink? _layoutLink;
+  SingleLeaderLayoutLink<LayoutLeaderClient<Size>, LayoutFollowerClient>?
+  get layoutLink => _layoutLink;
 
-  SingleLeaderLayoutLink? get layoutLink => _layoutLink;
-
-  set layoutLink(SingleLeaderLayoutLink? value) {
+  set layoutLink(
+    SingleLeaderLayoutLink<LayoutLeaderClient<Size>, LayoutFollowerClient>?
+    value,
+  ) {
     if (_layoutLink == value) return;
     updateLayoutLink(value, () => _layoutLink = value);
     markNeedsLayout();
   }
 
   @override
-  LayoutLeaderClient createLayoutClient({
-    required LayoutLeaderClientSizeGetter onTryGetSize,
-  }) => .new(this, onTryGetSize: onTryGetSize);
+  LayoutLeaderClient<Size> createLayoutClient({
+    required LayoutLeaderClientGeometryGetter<Size> onTryGetGeometry,
+  }) => .new(this, onTryGetGeometry: onTryGetGeometry);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      DiagnosticsProperty<SingleLeaderLayoutLink>("layoutLink", layoutLink),
+      DiagnosticsProperty<
+        SingleLeaderLayoutLink<LayoutLeaderClient<Size>, LayoutFollowerClient>
+      >("layoutLink", layoutLink),
     );
   }
 }
 
-class SlottedLayoutLeader<SlotType extends Object?>
-    extends SingleChildRenderObjectWidget {
-  const SlottedLayoutLeader({
-    super.key,
-    required this.layoutLink,
-    required this.slot,
-    super.child,
-  });
-
-  final SlottedMultiLeaderLayoutLink<SlotType>? layoutLink;
-  final SlotType slot;
-
+class const SlottedLayoutLeader<SlotType extends Object?>({
+  super.key,
+  required final SlottedMultiLeaderLayoutLink<
+    SlotType,
+    SlottedLayoutLeaderClient<SlotType, Size>,
+    LayoutFollowerClient
+  >?
+  layoutLink,
+  required final SlotType slot,
+  super.child,
+}) extends SingleChildRenderObjectWidget {
   @override
   RenderSlottedLayoutLeader<SlotType> createRenderObject(
     BuildContext context,
@@ -84,7 +99,7 @@ class SlottedLayoutLeader<SlotType extends Object?>
   @override
   void updateRenderObject(
     BuildContext context,
-    RenderSlottedLayoutLeader renderObject,
+    RenderSlottedLayoutLeader<SlotType> renderObject,
   ) {
     renderObject
       ..layoutLink = layoutLink
@@ -96,41 +111,61 @@ class SlottedLayoutLeader<SlotType extends Object?>
     super.debugFillProperties(properties);
     properties
       ..add(
-        DiagnosticsProperty<SlottedMultiLeaderLayoutLink<SlotType>>(
-          "layoutLink",
-          layoutLink,
-        ),
+        DiagnosticsProperty<
+          SlottedMultiLeaderLayoutLink<
+            SlotType,
+            SlottedLayoutLeaderClient<SlotType, Size>,
+            LayoutFollowerClient
+          >
+        >("layoutLink", layoutLink),
       )
       ..add(DiagnosticsProperty<SlotType>("slot", slot));
   }
 }
 
-class RenderSlottedLayoutLeader<SlotType extends Object?> extends RenderProxyBox
+class RenderSlottedLayoutLeader<SlotType extends Object?>({
+  required var SlottedMultiLeaderLayoutLink<
+    SlotType,
+    SlottedLayoutLeaderClient<SlotType, Size>,
+    LayoutFollowerClient
+  >?
+  _layoutLink,
+  required var SlotType _slot,
+  RenderBox? child,
+}) extends RenderProxyBox
     with
         LayoutLeaderRenderObjectMixin<
-          SlottedLayoutLeaderClient<SlotType>,
+          SlottedLayoutLeaderClient<SlotType, Size>,
           LayoutFollowerClient,
-          SlottedMultiLeaderLayoutLink<SlotType>
+          SlottedMultiLeaderLayoutLink<
+            SlotType,
+            SlottedLayoutLeaderClient<SlotType, Size>,
+            LayoutFollowerClient
+          >
         > {
-  RenderSlottedLayoutLeader({
-    required this._layoutLink,
-    required this._slot,
-    RenderBox? child,
-  }) : super(child) {
+  this : super(child) {
     updateLayoutLink(layoutLink);
   }
 
-  SlottedMultiLeaderLayoutLink<SlotType>? _layoutLink;
+  SlottedMultiLeaderLayoutLink<
+    SlotType,
+    SlottedLayoutLeaderClient<SlotType, Size>,
+    LayoutFollowerClient
+  >?
+  get layoutLink => _layoutLink;
 
-  SlottedMultiLeaderLayoutLink<SlotType>? get layoutLink => _layoutLink;
-
-  set layoutLink(SlottedMultiLeaderLayoutLink<SlotType>? value) {
+  set layoutLink(
+    SlottedMultiLeaderLayoutLink<
+      SlotType,
+      SlottedLayoutLeaderClient<SlotType, Size>,
+      LayoutFollowerClient
+    >?
+    value,
+  ) {
     if (_layoutLink == value) return;
     updateLayoutLink(value, () => _layoutLink = value);
     markNeedsLayout();
   }
-
-  SlotType _slot;
 
   SlotType get slot => _slot;
 
@@ -141,19 +176,22 @@ class RenderSlottedLayoutLeader<SlotType extends Object?> extends RenderProxyBox
   }
 
   @override
-  SlottedLayoutLeaderClient<SlotType> createLayoutClient({
-    required LayoutLeaderClientSizeGetter onTryGetSize,
-  }) => .new(this, slot, onTryGetSize: onTryGetSize);
+  SlottedLayoutLeaderClient<SlotType, Size> createLayoutClient({
+    required LayoutLeaderClientGeometryGetter<Size> onTryGetGeometry,
+  }) => .new(this, slot, onTryGetGeometry: onTryGetGeometry);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
       ..add(
-        DiagnosticsProperty<SlottedMultiLeaderLayoutLink<SlotType>>(
-          "layoutLink",
-          layoutLink,
-        ),
+        DiagnosticsProperty<
+          SlottedMultiLeaderLayoutLink<
+            SlotType,
+            SlottedLayoutLeaderClient<SlotType, Size>,
+            LayoutFollowerClient
+          >
+        >("layoutLink", layoutLink),
       )
       ..add(DiagnosticsProperty<SlotType>("slot", slot));
   }

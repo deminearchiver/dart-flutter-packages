@@ -1,16 +1,11 @@
 import 'package:flutter/scheduler.dart';
 
-class FrameCallbackScheduler {
-  FrameCallbackScheduler(
-    void Function(Duration timestamp) callback, {
-    SchedulerBinding? schedulerBinding,
-  }) : _callback = callback,
-       _scheduler = schedulerBinding ?? SchedulerBinding.instance;
-
+class FrameCallbackScheduler(
+  final void Function(Duration timestamp) _callback, {
+  SchedulerBinding? schedulerBinding,
+}) {
   // Not using `FrameCallback` to enforce "timestamp" instead of "timeStamp".
-  final void Function(Duration timestamp) _callback;
-
-  final SchedulerBinding _scheduler;
+  final _scheduler = schedulerBinding ?? SchedulerBinding.instance;
 
   bool _isScheduled = false;
 

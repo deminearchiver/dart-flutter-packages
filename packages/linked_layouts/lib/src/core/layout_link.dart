@@ -8,15 +8,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:linked_layouts/src/linked_layouts.dart';
 
-class _LeaderLayout {
-  _LeaderLayout({this.size, this.transform});
-
-  Size? size;
-
-  Matrix4? transform;
-
+class _LeaderLayout({var Object? geometry, var Matrix4? transform}) {
   @override
-  String toString() => "_LeaderLayout(size: $size, transform: $transform)";
+  String toString() =>
+      "_LeaderLayout(geometry: $geometry, transform: $transform)";
 }
 
 abstract base class LayoutLink<
@@ -80,10 +75,7 @@ abstract base class LayoutLink<
   LeaderLayoutLinkHandle<LeaderClientType, FollowerClientType> registerLeader(
     LeaderClientType leader,
   ) {
-    // Leaders must be in a valid state.
     assert(debugAssertLeadersAreValid(leadersInternal));
-
-    // User-friendly error message if the leader was already registered.
     assert(() {
       if (isLeaderRegistered(leader)) {
         throw FlutterError(
@@ -93,26 +85,18 @@ abstract base class LayoutLink<
       }
       return true;
     }());
-
-    // Register the leader.
     registerLeaderInternal(leader);
     _leaders.add(leader);
-
-    // Leaders must be in a valid state.
     assert(debugAssertLeadersAreValid(leadersInternal));
 
-    // Schedule followers layout.
+    _redepthFollowers();
     _onLeaderCountChanged();
 
-    // Return a finalizer handle.
     return LeaderLayoutLinkHandle._(link: this, leader: leader);
   }
 
   void _unregisterLeader(LeaderClientType leader) {
-    // Leaders must be in a valid state.
     assert(debugAssertLeadersAreValid(leadersInternal));
-
-    // User-friendly error message if the leader was already registered.
     assert(() {
       if (!isLeaderRegistered(leader)) {
         throw FlutterError(
@@ -123,15 +107,11 @@ abstract base class LayoutLink<
       return true;
     }());
 
-    // Unregister the leader.
     unregisterLeaderInternal(leader);
     _leaders.remove(leader);
     _lastLeaderLayouts.remove(leader);
-
-    // Leaders must be in a valid state.
     assert(debugAssertLeadersAreValid(leadersInternal));
 
-    // Schedule followers layout.
     _onLeaderCountChanged();
   }
 
@@ -139,7 +119,6 @@ abstract base class LayoutLink<
 
   FollowerLayoutLinkHandle<LeaderClientType, FollowerClientType>
   registerFollower(FollowerClientType follower) {
-    // User-friendly error message if the follower was already registered.
     assert(() {
       if (_followers.contains(follower)) {
         throw FlutterError(
@@ -149,24 +128,13 @@ abstract base class LayoutLink<
       }
       return true;
     }());
-
-    // Remember empty state.
     final wasEmpty = _followers.isEmpty;
-
-    // Register the follower.
     _followers.add(follower);
-
-    // Schedule a callback if this is the first follower.
     if (wasEmpty) _frameCallbackScheduler.schedule();
-
-    // TODO: should a layout update be forced here?
-
-    // Return a finalizer handle.
-    return FollowerLayoutLinkHandle._(link: this, follower: follower);
+    return ._(link: this, follower: follower);
   }
 
   void _unregisterFollower(FollowerClientType follower) {
-    // User-friendly error message if a leader was already registered.
     assert(() {
       if (!_followers.contains(follower)) {
         throw FlutterError(
@@ -176,14 +144,16 @@ abstract base class LayoutLink<
       }
       return true;
     }());
-
-    // Unregister the follower.
     _followers.remove(follower);
-
-    // Cancel the callback if there are no more followers left.
     if (_followers.isEmpty) _frameCallbackScheduler.cancel();
+  }
 
-    // TODO: should a layout update be forced here?
+  void _redepthFollowers() {
+    if (_leaders.isEmpty || _followers.isEmpty) return;
+    for (final follower in _followers) {
+      if (!follower.attached) continue;
+      follower.tryRedepthWith(_leaders);
+    }
   }
 
   late final _frameCallbackScheduler = FrameCallbackScheduler(_frameCallback);
@@ -191,42 +161,41 @@ abstract base class LayoutLink<
 
   void _frameCallback(Duration _) {
     if (_followers.isEmpty) return;
-
     if (!_isSchedulingPostFrameLayout &&
-        _checkLeadersChanged(checkSizes: false, checkTransforms: true)) {
+        _checkLeadersChanged(checkGeometries: false, checkTransforms: true)) {
       _scheduleFollowersLayout();
     }
-
     _frameCallbackScheduler.schedule();
   }
 
   final Map<LeaderClientType, _LeaderLayout> _lastLeaderLayouts = HashMap();
   final _leaderTransformCache = Matrix4.zero();
+  final Map<RenderObject, Matrix4> _ancestorTransformCache = HashMap();
 
   bool _checkLeaderChanged(
     LeaderClientType leader, {
-    required bool checkSizes,
+    required bool checkGeometries,
     required bool checkTransforms,
+    Map<RenderObject, Matrix4>? ancestorTransformCache,
   }) {
-    assert(checkSizes || checkTransforms);
+    assert(checkGeometries || checkTransforms);
 
     if (!leader.attached) return false;
 
     var changed = false;
     final lastLayout = _lastLeaderLayouts[leader] ??= .new();
-
-    if (checkSizes) {
-      final size = leader.tryGetSize();
-      if (lastLayout.size != size) {
-        lastLayout.size = size;
+    if (checkGeometries) {
+      final geometry = leader.tryGetGeometry();
+      if (lastLayout.geometry != geometry) {
+        lastLayout.geometry = geometry;
         changed = true;
       }
     }
-
     if (checkTransforms) {
       final transform = leader.tryGetTransformFrom(
         null,
         matrix: _leaderTransformCache,
+        ancestorTransformCache: ancestorTransformCache,
       );
       final lastTransform = lastLayout.transform;
       if (transform != null) {
@@ -242,28 +211,34 @@ abstract base class LayoutLink<
         }
       }
     }
-
     return changed;
   }
 
   bool _checkLeadersChanged({
-    required bool checkSizes,
+    required bool checkGeometries,
     required bool checkTransforms,
   }) {
-    assert(checkSizes || checkTransforms);
+    assert(checkGeometries || checkTransforms);
 
     var changed = false;
-
-    for (final leader in _leaders) {
-      if (_checkLeaderChanged(
-        leader,
-        checkSizes: checkSizes,
-        checkTransforms: checkTransforms,
-      )) {
-        changed = true;
+    final useAncestorCache = checkTransforms && _leaders.length > 1;
+    if (useAncestorCache) _ancestorTransformCache.clear();
+    try {
+      for (final leader in _leaders) {
+        if (_checkLeaderChanged(
+          leader,
+          checkGeometries: checkGeometries,
+          checkTransforms: checkTransforms,
+          ancestorTransformCache: useAncestorCache
+              ? _ancestorTransformCache
+              : null,
+        )) {
+          changed = true;
+        }
       }
+    } finally {
+      if (useAncestorCache) _ancestorTransformCache.clear();
     }
-
     return changed;
   }
 
@@ -277,6 +252,7 @@ abstract base class LayoutLink<
   void _postFrameCallback(Duration _) {
     _isSchedulingPostFrameLayout = false;
     if (_followers.isEmpty) return;
+    _redepthFollowers();
     _markFollowersNeedLayout();
   }
 
@@ -291,6 +267,7 @@ abstract base class LayoutLink<
           schedulerBinding.addPostFrameCallback(_postFrameCallback);
         }
       default:
+        _redepthFollowers();
         _markFollowersNeedLayout();
     }
   }
@@ -300,14 +277,25 @@ abstract base class LayoutLink<
   }
 
   void _onLeaderLayout(LeaderClientType leader) {
-    if (_checkLeaderChanged(leader, checkSizes: true, checkTransforms: true)) {
+    if (_checkLeaderChanged(
+      leader,
+      checkGeometries: true,
+      checkTransforms: true,
+    )) {
       _scheduleFollowersLayout();
     }
   }
 
+  void _onLeaderRedepth(LeaderClientType leader) {
+    _redepthFollowers();
+  }
+
   void _onLeaderPaint(LeaderClientType leader) {
-    // TODO: implement leader debug tracking
-    if (_checkLeaderChanged(leader, checkSizes: false, checkTransforms: true)) {
+    if (_checkLeaderChanged(
+      leader,
+      checkGeometries: false,
+      checkTransforms: true,
+    )) {
       _scheduleFollowersLayout();
     }
   }
@@ -319,10 +307,10 @@ abstract base class LayoutLink<
   }
 }
 
-sealed class LayoutLinkHandle<LayoutClientType extends LayoutClient> {
-  LayoutLinkHandle._(LayoutClientType client) : _client = client;
-
-  LayoutClientType? _client;
+sealed class LayoutLinkHandle<LayoutClientType extends LayoutClient>._(
+  LayoutClientType client,
+) {
+  LayoutClientType? _client = client;
 
   /// The client associated with this handle.
   LayoutClientType get client {
@@ -367,15 +355,13 @@ sealed class LayoutLinkHandle<LayoutClientType extends LayoutClient> {
 final class LeaderLayoutLinkHandle<
   LeaderClientType extends LayoutLeaderClient,
   FollowerClientType extends LayoutFollowerClient
->
-    extends LayoutLinkHandle<LeaderClientType> {
-  LeaderLayoutLinkHandle._({
-    required LayoutLink<LeaderClientType, FollowerClientType> link,
-    required LeaderClientType leader,
-  }) : _linkOrNull = link,
-       super._(leader);
+>._({
+  required LayoutLink<LeaderClientType, FollowerClientType> link,
+  required LeaderClientType leader,
+}) extends LayoutLinkHandle<LeaderClientType> {
+  this : super._(leader);
 
-  LayoutLink<LeaderClientType, FollowerClientType>? _linkOrNull;
+  LayoutLink<LeaderClientType, FollowerClientType>? _linkOrNull = link;
 
   LayoutLink<LeaderClientType, FollowerClientType> get _link {
     assert(LayoutLinkHandle.debugAssertNotDisposed(this));
@@ -383,19 +369,16 @@ final class LeaderLayoutLinkHandle<
     return _linkOrNull!;
   }
 
+  /// Notify the connected [LayoutLink] that the client's depth may have
+  /// changed.
+  void onClientRedepth() {
+    _link._onLeaderRedepth(client);
+  }
+
   /// Notify the connected [LayoutLink] that the client was marked dirty for
   /// layout.
   ///
   /// This must be called only from [RenderObject.markNeedsLayout].
-  ///
-  /// Example:
-  /// ```dart
-  /// @override
-  /// void markNeedsLayout() {
-  ///   super.markNeedsLayout();
-  ///   layoutLinkHandle?.onClientNeedsLayout();
-  /// }
-  /// ```
   void onClientNeedsLayout() {
     _link._onLeaderLayout(client);
   }
@@ -403,15 +386,6 @@ final class LeaderLayoutLinkHandle<
   /// Notify the connected [LayoutLink] that the client has performed layout.
   ///
   /// This must be called only from [RenderObject.performLayout].
-  ///
-  /// Example:
-  /// ```dart
-  /// @override
-  /// void performLayout() {
-  ///   size = _computeLayout(constraints);
-  ///   layoutLinkHandle?.onClientDidLayout();
-  /// }
-  /// ```
   void onClientDidLayout() {
     _link._onLeaderLayout(client);
   }
@@ -419,15 +393,6 @@ final class LeaderLayoutLinkHandle<
   /// Notify the connected [LayoutLink] that the client has performed a paint.
   ///
   /// This must be called only from [RenderObject.paint].
-  ///
-  /// Example:
-  /// ```dart
-  /// @override
-  /// void paint(PaintingContext context, Offset offset) {
-  ///   super.paint(context, offset);
-  ///   layoutLinkHandle?.onClientPaint();
-  /// }
-  /// ```
   void onClientPaint() {
     _link._onLeaderPaint(client);
   }
@@ -437,7 +402,6 @@ final class LeaderLayoutLinkHandle<
     assert(LayoutLinkHandle.debugAssertNotDisposed(this));
     _linkOrNull?._unregisterLeader(client);
     _linkOrNull = null;
-
     super.dispose();
   }
 }
@@ -445,15 +409,13 @@ final class LeaderLayoutLinkHandle<
 final class FollowerLayoutLinkHandle<
   LeaderClientType extends LayoutLeaderClient,
   FollowerClientType extends LayoutFollowerClient
->
-    extends LayoutLinkHandle<FollowerClientType> {
-  FollowerLayoutLinkHandle._({
-    required LayoutLink<LeaderClientType, FollowerClientType> link,
-    required FollowerClientType follower,
-  }) : _linkOrNull = link,
-       super._(follower);
+>._({
+  required LayoutLink<LeaderClientType, FollowerClientType> link,
+  required FollowerClientType follower,
+}) extends LayoutLinkHandle<FollowerClientType> {
+  this : super._(follower);
 
-  LayoutLink<LeaderClientType, FollowerClientType>? _linkOrNull;
+  LayoutLink<LeaderClientType, FollowerClientType>? _linkOrNull = link;
 
   LayoutLink<LeaderClientType, FollowerClientType> get _link {
     assert(LayoutLinkHandle.debugAssertNotDisposed(this));
@@ -466,16 +428,6 @@ final class FollowerLayoutLinkHandle<
   /// Returns `true` if the redepth was successful, meaning it's not longer
   /// needed to redepth the children of the client render object. If `false` is
   /// returned, the client may continue with redepthing its children.
-  ///
-  /// Example:
-  /// ```dart
-  /// @override
-  /// void redepthChildren() {
-  ///   // Skip redepthing children only if leader-based redepth succeeded.
-  ///   if (layoutLinkHandle?.redepthClientRenderObject() == true) return;
-  ///   super.redepthChildren();
-  /// }
-  /// ```
   bool tryRedepthClient() {
     assert(LayoutLinkHandle.debugAssertNotDisposed(this));
     return client.tryRedepthWith(_link._leaders);

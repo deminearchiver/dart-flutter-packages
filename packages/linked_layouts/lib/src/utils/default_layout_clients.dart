@@ -3,19 +3,12 @@
 import 'package:flutter/rendering.dart';
 import 'package:linked_layouts/src/linked_layouts.dart';
 
-class DefaultLayoutLeaderClient
-    with RenderObjectLayoutClientMixin
-    implements LayoutLeaderClient {
-  const DefaultLayoutLeaderClient(
-    this.renderObject, {
-    required this.onTryGetSize,
-  });
-
-  @override
-  final RenderBox renderObject;
-
-  final LayoutLeaderClientSizeGetter onTryGetSize;
-
+class const DefaultLayoutLeaderClient<GeometryType extends Object>(
+  @override final RenderObject renderObject, {
+  required final LayoutLeaderClientGeometryGetter<GeometryType>
+  _onTryGetGeometry,
+}) with RenderObjectLayoutClientMixin
+    implements LayoutLeaderClient<GeometryType> {
   @override
   void redepthChild(RenderObject child) {
     // ignore: invalid_use_of_protected_member
@@ -23,90 +16,71 @@ class DefaultLayoutLeaderClient
   }
 
   @override
-  Size? tryGetSize() =>
-      renderObject.attached && renderObject.hasSize ? onTryGetSize() : null;
+  GeometryType? tryGetGeometry() =>
+      renderObject.attached ? _onTryGetGeometry() : null;
 
   @override
-  Matrix4? tryGetTransformFrom(RenderObject? ancestor, {Matrix4? matrix}) =>
-      RenderObjectTransformHelper.tryGetTransformTo(
-        renderObject,
-        ancestor: ancestor,
-        result: matrix,
-      );
+  Matrix4? tryGetTransformFrom(
+    RenderObject? ancestor, {
+    Matrix4? matrix,
+    Map<RenderObject, Matrix4>? ancestorTransformCache,
+  }) {
+    if (tryGetGeometry() == null) return null;
+    return RenderObjectTransformHelper.tryGetTransformTo(
+      renderObject,
+      ancestor: ancestor,
+      result: matrix,
+      ancestorTransformCache: ancestorTransformCache,
+    );
+  }
 
   @override
-  Matrix4? tryGetTransformIn(RenderObject other, {Matrix4? matrix}) =>
-      RenderObjectTransformHelper.tryGetTransformIn(
-        renderObject,
-        other,
-        matrix: matrix,
-      );
-
-  @override
-  Offset? tryGetPositionIn(RenderObject other, {Matrix4? matrix}) =>
-      RenderObjectTransformHelper.tryGetPositionIn(
-        renderObject,
-        other,
-        matrix: matrix,
-      );
-
-  @override
-  Rect? tryGetRectIn(RenderObject other, {Matrix4? matrix}) {
-    final size = tryGetSize();
-    if (size == null) return null;
-
-    final transform = tryGetTransformIn(other, matrix: matrix);
-    if (transform == null) return null;
-
-    return MatrixUtils.transformRect(transform, Offset.zero & size);
+  Matrix4? tryGetTransformIn(RenderObject other, {Matrix4? matrix}) {
+    if (tryGetGeometry() == null) return null;
+    return RenderObjectTransformHelper.tryGetTransformIn(
+      renderObject,
+      other,
+      matrix: matrix,
+    );
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
-          other is DefaultLayoutLeaderClient &&
+          other is DefaultLayoutLeaderClient<GeometryType> &&
           renderObject == other.renderObject &&
-          onTryGetSize == other.onTryGetSize;
+          _onTryGetGeometry == other._onTryGetGeometry;
 
   @override
-  int get hashCode => Object.hash(runtimeType, renderObject, onTryGetSize);
+  int get hashCode => Object.hash(renderObject, _onTryGetGeometry);
 }
 
-class DefaultSlottedLayoutLeaderClient<SlotType extends Object?>
-    extends DefaultLayoutLeaderClient
-    implements SlottedLayoutLeaderClient<SlotType> {
-  const DefaultSlottedLayoutLeaderClient(
-    super.renderObject,
-    this.slot, {
-    required super.onTryGetSize,
-  });
-
-  @override
-  final SlotType slot;
-
+class const DefaultSlottedLayoutLeaderClient<
+  SlotType extends Object?,
+  GeometryType extends Object
+>(
+  super.renderObject,
+  @override final SlotType slot, {
+  required super.onTryGetGeometry,
+}) extends DefaultLayoutLeaderClient<GeometryType>
+    implements SlottedLayoutLeaderClient<SlotType, GeometryType> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
-          other is DefaultSlottedLayoutLeaderClient<SlotType> &&
+          other is DefaultSlottedLayoutLeaderClient<SlotType, GeometryType> &&
           renderObject == other.renderObject &&
-          onTryGetSize == other.onTryGetSize &&
-          slot == other.slot;
+          slot == other.slot &&
+          _onTryGetGeometry == other._onTryGetGeometry;
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, renderObject, onTryGetSize, slot);
+  int get hashCode => Object.hash(renderObject, slot, _onTryGetGeometry);
 }
 
-class DefaultLayoutFollowerClient
-    with RenderObjectLayoutClientMixin
-    implements LayoutFollowerClient {
-  const DefaultLayoutFollowerClient(this.renderObject);
-
-  @override
-  final RenderObject renderObject;
-
+class const DefaultLayoutFollowerClient(
+  @override final RenderObject renderObject,
+) with RenderObjectLayoutClientMixin implements LayoutFollowerClient {
   @override
   bool tryRedepthWith(Iterable<LayoutLeaderClient> leaders) {
     LayoutLeaderClient? deepestLeader;
@@ -140,5 +114,5 @@ class DefaultLayoutFollowerClient
           renderObject == other.renderObject;
 
   @override
-  int get hashCode => Object.hash(runtimeType, renderObject);
+  int get hashCode => renderObject.hashCode;
 }

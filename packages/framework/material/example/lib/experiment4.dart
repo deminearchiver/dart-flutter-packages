@@ -13,7 +13,12 @@ class _SearchViewLayout extends SingleChildRenderObjectWidget {
     super.child,
   });
 
-  final SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot> layoutLink;
+  final SlottedMultiLeaderLayoutLink<
+    _SearchViewLeaderSlot,
+    SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
+    LayoutFollowerClient
+  >
+  layoutLink;
   final ValueListenable<double> animation;
 
   @override
@@ -38,12 +43,28 @@ class _RenderSearchViewLayout extends RenderShiftedBox {
     RenderBox? child,
   }) : super(child);
 
-  SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? _layoutLink;
+  SlottedMultiLeaderLayoutLink<
+    _SearchViewLeaderSlot,
+    SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
+    LayoutFollowerClient
+  >?
+  _layoutLink;
 
-  SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? get layoutLink =>
-      _layoutLink;
+  SlottedMultiLeaderLayoutLink<
+    _SearchViewLeaderSlot,
+    SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
+    LayoutFollowerClient
+  >?
+  get layoutLink => _layoutLink;
 
-  set layoutLink(SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>? value) {
+  set layoutLink(
+    SlottedMultiLeaderLayoutLink<
+      _SearchViewLeaderSlot,
+      SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
+      LayoutFollowerClient
+    >?
+    value,
+  ) {
     if (_layoutLink == value) return;
     _layoutLinkHandle?.dispose();
     _layoutLinkHandle = null;
@@ -71,7 +92,7 @@ class _RenderSearchViewLayout extends RenderShiftedBox {
   }
 
   FollowerLayoutLinkHandle<
-    SlottedLayoutLeaderClient<_SearchViewLeaderSlot>,
+    SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
     LayoutFollowerClient
   >?
   _layoutLinkHandle;
@@ -146,7 +167,12 @@ class Experiment4View extends StatefulWidget {
 
 class _Experiment4ViewState extends State<Experiment4View>
     with SingleTickerProviderStateMixin {
-  final _link = SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot>();
+  final _link =
+      SlottedMultiLeaderLayoutLink<
+        _SearchViewLeaderSlot,
+        SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
+        LayoutFollowerClient
+      >();
   late AnimationController _controller;
 
   @override
@@ -233,7 +259,12 @@ class _Experiment4ViewState extends State<Experiment4View>
 class _Route extends PopupRoute<void> {
   _Route({required this.link});
 
-  final SlottedMultiLeaderLayoutLink<_SearchViewLeaderSlot> link;
+  final SlottedMultiLeaderLayoutLink<
+    _SearchViewLeaderSlot,
+    SlottedLayoutLeaderClient<_SearchViewLeaderSlot, Size>,
+    LayoutFollowerClient
+  >
+  link;
 
   var _curvedAnimation = CurvedAnimation(
     parent: kAlwaysDismissedAnimation,

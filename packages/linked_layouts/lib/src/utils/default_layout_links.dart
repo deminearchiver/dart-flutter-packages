@@ -37,13 +37,15 @@ base class SingleLeaderLayoutLink<
   }
 }
 
-base class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
-    extends
-        LayoutLink<SlottedLayoutLeaderClient<SlotType>, LayoutFollowerClient> {
-  final Map<SlotType, SlottedLayoutLeaderClient<SlotType>> _slotToLeader =
-      HashMap();
+base class SlottedMultiLeaderLayoutLink<
+  SlotType extends Object?,
+  LeaderClientType extends SlottedLayoutLeaderClient<SlotType, Object>,
+  FollowerClientType extends LayoutFollowerClient
+>
+    extends LayoutLink<LeaderClientType, FollowerClientType> {
+  final Map<SlotType, LeaderClientType> _slotToLeader = HashMap();
 
-  SlottedLayoutLeaderClient<SlotType>? leaderForSlot(SlotType slot) {
+  LeaderClientType? leaderForSlot(SlotType slot) {
     final leader = _slotToLeader[slot];
     // TODO: throw errors via FlutterError and improve error messages
     assert(
@@ -66,11 +68,10 @@ base class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
   }
 
   @override
-  Iterable<SlottedLayoutLeaderClient<SlotType>> get leadersInternal =>
-      _slotToLeader.values;
+  Iterable<LeaderClientType> get leadersInternal => _slotToLeader.values;
 
   @override
-  bool isLeaderRegistered(SlottedLayoutLeaderClient<SlotType> leader) {
+  bool isLeaderRegistered(LeaderClientType leader) {
     // TODO: expand this assertion further
     assert(
       !_slotToLeader.containsKey(leader.slot) ||
@@ -80,12 +81,12 @@ base class SlottedMultiLeaderLayoutLink<SlotType extends Object?>
   }
 
   @override
-  void registerLeaderInternal(SlottedLayoutLeaderClient<SlotType> leader) {
+  void registerLeaderInternal(LeaderClientType leader) {
     _slotToLeader[leader.slot] = leader;
   }
 
   @override
-  void unregisterLeaderInternal(SlottedLayoutLeaderClient<SlotType> leader) {
+  void unregisterLeaderInternal(LeaderClientType leader) {
     _slotToLeader.remove(leader.slot);
   }
 }
