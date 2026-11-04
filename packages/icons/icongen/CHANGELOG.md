@@ -1,3 +1,14 @@
+## Unreleased
+
+- Added the pre-defined variable axis tagged "JITT" - Jitter to `VariableAxisTag` as `VariableAxisTag.jitt`.
+  - The [Google Fonts CSS v2 API](https://developers.google.com/fonts/docs/css2) defines the axis as:
+
+    *Controls the amount of jitter applied to the glyphs. Higher values emulate the mechanical imperfection and displacement of vintage printers.*
+
+    | Default: | Min: | Max:  | Step: |
+    | -------- | ---- | ----- | ----- |
+    | 0.0      | 0.0  | 100.0 | 1.0   |
+
 ## 0.6.0
 
 - Bumped minimum SDK version to Dart 3.13.

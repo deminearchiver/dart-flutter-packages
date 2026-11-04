@@ -228,6 +228,17 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | 0.0      | 0.0  | 1.0  | 1.0   |
   static const ital = VariableAxisTag.fromJson("ital");
 
+  /// Variable font axis tagged "JITT" - Jitter.
+  ///
+  /// Controls the amount of jitter applied to the glyphs. Higher values emulate the mechanical imperfection and displacement of vintage printers.
+  ///
+  /// The [Google Fonts CSS v2 API](https://developers.google.com/fonts/docs/css2) defines the axis as:
+  ///
+  /// | Default: | Min: | Max:  | Step: |
+  /// | -------- | ---- | ----- | ----- |
+  /// | 0.0      | 0.0  | 100.0 | 1.0   |
+  static const jitt = VariableAxisTag.fromJson("JITT");
+
   /// Variable font axis tagged "MONO" - Monospace.
   ///
   /// Adjust the style from Proportional (natural widths, default) to Monospace (fixed width). With proportional spacing, each glyph takes up a unique amount of space on a line, while monospace is when all glyphs have the same total character width.
