@@ -1,4 +1,4 @@
-## Unreleased
+## 0.6.1
 
 - Updated `VariableAxisTag` generator script.
   - The extension type now has full documentation coverage.
