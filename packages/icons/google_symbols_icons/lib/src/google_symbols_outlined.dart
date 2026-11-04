@@ -2107,6 +2107,9 @@ abstract final class GoogleSymbolsOutlined {
   /// Google Symbols Outlined icon named "campaign_shopping".
   static const IconData campaign_shopping = IconData(0xe66c, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Outlined icon named "campaign_studio".
+  static const IconData campaign_studio = IconData(0xffe89, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Outlined icon named "campaign_travel".
   static const IconData campaign_travel = IconData(0xf699, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -3408,6 +3411,9 @@ abstract final class GoogleSymbolsOutlined {
 
   /// Google Symbols Outlined icon named "devices".
   static const IconData devices = IconData(0xe1b1, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Outlined icon named "devices_2".
+  static const IconData devices_2 = IconData(0xffe88, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Outlined icon named "devices_fold".
   static const IconData devices_fold = IconData(0xebde, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -8062,6 +8068,9 @@ abstract final class GoogleSymbolsOutlined {
   /// Google Symbols Outlined icon named "mintmark".
   static const IconData mintmark = IconData(0xefa9, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Outlined icon named "mirror_stack".
+  static const IconData mirror_stack = IconData(0xffe87, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Outlined icon named "missed_video_call".
   static const IconData missed_video_call = IconData(0xe073, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -10182,6 +10191,9 @@ abstract final class GoogleSymbolsOutlined {
 
   /// Google Symbols Outlined icon named "published_with_changes".
   static const IconData published_with_changes = IconData(0xf232, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Outlined icon named "pull_request".
+  static const IconData pull_request = IconData(0xffe85, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Outlined icon named "pulmonology".
   static const IconData pulmonology = IconData(0xe124, fontFamily: fontFamily, fontPackage: fontPackage);

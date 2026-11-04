@@ -1,3 +1,8 @@
+## 0.1.13
+
+- Rolled the Google Symbols font from `v469` to `v470`.
+  - This update introduces 4 new icons: `campaign_studio`, `devices_2`, `mirror_stack`, `pull_request`.
+
 ## 0.1.12
 
 - Rolled the Google Symbols font from `v467` to `v469`.
