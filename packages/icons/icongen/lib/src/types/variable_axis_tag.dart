@@ -1,4 +1,12 @@
-extension type const VariableAxisTag._(String _) implements String {
+/// A 4-character tag that identifies a variable font axis.
+extension type const VariableAxisTag._(
+  /// The underlying 4-character string value of this tag.
+  String _,
+) implements String {
+  /// Creates a [VariableAxisTag].
+  this;
+
+  /// Creates a [VariableAxisTag] from a 4-character string.
   const new fromJson(String json)
     : assert(
         json.length == 4,
@@ -6,6 +14,7 @@ extension type const VariableAxisTag._(String _) implements String {
       ),
       _ = json;
 
+  /// Returns the underlying string value of this tag.
   String toJson() => _;
 
   /// Variable font axis tagged "ARRR" - AR Retinal Resolution.
@@ -17,7 +26,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max: | Step: |
   /// | -------- | ---- | ---- | ----- |
   /// | 10.0     | 10.0 | 60.0 | 1.0   |
-  static const arrr = VariableAxisTag.fromJson("ARRR");
+  static const arrr = VariableAxisTag._("ARRR");
 
   /// Variable font axis tagged "BLED" - Bleed.
   ///
@@ -28,7 +37,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 1.0   |
-  static const bled = VariableAxisTag.fromJson("BLED");
+  static const bled = VariableAxisTag._("BLED");
 
   /// Variable font axis tagged "BNCE" - Bounce.
   ///
@@ -39,7 +48,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 1.0   |
-  static const bnce = VariableAxisTag.fromJson("BNCE");
+  static const bnce = VariableAxisTag._("BNCE");
 
   /// Variable font axis tagged "CASL" - Casual.
   ///
@@ -50,7 +59,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max: | Step: |
   /// | -------- | ---- | ---- | ----- |
   /// | 0.0      | 0.0  | 1.0  | 0.01  |
-  static const casl = VariableAxisTag.fromJson("CASL");
+  static const casl = VariableAxisTag._("CASL");
 
   /// Variable font axis tagged "CTRS" - Contrast.
   ///
@@ -61,7 +70,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 10.0  |
-  static const ctrs = VariableAxisTag.fromJson("CTRS");
+  static const ctrs = VariableAxisTag._("CTRS");
 
   /// Variable font axis tagged "CRSV" - Cursive.
   ///
@@ -72,7 +81,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max: | Step: |
   /// | -------- | ---- | ---- | ----- |
   /// | 0.5      | 0.0  | 1.0  | 0.1   |
-  static const crsv = VariableAxisTag.fromJson("CRSV");
+  static const crsv = VariableAxisTag._("CRSV");
 
   /// Variable font axis tagged "EHLT" - Edge Highlight.
   ///
@@ -83,7 +92,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:   | Step: |
   /// | -------- | ---- | ------ | ----- |
   /// | 12.0     | 0.0  | 1000.0 | 1.0   |
-  static const ehlt = VariableAxisTag.fromJson("EHLT");
+  static const ehlt = VariableAxisTag._("EHLT");
 
   /// Variable font axis tagged "ELXP" - Element Expansion.
   ///
@@ -94,7 +103,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 1.0   |
-  static const elxp = VariableAxisTag.fromJson("ELXP");
+  static const elxp = VariableAxisTag._("ELXP");
 
   /// Variable font axis tagged "ELGR" - Element Grid.
   ///
@@ -105,7 +114,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max: | Step: |
   /// | -------- | ---- | ---- | ----- |
   /// | 1.0      | 1.0  | 2.0  | 0.1   |
-  static const elgr = VariableAxisTag.fromJson("ELGR");
+  static const elgr = VariableAxisTag._("ELGR");
 
   /// Variable font axis tagged "ELSH" - Element Shape.
   ///
@@ -116,7 +125,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 0.1   |
-  static const elsh = VariableAxisTag.fromJson("ELSH");
+  static const elsh = VariableAxisTag._("ELSH");
 
   /// Variable font axis tagged "ENLA" - Enlarge.
   ///
@@ -127,7 +136,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 0.01  |
-  static const enla = VariableAxisTag.fromJson("ENLA");
+  static const enla = VariableAxisTag._("ENLA");
 
   /// Variable font axis tagged "EDPT" - Extrusion Depth.
   ///
@@ -138,7 +147,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:   | Step: |
   /// | -------- | ---- | ------ | ----- |
   /// | 100.0    | 0.0  | 1000.0 | 1.0   |
-  static const edpt = VariableAxisTag.fromJson("EDPT");
+  static const edpt = VariableAxisTag._("EDPT");
 
   /// Variable font axis tagged "FILL" - Fill.
   ///
@@ -149,7 +158,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max: | Step: |
   /// | -------- | ---- | ---- | ----- |
   /// | 0.0      | 0.0  | 1.0  | 0.01  |
-  static const fill = VariableAxisTag.fromJson("FILL");
+  static const fill = VariableAxisTag._("FILL");
 
   /// Variable font axis tagged "FLAR" - Flare.
   ///
@@ -160,7 +169,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 1.0   |
-  static const flar = VariableAxisTag.fromJson("FLAR");
+  static const flar = VariableAxisTag._("FLAR");
 
   /// Variable font axis tagged "GEOM" - Geometric Form.
   ///
@@ -171,7 +180,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 10.0  |
-  static const geom = VariableAxisTag.fromJson("GEOM");
+  static const geom = VariableAxisTag._("GEOM");
 
   /// Variable font axis tagged "GRAD" - Grade.
   ///
@@ -182,7 +191,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:    | Max:   | Step: |
   /// | -------- | ------- | ------ | ----- |
   /// | 0.0      | -1000.0 | 1000.0 | 1.0   |
-  static const grad = VariableAxisTag.fromJson("GRAD");
+  static const grad = VariableAxisTag._("GRAD");
 
   /// Variable font axis tagged "GDOP" - Guides Opacity.
   ///
@@ -193,7 +202,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 100.0    | 0.0  | 100.0 | 1.0   |
-  static const gdop = VariableAxisTag.fromJson("GDOP");
+  static const gdop = VariableAxisTag._("GDOP");
 
   /// Variable font axis tagged "HEXP" - Hyper Expansion.
   ///
@@ -204,7 +213,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 0.1   |
-  static const hexp = VariableAxisTag.fromJson("HEXP");
+  static const hexp = VariableAxisTag._("HEXP");
 
   /// Variable font axis tagged "INFM" - Informality.
   ///
@@ -215,7 +224,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 1.0   |
-  static const infm = VariableAxisTag.fromJson("INFM");
+  static const infm = VariableAxisTag._("INFM");
 
   /// Variable font axis tagged "ital" - Italic.
   ///
@@ -226,7 +235,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max: | Step: |
   /// | -------- | ---- | ---- | ----- |
   /// | 0.0      | 0.0  | 1.0  | 1.0   |
-  static const ital = VariableAxisTag.fromJson("ital");
+  static const ital = VariableAxisTag._("ital");
 
   /// Variable font axis tagged "JITT" - Jitter.
   ///
@@ -237,7 +246,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 1.0   |
-  static const jitt = VariableAxisTag.fromJson("JITT");
+  static const jitt = VariableAxisTag._("JITT");
 
   /// Variable font axis tagged "MONO" - Monospace.
   ///
@@ -248,7 +257,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max: | Step: |
   /// | -------- | ---- | ---- | ----- |
   /// | 0.0      | 0.0  | 1.0  | 0.01  |
-  static const mono = VariableAxisTag.fromJson("MONO");
+  static const mono = VariableAxisTag._("MONO");
 
   /// Variable font axis tagged "MORF" - Morph.
   ///
@@ -259,7 +268,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max: | Step: |
   /// | -------- | ---- | ---- | ----- |
   /// | 0.0      | 0.0  | 60.0 | 1.0   |
-  static const morf = VariableAxisTag.fromJson("MORF");
+  static const morf = VariableAxisTag._("MORF");
 
   /// Variable font axis tagged "opsz" - Optical Size.
   ///
@@ -270,7 +279,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:   | Step: |
   /// | -------- | ---- | ------ | ----- |
   /// | 14.0     | 5.0  | 1200.0 | 0.1   |
-  static const opsz = VariableAxisTag.fromJson("opsz");
+  static const opsz = VariableAxisTag._("opsz");
 
   /// Variable font axis tagged "ROND" - Roundness.
   ///
@@ -281,7 +290,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 1.0   |
-  static const rond = VariableAxisTag.fromJson("ROND");
+  static const rond = VariableAxisTag._("ROND");
 
   /// Variable font axis tagged "SCAN" - Scanlines.
   ///
@@ -292,7 +301,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 1.0   |
-  static const scan = VariableAxisTag.fromJson("SCAN");
+  static const scan = VariableAxisTag._("SCAN");
 
   /// Variable font axis tagged "SHLN" - Shadow Length.
   ///
@@ -303,7 +312,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 50.0     | 0.0  | 100.0 | 0.1   |
-  static const shln = VariableAxisTag.fromJson("SHLN");
+  static const shln = VariableAxisTag._("SHLN");
 
   /// Variable font axis tagged "SHRP" - Sharpness.
   ///
@@ -314,7 +323,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 1.0   |
-  static const shrp = VariableAxisTag.fromJson("SHRP");
+  static const shrp = VariableAxisTag._("SHRP");
 
   /// Variable font axis tagged "SZP1" - Size of Paint 1.
   ///
@@ -325,7 +334,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 1.0   |
-  static const szp1 = VariableAxisTag.fromJson("SZP1");
+  static const szp1 = VariableAxisTag._("SZP1");
 
   /// Variable font axis tagged "SZP2" - Size of Paint 2.
   ///
@@ -336,7 +345,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 1.0   |
-  static const szp2 = VariableAxisTag.fromJson("SZP2");
+  static const szp2 = VariableAxisTag._("SZP2");
 
   /// Variable font axis tagged "slnt" - Slant.
   ///
@@ -347,7 +356,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:  | Max: | Step: |
   /// | -------- | ----- | ---- | ----- |
   /// | 0.0      | -90.0 | 90.0 | 1.0   |
-  static const slnt = VariableAxisTag.fromJson("slnt");
+  static const slnt = VariableAxisTag._("slnt");
 
   /// Variable font axis tagged "SOFT" - Softness.
   ///
@@ -358,7 +367,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 0.1   |
-  static const soft = VariableAxisTag.fromJson("SOFT");
+  static const soft = VariableAxisTag._("SOFT");
 
   /// Variable font axis tagged "SPAC" - Spacing.
   ///
@@ -369,7 +378,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 0.1   |
-  static const spac = VariableAxisTag.fromJson("SPAC");
+  static const spac = VariableAxisTag._("SPAC");
 
   /// Variable font axis tagged "VOLM" - Volume.
   ///
@@ -380,7 +389,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 1.0   |
-  static const volm = VariableAxisTag.fromJson("VOLM");
+  static const volm = VariableAxisTag._("VOLM");
 
   /// Variable font axis tagged "wght" - Weight.
   ///
@@ -391,7 +400,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:   | Step: |
   /// | -------- | ---- | ------ | ----- |
   /// | 400.0    | 1.0  | 1000.0 | 1.0   |
-  static const wght = VariableAxisTag.fromJson("wght");
+  static const wght = VariableAxisTag._("wght");
 
   /// Variable font axis tagged "wdth" - Width.
   ///
@@ -402,7 +411,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 100.0    | 25.0 | 200.0 | 0.1   |
-  static const wdth = VariableAxisTag.fromJson("wdth");
+  static const wdth = VariableAxisTag._("wdth");
 
   /// Variable font axis tagged "WONK" - Wonky.
   ///
@@ -413,7 +422,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max: | Step: |
   /// | -------- | ---- | ---- | ----- |
   /// | 0.0      | 0.0  | 1.0  | 1.0   |
-  static const wonk = VariableAxisTag.fromJson("WONK");
+  static const wonk = VariableAxisTag._("WONK");
 
   /// Variable font axis tagged "XELA" - Horizontal Element Alignment.
   ///
@@ -424,7 +433,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 1.0   |
-  static const xela = VariableAxisTag.fromJson("XELA");
+  static const xela = VariableAxisTag._("XELA");
 
   /// Variable font axis tagged "XOPQ" - Thick Stroke.
   ///
@@ -435,7 +444,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:    | Max:   | Step: |
   /// | -------- | ------- | ------ | ----- |
   /// | 88.0     | -1000.0 | 2000.0 | 1.0   |
-  static const xopq = VariableAxisTag.fromJson("XOPQ");
+  static const xopq = VariableAxisTag._("XOPQ");
 
   /// Variable font axis tagged "XPN1" - Horizontal Position of Paint 1.
   ///
@@ -446,7 +455,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 1.0   |
-  static const xpn1 = VariableAxisTag.fromJson("XPN1");
+  static const xpn1 = VariableAxisTag._("XPN1");
 
   /// Variable font axis tagged "XPN2" - Horizontal Position of Paint 2.
   ///
@@ -457,7 +466,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 1.0   |
-  static const xpn2 = VariableAxisTag.fromJson("XPN2");
+  static const xpn2 = VariableAxisTag._("XPN2");
 
   /// Variable font axis tagged "XROT" - Rotation in X.
   ///
@@ -468,7 +477,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -180.0 | 180.0 | 1.0   |
-  static const xrot = VariableAxisTag.fromJson("XROT");
+  static const xrot = VariableAxisTag._("XROT");
 
   /// Variable font axis tagged "XTRA" - Counter Width.
   ///
@@ -479,7 +488,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:    | Max:   | Step: |
   /// | -------- | ------- | ------ | ----- |
   /// | 400.0    | -1000.0 | 2000.0 | 1.0   |
-  static const xtra = VariableAxisTag.fromJson("XTRA");
+  static const xtra = VariableAxisTag._("XTRA");
 
   /// Variable font axis tagged "XTFI" - X transparent figures.
   ///
@@ -490,7 +499,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:    | Max:   | Step: |
   /// | -------- | ------- | ------ | ----- |
   /// | 400.0    | -1000.0 | 2000.0 | 1.0   |
-  static const xtfi = VariableAxisTag.fromJson("XTFI");
+  static const xtfi = VariableAxisTag._("XTFI");
 
   /// Variable font axis tagged "YELA" - Vertical Element Alignment.
   ///
@@ -501,7 +510,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 1.0   |
-  static const yela = VariableAxisTag.fromJson("YELA");
+  static const yela = VariableAxisTag._("YELA");
 
   /// Variable font axis tagged "YOPQ" - Thin Stroke.
   ///
@@ -512,7 +521,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:    | Max:   | Step: |
   /// | -------- | ------- | ------ | ----- |
   /// | 116.0    | -1000.0 | 2000.0 | 1.0   |
-  static const yopq = VariableAxisTag.fromJson("YOPQ");
+  static const yopq = VariableAxisTag._("YOPQ");
 
   /// Variable font axis tagged "YPN1" - Vertical Position of Paint 1.
   ///
@@ -523,7 +532,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 1.0   |
-  static const ypn1 = VariableAxisTag.fromJson("YPN1");
+  static const ypn1 = VariableAxisTag._("YPN1");
 
   /// Variable font axis tagged "YPN2" - Vertical Position of Paint 2.
   ///
@@ -534,7 +543,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -100.0 | 100.0 | 1.0   |
-  static const ypn2 = VariableAxisTag.fromJson("YPN2");
+  static const ypn2 = VariableAxisTag._("YPN2");
 
   /// Variable font axis tagged "YROT" - Rotation in Y.
   ///
@@ -545,7 +554,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -180.0 | 180.0 | 1.0   |
-  static const yrot = VariableAxisTag.fromJson("YROT");
+  static const yrot = VariableAxisTag._("YROT");
 
   /// Variable font axis tagged "YTAS" - Ascender Height.
   ///
@@ -556,7 +565,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:   | Step: |
   /// | -------- | ---- | ------ | ----- |
   /// | 750.0    | 0.0  | 1000.0 | 1.0   |
-  static const ytas = VariableAxisTag.fromJson("YTAS");
+  static const ytas = VariableAxisTag._("YTAS");
 
   /// Variable font axis tagged "YTDE" - Descender Depth.
   ///
@@ -567,7 +576,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:    | Max: | Step: |
   /// | -------- | ------- | ---- | ----- |
   /// | -250.0   | -1000.0 | 0.0  | 1.0   |
-  static const ytde = VariableAxisTag.fromJson("YTDE");
+  static const ytde = VariableAxisTag._("YTDE");
 
   /// Variable font axis tagged "YTFI" - Figure Height.
   ///
@@ -578,7 +587,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:    | Max:   | Step: |
   /// | -------- | ------- | ------ | ----- |
   /// | 600.0    | -1000.0 | 2000.0 | 1.0   |
-  static const ytfi = VariableAxisTag.fromJson("YTFI");
+  static const ytfi = VariableAxisTag._("YTFI");
 
   /// Variable font axis tagged "YTLC" - Lowercase Height.
   ///
@@ -589,7 +598,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:   | Step: |
   /// | -------- | ---- | ------ | ----- |
   /// | 500.0    | 0.0  | 1000.0 | 1.0   |
-  static const ytlc = VariableAxisTag.fromJson("YTLC");
+  static const ytlc = VariableAxisTag._("YTLC");
 
   /// Variable font axis tagged "YTUC" - Uppercase Height.
   ///
@@ -600,7 +609,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:   | Step: |
   /// | -------- | ---- | ------ | ----- |
   /// | 725.0    | 0.0  | 1000.0 | 1.0   |
-  static const ytuc = VariableAxisTag.fromJson("YTUC");
+  static const ytuc = VariableAxisTag._("YTUC");
 
   /// Variable font axis tagged "YEXT" - Vertical Extension.
   ///
@@ -611,7 +620,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min: | Max:  | Step: |
   /// | -------- | ---- | ----- | ----- |
   /// | 0.0      | 0.0  | 100.0 | 1.0   |
-  static const yext = VariableAxisTag.fromJson("YEXT");
+  static const yext = VariableAxisTag._("YEXT");
 
   /// Variable font axis tagged "YEAR" - Year.
   ///
@@ -622,7 +631,7 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:    | Max:   | Step: |
   /// | -------- | ------- | ------ | ----- |
   /// | 2000.0   | -4000.0 | 4000.0 | 1.0   |
-  static const year = VariableAxisTag.fromJson("YEAR");
+  static const year = VariableAxisTag._("YEAR");
 
   /// Variable font axis tagged "ZROT" - Rotation in Z.
   ///
@@ -633,5 +642,5 @@ extension type const VariableAxisTag._(String _) implements String {
   /// | Default: | Min:   | Max:  | Step: |
   /// | -------- | ------ | ----- | ----- |
   /// | 0.0      | -180.0 | 180.0 | 1.0   |
-  static const zrot = VariableAxisTag.fromJson("ZROT");
+  static const zrot = VariableAxisTag._("ZROT");
 }

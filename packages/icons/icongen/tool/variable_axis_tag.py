@@ -23,13 +23,23 @@ def create_table_lines(header: list[str], rows: list[list[str]]) -> list[str]:
 def main():
     axis_registry = AxisRegistry()
 
-    print("extension type const VariableAxisTag._(String _) implements String {")
-    print(
-        "  const VariableAxisTag.fromJson(String json): "
-        'assert(json.length == 4, "Variable axis tag must contain exactly 4 characters.",), '
-        "_ = json;"
-    )
+    print("/// A 4-character tag that identifies a variable font axis.")
+    print("extension type const VariableAxisTag._(")
+    print("  /// The underlying 4-character string value of this tag.")
+    print("  String _,")
+    print(") implements String {")
+    print("  /// Creates a [VariableAxisTag].")
+    print("  this;")
     print("")
+    print("  /// Creates a [VariableAxisTag] from a 4-character string.")
+    print("  const new fromJson(String json)")
+    print("    : assert(")
+    print("        json.length == 4,")
+    print("        \"Variable axis tag must contain exactly 4 characters.\",")
+    print("      ),")
+    print("      _ = json;")
+    print("")
+    print("  /// Returns the underlying string value of this tag.")
     print("  String toJson() => _;")
     print("")
 
@@ -64,8 +74,9 @@ def main():
         ]
         for line in docs:
             print(f"  /// {line}")
-
-        print(f'  static const {tag.lower()} = VariableAxisTag.fromJson("{tag}");')
+        # Force compile-time assertion instead of raising an error.
+        constructor_name = "_" if len(tag) == 4 else "fromJson"
+        print(f'  static const {tag.lower()} = VariableAxisTag.{constructor_name}("{tag}");')
 
     print("}")
 

@@ -1,9 +1,17 @@
 ## Unreleased
 
-- Added the pre-defined variable axis tagged "JITT" - Jitter to `VariableAxisTag` as `VariableAxisTag.jitt`.
-  - The [Google Fonts CSS v2 API](https://developers.google.com/fonts/docs/css2) defines the axis as:
+- Updated `VariableAxisTag` generator script.
+  - The extension type now has full documentation coverage.
+  - Pre-defined axis constants now use the internal constructor, which avoids unnecessary assertions.
+  - The generator script's output now matches Dart 3.13 code style, making formatting a no-op.
+  - Added tag validity guards in the form of compile-time assertions in the generated code.
 
-    *Controls the amount of jitter applied to the glyphs. Higher values emulate the mechanical imperfection and displacement of vintage printers.*
+- Executed the generator script against `axisregistry==0.4.20`.
+  - Added `VariableAxisTag.jitt`: variable font axis tagged "JITT" - Jitter.
+
+    > Controls the amount of jitter applied to the glyphs. Higher values emulate the mechanical imperfection and displacement of vintage printers.
+
+    The [Google Fonts CSS v2 API](https://developers.google.com/fonts/docs/css2) defines the axis as:
 
     | Default: | Min: | Max:  | Step: |
     | -------- | ---- | ----- | ----- |
