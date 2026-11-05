@@ -361,6 +361,44 @@ Darthb_bool_t hb_buffer_deserialize_glyphs(
     ffi.Pointer<hb_buffer_t>,
     ffi.Pointer<ffi.Char>,
     ffi.Int,
+    ffi.Pointer<ffi.UnsignedInt>,
+    ffi.Pointer<hb_font_t>,
+    ffi.UnsignedInt,
+  )
+>(symbol: 'hb_buffer_deserialize_glyphs2')
+external int _hb_buffer_deserialize_glyphs2(
+  ffi.Pointer<hb_buffer_t> buffer,
+  ffi.Pointer<ffi.Char> buf,
+  int buf_len,
+  ffi.Pointer<ffi.UnsignedInt> buf_consumed,
+  ffi.Pointer<hb_font_t> font,
+  int format,
+);
+
+Darthb_bool_t hb_buffer_deserialize_glyphs2(
+  ffi.Pointer<hb_buffer_t> buffer,
+  ffi.Pointer<ffi.Char> buf,
+  int buf_len,
+  ffi.Pointer<ffi.UnsignedInt> buf_consumed,
+  ffi.Pointer<hb_font_t> font,
+  hb_buffer_serialize_format_t format,
+) {
+  return _hb_buffer_deserialize_glyphs2(
+    buffer,
+    buf,
+    buf_len,
+    buf_consumed,
+    font,
+    format.value,
+  );
+}
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_buffer_t>,
+    ffi.Pointer<ffi.Char>,
+    ffi.Int,
     ffi.Pointer<ffi.Pointer<ffi.Char>>,
     ffi.UnsignedInt,
   )
@@ -385,6 +423,40 @@ Darthb_bool_t hb_buffer_deserialize_unicode(
     buf,
     buf_len,
     end_ptr,
+    format.value,
+  );
+}
+
+@meta.RecordUse()
+@ffi.Native<
+  hb_bool_t Function(
+    ffi.Pointer<hb_buffer_t>,
+    ffi.Pointer<ffi.Char>,
+    ffi.Int,
+    ffi.Pointer<ffi.UnsignedInt>,
+    ffi.UnsignedInt,
+  )
+>(symbol: 'hb_buffer_deserialize_unicode2')
+external int _hb_buffer_deserialize_unicode2(
+  ffi.Pointer<hb_buffer_t> buffer,
+  ffi.Pointer<ffi.Char> buf,
+  int buf_len,
+  ffi.Pointer<ffi.UnsignedInt> buf_consumed,
+  int format,
+);
+
+Darthb_bool_t hb_buffer_deserialize_unicode2(
+  ffi.Pointer<hb_buffer_t> buffer,
+  ffi.Pointer<ffi.Char> buf,
+  int buf_len,
+  ffi.Pointer<ffi.UnsignedInt> buf_consumed,
+  hb_buffer_serialize_format_t format,
+) {
+  return _hb_buffer_deserialize_unicode2(
+    buffer,
+    buf,
+    buf_len,
+    buf_consumed,
     format.value,
   );
 }
@@ -9767,9 +9839,9 @@ const int HB_VERSION_MAJOR = 15;
 
 const int HB_VERSION_MICRO = 0;
 
-const int HB_VERSION_MINOR = 0;
+const int HB_VERSION_MINOR = 1;
 
-const String HB_VERSION_STRING = '15.0.0';
+const String HB_VERSION_STRING = '15.1.0';
 
 final class _hb_var_int_t extends ffi.Union {
   @ffi.Uint32()
