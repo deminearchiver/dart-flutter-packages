@@ -1,3 +1,7 @@
+// ignore_for_file: avoid_print
+
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math' as math;
 
 extension type const ObjectHashExpressionBuilder._(
@@ -50,4 +54,14 @@ extension type const ObjectHashExpressionBuilder._(
     }
     return buffer.toString();
   }
+}
+
+Future<void> main(List<String> arguments) async {
+  final expressions = await stdin
+      .transform(utf8.decoder)
+      .transform(const LineSplitter())
+      .takeWhile((line) => line.isNotEmpty)
+      .toList();
+  final result = ObjectHashExpressionBuilder(expressions).build();
+  print(result);
 }
