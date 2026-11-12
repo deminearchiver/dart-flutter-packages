@@ -3658,6 +3658,9 @@ abstract final class GoogleSymbolsOutlined {
   /// Google Symbols Outlined icon named "document_share".
   static const IconData document_share = IconData(0xffea6, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Outlined icon named "document_share_off".
+  static const IconData document_share_off = IconData(0xffe82, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Outlined icon named "document_share_stack".
   static const IconData document_share_stack = IconData(0xffe93, fontFamily: fontFamily, fontPackage: fontPackage);
 
@@ -5673,6 +5676,9 @@ abstract final class GoogleSymbolsOutlined {
 
   /// Google Symbols Outlined icon named "frame_person".
   static const IconData frame_person = IconData(0xf8a6, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Outlined icon named "frame_person_2".
+  static const IconData frame_person_2 = IconData(0xffe83, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Outlined icon named "frame_person_mic".
   static const IconData frame_person_mic = IconData(0xf4d5, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -10099,8 +10105,20 @@ abstract final class GoogleSymbolsOutlined {
   /// Google Symbols Outlined icon named "print_error".
   static const IconData print_error = IconData(0xf7a0, fontFamily: fontFamily, fontPackage: fontPackage);
 
+  /// Google Symbols Outlined icon named "print_landscape_long".
+  static const IconData print_landscape_long = IconData(0xffe81, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Outlined icon named "print_landscape_short".
+  static const IconData print_landscape_short = IconData(0xffe80, fontFamily: fontFamily, fontPackage: fontPackage);
+
   /// Google Symbols Outlined icon named "print_lock".
   static const IconData print_lock = IconData(0xf651, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Outlined icon named "print_portrait_long".
+  static const IconData print_portrait_long = IconData(0xffe7f, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Outlined icon named "print_portrait_short".
+  static const IconData print_portrait_short = IconData(0xffe7e, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Outlined icon named "priority".
   static const IconData priority = IconData(0xe19f, fontFamily: fontFamily, fontPackage: fontPackage);
@@ -13224,6 +13242,9 @@ abstract final class GoogleSymbolsOutlined {
 
   /// Google Symbols Outlined icon named "touch_double_2".
   static const IconData touch_double_2 = IconData(0xfff35, fontFamily: fontFamily, fontPackage: fontPackage);
+
+  /// Google Symbols Outlined icon named "touch_double_2_hold".
+  static const IconData touch_double_2_hold = IconData(0xffe84, fontFamily: fontFamily, fontPackage: fontPackage);
 
   /// Google Symbols Outlined icon named "touch_long".
   static const IconData touch_long = IconData(0xf38a, fontFamily: fontFamily, fontPackage: fontPackage);

@@ -1,3 +1,8 @@
+## 0.1.14
+
+- Rolled the Google Symbols font from `v470` to `v472`.
+  - This update introduces 7 new icons: `document_share_off`, `frame_person_2`, `print_landscape_long`, `print_landscape_short`, `print_portrait_long`, `print_portrait_short`, `touch_double_2_hold`.
+
 ## 0.1.13
 
 - Rolled the Google Symbols font from `v469` to `v470`.
