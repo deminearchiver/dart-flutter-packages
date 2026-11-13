@@ -869,42 +869,27 @@ mixin _CutShapeCornerFamilyMixin implements ShapeCornerFamily {
 
   static CornersGeometry _inflateCorners(CornersGeometry value, double delta) {
     if (delta == 0.0) return value;
-    // TODO: shouldn't this account for parallel drift?
     return _CutCornersGeometry(value, delta);
   }
 
   static BorderRadius _inflateBorderRadius(BorderRadius value, double delta) {
     if (delta == 0.0) return value;
-    final BorderRadius(
-      topLeft: Radius(x: tlX, y: tlY),
-      topRight: Radius(x: trX, y: trY),
-      bottomLeft: Radius(x: blX, y: blY),
-      bottomRight: Radius(x: brX, y: brY),
-    ) = value;
-    final tlH = math.sqrt(tlX * tlX + tlY * tlY);
-    final trH = math.sqrt(trX * trX + trY * trY);
-    final blH = math.sqrt(blX * blX + blY * blY);
-    final brH = math.sqrt(brX * brX + brY * brY);
 
-    // TODO: shouldn't this account for parallel drift?
+    Radius inflateRadius(Radius radius) {
+      final Radius(:x, :y) = radius;
+      if (x > 0.0 && y > 0.0) {
+        final hypotenuse = math.sqrt(x * x + y * y);
+        final scale = 1.0 + (2.0 * delta) / (x + y + hypotenuse);
+        if (scale > 0.0) return .elliptical(x * scale, y * scale);
+      }
+      return .zero;
+    }
 
     return .only(
-      topLeft: .elliptical(
-        tlY != 0.0 ? math.max(0.0, tlX + delta * ((tlH - tlX) / tlY)) : 0.0,
-        tlX != 0.0 ? math.max(0.0, tlY + delta * ((tlH - tlY) / tlX)) : 0.0,
-      ),
-      topRight: .elliptical(
-        trY != 0.0 ? math.max(0.0, trX + delta * ((trH - trX) / trY)) : 0.0,
-        trX != 0.0 ? math.max(0.0, trY + delta * ((trH - trY) / trX)) : 0.0,
-      ),
-      bottomLeft: .elliptical(
-        blY != 0.0 ? math.max(0.0, blX + delta * ((blH - blX) / blY)) : 0.0,
-        blX != 0.0 ? math.max(0.0, blY + delta * ((blH - blY) / blX)) : 0.0,
-      ),
-      bottomRight: .elliptical(
-        brY != 0.0 ? math.max(0.0, brX + delta * ((brH - brX) / brY)) : 0.0,
-        brX != 0.0 ? math.max(0.0, brY + delta * ((brH - brY) / brX)) : 0.0,
-      ),
+      topLeft: inflateRadius(value.topLeft),
+      topRight: inflateRadius(value.topRight),
+      bottomLeft: inflateRadius(value.bottomLeft),
+      bottomRight: inflateRadius(value.bottomRight),
     );
   }
 
@@ -929,43 +914,44 @@ mixin _CutShapeCornerFamilyMixin implements ShapeCornerFamily {
     ) = value
         .scaleRadii();
 
-    final topLeftH = math.sqrt(topLeftX * topLeftX + topLeftY * topLeftY);
-    final topRightH = math.sqrt(topRightX * topRightX + topRightY * topRightY);
-    final bottomLeftH = math.sqrt(
-      bottomLeftX * bottomLeftX + bottomLeftY * bottomLeftY,
-    );
-    final bottomRightH = math.sqrt(
-      bottomRightX * bottomRightX + bottomRightY * bottomRightY,
-    );
+    double rawScale(double x, double y) {
+      if (x > 0.0 && y > 0.0) {
+        final hypotenuse = math.sqrt(x * x + y * y);
+        return math.max(0.0, 1.0 + (2.0 * delta) / (x + y + hypotenuse));
+      }
+      return 0.0;
+    }
 
-    // TODO: improve the algorithm (still not perfect)
+    final topLeftScale = rawScale(topLeftX, topLeftY);
+    final topRightScale = rawScale(topRightX, topRightY);
+    final bottomLeftScale = rawScale(bottomLeftX, bottomLeftY);
+    final bottomRightScale = rawScale(bottomRightX, bottomRightY);
 
-    double rawX(double x, double y, double h) =>
-        x > 0.0 || y > 0.0 ? x + delta * (2.0 * x) / (x + y + h) : 0.0;
-
-    double rawY(double x, double y, double h) =>
-        x > 0.0 || y > 0.0 ? y + delta * (2.0 * y) / (x + y + h) : 0.0;
-
-    final topLeftRawX = rawX(topLeftX, topLeftY, topLeftH);
-    final topLeftRawY = rawY(topLeftX, topLeftY, topLeftH);
-    final topRightRawX = rawX(topRightX, topRightY, topRightH);
-    final topRightRawY = rawY(topRightX, topRightY, topRightH);
-    final bottomLeftRawX = rawX(bottomLeftX, bottomLeftY, bottomLeftH);
-    final bottomLeftRawY = rawY(bottomLeftX, bottomLeftY, bottomLeftH);
-    final bottomRightRawX = rawX(bottomRightX, bottomRightY, bottomRightH);
-    final bottomRightRawY = rawY(bottomRightX, bottomRightY, bottomRightH);
+    final topLeftRawX = topLeftX * topLeftScale;
+    final topLeftRawY = topLeftY * topLeftScale;
+    final topRightRawX = topRightX * topRightScale;
+    final topRightRawY = topRightY * topRightScale;
+    final bottomLeftRawX = bottomLeftX * bottomLeftScale;
+    final bottomLeftRawY = bottomLeftY * bottomLeftScale;
+    final bottomRightRawX = bottomRightX * bottomRightScale;
+    final bottomRightRawY = bottomRightY * bottomRightScale;
 
     double computeSideShift(
       double x1,
       double y1,
       double x2,
       double y2,
-      double overlap,
+      double limit,
     ) {
+      final overlap = y1 + y2 - limit;
       if (overlap <= 0.0) return 0.0;
       if (y1 > 0.0 && y2 > 0.0) {
         final denominator = x1 * y2 + x2 * y1;
-        return denominator != 0.0 ? (x1 * x2 * overlap) / denominator : 0.0;
+        if (denominator == 0.0) return 0.0;
+        final shift = (x1 * x2 * overlap) / denominator;
+        if (shift > x1) return x2 * (y2 - limit) / y2;
+        if (shift > x2) return x1 * (y1 - limit) / y1;
+        return shift;
       } else if (y1 > 0.0) {
         return x1 * overlap / y1;
       } else if (y2 > 0.0) {
@@ -978,32 +964,32 @@ mixin _CutShapeCornerFamilyMixin implements ShapeCornerFamily {
     final inflatedHeight = height + 2.0 * delta;
 
     final leftShift = computeSideShift(
-      topLeftX,
-      topLeftY,
-      bottomLeftX,
-      bottomLeftY,
-      topLeftRawY + bottomLeftRawY - inflatedHeight,
+      topLeftRawX,
+      topLeftRawY,
+      bottomLeftRawX,
+      bottomLeftRawY,
+      inflatedHeight,
     );
     final topShift = computeSideShift(
-      topLeftY,
-      topLeftX,
-      topRightY,
-      topRightX,
-      topLeftRawX + topRightRawX - inflatedWidth,
+      topLeftRawY,
+      topLeftRawX,
+      topRightRawY,
+      topRightRawX,
+      inflatedWidth,
     );
     final rightShift = computeSideShift(
-      topRightX,
-      topRightY,
-      bottomRightX,
-      bottomRightY,
-      topRightRawY + bottomRightRawY - inflatedHeight,
+      topRightRawX,
+      topRightRawY,
+      bottomRightRawX,
+      bottomRightRawY,
+      inflatedHeight,
     );
     final bottomShift = computeSideShift(
-      bottomLeftY,
-      bottomLeftX,
-      bottomRightY,
-      bottomRightX,
-      bottomLeftRawX + bottomRightRawX - inflatedWidth,
+      bottomLeftRawY,
+      bottomLeftRawX,
+      bottomRightRawY,
+      bottomRightRawX,
+      inflatedWidth,
     );
 
     final deltaLeft = delta - leftShift;
@@ -1013,22 +999,20 @@ mixin _CutShapeCornerFamilyMixin implements ShapeCornerFamily {
 
     double trimRadiusX(
       double rawX,
-      double originalX,
-      double originalY,
+      double rawY,
       double shiftX,
       double shiftY,
-    ) => originalX > 0.0 && originalY > 0.0
-        ? math.max(0.0, rawX - shiftX - shiftY * (originalX / originalY))
+    ) => rawX > 0.0 && rawY > 0.0
+        ? math.max(0.0, rawX - shiftX - shiftY * (rawX / rawY))
         : 0.0;
 
     double trimRadiusY(
+      double rawX,
       double rawY,
-      double originalX,
-      double originalY,
       double shiftX,
       double shiftY,
-    ) => originalX > 0.0 && originalY > 0.0
-        ? math.max(0.0, rawY - shiftY - shiftX * (originalY / originalX))
+    ) => rawX > 0.0 && rawY > 0.0
+        ? math.max(0.0, rawY - shiftY - shiftX * (rawY / rawX))
         : 0.0;
 
     return .fromLTRBAndRadiiXY(
@@ -1036,59 +1020,31 @@ mixin _CutShapeCornerFamilyMixin implements ShapeCornerFamily {
       top - deltaTop,
       right + deltaRight,
       bottom + deltaBottom,
-      topLeftX: trimRadiusX(
-        topLeftRawX,
-        topLeftX,
-        topLeftY,
-        leftShift,
-        topShift,
-      ),
-      topLeftY: trimRadiusY(
-        topLeftRawY,
-        topLeftX,
-        topLeftY,
-        leftShift,
-        topShift,
-      ),
-      topRightX: trimRadiusX(
-        topRightRawX,
-        topRightX,
-        topRightY,
-        rightShift,
-        topShift,
-      ),
-      topRightY: trimRadiusY(
-        topRightRawY,
-        topRightX,
-        topRightY,
-        rightShift,
-        topShift,
-      ),
+      topLeftX: trimRadiusX(topLeftRawX, topLeftRawY, leftShift, topShift),
+      topLeftY: trimRadiusY(topLeftRawX, topLeftRawY, leftShift, topShift),
+      topRightX: trimRadiusX(topRightRawX, topRightRawY, rightShift, topShift),
+      topRightY: trimRadiusY(topRightRawX, topRightRawY, rightShift, topShift),
       bottomLeftX: trimRadiusX(
         bottomLeftRawX,
-        bottomLeftX,
-        bottomLeftY,
+        bottomLeftRawY,
         leftShift,
         bottomShift,
       ),
       bottomLeftY: trimRadiusY(
+        bottomLeftRawX,
         bottomLeftRawY,
-        bottomLeftX,
-        bottomLeftY,
         leftShift,
         bottomShift,
       ),
       bottomRightX: trimRadiusX(
         bottomRightRawX,
-        bottomRightX,
-        bottomRightY,
+        bottomRightRawY,
         rightShift,
         bottomShift,
       ),
       bottomRightY: trimRadiusY(
+        bottomRightRawX,
         bottomRightRawY,
-        bottomRightX,
-        bottomRightY,
         rightShift,
         bottomShift,
       ),

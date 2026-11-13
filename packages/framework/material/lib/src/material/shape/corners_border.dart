@@ -225,11 +225,12 @@ class const _CutCorner(super._value, super._delta) extends _OffsetCorner {
     final Radius(:x, :y) = _value.toRadius(deflatedSize);
 
     // Apply non-linear offset to corners as if they were bevels of a rectangle.
-    final hypotenuse = math.sqrt(x * x + y * y);
-    return Radius.elliptical(
-      y != 0.0 ? math.max(0.0, x + _delta * ((hypotenuse - x) / y)) : 0.0,
-      x != 0.0 ? math.max(0.0, y + _delta * ((hypotenuse - y) / x)) : 0.0,
-    );
+    if (x > 0.0 && y > 0.0) {
+      final hypotenuse = math.sqrt(x * x + y * y);
+      final scale = 1.0 + (2.0 * _delta) / (x + y + hypotenuse);
+      if (scale > 0.0) return .elliptical(x * scale, y * scale);
+    }
+    return .zero;
   }
 
   @override
