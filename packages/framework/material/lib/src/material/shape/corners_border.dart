@@ -8,14 +8,10 @@ part 'geometry.dart';
 // because we assume it will remain the same in future releases of the
 // framework. We need to keep track of new enum members being added.
 
-abstract class _OffsetCornersGeometry extends CornersGeometry {
-  const _OffsetCornersGeometry(CornersGeometry value, double delta)
-    : _value = value,
-      _delta = delta;
-
-  final CornersGeometry _value;
-  final double _delta;
-
+abstract class const _OffsetCornersGeometry(
+  final CornersGeometry _value,
+  final double _delta,
+) extends CornersGeometry {
   @override
   _OffsetCorners resolve(TextDirection? textDirection);
 
@@ -55,18 +51,10 @@ abstract class _OffsetCornersGeometry extends CornersGeometry {
   }
 }
 
-abstract class _OffsetCorners extends Corners
-    implements _OffsetCornersGeometry {
-  const _OffsetCorners(Corners value, double delta)
-    : _value = value,
-      _delta = delta;
-
-  @override
-  final Corners _value;
-
-  @override
-  final double _delta;
-
+abstract class const _OffsetCorners(
+  @override final Corners _value,
+  @override final double _delta,
+) extends Corners implements _OffsetCornersGeometry {
   @override
   _OffsetCorner get bottomLeft;
 
@@ -91,14 +79,8 @@ abstract class _OffsetCorners extends Corners
   int get hashCode => Object.hash(_value, _delta);
 }
 
-abstract class _OffsetCorner extends Corner {
-  const _OffsetCorner(Corner value, double delta)
-    : _value = value,
-      _delta = delta;
-
-  final Corner _value;
-  final double _delta;
-
+abstract class const _OffsetCorner(final Corner _value, final double _delta)
+    extends Corner {
   @override
   _OffsetCorner get flipped;
 
@@ -114,9 +96,8 @@ abstract class _OffsetCorner extends Corner {
   int get hashCode => Object.hash(_value, _delta);
 }
 
-class _RoundedCornersGeometry extends _OffsetCornersGeometry {
-  const _RoundedCornersGeometry(super.value, super.delta);
-
+class const _RoundedCornersGeometry(super._value, super._delta)
+    extends _OffsetCornersGeometry {
   @override
   _RoundedCorners resolve(TextDirection? textDirection) =>
       .new(_value.resolve(textDirection), _delta);
@@ -129,10 +110,9 @@ class _RoundedCornersGeometry extends _OffsetCornersGeometry {
   );
 }
 
-class _RoundedCorners extends _OffsetCorners
+class const _RoundedCorners(super._value, super._delta)
+    extends _OffsetCorners
     implements _RoundedCornersGeometry {
-  const _RoundedCorners(super.value, super.delta);
-
   @override
   _RoundedCorner get bottomLeft => .new(_value.bottomLeft, _delta);
 
@@ -156,9 +136,7 @@ class _RoundedCorners extends _OffsetCorners
   );
 }
 
-class _RoundedCorner extends _OffsetCorner {
-  const _RoundedCorner(super.value, super.delta);
-
+class const _RoundedCorner(super._value, super._delta) extends _OffsetCorner {
   @override
   _RoundedCorner get flipped => .new(_value.flipped, _delta);
 
@@ -188,9 +166,8 @@ class _RoundedCorner extends _OffsetCorner {
   );
 }
 
-class _CutCornersGeometry extends _OffsetCornersGeometry {
-  const _CutCornersGeometry(super.value, super.delta);
-
+class const _CutCornersGeometry(super._value, super._delta)
+    extends _OffsetCornersGeometry {
   @override
   _CutCorners resolve(TextDirection? textDirection) =>
       .new(_value.resolve(textDirection), _delta);
@@ -203,9 +180,9 @@ class _CutCornersGeometry extends _OffsetCornersGeometry {
   );
 }
 
-class _CutCorners extends _OffsetCorners implements _CutCornersGeometry {
-  const _CutCorners(super.value, super.delta);
-
+class const _CutCorners(super._value, super._delta)
+    extends _OffsetCorners
+    implements _CutCornersGeometry {
   @override
   _CutCorner get bottomLeft => .new(_value.bottomLeft, _delta);
 
@@ -229,9 +206,7 @@ class _CutCorners extends _OffsetCorners implements _CutCornersGeometry {
   );
 }
 
-class _CutCorner extends _OffsetCorner {
-  const _CutCorner(super.value, super.delta);
-
+class const _CutCorner(super._value, super._delta) extends _OffsetCorner {
   @override
   _CutCorner get flipped => .new(_value.flipped, _delta);
 
@@ -265,9 +240,7 @@ class _CutCorner extends _OffsetCorner {
   );
 }
 
-abstract class CornersBorderDelegate {
-  const CornersBorderDelegate();
-
+abstract class const CornersBorderDelegate() {
   // Calculations
 
   CornersGeometry inflateCorners(CornersGeometry value, double delta);
@@ -385,10 +358,9 @@ mixin _RoundedCornerCalculations implements CornersBorderDelegate {
       ShapeCornerFamily.rounded.rSuperellipse.inflate(value, delta);
 }
 
-class _RoundedCornersBorderDelegate extends CornersBorderDelegate
+class const _RoundedCornersBorderDelegate()
+    extends CornersBorderDelegate
     with _RoundedCornerCalculations {
-  const _RoundedCornersBorderDelegate();
-
   @override
   _RoundedCornersBorderDelegate scale(double t) => this;
 
@@ -458,10 +430,9 @@ class _RoundedCornersBorderDelegate extends CornersBorderDelegate
   String toString() => "CornersBorderDelegate.rounded";
 }
 
-class _SmoothCornersBorderDelegate extends CornersBorderDelegate
+class const _SmoothCornersBorderDelegate()
+    extends CornersBorderDelegate
     with _RoundedCornerCalculations {
-  const _SmoothCornersBorderDelegate();
-
   @override
   _SmoothCornersBorderDelegate scale(double t) => this;
 
@@ -564,10 +535,9 @@ mixin _CutCornerCalculations implements CornersBorderDelegate {
       ShapeCornerFamily.cut.rSuperellipse.inflate(value, delta);
 }
 
-class _CutCornersBorderDelegate extends CornersBorderDelegate
+class const _CutCornersBorderDelegate()
+    extends CornersBorderDelegate
     with _CutCornerCalculations {
-  const _CutCornersBorderDelegate();
-
   @override
   _CutCornersBorderDelegate scale(double t) => this;
 
@@ -671,24 +641,19 @@ class _CutCornersBorderDelegate extends CornersBorderDelegate
   }
 }
 
-class CornersBorder extends OutlinedBorder {
-  const CornersBorder({
-    super.side,
-    required this.delegate,
-    this.corners = .zero,
-  });
+class const CornersBorder({
+  super.side,
+  required final CornersBorderDelegate delegate,
+  final CornersGeometry corners = .zero,
+}) extends OutlinedBorder {
+  const new rounded({BorderSide side = .none, CornersGeometry corners = .zero})
+    : this(side: side, delegate: .rounded, corners: corners);
 
-  const CornersBorder.rounded({super.side, this.corners = .zero})
-    : delegate = .rounded;
+  const new smooth({BorderSide side = .none, CornersGeometry corners = .zero})
+    : this(side: side, delegate: .smooth, corners: corners);
 
-  const CornersBorder.smooth({super.side, this.corners = .zero})
-    : delegate = .smooth;
-
-  const CornersBorder.cut({super.side, this.corners = .zero}) : delegate = .cut;
-
-  final CornersBorderDelegate delegate;
-
-  final CornersGeometry corners;
+  const new cut({BorderSide side = .none, CornersGeometry corners = .zero})
+    : this(side: side, delegate: .cut, corners: corners);
 
   @override
   CornersBorder copyWith({

@@ -1,14 +1,12 @@
 part of 'corners_border.dart';
 
-abstract class BorderRect {
-  const BorderRect();
+abstract class const BorderRect() {
+  const factory fromRRect(RRect value) = _BorderRectFromRRect;
 
-  const factory BorderRect.fromRRect(RRect value) = _BorderRectFromRRect;
-
-  const factory BorderRect.fromRSuperellipse(RSuperellipse value) =
+  const factory fromRSuperellipse(RSuperellipse value) =
       _BorderRectFromRSuperellipse;
 
-  const factory BorderRect.fromLTRBAndRadii(
+  const factory fromLTRBAndRadii(
     double left,
     double top,
     double right,
@@ -19,7 +17,7 @@ abstract class BorderRect {
     Radius bottomRight,
   }) = _BorderRectFromRadii.fromLTRB;
 
-  const factory BorderRect.fromLTRBAndRadiiXY(
+  const factory fromLTRBAndRadiiXY(
     double left,
     double top,
     double right,
@@ -318,72 +316,47 @@ abstract class BorderRect {
   }
 }
 
-final class _BorderRectFromRadiiXY extends BorderRect {
-  const _BorderRectFromRadiiXY({
-    this.left = 0.0,
-    this.top = 0.0,
-    this.right = 0.0,
-    this.bottom = 0.0,
-    this.topLeftX = 0.0,
-    this.topLeftY = 0.0,
-    this.topRightX = 0.0,
-    this.topRightY = 0.0,
-    this.bottomLeftX = 0.0,
-    this.bottomLeftY = 0.0,
-    this.bottomRightX = 0.0,
-    this.bottomRightY = 0.0,
-  });
-
-  const _BorderRectFromRadiiXY.fromLTRB(
-    this.left,
-    this.top,
-    this.right,
-    this.bottom, {
-    this.topLeftX = 0.0,
-    this.topLeftY = 0.0,
-    this.topRightX = 0.0,
-    this.topRightY = 0.0,
-    this.bottomLeftX = 0.0,
-    this.bottomLeftY = 0.0,
-    this.bottomRightX = 0.0,
-    this.bottomRightY = 0.0,
-  });
-
-  @override
-  final double left;
-
-  @override
-  final double top;
-
-  @override
-  final double right;
-
-  @override
-  final double bottom;
-
-  @override
-  final double topLeftX;
-
-  @override
-  final double topLeftY;
-
-  @override
-  final double topRightX;
-
-  @override
-  final double topRightY;
-
-  @override
-  final double bottomLeftX;
-
-  @override
-  final double bottomLeftY;
-
-  @override
-  final double bottomRightX;
-
-  @override
-  final double bottomRightY;
+final class const _BorderRectFromRadiiXY({
+  @override final double left = 0.0,
+  @override final double top = 0.0,
+  @override final double right = 0.0,
+  @override final double bottom = 0.0,
+  @override final double topLeftX = 0.0,
+  @override final double topLeftY = 0.0,
+  @override final double topRightX = 0.0,
+  @override final double topRightY = 0.0,
+  @override final double bottomLeftX = 0.0,
+  @override final double bottomLeftY = 0.0,
+  @override final double bottomRightX = 0.0,
+  @override final double bottomRightY = 0.0,
+}) extends BorderRect {
+  const new fromLTRB(
+    double left,
+    double top,
+    double right,
+    double bottom, {
+    double topLeftX = 0.0,
+    double topLeftY = 0.0,
+    double topRightX = 0.0,
+    double topRightY = 0.0,
+    double bottomLeftX = 0.0,
+    double bottomLeftY = 0.0,
+    double bottomRightX = 0.0,
+    double bottomRightY = 0.0,
+  }) : this(
+         left: left,
+         top: top,
+         right: right,
+         bottom: bottom,
+         topLeftX: topLeftX,
+         topLeftY: topLeftY,
+         topRightX: topRightX,
+         topRightY: topRightY,
+         bottomLeftX: bottomLeftX,
+         bottomLeftY: bottomLeftY,
+         bottomRightX: bottomRightX,
+         bottomRightY: bottomRightY,
+       );
 
   @override
   Radius get topLeft => .elliptical(topLeftX, topLeftY);
@@ -398,52 +371,35 @@ final class _BorderRectFromRadiiXY extends BorderRect {
   Radius get bottomRight => .elliptical(bottomRightX, bottomRightY);
 }
 
-final class _BorderRectFromRadii extends BorderRect {
-  const _BorderRectFromRadii({
-    this.left = 0.0,
-    this.top = 0.0,
-    this.right = 0.0,
-    this.bottom = 0.0,
-    this.topLeft = .zero,
-    this.topRight = .zero,
-    this.bottomLeft = .zero,
-    this.bottomRight = .zero,
-  });
-
-  const _BorderRectFromRadii.fromLTRB(
-    this.left,
-    this.top,
-    this.right,
-    this.bottom, {
-    this.topLeft = .zero,
-    this.topRight = .zero,
-    this.bottomLeft = .zero,
-    this.bottomRight = .zero,
-  });
-
-  @override
-  final double left;
-
-  @override
-  final double top;
-
-  @override
-  final double right;
-
-  @override
-  final double bottom;
-
-  @override
-  final Radius topLeft;
-
-  @override
-  final Radius topRight;
-
-  @override
-  final Radius bottomLeft;
-
-  @override
-  final Radius bottomRight;
+final class const _BorderRectFromRadii({
+  @override final double left = 0.0,
+  @override final double top = 0.0,
+  @override final double right = 0.0,
+  @override final double bottom = 0.0,
+  @override final Radius topLeft = .zero,
+  @override final Radius topRight = .zero,
+  @override final Radius bottomLeft = .zero,
+  @override final Radius bottomRight = .zero,
+}) extends BorderRect {
+  const new fromLTRB(
+    double left,
+    double top,
+    double right,
+    double bottom, {
+    Radius topLeft = .zero,
+    Radius topRight = .zero,
+    Radius bottomLeft = .zero,
+    Radius bottomRight = .zero,
+  }) : this(
+         left: left,
+         top: top,
+         right: right,
+         bottom: bottom,
+         topLeft: topLeft,
+         topRight: topRight,
+         bottomLeft: bottomLeft,
+         bottomRight: bottomRight,
+       );
 
   @override
   double get topLeftX => topLeft.x;
@@ -470,11 +426,7 @@ final class _BorderRectFromRadii extends BorderRect {
   double get bottomRightY => bottomRight.y;
 }
 
-final class _BorderRectFromRRect extends BorderRect {
-  const _BorderRectFromRRect(RRect value) : _value = value;
-
-  final RRect _value;
-
+final class const _BorderRectFromRRect(final RRect _value) extends BorderRect {
   @override
   double get left => _value.left;
 
@@ -527,11 +479,8 @@ final class _BorderRectFromRRect extends BorderRect {
   RRect toRRect() => _value;
 }
 
-final class _BorderRectFromRSuperellipse extends BorderRect {
-  const _BorderRectFromRSuperellipse(RSuperellipse value) : _value = value;
-
-  final RSuperellipse _value;
-
+final class const _BorderRectFromRSuperellipse(final RSuperellipse _value)
+    extends BorderRect {
   @override
   double get left => _value.left;
 
@@ -693,7 +642,7 @@ mixin GeometryDeflateMixin<T extends Object> {
 }
 
 mixin GeometryOffsetMixin<T extends Object>
-    implements GeometryInflateMixin<T>, GeometryDeflateMixin<T> {}
+    implements GeometryInflateMixin<T>, GeometryDeflateMixin<T>;
 
 mixin GeometryDeflateDefaultsMixin<T extends Object>
     implements GeometryOffsetMixin<T> {
@@ -712,19 +661,15 @@ typedef GeometryOffsetCallback<T extends Object> = T Function(
   double delta,
 );
 
-abstract class GeometryOffsetDelegate<T extends Object>
+abstract class const GeometryOffsetDelegate<T extends Object>()
     implements GeometryOffsetMixin<T> {
-  const GeometryOffsetDelegate();
+  const factory fromInflateCallback(GeometryOffsetCallback<T> inflate) =
+      _GeometryOffsetDelegateFromInflateCallback;
 
-  const factory GeometryOffsetDelegate.fromInflateCallback(
-    GeometryOffsetCallback<T> inflate,
-  ) = _GeometryOffsetDelegateFromInflateCallback;
+  const factory fromDeflateCallback(GeometryOffsetCallback<T> deflate) =
+      _GeometryOffsetDelegateFromDeflateCallback;
 
-  const factory GeometryOffsetDelegate.fromDeflateCallback(
-    GeometryOffsetCallback<T> deflate,
-  ) = _GeometryOffsetDelegateFromDeflateCallback;
-
-  const factory GeometryOffsetDelegate.fromOffsetCallbacks({
+  const factory fromOffsetCallbacks({
     required GeometryOffsetCallback<T> inflate,
     required GeometryOffsetCallback<T> deflate,
   }) = _GeometryOffsetDelegateFromOffsetCallbacks;
@@ -736,15 +681,9 @@ abstract class GeometryOffsetDelegate<T extends Object>
   T deflate(T value, double delta);
 }
 
-final class _GeometryOffsetDelegateFromInflateCallback<T extends Object>
-    extends GeometryOffsetDelegate<T>
-    implements GeometryDeflateDefaultsMixin<T> {
-  const _GeometryOffsetDelegateFromInflateCallback(
-    GeometryOffsetCallback<T> inflate,
-  ) : _inflate = inflate;
-
-  final GeometryOffsetCallback<T> _inflate;
-
+final class const _GeometryOffsetDelegateFromInflateCallback<T extends Object>(
+  final GeometryOffsetCallback<T> _inflate,
+) extends GeometryOffsetDelegate<T> implements GeometryDeflateDefaultsMixin<T> {
   @override
   T inflate(T value, double delta) => _inflate(value, delta);
 
@@ -761,15 +700,9 @@ final class _GeometryOffsetDelegateFromInflateCallback<T extends Object>
   int get hashCode => _inflate.hashCode;
 }
 
-final class _GeometryOffsetDelegateFromDeflateCallback<T extends Object>
-    extends GeometryOffsetDelegate<T>
-    implements GeometryInflateDefaultsMixin<T> {
-  const _GeometryOffsetDelegateFromDeflateCallback(
-    GeometryOffsetCallback<T> deflate,
-  ) : _deflate = deflate;
-
-  final GeometryOffsetCallback<T> _deflate;
-
+final class const _GeometryOffsetDelegateFromDeflateCallback<T extends Object>(
+  final GeometryOffsetCallback<T> _deflate,
+) extends GeometryOffsetDelegate<T> implements GeometryInflateDefaultsMixin<T> {
   @override
   T inflate(T value, double delta) => _deflate(value, -delta);
 
@@ -786,17 +719,10 @@ final class _GeometryOffsetDelegateFromDeflateCallback<T extends Object>
   int get hashCode => _deflate.hashCode;
 }
 
-final class _GeometryOffsetDelegateFromOffsetCallbacks<T extends Object>
-    extends GeometryOffsetDelegate<T> {
-  const _GeometryOffsetDelegateFromOffsetCallbacks({
-    required GeometryOffsetCallback<T> inflate,
-    required GeometryOffsetCallback<T> deflate,
-  }) : _inflate = inflate,
-       _deflate = deflate;
-
-  final GeometryOffsetCallback<T> _inflate;
-  final GeometryOffsetCallback<T> _deflate;
-
+final class const _GeometryOffsetDelegateFromOffsetCallbacks<T extends Object>({
+  required final GeometryOffsetCallback<T> _inflate,
+  required final GeometryOffsetCallback<T> _deflate,
+}) extends GeometryOffsetDelegate<T> {
   @override
   T inflate(T value, double delta) => _inflate(value, delta);
 
@@ -814,9 +740,7 @@ final class _GeometryOffsetDelegateFromOffsetCallbacks<T extends Object>
   int get hashCode => Object.hash(_inflate, _deflate);
 }
 
-abstract class ShapeCornerFamily {
-  const ShapeCornerFamily();
-
+abstract class const ShapeCornerFamily() {
   GeometryOffsetDelegate<CornersGeometry> get corners;
 
   GeometryOffsetDelegate<BorderRadius> get borderRadius;
@@ -908,18 +832,16 @@ mixin _RoundedShapeCornerFamilyMixin implements ShapeCornerFamily {
   }
 }
 
-final class _RoundedShapeCornerFamily extends ShapeCornerFamily
+final class const _RoundedShapeCornerFamily()
+    extends ShapeCornerFamily
     with _RoundedShapeCornerFamilyMixin {
-  const _RoundedShapeCornerFamily();
-
   @override
   String toString() => "ShapeCornerFamily.rounded";
 }
 
-final class _SmoothShapeCornerFamily extends ShapeCornerFamily
+final class const _SmoothShapeCornerFamily()
+    extends ShapeCornerFamily
     with _RoundedShapeCornerFamilyMixin {
-  const _SmoothShapeCornerFamily();
-
   @override
   String toString() => "ShapeCornerFamily.smooth";
 }
@@ -1185,10 +1107,9 @@ mixin _CutShapeCornerFamilyMixin implements ShapeCornerFamily {
       : value;
 }
 
-final class _CutShapeCornerFamily extends ShapeCornerFamily
+final class const _CutShapeCornerFamily()
+    extends ShapeCornerFamily
     with _CutShapeCornerFamilyMixin {
-  const _CutShapeCornerFamily();
-
   @override
   String toString() => "ShapeCornerFamily.cut";
 }

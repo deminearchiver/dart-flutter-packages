@@ -1,5 +1,3 @@
-// ignore_for_file: use_to_and_as_if_applicable
-
 import 'package:material/src/material/flutter.dart';
 
 // ////////////////////////////////////////////////////////////////
@@ -7,20 +5,18 @@ import 'package:material/src/material/flutter.dart';
 // ////////////////////////////////////////////////////////////////
 
 @immutable
-abstract class Corner {
-  const Corner();
+abstract class const Corner() {
+  const factory fixed(double radius) = FixedCorner.circular;
 
-  const factory Corner.fixed(double radius) = FixedCorner.circular;
-
-  const factory Corner.fixedXY(double radiusX, double radiusY) =
+  const factory fixedXY(double radiusX, double radiusY) =
       FixedCorner.elliptical;
 
-  const factory Corner.fractional(double fraction) = FractionalCorner.circular;
+  const factory fractional(double fraction) = FractionalCorner.circular;
 
-  const factory Corner.fractionalXY(double fractionX, double fractionY) =
+  const factory fractionalXY(double fractionX, double fractionY) =
       FractionalCorner.elliptical;
 
-  const factory Corner.fromRadius(Radius radius) = FixedCorner.fromRadius;
+  const factory fromRadius(Radius radius) = FixedCorner.fromRadius;
 
   // /// Whether [toRadius] would return [Radius.zero].
   // bool get isZero;
@@ -76,11 +72,7 @@ abstract class Corner {
   }
 }
 
-final class _CornerUnaryNegation extends Corner {
-  const _CornerUnaryNegation(Corner value) : _value = value;
-
-  final Corner _value;
-
+final class const _CornerUnaryNegation(final Corner _value) extends Corner {
   @override
   _CornerUnaryNegation get flipped => _CornerUnaryNegation(_value.flipped);
 
@@ -102,16 +94,11 @@ final class _CornerUnaryNegation extends Corner {
   int get hashCode => _value.hashCode;
 }
 
-abstract class _CornerWithDoubleOperation extends Corner {
-  const _CornerWithDoubleOperation(Corner value, double operand)
-    : _value = value,
-      _operand = operand;
-
-  final Corner _value;
-  final double _operand;
-
+abstract class const _CornerWithDoubleOperation(
+  final Corner _value,
+  final double _operand,
+) extends Corner {
   // Runtime type participates in checks because this class has specializations.
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -124,9 +111,8 @@ abstract class _CornerWithDoubleOperation extends Corner {
   int get hashCode => Object.hash(_value, _operand);
 }
 
-final class _CornerMultiply extends _CornerWithDoubleOperation {
-  const _CornerMultiply(super.value, super.operand);
-
+final class const _CornerMultiply(super._value, super._operand)
+    extends _CornerWithDoubleOperation {
   @override
   _CornerMultiply get flipped => _CornerMultiply(_value.flipped, _operand);
 
@@ -137,9 +123,8 @@ final class _CornerMultiply extends _CornerWithDoubleOperation {
   String toString() => "$_value * ${_operand.toStringAsFixed(1)}";
 }
 
-final class _CornerDivideDouble extends _CornerWithDoubleOperation {
-  const _CornerDivideDouble(super.value, super.operand);
-
+final class const _CornerDivideDouble(super._value, super._operand)
+    extends _CornerWithDoubleOperation {
   @override
   _CornerDivideDouble get flipped =>
       _CornerDivideDouble(_value.flipped, _operand);
@@ -151,9 +136,8 @@ final class _CornerDivideDouble extends _CornerWithDoubleOperation {
   String toString() => "$_value / ${_operand.toStringAsFixed(1)}";
 }
 
-final class _CornerDivideInt extends _CornerWithDoubleOperation {
-  const _CornerDivideInt(super.value, super.operand);
-
+final class const _CornerDivideInt(super._value, super._operand)
+    extends _CornerWithDoubleOperation {
   @override
   _CornerDivideInt get flipped => _CornerDivideInt(_value.flipped, _operand);
 
@@ -164,9 +148,8 @@ final class _CornerDivideInt extends _CornerWithDoubleOperation {
   String toString() => "$_value ~/ ${_operand.toStringAsFixed(1)}";
 }
 
-final class _CornerModulo extends _CornerWithDoubleOperation {
-  const _CornerModulo(super.value, super.operand);
-
+final class const _CornerModulo(super._value, super._operand)
+    extends _CornerWithDoubleOperation {
   @override
   _CornerModulo get flipped => _CornerModulo(_value.flipped, _operand);
 
@@ -177,12 +160,8 @@ final class _CornerModulo extends _CornerWithDoubleOperation {
   String toString() => "$_value % ${_operand.toStringAsFixed(1)}";
 }
 
-abstract class _CornerWithCornerOperation extends Corner {
-  const _CornerWithCornerOperation(Corner a, Corner b) : _a = a, _b = b;
-
-  final Corner _a;
-  final Corner _b;
-
+sealed class const _CornerWithCornerOperation(final Corner _a, final Corner _b)
+    extends Corner {
   // Runtime type participates in checks because this class has specializations.
 
   @override
@@ -197,9 +176,8 @@ abstract class _CornerWithCornerOperation extends Corner {
   int get hashCode => Object.hash(_a, _b);
 }
 
-final class _CornerAdd extends _CornerWithCornerOperation {
-  const _CornerAdd(super.a, super.b);
-
+final class const _CornerAdd(super._a, super._b)
+    extends _CornerWithCornerOperation {
   @override
   _CornerAdd get flipped => _CornerAdd(_a.flipped, _b.flipped);
 
@@ -210,9 +188,8 @@ final class _CornerAdd extends _CornerWithCornerOperation {
   String toString() => "$_a + $_b";
 }
 
-final class _CornerSubtract extends _CornerWithCornerOperation {
-  const _CornerSubtract(super.a, super.b);
-
+final class const _CornerSubtract(super._a, super._b)
+    extends _CornerWithCornerOperation {
   @override
   _CornerSubtract get flipped => _CornerSubtract(_a.flipped, _b.flipped);
 
@@ -223,16 +200,11 @@ final class _CornerSubtract extends _CornerWithCornerOperation {
   String toString() => "$_a - $_b";
 }
 
-final class _CornerClamp extends Corner {
-  const _CornerClamp(Corner value, Corner? minimum, Corner? maximum)
-    : _value = value,
-      _minimum = minimum,
-      _maximum = maximum;
-
-  final Corner _value;
-  final Corner? _minimum;
-  final Corner? _maximum;
-
+final class const _CornerClamp(
+  final Corner _value,
+  final Corner? _minimum,
+  final Corner? _maximum,
+) extends Corner {
   @override
   _CornerClamp get flipped =>
       _CornerClamp(_value.flipped, _minimum?.flipped, _maximum?.flipped);
@@ -271,13 +243,8 @@ final class _CornerClamp extends Corner {
   int get hashCode => Object.hash(_value, _minimum, _maximum);
 }
 
-final class _CornerLerp extends Corner {
-  const _CornerLerp(Corner a, Corner b, double t) : _a = a, _b = b, _t = t;
-
-  final Corner _a;
-  final Corner _b;
-  final double _t;
-
+final class const _CornerLerp(final Corner _a, final Corner _b, final double _t)
+    extends Corner {
   @override
   _CornerLerp get flipped => _CornerLerp(_a.flipped, _b.flipped, _t);
 
@@ -307,9 +274,7 @@ final class _CornerLerp extends Corner {
 // Mixed corner (optimized for fast linear arithmetic) //
 // ////////////////////////////////////////////////////////////////
 
-abstract class _Corner extends Corner {
-  const _Corner();
-
+abstract class const _Corner() extends Corner {
   double? get _radiusX;
   double? get _radiusY;
   double? get _fractionX;
@@ -530,26 +495,12 @@ abstract class _Corner extends Corner {
   int get hashCode => Object.hash(_radiusX, _radiusY, _fractionX, _fractionY);
 }
 
-final class _MixedCorner extends _Corner {
-  const _MixedCorner(
-    this._radiusX,
-    this._radiusY,
-    this._fractionX,
-    this._fractionY,
-  );
-
-  @override
-  final double? _radiusX;
-
-  @override
-  final double? _radiusY;
-
-  @override
-  final double? _fractionX;
-
-  @override
-  final double? _fractionY;
-}
+final class const _MixedCorner(
+  @override final double? _radiusX,
+  @override final double? _radiusY,
+  @override final double? _fractionX,
+  @override final double? _fractionY,
+) extends _Corner;
 
 // final class _ZeroCorner extends _Corner {
 //   const _ZeroCorner();
@@ -598,15 +549,13 @@ final class _MixedCorner extends _Corner {
 // }
 
 @immutable
-abstract class FixedCorner extends _Corner {
-  const FixedCorner();
-
-  const factory FixedCorner.elliptical(double radiusX, double radiusY) =
+abstract class const FixedCorner() extends _Corner {
+  const factory elliptical(double radiusX, double radiusY) =
       _FixedCorner.elliptical;
 
-  const factory FixedCorner.circular(double radius) = _FixedCorner.circular;
+  const factory circular(double radius) = _FixedCorner.circular;
 
-  const factory FixedCorner.fromRadius(Radius radius) = _FixedCornerFromRadius;
+  const factory fromRadius(Radius radius) = _FixedCornerFromRadius;
 
   double get radiusX;
 
@@ -700,23 +649,15 @@ abstract class FixedCorner extends _Corner {
   static const zero = FixedCorner.circular(0.0);
 }
 
-final class _FixedCorner extends FixedCorner {
-  const _FixedCorner.elliptical(this.radiusX, this.radiusY);
-
-  const _FixedCorner.circular(double radius) : this.elliptical(radius, radius);
-
-  @override
-  final double radiusX;
-
-  @override
-  final double radiusY;
+final class const _FixedCorner.elliptical(
+  @override final double radiusX,
+  @override final double radiusY,
+) extends FixedCorner {
+  const new circular(double radius) : this.elliptical(radius, radius);
 }
 
-final class _FixedCornerFromRadius extends FixedCorner {
-  const _FixedCornerFromRadius(this._radius);
-
-  final Radius _radius;
-
+final class const _FixedCornerFromRadius(final Radius _radius)
+    extends FixedCorner {
   @override
   double get radiusX => _radius.x;
 
@@ -728,16 +669,11 @@ final class _FixedCornerFromRadius extends FixedCorner {
 }
 
 @immutable
-abstract class FractionalCorner extends _Corner {
-  const FractionalCorner();
+abstract class const FractionalCorner() extends _Corner {
+  const factory elliptical(double fractionX, double fractionY) =
+      _FractionalCorner.elliptical;
 
-  const factory FractionalCorner.elliptical(
-    double fractionX,
-    double fractionY,
-  ) = _FractionalCorner.elliptical;
-
-  const factory FractionalCorner.circular(double fraction) =
-      _FractionalCorner.circular;
+  const factory circular(double fraction) = _FractionalCorner.circular;
 
   double get fractionX;
 
@@ -840,15 +776,9 @@ abstract class FractionalCorner extends _Corner {
   }
 }
 
-final class _FractionalCorner extends FractionalCorner {
-  const _FractionalCorner.elliptical(this.fractionX, this.fractionY);
-
-  const _FractionalCorner.circular(double fraction)
-    : this.elliptical(fraction, fraction);
-
-  @override
-  final double fractionX;
-
-  @override
-  final double fractionY;
+final class const _FractionalCorner.elliptical(
+  @override final double fractionX,
+  @override final double fractionY,
+) extends FractionalCorner {
+  const new circular(double fraction) : this.elliptical(fraction, fraction);
 }

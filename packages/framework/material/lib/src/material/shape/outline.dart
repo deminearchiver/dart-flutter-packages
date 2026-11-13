@@ -2,14 +2,9 @@ import 'dart:math' as math;
 
 import 'package:material/src/material/flutter.dart';
 
-abstract class OutlinePartial with Diagnosticable {
-  const OutlinePartial();
-
-  const factory OutlinePartial.from({
-    double? width,
-    double? alignment,
-    Color? color,
-  }) = _OutlinePartial;
+abstract class const OutlinePartial() with Diagnosticable {
+  const factory from({double? width, double? alignment, Color? color}) =
+      _OutlinePartial;
 
   double? get width;
   double? get alignment;
@@ -138,18 +133,12 @@ abstract class OutlinePartial with Diagnosticable {
   }
 }
 
-class _OutlinePartial extends OutlinePartial {
-  const _OutlinePartial({this.width, this.alignment, this.color})
-    : assert(width == null || width >= 0.0);
-
-  @override
-  final double? width;
-
-  @override
-  final double? alignment;
-
-  @override
-  final Color? color;
+class const _OutlinePartial({
+  @override final double? width,
+  @override final double? alignment,
+  @override final Color? color,
+}) extends OutlinePartial {
+  this : assert(width == null || width >= 0.0);
 
   @override
   bool operator ==(Object other) =>
@@ -163,12 +152,8 @@ class _OutlinePartial extends OutlinePartial {
   int get hashCode => Object.hash(width, alignment, color);
 }
 
-class _OutlinePartialAsConcrete extends Outline {
-  _OutlinePartialAsConcrete(OutlinePartial value)
-    : assert(value.isConcrete),
-      _value = value;
-
-  final OutlinePartial _value;
+class _OutlinePartialAsConcrete(final OutlinePartial _value) extends Outline {
+  this : assert(_value.isConcrete);
 
   @override
   double get width => _value.width!;
@@ -202,18 +187,14 @@ class _OutlinePartialAsConcrete extends Outline {
   int get hashCode => _value.hashCode;
 }
 
-class OutlinePartialTween extends Tween<OutlinePartial?> {
-  OutlinePartialTween({super.begin, super.end});
-
+class OutlinePartialTween({super.begin, super.end})
+    extends Tween<OutlinePartial?> {
   @override
   OutlinePartial? lerp(double t) => .lerp(begin, end, t);
 }
 
-abstract class Outline extends OutlinePartial {
-  const Outline();
-
-  const factory Outline.from({double width, double alignment, Color color}) =
-      _Outline;
+abstract class const Outline() extends OutlinePartial {
+  const factory from({double width, double alignment, Color color}) = _Outline;
 
   @override
   double get width;
@@ -343,21 +324,12 @@ abstract class Outline extends OutlinePartial {
   }
 }
 
-class _Outline extends Outline {
-  const _Outline({
-    this.width = 0.0,
-    this.alignment = Outline.alignmentInside,
-    this.color = Colors.transparent,
-  }) : assert(width >= 0.0);
-
-  @override
-  final double width;
-
-  @override
-  final double alignment;
-
-  @override
-  final Color color;
+class const _Outline({
+  @override final double width = 0.0,
+  @override final double alignment = Outline.alignmentInside,
+  @override final Color color = Colors.transparent,
+}) extends Outline {
+  this : assert(width >= 0.0);
 
   @override
   bool operator ==(Object other) =>
@@ -371,9 +343,7 @@ class _Outline extends Outline {
   int get hashCode => Object.hash(width, alignment, color);
 }
 
-class OutlineTween extends Tween<Outline?> {
-  OutlineTween({super.begin, super.end});
-
+class OutlineTween({super.begin, super.end}) extends Tween<Outline?> {
   @override
   Outline? lerp(double t) {
     final a = begin;

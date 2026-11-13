@@ -1,5 +1,3 @@
-// ignore_for_file: use_to_and_as_if_applicable
-
 import 'package:material/src/material/flutter.dart';
 
 // ////////////////////////////////////////////////////////////////
@@ -11,36 +9,31 @@ import 'package:material/src/material/flutter.dart';
 /// To convert a [CornersGeometry] object of indeterminate type into a
 /// [Corners] object, call the [resolve] method.
 @immutable
-abstract class CornersGeometry {
-  const CornersGeometry();
-
-  const factory CornersGeometry.only({
+abstract class const CornersGeometry() {
+  const factory only({
     Corner topLeft,
     Corner topRight,
     Corner bottomLeft,
     Corner bottomRight,
   }) = Corners.only;
 
-  const factory CornersGeometry.directional({
+  const factory directional({
     Corner topStart,
     Corner topEnd,
     Corner bottomStart,
     Corner bottomEnd,
   }) = CornersDirectional.only;
 
-  const factory CornersGeometry.all(Corner corner) = Corners.all;
+  const factory all(Corner corner) = Corners.all;
 
-  const factory CornersGeometry.vertical({Corner top, Corner bottom}) =
-      Corners.vertical;
+  const factory vertical({Corner top, Corner bottom}) = Corners.vertical;
 
-  const factory CornersGeometry.horizontal({Corner left, Corner right}) =
-      Corners.horizontal;
+  const factory horizontal({Corner left, Corner right}) = Corners.horizontal;
 
   // TODO: add .directionalHorizontal or .horizontalDirectional (decide on name)
 
-  const factory CornersGeometry.fromBorderRadius(
-    BorderRadiusGeometry borderRadius,
-  ) = _CornersGeometryFromBorderRadiusGeometry;
+  const factory fromBorderRadius(BorderRadiusGeometry borderRadius) =
+      _CornersGeometryFromBorderRadiusGeometry;
 
   CornersGeometry clamp({CornersGeometry? minimum, CornersGeometry? maximum}) =>
       _CornersClamp(this, minimum, maximum);
@@ -108,11 +101,9 @@ abstract class CornersGeometry {
   }
 }
 
-final class _CornersGeometryFromBorderRadiusGeometry extends CornersGeometry {
-  const _CornersGeometryFromBorderRadiusGeometry(this._borderRadius);
-
-  final BorderRadiusGeometry _borderRadius;
-
+final class const _CornersGeometryFromBorderRadiusGeometry(
+  final BorderRadiusGeometry _borderRadius,
+) extends CornersGeometry {
   @override
   Corners resolve(TextDirection? textDirection) =>
       .fromBorderRadius(_borderRadius.resolve(textDirection));
@@ -163,11 +154,8 @@ final class _CornersGeometryFromBorderRadiusGeometry extends CornersGeometry {
   int get hashCode => _borderRadius.hashCode;
 }
 
-final class _CornersUnaryNegation extends CornersGeometry {
-  const _CornersUnaryNegation(CornersGeometry value) : _value = value;
-
-  final CornersGeometry _value;
-
+final class const _CornersUnaryNegation(final CornersGeometry _value)
+    extends CornersGeometry {
   @override
   Corners resolve(TextDirection? textDirection) =>
       -_value.resolve(textDirection);
@@ -187,14 +175,10 @@ final class _CornersUnaryNegation extends CornersGeometry {
   int get hashCode => _value.hashCode;
 }
 
-abstract class _CornersWithDoubleOperation extends CornersGeometry {
-  const _CornersWithDoubleOperation(CornersGeometry value, double operand)
-    : _value = value,
-      _operand = operand;
-
-  final CornersGeometry _value;
-  final double _operand;
-
+abstract class const _CornersWithDoubleOperation(
+  final CornersGeometry _value,
+  final double _operand,
+) extends CornersGeometry {
   // Runtime type participates in checks because this class has specializations.
 
   @override
@@ -209,9 +193,8 @@ abstract class _CornersWithDoubleOperation extends CornersGeometry {
   int get hashCode => Object.hash(_value, _operand);
 }
 
-final class _CornersMultiply extends _CornersWithDoubleOperation {
-  const _CornersMultiply(super.value, super.operand);
-
+final class const _CornersMultiply(super._value, super._operand)
+    extends _CornersWithDoubleOperation {
   @override
   Corners resolve(TextDirection? textDirection) =>
       _value.resolve(textDirection) * _operand;
@@ -220,9 +203,8 @@ final class _CornersMultiply extends _CornersWithDoubleOperation {
   String toString() => "$_value * ${_operand.toStringAsFixed(1)}";
 }
 
-final class _CornersDivideDouble extends _CornersWithDoubleOperation {
-  const _CornersDivideDouble(super.value, super.operand);
-
+final class const _CornersDivideDouble(super._value, super._operand)
+    extends _CornersWithDoubleOperation {
   @override
   Corners resolve(TextDirection? textDirection) =>
       _value.resolve(textDirection) / _operand;
@@ -231,9 +213,8 @@ final class _CornersDivideDouble extends _CornersWithDoubleOperation {
   String toString() => "$_value / ${_operand.toStringAsFixed(1)}";
 }
 
-final class _CornersDivideInt extends _CornersWithDoubleOperation {
-  const _CornersDivideInt(super.value, super.operand);
-
+final class const _CornersDivideInt(super._value, super._operand)
+    extends _CornersWithDoubleOperation {
   @override
   Corners resolve(TextDirection? textDirection) =>
       _value.resolve(textDirection) ~/ _operand;
@@ -242,9 +223,8 @@ final class _CornersDivideInt extends _CornersWithDoubleOperation {
   String toString() => "$_value ~/ ${_operand.toStringAsFixed(1)}";
 }
 
-final class _CornersModulo extends _CornersWithDoubleOperation {
-  const _CornersModulo(super.value, super.operand);
-
+final class const _CornersModulo(super._value, super._operand)
+    extends _CornersWithDoubleOperation {
   @override
   Corners resolve(TextDirection? textDirection) =>
       _value.resolve(textDirection) % _operand;
@@ -253,14 +233,10 @@ final class _CornersModulo extends _CornersWithDoubleOperation {
   String toString() => "$_value % ${_operand.toStringAsFixed(1)}";
 }
 
-abstract class _CornersWithCornersOperation extends CornersGeometry {
-  const _CornersWithCornersOperation(CornersGeometry a, CornersGeometry b)
-    : _a = a,
-      _b = b;
-
-  final CornersGeometry _a;
-  final CornersGeometry _b;
-
+abstract class const _CornersWithCornersOperation(
+  final CornersGeometry _a,
+  final CornersGeometry _b,
+) extends CornersGeometry {
   // Runtime type participates in checks because this class has specializations.
 
   @override
@@ -275,9 +251,8 @@ abstract class _CornersWithCornersOperation extends CornersGeometry {
   int get hashCode => Object.hash(_a, _b);
 }
 
-final class _CornersAdd extends _CornersWithCornersOperation {
-  const _CornersAdd(super.a, super.b);
-
+final class const _CornersAdd(super._a, super._b)
+    extends _CornersWithCornersOperation {
   @override
   Corners resolve(TextDirection? textDirection) =>
       _a.resolve(textDirection) + _b.resolve(textDirection);
@@ -286,9 +261,8 @@ final class _CornersAdd extends _CornersWithCornersOperation {
   String toString() => "$_a + $_b";
 }
 
-final class _CornersSubtract extends _CornersWithCornersOperation {
-  const _CornersSubtract(super.a, super.b);
-
+final class const _CornersSubtract(super._a, super._b)
+    extends _CornersWithCornersOperation {
   @override
   Corners resolve(TextDirection? textDirection) =>
       _a.resolve(textDirection) - _b.resolve(textDirection);
@@ -297,19 +271,11 @@ final class _CornersSubtract extends _CornersWithCornersOperation {
   String toString() => "$_a - $_b";
 }
 
-final class _CornersClamp extends CornersGeometry {
-  const _CornersClamp(
-    CornersGeometry value,
-    CornersGeometry? minimum,
-    CornersGeometry? maximum,
-  ) : _value = value,
-      _minimum = minimum,
-      _maximum = maximum;
-
-  final CornersGeometry _value;
-  final CornersGeometry? _minimum;
-  final CornersGeometry? _maximum;
-
+final class const _CornersClamp(
+  final CornersGeometry _value,
+  final CornersGeometry? _minimum,
+  final CornersGeometry? _maximum,
+) extends CornersGeometry {
   @override
   Corners resolve(TextDirection? textDirection) {
     final value = _value.resolve(textDirection);
@@ -350,16 +316,11 @@ final class _CornersClamp extends CornersGeometry {
   int get hashCode => Object.hash(_value, _minimum, _maximum);
 }
 
-final class _CornersLerp extends CornersGeometry {
-  const _CornersLerp(CornersGeometry a, CornersGeometry b, double t)
-    : _a = a,
-      _b = b,
-      _t = t;
-
-  final CornersGeometry _a;
-  final CornersGeometry _b;
-  final double _t;
-
+final class const _CornersLerp(
+  final CornersGeometry _a,
+  final CornersGeometry _b,
+  final double _t,
+) extends CornersGeometry {
   @override
   Corners resolve(TextDirection? textDirection) =>
       .lerp(_a.resolve(textDirection), _b.resolve(textDirection), _t)!;
@@ -384,9 +345,7 @@ final class _CornersLerp extends CornersGeometry {
 // Mixed corners (optimized for fast linear arithmetic) //
 // ////////////////////////////////////////////////////////////////
 
-abstract class _CornersGeometry extends CornersGeometry {
-  const _CornersGeometry();
-
+abstract class const _CornersGeometry() extends CornersGeometry {
   Corner? get _topLeft;
   Corner? get _topRight;
   Corner? get _bottomLeft;
@@ -771,42 +730,16 @@ abstract class _CornersGeometry extends CornersGeometry {
   );
 }
 
-final class _MixedCorners extends _CornersGeometry {
-  const _MixedCorners(
-    this._topLeft,
-    this._topRight,
-    this._bottomLeft,
-    this._bottomRight,
-    this._topStart,
-    this._topEnd,
-    this._bottomStart,
-    this._bottomEnd,
-  );
-
-  @override
-  final Corner? _topLeft;
-
-  @override
-  final Corner? _topRight;
-
-  @override
-  final Corner? _bottomLeft;
-
-  @override
-  final Corner? _bottomRight;
-
-  @override
-  final Corner? _topStart;
-
-  @override
-  final Corner? _topEnd;
-
-  @override
-  final Corner? _bottomStart;
-
-  @override
-  final Corner? _bottomEnd;
-}
+final class const _MixedCorners(
+  @override final Corner? _topLeft,
+  @override final Corner? _topRight,
+  @override final Corner? _bottomLeft,
+  @override final Corner? _bottomRight,
+  @override final Corner? _topStart,
+  @override final Corner? _topEnd,
+  @override final Corner? _bottomStart,
+  @override final Corner? _bottomEnd,
+) extends _CornersGeometry;
 
 // final class _ZeroCorners extends _CornersGeometry {
 //   const _ZeroCorners();
@@ -863,25 +796,21 @@ final class _MixedCorners extends _CornersGeometry {
 // }
 
 @immutable
-abstract class Corners extends _CornersGeometry {
-  const Corners();
-
-  const factory Corners.only({
+abstract class const Corners() extends _CornersGeometry {
+  const factory only({
     Corner topLeft,
     Corner topRight,
     Corner bottomLeft,
     Corner bottomRight,
   }) = _Corners.only;
 
-  const factory Corners.all(Corner corner) = _Corners.all;
+  const factory all(Corner corner) = _Corners.all;
 
-  const factory Corners.vertical({Corner top, Corner bottom}) =
-      _Corners.vertical;
+  const factory vertical({Corner top, Corner bottom}) = _Corners.vertical;
 
-  const factory Corners.horizontal({Corner left, Corner right}) =
-      _Corners.horizontal;
+  const factory horizontal({Corner left, Corner right}) = _Corners.horizontal;
 
-  const factory Corners.fromBorderRadius(BorderRadius borderRadius) =
+  const factory fromBorderRadius(BorderRadius borderRadius) =
       _CornersFromBorderRadius;
 
   Corner get topLeft;
@@ -1046,15 +975,13 @@ abstract class Corners extends _CornersGeometry {
   }
 }
 
-final class _Corners extends Corners {
-  const _Corners.only({
-    this.topLeft = .zero,
-    this.topRight = .zero,
-    this.bottomLeft = .zero,
-    this.bottomRight = .zero,
-  });
-
-  const _Corners.all(Corner corner)
+final class const _Corners.only({
+  @override final Corner topLeft = .zero,
+  @override final Corner topRight = .zero,
+  @override final Corner bottomLeft = .zero,
+  @override final Corner bottomRight = .zero,
+}) extends Corners {
+  const new all(Corner corner)
     : this.only(
         topLeft: corner,
         topRight: corner,
@@ -1062,7 +989,7 @@ final class _Corners extends Corners {
         bottomRight: corner,
       );
 
-  const _Corners.vertical({Corner top = .zero, Corner bottom = .zero})
+  const new vertical({Corner top = .zero, Corner bottom = .zero})
     : this.only(
         topLeft: top,
         topRight: top,
@@ -1070,33 +997,17 @@ final class _Corners extends Corners {
         bottomRight: bottom,
       );
 
-  const _Corners.horizontal({Corner left = .zero, Corner right = .zero})
+  const new horizontal({Corner left = .zero, Corner right = .zero})
     : this.only(
         topLeft: left,
         topRight: right,
         bottomLeft: left,
         bottomRight: right,
       );
-
-  @override
-  final Corner topLeft;
-
-  @override
-  final Corner topRight;
-
-  @override
-  final Corner bottomLeft;
-
-  @override
-  final Corner bottomRight;
 }
 
-final class _CornersFromBorderRadius extends Corners {
-  const _CornersFromBorderRadius(BorderRadius borderRadius)
-    : _borderRadius = borderRadius;
-
-  final BorderRadius _borderRadius;
-
+final class const _CornersFromBorderRadius(final BorderRadius _borderRadius)
+    extends Corners {
   @override
   Corner get topLeft => .fromRadius(_borderRadius.topLeft);
 
@@ -1114,27 +1025,24 @@ final class _CornersFromBorderRadius extends Corners {
 }
 
 @immutable
-abstract class CornersDirectional extends _CornersGeometry {
-  const CornersDirectional();
-
-  const factory CornersDirectional.only({
+abstract class const CornersDirectional() extends _CornersGeometry {
+  const factory only({
     Corner topStart,
     Corner topEnd,
     Corner bottomStart,
     Corner bottomEnd,
   }) = _CornersDirectional.only;
 
-  const factory CornersDirectional.all(Corner radius) = _CornersDirectional.all;
+  const factory all(Corner radius) = _CornersDirectional.all;
 
-  const factory CornersDirectional.vertical({Corner top, Corner bottom}) =
+  const factory vertical({Corner top, Corner bottom}) =
       _CornersDirectional.vertical;
 
-  const factory CornersDirectional.horizontal({Corner start, Corner end}) =
+  const factory horizontal({Corner start, Corner end}) =
       _CornersDirectional.horizontal;
 
-  const factory CornersDirectional.fromBorderRadius(
-    BorderRadiusDirectional borderRadius,
-  ) = _CornersDirectionalFromBorderRadius;
+  const factory fromBorderRadius(BorderRadiusDirectional borderRadius) =
+      _CornersDirectionalFromBorderRadius;
 
   Corner get topStart;
 
@@ -1315,8 +1223,13 @@ abstract class CornersDirectional extends _CornersGeometry {
   }
 }
 
-final class _CornersDirectional extends CornersDirectional {
-  const _CornersDirectional.all(Corner radius)
+final class const _CornersDirectional.only({
+  @override final Corner topStart = .zero,
+  @override final Corner topEnd = .zero,
+  @override final Corner bottomStart = .zero,
+  @override final Corner bottomEnd = .zero,
+}) extends CornersDirectional {
+  const new all(Corner radius)
     : this.only(
         topStart: radius,
         topEnd: radius,
@@ -1324,53 +1237,26 @@ final class _CornersDirectional extends CornersDirectional {
         bottomEnd: radius,
       );
 
-  const _CornersDirectional.vertical({
-    Corner top = .zero,
-    Corner bottom = .zero,
-  }) : this.only(
-         topStart: top,
-         topEnd: top,
-         bottomStart: bottom,
-         bottomEnd: bottom,
-       );
+  const new vertical({Corner top = .zero, Corner bottom = .zero})
+    : this.only(
+        topStart: top,
+        topEnd: top,
+        bottomStart: bottom,
+        bottomEnd: bottom,
+      );
 
-  const _CornersDirectional.horizontal({
-    Corner start = .zero,
-    Corner end = .zero,
-  }) : this.only(
-         topStart: start,
-         topEnd: end,
-         bottomStart: start,
-         bottomEnd: end,
-       );
-
-  const _CornersDirectional.only({
-    this.topStart = .zero,
-    this.topEnd = .zero,
-    this.bottomStart = .zero,
-    this.bottomEnd = .zero,
-  });
-
-  @override
-  final Corner topStart;
-
-  @override
-  final Corner topEnd;
-
-  @override
-  final Corner bottomStart;
-
-  @override
-  final Corner bottomEnd;
+  const new horizontal({Corner start = .zero, Corner end = .zero})
+    : this.only(
+        topStart: start,
+        topEnd: end,
+        bottomStart: start,
+        bottomEnd: end,
+      );
 }
 
-final class _CornersDirectionalFromBorderRadius extends CornersDirectional {
-  const _CornersDirectionalFromBorderRadius(
-    BorderRadiusDirectional borderRadius,
-  ) : _borderRadius = borderRadius;
-
-  final BorderRadiusDirectional _borderRadius;
-
+final class const _CornersDirectionalFromBorderRadius(
+  final BorderRadiusDirectional _borderRadius,
+) extends CornersDirectional {
   @override
   Corner get topStart => .fromRadius(_borderRadius.topStart);
 

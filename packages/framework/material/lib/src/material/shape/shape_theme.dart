@@ -1,9 +1,7 @@
 import 'package:material/src/material/flutter.dart';
 
-abstract class ShapeThemeDataPartial with Diagnosticable {
-  const ShapeThemeDataPartial();
-
-  const factory ShapeThemeDataPartial.from({
+abstract class const ShapeThemeDataPartial() with Diagnosticable {
+  const factory from({
     double? cornerValueNone,
     double? cornerValueExtraSmall,
     double? cornerValueSmall,
@@ -484,110 +482,33 @@ abstract class ShapeThemeDataPartial with Diagnosticable {
   }
 }
 
-final class _ShapeThemeDataPartial extends ShapeThemeDataPartial {
-  const _ShapeThemeDataPartial({
-    this.cornerValueNone,
-    this.cornerValueExtraSmall,
-    this.cornerValueSmall,
-    this.cornerValueMedium,
-    this.cornerValueLarge,
-    this.cornerValueLargeIncreased,
-    this.cornerValueExtraLarge,
-    this.cornerValueExtraLargeIncreased,
-    this.cornerValueExtraExtraLarge,
-    this.cornerFamily,
-    this.cornerNone,
-    this.cornerExtraSmall,
-    this.cornerExtraSmallTop,
-    this.cornerSmall,
-    this.cornerMedium,
-    this.cornerLarge,
-    this.cornerLargeStart,
-    this.cornerLargeEnd,
-    this.cornerLargeTop,
-    this.cornerLargeIncreased,
-    this.cornerExtraLarge,
-    this.cornerExtraLargeTop,
-    this.cornerExtraLargeIncreased,
-    this.cornerExtraExtraLarge,
-    this.cornerFull,
-  });
-
-  @override
-  final double? cornerValueNone;
-
-  @override
-  final double? cornerValueExtraSmall;
-
-  @override
-  final double? cornerValueSmall;
-
-  @override
-  final double? cornerValueMedium;
-
-  @override
-  final double? cornerValueLarge;
-
-  @override
-  final double? cornerValueLargeIncreased;
-
-  @override
-  final double? cornerValueExtraLarge;
-
-  @override
-  final double? cornerValueExtraLargeIncreased;
-
-  @override
-  final double? cornerValueExtraExtraLarge;
-
-  @override
-  final CornersBorderDelegate? cornerFamily;
-
-  @override
-  final Corner? cornerNone;
-
-  @override
-  final Corner? cornerExtraSmall;
-
-  @override
-  final CornersGeometry? cornerExtraSmallTop;
-
-  @override
-  final Corner? cornerSmall;
-
-  @override
-  final Corner? cornerMedium;
-
-  @override
-  final Corner? cornerLarge;
-
-  @override
-  final CornersGeometry? cornerLargeStart;
-
-  @override
-  final CornersGeometry? cornerLargeEnd;
-
-  @override
-  final CornersGeometry? cornerLargeTop;
-
-  @override
-  final Corner? cornerLargeIncreased;
-
-  @override
-  final Corner? cornerExtraLarge;
-
-  @override
-  final CornersGeometry? cornerExtraLargeTop;
-
-  @override
-  final Corner? cornerExtraLargeIncreased;
-
-  @override
-  final Corner? cornerExtraExtraLarge;
-
-  @override
-  final Corner? cornerFull;
-
+final class const _ShapeThemeDataPartial({
+  @override final double? cornerValueNone,
+  @override final double? cornerValueExtraSmall,
+  @override final double? cornerValueSmall,
+  @override final double? cornerValueMedium,
+  @override final double? cornerValueLarge,
+  @override final double? cornerValueLargeIncreased,
+  @override final double? cornerValueExtraLarge,
+  @override final double? cornerValueExtraLargeIncreased,
+  @override final double? cornerValueExtraExtraLarge,
+  @override final CornersBorderDelegate? cornerFamily,
+  @override final Corner? cornerNone,
+  @override final Corner? cornerExtraSmall,
+  @override final CornersGeometry? cornerExtraSmallTop,
+  @override final Corner? cornerSmall,
+  @override final Corner? cornerMedium,
+  @override final Corner? cornerLarge,
+  @override final CornersGeometry? cornerLargeStart,
+  @override final CornersGeometry? cornerLargeEnd,
+  @override final CornersGeometry? cornerLargeTop,
+  @override final Corner? cornerLargeIncreased,
+  @override final Corner? cornerExtraLarge,
+  @override final CornersGeometry? cornerExtraLargeTop,
+  @override final Corner? cornerExtraLargeIncreased,
+  @override final Corner? cornerExtraExtraLarge,
+  @override final Corner? cornerFull,
+}) extends ShapeThemeDataPartial {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -651,10 +572,8 @@ final class _ShapeThemeDataPartial extends ShapeThemeDataPartial {
   );
 }
 
-abstract class ShapeThemeData extends ShapeThemeDataPartial {
-  const ShapeThemeData();
-
-  const factory ShapeThemeData.from({
+abstract class const ShapeThemeData() extends ShapeThemeDataPartial {
+  const factory from({
     required double cornerValueNone,
     required double cornerValueExtraSmall,
     required double cornerValueSmall,
@@ -682,7 +601,7 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
     required Corner cornerFull,
   }) = _ShapeThemeData;
 
-  const factory ShapeThemeData.defaults({ShapeThemeDataPartial? overrides}) =
+  const factory defaults({ShapeThemeDataPartial? overrides}) =
       _ShapeThemeDataDefaults;
 
   @override
@@ -1067,110 +986,33 @@ abstract class ShapeThemeData extends ShapeThemeDataPartial {
   }
 }
 
-final class _ShapeThemeData extends ShapeThemeData {
-  const _ShapeThemeData({
-    required this.cornerValueNone,
-    required this.cornerValueExtraSmall,
-    required this.cornerValueSmall,
-    required this.cornerValueMedium,
-    required this.cornerValueLarge,
-    required this.cornerValueLargeIncreased,
-    required this.cornerValueExtraLarge,
-    required this.cornerValueExtraLargeIncreased,
-    required this.cornerValueExtraExtraLarge,
-    required this.cornerFamily,
-    required this.cornerNone,
-    required this.cornerExtraSmall,
-    required this.cornerExtraSmallTop,
-    required this.cornerSmall,
-    required this.cornerMedium,
-    required this.cornerLarge,
-    required this.cornerLargeStart,
-    required this.cornerLargeEnd,
-    required this.cornerLargeTop,
-    required this.cornerLargeIncreased,
-    required this.cornerExtraLarge,
-    required this.cornerExtraLargeTop,
-    required this.cornerExtraLargeIncreased,
-    required this.cornerExtraExtraLarge,
-    required this.cornerFull,
-  });
-
-  @override
-  final double cornerValueNone;
-
-  @override
-  final double cornerValueExtraSmall;
-
-  @override
-  final double cornerValueSmall;
-
-  @override
-  final double cornerValueMedium;
-
-  @override
-  final double cornerValueLarge;
-
-  @override
-  final double cornerValueLargeIncreased;
-
-  @override
-  final double cornerValueExtraLarge;
-
-  @override
-  final double cornerValueExtraLargeIncreased;
-
-  @override
-  final double cornerValueExtraExtraLarge;
-
-  @override
-  final CornersBorderDelegate cornerFamily;
-
-  @override
-  final Corner cornerNone;
-
-  @override
-  final Corner cornerExtraSmall;
-
-  @override
-  final CornersGeometry cornerExtraSmallTop;
-
-  @override
-  final Corner cornerSmall;
-
-  @override
-  final Corner cornerMedium;
-
-  @override
-  final Corner cornerLarge;
-
-  @override
-  final CornersGeometry cornerLargeStart;
-
-  @override
-  final CornersGeometry cornerLargeEnd;
-
-  @override
-  final CornersGeometry cornerLargeTop;
-
-  @override
-  final Corner cornerLargeIncreased;
-
-  @override
-  final Corner cornerExtraLarge;
-
-  @override
-  final CornersGeometry cornerExtraLargeTop;
-
-  @override
-  final Corner cornerExtraLargeIncreased;
-
-  @override
-  final Corner cornerExtraExtraLarge;
-
-  @override
-  final Corner cornerFull;
-
+final class const _ShapeThemeData({
+  @override required final double cornerValueNone,
+  @override required final double cornerValueExtraSmall,
+  @override required final double cornerValueSmall,
+  @override required final double cornerValueMedium,
+  @override required final double cornerValueLarge,
+  @override required final double cornerValueLargeIncreased,
+  @override required final double cornerValueExtraLarge,
+  @override required final double cornerValueExtraLargeIncreased,
+  @override required final double cornerValueExtraExtraLarge,
+  @override required final CornersBorderDelegate cornerFamily,
+  @override required final Corner cornerNone,
+  @override required final Corner cornerExtraSmall,
+  @override required final CornersGeometry cornerExtraSmallTop,
+  @override required final Corner cornerSmall,
+  @override required final Corner cornerMedium,
+  @override required final Corner cornerLarge,
+  @override required final CornersGeometry cornerLargeStart,
+  @override required final CornersGeometry cornerLargeEnd,
+  @override required final CornersGeometry cornerLargeTop,
+  @override required final Corner cornerLargeIncreased,
+  @override required final Corner cornerExtraLarge,
+  @override required final CornersGeometry cornerExtraLargeTop,
+  @override required final Corner cornerExtraLargeIncreased,
+  @override required final Corner cornerExtraExtraLarge,
+  @override required final Corner cornerFull,
+}) extends ShapeThemeData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1234,11 +1076,9 @@ final class _ShapeThemeData extends ShapeThemeData {
   );
 }
 
-final class _ShapeThemeDataDefaults extends ShapeThemeData {
-  const _ShapeThemeDataDefaults({ShapeThemeDataPartial? overrides})
-    : _overrides = overrides ?? const .from();
-
-  final ShapeThemeDataPartial _overrides;
+final class const _ShapeThemeDataDefaults({ShapeThemeDataPartial? overrides})
+    extends ShapeThemeData {
+  final ShapeThemeDataPartial _overrides = overrides ?? const .from();
 
   @override
   double get cornerValueNone => _overrides.cornerValueNone ?? 0.0;
@@ -1532,40 +1372,39 @@ final class _ShapeThemeDataDefaults extends ShapeThemeData {
   int get hashCode => _overrides.hashCode;
 }
 
-abstract class ShapeTheme extends SingleChildStatelessWidget {
-  const ShapeTheme._({super.key, super.child});
-
-  const factory ShapeTheme.mergeWithResolver({
+abstract class const ShapeTheme._({super.key, super.child})
+    extends SingleChildStatelessWidget {
+  const factory mergeWithResolver({
     Key? key,
     required ThemeResolver<ShapeThemeDataPartial> resolver,
     Widget? child,
   }) = _ShapeThemeWithResolver<ShapeThemeDataPartial>;
 
-  const factory ShapeTheme.mergeWithCallback({
+  const factory mergeWithCallback({
     Key? key,
     required ThemeResolverCallback<ShapeThemeDataPartial> callback,
     Widget? child,
   }) = _ShapeThemeWithCallback<ShapeThemeDataPartial>;
 
-  const factory ShapeTheme.mergeWithData({
+  const factory mergeWithData({
     Key? key,
     required ShapeThemeDataPartial data,
     Widget? child,
   }) = _ShapeThemeWithData<ShapeThemeDataPartial>;
 
-  const factory ShapeTheme.replaceWithResolver({
+  const factory replaceWithResolver({
     Key? key,
     required ThemeResolver<ShapeThemeData> resolver,
     Widget? child,
   }) = _ShapeThemeWithResolver<ShapeThemeData>;
 
-  const factory ShapeTheme.replaceWithCallback({
+  const factory replaceWithCallback({
     Key? key,
     required ThemeResolverCallback<ShapeThemeData> callback,
     Widget? child,
   }) = _ShapeThemeWithCallback<ShapeThemeData>;
 
-  const factory ShapeTheme.replaceWithData({
+  const factory replaceWithData({
     Key? key,
     required ShapeThemeData data,
     Widget? child,
@@ -1588,16 +1427,12 @@ abstract class ShapeTheme extends SingleChildStatelessWidget {
       .defaults(overrides: _ShapeTheme.maybeOverridesOf(context));
 }
 
-class _ShapeThemeWithResolver<T extends ShapeThemeDataPartial>
-    extends ShapeTheme {
-  const _ShapeThemeWithResolver({
-    super.key,
-    required this.resolver,
-    super.child,
-  }) : super._();
-
-  @override
-  final ThemeResolver<T> resolver;
+class const _ShapeThemeWithResolver<T extends ShapeThemeDataPartial>({
+  super.key,
+  @override required final ThemeResolver<T> resolver,
+  super.child,
+}) extends ShapeTheme {
+  this : super._();
 
   @override
   SingleChildWidget wrap(BuildContext context, Widget? child) =>
@@ -1610,15 +1445,12 @@ class _ShapeThemeWithResolver<T extends ShapeThemeDataPartial>
   }
 }
 
-class _ShapeThemeWithCallback<T extends ShapeThemeDataPartial>
-    extends ShapeTheme {
-  const _ShapeThemeWithCallback({
-    super.key,
-    required this.callback,
-    super.child,
-  }) : super._();
-
-  final ThemeResolverCallback<T> callback;
+class const _ShapeThemeWithCallback<T extends ShapeThemeDataPartial>({
+  super.key,
+  required final ThemeResolverCallback<T> callback,
+  super.child,
+}) extends ShapeTheme {
+  this : super._();
 
   @override
   ThemeResolver<T> get resolver => .callback(callback);
@@ -1636,11 +1468,12 @@ class _ShapeThemeWithCallback<T extends ShapeThemeDataPartial>
   }
 }
 
-class _ShapeThemeWithData<T extends ShapeThemeDataPartial> extends ShapeTheme {
-  const _ShapeThemeWithData({super.key, required this.data, super.child})
-    : super._();
-
-  final T data;
+class const _ShapeThemeWithData<T extends ShapeThemeDataPartial>({
+  super.key,
+  required final T data,
+  super.child,
+}) extends ShapeTheme {
+  this : super._();
 
   @override
   ThemeResolver<T> get resolver => .value(data);
@@ -1656,16 +1489,17 @@ class _ShapeThemeWithData<T extends ShapeThemeDataPartial> extends ShapeTheme {
   }
 }
 
-final class _ShapeTheme
-    extends
+final class const _ShapeTheme({
+  super.key,
+  required super.resolver,
+  required super.child,
+}) extends
         InheritedThemeResolverWidget<
           ShapeThemeDataPartial,
           _ShapeTheme,
           _ShapeThemeElement
         >
     implements InheritedTheme {
-  const _ShapeTheme({super.key, required super.resolver, required super.child});
-
   @override
   ShapeThemeDataPartial merge(
     ShapeThemeDataPartial fallback,
@@ -1699,12 +1533,10 @@ final class _ShapeTheme
       >(context);
 }
 
-final class _ShapeThemeElement
+final class _ShapeThemeElement(super.widget)
     extends
         InheritedThemeResolverElement<
           ShapeThemeDataPartial,
           _ShapeTheme,
           _ShapeThemeElement
-        > {
-  _ShapeThemeElement(super.widget);
-}
+        >;
