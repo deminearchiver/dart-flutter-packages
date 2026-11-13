@@ -510,17 +510,33 @@ abstract class const _CornersGeometry() extends CornersGeometry {
       final bbs = other._bottomStart;
       final bbe = other._bottomEnd;
       return _MixedCorners(
-        atl != null && btl != null ? atl.subtract(btl) : atl ?? btl,
-        atr != null && btr != null ? atr.subtract(btr) : atr ?? btr,
-        abl != null && bbl != null ? abl.subtract(bbl) : abl ?? bbl,
-        abr != null && bbr != null ? abr.subtract(bbr) : abr ?? bbr,
-        ats != null && bts != null ? ats.subtract(bts) : ats ?? bts,
-        ate != null && bte != null ? ate.subtract(bte) : ate ?? bte,
-        abs != null && bbs != null ? abs.subtract(bbs) : abs ?? bbs,
-        abe != null && bbe != null ? abe.subtract(bbe) : abe ?? bbe,
+        atl != null && btl != null
+            ? atl.subtract(btl)
+            : atl ?? (btl != null ? -btl : null),
+        atr != null && btr != null
+            ? atr.subtract(btr)
+            : atr ?? (btr != null ? -btr : null),
+        abl != null && bbl != null
+            ? abl.subtract(bbl)
+            : abl ?? (bbl != null ? -bbl : null),
+        abr != null && bbr != null
+            ? abr.subtract(bbr)
+            : abr ?? (bbr != null ? -bbr : null),
+        ats != null && bts != null
+            ? ats.subtract(bts)
+            : ats ?? (bts != null ? -bts : null),
+        ate != null && bte != null
+            ? ate.subtract(bte)
+            : ate ?? (bte != null ? -bte : null),
+        abs != null && bbs != null
+            ? abs.subtract(bbs)
+            : abs ?? (bbs != null ? -bbs : null),
+        abe != null && bbe != null
+            ? abe.subtract(bbe)
+            : abe ?? (bbe != null ? -bbe : null),
       );
     }
-    return super.add(other);
+    return super.subtract(other);
   }
 
   @override

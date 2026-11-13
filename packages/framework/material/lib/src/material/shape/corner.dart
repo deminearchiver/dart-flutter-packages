@@ -374,10 +374,18 @@ abstract class const _Corner() extends Corner {
       final bfx = other._fractionX;
       final bfy = other._fractionY;
       return _MixedCorner(
-        arx != null && brx != null ? arx - brx : arx ?? brx,
-        ary != null && bry != null ? ary - bry : ary ?? bry,
-        afx != null && bfx != null ? afx - bfx : afx ?? bfx,
-        afy != null && bfy != null ? afy - bfy : afy ?? bfy,
+        arx != null && brx != null
+            ? arx - brx
+            : arx ?? (brx != null ? -brx : null),
+        ary != null && bry != null
+            ? ary - bry
+            : ary ?? (bry != null ? -bry : null),
+        afx != null && bfx != null
+            ? afx - bfx
+            : afx ?? (bfx != null ? -bfx : null),
+        afy != null && bfy != null
+            ? afy - bfy
+            : afy ?? (bfy != null ? -bfy : null),
       );
     }
     return super.subtract(other);
