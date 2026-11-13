@@ -747,9 +747,9 @@ abstract class const ShapeCornerFamily() {
 
   GeometryOffsetDelegate<BorderRect> get borderRect;
 
-  GeometryOffsetDelegate<RRect> get rRect;
+  GeometryOffsetDelegate<RRect> get rrect;
 
-  GeometryOffsetDelegate<RSuperellipse> get rSuperellipse;
+  GeometryOffsetDelegate<RSuperellipse> get rsuperellipse;
 
   static const ShapeCornerFamily rounded = _RoundedShapeCornerFamily();
 
@@ -772,11 +772,11 @@ mixin _RoundedShapeCornerFamilyMixin implements ShapeCornerFamily {
       const .fromInflateCallback(_inflateBorderRect);
 
   @override
-  GeometryOffsetDelegate<RRect> get rRect =>
+  GeometryOffsetDelegate<RRect> get rrect =>
       const .fromInflateCallback(_inflateRRect);
 
   @override
-  GeometryOffsetDelegate<RSuperellipse> get rSuperellipse =>
+  GeometryOffsetDelegate<RSuperellipse> get rsuperellipse =>
       const .fromInflateCallback(_inflateRSuperellipse);
 
   static CornersGeometry _inflateCorners(CornersGeometry value, double delta) {
@@ -860,11 +860,11 @@ mixin _CutShapeCornerFamilyMixin implements ShapeCornerFamily {
       const .fromInflateCallback(_inflateBorderRect);
 
   @override
-  GeometryOffsetDelegate<RRect> get rRect =>
+  GeometryOffsetDelegate<RRect> get rrect =>
       const .fromInflateCallback(_inflateRRect);
 
   @override
-  GeometryOffsetDelegate<RSuperellipse> get rSuperellipse =>
+  GeometryOffsetDelegate<RSuperellipse> get rsuperellipse =>
       const .fromInflateCallback(_inflateRSuperellipse);
 
   static CornersGeometry _inflateCorners(CornersGeometry value, double delta) {

@@ -352,11 +352,11 @@ mixin _RoundedCornerCalculations implements CornersBorderDelegate {
 
   @override
   RRect inflateRRect(RRect value, double delta) =>
-      ShapeCornerFamily.rounded.rRect.inflate(value, delta);
+      ShapeCornerFamily.rounded.rrect.inflate(value, delta);
 
   @override
   RSuperellipse inflateRSuperellipse(RSuperellipse value, double delta) =>
-      ShapeCornerFamily.rounded.rSuperellipse.inflate(value, delta);
+      ShapeCornerFamily.rounded.rsuperellipse.inflate(value, delta);
 }
 
 class const _RoundedCornersBorderDelegate()
@@ -529,11 +529,11 @@ mixin _CutCornerCalculations implements CornersBorderDelegate {
 
   @override
   RRect inflateRRect(RRect value, double delta) =>
-      ShapeCornerFamily.cut.rRect.inflate(value, delta);
+      ShapeCornerFamily.cut.rrect.inflate(value, delta);
 
   @override
   RSuperellipse inflateRSuperellipse(RSuperellipse value, double delta) =>
-      ShapeCornerFamily.cut.rSuperellipse.inflate(value, delta);
+      ShapeCornerFamily.cut.rsuperellipse.inflate(value, delta);
 }
 
 class const _CutCornersBorderDelegate()
