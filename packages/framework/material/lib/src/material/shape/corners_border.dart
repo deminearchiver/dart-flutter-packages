@@ -88,7 +88,7 @@ abstract class const _OffsetCorner(final Corner _value, final double _delta)
   bool operator ==(Object other) =>
       identical(this, other) ||
       runtimeType == other.runtimeType &&
-          other is _CutCorner &&
+          other is _OffsetCorner &&
           _value == other._value &&
           _delta == other._delta;
 
