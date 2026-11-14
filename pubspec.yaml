@@ -10,7 +10,6 @@ workspace:
   - packages/androidx_graphics_shapes/example
   - packages/csscolorparser
   - packages/csscolorparser_flutter
-  - packages/deminearchiver_lints
   - packages/device_info_ffi
   - packages/device_info_ffi/example
   - packages/dynamic_color_ffi

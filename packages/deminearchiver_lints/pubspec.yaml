@@ -5,7 +5,6 @@ homepage: https://github.com/deminearchiver/dart-flutter-packages
 repository: https://github.com/deminearchiver/dart-flutter-packages/tree/main/packages/deminearchiver_lints
 issue_tracker: https://github.com/deminearchiver/dart-flutter-packages/issues
 topics: [analysis, analyzer, code-style, lint, lints]
-resolution: workspace
 
 environment:
   sdk: ^3.13.0
