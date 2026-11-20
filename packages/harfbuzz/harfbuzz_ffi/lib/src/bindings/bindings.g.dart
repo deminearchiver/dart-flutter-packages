@@ -1942,6 +1942,29 @@ external ffi.Pointer<hb_font_t> hb_font_create_sub_font(
   ffi.Pointer<hb_font_t> parent,
 );
 
+/// hb_font_create_without_funcs_or_fail:
+/// @face: (nullable): a face
+///
+/// Constructs a new font object with the same initial properties as
+/// hb_font_create(), but without setting up default font functions.
+/// The face is referenced and made immutable, and the scale and variation
+/// coordinates are initialized as in hb_font_create().
+///
+/// This is useful for clients that install their own font functions with
+/// hb_font_set_funcs() or hb_font_set_funcs_using(), to avoid the overhead
+/// of setting up default font functions only to replace them immediately.
+/// The `HB_FONT_FUNCS` environment variable is not consulted.
+///
+/// Return value: (transfer full) (nullable): The new font object, or `NULL`
+/// if allocation fails
+///
+/// Since: 15.2.0
+@meta.RecordUse()
+@ffi.Native<ffi.Pointer<hb_font_t> Function(ffi.Pointer<hb_face_t>)>()
+external ffi.Pointer<hb_font_t> hb_font_create_without_funcs_or_fail(
+  ffi.Pointer<hb_face_t> face,
+);
+
 @meta.RecordUse()
 @ffi.Native<ffi.Void Function(ffi.Pointer<hb_font_t>)>()
 external void hb_font_destroy(ffi.Pointer<hb_font_t> font);
@@ -4630,6 +4653,45 @@ void hb_ot_layout_get_baseline_with_fallback2(
     script.value,
     language,
     coord,
+  );
+}
+
+/// JSTF
+@meta.RecordUse()
+@ffi.Native<
+  ffi.UnsignedInt Function(
+    ffi.Pointer<hb_face_t>,
+    ffi.UnsignedInt,
+    hb_language_t,
+    ffi.UnsignedInt,
+    ffi.Pointer<ffi.UnsignedInt>,
+    ffi.Pointer<hb_codepoint_t>,
+  )
+>(symbol: 'hb_ot_layout_get_extender_glyphs')
+external int _hb_ot_layout_get_extender_glyphs(
+  ffi.Pointer<hb_face_t> face,
+  int script,
+  hb_language_t language,
+  int start_offset,
+  ffi.Pointer<ffi.UnsignedInt> glyphs_count,
+  ffi.Pointer<hb_codepoint_t> glyphs,
+);
+
+int hb_ot_layout_get_extender_glyphs(
+  ffi.Pointer<hb_face_t> face,
+  hb_script_t script,
+  hb_language_t language,
+  int start_offset,
+  ffi.Pointer<ffi.UnsignedInt> glyphs_count,
+  ffi.Pointer<hb_codepoint_t> glyphs,
+) {
+  return _hb_ot_layout_get_extender_glyphs(
+    face,
+    script.value,
+    language,
+    start_offset,
+    glyphs_count,
+    glyphs,
   );
 }
 
@@ -9839,9 +9901,9 @@ const int HB_VERSION_MAJOR = 15;
 
 const int HB_VERSION_MICRO = 0;
 
-const int HB_VERSION_MINOR = 1;
+const int HB_VERSION_MINOR = 2;
 
-const String HB_VERSION_STRING = '15.1.0';
+const String HB_VERSION_STRING = '15.2.0';
 
 final class _hb_var_int_t extends ffi.Union {
   @ffi.Uint32()
@@ -13949,7 +14011,7 @@ final class hb_raster_extents_t extends ffi.Struct {
 
 /// hb_raster_format_t:
 /// @HB_RASTER_FORMAT_A8: 8-bit alpha-only coverage
-/// @HB_RASTER_FORMAT_BGRA32: 32-bit BGRA color
+/// @HB_RASTER_FORMAT_BGRA32: Premultiplied color in B, G, R, A byte order
 ///
 /// Pixel format for raster images.
 ///
@@ -14887,7 +14949,7 @@ enum hb_subset_depend_edge_flags_t {
 /// hb_subset_depend_entry_t:
 /// @table_tag: Source table (e.g. GSUB, glyf, CFF, COLR, MATH).
 /// @dependent: Target glyph ID.
-/// @layout_tag: Feature tag for GSUB edges; 0 otherwise.
+/// @layout_tag: Feature tag for GSUB edges; #HB_CODEPOINT_INVALID otherwise.
 /// @ligature_set_index: Index into the sets array for ligature component
 /// glyphs, or #HB_CODEPOINT_INVALID if not a ligature edge.
 /// @context_set_index: Index into the sets array for context requirement
@@ -14943,10 +15005,13 @@ final class hb_subset_depend_t extends ffi.Opaque {}
 /// hb_subset_flags_t:
 /// @HB_SUBSET_FLAGS_DEFAULT: all flags at their default value of false.
 /// @HB_SUBSET_FLAGS_NO_HINTING: If set hinting instructions will be dropped in
-/// the produced subset. Otherwise hinting instructions will be retained.
+/// the produced subset. Otherwise hinting instructions will be retained. This
+/// flag is ignored for fonts whose hinting is required for correct rendering.
 /// @HB_SUBSET_FLAGS_RETAIN_GIDS: If set glyph indices will not be modified in
 /// the produced subset. If glyphs are dropped their indices will be retained
-/// as an empty glyph.
+/// as an empty glyph. This is implied when the subset retains a table that
+/// cannot be subsetted and refers to glyphs, such as an AAT, Graphite, SVG, or
+/// bitmap table.
 /// @HB_SUBSET_FLAGS_DESUBROUTINIZE: If set and subsetting a CFF font the
 /// subsetter will attempt to remove subroutines from the CFF glyphs.
 /// @HB_SUBSET_FLAGS_NAME_LEGACY: If set non-unicode name records will be

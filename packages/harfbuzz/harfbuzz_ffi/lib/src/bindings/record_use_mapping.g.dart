@@ -170,6 +170,8 @@ const recordUseMapping = {
   'hb_font_changed': 'hb_font_changed',
   'hb_font_create': 'hb_font_create',
   'hb_font_create_sub_font': 'hb_font_create_sub_font',
+  'hb_font_create_without_funcs_or_fail':
+      'hb_font_create_without_funcs_or_fail',
   'hb_font_destroy': 'hb_font_destroy',
   'hb_font_draw_glyph': 'hb_font_draw_glyph',
   'hb_font_draw_glyph_or_fail': 'hb_font_draw_glyph_or_fail',
@@ -403,6 +405,7 @@ const recordUseMapping = {
       'hb_ot_layout_get_baseline_with_fallback',
   '_hb_ot_layout_get_baseline_with_fallback2':
       'hb_ot_layout_get_baseline_with_fallback2',
+  '_hb_ot_layout_get_extender_glyphs': 'hb_ot_layout_get_extender_glyphs',
   '_hb_ot_layout_get_font_extents': 'hb_ot_layout_get_font_extents',
   '_hb_ot_layout_get_font_extents2': 'hb_ot_layout_get_font_extents2',
   '_hb_ot_layout_get_glyph_class': 'hb_ot_layout_get_glyph_class',
